@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.LoanAchievementView;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -54,6 +53,7 @@ public class InvestAchievementServiceTest {
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTransferStatus(TransferStatus.TRANSFERABLE);
         investMapper.create(model);
         return model;
     }
@@ -131,13 +131,13 @@ public class InvestAchievementServiceTest {
 
         loanMapper.update(loanModel);
 
-        List<LoanAchievementView> investAchievementDtosFirst = investAchievementService.findInvestAchievementManage(1, 10, userModelFirstMan.getLoginName(), InvestAchievement.FIRST_INVEST);
+        List<LoanAchievementView> investAchievementDtosFirst = investAchievementService.findInvestAchievement(1, 10, userModelFirstMan.getLoginName());
         assertThat(investAchievementDtosFirst.get(0).getFirstInvestLoginName(), is(userModelFirstMan.getLoginName()));
 
-        List<LoanAchievementView> investAchievementDtosLast = investAchievementService.findInvestAchievementManage(1, 10, userModelLastMan.getLoginName(), InvestAchievement.LAST_INVEST);
+        List<LoanAchievementView> investAchievementDtosLast = investAchievementService.findInvestAchievement(1, 10, userModelLastMan.getLoginName());
         assertThat(investAchievementDtosLast.get(0).getLastInvestLoginName(), is(userModelLastMan.getLoginName()));
 
-        List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievementManage(1, 10, userModelMaxMan.getLoginName(), InvestAchievement.MAX_AMOUNT);
+        List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievement(1, 10, userModelMaxMan.getLoginName());
         assertThat(investAchievementDtosMax.get(0).getMaxAmountLoginName(), is(userModelMaxMan.getLoginName()));
 
     }

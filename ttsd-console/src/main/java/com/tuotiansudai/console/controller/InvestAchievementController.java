@@ -2,11 +2,11 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.InvestAchievementService;
-import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.LoanAchievementView;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,8 @@ import java.util.List;
 @RequestMapping(value = "/activity-manage")
 public class InvestAchievementController {
 
+    static Logger logger = Logger.getLogger(InvestAchievementController.class);
+
     @Autowired
     private InvestAchievementService investAchievementService;
 
@@ -31,7 +33,6 @@ public class InvestAchievementController {
     public ModelAndView investAchievement(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                           @RequestParam(value = "loginName", required = false) String loginName,
-                                          @RequestParam(value = "investAchievement", required = false) InvestAchievement investAchievement,
                                           @RequestParam(value = "export", required = false) String export,
                                           HttpServletResponse response) throws IOException {
         if (export != null && !export.equals("")) {
@@ -39,12 +40,12 @@ public class InvestAchievementController {
             try {
                 response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("投资称号管理.csv", "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getLocalizedMessage(), e);
             }
             response.setContentType("application/csv");
             List<List<String>> data = Lists.newArrayList();
-            long investAchievementCount = investAchievementService.findInvestAchievementManageCount(loginName, investAchievement);
-            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievementManage(1, new Long(investAchievementCount).intValue(), loginName, investAchievement);
+            long investAchievementCount = investAchievementService.findInvestAchievementCount(loginName);
+            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(1, new Long(investAchievementCount).intValue(), loginName);
             for (LoanAchievementView loanAchievementView : loanAchievementViews) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(loanAchievementView.getName());
@@ -74,21 +75,19 @@ public class InvestAchievementController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader, data, response.getOutputStream());
             return null;
         } else {
-            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievementManage(index, pageSize, loginName, investAchievement);
+            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, loginName);
             ModelAndView modelAndView = new ModelAndView("/invest-achievement");
             modelAndView.addObject("loanAchievementViews", loanAchievementViews);
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("loginName", loginName);
-            long investAchievementCount = investAchievementService.findInvestAchievementManageCount(loginName, investAchievement);
+            long investAchievementCount = investAchievementService.findInvestAchievementCount(loginName);
             long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             modelAndView.addObject("investAchievementCount", investAchievementCount);
-            modelAndView.addObject("achievement", investAchievement);
-            modelAndView.addObject("investAchievements", InvestAchievement.values());
             return modelAndView;
         }
     }

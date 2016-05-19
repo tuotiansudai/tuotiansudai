@@ -5,9 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.InvestAchievementService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.LoanAchievementView;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,17 +23,21 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     private InvestMapper investMapper;
 
     @Override
-    public long findInvestAchievementManageCount(String loginName, InvestAchievement investAchievement) {
-        return loanMapper.findLoanAchievementCount(loginName, StringUtils.isEmpty(loginName) ? null : investAchievement);
+    public long findInvestAchievementCount(String loginName) {
+        return loanMapper.findLoanAchievementCount(loginName);
     }
 
     @Override
-    public List<LoanAchievementView> findInvestAchievementManage(int index, int pageSize, String loginName, InvestAchievement investAchievement) {
-        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, loginName, StringUtils.isEmpty(loginName) ? null : investAchievement);
+    public List<LoanAchievementView> findInvestAchievement(int index, int pageSize, String loginName) {
+        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, loginName);
         return Lists.transform(loanAchievementViews, new Function<LoanAchievementView, LoanAchievementView>() {
             @Override
             public LoanAchievementView apply(LoanAchievementView input) {
-                input.setWhenCompleteInvest(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(input.getRaisingCompleteTime())));
+                if (input.getRaisingCompleteTime() == null) {
+                    input.setWhenCompleteInvest("/");
+                } else {
+                    input.setWhenCompleteInvest(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(input.getRaisingCompleteTime())));
+                }
                 Date firstInvestDate = investMapper.findFirstTradeTimeInvestByLoanId(input.getLoanId());
                 input.setWhenFirstInvest(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
                 return input;

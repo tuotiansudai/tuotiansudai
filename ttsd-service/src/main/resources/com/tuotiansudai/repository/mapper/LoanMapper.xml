@@ -444,304 +444,125 @@
 
     <select id="findLoanAchievement" resultMap="loanAchievementView" parameterType="map">
         SELECT
-        <if test="investAchievement == null">
-          temp1.id as loan_id,
-          temp1.name,
-          temp1.status as loan_status,
-          temp1.periods,
-          temp1.loan_amount,
-          temp1.raising_complete_time,
-          temp1.fundraising_start_time,
-          temp1.first_invest_achievement_id,
-          temp1.login_name as first_invest_login_name,
-          temp1.amount as first_invest_amount,
-          temp2.last_invest_achievement_id,
-          temp2.login_name as last_invest_login_name,
-          temp2.amount as last_invest_amount,
-          temp3.max_amount_achievement_id,
-          temp3.login_name as max_amount_login_name,
-          temp3.amount as max_amount
-        </if>
-        <if test="investAchievement != null and investAchievement.name() == 'FIRST_INVEST'">
-            temp1.id as loan_id,
-            temp1.name,
-            temp1.status as loan_status,
-            temp1.periods,
-            temp1.loan_amount,
-            temp1.raising_complete_time,
-            temp1.fundraising_start_time,
-            temp1.first_invest_achievement_id,
-            temp1.login_name as first_invest_login_name,
-            temp1.amount as first_invest_amount,
-            null as last_invest_achievement_id,
-            null as last_invest_login_name,
-            null as last_invest_amount,
-            null as max_amount_achievement_id,
-            null as max_amount_login_name,
-            null as max_amount
-        </if>
-        <if test="investAchievement != null and investAchievement.name() == 'LAST_INVEST'">
-            temp2.id as loan_id,
-            temp2.name,
-            temp2.status as loan_status,
-            temp2.periods,
-            temp2.loan_amount,
-            temp2.raising_complete_time,
-            temp2.fundraising_start_time,
-            null as first_invest_achievement_id,
-            null as first_invest_login_name,
-            null as first_invest_amount,
-            temp2.last_invest_achievement_id,
-            temp2.login_name as last_invest_login_name,
-            temp2.amount as last_invest_amount,
-            null as max_amount_achievement_id,
-            null as max_amount_login_name,
-            null as max_amount
-        </if>
-        <if test="investAchievement != null and investAchievement.name() == 'MAX_AMOUNT'">
-            temp3.id as loan_id,
-            temp3.name,
-            temp3.status as loan_status,
-            temp3.periods,
-            temp3.loan_amount,
-            temp3.raising_complete_time,
-            temp3.fundraising_start_time,
-            null as first_invest_achievement_id,
-            null as first_invest_login_name,
-            null as first_invest_amount,
-            null as last_invest_achievement_id,
-            null as last_invest_login_name,
-            null as last_invest_amount,
-            temp3.max_amount_achievement_id,
-            temp3.login_name as max_amount_login_name,
-            temp3.amount as max_amount
-        </if>
+        *
         FROM
-        <if test="investAchievement == null or investAchievement.name() == 'FIRST_INVEST'">
-          (SELECT
-            l.`id`,
-            l.`name`,
-            l.`status`,
-            l.`periods`,
-            l.`loan_amount`,
-            l.`raising_complete_time`,
-            l.`fundraising_start_time`,
-            l.`first_invest_achievement_id`,
-            l.`created_time`,
-            i.`login_name`,
-            i.`amount`
-          FROM
-            loan l
-            <if test="loginName != null and loginName != ''">
-            JOIN invest i
-            </if>
-            <if test="loginName == null or loginName == ''">
-            LEFT JOIN invest i
-            </if>
-              ON l.`first_invest_achievement_id` = i.`id`
-              AND l.`id` = i.`loan_id`
-              AND i.`status` = 'SUCCESS'
-              <if test="loginName != null and loginName != ''">
-              AND i.login_name = #{loginName}
-              </if>
-          WHERE l.`status` IN (
-              'RAISING',
-              'RECHECK',
-              'REPAYING',
-              'COMPLETE'
-            )) temp1
+        (SELECT
+        l.`id`,
+        l.`name`,
+        l.`status` as loan_status,
+        l.`periods`,
+        l.`loan_amount`,
+        l.`created_time`,
+        l.`raising_complete_time`,
+        l.`fundraising_start_time`,
+        l.`first_invest_achievement_id`,
+        l.last_invest_achievement_id,
+        l.max_amount_achievement_id,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.first_invest_achievement_id) AS first_invest_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.first_invest_achievement_id) AS first_invest_amount,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.last_invest_achievement_id) AS last_invest_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.last_invest_achievement_id) AS last_invest_amount,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.max_amount_achievement_id) AS max_amount_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.max_amount_achievement_id) AS max_amount
+        FROM
+        loan l
+        WHERE l.`status` IN (
+        'RAISING',
+        'RECHECK',
+        'REPAYING',
+        'COMPLETE'
+        )) temp
+        <if test="loginName != null and loginName != ''">
+        WHERE temp.max_amount_login_name = #{loginName}
+        OR temp.last_invest_login_name = #{loginName}
+        OR temp.first_invest_login_name = #{loginName}
         </if>
-        <if test="investAchievement == null">
-          JOIN
-        </if>
-        <if test="investAchievement == null or investAchievement.name() == 'LAST_INVEST'">
-            (SELECT
-              l.`id`,
-              l.`name`,
-              l.`status`,
-              l.`periods`,
-              l.`loan_amount`,
-              l.`raising_complete_time`,
-              l.`fundraising_start_time`,
-              l.`last_invest_achievement_id`,
-              l.`created_time`,
-              i.`login_name`,
-              i.`amount`
-            FROM
-              loan l
-              <if test="loginName != null and loginName != ''">
-              JOIN invest i
-              </if>
-              <if test="loginName == null or loginName == ''">
-              LEFT JOIN invest i
-              </if>
-                ON l.`last_invest_achievement_id` = i.`id`
-                AND l.`id` = i.`loan_id`
-                AND i.`status` = 'SUCCESS'
-                <if test="loginName != null and loginName != ''">
-                AND i.login_name = #{loginName}
-                </if>
-            WHERE l.`status` IN (
-                'RAISING',
-                'RECHECK',
-                'REPAYING',
-                'COMPLETE'
-              )) temp2
-        </if>
-        <if test="investAchievement == null">
-            ON temp1.id = temp2.id
-          JOIN
-        </if>
-        <if test="investAchievement == null or investAchievement.name() == 'MAX_AMOUNT'">
-            (SELECT
-              l.`id`,
-              l.`name`,
-              l.`status`,
-              l.`periods`,
-              l.`loan_amount`,
-              l.`raising_complete_time`,
-              l.`fundraising_start_time`,
-              l.`max_amount_achievement_id`,
-              l.`created_time`,
-              i.`login_name`,
-              i.`amount`
-            FROM
-              loan l
-              <if test="loginName != null and loginName != ''">
-              JOIN invest i
-              </if>
-              <if test="loginName == null or loginName == ''">
-              LEFT JOIN invest i
-              </if>
-                ON l.`max_amount_achievement_id` = i.`id`
-                AND l.`id` = i.`loan_id`
-                AND i.`status` = 'SUCCESS'
-                <if test="loginName != null and loginName != ''">
-                AND i.login_name = #{loginName}
-                </if>
-            WHERE l.`status` IN (
-                'RAISING',
-                'RECHECK',
-                'REPAYING',
-                'COMPLETE'
-              )) temp3
-        </if>
-        <if test="investAchievement == null">
-            ON temp2.id = temp3.id
-        </if>
-        <if test="investAchievement == null or investAchievement.name() == 'FIRST_INVEST'">
-        ORDER BY temp1.created_time DESC
-        </if>
-        <if test="investAchievement != null and investAchievement.name() == 'LAST_INVEST'">
-        ORDER BY temp2.created_time DESC
-        </if>
-        <if test="investAchievement != null and investAchievement.name() == 'MAX_AMOUNT'">
-        ORDER BY temp3.created_time DESC
-        </if>
+        ORDER BY temp.created_time DESC
         limit #{index}, #{pageSize}
     </select>
 
     <select id="findLoanAchievementCount" parameterType="map" resultType="long">
         SELECT
-          count(*)
+        count(*)
         FROM
-        <if test="investAchievement == null or investAchievement.name() == 'FIRST_INVEST'">
-          (SELECT
-            l.`id`,
-            l.`name`,
-            l.`status`,
-            l.`periods`,
-            l.`loan_amount`,
-            l.`raising_complete_time`,
-            l.`fundraising_start_time`,
-            l.`first_invest_achievement_id`,
-            l.`created_time`,
-            i.`login_name`,
-            i.`amount`
-          FROM
-            loan l
-            <if test="loginName != null and loginName != ''">
-            JOIN invest i
-            </if>
-            <if test="loginName == null or loginName == ''">
-            LEFT JOIN invest i
-            </if>
-              ON l.`first_invest_achievement_id` = i.`id`
-              AND l.`id` = i.`loan_id`
-              AND i.`status` = 'SUCCESS'
-              <if test="loginName != null and loginName != ''">
-              AND i.login_name = #{loginName}
-              </if>
-          WHERE l.`status` IN (
-              'RAISING',
-              'RECHECK',
-              'REPAYING',
-              'COMPLETE'
-            )) temp1
-        </if>
-        <if test="investAchievement == null">
-          JOIN
-        </if>
-        <if test="investAchievement == null or investAchievement.name() == 'LAST_INVEST'">
-            (SELECT
-              l.`id`,
-              l.`last_invest_achievement_id`,
-              i.`login_name`,
-              i.`amount`
-            FROM
-              loan l
-              <if test="loginName != null and loginName != ''">
-              JOIN invest i
-              </if>
-              <if test="loginName == null or loginName == ''">
-              LEFT JOIN invest i
-              </if>
-                ON l.`last_invest_achievement_id` = i.`id`
-                AND l.`id` = i.`loan_id`
-                AND i.`status` = 'SUCCESS'
-                <if test="loginName != null and loginName != ''">
-                AND i.login_name = #{loginName}
-                </if>
-            WHERE l.`status` IN (
-                'RAISING',
-                'RECHECK',
-                'REPAYING',
-                'COMPLETE'
-              )) temp2
-        </if>
-        <if test="investAchievement == null">
-            ON temp1.id = temp2.id
-          JOIN
-        </if>
-        <if test="investAchievement == null or investAchievement.name() == 'MAX_AMOUNT'">
-            (SELECT
-              l.`id`,
-              l.`max_amount_achievement_id`,
-              i.`login_name`,
-              i.`amount`
-            FROM
-              loan l
-              <if test="loginName != null and loginName != ''">
-              JOIN invest i
-              </if>
-              <if test="loginName == null or loginName == ''">
-              LEFT JOIN invest i
-              </if>
-                ON l.`max_amount_achievement_id` = i.`id`
-                AND l.`id` = i.`loan_id`
-                AND i.`status` = 'SUCCESS'
-                <if test="loginName != null and loginName != ''">
-                AND i.login_name = #{loginName}
-                </if>
-            WHERE l.`status` IN (
-                'RAISING',
-                'RECHECK',
-                'REPAYING',
-                'COMPLETE'
-              )) temp3
-        </if>
-        <if test="investAchievement == null">
-            ON temp2.id = temp3.id
+        (SELECT
+        l.`id`,
+        l.`name`,
+        l.`status`,
+        l.`periods`,
+        l.`loan_amount`,
+        l.`created_time`,
+        l.`raising_complete_time`,
+        l.`fundraising_start_time`,
+        l.`first_invest_achievement_id`,
+        l.last_invest_achievement_id,
+        l.max_amount_achievement_id,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.first_invest_achievement_id) AS first_invest_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.first_invest_achievement_id) AS first_invest_amount,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.last_invest_achievement_id) AS last_invest_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.last_invest_achievement_id) AS last_invest_amount,
+        (SELECT
+        i.login_name
+        FROM
+        invest i
+        WHERE i.id = l.max_amount_achievement_id) AS max_amount_login_name,
+        (SELECT
+        i.amount
+        FROM
+        invest i
+        WHERE i.id = l.max_amount_achievement_id) AS max_amount
+        FROM
+        loan l
+        WHERE l.`status` IN (
+        'RAISING',
+        'RECHECK',
+        'REPAYING',
+        'COMPLETE'
+        )) temp
+        <if test="loginName != null and loginName != ''">
+            WHERE temp.max_amount_login_name = #{loginName}
+            OR temp.last_invest_login_name = #{loginName}
+            OR temp.first_invest_login_name = #{loginName}
         </if>
     </select>
 

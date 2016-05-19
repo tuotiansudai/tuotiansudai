@@ -1,7 +1,5 @@
-require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'moment'], function ($) {
+require(['jquery', 'jquery-ui', 'moment'], function ($) {
     $(function () {
-
-        $('.selectpicker').selectpicker();
 
         var autoValue = '';
         $("#loginName").autocomplete({
