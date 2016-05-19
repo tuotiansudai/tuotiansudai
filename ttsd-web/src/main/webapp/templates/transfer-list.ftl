@@ -19,7 +19,7 @@
                 </#list>
             </li>
             <li>
-                <span>年化收益: </span>
+                <span>预期年化收益: </span>
                 <#assign rateUrl = "/transfer-list?transferStatus=${transferStatus!}&{rateType}">
                 <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
                 <#assign rateKeys = rateMap?keys>
@@ -52,14 +52,14 @@
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>待收本金</dt>
+                                    <dt>项目本金</dt>
                                     <dd><em><@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger></em>
                                         <i><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction>
                                         </i>元
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>年化收益</dt>
+                                    <dt>预期年化收益</dt>
                                     <dd><em>${transferApplicationItem.baseRate!}%</em></dd>
                                 </dl>
                                 <dl>
