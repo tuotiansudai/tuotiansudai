@@ -1,12 +1,12 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.repository.model;
 
-
-import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class InvestAchievementDto implements Serializable{
+public class LoanAchievementView implements Serializable{
+
+    private long loanId;
 
     private String name;
 
@@ -16,19 +16,27 @@ public class InvestAchievementDto implements Serializable{
 
     private long loanAmount;
 
+    private Date fundraisingStartTime;
+
     private Date raisingCompleteTime;
 
     private String whenFirstInvest;
 
     private String whenCompleteInvest;
 
+    private Long firstInvestAchievementId;
+
     private String firstInvestLoginName;
 
     private long firstInvestAmount;
 
+    private Long lastInvestAchievementId;
+
     private String lastInvestLoginName;
 
     private long lastInvestAmount;
+
+    private Long maxAmountAchievementId;
 
     private String maxAmountLoginName;
 
@@ -136,6 +144,46 @@ public class InvestAchievementDto implements Serializable{
 
     public void setMaxAmount(long maxAmount) {
         this.maxAmount = maxAmount;
+    }
+
+    public Date getFundraisingStartTime() {
+        return fundraisingStartTime;
+    }
+
+    public void setFundraisingStartTime(Date fundraisingStartTime) {
+        this.fundraisingStartTime = fundraisingStartTime;
+    }
+
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
+    public Long getFirstInvestAchievementId() {
+        return firstInvestAchievementId;
+    }
+
+    public void setFirstInvestAchievementId(Long firstInvestAchievementId) {
+        this.firstInvestAchievementId = firstInvestAchievementId;
+    }
+
+    public Long getLastInvestAchievementId() {
+        return lastInvestAchievementId;
+    }
+
+    public void setLastInvestAchievementId(Long lastInvestAchievementId) {
+        this.lastInvestAchievementId = lastInvestAchievementId;
+    }
+
+    public Long getMaxAmountAchievementId() {
+        return maxAmountAchievementId;
+    }
+
+    public void setMaxAmountAchievementId(Long maxAmountAchievementId) {
+        this.maxAmountAchievementId = maxAmountAchievementId;
     }
 
 }

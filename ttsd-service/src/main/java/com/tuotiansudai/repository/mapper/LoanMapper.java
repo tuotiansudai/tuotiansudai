@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.LoanAchievementView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
@@ -74,8 +75,8 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<LoanAchievementView> findLoanAchievementAll(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    long findLoanAchievementCount();
+    long findLoanAchievementAllCount();
 
 }

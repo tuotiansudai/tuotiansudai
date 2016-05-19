@@ -1,7 +1,7 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.InvestAchievementDto;
+import com.tuotiansudai.repository.model.LoanAchievementView;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -125,13 +125,19 @@ public class InvestAchievementServiceTest {
         investModelMax.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
         investMapper.update(investModelMax);
 
-        List<InvestAchievementDto> investAchievementDtosFirst = investAchievementService.findInvestAchievementManage(1, 10, userModelFirstMan.getLoginName());
+        loanModel.setFirstInvestAchievementId(investModelFirst.getId());
+        loanModel.setLastInvestAchievementId(investModelLast.getId());
+        loanModel.setMaxAmountAchievementId(investModelMax.getId());
+
+        loanMapper.update(loanModel);
+
+        List<LoanAchievementView> investAchievementDtosFirst = investAchievementService.findInvestAchievementManage(1, 10, userModelFirstMan.getLoginName());
         assertThat(investAchievementDtosFirst.get(0).getFirstInvestLoginName(), is(userModelFirstMan.getLoginName()));
 
-        List<InvestAchievementDto> investAchievementDtosLast = investAchievementService.findInvestAchievementManage(1, 10, userModelLastMan.getLoginName());
+        List<LoanAchievementView> investAchievementDtosLast = investAchievementService.findInvestAchievementManage(1, 10, userModelLastMan.getLoginName());
         assertThat(investAchievementDtosLast.get(0).getLastInvestLoginName(), is(userModelLastMan.getLoginName()));
 
-        List<InvestAchievementDto> investAchievementDtosMax = investAchievementService.findInvestAchievementManage(1, 10, userModelMaxMan.getLoginName());
+        List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievementManage(1, 10, userModelMaxMan.getLoginName());
         assertThat(investAchievementDtosMax.get(0).getMaxAmountLoginName(), is(userModelMaxMan.getLoginName()));
 
     }

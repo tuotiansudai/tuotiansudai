@@ -173,10 +173,6 @@ public interface InvestMapper {
                                          @Param(value = "startTime") Date startTime,
                                          @Param(value = "endTime") Date endTime);
 
-    List<InvestModel> findInvestAchievement(@Param(value = "loginName") String loginName, @Param(value = "loanId") Long loanId);
-
-    long findInvestAchievementCount(@Param(value = "loginName") String loginName);
-
     List<InvestModel> findInvestorInvestPagination(@Param(value = "loginName") String loginName,
                                                    @Param(value = "loanStatus") LoanStatus loanStatus,
                                                    @Param(value = "index") int index,
@@ -188,4 +184,7 @@ public interface InvestMapper {
                                        @Param(value = "loanStatus") LoanStatus loanStatus,
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);
+
+    Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
 }

@@ -27,34 +27,34 @@
                 </tr>
             </thead>
             <tbody>
-                <#list investAchievementDtos as investAchievementDto>
+                <#list loanAchievementViews as loanAchievementView>
                     <tr>
-                        <td>${investAchievementDto.name!}</td>
-                        <td>${investAchievementDto.loanStatus.description!}</td>
-                        <td>${investAchievementDto.periods}</td>
-                        <td>${(investAchievementDto.loanAmount/100)?string('0.00')!}</td>
-                        <#if investAchievementDto.maxAmountLoginName??>
-                            <td>${investAchievementDto.maxAmountLoginName!}/${(investAchievementDto.maxAmount/100)?string('0.00')!}</td>
+                        <td>${loanAchievementView.name!}</td>
+                        <td>${loanAchievementView.loanStatus.description!}</td>
+                        <td>${loanAchievementView.periods}</td>
+                        <td>${(loanAchievementView.loanAmount/100)?string('0.00')!}</td>
+                        <#if loanAchievementView.maxAmountLoginName??>
+                            <td>${loanAchievementView.maxAmountLoginName!}/${(loanAchievementView.maxAmount/100)?string('0.00')!}</td>
                         <#else>
                             <td>/</td>
                         </#if>
-                        <#if investAchievementDto.firstInvestLoginName??>
-                            <td>${investAchievementDto.firstInvestLoginName!}/${(investAchievementDto.firstInvestAmount/100)?string('0.00')!}</td>
+                        <#if loanAchievementView.firstInvestLoginName??>
+                            <td>${loanAchievementView.firstInvestLoginName!}/${(loanAchievementView.firstInvestAmount/100)?string('0.00')!}</td>
                         <#else>
                             <td>/</td>
                         </#if>
-                        <#if investAchievementDto.lastInvestLoginName??>
-                            <td>${investAchievementDto.lastInvestLoginName!}/${(investAchievementDto.lastInvestAmount/100)?string('0.00')!}</td>
+                        <#if loanAchievementView.lastInvestLoginName??>
+                            <td>${loanAchievementView.lastInvestLoginName!}/${(loanAchievementView.lastInvestAmount/100)?string('0.00')!}</td>
                         <#else>
                             <td>/</td>
                         </#if>
-                        <#if investAchievementDto.raisingCompleteTime??>
-                            <td>${investAchievementDto.raisingCompleteTime?string('yyyy-MM-dd HH:mm:ss')!}</td>
+                        <#if loanAchievementView.raisingCompleteTime??>
+                            <td>${loanAchievementView.raisingCompleteTime?string('yyyy-MM-dd HH:mm:ss')!}</td>
                         <#else>
                             <td>/</td>
                         </#if>
-                        <td>${investAchievementDto.whenFirstInvest!}</td>
-                        <td>${investAchievementDto.whenCompleteInvest!}</td>
+                        <td>${loanAchievementView.whenFirstInvest!}</td>
+                        <td>${loanAchievementView.whenCompleteInvest!}</td>
                     </tr>
                 </#list>
             </tbody>

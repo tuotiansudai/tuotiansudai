@@ -423,33 +423,8 @@
         and trading_time between #{startTime} and #{endTime}
     </select>
 
-    <select id="findInvestAchievement" parameterType="map" resultMap="investResultMap">
-        SELECT
-          *
-        FROM
-          invest
-        WHERE achievements IS NOT NULL
-          AND status = 'SUCCESS'
-          <if test="loanId != null">
-          AND loan_id = #{loanId}
-          </if>
-          <if test="loginName != null and loginName != ''">
-          AND login_name = #{loginName}
-          </if>
-    </select>
-
-    <select id="findInvestAchievementCount" parameterType="map" resultType="long">
-        SELECT
-          COUNT(*)
-        FROM
-          (SELECT
-            loan_id
-          FROM
-            invest
-          WHERE login_name = #{loginName}
-            AND achievements IS NOT NULL
-            AND status = 'SUCCESS'
-          GROUP BY loan_id) temp
+    <select id="findFirstTradeTimeInvestByLoanId" parameterType="map" resultType="java.util.Date">
+        select min(trading_time) from invest where loan_id = #{loanId}
     </select>
 
 </mapper>
