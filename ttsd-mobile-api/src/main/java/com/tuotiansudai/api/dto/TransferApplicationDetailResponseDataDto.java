@@ -160,7 +160,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {
         this.transferApplicationId = String.valueOf(transferApplicationDetailDto.getId());
         this.name = transferApplicationDetailDto.getName();
-        this.transferrer = transferApplicationDetailDto.getLoginName();
+        this.transferrer = transferApplicationDetailDto.getTransferrer();
         this.loanId = String.valueOf(transferApplicationDetailDto.getLoanId());
         this.productType = transferApplicationDetailDto.getProductType().name();
         this.productTypeName = transferApplicationDetailDto.getProductType().getName();
