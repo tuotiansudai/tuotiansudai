@@ -195,7 +195,7 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
-            totalExpectedInterestAmount += investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
+            totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
         return totalExpectedInterestAmount;
     }
