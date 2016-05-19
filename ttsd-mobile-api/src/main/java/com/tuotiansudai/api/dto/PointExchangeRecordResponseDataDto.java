@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.CouponType;
@@ -69,12 +70,12 @@ public class PointExchangeRecordResponseDataDto {
         this.rate = String.valueOf(decimalFormat.format(couponModel.getRate() * 100));
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.deadline = Days.daysBetween(new DateTime().withTimeAtStartOfDay(), new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay()).getDays() + 1;
-        this.productTypes = Lists.newArrayList();
-        for (ProductType productType : couponModel.getProductTypes()) {
-            if (!productTypes.contains(productType.getProductLine())) {
-                this.productTypes.add(productType.getProductLine());
+        this.productTypes = Lists.transform(couponModel.getProductTypes(), new Function<ProductType, String>() {
+            @Override
+            public String apply(ProductType input) {
+                return input.getProductLine();
             }
-        }
+        });
     }
 
 }

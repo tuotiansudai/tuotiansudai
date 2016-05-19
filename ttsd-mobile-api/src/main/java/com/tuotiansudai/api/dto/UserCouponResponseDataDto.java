@@ -39,12 +39,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
         this.type = userCouponView.getCouponType();
         this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount());
         this.investLowerLimit = AmountConverter.convertCentToString(userCouponView.getInvestLowerLimit());
-        this.productTypes = Lists.newArrayList();
-        for (ProductType productType : userCouponView.getProductTypeList()) {
-            if (!productTypes.contains(productType.getProductLine())) {
-                this.productTypes.add(productType.getProductLine());
+        this.productTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
+            @Override
+            public String apply(ProductType input) {
+                return input.getProductLine();
             }
-        }
+        });
         this.rate = decimalFormat.format(userCouponView.getRate() * 100);
         this.birthdayRate = String.valueOf(userCouponView.getBirthdayBenefit());
         this.shared = userCouponView.isShared();
