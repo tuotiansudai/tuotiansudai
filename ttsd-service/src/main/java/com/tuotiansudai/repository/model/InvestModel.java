@@ -1,8 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.util.AmountConverter;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +8,11 @@ public class InvestModel implements Serializable {
      * 投资ID
      */
     private long id;
+
+    /**
+     * 转让人投资id
+     */
+    private Long transferInvestId;
     /**
      * 投资人ID
      */
@@ -27,6 +29,11 @@ public class InvestModel implements Serializable {
      * 投资状态
      */
     private InvestStatus status;
+
+    /**
+     * 转让状态
+     */
+    private TransferStatus transferStatus;
     /**
      * 投资来源
      */
@@ -48,19 +55,28 @@ public class InvestModel implements Serializable {
      */
     private Date createdTime = new Date();
 
+    /**
+     * 投资时间
+     */
+    private Date investTime;
+
     public InvestModel(){
 
     }
 
-    public InvestModel(long loanId, long amount, String loginName, Source source, String channel) {
+    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel) {
+        this.id = id;
+        this.transferInvestId = transferInvestId;
+        this.loginName = loginName;
         this.loanId = loanId;
         this.amount = amount;
-        this.loginName = loginName;
         this.source = source;
         this.channel = channel;
         this.status = InvestStatus.WAIT_PAY;
         this.isAutoInvest = Source.AUTO == source;
+        this.investTime = investTime;
         this.createdTime = new Date();
+        this.transferStatus = TransferStatus.TRANSFERABLE;
     }
 
     public long getId() {
@@ -69,6 +85,14 @@ public class InvestModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Long getTransferInvestId() {
+        return transferInvestId;
+    }
+
+    public void setTransferInvestId(Long transferInvestId) {
+        this.transferInvestId = transferInvestId;
     }
 
     public String getLoginName() {
@@ -103,6 +127,14 @@ public class InvestModel implements Serializable {
         this.status = status;
     }
 
+    public TransferStatus getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(TransferStatus transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
     public Source getSource() {
         return source;
     }
@@ -127,6 +159,14 @@ public class InvestModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public Date getInvestTime() {
+        return investTime;
+    }
+
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
+    }
+
     public String getChannel() {
         return channel;
     }
@@ -138,4 +178,5 @@ public class InvestModel implements Serializable {
     public boolean isNoPasswordInvest() { return isNoPasswordInvest; }
 
     public void setNoPasswordInvest(boolean noPasswordInvest) { isNoPasswordInvest = noPasswordInvest; }
+
 }
