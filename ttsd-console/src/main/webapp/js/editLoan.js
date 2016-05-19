@@ -146,14 +146,16 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         $('.jq-piex').text(_pix);
                     }
                     _hidden.val(_options.eq(i).attr('value'));
-                    if (_options.eq(i).attr('value') && _options.eq(i).attr('value') != '') {
-                        $('.jq-timer').val(_options.eq(i).data('period'));
-                        $('.jq-duration').val(_options.eq(i).data('duration'));
-                        $('.jq-product-line').val(_options.eq(i).data('product-line'));
-                    }  else {
-                        $('.jq-timer').val('');
-                        $('.jq-duration').val('');
-                        $('.jq-product-line').val('');
+                    if (_hidden.hasClass('jq-duration')) {
+                        if (_options.eq(i).attr('value') && _options.eq(i).attr('value') != '') {
+                            $('.jq-timer').val(_options.eq(i).data('period'));
+                            $('.jq-duration').val(_options.eq(i).data('duration'));
+                            $('.jq-product-line').val(_options.eq(i).data('product-line'));
+                        } else {
+                            $('.jq-timer').val('');
+                            $('.jq-duration').val('');
+                            $('.jq-product-line').val('');
+                        }
                     }
                 }
             })
