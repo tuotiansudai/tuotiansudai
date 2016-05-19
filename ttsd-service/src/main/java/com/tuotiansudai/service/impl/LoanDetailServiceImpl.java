@@ -11,8 +11,8 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private InvestMapper investMapper;
 
     @Autowired
-    private LoanService loanService;
-
-    @Autowired
     private InvestService investService;
 
     @Autowired
@@ -57,6 +54,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -84,7 +84,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 @Override
                 public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
                     LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
-                    item.setLoginName(loanService.encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
+                    item.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());

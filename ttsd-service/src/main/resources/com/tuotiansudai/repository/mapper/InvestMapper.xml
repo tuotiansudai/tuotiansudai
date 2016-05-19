@@ -8,14 +8,17 @@
 
     <resultMap id="investResultMap" type="InvestModel">
         <id column="id" property="id"/>
+        <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="login_name" property="loginName"/>
         <result column="loan_id" property="loanId"/>
         <result column="amount" property="amount"/>
         <result column="status" property="status"/>
+        <result column="transfer_status" property="transferStatus"/>
         <result column="source" property="source"/>
         <result column="is_auto_invest" property="isAutoInvest"/>
         <result column="channel" property="channel"/>
         <result column="is_no_password_invest" property="isNoPasswordInvest"/>
+        <result column="invest_time" property="investTime"/>
         <result column="created_time" property="createdTime"/>
         <result column="trading_time" property="tradingTime"/>
         <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
@@ -37,6 +40,8 @@
         <result column="loan_type" property="loanType"></result>
         <result column="loan_status" property="loanStatus"></result>
         <result column="loan_periods" property="loanPeriods"></result>
+        <result column="loan_base_rate" property="loanBaseRate"></result>
+        <result column="loan_activity_rate" property="loanActivityRate"></result>
         <result column="roles" property="roles"></result>
         <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="next_repay_date" property="nextRepayDate"></result>
@@ -59,12 +64,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time, trading_time, achievements
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, invest_time, trading_time, achievements
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}))
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -83,6 +88,10 @@
         where id = #{id}
     </update>
 
+    <update id="updateTransferStatus" parameterType="map">
+        update invest set transfer_status = #{transferStatus} where id = #{id}
+    </update>
+
     <select id="findById" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
@@ -98,7 +107,7 @@
     </select>
 
     <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
-        select invest.*
+        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -115,24 +124,46 @@
         and loan.status &lt;&gt; 'CANCEL'
     </select>
 
+    <select id="findByLoginNameExceptTransfer" parameterType="map" resultMap="investResultMap">
+        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status &lt;&gt; 'CANCEL'
+        and invest.transfer_invest_id is null
+        order by invest.created_time desc
+        <if test=" isPagination == true">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+    <select id="findCountByLoginNameExceptTransfer" parameterType="map" resultType="long">
+        select count(1)
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and invest.transfer_invest_id is null
+        and loan.status &lt;&gt; 'CANCEL'
+    </select>
+
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where loan_id = #{loanId} and status = 'SUCCESS'
-        order by trading_time asc
+        where loan_id = #{loanId} and status = 'SUCCESS' and transfer_status != 'SUCCESS'
+        order by trading_time
     </select>
 
     <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId}
-        and status = 'SUCCESS'
+        and status = 'SUCCESS' and transfer_status != 'SUCCESS'
     </select>
 
     <select id="findByStatus" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
         where loan_id = #{loanId}
+        and transfer_invest_id is null
         and status = '${status}'
         order by case trading_time when null then created_time else trading_time end desc
         limit #{index}, #{pageSize}
@@ -142,6 +173,7 @@
         select count(1)
         from invest
         where loan_id = #{loanId}
+        and transfer_invest_id is null
         and status = '${status}'
     </select>
 
@@ -184,10 +216,13 @@
 
     <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemView">
         select invest.*,
+        loan.id as loan_id,
         loan.name as loan_name,
         loan.status as loan_status,
         loan.type as loan_type,
         loan.periods as loan_periods,
+        loan.base_rate as loan_base_rate,
+        loan.activity_rate as loan_activity_rate,
         a.user_name as investor_user_name,
         u.mobile as investor_mobile,
         a.identity_number as identity_number,
@@ -210,6 +245,7 @@
         left join user ru on ru.login_name = u.referrer
         left join account ra on ra.login_name = u.referrer
         <where>
+            invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
@@ -236,7 +272,9 @@
             </if>
         </where>
         order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
-        limit #{index}, #{pageSize}
+        <if test="isPagination == true">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
@@ -281,6 +319,7 @@
         select count(1)
         from invest join loan on invest.loan_id = loan.id
         <where>
+            invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>

@@ -59,5 +59,4 @@ public interface LoanService {
 
     BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto);
 
-    String encryptLoginName(String loginName, String recordsLoginName, int showLength, long investId);
 }
