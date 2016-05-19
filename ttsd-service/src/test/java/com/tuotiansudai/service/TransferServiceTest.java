@@ -198,9 +198,9 @@ public class TransferServiceTest {
         assertThat(transferApplicationDetailDto.getDueDate(), is(strToDate("2016-06-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getNextRefundDate(), is(strToDate("2016-03-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getTransferAmount(), is("900.00"));
-        assertThat(transferApplicationDetailDto.getExpecedInterest(), is("103.60"));
+        assertThat(transferApplicationDetailDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationDetailDto.getInvestAmount(), is("1000.00"));
-        assertThat(transferApplicationDetailDto.getExpecedInterest(), is("103.60"));
+        assertThat(transferApplicationDetailDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("0.90"));
         assertThat(transferApplicationDetailDto.getBalance(), is("10.00"));
     }
@@ -229,7 +229,7 @@ public class TransferServiceTest {
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
         assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is("tes******"));
-        assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("103.60"));
+        assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));
     }
