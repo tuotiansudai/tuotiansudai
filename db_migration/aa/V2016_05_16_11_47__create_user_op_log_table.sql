@@ -13,6 +13,9 @@ CREATE TABLE `aa`.`user_op_log` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
+/**
+Can not run under Jenkins, need to be manually run under aa schema
+
 BEGIN;
 
 insert into `aa`.`user_op_log` (login_name, op_type, ip, device_id, source, description, created_time)
@@ -40,3 +43,4 @@ insert into `aa`.`user_op_log` (login_name, op_type, ip, device_id, source, desc
 
 COMMIT;
 
+**/
