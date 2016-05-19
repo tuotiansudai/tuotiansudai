@@ -5,7 +5,9 @@
         <img src="${staticServer}/images/sign/actor/achievement/top-picture.png" width="100%">
     </div>
     <div class="content-list">
-        <div class="wp">
+        <div class="wp clearfix">
+            <div class="left-line"></div>
+            <div class="right-line"></div>
             <div class="actor-intro">
                 <p class="tc">古语有云:“东园载酒西园醉，摘尽枇杷一树金。”</p>
                 <p class="tc">快来跟着拓天的脚步，进入火热的夏日节奏吧。</p>
@@ -36,6 +38,20 @@
             <div class="actor-model">
                 <div class="btn-model">
                     <a href="#">我要抢称号</a>
+                </div>
+                <div class="explanation-text">
+                    <div class="explanation-content">
+                        <div class="title-name">
+                            注：
+                        </div>
+                        <ul class="text-info">
+                            <li>活动范围仅限抵押类90天、180天、360天产品；</li>
+                            <li>每位用户在一个自然月最多可抢得三次拓荒先锋称号，超过三次，自动顺延至下一位；</li>
+                            <li>奖励会在标的放款后1个工作日以内发放，如遇周末节假日则顺延。</li>
+                            <li>本活动最终解释权归拓天速贷所有</li>
+                            <li class="tc">客服电话：400-169-1188（服务时间：9:00－20:00）</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
