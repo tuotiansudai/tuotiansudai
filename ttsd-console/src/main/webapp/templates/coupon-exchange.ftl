@@ -80,7 +80,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">使用条件: </label>
             <div class="col-sm-8">
-                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
+                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number invest_limit" name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
             </div>
         </div>
 

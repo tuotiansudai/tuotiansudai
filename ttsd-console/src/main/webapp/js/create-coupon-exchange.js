@@ -72,6 +72,17 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                         showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
                         return false;
                     }
+                } else {
+                    var periods = parseInt($('.coupon-number', curform).val());
+                    if (periods <= 0) {
+                        showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                        return false;
+                    }
+                    var investLimit = parseInt($('.invest_limit', curform).val());
+                    if (investLimit <= 0) {
+                        showErrorMessage('投资体验券下限最小为1', $('.invest_limit', curform));
+                        return false;
+                    }
                 }
 
                 var fivenumber = parseInt($('.give-number', curform).val());
@@ -79,6 +90,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                     showErrorMessage('最小为1', $('.give-number', curform));
                     return false;
                 }
+
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
                     return $(option).is(':checked');
                 }).length;
