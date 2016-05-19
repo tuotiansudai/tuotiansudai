@@ -61,6 +61,4 @@ public interface InvestService {
     boolean switchNoPasswordInvest(String loginName, boolean isTurnOn);
 
     void markNoPasswordRemind(String loginName);
-
-    boolean isRemindNoPassword(String loginName);
 }

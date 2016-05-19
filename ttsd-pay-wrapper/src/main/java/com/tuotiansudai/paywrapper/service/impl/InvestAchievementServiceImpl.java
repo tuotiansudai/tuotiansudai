@@ -92,36 +92,37 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     }
 
     private boolean isMaxAmountAchievement(InvestModel investModel, List<InvestModel> successInvestModels) {
-        Ordering<InvestModel> ordering = new Ordering<InvestModel>() {
+        Optional<InvestModel> maxAmountAchievementInvestOptional = Iterators.tryFind(successInvestModels.iterator(), new Predicate<InvestModel>() {
             @Override
-            public int compare(InvestModel left, InvestModel right) {
-                int compare = Long.compare(left.getAmount(), right.getAmount());
-                if (compare == 0) {
-                    return Longs.compare(right.getTradingTime().getTime(), left.getTradingTime().getTime());
-                }
-                return compare;
+            public boolean apply(InvestModel input) {
+                return input.getAchievements().contains(InvestAchievement.MAX_AMOUNT);
             }
-        };
+        });
 
-        InvestModel maxAmountInvestModel = ordering.max(successInvestModels);
+        if (maxAmountAchievementInvestOptional.isPresent()) {
+            InvestModel previousMaxAmountInvest = maxAmountAchievementInvestOptional.get();
 
-        if (maxAmountInvestModel.getId() == investModel.getId()) {
-            Optional<InvestModel> maxAmountInvestOptional = Iterators.tryFind(successInvestModels.iterator(), new Predicate<InvestModel>() {
-                @Override
-                public boolean apply(InvestModel input) {
-                    return input.getAchievements().contains(InvestAchievement.MAX_AMOUNT);
+            long currentInvestorInvestAmount = 0;
+            long maxAmountInvestorInvestAmount = 0;
+
+            for (InvestModel successInvestModel : successInvestModels) {
+                if (successInvestModel.getLoginName().equalsIgnoreCase(investModel.getLoginName())) {
+                    currentInvestorInvestAmount += successInvestModel.getAmount();
                 }
-            });
-
-            if (maxAmountInvestOptional.isPresent()) {
-                InvestModel previousInvest = maxAmountInvestOptional.get();
-                previousInvest.getAchievements().remove(InvestAchievement.MAX_AMOUNT);
-                investMapper.update(previousInvest);
+                if (successInvestModel.getLoginName().equalsIgnoreCase(previousMaxAmountInvest.getLoginName())) {
+                    maxAmountInvestorInvestAmount += successInvestModel.getAmount();
+                }
             }
-            return true;
+
+            if (currentInvestorInvestAmount <= maxAmountInvestorInvestAmount) {
+                return false;
+            }
+
+            previousMaxAmountInvest.getAchievements().remove(InvestAchievement.MAX_AMOUNT);
+            investMapper.update(previousMaxAmountInvest);
         }
 
-        return false;
+        return true;
     }
 
     private boolean isLastInvestAchievement(InvestModel investModel, List<InvestModel> successInvestModels) {

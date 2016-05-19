@@ -353,8 +353,5 @@ public class InvestServiceImpl implements InvestService {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
     }
 
-    @Override
-    public boolean isRemindNoPassword(String loginName) {
-        return redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
-    }
+
 }

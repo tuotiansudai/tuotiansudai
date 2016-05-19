@@ -150,15 +150,16 @@ public class InvestAchievementServiceTest {
     public void shouldAwardMaxAmountAchievement() throws Exception {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
-        UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        UserModel investor1 = getFakeUser("investor1");
+        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor1.getLoginName(), Source.WEB, null);
         investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 2, investor.getLoginName(), Source.WEB, null);
+        UserModel investor2 = getFakeUser("investor2");
+        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 2, investor2.getLoginName(), Source.WEB, null);
         investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
@@ -179,15 +180,16 @@ public class InvestAchievementServiceTest {
     public void shouldAwardMaxAmountAchievementWhenEarlierInvest() throws Exception {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
-        UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        UserModel investor1 = getFakeUser("investor1");
+        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor1.getLoginName(), Source.WEB, null);
         investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        UserModel investor2 = getFakeUser("investor2");
+        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 1, investor2.getLoginName(), Source.WEB, null);
         investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);

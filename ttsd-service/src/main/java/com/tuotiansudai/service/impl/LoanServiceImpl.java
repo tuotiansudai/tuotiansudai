@@ -77,13 +77,7 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
     private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private InvestService investService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -192,85 +186,6 @@ public class LoanServiceImpl implements LoanService {
             return accountModel.getPayUserId();
         }
         return null;
-    }
-
-    @Override
-    public LoanDetailDto getLoanDetail(String loginName, long loanId) {
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel == null) {
-            return null;
-        }
-
-        LoanDetailDto loanDto = convertModelToDto(loanModel, loginName);
-        loanDto.setStatus(true);
-        return loanDto;
-    }
-
-    private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
-        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
-        LoanDetailDto loanDto = new LoanDetailDto();
-        loanDto.setId(loanModel.getId());
-        loanDto.setName(loanModel.getName());
-        loanDto.setProgress(new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
-        loanDto.setBasicRate(new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        loanDto.setActivityRate(new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        loanDto.setLoanAmount(loanModel.getLoanAmount());
-        loanDto.setAgentLoginName(loanModel.getAgentLoginName());
-        loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
-        loanDto.setPeriods(loanModel.getPeriods());
-        loanDto.setType(loanModel.getType());
-        loanDto.setMinInvestAmount(loanModel.getMinInvestAmount());
-        loanDto.setInvestIncreasingAmount(loanModel.getInvestIncreasingAmount());
-        loanDto.setProductType(loanModel.getProductType());
-        loanDto.setActivityType(loanModel.getActivityType());
-        loanDto.setLoanStatus(loanModel.getStatus());
-        loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
-        loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
-
-        loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
-        loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
-        loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
-                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
-
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel != null) {
-            loanDto.setHasRemindInvestNoPassword(investService.isRemindNoPassword(loginName));
-            loanDto.setAutoInvest(accountModel.isAutoInvest());
-            loanDto.setInvestNoPassword(accountModel.isNoPasswordInvest());
-            long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
-            loanDto.setUserBalance(accountModel.getBalance());
-            loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(calculateMaxAvailableInvestAmount(
-                    NumberUtils.min(accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount),
-                    loanModel.getMinInvestAmount(),
-                    loanModel.getInvestIncreasingAmount())));
-        }
-        loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
-        loanDto.setLoanTitleDto(loanTitleMapper.findAll());
-        if (loanModel.getStatus() == LoanStatus.PREHEAT) {
-            loanDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
-        }
-
-        if (loanModel.getActivityType() == ActivityType.NEWBIE) {
-            double newbieInterestCouponRate = 0;
-            final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
-            for (CouponModel activeCoupon : allActiveCoupons) {
-                if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
-                        && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                        && activeCoupon.getProductTypes().contains(ProductType.SYL)
-                        && activeCoupon.getRate() > newbieInterestCouponRate) {
-                    newbieInterestCouponRate = activeCoupon.getRate();
-                }
-            }
-            loanDto.setNewbieInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
-        }
-        return loanDto;
-    }
-
-    private long calculateMaxAvailableInvestAmount(long maxAvailableInvestAmount, long minInvestAmount, long investIncreasingAmount) {
-        if (maxAvailableInvestAmount < minInvestAmount) {
-            return 0L;
-        }
-        return maxAvailableInvestAmount - (maxAvailableInvestAmount - minInvestAmount) % investIncreasingAmount;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -461,46 +376,6 @@ public class LoanServiceImpl implements LoanService {
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
-    }
-
-    @Override
-    public BaseDto<BasePaginationDataDto> getInvests(final String loginName, long loanId, int index, int pageSize) {
-        long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
-        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
-        List<InvestPaginationItemDto> records = Lists.newArrayList();
-
-        if (CollectionUtils.isNotEmpty(investModels)) {
-            records = Lists.transform(investModels, new Function<InvestModel, InvestPaginationItemDto>() {
-                @Override
-                public InvestPaginationItemDto apply(InvestModel input) {
-                    InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
-                    item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
-                    item.setSource(input.getSource());
-                    item.setAutoInvest(input.isAutoInvest());
-
-                    long amount = 0;
-                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
-
-                    if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
-                    }
-
-                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
-                    item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
-                    item.setAchievements(input.getAchievements());
-                    return item;
-                }
-            });
-        }
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        BasePaginationDataDto<InvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
-        baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-        return baseDto;
     }
 
     @Override
