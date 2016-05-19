@@ -23,6 +23,10 @@
         select * from invest_referrer_reward where id = #{id}
     </select>
 
+    <select id="findById" parameterType="long" resultMap="investReferrerRewardModelResultMap">
+        select * from invest_referrer_reward where invest_id = #{investId}
+    </select>
+
     <select id="findByInvestIdAndReferrer" parameterType="map" resultMap="investReferrerRewardModelResultMap">
         select * from invest_referrer_reward where invest_id = #{investId} and referrer_login_name = #{referrerLoginName}
     </select>

@@ -85,6 +85,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private WithdrawMapper withdrawMapper;
 
     @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
     private JobManager jobManager;
 
     @Autowired
@@ -562,26 +565,27 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushReferrerRewardAlert(long orderId) {
-        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(orderId);
-        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
-        if (investReferrerRewardModel == null) {
-            logger.error(MessageFormat.format("ReferrerReward callback order is not exist (orderId = {0})", orderId));
-            return;
-        }
-        AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(investModel.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-            loginNameMap.put(accountModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
-            loginNameMap.clear();
+    public void autoJPushReferrerRewardAlert(long loanId) {
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel invest : successInvestList) {
+            List<InvestReferrerRewardModel> investReferrerRewardModelList = investReferrerRewardMapper.findByInvestId(invest.getId());
+            for(InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList){
+                if("SUCCESS".equals(investReferrerRewardModel.getStatus())){
+                    AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
+                    JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
+                    if (jPushAlertModel != null) {
+                        Map<String, List<String>> loginNameMap = Maps.newHashMap();
+                        List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
+                        loginNameMap.put(accountModel.getLoginName(), amountLists);
+                        autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                        loginNameMap.clear();
+                    } else {
+                        logger.debug("REFERRER_REWARD_ALERT is disabled");
+                    }
+                }
+            }
 
-        } else {
-            logger.debug("REFERRER_REWARD_ALERT is disabled");
         }
-
     }
 
 
