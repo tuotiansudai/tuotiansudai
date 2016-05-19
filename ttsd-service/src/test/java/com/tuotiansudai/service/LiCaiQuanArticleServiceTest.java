@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -72,5 +73,11 @@ public class LiCaiQuanArticleServiceTest {
     public void shouldFindLiCaiQuanArticleDtoIsOk(){
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+
+        List<LiCaiQuanArticleDto> list =  liCaiQuanArticleService.findLiCaiQuanArticleDto("",null,0,1000);
+
+
     }
 }
