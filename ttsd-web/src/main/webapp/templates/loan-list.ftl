@@ -23,6 +23,10 @@
 
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
+    <ul class="project-type">
+        <li class="active"><a href="/loan-list">直投项目</a></li>
+        <li><a href="/transfer-list">转让项目</a></li>
+    </ul>
     <div class="bRadiusBox bg-w">
         <ul class="wrapper-list">
             <li>
@@ -47,7 +51,7 @@
                        href=${statusUrl?replace("{status}",key)}>${statusMap[key]}</a>
                 </#list>
             </li>
-            <li class>
+            <li>
                 <span>年化收益: </span>
                 <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}">
                 <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>

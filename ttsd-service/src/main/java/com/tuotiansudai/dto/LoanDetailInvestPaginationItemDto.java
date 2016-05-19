@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.Source;
 import java.util.Date;
 import java.util.List;
 
-public class InvestPaginationItemDto {
+public class LoanDetailInvestPaginationItemDto {
 
     private String loginName;
 

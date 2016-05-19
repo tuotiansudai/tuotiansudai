@@ -43,7 +43,7 @@
         <ul id="linkList">
             <#if linkExchangeList??>
                 <#list linkExchangeList as linkExchange>
-                    <li><a href="${linkExchange.linkUrl}" target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                    <li><a rel="nofollow" href="${linkExchange.linkUrl}" target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
                 </#list>
             </#if>
         </ul>
@@ -53,16 +53,16 @@
     </div>
     <div class="copyright page-width">
         <div class="fl">
-            <a href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" onclick="cnzzPush.trackClick('57底部导航','信用企业')" target="_blank">
+            <a rel="nofollow" href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" onclick="cnzzPush.trackClick('57底部导航','信用企业')" target="_blank">
                 <div class="img-gray img-itrust_logo"></div>
             </a>
-            <a href="https://search.szfw.org/cert/l/CX20150616010363010507" onclick="cnzzPush.trackClick('58底部导航','诚信网站')" target="_blank">
+            <a rel="nofollow" href="https://search.szfw.org/cert/l/CX20150616010363010507" onclick="cnzzPush.trackClick('58底部导航','诚信网站')" target="_blank">
                 <div class="img-gray img-chengxin_logo"></div>
             </a>
-            <a href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" onclick="cnzzPush.trackClick('59底部导航','可信网站')" target="_blank">
+            <a rel="nofollow" href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" onclick="cnzzPush.trackClick('59底部导航','可信网站')" target="_blank">
                 <div class="img-gray img-knetSealLogo"></div>
             </a>
-            <a href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" onclick="cnzzPush.trackClick('60底部导航','digicert')" target="_blank">
+            <a rel="nofollow" href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" onclick="cnzzPush.trackClick('60底部导航','digicert')" target="_blank">
                 <div class="img-gray img-digicert"></div>
             </a>
         </div>

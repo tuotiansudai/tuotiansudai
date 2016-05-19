@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
@@ -60,7 +61,7 @@ public class InvestRepayDataItemDto {
         this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = model.getStatus().getDescription();
+        this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
         this.period = model.getPeriod();
         this.amount = AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
     }
