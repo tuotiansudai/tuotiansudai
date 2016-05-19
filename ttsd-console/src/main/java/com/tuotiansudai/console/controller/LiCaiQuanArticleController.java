@@ -6,11 +6,15 @@ import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
+import org.apache.http.HttpRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 @Controller
@@ -46,5 +50,19 @@ public class LiCaiQuanArticleController {
         ModelAndView modelAndView = new ModelAndView("/article-preview");
         modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/article/check/{articleId}", method = RequestMethod.GET)
+    public ModelAndView checkArticle(@PathVariable long articleId) {
+        ModelAndView modelAndView = new ModelAndView("/article-check");
+        modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/article/reject/{articleId}", method = RequestMethod.POST)
+    @ResponseBody
+    public String rejectArticle(@PathVariable long articleId, @RequestParam(value = "comment", required = false) String comment) {
+        liCaiQuanArticleService.rejectArticle(articleId, comment);
+        return "";
     }
 }

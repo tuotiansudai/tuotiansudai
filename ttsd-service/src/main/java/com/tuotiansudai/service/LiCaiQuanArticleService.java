@@ -1,8 +1,10 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
+
+import java.util.Map;
 
 public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
@@ -10,4 +12,14 @@ public interface LiCaiQuanArticleService {
     void createArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
 
     LiCaiQuanArticleDto getArticleContent(long articleId);
+
+    void rejectArticle(long articleId, String comment);
+
+    Map<String, String> getAllComments(long articleId);
+
+    void updateLikeCount(long articleId);
+
+    void updateReadCount(long articleId);
+
+    Map<String, Integer> getLikeAndReadCount(long articleId);
 }
