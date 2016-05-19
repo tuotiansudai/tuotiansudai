@@ -200,4 +200,7 @@ public interface InvestMapper {
                                        @Param(value = "loanStatus") LoanStatus loanStatus,
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);
+
+    Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
 }
