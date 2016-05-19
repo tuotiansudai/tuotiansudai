@@ -26,8 +26,6 @@ public class HomeLoanDto {
 
     private int periods;
 
-    private boolean isPeriodMonthUnit;
-
     private String amount;
 
     private double progress;
@@ -99,10 +97,6 @@ public class HomeLoanDto {
 
     public int getPeriods() {
         return periods;
-    }
-
-    public boolean getIsPeriodMonthUnit() {
-        return isPeriodMonthUnit;
     }
 
     public String getAmount() {
