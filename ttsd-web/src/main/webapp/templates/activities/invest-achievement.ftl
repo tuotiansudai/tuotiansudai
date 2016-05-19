@@ -91,8 +91,8 @@
     <div class="phone-model">
         <div class="actor-model mt-25">
             <h3><span><i class="left-icon"></i>进入<strong>标的详情</strong>可查看当前战况<i class="right-icon"></i></span></h3>
-            <div class="actor-content mt-15">
-                <img src="${staticServer}/images/sign/actor/achievement/product-images-phone.jpg" width="100%">
+            <div class="actor-content mt-15 tc">
+                <img src="${staticServer}/images/sign/actor/achievement/product-images-phone.jpg" width="90%">
             </div>
         </div>
     </div>
