@@ -58,13 +58,12 @@ public class BaseCouponResponseDataDto {
         this.startDate = userCouponModel.getStartTime();
         this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
-        Lists.newArrayList(Sets.newLinkedHashSet(couponModel.getProductTypes()));
-        this.productTypes = Lists.transform(Lists.newArrayList(Sets.newLinkedHashSet(couponModel.getProductTypes())), new Function<ProductType, String>() {
-            @Override
-            public String apply(ProductType input) {
-                return input.getProductLine();
+        this.productTypes = Lists.newArrayList();
+        for (ProductType productType : couponModel.getProductTypes()) {
+            if (!productTypes.contains(productType.getProductLine())) {
+                this.productTypes.add(productType.getProductLine());
             }
-        });
+        }
         this.rate = decimalFormat.format(couponModel.getRate() * 100);
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());

@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
@@ -38,12 +39,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
         this.type = userCouponView.getCouponType();
         this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount());
         this.investLowerLimit = AmountConverter.convertCentToString(userCouponView.getInvestLowerLimit());
-        this.productTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
-            @Override
-            public String apply(ProductType input) {
-                return input.getProductLine();
+        this.productTypes = Lists.newArrayList();
+        for (ProductType productType : userCouponView.getProductTypeList()) {
+            if (!productTypes.contains(productType.getProductLine())) {
+                this.productTypes.add(productType.getProductLine());
             }
-        });
+        }
         this.rate = decimalFormat.format(userCouponView.getRate() * 100);
         this.birthdayRate = String.valueOf(userCouponView.getBirthdayBenefit());
         this.shared = userCouponView.isShared();
