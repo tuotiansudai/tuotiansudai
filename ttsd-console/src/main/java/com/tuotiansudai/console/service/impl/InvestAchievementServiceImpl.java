@@ -2,10 +2,12 @@ package com.tuotiansudai.console.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.LoanAchievementView;
 import com.tuotiansudai.console.service.InvestAchievementService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.InvestAchievement;
+import com.tuotiansudai.repository.model.LoanAchievementView;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,13 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     private InvestMapper investMapper;
 
     @Override
-    public long findInvestAchievementManageCount(String loginName) {
-        return loanMapper.findLoanAchievementCount();
+    public long findInvestAchievementManageCount(String loginName, InvestAchievement investAchievement) {
+        return loanMapper.findLoanAchievementCount(loginName, StringUtils.isEmpty(loginName) ? null : investAchievement);
     }
 
     @Override
-    public List<LoanAchievementView> findInvestAchievementManage(int index, int pageSize, String loginName) {
-        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize);
+    public List<LoanAchievementView> findInvestAchievementManage(int index, int pageSize, String loginName, InvestAchievement investAchievement) {
+        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, loginName, StringUtils.isEmpty(loginName) ? null : investAchievement);
         return Lists.transform(loanAchievementViews, new Function<LoanAchievementView, LoanAchievementView>() {
             @Override
             public LoanAchievementView apply(LoanAchievementView input) {

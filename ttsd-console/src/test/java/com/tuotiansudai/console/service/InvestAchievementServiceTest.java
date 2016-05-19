@@ -131,13 +131,13 @@ public class InvestAchievementServiceTest {
 
         loanMapper.update(loanModel);
 
-        List<LoanAchievementView> investAchievementDtosFirst = investAchievementService.findInvestAchievementManage(1, 10, userModelFirstMan.getLoginName());
+        List<LoanAchievementView> investAchievementDtosFirst = investAchievementService.findInvestAchievementManage(1, 10, userModelFirstMan.getLoginName(), InvestAchievement.FIRST_INVEST);
         assertThat(investAchievementDtosFirst.get(0).getFirstInvestLoginName(), is(userModelFirstMan.getLoginName()));
 
-        List<LoanAchievementView> investAchievementDtosLast = investAchievementService.findInvestAchievementManage(1, 10, userModelLastMan.getLoginName());
+        List<LoanAchievementView> investAchievementDtosLast = investAchievementService.findInvestAchievementManage(1, 10, userModelLastMan.getLoginName(), InvestAchievement.LAST_INVEST);
         assertThat(investAchievementDtosLast.get(0).getLastInvestLoginName(), is(userModelLastMan.getLoginName()));
 
-        List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievementManage(1, 10, userModelMaxMan.getLoginName());
+        List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievementManage(1, 10, userModelMaxMan.getLoginName(), InvestAchievement.MAX_AMOUNT);
         assertThat(investAchievementDtosMax.get(0).getMaxAmountLoginName(), is(userModelMaxMan.getLoginName()));
 
     }
