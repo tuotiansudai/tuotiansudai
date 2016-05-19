@@ -14,7 +14,7 @@ public interface InvestReferrerRewardMapper {
 
     InvestReferrerRewardModel findById(@Param(value = "id") long id);
 
-    List<InvestReferrerRewardModel> findByInvestId(@Param(value="InvestId") long investId);
+    List<InvestReferrerRewardModel> findByInvestId(@Param(value="investId") long investId);
 
     InvestReferrerRewardModel findByInvestIdAndReferrer(@Param(value = "investId") long investId,
                                                         @Param(value = "referrerLoginName") String referrerLoginName);

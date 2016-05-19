@@ -23,7 +23,7 @@
         select * from invest_referrer_reward where id = #{id}
     </select>
 
-    <select id="findById" parameterType="long" resultMap="investReferrerRewardModelResultMap">
+    <select id="findByInvestId" parameterType="long" resultMap="investReferrerRewardModelResultMap">
         select * from invest_referrer_reward where invest_id = #{investId}
     </select>
 
