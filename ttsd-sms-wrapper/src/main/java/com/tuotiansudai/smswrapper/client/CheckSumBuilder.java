@@ -1,4 +1,4 @@
-package com.netease;
+package com.tuotiansudai.smswrapper.client;
 
 import java.security.MessageDigest;
 
