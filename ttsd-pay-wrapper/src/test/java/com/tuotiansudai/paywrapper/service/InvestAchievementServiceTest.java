@@ -121,7 +121,7 @@ public class InvestAchievementServiceTest {
         investAchievementService.awardAchievement(loan4InvestModel1);
 
         UserModel investor2 = getFakeUser("investor2");
-        InvestModel loan4InvestModel2 = new InvestModel(idGenerator.generate(), fakeLoan2.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null);
+        InvestModel loan4InvestModel2 = new InvestModel(idGenerator.generate(), fakeLoan4.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null);
         loan4InvestModel2.setTradingTime(new Date());
         loan4InvestModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(loan4InvestModel2);
@@ -150,7 +150,7 @@ public class InvestAchievementServiceTest {
         investAchievementService.awardAchievement(investModel1);
 
         UserModel investor2 = getFakeUser("investor2");
-        InvestModel investModel2 = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null);
+        InvestModel investModel2 = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, 2, investor2.getLoginName(), null, Source.WEB, null);
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);
@@ -172,7 +172,6 @@ public class InvestAchievementServiceTest {
 
         UserModel investor1 = getFakeUser("investor1");
         InvestModel investModel1 = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null);
-        investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
@@ -180,7 +179,6 @@ public class InvestAchievementServiceTest {
 
         UserModel investor2 = getFakeUser("investor2");
         InvestModel investModel2 = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null);
-        investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);

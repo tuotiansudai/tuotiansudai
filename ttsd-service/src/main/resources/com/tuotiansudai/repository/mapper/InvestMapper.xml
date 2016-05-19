@@ -69,7 +69,7 @@
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}))
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -454,11 +454,16 @@
           ]]>
     </select>
 
-    <select id="countAchievementTimesByLoginName" resultType="int" parameterType="map">
+    <select id="countAchievementTimesByLoginName" parameterType="map" resultType="int">
         select count(1) from invest
         where login_name = #{loginName}
         and status = 'SUCCESS'
         and achievements like CONCAT('%', #{achievement}, '%')
         and trading_time between #{startTime} and #{endTime}
     </select>
+
+    <select id="findFirstTradeTimeInvestByLoanId" parameterType="map" resultType="java.util.Date">
+        select min(trading_time) from invest where loan_id = #{loanId}
+    </select>
+
 </mapper>

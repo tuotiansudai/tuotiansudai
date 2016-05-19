@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -73,4 +71,9 @@ public interface LoanMapper {
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
     List<LoanModel> findHomeLoan();
+
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName, @Param(value = "investAchievement") InvestAchievement investAchievement);
+
+    long findLoanAchievementCount(@Param(value = "loginName") String loginName, @Param(value = "investAchievement") InvestAchievement investAchievement);
+
 }
