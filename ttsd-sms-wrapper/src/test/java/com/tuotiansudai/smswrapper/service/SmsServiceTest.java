@@ -1,5 +1,6 @@
 package com.tuotiansudai.smswrapper.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -79,8 +80,8 @@ public class SmsServiceTest {
 
         assertThat(record.getMobile(), is(mobile));
 
-        Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
-        String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(map);
+        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
+        String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(paramList);
         assertThat(record.getContent(), is(content));
         assertThat(record.getResultCode(), is(resultCode));
     }
@@ -108,8 +109,8 @@ public class SmsServiceTest {
 
         assertThat(record.getMobile(), is(mobile));
 
-        Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
-        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(map);
+        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
+        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(paramList);
         assertThat(record.getContent(), is(content));
         assertThat(record.getResultCode(), is(resultCode));
     }
