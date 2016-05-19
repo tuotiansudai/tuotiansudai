@@ -142,6 +142,7 @@ public class TransferRuleUtilTest {
         loanDto.setType(loanType);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
+        loanDto.setProductType(ProductType._180);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         LoanModel loanModel = new LoanModel(loanDto);
