@@ -234,8 +234,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
             lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
             couponMapper.updateCoupon(lockedCoupon);
-            Date startTime = couponModel.getStartTime();
-            Date endTime = couponModel.getEndTime();
+            Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
+            Date endTime = new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
             if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
                 DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
                 startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
