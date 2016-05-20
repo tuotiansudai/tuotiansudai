@@ -58,9 +58,11 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
         if(liCaiQuanArticleDto.getArticleId() == null ){
             long articleId = idGenerator.generate();
             liCaiQuanArticleDto.setArticleId(articleId);
+            liCaiQuanArticleDto.setCreateTime(new Date());
+        }else{
+            liCaiQuanArticleDto.setModifyTime(new Date());
         }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
-        liCaiQuanArticleDto.setCreateTime(new Date());
         redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()), liCaiQuanArticleDto);
     }
 

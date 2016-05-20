@@ -18,6 +18,8 @@ public class LiCaiQuanArticleDto implements Serializable{
     private Date createTime;
     private ArticleStatus articleStatus;
     private String source;
+    private Date modifyTime;
+    private String checker;
 
     public Long getArticleId() {
         return articleId;
@@ -119,9 +121,23 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.section = licaiquanArticleModel.getArticleSection();
         this.content = licaiquanArticleModel.getContent();
         this.source = licaiquanArticleModel.getSource();
+        this.modifyTime = licaiquanArticleModel.getUpdateTime();
+        this.checker = licaiquanArticleModel.getChecker();
     }
 
+    public Date getModifyTime() {
+        return modifyTime;
+    }
 
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
 
+    public String getChecker() {
+        return checker;
+    }
 
+    public void setChecker(String checker) {
+        this.checker = checker;
+    }
 }
