@@ -93,7 +93,7 @@ public class ContractServiceTest {
         lm.setMaxInvestAmount(1300);
         lm.setInvestIncreasingAmount(1);
         lm.setActivityType(ActivityType.NORMAL);
-        lm.setProductType(ProductType.WYX);
+        lm.setProductType(ProductType._180);
         lm.setBaseRate(0.12);
         lm.setActivityRate(0);
         lm.setContractId(789098123);

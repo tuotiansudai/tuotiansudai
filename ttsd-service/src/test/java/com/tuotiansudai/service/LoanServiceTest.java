@@ -107,6 +107,7 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(date);
         loanDto.setFundraisingStartTime(date);
+        loanDto.setProductType(ProductType._30);
         return loanDto;
     }
 
@@ -123,6 +124,7 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
+        loanDto.setProductType(ProductType._30);
         return loanDto;
     }
 

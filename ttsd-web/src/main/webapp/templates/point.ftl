@@ -116,11 +116,20 @@
                                         <p>［投资即可使用］</p>
 									</#if>
 
-                                    <p>产品限制：
-										<#list exchangeCouponDto.productTypes as productType>
-											<i class="pro-icon">${productType.getName()?substring(0,1)}<em class="bg-com"></em><em class="circle-com"></em></i>
-										</#list>
-										产品线可用</p>
+                                    <p>
+                                        <#if (exchangeCouponDto.productTypes?size)  == 4>
+                                            全部产品均可使用
+                                        <#else>
+                                            <#list exchangeCouponDto.productTypes as productType>
+                                                <#if productType_index == (exchangeCouponDto.productTypes?size - 1)>
+                                                ${productType.getName()}
+                                                <#else>
+                                                ${productType.getName()},
+                                                </#if>
+                                            </#list>
+                                            产品可用
+                                        </#if>
+                                    </p>
                                 </div>
                             </div>
                             <div class="bottom-time">

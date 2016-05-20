@@ -194,7 +194,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         assertEquals("1000.00", baseResponseDto.getData().getBalance());
         assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("1000.14", baseResponseDto.getData().getExpectedInterestAmount());
+        assertEquals("0.14", baseResponseDto.getData().getExpectedInterestAmount());
     }
 
     @Test
@@ -426,6 +426,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
+        loanDto.setProductType(ProductType._180);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(com.tuotiansudai.repository.model.LoanStatus.REPAYING);
         LoanModel loanModel = new LoanModel(loanDto);
@@ -440,7 +441,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationDetailDto.setName(transferApplicationModel.getName());
         transferApplicationDetailDto.setLoginName(transferApplicationModel.getLoginName());
         transferApplicationDetailDto.setLoanId(loanModel.getId());
-        transferApplicationDetailDto.setProductType(ProductType.JYF);
+        transferApplicationDetailDto.setProductType(ProductType._180);
         transferApplicationDetailDto.setLoanName(loanModel.getName());
         transferApplicationDetailDto.setLoanType(loanModel.getType().getName());
         transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestAmount());
