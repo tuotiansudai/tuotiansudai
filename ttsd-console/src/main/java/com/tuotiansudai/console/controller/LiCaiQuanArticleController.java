@@ -1,8 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+import com.tuotiansudai.dto.ArticlePaginationDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.constraints.Min;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -39,5 +44,19 @@ public class LiCaiQuanArticleController {
     @ResponseBody
     public BaseDto<PayDataDto> retraceArticle(@PathVariable long articleId) {
         return liCaiQuanArticleService.retrace(articleId);
+    }
+
+    @RequestMapping(value = "/article/list", method = RequestMethod.GET)
+    public ModelAndView findArticle(@RequestParam(value = "title",required = false) String title,
+                                    @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
+                                    @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                    @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize){
+        ModelAndView mv = new ModelAndView("/article-list");
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,pageSize,index);
+        mv.addObject("data", dto);
+        mv.addObject("title", title);
+        mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
+        mv.addObject("articleSectionTypeList",ArticleSectionType.values());
+        return mv;
     }
 }

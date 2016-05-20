@@ -29,4 +29,8 @@ public interface LicaiquanArticleMapper {
                                                                         @Param("section") ArticleSectionType sectionType,
                                                                         @Param("startId") long startId,
                                                                         @Param("size") int size);
+
+    long findExistedArticleListCount(@Param("title") String title,
+                                                                        @Param("section") ArticleSectionType sectionType);
+
 }

@@ -1,16 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ArticleStatus;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
 
-    private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static Map<String,Long> paramMap = new HashMap<>();
 
 
     @Override
@@ -72,54 +71,79 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     }
 
     @Override
-    public List<LiCaiQuanArticleDto> findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,long startId, int size){
-        List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
-        List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title,articleSectionType,startId,size);
-        Map<byte[],byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
-        for (byte[] key : articleDtoListHkey.keySet()) {
-            String linkListHValue = "";
-            LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
-            try {
-                linkListHValue = new String(articleDtoListHkey.get(key),"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String[] values = linkListHValue.split("\\|");
-            liCaiQuanArticleDto.setId(Long.parseLong(values[0]));
-            liCaiQuanArticleDto.setAuthor(values[1]);
-            liCaiQuanArticleDto.setThumbPicture(values[2]);
-            liCaiQuanArticleDto.setShowPicture(values[3]);
-            liCaiQuanArticleDto.setCarousel(Boolean.parseBoolean(values[4]));
-            liCaiQuanArticleDto.setSection(ArticleSectionType.valueOf(values[5]));
-            liCaiQuanArticleDto.setContent(values[6]);
-            liCaiQuanArticleDto.setCreateTime(strToDate(values[7]));
-            liCaiQuanArticleDto.setArticleStatus(ArticleStatus.valueOf(values[8]));
-            articleDtoList.add(liCaiQuanArticleDto);
-        }
+    public ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,
+                                                            int pageSize,
+                                                            int index){
+        int count = 0;
+        List<LiCaiQuanArticleDto> list = new ArrayList<>();
+        List<LiCaiQuanArticleDto> articleDtoList = findRedisArticleDto(title,articleSectionType);
+        if(CollectionUtils.isNotEmpty(articleDtoList)) count += articleDtoList.size();
 
+        List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title,articleSectionType,1,10000);
         if(CollectionUtils.isNotEmpty(articleListItemModelList)){
+            count += articleListItemModelList.size();
             for(LicaiquanArticleModel model : articleListItemModelList){
                 articleDtoList.add(new LiCaiQuanArticleDto(model,ArticleStatus.PUBLISH));
             }
         }
-
         Collections.sort(articleDtoList, new Comparator<LiCaiQuanArticleDto>(){
             @Override
             public int compare(LiCaiQuanArticleDto o1, LiCaiQuanArticleDto o2) {
-                return o2.getCreateTime().after(o1.getCreateTime()) ? 1 : 0;
+                return o2.getCreateTime().after(o1.getCreateTime()) ? 1 : -1;
             }
         });
 
+        int indexCount = (index - 1) * pageSize;
+        int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
+        index = index > totalPages ? totalPages : index;
+        int toIndex = (indexCount + pageSize) > articleDtoList.size()?articleDtoList.size():indexCount + pageSize;
+        list = updateArticleDtoTitle(articleDtoList.subList(indexCount,toIndex));
+        ArticlePaginationDataDto dto = new ArticlePaginationDataDto(index,pageSize,count,list);
+        return dto;
+    }
+
+    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType){
+        List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
+        Map<byte[],byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
+        for (byte[] key : articleDtoListHkey.keySet()) {
+            LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto)SerializeUtil.deserialize(articleDtoListHkey.get(key));
+            if(StringUtils.isNotEmpty(title) && liCaiQuanArticleDto.getTitle().indexOf(title) == -1){
+                continue;
+            }
+            if(articleSectionType != null && !liCaiQuanArticleDto.getSection().equals(articleSectionType)){
+                continue;
+            }
+            articleDtoList.add(liCaiQuanArticleDto);
+        }
         return articleDtoList;
     }
 
-    private Date strToDate(String strDate){
-        Date date = null;
-        try {
-            date = format.parse(strDate);
-        } catch (ParseException e) {
-            logger.debug("The date conversion errors");
+    private List<LiCaiQuanArticleDto> updateArticleDtoTitle(List<LiCaiQuanArticleDto> list){
+        long redisId = 0l;
+        long databaseId = 0l;
+        List<LiCaiQuanArticleDto> redisList = new ArrayList<>();
+        List<LiCaiQuanArticleDto> databaseList = new ArrayList<>();
+        for(LiCaiQuanArticleDto dto : list){
+            if(dto.getArticleStatus().equals(ArticleStatus.PUBLISH)){
+                if(databaseId < dto.getId()) databaseId = dto.getId();
+                databaseList.add(dto);
+            }else{
+                if(redisId < dto.getId()) redisId = dto.getId();
+                redisList.add(dto);
+            }
         }
-        return date;
+
+        if(CollectionUtils.isNotEmpty(redisList) && CollectionUtils.isNotEmpty(databaseList)){
+            for(LiCaiQuanArticleDto database : databaseList){
+                for(LiCaiQuanArticleDto redis : redisList){
+                    if(redis.getTitle().equals(database.getTitle())){
+                        database.setTitle(database.getTitle() + "(原文)");
+                        break;
+                    }
+                }
+            }
+        }
+        return list;
     }
+
 }

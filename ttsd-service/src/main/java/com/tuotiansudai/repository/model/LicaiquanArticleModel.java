@@ -1,11 +1,12 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by huoxuanbo on 16/5/13.
  */
-public class LicaiquanArticleModel {
+public class LicaiquanArticleModel implements Serializable {
     /**
      * 文章ID, 主键
      */
@@ -41,7 +42,7 @@ public class LicaiquanArticleModel {
     /**
      * 缩略图
      */
-    private String thumb;
+    private String thumbnail;
     /**
      * 展示图
      */
@@ -75,7 +76,7 @@ public class LicaiquanArticleModel {
         this.articleSection = articleSection;
         this.source = source;
         this.carousel = carousel;
-        this.thumb = thumb;
+        this.thumbnail = thumb;
         this.showPicture = showPicture;
         this.content = content;
         this.createTime = createTime;
@@ -145,12 +146,12 @@ public class LicaiquanArticleModel {
         this.carousel = carousel;
     }
 
-    public String getThumb() {
-        return thumb;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setThumb(String thumb) {
-        this.thumb = thumb;
+    public void setThumbnail(String thumb) {
+        this.thumbnail = thumb;
     }
 
     public String getShowPicture() {

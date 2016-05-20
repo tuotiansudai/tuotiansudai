@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.SerializeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,12 +72,7 @@ public class LiCaiQuanArticleServiceTest {
 
     @Test
     public void shouldFindLiCaiQuanArticleDtoIsOk(){
-        LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
-
-        List<LiCaiQuanArticleDto> list =  liCaiQuanArticleService.findLiCaiQuanArticleDto("",null,0,1000);
+//        List<LiCaiQuanArticleDto> list =  liCaiQuanArticleService.findLiCaiQuanArticleDto("",null,10,0,1,1000);
 
 
     }

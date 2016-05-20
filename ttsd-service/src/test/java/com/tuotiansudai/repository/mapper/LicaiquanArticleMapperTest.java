@@ -63,7 +63,7 @@ public class LicaiquanArticleMapperTest {
         licaiquanArticleModel.setTitle("testTitle");
         licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setShowPicture("testShowPicture");
-        licaiquanArticleModel.setThumb("testThumb");
+        licaiquanArticleModel.setThumbnail("testThumb");
 
         return licaiquanArticleModel;
     }
@@ -74,7 +74,7 @@ public class LicaiquanArticleMapperTest {
         licaiquanArticleModel.setChecker("modifyChecker");
         licaiquanArticleModel.setCreator("modifyCreator");
         licaiquanArticleModel.setTitle("modifyTitle");
-        licaiquanArticleModel.setThumb("modifyThumb");
+        licaiquanArticleModel.setThumbnail("modifyThumb");
         licaiquanArticleModel.setSource("modifySource");
         licaiquanArticleModel.setArticleSection(ArticleSectionType.PLATFORM_ACTIVITY);
         licaiquanArticleModel.setAuthor("modifyAuthor");
@@ -111,7 +111,7 @@ public class LicaiquanArticleMapperTest {
         assertEquals(licaiquanArticleModel.getTitle(), testLicaiquanArticleModle.getTitle());
         assertEquals(licaiquanArticleModel.getUpdateTime(), testLicaiquanArticleModle.getUpdateTime());
         assertEquals(licaiquanArticleModel.getShowPicture(), licaiquanArticleModel.getShowPicture());
-        assertEquals(licaiquanArticleModel.getThumb(), licaiquanArticleModel.getThumb());
+        assertEquals(licaiquanArticleModel.getThumbnail(), licaiquanArticleModel.getThumbnail());
     }
 
     @Test
@@ -159,7 +159,7 @@ public class LicaiquanArticleMapperTest {
         assertEquals(licaiquanArticleModel.getChecker(), modifiedLicaiquanArticleModel.getChecker());
         assertEquals(licaiquanArticleModel.getCreator(), modifiedLicaiquanArticleModel.getCreator());
         assertEquals(licaiquanArticleModel.getTitle(), modifiedLicaiquanArticleModel.getTitle());
-        assertEquals(licaiquanArticleModel.getThumb(), modifiedLicaiquanArticleModel.getThumb());
+        assertEquals(licaiquanArticleModel.getThumbnail(), modifiedLicaiquanArticleModel.getThumbnail());
         assertEquals(licaiquanArticleModel.getSource(), modifiedLicaiquanArticleModel.getSource());
         assertEquals(licaiquanArticleModel.getArticleSection(), modifiedLicaiquanArticleModel.getArticleSection());
         assertEquals(licaiquanArticleModel.getAuthor(), modifiedLicaiquanArticleModel.getAuthor());

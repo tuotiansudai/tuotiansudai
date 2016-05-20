@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LiCaiQuanArticleDto implements Serializable{
+    private static final long serialVersionUID = 5982862020562402898l;
     private long id;
     private String title;
     private String author;
@@ -17,6 +18,8 @@ public class LiCaiQuanArticleDto implements Serializable{
     private String content;
     private Date createTime;
     private ArticleStatus articleStatus;
+    private Date updateTime;
+    private String checker;
 
     public LiCaiQuanArticleDto(){}
 
@@ -24,13 +27,15 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.id = model.getId();
         this.title = model.getTitle();
         this.author = model.getCreator();
-        this.thumbPicture = model.getThumb();
+        this.thumbPicture = model.getThumbnail();
         this.showPicture = model.getShowPicture();
         this.carousel = model.isCarousel();
         this.section = model.getArticleSection();
         this.content = model.getContent();
         this.createTime = model.getCreateTime();
         this.articleStatus = articleStatus;
+        this.updateTime = model.getUpdateTime();
+        this.checker = model.getChecker();
     }
 
     public long getId() {
@@ -113,5 +118,11 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.articleStatus = articleStatus;
     }
 
+    public Date getUpdateTime() { return updateTime; }
 
+    public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
+
+    public String getChecker() { return checker; }
+
+    public void setChecker(String checker) { this.checker = checker; }
 }
