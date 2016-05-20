@@ -261,14 +261,13 @@
                         </td>
                         <td>
                             <#if loan.achievement.maxAmountAchievementLoginName??>
-                                以累积投资${loan.achievement.maxAmountAchievementAmount}元 夺得标王
+                                以累积投资 ${loan.achievement.maxAmountAchievementAmount}元 夺得标王
                             <#else>
                                 --
                             </#if>
                         </td>
                         <td>
                             <#if loan.achievement.lastInvestAchievementLoginName??>
-                                以累积投资${loan.achievement.maxAmountAchievementAmount}元夺得标王
                                 ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 一锤定音
                             <#else>
                                 目前项目剩余${loan.achievement.loanRemainingAmount}元<br/>快来一锤定音吧
