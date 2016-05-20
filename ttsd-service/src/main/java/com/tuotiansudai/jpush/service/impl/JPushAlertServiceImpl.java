@@ -567,7 +567,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         for (InvestModel invest : successInvestList) {
             List<InvestReferrerRewardModel> investReferrerRewardModelList = investReferrerRewardMapper.findByInvestId(invest.getId());
             for(InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList){
-                if("SUCCESS".equals(investReferrerRewardModel.getStatus())){
+                if(investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS){
                     AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
                     JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
                     if (jPushAlertModel != null) {
