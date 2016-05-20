@@ -75,7 +75,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                                                             int pageSize,
                                                             int index){
         int count = 0;
-        List<LiCaiQuanArticleDto> list = new ArrayList<>();
+        List<LiCaiQuanArticleDto> list;
         List<LiCaiQuanArticleDto> articleDtoList = findRedisArticleDto(title,articleSectionType);
         if(CollectionUtils.isNotEmpty(articleDtoList)) count += articleDtoList.size();
 

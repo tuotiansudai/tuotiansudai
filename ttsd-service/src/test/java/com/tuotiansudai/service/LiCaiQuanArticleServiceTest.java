@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.ArticlePaginationDataDto;
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -72,8 +74,8 @@ public class LiCaiQuanArticleServiceTest {
 
     @Test
     public void shouldFindLiCaiQuanArticleDtoIsOk(){
-//        List<LiCaiQuanArticleDto> list =  liCaiQuanArticleService.findLiCaiQuanArticleDto("",null,10,0,1,1000);
-
-
+        liCaiQuanArticleService.createArticle(fakeLiCaiQuanArticleDto());
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto("tile",ArticleSectionType.INDUSTRY_NEWS,10,1);
+        assertNotNull(dto);
     }
 }

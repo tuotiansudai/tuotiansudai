@@ -42,7 +42,12 @@
             <tbody>
                 <#list data.records as article>
                 <tr>
-                    <td>${article.section.articleSectionTypeName!}</td>
+                    <td>
+                        <#if article.carousel>
+                            <i class="lunbo-icon"></i>
+                        </#if>
+                        ${article.section.articleSectionTypeName!}
+                    </td>
                     <td>${article.title!}</td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
                     <td>${article.author!}</td>
