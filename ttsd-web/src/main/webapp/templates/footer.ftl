@@ -43,7 +43,7 @@
         <ul id="linkList">
             <#if linkExchangeList??>
                 <#list linkExchangeList as linkExchange>
-                    <li><a rel="nofollow" href="${linkExchange.linkUrl}" target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
+                    <li><a href="${linkExchange.linkUrl}" target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
                 </#list>
             </#if>
         </ul>

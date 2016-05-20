@@ -31,18 +31,33 @@
         <ul class="wrapper-list">
             <li>
                 <span>项目类型: </span>
-                <#assign productUrl = "/loan-list?productType={productType}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}">
-                <#assign productMap = {"":"全部","SYL":"速盈利","WYX":"稳盈绣","JYF":"久盈富"}>
-                <#assign productKeys = productMap?keys>
-                <#list productKeys as key>
-                    <a <#if productType?? && productType == key>class="active"
-                       <#elseif !(productType??) && key=="">class="active"</#if>
-                       href=${productUrl?replace("{productType}",key)}>${productMap[key]}</a>
+                <#assign nametUrl = "/loan-list?name={name}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
+                <#assign nameMap = {"":"全部","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款"}>
+                <#assign nameKeys = nameMap?keys>
+                <#list nameKeys as key>
+                    <a <#if name?? && name == key>class="active"
+                       <#elseif !(name??) && key=="">class="active"</#if>
+                       href=${nametUrl?replace("{name}",key)}>${nameMap[key]}</a>
+                </#list>
+            </li>
+            <li>
+                <span>项目期限: </span>
+                <#assign durationUrl = "/loan-list?{durationType}&name=${name!}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}">
+                <#assign durationMap = {"":"全部","durationStart=1&durationEnd=30":"30天以内","durationStart=31&durationEnd=90":"31-90天","durationStart=91&durationEnd=180":"91-180天","durationStart=181&durationEnd=366":"180天以上"}>
+                <#assign durationKeys = durationMap?keys>
+                <#list durationKeys as key>
+                    <a <#if durationStart == 0 && durationEnd == 0 && key=="">class="active"
+                       <#elseif durationStart == 1 && durationEnd == 30 && durationMap[key]=="30天以内">class="active"
+                       <#elseif durationStart == 31 && durationEnd == 90 && durationMap[key]=="31-90天">class="active"
+                       <#elseif durationStart == 91 && durationEnd == 180 && durationMap[key]=="91-180天">class="active"
+                       <#elseif durationStart == 181 && durationEnd == 366 && durationMap[key]=="180天以上">class="active"
+                    </#if>
+                       href=${durationUrl?replace("{durationType}",key)}>${durationMap[key]}</a>
                 </#list>
             </li>
             <li>
                 <span>项目状态: </span>
-                <#assign statusUrl = "/loan-list?status={status}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}">
+                <#assign statusUrl = "/loan-list?status={status}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign statusMap = {"":"全部","RAISING":"可投资","REPAYING":"还款中","COMPLETE":"还款完成","PREHEAT":"预热中"}>
                 <#assign statusKeys = statusMap?keys>
                 <#list statusKeys as key>
@@ -53,7 +68,7 @@
             </li>
             <li>
                 <span>年化收益: </span>
-                <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}">
+                <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
                 <#assign rateKeys = rateMap?keys>
                 <#list rateKeys as key>
@@ -73,10 +88,6 @@
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
                     <#if loanItem.activityType == 'NEWBIE'>
                         <span class="new-user"></span>
-                    <#else>
-                        <#if loanItem.productType??>
-                            <span class="${loanItem.productType?lower_case}"></span>
-                        </#if>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
@@ -108,13 +119,7 @@
 
                             <dl>
                                 <dt>项目期限</dt>
-                                <dd><em>${loanItem.periods}</em>
-                                    <#if loanItem.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanItem.type = 'LOAN_INTEREST_MONTHLY_REPAY'>
-                                        个月
-                                    <#else>
-                                        天
-                                    </#if>
-                                </dd>
+                                <dd><em>${loanItem.duration}</em>天</dd>
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
@@ -185,9 +190,9 @@
         <div class="pagination">
             <span class="total">共 <span class="subTotal">${count}</span> 条记录，当前第 <span class="index-page">${index}</span> 页</span>
             <span class="prev <#if hasPreviousPage>active</#if>"
-                  data-url="/loan-list?status=${status!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&index=${index - 1}">上一页</span>
+                  data-url="/loan-list?status=${status!}&name=${name!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}&index=${index - 1}">上一页</span>
             <span class="next <#if hasNextPage>active</#if>"
-                  data-url="/loan-list?status=${status!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&index=${index + 1}">下一页</span>
+                  data-url="/loan-list?status=${status!}&name=${name!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
     <#include "coupon-alert.ftl" />

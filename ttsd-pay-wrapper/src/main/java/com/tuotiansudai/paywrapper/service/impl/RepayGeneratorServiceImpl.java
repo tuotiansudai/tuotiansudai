@@ -54,13 +54,13 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
-        int totalPeriods = loanModel.calculateLoanRepayTimes();
+        int totalPeriods = loanModel.getPeriods();
 
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
 
-            int currentPeriodDuration = isPeriodUnitDay ? loanModel.getPeriods() : InterestCalculator.DAYS_OF_MONTH;
+            int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
             DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
 
             long currentPeriodCorpus = 0;
