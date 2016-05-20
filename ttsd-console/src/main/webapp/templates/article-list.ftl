@@ -54,8 +54,14 @@
                     <td>${article.checker!}</td>
                     <td>${article.articleStatus.description!}</td>
                     <td>
-                        <a href="#" >编辑 </a>/
-                        <a href="#" > 删除</a>
+                        <#if article.articleStatus.description == '待审核'>
+                            <a href="#" >审核 </a>/
+                            <a href="#" > 撤销</a>
+                        </#if>
+                        <#if article.articleStatus.description == '已发布'>
+                            <a href="#" >编辑 </a>/
+                            <a href="#" > 删除</a>
+                        </#if>
                     </td>
                     <td></td>
                 </tr>
