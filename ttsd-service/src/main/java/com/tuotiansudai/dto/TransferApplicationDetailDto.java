@@ -15,6 +15,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private String loanName;
 
+    private String transferrer;
+
     private long investId;
 
     private long transferInvestId;
@@ -85,6 +87,10 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     public void setLoanName(String loanName) {
         this.loanName = loanName;
     }
+
+    public String getTransferrer() { return transferrer; }
+
+    public void setTransferrer(String transferrer) { this.transferrer = transferrer; }
 
     public long getInvestId() {
         return investId;

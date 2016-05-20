@@ -5,7 +5,7 @@
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
-            <span class="product-tip">拓天速贷提醒您：理财非存款，投资需谨慎！</span>
+            <span class="product-tip">拓天速贷提醒您：投资非存款，投资需谨慎！</span>
         </div>
         <div class="transfer-info">
             <div class="transfer-info-dl">
@@ -16,13 +16,13 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt>待收本金</dt>
+                    <dt>项目本金</dt>
                     <dd><em><@percentInteger>${transferApplication.investAmount!}</@percentInteger></em>
                         <i><@percentFraction>${transferApplication.investAmount!}</@percentFraction></i>元
                     </dd>
                 </dl>
                 <dl>
-                    <dt>年化收益</dt>
+                    <dt>预期年化收益</dt>
                     <dd><em>${transferApplication.baseRate!}%</em></dd>
                 </dl>
                 <dl>
@@ -39,7 +39,7 @@
                         <span>下次回款：${transferApplication.nextRefundDate?string("yyyy-MM-dd")}/${transferApplication.nextExpecedInterest!}元</span>
                     </li>
                     <li>
-                        <span>还款方式：${transferApplication.loanType!}</span>
+                        <span>还款方式：按期还收益，到期付本金！</span>
                     </li>
                     <li>
                         <span>转让截止时间：${transferApplication.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
@@ -93,7 +93,7 @@
                         <th>转让价格(元)</th>
                         <th>承接方式</th>
                         <th>预计收益(元)</th>
-                        <th>待收本金(元)</th>
+                        <th>项目本金(元)</th>
                         <th>承接时间</th>
                     </tr>
                     </thead>

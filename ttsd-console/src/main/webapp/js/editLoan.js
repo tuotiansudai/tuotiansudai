@@ -146,20 +146,15 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         $('.jq-piex').text(_pix);
                     }
                     _hidden.val(_options.eq(i).attr('value'));
-                    if (_hidden.hasClass('jq-product-type')) {
-                        $('.product-line-period').html('');
-                        if (_options.eq(i).attr('value') && _options.eq(i).attr('value') != 'JYF') {
-                            $('.product-line-period').append('<input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">');
+                    if (_hidden.hasClass('jq-duration')) {
+                        if (_options.eq(i).attr('value') && _options.eq(i).attr('value') != '') {
                             $('.jq-timer').val(_options.eq(i).data('period'));
-                        } else if (_options.eq(i).attr('value') && _options.eq(i).attr('value') == 'JYF') {
-                            $('.product-line-period').append('<select class="selectpicker b-width jq-timer"><option value="6">6</option><option value="12">12</option></select>');
-                            $('.selectpicker').selectpicker({
-                                style: 'btn-default',
-                                size: 8
-                            });
+                            $('.jq-duration').val(_options.eq(i).data('duration'));
+                            $('.jq-product-line').val(_options.eq(i).data('product-line'));
                         } else {
-                            $('.product-line-period').append('<input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">');
                             $('.jq-timer').val('');
+                            $('.jq-duration').val('');
+                            $('.jq-product-line').val('');
                         }
                     }
                 }
@@ -256,12 +251,20 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             //beforeSubmit
             beforeCheck: function(curform){
                 $('.form-error').html('');
-                var periods = parseInt($('.jq-timer',curform).val());
-                if(periods <= 0){
-                    showErrorMessage('借款期限最小为1',$('.jq-timer',curform));
+
+                var projectName = $('.jq-user', curform).val();
+                if (projectName == '') {
+                    showErrorMessage('请选择借款项目名称', $('.jq-user', curform));
                     return false;
                 }
-                var loanAmount = parseFloat($('.jq-pay',curform).val());
+
+                var duration = $('.jq-duration', curform).val();
+                if (duration == '') {
+                    showErrorMessage('请选择借款期限', $('.jq-duration', curform));
+                    return false;
+                }
+
+                var loanAmount = parseFloat($('.jq-pay', curform).val());
                 if(loanAmount <= 0){
                     showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
                     return false;
@@ -334,6 +337,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
                     "type": $('.jq-mark-type').val(),
                     "periods": $('.jq-timer').val(),
+                    "duration": $('.jq-duration').val(),
                     "descriptionText": getContentTxt(),
                     "descriptionHtml": getContent(),
                     "investFeeRate": $('.jq-fee').val(),
@@ -341,7 +345,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
                     "activityType": $('.jq-impact-type').val(),
-                    "productType": $('.jq-product-type').val(),
+                    "productType": $('.jq-product-line').val(),
                     "activityRate": $('.jq-percent').val(),
                     "contractId": $('.jq-pact').val(),
                     "basicRate": $('.jq-base-percent').val(),

@@ -175,6 +175,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
+        transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginNme, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginNme);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());

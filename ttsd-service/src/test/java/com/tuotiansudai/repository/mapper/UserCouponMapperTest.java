@@ -75,7 +75,7 @@ public class UserCouponMapperTest {
         couponModel.setTotalCount(1000L);
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
 
         return couponModel;
     }

@@ -1497,6 +1497,11 @@ body{
 
                   .ticket-term {
                     font-size: 10px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    width: 150px;
+                    display: inline-block;
                   }
                 }
                 &:hover {
@@ -2551,7 +2556,7 @@ body{
           }
           .right-coupon {
             float: left;
-            width: 228px;
+            width: 227px;
             height: 123px;
             padding-left: 20px;
             border: 1px solid #ccc;
@@ -3293,7 +3298,7 @@ body{
           }
           .right-coupon {
             float: left;
-            width: 228px;
+            width: 227px;
             height: 123px;
             padding-left: 20px;
             border: 1px solid #ccc;
