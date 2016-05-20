@@ -12,6 +12,7 @@ public enum PushType {
     WITHDRAW_SUCCESS_ALERT("AUTO","提现成功提醒"),
     REFERRER_REWARD_ALERT("AUTO","推荐人奖励提醒"),
     LOTTERY_OBTAIN_CASH_ALERT("AUTO","抽奖获取现金提醒"),
+    COUPON_INCOME_ALERT("AUTO","优惠券收益发放"),
 
     PREHEAT("MANUAL","预热标的"),
     PRESENT_SEND("MANUAL","礼品派送"),

@@ -15,7 +15,7 @@
     <form action="/message-manage/manual-message-list" class="form-inline query-build">
         <div class="form-group">
             <label>标题</label>
-            <input type='text' class="form-control" name="title" value="${(createdBy?string('0'))!}"/>
+            <input type='text' class="form-control" id="title" name="title" value="${title!}"/>
         </div>
 
         <div class="form-group">
@@ -23,13 +23,13 @@
             <select class="selectpicker" name="messageStatus">
                 <option value="" <#if !(messageStatusInput??)>selected</#if>>全部</option>
                 <#list messageStatuses as messageStatus>
-                    <option value="${messageStatus.name()}" <#if messageStatusInput?? && messageStatus==messageStatusInput>selected</#if>>${messageStatus.getDescription()}</option>
+                    <option value="${messageStatus.name()}" <#if messageStatusInput?? && messageStatus == messageStatusInput>selected</#if>>${messageStatus.getDescription()}</option>
                 </#list>
             </select>
         </div>
         <div class="form-group">
             <label>创建人</label>
-            <input type='text' class="form-control" name="createdBy" value="${(createdBy?string('0'))!}"/>
+            <input type='text' class="form-control" id="createdBy" name="createdBy" value="${createdBy!}"/>
         </div>
         <button class="btn btn-sm btn-primary query">查询</button>
         <a href="/message-manage/manual-message-list" class="btn btn-sm btn-default">重置</a>
@@ -69,36 +69,37 @@
         </tr>
         </thead>
         <tbody>
-        <#list messageLists as message>
-            <tr>
-                <td>
-                    收件人
-                </td>
-                <td>
-                    标题
-                </td>
-                <td>
-                   内容
-                </td>
-                <td>
-                    送达渠道
-                </td>
-                <td>
-                    发送时间
-                </td>
-                <td>
-                    打开数
-                </td>
-                    状态
-                <td>
-                    创建人/审核人
-                </td>
 
-                <td>
-                    caozuo
-                </td>
-            </tr>
-        </#list>
+                <tr>
+                    <td>
+                        收件人
+                    </td>
+                    <td>
+                        标题
+                    </td>
+                    <td>
+                       内容
+                    </td>
+                    <td>
+                        送达渠道
+                    </td>
+                    <td>
+                        发送时间
+                    </td>
+                    <td>
+                        打开数
+                    </td>
+                        状态
+                    <td>
+                        创建人/审核人
+                    </td>
+                    <td>
+                        caozuo
+                    </td>
+                    <td>
+                        caozuo
+                    </td>
+                </tr>
         </tbody>
         </table>
     </div>
@@ -108,11 +109,11 @@
         <div>
             <span class="bordern">总共${messageCount}条,每页显示${pageSize}条</span>
         </div>
-        <#if messageLists?has_content>
+        <#if messageList?has_content>
             <ul class="pagination">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createBy??>&createBy=${createBy?string('0')}</#if>" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title!}</#if> <#if createdBy??>&createBy=${createdBy!}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -122,7 +123,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createBy??>&createBy=${createBy?string('0')}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createdBy??>&createdBy=${createBy!}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="autoMessageManage" title="自动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -15,7 +15,7 @@
     <form action="/message-manage/auto-message-list" class="form-inline query-build">
         <div class="form-group">
             <label>标题</label>
-            <input type='text' class="form-control" name="title" value="${(createdBy?string('0'))!}"/>
+            <input type='text' class="form-control" id="title" name="title" value="${title!}"/>
         </div>
 
         <div class="form-group">
@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             <label>创建人</label>
-            <input type='text' class="form-control" name="createdBy" value="${(createdBy?string('0'))!}"/>
+            <input type='text' class="form-control" id="createBy" name="createdBy" value="${createdBy!}"/>
         </div>
         <button class="btn btn-sm btn-primary query">查询</button>
         <a href="/message-manage/auto-message-list" class="btn btn-sm btn-default">重置</a>
@@ -69,7 +69,6 @@
         </tr>
         </thead>
         <tbody>
-        <#list messageLists as message>
             <tr>
                 <td>
                     收件人
@@ -97,8 +96,10 @@
                 <td>
                     caozuo
                 </td>
+                <td>
+                    caozuo
+                </td>
             </tr>
-        </#list>
         </tbody>
         </table>
     </div>
@@ -108,11 +109,11 @@
         <div>
             <span class="bordern">总共${messageCount}条,每页显示${pageSize}条</span>
         </div>
-        <#if messageLists?has_content>
+        <#if messageList?has_content>
             <ul class="pagination">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createBy??>&createBy=${createBy?string('0')}</#if>" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title!}</#if> <#if createdBy??>&createdBy=${createdBy!}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -122,7 +123,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createBy??>&createBy=${createBy?string('0')}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title!}</#if> <#if createdBy??>&createdBy=${createdBy!}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

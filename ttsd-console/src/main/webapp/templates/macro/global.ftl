@@ -106,13 +106,13 @@
             },
             {
                 "name":"app-push-manage",
-                "header":{"text":"APP推送管理"},
+                "header":{"text":"消息管理"},
                 "sidebar":[
                     {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"autoAppPushManage","text":"自动推送管理","link":"/app-push-manage/auto-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"manualMessageManage","text":"手动发送站内信管理","link":"/manual-message-manage/manual-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"autoMessageManage","text":"自动发送站内信管理","link":"/auto-message-manage/auto-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"manualMessageManage","text":"手动发送站内信管理","link":"/message-manage/manual-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"autoMessageManage","text":"自动发送站内信管理","link":"/message-manage/auto-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {

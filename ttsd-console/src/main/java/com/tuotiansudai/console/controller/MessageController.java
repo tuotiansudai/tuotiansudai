@@ -29,13 +29,13 @@ public class MessageController {
     public ModelAndView manualMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                     @RequestParam(value = "title", required = false) String title,
-                                    @RequestParam(value = "createBy", required = false) String createBy,
+                                    @RequestParam(value = "createdBy", required = false) String createdBy,
                                     @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
         ModelAndView modelAndView = new ModelAndView("/manual-message-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("title", title);
-        modelAndView.addObject("createBy", createBy);
+        modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
         modelAndView.addObject("messageList", "");
@@ -56,8 +56,29 @@ public class MessageController {
     @RequestMapping(value = "/auto-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                        @RequestParam(value = "title", required = false) String title,
+                                        @RequestParam(value = "createdBy", required = false) String createdBy,
+                                        @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
         ModelAndView modelAndView = new ModelAndView("/auto-message-list");
+
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("title", title);
+        modelAndView.addObject("createdBy", createdBy);
+        modelAndView.addObject("messageStatusInput", messageStatus);
+
+        modelAndView.addObject("messageList", "");
+
+        modelAndView.addObject("messageStatuses", Lists.newArrayList(messageStatus.values()));
+        modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
+        int messageCount = 0;
+        modelAndView.addObject("messageCount", messageCount);
+        long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
 
         return modelAndView;
     }
