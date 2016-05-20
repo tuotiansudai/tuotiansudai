@@ -27,7 +27,7 @@ public class InterestCalculator {
         for (InvestModel successInvest : investModels) {
             DateTime lastInvestRepayDate = lastRepayDate;
             if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-                lastInvestRepayDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);
+                lastInvestRepayDate = new DateTime(successInvest.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
             }
             // 2015-01-01 ~ 2015-01-31: 30
             int periodDuration = Days.daysBetween(lastInvestRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
@@ -42,7 +42,7 @@ public class InterestCalculator {
 
         DateTime lastInvestRepayDate = lastRepayDate.withTimeAtStartOfDay();
         if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-            lastInvestRepayDate = new DateTime(investModel.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);
+            lastInvestRepayDate = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
         }
         // 2015-01-01 ~ 2015-01-31: 30
         int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
@@ -52,13 +52,7 @@ public class InterestCalculator {
     }
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * InterestCalculator.DAYS_OF_MONTH;
-        }
-        return InterestCalculator.calculateInterest(loanModel, amount * duration);
+        return InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration());
     }
 
     public static long estimateCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long amount) {
@@ -66,11 +60,7 @@ public class InterestCalculator {
             return 0;
         }
 
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * DAYS_OF_MONTH;
-        }
+        int duration = loanModel.getDuration();
 
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
@@ -133,9 +123,10 @@ public class InterestCalculator {
         return lastRepayDate;
     }
 
-    private static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
+    public static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
         int daysOfYear = DAYS_OF_YEAR;
-        new DateTime(2016, 3, 9, 21, 0, 0);
+
+        //2016-03-09 放款后标的按每期30天一年365天计算利息
         if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(new DateTime(2016, 3, 9, 21, 0, 0).toDate())) {
             DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
             daysOfYear = loanDate.dayOfYear().getMaximumValue();
@@ -144,4 +135,5 @@ public class InterestCalculator {
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
+
 }

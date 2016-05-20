@@ -72,6 +72,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private long raisingPeriod;
 
+    private int duration;
+
     public LoanDetailDto() {
     }
 
@@ -323,5 +325,11 @@ public class LoanDetailDto extends BaseDataDto {
         this.raisingPeriod = raisingPeriod;
     }
 
+    public int getDuration() {
+        return duration;
+    }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 }
