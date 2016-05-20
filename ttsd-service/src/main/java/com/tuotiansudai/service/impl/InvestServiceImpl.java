@@ -284,17 +284,6 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
             for (InvestPaginationItemView investPaginationItemView : items) {
-                List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investPaginationItemView.getId());
-                if (CollectionUtils.isNotEmpty(userCouponList)) {
-                    List<CouponType> couponTypeList = new ArrayList<>();
-                    for (UserCouponModel userCouponView : userCouponList) {
-                        CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
-                        if (couponModel != null && couponModel.getCouponType() != null) {
-                            couponTypeList.add(couponModel.getCouponType());
-                        }
-                    }
-                    investPaginationItemView.setCouponTypeList(couponTypeList);
-                }
                 List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
                 if (CollectionUtils.isNotEmpty(userCouponModels)) {

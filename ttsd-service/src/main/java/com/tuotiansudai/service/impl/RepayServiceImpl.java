@@ -55,8 +55,6 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private CouponMapper couponMapper;
 
-    private static String COUPON_MESSAGE = "{0}的利息为:{1}";
-
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
         return payWrapperClient.repay(repayDto);
@@ -146,7 +144,7 @@ public class RepayServiceImpl implements RepayService {
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
-        dataDto.setCouponDescriptionList(getCouponDescription(investId));
+        setCouponInterest(dataDto,investId);
         baseDto.setData(dataDto);
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
@@ -163,24 +161,21 @@ public class RepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private List<String> getCouponDescription(long investId){
+    private List<String> setCouponInterest(InvestRepayDataDto dataDto,long investId){
         List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
         List<String> couponList = new ArrayList<>();
-        long couponMoney = 0L;
+        long expectedInterest = 0l;
+        long actualInterest = 0l;
         if(CollectionUtils.isNotEmpty(userCouponModels)){
             for(UserCouponModel userCouponModel : userCouponModels){
-                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-                if(couponModel != null && couponModel.getCouponType() != null){
-                    couponList.add(MessageFormat.format(COUPON_MESSAGE, couponModel.getCouponType().getName(),(AmountConverter.convertCentToString(userCouponModel.getExpectedInterest()))));
-                    couponMoney += userCouponModel.getExpectedInterest();
-                }
+                expectedInterest += userCouponModel.getExpectedInterest();
+                actualInterest += userCouponModel.getActualInterest();
             }
         }
-
-        if(couponMoney > 0){
-            couponList.add(MessageFormat.format(COUPON_MESSAGE,"总",AmountConverter.convertCentToString(couponMoney)));
-        }
+        dataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+        dataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
         return couponList;
     }
+
 
 }

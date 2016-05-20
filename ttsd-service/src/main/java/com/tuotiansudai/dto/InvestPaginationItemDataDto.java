@@ -68,8 +68,6 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private double birthdayBenefit;
 
-    private List<CouponType> couponTypeList;
-
     private String transferStatus;
 
     private String baseRate;
@@ -111,7 +109,6 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.city = view.getCity();
         this.birthdayCoupon = view.isBirthdayCoupon();
         this.birthdayBenefit = view.getBirthdayBenefit();
-        this.couponTypeList = view.getCouponTypeList();
         this.baseRate = view.getLoanBaseRatePercent();
         this.activityRate = view.getLoanActivityRatePercent();
         this.sumRate = view.getSumRatePercent();
@@ -296,10 +293,6 @@ public class InvestPaginationItemDataDto implements Serializable {
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
     }
-
-    public List<CouponType> getCouponTypeList() { return couponTypeList; }
-
-    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 
     public String getTransferStatus() {
         return transferStatus;

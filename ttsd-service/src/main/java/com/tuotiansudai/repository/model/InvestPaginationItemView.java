@@ -41,8 +41,6 @@ public class InvestPaginationItemView extends InvestModel {
 
     private double birthdayBenefit;
 
-    private List<CouponType> couponTypeList;
-
     private double loanBaseRate;
 
     private double loanActivityRate;
@@ -190,10 +188,6 @@ public class InvestPaginationItemView extends InvestModel {
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
     }
-
-    public List<CouponType> getCouponTypeList() { return couponTypeList; }
-
-    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 
     public String getLoanBaseRatePercent(){
         return new DecimalFormat("######0.##").format(loanBaseRate * 100);
