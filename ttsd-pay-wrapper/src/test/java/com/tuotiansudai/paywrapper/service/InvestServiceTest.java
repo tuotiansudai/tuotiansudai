@@ -222,7 +222,6 @@ public class InvestServiceTest {
         investMapper.create(model);
 
         createUserAutoInvestPlan("testInvest1", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserAutoInvestPlan("testInvest1", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
         createUserAutoInvestPlan("testInvest2", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
         createUserAutoInvestPlan("testInvest3", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
 
