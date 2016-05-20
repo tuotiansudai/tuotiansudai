@@ -101,6 +101,9 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.auto.invest.interval.milliseconds}")
     private int autoInvestIntervalMilliseconds;
 
+    @Value(value = "${web.newbie.invest.limit}")
+    private int newbieInvestLimit;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -356,6 +359,10 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was stop, because loan status is not raising , loanId : " + loanId);
                     return;
                 }
+                if (ActivityType.NEWBIE == loanModel.getActivityType() && !canInvestNewbieLoan(autoInvestPlanModel.getLoginName())) {
+                    logger.info("auto invest was skip,because newbie is invested by new investor");
+                    continue;
+                }
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
                 if (availableLoanAmount <= 0) {
                     logger.info("auto invest was stop, because loan was full , loanId : " + loanId);
@@ -393,6 +400,11 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
         }
+    }
+
+    private boolean canInvestNewbieLoan(String loginName) {
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 
     private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
