@@ -111,7 +111,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.coupon-icon',function() {//coupon icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        var number = parseFloat($(this).data('benefit'));
+        var num = number == number.toFixed(0) ? number.toFixed(0) : number.toFixed(1);
         layer.tips('您使用了' + num + '%加息券', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,

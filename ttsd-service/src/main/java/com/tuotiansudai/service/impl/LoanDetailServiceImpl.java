@@ -153,7 +153,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementAmount(maxInvest.getLoginName());
+                achievementDto.setMaxAmountAchievementLoginName(maxInvest.getLoginName());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
             }
