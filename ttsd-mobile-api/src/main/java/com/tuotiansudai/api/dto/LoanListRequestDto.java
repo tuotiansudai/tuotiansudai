@@ -1,13 +1,12 @@
 package com.tuotiansudai.api.dto;
 
 
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.LoanStatus;
 
 public class LoanListRequestDto extends BaseParamDto {
     private Integer index;
     private Integer pageSize;
-    private ProductType productType;
+    private String productType;
     private LoanStatus loanStatus;
     private double rateLower;
     private double rateUpper;
@@ -28,11 +27,11 @@ public class LoanListRequestDto extends BaseParamDto {
         this.pageSize = pageSize;
     }
 
-    public ProductType getProductType() {
+    public String getProductType() {
         return productType;
     }
 
-    public void setProductType(ProductType productType) {
+    public void setProductType(String productType) {
         this.productType = productType;
     }
 

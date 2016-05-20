@@ -5,6 +5,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             $dateEnd = $('#endTime'),
             $errorDom = $('.form-error'),
             $submitBtn = $('#btnSave'),
+            boolFlag = false, //校验布尔变量值
             $couponForm = $('.form-list');
 
         $selectDom.selectpicker();
@@ -59,11 +60,37 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 }
             },
             beforeCheck: function(curform) {
+                var couponType = $('.couponType', curform).val();
+                if(couponType == 'INTEREST_COUPON' || couponType == '加息券'){
+                    var rep_point1 = /^(\d+\.\d{1,1}|\d+)$/;
+                    var couponRate = parseFloat($('.coupon-rate').val());
+                    if (couponRate <= 0) {
+                        showErrorMessage('加息券利率需要大于0', $('.coupon-rate', curform));
+                        return false;
+                    }
+                    if (!rep_point1.test(couponRate)) {
+                        showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
+                        return false;
+                    }
+                } else {
+                    var periods = parseInt($('.coupon-number', curform).val());
+                    if (periods <= 0) {
+                        showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                        return false;
+                    }
+                    var investLimit = parseInt($('.invest_limit', curform).val());
+                    if (investLimit <= 0) {
+                        showErrorMessage('投资体验券下限最小为1', $('.invest_limit', curform));
+                        return false;
+                    }
+                }
+
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('最小为1', $('.give-number', curform));
                     return false;
                 }
+
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
                     return $(option).is(':checked');
                 }).length;

@@ -39,6 +39,8 @@ public class LoanItemDto {
 
     private long preheatSeconds;
 
+    private int duration;
+
     public long getId() {
         return id;
     }
@@ -157,5 +159,13 @@ public class LoanItemDto {
 
     public void setPreheatSeconds(long preheatSeconds) {
         this.preheatSeconds = preheatSeconds;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

@@ -24,7 +24,7 @@
                 项目金额：<@amount>${loan.loanAmount?string.computer}</@amount> 元<br/>
                 代理人：${loan.agentLoginName}<br/>
                 借款人：${loan.loanerLoginName}<br/>
-                项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
+                项目期限：${loan.duration}天<br/>
                 募集期限：${loan.raisingPeriod}天<br/>
                 还款方式：${loan.type.getName()}<br/>
                 投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
@@ -132,14 +132,14 @@
                                                             </i>
                                                             <#if !(coupon.productTypeList?seq_contains(loan.productType))>
                                                                 <br/>
-                                                                <i class="ticket-term">[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next> 、</#if></#list>可用]</i>
+                                                                <i class="ticket-term" title="[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next> 、</#if></#list>可用]">[适用于<#list coupon.productTypeList as productType>${productType.getName()}<#if productType_has_next> 、</#if></#list>可用]</i>
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
                                                                     <i class="ticket-term lower-limit" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
                                                                 </#if>
                                                                 <#if coupon.investLowerLimit==0>
-                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即返]</#if>
+                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>
                                                                     </i>
                                                                 </#if>
                                                             </#if>

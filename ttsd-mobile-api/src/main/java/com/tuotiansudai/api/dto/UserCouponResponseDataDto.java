@@ -1,6 +1,9 @@
 package com.tuotiansudai.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
@@ -8,14 +11,14 @@ import com.tuotiansudai.util.AmountConverter;
 import java.text.DecimalFormat;
 import java.util.Date;
 
-public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
+public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
 
 
     private String loanId;
 
     private String loanName;
 
-    private ProductType loanProductType;
+    private String loanProductType;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date usedTime;
@@ -36,7 +39,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.type = userCouponView.getCouponType();
         this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount());
         this.investLowerLimit = AmountConverter.convertCentToString(userCouponView.getInvestLowerLimit());
-        this.productTypes = userCouponView.getProductTypeList();
+        this.productTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
+            @Override
+            public String apply(ProductType input) {
+                return input.getProductLine();
+            }
+        });
         this.rate = decimalFormat.format(userCouponView.getRate() * 100);
         this.birthdayRate = String.valueOf(userCouponView.getBirthdayBenefit());
         this.shared = userCouponView.isShared();
@@ -47,12 +55,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.expectedInterest = AmountConverter.convertCentToString(userCouponView.getExpectedIncome());
         this.loanId = String.valueOf(userCouponView.getLoanId());
         this.loanName = userCouponView.getLoanName();
-        this.loanProductType = userCouponView.getLoanProductType();
+        if (userCouponView.getLoanProductType() != null) {
+            this.loanProductType = userCouponView.getLoanProductType().getProductLine();
+        }
         this.investAmount = AmountConverter.convertCentToString(userCouponView.getInvestAmount());
 
     }
-
-
 
     public String getLoanId() {
         return loanId;
@@ -70,11 +78,11 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.loanName = loanName;
     }
 
-    public ProductType getLoanProductType() {
+    public String getLoanProductType() {
         return loanProductType;
     }
 
-    public void setLoanProductType(ProductType loanProductType) {
+    public void setLoanProductType(String loanProductType) {
         this.loanProductType = loanProductType;
     }
 
