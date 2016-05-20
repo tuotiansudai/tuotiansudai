@@ -494,7 +494,7 @@ public class InvestServiceTest {
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
         investMapper.create(investModel);
 
-        investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
+        investService.investSuccess(investModel);
     }
 
 }

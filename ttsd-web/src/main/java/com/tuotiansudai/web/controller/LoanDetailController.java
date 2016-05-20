@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
+import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -21,10 +22,10 @@ import javax.validation.constraints.Min;
 
 @Controller
 @RequestMapping(value = "/loan")
-public class LoanController {
+public class LoanDetailController {
 
     @Autowired
-    private LoanService loanService;
+    private LoanDetailService loanDetailService;
 
     @Autowired
     private CouponAlertService couponAlertService;
@@ -34,7 +35,7 @@ public class LoanController {
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
-        LoanDetailDto dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
+        LoanDetailDto dto = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
@@ -65,6 +66,6 @@ public class LoanController {
     public BaseDto<BasePaginationDataDto> getInvestList(@PathVariable long loanId,
                                                         @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                         @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return loanService.getInvests(LoginUserInfo.getLoginName(), loanId, index, pageSize);
+        return loanDetailService.getInvests(LoginUserInfo.getLoginName(), loanId, index, pageSize);
     }
 }
