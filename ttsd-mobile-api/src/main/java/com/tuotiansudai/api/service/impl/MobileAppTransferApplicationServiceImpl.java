@@ -202,10 +202,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId():transferApplicationModel.getTransferInvestId());
         long totalExpectedInterestAmount = 0;
         for(int i = transferApplicationModel.getPeriod() - 1  ; i < investRepayModels.size(); i ++ ){
-            totalExpectedInterestAmount +=  investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
+            totalExpectedInterestAmount +=  investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(totalExpectedInterestAmount));
 

@@ -112,9 +112,9 @@ public class InfoPublishServiceTest {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
 
-        createLoanByUserId("testUserLoaner",10001,ProductType.SYL);
-        createLoanByUserId("testUserLoaner",10002,ProductType.WYX);
-        createLoanByUserId("testUserLoaner",10003,ProductType.JYF);
+        createLoanByUserId("testUserLoaner",10001,ProductType._30);
+        createLoanByUserId("testUserLoaner",10002,ProductType._30);
+        createLoanByUserId("testUserLoaner",10003,ProductType._30);
 
 
         createInvest("testUserInvest",10001,1000);

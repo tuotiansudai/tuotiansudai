@@ -121,7 +121,7 @@
 
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd>${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                        <dd>${loan.duration} 天</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -147,9 +147,7 @@
 
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd>
-                                        ${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}
-                                        </dd>
+                                        <dd>${loan.duration} 天</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -677,7 +675,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天</dd>
                                 </dl>
                             </div>
                             <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
@@ -699,7 +697,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天</dd>
                                 </dl>
                             </div>
                             <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}">立即查看</a>

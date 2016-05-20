@@ -1,10 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -27,7 +25,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -224,7 +221,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
-
+        loanDto.setDuration(loanModel.getDuration());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
@@ -254,7 +251,7 @@ public class LoanServiceImpl implements LoanService {
             for (CouponModel activeCoupon : allActiveCoupons) {
                 if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                         && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                        && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                        && activeCoupon.getProductTypes().contains(ProductType._30)
                         && activeCoupon.getRate() > newbieInterestCouponRate) {
                     newbieInterestCouponRate = activeCoupon.getRate();
                 }
@@ -479,12 +476,17 @@ public class LoanServiceImpl implements LoanService {
 
                     long amount = 0;
                     List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
                         amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                    } else {
+                        List<InvestModel> investModelList = investMapper.findInvestByTransferInvestId(input.getId());
+                        for (InvestModel investModel : investModelList) {
+                            investRepayModels.addAll(investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()));
+                        }
+                        for (InvestRepayModel investRepayModel : investRepayModels) {
+                            amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                        }
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
@@ -640,10 +642,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanItemDto> findLoanItems(ProductType productType, LoanStatus status, double rateStart, double rateEnd, int index) {
+    public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd, int index) {
         index = (index - 1) * 10;
 
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(productType, status, rateStart, rateEnd, index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
 
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
@@ -651,7 +653,7 @@ public class LoanServiceImpl implements LoanService {
         for (CouponModel activeCoupon : allActiveCoupons) {
             if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                     && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                    && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                    && activeCoupon.getProductTypes().contains(ProductType._30)
                     && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
                 newbieInterestCouponModel = activeCoupon;
             }
@@ -690,9 +692,10 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setProgress(100);
                 }
                 if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loanModel.getStatus())) {
-                    loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.calculateLoanRepayTimes()));
+                    loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
                     loanItemDto.setProgress(100);
                 }
+                loanItemDto.setDuration(loanModel.getDuration());
 
                 return loanItemDto;
             }
@@ -700,8 +703,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCountWeb(ProductType productType, LoanStatus status, double rateStart, double rateEnd) {
-        return loanMapper.findLoanListCountWeb(productType, status, rateStart, rateEnd);
+    public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd) {
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {

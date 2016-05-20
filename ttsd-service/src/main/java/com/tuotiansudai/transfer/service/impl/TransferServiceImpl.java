@@ -156,7 +156,8 @@ public class TransferServiceImpl implements TransferService {
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginNme, int showLoginNameLength) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
+
+        InvestRepayModel investRepayModel = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod()):investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());
         transferApplicationDetailDto.setName(transferApplicationModel.getName());
@@ -170,10 +171,11 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(),loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
-        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
-        transferApplicationDetailDto.setLoanType(loanModel.getType().getName());
+        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
+        transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
+        transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginNme, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginNme);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
@@ -191,10 +193,10 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private long calculateExpectedInterest(TransferApplicationModel transferApplicationModel) {
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
+        List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
-            totalExpectedInterestAmount += investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
+            totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
         return totalExpectedInterestAmount;
     }
