@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.net.URLDecoder;
-import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
