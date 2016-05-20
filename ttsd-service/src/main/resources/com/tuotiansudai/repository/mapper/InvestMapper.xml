@@ -112,7 +112,7 @@
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
         and loan.status &lt;&gt; 'CANCEL'
-        order by case when trading_time is null then created_time else trading_time end desc
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc
         limit #{index}, #{pageSize}
     </select>
 

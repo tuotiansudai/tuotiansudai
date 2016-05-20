@@ -133,7 +133,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         DateTime currentRepayDate = new DateTime();
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastRepayDate, currentRepayDate);
         long corpus = loanRepayMapper.findLastLoanRepay(loanId).getCorpus();
         long repayAmount = corpus + actualInterest;
@@ -206,7 +206,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
         DateTime currentRepayDate = new DateTime(currentLoanRepay.getActualRepayDate());
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
 
         // update agent user bill
         amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY, null, null);
