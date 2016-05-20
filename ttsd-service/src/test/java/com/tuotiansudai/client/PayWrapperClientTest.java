@@ -157,6 +157,7 @@ public class PayWrapperClientTest {
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RECHECK);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();

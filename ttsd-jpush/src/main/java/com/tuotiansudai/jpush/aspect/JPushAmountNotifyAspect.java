@@ -140,14 +140,8 @@ public class JPushAmountNotifyAspect {
     public void afterReturningRewardReferrer(JoinPoint joinPoint) {
         logger.debug("after RewardReferrer pointcut");
         try {
-            List<InvestModel> successInvestList = (List<InvestModel>) joinPoint.getArgs()[1];
-            for (InvestModel invest : successInvestList) {
-                List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
-                for(ReferrerRelationModel referrerRelationModel : referrerRelationList){
-                    InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findByInvestIdAndReferrer(invest.getId(), referrerRelationModel.getReferrerLoginName());
-                    createAutoJPushReferrerRewardAlertJob(investReferrerRewardModel.getId());
-                }
-            }
+            LoanModel loanModel = (LoanModel) joinPoint.getArgs()[0];
+            createAutoJPushReferrerRewardAlertJob(loanModel.getId());
         } catch (Exception e) {
             logger.error("after RewardReferrer aspect fail ", e);
         }
@@ -230,18 +224,18 @@ public class JPushAmountNotifyAspect {
         }
     }
 
-    private void createAutoJPushReferrerRewardAlertJob(long orderId) {
+    private void createAutoJPushReferrerRewardAlertJob(long loanId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushReferrerRewardAlertJob.JPUSH_ALERT_REFERRER_REWARD_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushReferrerRewardAlert, AutoJPushReferrerRewardAlertJob.class)
-                    .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRER_REWARD, orderId))
+                    .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRER_REWARD, loanId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
+            logger.error("create send AutoJPushReferrerRewardAlert job for loanId[" + loanId + "] fail", e);
         }
     }
 

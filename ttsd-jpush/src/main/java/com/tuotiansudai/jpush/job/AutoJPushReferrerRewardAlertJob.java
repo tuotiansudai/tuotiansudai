@@ -22,9 +22,9 @@ public class AutoJPushReferrerRewardAlertJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert referrer reward job, prepare do job");
-        long orderId = (long) context.getJobDetail().getJobDataMap().get(REFERRER_REWARD_ID_KEY);
-        jPushAlertService.autoJPushReferrerRewardAlert(orderId);
-        logger.debug("trigger send jPush alert referrer reward job, orderId : " + orderId);
+        long loanId = (long) context.getJobDetail().getJobDataMap().get(REFERRER_REWARD_ID_KEY);
+        jPushAlertService.autoJPushReferrerRewardAlert(loanId);
+        logger.debug("trigger send jPush alert referrer reward job, loanId : " + loanId);
 
     }
 }

@@ -132,6 +132,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
                     .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
@@ -147,6 +148,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
