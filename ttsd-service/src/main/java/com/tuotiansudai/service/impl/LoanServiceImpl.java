@@ -3,7 +3,6 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -477,12 +476,17 @@ public class LoanServiceImpl implements LoanService {
 
                     long amount = 0;
                     List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
                         amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                    } else {
+                        List<InvestModel> investModelList = investMapper.findInvestByTransferInvestId(input.getId());
+                        for (InvestModel investModel : investModelList) {
+                            investRepayModels.addAll(investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()));
+                        }
+                        for (InvestRepayModel investRepayModel : investRepayModels) {
+                            amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                        }
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
