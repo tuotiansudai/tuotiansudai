@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="article-list.js" headLab="announce-manage" sideLab="articleMan" title="理财圈列表">
 
@@ -55,7 +56,9 @@
                     <td>${article.articleStatus.description!}</td>
                     <td>
                         <#if article.articleStatus.description == '待审核'>
-                            <a href="#" >审核 </a>/
+                            <@security.authorize access="hasAuthority('ADMIN')">
+                                <a href="#" >审核 </a>/
+                            </@security.authorize>
                             <a href="#" > 撤销</a>
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
