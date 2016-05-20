@@ -6,11 +6,7 @@ import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.util.IdGenerator;
-<<<<<<< HEAD
-import com.tuotiansudai.util.SerializeUtil;
-=======
 import org.junit.After;
->>>>>>> features/hxb/invest_circle
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +15,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-<<<<<<< HEAD
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-=======
 import java.util.Map;
 
 import static org.junit.Assert.*;
->>>>>>> features/hxb/invest_circle
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -88,13 +76,10 @@ public class LiCaiQuanArticleServiceTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void shouldFindLiCaiQuanArticleDtoIsOk(){
+    public void shouldFindLiCaiQuanArticleDtoIsOk() throws InterruptedException {
         liCaiQuanArticleService.createArticle(fakeLiCaiQuanArticleDto());
         ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto("tile",ArticleSectionType.INDUSTRY_NEWS,10,1);
         assertNotNull(dto);
-=======
-    public void testRejectArticle_getAllComments() throws InterruptedException {
         liCaiQuanArticleService.rejectArticle(0, "testComment0-1");
         Thread.currentThread().sleep(1000);
         liCaiQuanArticleService.rejectArticle(0, "testComment0-2");
@@ -145,6 +130,5 @@ public class LiCaiQuanArticleServiceTest {
     public void clearRedis() {
         redisWrapperClient.del(articleCommentRedisKey);
         redisWrapperClient.del(articleCounterKey);
->>>>>>> features/hxb/invest_circle
     }
 }
