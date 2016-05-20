@@ -99,7 +99,7 @@
     <div class="phone-model">
         <div class="actor-model">
             <div class="btn-model">
-                <a href="/loan-list">我要抢称号</a>
+                <a href="/loan-list?productType">我要抢称号</a>
             </div>
             <div class="explanation-text">
                 <div class="title-name">
