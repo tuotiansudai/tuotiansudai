@@ -78,12 +78,6 @@ public class LoanServiceImpl implements LoanService {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private InvestService investService;
-
-    @Autowired
     private JobManager jobManager;
 
     @Autowired
