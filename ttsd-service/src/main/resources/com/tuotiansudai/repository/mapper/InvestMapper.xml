@@ -463,7 +463,11 @@
     </select>
 
     <select id="findFirstTradeTimeInvestByLoanId" parameterType="map" resultType="java.util.Date">
-        select min(trading_time) from invest where loan_id = #{loanId}
+        select min(trading_time) from invest where status = 'SUCCESS' and loan_id = #{loanId}
+    </select>
+
+    <select id="findInvestByTransferInvestId" parameterType="map" resultMap="investResultMap">
+        select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
     </select>
 
 </mapper>
