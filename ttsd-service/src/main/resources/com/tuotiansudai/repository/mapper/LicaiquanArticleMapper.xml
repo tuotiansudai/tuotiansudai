@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LicaiquanArticleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="licaiquanArticleModel" type="LicaiquanArticleModel">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="creator_login_name" property="creator"/>
+        <result column="checker_login_name" property="checker"/>
+        <result column="author" property="author"/>
+        <result column="section" property="articleSection"/>
+        <result column="source" property="source"/>
+        <result column="carousel" property="carousel"/>
+        <result column="thumb" property="thumb"/>
+        <result column="show_picture" property="showPicture"/>
+        <result column="content" property="content"/>
+        <result column="created_time" property="createTime"/>
+        <result column="updated_time" property="updateTime"/>
+        <result column="deleted" property="isDeleted"/>
+    </resultMap>
+
+    <insert id="createArticle" parameterType="LicaiquanArticleModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`licaiquan_article` (id, title, creator_login_name, checker_login_name, author, section,
+        source, carousel, thumb, show_picture, content, created_time, updated_time, deleted)
+        VALUE (#{id}, #{title}, #{creator}, #{checker}, #{author}, #{articleSection}, #{source}, #{carousel},
+        #{thumb}, #{showPicture}, #{content}, #{createTime}, #{updateTime}, #{isDeleted})
+    </insert>
+
+    <update id="deleteArticle">
+        UPDATE `aa`.`licaiquan_article` SET deleted = TRUE WHERE id = #{id}
+    </update>
+
+    <select id="findArticleById" resultMap="licaiquanArticleModel">
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted
+        FROM `aa`.`licaiquan_article` WHERE id = #{id}
+    </select>
+
+    <update id="updateArticle" parameterType="LicaiquanArticleModel">
+        UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creator}, checker_login_name = #{checker},
+        author = #{author}, section = #{articleSection}, source = #{source}, carousel = #{carousel}, thumb = #{thumb},
+        show_picture = #{showPicture}, content = #{content}, created_time = #{createTime}, updated_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findExistedArticleListOrderByCreateTime" resultMap="licaiquanArticleModel">
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted
+        FROM `aa`.`licaiquan_article`
+        WHERE id >= #{startId} AND deleted = FALSE
+        <if test="title != null">
+            AND title = #{title}
+        </if>
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+        ORDER BY created_time DESC
+        LIMIT #{size}
+    </select>
+
+    <select id="findDeletedArticleListOrderByCreateTime" resultMap="licaiquanArticleModel">
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted
+        FROM `aa`.`licaiquan_article`
+        WHERE id >= #{startId} AND deleted = TRUE
+        <if test="title != null">
+            AND title = #{title}
+        </if>
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+        ORDER BY created_time DESC
+        LIMIT #{size}
+    </select>
+</mapper>
