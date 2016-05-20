@@ -92,9 +92,6 @@
                                             <#else>
                                                 当前无可用优惠券
                                             </#if>
-                                        <#else>
-                                            当前无可用优惠券
-                                        </#if>
                                     </span>
                                     <i class="fa fa-sort-down fr"></i>
                                     <i class="fa fa-sort-up hide fr"></i>
