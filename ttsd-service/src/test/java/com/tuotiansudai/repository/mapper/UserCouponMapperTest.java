@@ -68,7 +68,8 @@ public class UserCouponMapperTest {
 
     private CouponModel fakeCouponModel() {
         CouponModel couponModel = new CouponModel();
-        couponModel.setAmount(1000l);
+        couponModel.setId(idGenerator.generate());
+        couponModel.setAmount(1000L);
         couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);
         couponModel.setCreatedTime(new Date());
@@ -78,8 +79,7 @@ public class UserCouponMapperTest {
         couponModel.setTotalCount(1000L);
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL));
-        couponModel.setId(idGenerator.generate());
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
 
         return couponModel;
     }

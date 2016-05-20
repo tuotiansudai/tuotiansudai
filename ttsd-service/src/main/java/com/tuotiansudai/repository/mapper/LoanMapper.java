@@ -14,13 +14,28 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
-    List<LoanModel> findLoanListWeb(@Param(value = "productType") ProductType productType,
+    List<LoanModel> findLoanListWeb(@Param(value = "name") String name,
+                                    @Param(value = "status") LoanStatus status,
+                                    @Param(value = "rateStart") double rateStart,
+                                    @Param(value = "rateEnd") double rateEnd,
+                                    @Param(value = "durationStart") int durationStart,
+                                    @Param(value = "durationEnd") int durationEnd,
+                                    @Param(value = "index") int index);
+
+    int findLoanListCountWeb(@Param(value = "name") String name,
+                             @Param(value = "status") LoanStatus status,
+                             @Param(value = "rateStart") double rateStart,
+                             @Param(value = "rateEnd") double rateEnd,
+                             @Param(value = "durationStart") int durationStart,
+                             @Param(value = "durationEnd") int durationEnd);
+
+    List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
                                     @Param(value = "status") LoanStatus status,
                                     @Param(value = "rateStart") double rateStart,
                                     @Param(value = "rateEnd") double rateEnd,
                                     @Param(value = "index") int index);
 
-    int findLoanListCountWeb(@Param(value = "productType") ProductType productType,
+    int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
                              @Param(value = "status") LoanStatus status,
                              @Param(value = "rateStart") double rateStart,
                              @Param(value = "rateEnd") double rateEnd);

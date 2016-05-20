@@ -74,6 +74,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private long raisingPeriod;
 
+    private int duration;
+
     private LoanInvestAchievementDto achievement;
 
     public LoanDetailDto(LoanModel loanModel, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels) {
@@ -98,7 +100,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.descriptionHtml = loanModel.getDescriptionHtml();
         this.fundraisingStartTime = loanModel.getFundraisingStartTime();
         this.raisingPeriod = Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(), new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1;
-
+        this.duration = loanModel.getDuration();
         this.loanTitleDto = loanTitleModels;
         this.loanTitles = loanTitleRelationModels;
 
@@ -257,5 +259,9 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setAchievement(LoanInvestAchievementDto achievement) {
         this.achievement = achievement;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }

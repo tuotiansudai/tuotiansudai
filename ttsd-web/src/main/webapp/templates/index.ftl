@@ -125,7 +125,7 @@
 
     <div class="home-content" id="productFrame">
         <#list loans as loan>
-            <#if loan.periods == 1>
+            <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
                 <h3 class="label-title">
                     <span class="product-icon"></span>
@@ -152,8 +152,8 @@
                                     </dl>
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                 </div>
@@ -237,11 +237,8 @@
             <div class="loan-list-index fl">
                 <ul class="loan-box-inner loan-btn">
                 <#list loans as loan>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
-                            <#if loan.productType??>
-                                <span class="${loan.productType.name()?lower_case}"></span>
-                            </#if>
                             <div class="loan-info-frame fl">
                                 <div class="loan-top">
                                     <span class="l-title fl">${loan.name}</span>
@@ -260,8 +257,8 @@
 
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                     <dl>
@@ -333,7 +330,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                 <#list loans as loan>
-                    <#if loan.periods == 1>
+                    <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="new-user"></i>
@@ -351,7 +348,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i class="new-user-coupon">新手加息券</i></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">
@@ -398,7 +395,7 @@
                             </#if>
                         </div>
                     </#if>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="${loan.productType.name()?lower_case}"></i>
@@ -416,7 +413,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目总额</span></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">

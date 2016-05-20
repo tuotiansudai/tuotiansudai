@@ -80,6 +80,7 @@
             <result column="recheck_time" property="recheckTime"></result>
             <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
+            <result column="duration" property="duration"></result>
         </association>
     </resultMap>
 
@@ -198,6 +199,7 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
+          t.duration,
           t.`loan_id`,
           t.type
         FROM
@@ -209,6 +211,7 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
+              l.`duration`,
               l.`id` as loan_id,
               l.`type`
             FROM
@@ -232,6 +235,7 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
+          t.duration,
           t.`loan_id`,
           t.type
         FROM
@@ -243,6 +247,7 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
+              l.`duration`,
               l.`id` as `loan_id`,
               l.type
             FROM
