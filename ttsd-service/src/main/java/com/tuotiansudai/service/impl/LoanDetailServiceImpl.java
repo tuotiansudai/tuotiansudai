@@ -136,7 +136,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             for (CouponModel activeCoupon : allActiveCoupons) {
                 if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                         && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                        && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                        && activeCoupon.getProductTypes().contains(ProductType._30)
                         && activeCoupon.getRate() > newbieInterestCouponRate) {
                     newbieInterestCouponRate = activeCoupon.getRate();
                 }
