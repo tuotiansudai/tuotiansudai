@@ -271,8 +271,8 @@ public class InvestAchievementServiceTest {
         fakeLoanModel.setBaseRate(0.1);
         fakeLoanModel.setActivityRate(0);
         fakeLoanModel.setInvestFeeRate(0.1);
-        fakeLoanModel.setFundraisingStartTime(new Date());
-        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setFundraisingStartTime(new DateTime().plusDays(10).toDate());
+        fakeLoanModel.setFundraisingEndTime(new DateTime().plusDays(10).toDate());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(new Date());
