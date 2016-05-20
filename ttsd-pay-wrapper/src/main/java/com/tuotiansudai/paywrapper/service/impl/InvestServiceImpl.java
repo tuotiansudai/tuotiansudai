@@ -363,7 +363,7 @@ public class InvestServiceImpl implements InvestService {
                 }
                 if (ActivityType.NEWBIE == loanModel.getActivityType() && !canInvestNewbieLoan(autoInvestPlanModel.getLoginName())) {
                     logger.info("auto invest was skip,because newbie is invested by new investor");
-                    return;
+                    continue;
                 }
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
                 if (availableLoanAmount <= 0) {
