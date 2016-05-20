@@ -17,6 +17,6 @@ public class SmsTemplateTest {
         List<String> paramList = ImmutableList.<String>builder().add("1234").build();
         String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(paramList);
 
-        assertThat(content, is("尊敬的拓天速贷客户，您的注册验证码是：1234 。请勿泄露给他人!【拓天速贷】"));
+        assertThat(content, is("尊敬的拓天速贷客户，您的注册验证码是：1234 。请勿泄露给他人！"));
     }
 }

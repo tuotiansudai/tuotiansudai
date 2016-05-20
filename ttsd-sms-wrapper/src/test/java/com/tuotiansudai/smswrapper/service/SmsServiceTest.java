@@ -43,6 +43,8 @@ public class SmsServiceTest {
     @Autowired
     private RegisterCaptchaMapper registerCaptchaMapper;
 
+    private String SUCCESS_RESPONSE_BODY = "{\"code\":200,\"msg\":\"sendid\",\"obj\":1}";
+
     @Autowired
     private TurnOffNoPasswordInvestCaptchaMapper noPasswordInvestMapper;
 
@@ -61,9 +63,7 @@ public class SmsServiceTest {
     @Transactional
     public void shouldSendRegisterCaptcha() throws Exception {
         MockResponse mockResponse = new MockResponse();
-        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
-        String resultCode = "1";
-        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
@@ -83,16 +83,14 @@ public class SmsServiceTest {
         List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
         String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(paramList);
         assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is(resultCode));
+        assertThat(record.getResultCode(), is("200"));
     }
 
     @Test
     @Transactional
     public void shouldSendNoPasswordInvestCaptcha() throws Exception {
         MockResponse mockResponse = new MockResponse();
-        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
-        String resultCode = "1";
-        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
@@ -112,6 +110,6 @@ public class SmsServiceTest {
         List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
         String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(paramList);
         assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is(resultCode));
+        assertThat(record.getResultCode(), is("200"));
     }
 }

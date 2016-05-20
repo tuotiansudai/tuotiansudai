@@ -132,7 +132,7 @@ public class SmsClient {
         if (!Strings.isNullOrEmpty(restrictedIP)) {
             redisWrapperClient.setex(redisKey, second, "1");
         }
-
+        data.setStatus(true);
         return dto;
     }
 
