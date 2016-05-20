@@ -187,4 +187,6 @@ public interface InvestMapper {
     InvestModel findLatestSuccessInvest(@Param(value = "loginName") String loginName);
 
     List<InvestDataView> getInvestDetail();
+
+    List<InvestModel> findInvestByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
 }
