@@ -224,7 +224,7 @@
 
         <#if loan.achievement??>
             <div class="loan-designation bg-w clearfix borderBox">
-                <h3>称号争夺大作战<a href="/activity/invest-achievement">查看活动详情>></a></h3>
+                <h3>称号争夺大作战<a href="/activity/invest-achievement" target="_blank">查看活动详情>></a></h3>
                 <table class="table design-table">
                     <thead>
                     <tr>
