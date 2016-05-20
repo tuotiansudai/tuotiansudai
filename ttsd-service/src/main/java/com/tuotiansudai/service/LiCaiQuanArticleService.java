@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -22,4 +23,6 @@ public interface LiCaiQuanArticleService {
     void updateReadCount(long articleId);
 
     Map<String, Integer> getLikeAndReadCount(long articleId);
+
+    void changeArticleStatus(long articleId, ArticleStatus articleStatus);
 }

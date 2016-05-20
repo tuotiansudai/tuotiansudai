@@ -138,4 +138,11 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         existedCounter.put(readCounterKey, existedCounter.get(readCounterKey) + 1);
         updateRedisArticleCounter(articleId, existedCounter);
     }
+
+    @Override
+    public void changeArticleStatus(long articleId, ArticleStatus articleStatus)
+    {
+        LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto)redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
+        liCaiQuanArticleDto.setArticleStatus(articleStatus);
+    }
 }
