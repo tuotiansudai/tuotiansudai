@@ -226,7 +226,7 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, 1, investor.getLoginName(), null, Source.WEB, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), fakeLoan.getId(), null, fakeLoan.getLoanAmount(), investor.getLoginName(), null, Source.WEB, null);
         investModel.setTradingTime(new Date());
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);

@@ -82,7 +82,7 @@ public class InvestAchievementServiceTest {
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
+        loanDto.setProductType(ProductType._30);
         loanDto.setActivityType(ActivityType.NEWBIE);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
