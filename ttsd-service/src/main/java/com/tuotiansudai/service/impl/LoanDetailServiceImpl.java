@@ -144,7 +144,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             loanDto.setNewbieInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
         }
 
-        if (loanModel.getFundraisingStartTime().after(achievementStartTime)) {
+        if (loanModel.getActivityType() != ActivityType.NEWBIE && loanModel.getFundraisingStartTime().after(achievementStartTime)) {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
