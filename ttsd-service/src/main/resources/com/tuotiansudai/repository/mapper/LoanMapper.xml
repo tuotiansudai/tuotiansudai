@@ -467,7 +467,7 @@
         *
         FROM
         (SELECT
-        l.`id`,
+        l.`id` as loan_id,
         l.`name`,
         l.`status` as loan_status,
         l.`periods`,

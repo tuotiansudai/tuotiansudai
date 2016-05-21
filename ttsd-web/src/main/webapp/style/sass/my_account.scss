@@ -1222,6 +1222,9 @@ body{
     td {
       font-size: 12px;
       position:relative;
+      &.loan-td{
+        padding-left:60px;
+      }
       span.icon-list{
         position: absolute;
         width: 40px;
@@ -1229,6 +1232,9 @@ body{
         left: 0;
         top: 50%;
         margin-top: -10px;
+        &.loan-icon-list{
+          width:60px;
+        }
         .birth-icon {
           float: left;
           width: 20px;

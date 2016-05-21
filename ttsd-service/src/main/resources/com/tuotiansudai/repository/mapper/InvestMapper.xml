@@ -102,7 +102,7 @@
         select <include refid="columns"></include>
         from invest
         where login_name = #{loginName}
-        order by case trading_time when null then created_time else trading_time end desc
+        order by case when trading_time is null then created_time else trading_time end desc
         limit 1;
     </select>
 
@@ -112,7 +112,7 @@
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
         and loan.status &lt;&gt; 'CANCEL'
-        order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc
+        order by case when trading_time is null then created_time else trading_time end desc
         limit #{index}, #{pageSize}
     </select>
 
@@ -165,7 +165,7 @@
         where loan_id = #{loanId}
         and transfer_invest_id is null
         and status = '${status}'
-        order by case trading_time when null then created_time else trading_time end desc
+        order by case when trading_time is null then created_time else trading_time end desc
         limit #{index}, #{pageSize}
     </select>
 
@@ -293,7 +293,7 @@
                 and loan.status = #{loanStatus}
             </if>
         </where>
-        order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
     </select>
 
