@@ -20,3 +20,10 @@ function reject() {
         alert("已驳回");
     });
 }
+
+function checkPass() {
+    if(confirm("确认通过并发布!")){
+        var id = $('#content').attr('data-id');
+        window.location.href = '/announce-manage/article/checkPass/' + id;
+    }
+}

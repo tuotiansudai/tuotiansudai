@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,8 @@ import java.util.Date;
  * Created by huoxuanbo on 16/5/13.
  */
 public class LicaiquanArticleModel implements Serializable {
+
+    private static final long serialVersionUID = 8615696510049372781l;
     /**
      * 文章ID, 主键
      */
@@ -80,6 +84,22 @@ public class LicaiquanArticleModel implements Serializable {
         this.showPicture = showPicture;
         this.content = content;
         this.createTime = createTime;
+    }
+
+    public LicaiquanArticleModel(LiCaiQuanArticleDto dto){
+        this.id = dto.getArticleId();
+        this.title = dto.getTitle();
+        this.creator = dto.getCreator();
+        this.checker = dto.getChecker();
+        this.author = dto.getAuthor();
+        this.articleSection = dto.getSection();
+        this.source = dto.getSource();
+        this.carousel = dto.isCarousel();
+        this.thumbnail = dto.getThumbPicture();
+        this.showPicture = dto.getShowPicture();
+        this.content = dto.getContent();
+        this.createTime = dto.getCreateTime();
+        this.updateTime = dto.getUpdateTime();
     }
 
     public long getId() {

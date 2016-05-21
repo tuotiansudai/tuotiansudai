@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.ArticlePaginationDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
@@ -41,7 +42,7 @@ public class LiCaiQuanArticleController {
     public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,LoginUserInfo.getLoginName());
         return mv;
     }
 
@@ -84,5 +85,19 @@ public class LiCaiQuanArticleController {
     public String rejectArticle(@PathVariable long articleId, @RequestParam(value = "comment", required = false) String comment) {
         liCaiQuanArticleService.rejectArticle(articleId, comment);
         return "";
+    }
+
+    @RequestMapping(value = "/article/checkPass/{articleId}", method = RequestMethod.GET)
+    public ModelAndView checkPass(@PathVariable long articleId) {
+        liCaiQuanArticleService.checkPassAndCreateArticle(articleId, LoginUserInfo.getLoginName());
+        ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
+        return mv;
+    }
+
+    @RequestMapping(value = "/article/deleteArticle/{articleId}", method = RequestMethod.GET)
+    public ModelAndView deleteArticle(@PathVariable long articleId) {
+        ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
+        this.liCaiQuanArticleService.deleteArticle(articleId);
+        return mv;
     }
 }

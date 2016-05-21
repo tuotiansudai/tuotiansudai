@@ -47,7 +47,7 @@
                         <#if article.carousel>
                             <i class="lunbo-icon"></i>
                         </#if>
-                        ${article.section.articleSectionTypeName!}
+                    ${article.section.articleSectionTypeName!}
                     </td>
                     <td>${article.title!}</td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
@@ -57,16 +57,19 @@
                     <td>
                         <#if article.articleStatus.description == '待审核'>
                             <@security.authorize access="hasAuthority('ADMIN')">
-                                <a href="#" >审核 </a>/
+                                <a href="/announce-manage/article/check/${article.articleId?c}" >审核 </a>/
                             </@security.authorize>
                             <a href="#" > 撤销</a>
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
                             <a href="#" >编辑 </a>/
-                            <a href="#" > 删除</a>
+                            <a href="/announce-manage/article/deleteArticle/${article.articleId?c}" onclick="return confirm('确定删除吗?')"> 删除</a>
                         </#if>
                     </td>
-                    <td></td>
+                    <td>
+                    ${article.likeCount!} /
+                    ${article.readCount!}
+                    </td>
                 </tr>
                 </#list>
             </tbody>
@@ -101,7 +104,7 @@
             </ul>
         </#if>
     </nav>
-<!-- pagination -->
+    <!-- pagination -->
 </div>
 <!-- content area end -->
 </@global.main>

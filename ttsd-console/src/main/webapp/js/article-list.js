@@ -8,5 +8,9 @@ require(['jquery','bootstrap', 'bootstrapSelect','bootstrapDatetimepicker','jque
             window.location.href = '/announce-manage/article/list?title='+title+'&articleSectionType='+articleSectionType;
         });
 
+        $('.publishAD').click(function(){
+            window.location.href = '/announce-manage/article/create';
+        });
+
     });
 })

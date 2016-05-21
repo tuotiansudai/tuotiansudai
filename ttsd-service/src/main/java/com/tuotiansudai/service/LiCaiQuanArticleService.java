@@ -25,7 +25,11 @@ public interface LiCaiQuanArticleService {
 
     Map<String, Integer> getLikeAndReadCount(long articleId);
 
-    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
+    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto,String creator);
 
     LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
+
+    void checkPassAndCreateArticle(long articleId,String checkName);
+
+    void deleteArticle(long articleId);
 }
