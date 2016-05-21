@@ -11,8 +11,6 @@ import java.util.Map;
 public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
 
-    void createArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
-
     ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,int size, int index);
 
     LiCaiQuanArticleDto getArticleContent(long articleId);
@@ -26,4 +24,8 @@ public interface LiCaiQuanArticleService {
     void updateReadCount(long articleId);
 
     Map<String, Integer> getLikeAndReadCount(long articleId);
+
+    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
+
+    LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
 }

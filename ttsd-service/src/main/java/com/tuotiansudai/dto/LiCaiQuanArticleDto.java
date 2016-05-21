@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class LiCaiQuanArticleDto implements Serializable{
     private static final long serialVersionUID = 5982862020562402898l;
-    private long id;
+    private Long articleId;
     private String title;
     private String author;
     private String thumbPicture;
@@ -18,13 +18,14 @@ public class LiCaiQuanArticleDto implements Serializable{
     private String content;
     private Date createTime;
     private ArticleStatus articleStatus;
+    private String source;
     private Date updateTime;
     private String checker;
 
     public LiCaiQuanArticleDto(){}
 
-    public LiCaiQuanArticleDto(LicaiquanArticleModel model,ArticleStatus articleStatus){
-        this.id = model.getId();
+    public LiCaiQuanArticleDto(LicaiquanArticleModel model){
+        this.articleId = model.getId();
         this.title = model.getTitle();
         this.author = model.getCreator();
         this.thumbPicture = model.getThumbnail();
@@ -33,17 +34,18 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.section = model.getArticleSection();
         this.content = model.getContent();
         this.createTime = model.getCreateTime();
-        this.articleStatus = articleStatus;
+        this.articleStatus = ArticleStatus.PUBLISH;
+        this.source = model.getSource();
         this.updateTime = model.getUpdateTime();
         this.checker = model.getChecker();
     }
 
-    public long getId() {
-        return id;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -118,11 +120,27 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.articleStatus = articleStatus;
     }
 
-    public Date getUpdateTime() { return updateTime; }
+    public String getSource() {
+        return source;
+    }
 
-    public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
+    public void setSource(String source) {
+        this.source = source;
+    }
 
-    public String getChecker() { return checker; }
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
-    public void setChecker(String checker) { this.checker = checker; }
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getChecker() {
+        return checker;
+    }
+
+    public void setChecker(String checker) {
+        this.checker = checker;
+    }
 }

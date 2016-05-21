@@ -28,12 +28,20 @@ public class LiCaiQuanArticleController {
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
         return mv;
     }
+    @RequestMapping(value = "/article/edit/{articleId}",method = RequestMethod.GET)
+    public ModelAndView editArticle(@PathVariable long articleId ) {
+        ModelAndView mv = new ModelAndView("/article-edit");
+        LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
+        mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
+        mv.addObject("dto",liCaiQuanArticleDto);
+        return mv;
+    }
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
     public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         return mv;
     }
 
