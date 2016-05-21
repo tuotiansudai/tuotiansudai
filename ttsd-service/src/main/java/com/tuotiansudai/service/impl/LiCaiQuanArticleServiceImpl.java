@@ -121,7 +121,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
         index = index > totalPages ? totalPages : index;
         int toIndex = (indexCount + pageSize) > articleDtoList.size()?articleDtoList.size():indexCount + pageSize;
-        list = updateArticleDtoTitle(articleDtoList.subList(indexCount,toIndex));
+        list = setLikeAndReadCount(updateArticleDtoTitle(articleDtoList.subList(indexCount,toIndex)));
         ArticlePaginationDataDto dto = new ArticlePaginationDataDto(index,pageSize,count,list);
         return dto;
     }
@@ -156,7 +156,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         if(CollectionUtils.isNotEmpty(redisList) && CollectionUtils.isNotEmpty(databaseList)){
             for(LiCaiQuanArticleDto database : databaseList){
                 for(LiCaiQuanArticleDto redis : redisList){
-                    if(redis.getTitle().equals(database.getTitle())){
+                    if(redis.getArticleId().equals(database.getArticleId())){
                         database.setTitle(database.getTitle() + "(原文)");
                         break;
                     }

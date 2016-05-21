@@ -11,10 +11,15 @@ import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.Min;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Controller
@@ -23,6 +28,7 @@ public class LiCaiQuanArticleController {
     static Logger logger = Logger.getLogger(LiCaiQuanArticleController.class);
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
+    private DateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(value = "/article/create", method = RequestMethod.GET)
     public ModelAndView createArticle() {
@@ -40,9 +46,11 @@ public class LiCaiQuanArticleController {
     }
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
-    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
+    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
+                                      @RequestParam(value = "create",required = false) String create) throws ParseException {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
+        if(create != null) liCaiQuanArticleDto.setCreateTime(sdf.parse(create));
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,LoginUserInfo.getLoginName());
         return mv;
     }

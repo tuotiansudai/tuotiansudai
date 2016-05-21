@@ -104,6 +104,9 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="col-sm-4">
                     <button type="button" class="btn jq-btn-form btn-primary article-save">提交审核</button>
+                    <#if dto??>
+                        <input type='text' name="create" <#if dto??>value="${(dto.createTime?string("yyyy-MM-dd"))!}"</#if>/>
+                    </#if>
                 </div>
             </div>
         </form>
