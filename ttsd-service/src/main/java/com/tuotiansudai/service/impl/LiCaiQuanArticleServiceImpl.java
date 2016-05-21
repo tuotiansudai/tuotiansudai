@@ -186,8 +186,8 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         String timeStamp = new Date().toString();
         Map<String, String> existedComments = getAllComments(articleId);
         existedComments.put(timeStamp, comment);
-        String newCommmentsString = Joiner.on('\36').withKeyValueSeparator("\37").join(existedComments);
-        redisWrapperClient.hset(articleCommentRedisKey, String.valueOf(articleId), newCommmentsString);
+        String newCommentsString = Joiner.on('\36').withKeyValueSeparator("\37").join(existedComments);
+        redisWrapperClient.hset(articleCommentRedisKey, String.valueOf(articleId), newCommentsString);
     }
 
     @Override
@@ -252,6 +252,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
         if(liCaiQuanArticleDto != null){
             redisWrapperClient.hdel(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
+            LiCaiQuanArticleDto liCaiQuanArticl1eDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
             liCaiQuanArticleDto.setChecker(checkName);
             if(liCaiQuanArticleDto.getUpdateTime() == null){
                 liCaiQuanArticleDto.setUpdateTime(new Date());
@@ -266,7 +267,14 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     }
 
     @Override
-    public void deleteArticle(long articleId){
+    public void deleteArticle(long articleId) {
         this.licaiquanArticleMapper.deleteArticle(articleId);
+    }
+
+    @Override
+    public void changeArticleStatus(long articleId,ArticleStatus articleStatus) {
+        LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey,
+                String.valueOf(articleId));
+        liCaiQuanArticleDto.setArticleStatus(articleStatus);
     }
 }

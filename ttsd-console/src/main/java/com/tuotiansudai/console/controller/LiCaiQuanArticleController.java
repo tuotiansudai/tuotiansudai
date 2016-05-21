@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.ArticlePaginationDataDto;
+import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -76,6 +77,7 @@ public class LiCaiQuanArticleController {
     @RequestMapping(value = "/article/check/{articleId}", method = RequestMethod.GET)
     public ModelAndView checkArticle(@PathVariable long articleId) {
         ModelAndView modelAndView = new ModelAndView("/article-check");
+        liCaiQuanArticleService.changeArticleStatus(articleId, ArticleStatus.APPROVING);
         modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
         return modelAndView;
     }
@@ -83,7 +85,10 @@ public class LiCaiQuanArticleController {
     @RequestMapping(value = "/article/reject/{articleId}", method = RequestMethod.POST)
     @ResponseBody
     public String rejectArticle(@PathVariable long articleId, @RequestParam(value = "comment", required = false) String comment) {
-        liCaiQuanArticleService.rejectArticle(articleId, comment);
+        liCaiQuanArticleService.changeArticleStatus(articleId, ArticleStatus.TO_APPROVE);
+        if (null != comment && !comment.equals("")) {
+            liCaiQuanArticleService.rejectArticle(articleId, comment);
+        }
         return "";
     }
 

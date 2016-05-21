@@ -1,0 +1,2 @@
+ALTER TABLE loan ADD COLUMN duration INT UNSIGNED
+AFTER periods;

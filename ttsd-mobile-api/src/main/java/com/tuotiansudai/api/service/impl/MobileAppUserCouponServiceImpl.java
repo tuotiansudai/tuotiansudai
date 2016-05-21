@@ -20,7 +20,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(UserCouponRequestDto requestDto) {
-        List<UserCouponView> couponDtos = null;
+        List<UserCouponView> couponDtos = Lists.newArrayList();
 
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
 
@@ -35,14 +35,14 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
         if(requestDto.isUsed()){
             couponDtos = userCouponService.findUseRecords(requestDto.getBaseParam().getUserId());
         }
-        List<BaseCouponResponseDataDto> coupons = null;
+
+        List<BaseCouponResponseDataDto> coupons = Lists.newArrayList();
 
         if(CollectionUtils.isNotEmpty(couponDtos)){
             coupons = Lists.transform(couponDtos, new Function<UserCouponView, BaseCouponResponseDataDto>() {
                 @Override
                 public BaseCouponResponseDataDto apply(UserCouponView userCouponView) {
-                    UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(userCouponView);
-                    return dataDto;
+                    return new UserCouponResponseDataDto(userCouponView);
                 }
             });
 

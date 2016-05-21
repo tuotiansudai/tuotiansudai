@@ -59,10 +59,10 @@
                             <@security.authorize access="hasAuthority('ADMIN')">
                                 <a href="/announce-manage/article/check/${article.articleId?c}" >审核 </a>/
                             </@security.authorize>
-                            <a href="#" > 撤销</a>
+                            <a href="/announce-manage/article/retrace/${article.articleId?c}" > 撤销</a>
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
-                            <a href="#" >编辑 </a>/
+                            <a href="/announce-manage/article/edit/${article.articleId?c}" >编辑 </a>/
                             <a href="/announce-manage/article/deleteArticle/${article.articleId?c}" onclick="return confirm('确定删除吗?')"> 删除</a>
                         </#if>
                     </td>

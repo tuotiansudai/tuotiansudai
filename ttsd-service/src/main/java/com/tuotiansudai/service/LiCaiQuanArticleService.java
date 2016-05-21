@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.ArticlePaginationDataDto;
+import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -32,4 +33,6 @@ public interface LiCaiQuanArticleService {
     void checkPassAndCreateArticle(long articleId,String checkName);
 
     void deleteArticle(long articleId);
+
+    void changeArticleStatus(long articleId, ArticleStatus articleStatus);
 }
