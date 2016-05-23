@@ -226,6 +226,7 @@
         AND c.`total_count` > c.`issued_count`
         AND c.`active` is TRUE
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+        AND c.`end_time`  >= now()
         ORDER BY c.created_time desc
         LIMIT #{index},#{pageSize}
     </select>
@@ -239,6 +240,7 @@
         ON c.`id` = e.`coupon_id`
         AND c.`total_count` > c.`issued_count`
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+         AND c.`end_time`  >= now()
     </select>
 
     <update id="updateCouponIssuedCountById" parameterType="java.lang.String">
