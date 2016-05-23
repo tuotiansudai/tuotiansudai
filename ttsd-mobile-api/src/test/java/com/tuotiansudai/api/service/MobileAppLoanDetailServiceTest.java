@@ -137,21 +137,20 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
+        assertEquals("1",baseResponseDto.getData().getRaisingPeriod());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel();
         model.setAmount(50000);
         // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
         model.setId(idGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.WAIT_PAY);
-        model.setCreatedTime(new Date());
+        model.setInvestTime(new Date());
         return model;
     }
 

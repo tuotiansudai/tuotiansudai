@@ -43,11 +43,11 @@ public class MobileAppUserCouponControllerTest extends ControllerTestBase {
         item.setStartDate(new Date());
         item.setEndDate(new Date());
         item.setInvestLowerLimit("1.00");
-        item.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        item.setProductTypes(Lists.newArrayList(ProductType._30.getProductLine(), ProductType._90.getProductLine(), ProductType._180.getProductLine()));
         item.setUsedTime(new Date());
         item.setLoanId("loanId");
         item.setLoanName("loanName");
-        item.setLoanProductType(ProductType.JYF);
+        item.setLoanProductType(ProductType._30.getProductLine());
         item.setExpectedInterest("1.00");
 
         UserCouponListResponseDataDto dataDto = new UserCouponListResponseDataDto(Lists.newArrayList((BaseCouponResponseDataDto)item));
@@ -63,12 +63,12 @@ public class MobileAppUserCouponControllerTest extends ControllerTestBase {
                 .andExpect(jsonPath("$.data.coupons[0].startDate").value(new DateTime(item.getStartDate()).toString("yyyy-MM-dd")))
                 .andExpect(jsonPath("$.data.coupons[0].endDate").value(new DateTime(item.getEndDate()).toString("yyyy-MM-dd")))
                 .andExpect(jsonPath("$.data.coupons[0].investLowerLimit").value(item.getInvestLowerLimit()))
-                .andExpect(jsonPath("$.data.coupons[0].productTypes[0]").value("JYF"))
+                .andExpect(jsonPath("$.data.coupons[0].productTypes[0]").value("SYL"))
                 .andExpect(jsonPath("$.data.coupons[0].productTypes[1]").value("WYX"))
-                .andExpect(jsonPath("$.data.coupons[0].productTypes[2]").value("SYL"))
+                .andExpect(jsonPath("$.data.coupons[0].productTypes[2]").value("JYF"))
                 .andExpect(jsonPath("$.data.coupons[0].loanId").value(item.getLoanId()))
                 .andExpect(jsonPath("$.data.coupons[0].loanName").value(item.getLoanName()))
-                .andExpect(jsonPath("$.data.coupons[0].loanProductType").value(item.getLoanProductType().name()))
+                .andExpect(jsonPath("$.data.coupons[0].loanProductType").value(item.getLoanProductType()))
                 .andExpect(jsonPath("$.data.coupons[0].expectedInterest").value(item.getExpectedInterest()))
                 .andExpect(jsonPath("$.data.coupons[0].usedTime").value(new DateTime(item.getUsedTime()).toString("yyyy-MM-dd")))
         ;

@@ -10,6 +10,7 @@
 			<div class="col-sm-4">
 
                 <select class="selectpicker jq-b-type couponType" name="couponType">
+                    <option value="">请选择</option>
 					<#list couponTypes as couponType>
 						<#if couponType.name() == 'NEWBIE_COUPON' || couponType.name() == 'INVEST_COUPON'>
                         <option value="${couponType.name()}">${couponType.getName()}</option>

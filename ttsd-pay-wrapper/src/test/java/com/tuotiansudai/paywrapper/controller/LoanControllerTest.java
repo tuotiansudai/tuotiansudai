@@ -13,9 +13,10 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -84,6 +85,9 @@ public class LoanControllerTest {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponLoanOutService couponLoanOutService;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -226,8 +230,6 @@ public class LoanControllerTest {
         assert amount - mockInitAmount == mockInitAmount * 2 - amount1 - amount2;
     }
 
-
-
     @Test
     public void shouldSendRedEnvelopeWhenLoanOut() throws Exception {
         long mockLoanId = 123451234512345L;
@@ -260,12 +262,13 @@ public class LoanControllerTest {
                 .andExpect(jsonPath("$.data.status").value(true))
                 .andExpect(jsonPath("$.data.code").value("0000"));
 
+        couponLoanOutService.sendRedEnvelope(mockLoanId);
+
 //        Thread.sleep(1000 * 5);
         AccountModel am = accountMapper.findByLoginName(loanerLoginName);
         AccountModel am1 = accountMapper.findByLoginName(mockInvestLoginName[0]);
         AccountModel am2 = accountMapper.findByLoginName(mockInvestLoginName[1]);
 
-        long amount = am.getBalance();
         long amount1 = am1.getBalance();
         long amount2 = am2.getBalance();
         Thread.sleep(1000 * 5);
@@ -298,7 +301,7 @@ public class LoanControllerTest {
         couponModel.setCreatedTime(new Date());
         couponModel.setDeadline(5);
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);
         return couponModel.getId();
     }
@@ -366,14 +369,7 @@ public class LoanControllerTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel();
-        im.setAmount(amount);
-        im.setCreatedTime(new Date());
-        im.setId(idGenerator.generate());
-        im.setSource(Source.WEB);
-        im.setLoanId(loanId);
-        im.setIsAutoInvest(false);
-        im.setLoginName(loginName);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
