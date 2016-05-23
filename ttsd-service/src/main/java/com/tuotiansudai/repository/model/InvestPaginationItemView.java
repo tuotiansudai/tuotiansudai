@@ -1,9 +1,10 @@
 package com.tuotiansudai.repository.model;
 
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemView extends InvestModel {
-
     private String loanName;
 
     private LoanStatus loanStatus;
@@ -39,6 +40,10 @@ public class InvestPaginationItemView extends InvestModel {
     private boolean birthdayCoupon;
 
     private double birthdayBenefit;
+
+    private double loanBaseRate;
+
+    private double loanActivityRate;
 
     public String getLoanName() {
         return loanName;
@@ -182,5 +187,32 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public String getLoanBaseRatePercent(){
+        return new DecimalFormat("######0.##").format(loanBaseRate * 100);
+    }
+    public double getLoanBaseRate() {
+        return loanBaseRate;
+    }
+
+    public void setLoanBaseRate(double loanBaseRate) {
+        this.loanBaseRate = loanBaseRate;
+    }
+
+    public String getLoanActivityRatePercent(){
+        return new DecimalFormat("######0.##").format(loanActivityRate * 100);
+    }
+
+    public String getSumRatePercent(){
+        return new DecimalFormat("######0.##").format((loanActivityRate + loanBaseRate) * 100);
+    }
+
+    public double getLoanActivityRate() {
+        return loanActivityRate;
+    }
+
+    public void setLoanActivityRate(double loanActivityRate) {
+        this.loanActivityRate = loanActivityRate;
     }
 }

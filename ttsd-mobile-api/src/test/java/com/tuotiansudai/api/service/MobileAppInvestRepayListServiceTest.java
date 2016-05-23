@@ -61,7 +61,7 @@ public class MobileAppInvestRepayListServiceTest extends ServiceTestBase {
         InvestModel investModel = new InvestModel();
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setAmount(3159L);
-        investModel.setCreatedTime(new Date());
+        investModel.setInvestTime(new Date());
         investModel.setId(idGenerator.generate());
         investModel.setLoanId(idGenerator.generate());
         return investModel;

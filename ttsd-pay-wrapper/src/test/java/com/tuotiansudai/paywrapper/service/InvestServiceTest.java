@@ -125,8 +125,6 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         this.mockServer = mockUmPayService();
 
         MockPayGateWrapper.injectInto(paySyncClient);
@@ -219,14 +217,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel();
-        model.setAmount(100);
-        model.setCreatedTime(new Date());
-        model.setId(this.idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName("testInvest");
-        model.setLoanId(loanId);
-        model.setSource(Source.WEB);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -239,6 +230,68 @@ public class InvestServiceTest {
         long amount = investMapper.sumSuccessInvestAmount(loanId);
 
         assert amount == 100;
+    }
+    @Test
+    public void shouldAutoInvestNewBieByNewInvestorIsSuccess(){
+        this.createUserByUserId("testLoan");
+        this.createUserByUserId("testInvest");
+        this.createUserByUserId("testNewInvest");
+
+        accountMapper.create(createAccountByUserId("testInvest"));
+        accountMapper.create(createAccountByUserId("testNewInvest"));
+
+        LoanModel loanModelOld = createLoanModel();
+        loanMapper.create(loanModelOld);
+
+        LoanModel loanModel = createLoanModel();
+        loanMapper.create(loanModel);
+
+        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null);
+        modelOld.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(modelOld);
+        createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
+        createUserAutoInvestPlan("testNewInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
+
+
+
+        this.investService.autoInvest(loanModel.getId());
+
+        List<InvestModel> investModels = investMapper.findByStatus(loanModel.getId(),0,10,InvestStatus.WAIT_PAY);
+
+        assertEquals(1,investModels.size());
+        assertEquals("testNewInvest",investModels.get(0).getLoginName());
+
+    }
+    private LoanModel createLoanModel(){
+        long loanId = this.idGenerator.generate();
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("testLoan");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName("testLoan");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(2);
+        loanDto.setActivityType(ActivityType.NEWBIE);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setProductType(ProductType._30);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(LoanStatus.RAISING);
+        return loanModel;
     }
 
     @Test
@@ -438,18 +491,10 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel investModel = new InvestModel();
-        investModel.setAmount(100);
-        investModel.setCreatedTime(new Date());
-        investModel.setId(this.idGenerator.generate());
-        investModel.setIsAutoInvest(false);
-        investModel.setLoginName("investor");
-        investModel.setLoanId(loanId);
-        investModel.setSource(Source.WEB);
-        investModel.setStatus(InvestStatus.WAIT_PAY);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
         investMapper.create(investModel);
 
-        investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
+        investService.investSuccess(investModel);
     }
 
 }

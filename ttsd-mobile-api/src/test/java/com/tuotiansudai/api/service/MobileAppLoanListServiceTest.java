@@ -39,16 +39,16 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoanModel("test2"));
         LoanModel loanModelNovice = getFakeLoanModel("test3");
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
-        when(loanMapper.findLoanListWeb(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
-        when(loanMapper.findLoanListCountWeb(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
+        when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
+        when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
-        loanListRequestDto.setProductType("SYL");
+        loanListRequestDto.setProductType(ProductType._30.getProductLine());
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
-        assertEquals(ProductType._30.name(),dto.getData().getLoanList().get(0).getLoanType());
+        assertEquals(ProductType._30.getProductLine(),dto.getData().getLoanList().get(0).getLoanType());
 
     }
 

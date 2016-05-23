@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.SmsFatalNotifyDto;
-import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.job.InvestCallbackJob;
+import com.tuotiansudai.job.InvestTransferCallbackJob;
 import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
@@ -41,7 +42,7 @@ public class JobMonitorServiceImpl implements JobMonitorService {
     public void onJobToBeExecuted(JobExecutionContext context) {
         JobDetail jobDetail = context.getJobDetail();
         // 排除投资回调的job (执行太频繁，不适合记录执行情况)
-        if (InvestCallback.class.equals(jobDetail.getJobClass())) {
+        if (InvestCallbackJob.class.equals(jobDetail.getJobClass()) || InvestTransferCallbackJob.class.equals(jobDetail.getJobClass())) {
             return;
         }
 

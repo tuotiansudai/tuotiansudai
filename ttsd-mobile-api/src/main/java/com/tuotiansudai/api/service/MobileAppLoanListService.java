@@ -9,6 +9,6 @@ public interface MobileAppLoanListService {
 
     BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto investListRequestDto);
 
-    BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto);
+    BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(BaseParamDto baseParamDto);
 
 }
