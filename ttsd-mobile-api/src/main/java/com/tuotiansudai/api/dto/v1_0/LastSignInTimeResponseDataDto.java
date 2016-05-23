@@ -6,6 +6,8 @@ public class LastSignInTimeResponseDataDto extends BaseResponseDataDto {
 
     int signInTimes;
 
+    int nextSignInPoint;
+
     public boolean isSignIn() {
         return signIn;
     }
@@ -20,5 +22,13 @@ public class LastSignInTimeResponseDataDto extends BaseResponseDataDto {
 
     public void setSignInTimes(int signInTimes) {
         this.signInTimes = signInTimes;
+    }
+
+    public int getNextSignInPoint() {
+        return nextSignInPoint;
+    }
+
+    public void setNextSignInPoint(int nextSignInPoint) {
+        this.nextSignInPoint = nextSignInPoint;
     }
 }

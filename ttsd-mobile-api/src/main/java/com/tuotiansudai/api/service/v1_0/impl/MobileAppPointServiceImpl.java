@@ -53,6 +53,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         SignInResponseDataDto dataDto = new SignInResponseDataDto();
         dataDto.setPoint(signInPointDto.getSignInPoint());
         dataDto.setSignInTimes(signInPointDto.getSignInCount());
+        dataDto.setNextSignInPoint(signInPointDto == null ? 0 : signInPointDto.getNextSignInPoint());
 
         BaseResponseDto dto = new BaseResponseDto();
         if (signInPointDto.getStatus()) {
@@ -78,6 +79,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
         dataDto.setSignInTimes(lastSignInPointDto == null ? 0 : lastSignInPointDto.getSignInCount());
+        dataDto.setNextSignInPoint(lastSignInPointDto == null ? 0 : lastSignInPointDto.getNextSignInPoint());
 
         BaseResponseDto dto = new BaseResponseDto();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
