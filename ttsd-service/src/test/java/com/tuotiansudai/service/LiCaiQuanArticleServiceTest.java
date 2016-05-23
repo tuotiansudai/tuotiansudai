@@ -31,10 +31,8 @@ public class LiCaiQuanArticleServiceTest {
 
     private final static String articleRedisKey = "console:article:key";
     private final static String articleCommentRedisKey = "console:article:comment";
-    private final static String articleCounterKey = "console:article:counter";
-
-    private final static String likeCounterKey = "likeCounter";
-    private final static String readCounterKey = "readCounter";
+    private final static String articleLikeCounterKey = "console:article:likeCounter";
+    private final static String articleReadCounterKey = "console:article:readCounter";
 
     @Test
     public void shouldRetraceIsSuccess() {
@@ -74,8 +72,27 @@ public class LiCaiQuanArticleServiceTest {
         return liCaiQuanArticleDto;
     }
 
+    private void prepareArticleData(long articleId, ArticleStatus articleStatus)
+    {
+        LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
+        liCaiQuanArticleDto.setId(articleId);
+        liCaiQuanArticleDto.setTitle("testTitle");
+        liCaiQuanArticleDto.setAuthor("testAuthor");
+        liCaiQuanArticleDto.setCarousel(true);
+        liCaiQuanArticleDto.setSection(ArticleSectionType.INDUSTRY_NEWS);
+        liCaiQuanArticleDto.setArticleStatus(articleStatus);
+        liCaiQuanArticleDto.setShowPicture("testShowPicture");
+        liCaiQuanArticleDto.setThumbPicture("testThumbPicture");
+        liCaiQuanArticleDto.setCreateTime(new Date());
+        redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
+    }
+
     @Test
     public void testRejectArticle_getAllComments() throws InterruptedException {
+        prepareArticleData(0, ArticleStatus.TO_APPROVE);
+        prepareArticleData(1, ArticleStatus.TO_APPROVE);
+        prepareArticleData(2, ArticleStatus.TO_APPROVE);
+
         liCaiQuanArticleService.rejectArticle(0, "testComment0-1");
         Thread.currentThread().sleep(1000);
         liCaiQuanArticleService.rejectArticle(0, "testComment0-2");
@@ -99,7 +116,7 @@ public class LiCaiQuanArticleServiceTest {
     }
 
     @Test
-    public void testGetLikeAndReadCount_updateLikeCount_updateReadCount() throws InterruptedException {
+    public void testGetLikeCount_getReadCount_updateLikeCount_updateReadCount() throws InterruptedException {
         long article0 = 0;
         long article1 = 1;
         for (int i = 0; i < 10; ++i) {
@@ -108,23 +125,21 @@ public class LiCaiQuanArticleServiceTest {
         for (int i = 0; i < 5; ++i) {
             liCaiQuanArticleService.updateLikeCount(article0);
         }
-        Map<String, Integer> counter = liCaiQuanArticleService.getLikeAndReadCount(article0);
-        assertEquals(10, counter.get(readCounterKey).intValue());
-        assertEquals(5, counter.get(likeCounterKey).intValue());
+        assertEquals(10, liCaiQuanArticleService.getReadCount(article0));
+        assertEquals(5, liCaiQuanArticleService.getLikeCount(article0));
 
-        counter = liCaiQuanArticleService.getLikeAndReadCount(article1);
-        assertEquals(0, counter.get(readCounterKey).intValue());
-        assertEquals(0, counter.get(likeCounterKey).intValue());
+        assertEquals(0, liCaiQuanArticleService.getReadCount(article1));
+        assertEquals(0, liCaiQuanArticleService.getLikeCount(article1));
         liCaiQuanArticleService.updateLikeCount(article1);
         liCaiQuanArticleService.updateReadCount(article1);
-        counter = liCaiQuanArticleService.getLikeAndReadCount(article1);
-        assertEquals(1, counter.get(readCounterKey).intValue());
-        assertEquals(1, counter.get(likeCounterKey).intValue());
+        assertEquals(1, liCaiQuanArticleService.getLikeCount(article1));
+        assertEquals(1, liCaiQuanArticleService.getReadCount(article1));
     }
 
     @After
     public void clearRedis() {
         redisWrapperClient.del(articleCommentRedisKey);
-        redisWrapperClient.del(articleCounterKey);
+        redisWrapperClient.del(articleLikeCounterKey);
+        redisWrapperClient.del(articleReadCounterKey);
     }
 }

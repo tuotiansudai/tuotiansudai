@@ -52,16 +52,16 @@ public class LicaiquanArticleMapperTest {
     private LicaiquanArticleModel createLicaiquanArticleModel() {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
         licaiquanArticleModel.setId(articleId);
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setAuthor("testAuthor");
         licaiquanArticleModel.setCarousel(false);
-        licaiquanArticleModel.setChecker("testChecker");
+        licaiquanArticleModel.setCheckerLoginName("testChecker");
         licaiquanArticleModel.setContent("testContent");
-        licaiquanArticleModel.setCreator("testCreator");
-        licaiquanArticleModel.setCreateTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setCreatorLoginName("testCreator");
+        licaiquanArticleModel.setCreatedTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setSource("testSource");
         licaiquanArticleModel.setTitle("testTitle");
-        licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setUpdatedTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setShowPicture("testShowPicture");
         licaiquanArticleModel.setThumb("testThumb");
 
@@ -71,18 +71,18 @@ public class LicaiquanArticleMapperTest {
     private LicaiquanArticleModel createModifiedLicaiquanArticleModel(long id) {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
         licaiquanArticleModel.setId(id);
-        licaiquanArticleModel.setChecker("modifyChecker");
-        licaiquanArticleModel.setCreator("modifyCreator");
+        licaiquanArticleModel.setCheckerLoginName("modifyChecker");
+        licaiquanArticleModel.setCreatorLoginName("modifyCreator");
         licaiquanArticleModel.setTitle("modifyTitle");
         licaiquanArticleModel.setThumb("modifyThumb");
         licaiquanArticleModel.setSource("modifySource");
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.PLATFORM_ACTIVITY);
+        licaiquanArticleModel.setSection(ArticleSectionType.PLATFORM_ACTIVITY);
         licaiquanArticleModel.setAuthor("modifyAuthor");
         licaiquanArticleModel.setCarousel(true);
         licaiquanArticleModel.setShowPicture("modifyShowPicture");
         licaiquanArticleModel.setContent("modifyContent");
-        licaiquanArticleModel.setCreateTime(new DateTime().parse("2016-4-3").withTimeAtStartOfDay().toDate());
-        licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-5-5").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setCreatedTime(new DateTime().parse("2016-4-3").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setUpdatedTime(new DateTime().parse("2016-5-5").withTimeAtStartOfDay().toDate());
 
         return licaiquanArticleModel;
     }
@@ -100,16 +100,16 @@ public class LicaiquanArticleMapperTest {
 
         LicaiquanArticleModel testLicaiquanArticleModle = licaiquanArticleMapper.findArticleById(articleId);
 
-        assertEquals(licaiquanArticleModel.getArticleSection(), testLicaiquanArticleModle.getArticleSection());
+        assertEquals(licaiquanArticleModel.getSection(), testLicaiquanArticleModle.getSection());
         assertEquals(licaiquanArticleModel.getAuthor(), testLicaiquanArticleModle.getAuthor());
         assertEquals(licaiquanArticleModel.isCarousel(), testLicaiquanArticleModle.isCarousel());
-        assertEquals(licaiquanArticleModel.getChecker(), testLicaiquanArticleModle.getChecker());
+        assertEquals(licaiquanArticleModel.getCheckerLoginName(), testLicaiquanArticleModle.getCheckerLoginName());
         assertEquals(licaiquanArticleModel.getContent(), testLicaiquanArticleModle.getContent());
-        assertEquals(licaiquanArticleModel.getCreator(), testLicaiquanArticleModle.getCreator());
-        assertEquals(licaiquanArticleModel.getCreateTime(), testLicaiquanArticleModle.getCreateTime());
+        assertEquals(licaiquanArticleModel.getCreatorLoginName(), testLicaiquanArticleModle.getCreatorLoginName());
+        assertEquals(licaiquanArticleModel.getCreatedTime(), testLicaiquanArticleModle.getCreatedTime());
         assertEquals(licaiquanArticleModel.getSource(), testLicaiquanArticleModle.getSource());
         assertEquals(licaiquanArticleModel.getTitle(), testLicaiquanArticleModle.getTitle());
-        assertEquals(licaiquanArticleModel.getUpdateTime(), testLicaiquanArticleModle.getUpdateTime());
+        assertEquals(licaiquanArticleModel.getUpdatedTime(), testLicaiquanArticleModle.getUpdatedTime());
         assertEquals(licaiquanArticleModel.getShowPicture(), licaiquanArticleModel.getShowPicture());
         assertEquals(licaiquanArticleModel.getThumb(), licaiquanArticleModel.getThumb());
     }
@@ -156,17 +156,17 @@ public class LicaiquanArticleMapperTest {
         LicaiquanArticleModel licaiquanArticleModel = createModifiedLicaiquanArticleModel(articleId);
         licaiquanArticleMapper.updateArticle(licaiquanArticleModel);
         LicaiquanArticleModel modifiedLicaiquanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
-        assertEquals(licaiquanArticleModel.getChecker(), modifiedLicaiquanArticleModel.getChecker());
-        assertEquals(licaiquanArticleModel.getCreator(), modifiedLicaiquanArticleModel.getCreator());
+        assertEquals(licaiquanArticleModel.getCheckerLoginName(), modifiedLicaiquanArticleModel.getCheckerLoginName());
+        assertEquals(licaiquanArticleModel.getCreatorLoginName(), modifiedLicaiquanArticleModel.getCreatorLoginName());
         assertEquals(licaiquanArticleModel.getTitle(), modifiedLicaiquanArticleModel.getTitle());
         assertEquals(licaiquanArticleModel.getThumb(), modifiedLicaiquanArticleModel.getThumb());
         assertEquals(licaiquanArticleModel.getSource(), modifiedLicaiquanArticleModel.getSource());
-        assertEquals(licaiquanArticleModel.getArticleSection(), modifiedLicaiquanArticleModel.getArticleSection());
+        assertEquals(licaiquanArticleModel.getSection(), modifiedLicaiquanArticleModel.getSection());
         assertEquals(licaiquanArticleModel.getAuthor(), modifiedLicaiquanArticleModel.getAuthor());
         assertEquals(licaiquanArticleModel.isCarousel(), modifiedLicaiquanArticleModel.isCarousel());
         assertEquals(licaiquanArticleModel.getShowPicture(), modifiedLicaiquanArticleModel.getShowPicture());
         assertEquals(licaiquanArticleModel.getContent(), modifiedLicaiquanArticleModel.getContent());
-        assertEquals(licaiquanArticleModel.getCreator(), modifiedLicaiquanArticleModel.getCreator());
-        assertEquals(licaiquanArticleModel.getUpdateTime(), modifiedLicaiquanArticleModel.getUpdateTime());
+        assertEquals(licaiquanArticleModel.getCreatorLoginName(), modifiedLicaiquanArticleModel.getCreatorLoginName());
+        assertEquals(licaiquanArticleModel.getUpdatedTime(), modifiedLicaiquanArticleModel.getUpdatedTime());
     }
 }

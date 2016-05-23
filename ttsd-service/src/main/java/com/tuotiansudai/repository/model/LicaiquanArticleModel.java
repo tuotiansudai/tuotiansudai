@@ -2,9 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-/**
- * Created by huoxuanbo on 16/5/13.
- */
 public class LicaiquanArticleModel {
     /**
      * 文章ID, 主键
@@ -17,11 +14,11 @@ public class LicaiquanArticleModel {
     /**
      * 文章创建人
      */
-    private String creator;
+    private String creatorLoginName;
     /**
      * 文章审核人
      */
-    private String checker;
+    private String checkerLoginName;
     /**
      * 文章作者
      */
@@ -29,7 +26,7 @@ public class LicaiquanArticleModel {
     /**
      * 文章所属栏目
      */
-    private ArticleSectionType articleSection;
+    private ArticleSectionType section;
     /**
      * 文章来源
      */
@@ -53,32 +50,34 @@ public class LicaiquanArticleModel {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date createdTime;
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private Date updatedTime;
     /**
      * 是否已删除
      */
-    private boolean isDeleted;
+    private boolean deleted;
 
     public LicaiquanArticleModel() {
     }
 
-    public LicaiquanArticleModel(long id, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumb, String showPicture, String content, Date createTime) {
+    public LicaiquanArticleModel(long id, String title, String creatorLoginName, String checkerLoginName, String author, ArticleSectionType section, String source, boolean carousel, String thumb, String showPicture, String content, Date createdTime) {
         this.id = id;
         this.title = title;
-        this.creator = creator;
-        this.checker = checker;
+        this.creatorLoginName = creatorLoginName;
+        this.checkerLoginName = checkerLoginName;
         this.author = author;
-        this.articleSection = articleSection;
+        this.section = section;
         this.source = source;
         this.carousel = carousel;
         this.thumb = thumb;
         this.showPicture = showPicture;
         this.content = content;
-        this.createTime = createTime;
+        this.createdTime = createdTime;
+        this.updatedTime = createdTime;
+        this.deleted = false;
     }
 
     public long getId() {
@@ -97,20 +96,20 @@ public class LicaiquanArticleModel {
         this.title = title;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getCreatorLoginName() {
+        return creatorLoginName;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreatorLoginName(String creatorLoginName) {
+        this.creatorLoginName = creatorLoginName;
     }
 
-    public String getChecker() {
-        return checker;
+    public String getCheckerLoginName() {
+        return checkerLoginName;
     }
 
-    public void setChecker(String checker) {
-        this.checker = checker;
+    public void setCheckerLoginName(String checkerLoginName) {
+        this.checkerLoginName = checkerLoginName;
     }
 
     public String getAuthor() {
@@ -121,12 +120,12 @@ public class LicaiquanArticleModel {
         this.author = author;
     }
 
-    public ArticleSectionType getArticleSection() {
-        return articleSection;
+    public ArticleSectionType getSection() {
+        return section;
     }
 
-    public void setArticleSection(ArticleSectionType articleSection) {
-        this.articleSection = articleSection;
+    public void setSection(ArticleSectionType section) {
+        this.section = section;
     }
 
     public String getSource() {
@@ -169,27 +168,27 @@ public class LicaiquanArticleModel {
         this.content = content;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public boolean isDeleted() {
-        return isDeleted;
+        return deleted;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
