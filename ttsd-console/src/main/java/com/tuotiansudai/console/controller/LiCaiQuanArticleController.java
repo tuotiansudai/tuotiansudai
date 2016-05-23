@@ -46,10 +46,10 @@ public class LiCaiQuanArticleController {
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
     public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
-                                      @RequestParam(value = "create",required = false) Date create) throws ParseException {
+                                      @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime) throws ParseException {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        if(create != null) liCaiQuanArticleDto.setCreateTime(create);
+        if(beginTime != null) liCaiQuanArticleDto.setCreateTime(beginTime);
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,LoginUserInfo.getLoginName());
         return mv;
     }
@@ -66,7 +66,7 @@ public class LiCaiQuanArticleController {
                                     @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
         ModelAndView mv = new ModelAndView("/article-list");
-        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title, articleSectionType, pageSize, index);
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title, articleSectionType != null && articleSectionType.equals(ArticleSectionType.ALL) ? null : articleSectionType, pageSize, index);
         mv.addObject("data", dto);
         mv.addObject("title", title);
         mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
