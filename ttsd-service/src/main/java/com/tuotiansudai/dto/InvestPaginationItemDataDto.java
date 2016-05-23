@@ -2,16 +2,14 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.InvestPaginationItemView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemDataDto implements Serializable {
 
@@ -77,6 +75,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String activityRate;
 
     private String sumRate;
+
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date lastRepayDate;
 
@@ -100,7 +99,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.isAutoInvest = view.isAutoInvest();
         this.loanType = view.getLoanType().getName();
         this.loanPeriods = view.getLoanPeriods();
-        this.createdTime = view.getCreatedTime();
+        this.createdTime = view.getTradingTime() == null ? view.getCreatedTime() : view.getTradingTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
