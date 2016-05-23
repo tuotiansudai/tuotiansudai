@@ -70,8 +70,12 @@
                         </div>
                         <div class="transfer-right">
                             <#if (transferApplicationItem.transferStatus == "SUCCESS")>
-                                <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
-                                <p class="status-text">转让完成时间：${transferApplicationItem.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
+                                <div class="transfer-time">
+                                    <span>转让完成时间：${transferApplicationItem.transferTime?string("yyyy-MM-dd HH:mm:ss")}</span>
+                                </div>
+                                <div class="rest-amount">
+                                    <button class="btn-normal" disabled="">已转让</button>
+                                </div>
                             <#else>
                                 <div class="transfer-time">
                                     <span>截止时间：${transferApplicationItem.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
