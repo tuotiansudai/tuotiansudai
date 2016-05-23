@@ -16,13 +16,6 @@
 
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.api.security.MobileAppDaoAuthenticationProvider">
-        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
-        <beans:property name="saltSource" ref="saltSource"/>
-        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-        <beans:property name="enableCaptchaVerify" value="true"/>
-    </beans:bean>
-
     <beans:bean id="mobileAppTokenProvider" class="com.tuotiansudai.api.security.MobileAppTokenProvider">
         <beans:property name="tokenExpiredSeconds" value="${mobile.app.token.expire.seconds}"/>
     </beans:bean>
@@ -91,9 +84,5 @@
         <intercept-url pattern="/v1.0/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="myDaoAuthenticationProvider"/>
-    </authentication-manager>
 
 </beans:beans>
