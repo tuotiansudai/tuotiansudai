@@ -1,8 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -29,6 +26,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -42,7 +40,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -75,12 +72,6 @@ public class InvestServiceImpl implements InvestService {
     private AmountTransfer amountTransfer;
 
     @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private SendCloudMailUtil sendCloudMailUtil;
-
-    @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
 
     @Autowired
@@ -94,6 +85,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private CouponInvestService couponInvestService;
+
+    @Autowired
+    private InvestAchievementService investAchievementService;
 
     @Autowired
     private JobManager jobManager;
@@ -140,15 +134,13 @@ public class InvestServiceImpl implements InvestService {
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        long investId = idGenerator.generate();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, null);
         try {
-            InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, null);
-            investModel.setId(investId);
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
             if (CollectionUtils.isNotEmpty(userCouponIds)) {
-                couponInvestService.invest(investId, userCouponIds);
+                couponInvestService.invest(investModel.getId(), userCouponIds);
             }
         } catch (Exception e) {
             logger.error("create no password invest model failed", e);
@@ -159,7 +151,7 @@ public class InvestServiceImpl implements InvestService {
         try {
             ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                     String.valueOf(loanId),
-                    String.valueOf(investId),
+                    String.valueOf(investModel.getId()),
                     accountModel.getPayUserId(),
                     String.valueOf(amount));
 
@@ -172,7 +164,8 @@ public class InvestServiceImpl implements InvestService {
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
-            investMapper.updateStatus(investId, InvestStatus.FAIL);
+            investModel.setStatus(InvestStatus.FAIL);
+            investMapper.update(investModel);
             payDataDto.setMessage(e.getLocalizedMessage());
         }
         return baseDto;
@@ -239,7 +232,6 @@ public class InvestServiceImpl implements InvestService {
     @Transactional
     @Override
     public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
-
         String orderIdStr = callbackRequestModel.getOrderId();
         long orderId = Long.parseLong(orderIdStr);
         InvestModel investModel = investMapper.findById(orderId);
@@ -251,14 +243,18 @@ public class InvestServiceImpl implements InvestService {
             logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
+
+        //设置交易时间
+        investModel.setTradingTime(new Date());
+
         String loginName = investModel.getLoginName();
         if (callbackRequestModel.isSuccess()) {
-
             long loanId = investModel.getLoanId();
             long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
-
             LoanModel loanModel = loanMapper.findById(loanId);
-            if (successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount()) {
+
+            boolean isOverInvest = successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount();
+            if (isOverInvest) {
                 // 超投
                 infoLog("over_invest", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 超投返款处理
@@ -268,16 +264,17 @@ public class InvestServiceImpl implements InvestService {
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
 
-                ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
+                ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
-                    loanRaisingComplete(loanId);
+                    checkLoanRaisingComplete(loanId);
                 }
             }
         } else {
             // 失败的话：改invest本身状态
-            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+            investModel.setStatus(InvestStatus.FAIL);
+            investMapper.update(investModel);
         }
     }
 
@@ -324,7 +321,8 @@ public class InvestServiceImpl implements InvestService {
 
         if (!paybackSuccess) {
             // 如果返款失败，则记录本次投资为 超投返款失败
-            investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK_FAIL);
+            investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK_FAIL);
+            investMapper.update(investModel);
         }
         return paybackSuccess;
     }
@@ -432,49 +430,26 @@ public class InvestServiceImpl implements InvestService {
         return autoInvestMoney < NumberUtils.max(minInvestAmount, minLoanInvestAmount) ? 0L : autoInvestMoney;
     }
 
-    @Override
-    public void notifyInvestorRepaySuccessfulByEmail(long loanId, int period) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<InvestNotifyInfo> notifyList = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
-
-        for (InvestNotifyInfo notify : notifyList) {
-            String email = notify.getEmail();
-            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(notify.getInvestId(), period);
-            if (investRepay != null && !Strings.isNullOrEmpty(email)) {
-                long defaultInterest = 0;
-                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notify.getInvestId());
-                for (InvestRepayModel investRepayModel : investRepayModels) {
-                    defaultInterest += investRepayModel.getDefaultInterest();
-                }
-                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                        .put("loanName", notify.getLoanName())
-                        .put("periods", MessageFormat.format("{0} / {1}", String.valueOf(investRepay.getPeriod()), String.valueOf(notify.getPeriods())))
-                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
-                        .put("amount", AmountConverter.convertCentToString(investRepay.getCorpus() + investRepay.getActualInterest() + defaultInterest - investRepay.getActualFee()))
-                        .build());
-                sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
-            }
-        }
-    }
-
     /**
      * 投资成功处理：冻结资金＋更新invest状态
      *
-     * @param orderId
      * @param investModel
-     * @param loginName
      */
     @Override
-    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
+    @Transactional
+    public void investSuccess(InvestModel investModel) {
         try {
             // 冻结资金
-            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+            amountTransfer.freeze(investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
+            fatalLog("invest success, but freeze account fail", String.valueOf(investModel.getId()), investModel.getAmount(), investModel.getLoginName(), investModel.getLoanId(), e);
         }
         // 改invest 本身状态为投资成功
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.update(investModel);
+
+        this.investAchievementService.awardAchievement(investModel);
     }
 
     /**
@@ -513,7 +488,8 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest.isSuccess()) {
             // 返款成功
             // 改 invest 本身状态为超投返款
-            investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
+            investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
+            investMapper.update(investModel);
             try {
                 // 解冻资金
                 amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
@@ -525,17 +501,17 @@ public class InvestServiceImpl implements InvestService {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
-            ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
+            ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
 
             long loanId = investModel.getLoanId();
-            loanRaisingComplete(loanId);
+            checkLoanRaisingComplete(loanId);
         }
 
         String respData = callbackRequest.getResponseData();
         return respData;
     }
 
-    private void loanRaisingComplete(long loanId) {
+    private void checkLoanRaisingComplete(long loanId) {
         // 超投，改标的状态为满标 RECHECK
         loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
         // 更新筹款完成时间

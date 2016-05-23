@@ -138,7 +138,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+            investModel.setStatus(InvestStatus.FAIL);
+            investMapper.update(investModel);
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
@@ -265,7 +266,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         if (callbackRequest.isSuccess()) {
             // 返款成功
             // 改 invest 本身状态为超投返款
-            investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
+            investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
+            investMapper.update(investModel);
         } else {
             // 返款失败，发报警短信，手动干预
             String errMsg = MessageFormat.format("invest transfer pay back notify fail. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
@@ -285,7 +287,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
 
         // update transferee invest status
-        investMapper.updateStatus(investId, InvestStatus.SUCCESS);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.update(investModel);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
 
         // generate transferee balance
@@ -447,7 +450,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         } else {
             // 失败的话：更新 invest 状态为投资失败
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback is failed", String.valueOf(investId)));
-            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+            investModel.setStatus(InvestStatus.FAIL);
+            investMapper.update(investModel);
         }
     }
 
@@ -485,7 +489,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
         logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer over invest payback({1}) is failed", String.valueOf(investId), String.valueOf(transferAmount)));
         // 如果返款失败，则记录本次投资为 超投返款失败
-        investMapper.updateStatus(investId, InvestStatus.OVER_INVEST_PAYBACK_FAIL);
+        investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK_FAIL);
+        investMapper.update(investModel);
         sendFatalNotify(MessageFormat.format("债权转让购买({0})超投返款失败", String.valueOf(investId)));
     }
 

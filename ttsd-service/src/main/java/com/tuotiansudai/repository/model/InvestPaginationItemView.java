@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemView extends InvestModel {
     private String loanName;
@@ -206,6 +207,7 @@ public class InvestPaginationItemView extends InvestModel {
     public String getSumRatePercent(){
         return new DecimalFormat("######0.##").format((loanActivityRate + loanBaseRate) * 100);
     }
+
     public double getLoanActivityRate() {
         return loanActivityRate;
     }

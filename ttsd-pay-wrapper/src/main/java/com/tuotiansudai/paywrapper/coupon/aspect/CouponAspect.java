@@ -97,7 +97,7 @@ public class CouponAspect {
 
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         try {
             couponInvestService.investCallback(investModel.getId());
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
@@ -107,7 +107,7 @@ public class CouponAspect {
                     UserGroup.AGENT,
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null,null);
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE), null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
