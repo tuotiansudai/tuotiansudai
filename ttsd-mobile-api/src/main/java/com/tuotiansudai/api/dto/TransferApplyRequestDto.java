@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;

@@ -4,6 +4,8 @@ package com.tuotiansudai.api.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.repository.mapper.*;

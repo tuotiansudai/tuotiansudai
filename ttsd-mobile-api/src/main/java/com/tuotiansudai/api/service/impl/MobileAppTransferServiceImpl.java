@@ -2,8 +2,12 @@ package com.tuotiansudai.api.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppChannelService;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.InvestNoPassResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.InvestResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTransferService;
+import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;

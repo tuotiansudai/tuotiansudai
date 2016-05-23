@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller;
 
 
-import com.tuotiansudai.api.dto.BaseParam;
 import com.tuotiansudai.api.dto.TransferTransfereeRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.service.MobileAppTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppTransferControllerTest extends ControllerTestBase{
 

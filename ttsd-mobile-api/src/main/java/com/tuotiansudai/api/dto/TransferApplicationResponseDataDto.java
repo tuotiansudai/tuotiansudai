@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
+
 import java.util.List;
 
 public class TransferApplicationResponseDataDto extends BaseResponseDataDto {
