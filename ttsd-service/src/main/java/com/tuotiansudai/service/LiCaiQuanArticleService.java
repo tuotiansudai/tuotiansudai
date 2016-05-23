@@ -28,6 +28,6 @@ public interface LiCaiQuanArticleService {
 
     void changeArticleStatus(long articleId, ArticleStatus articleStatus);
 
-    
+
 
 }

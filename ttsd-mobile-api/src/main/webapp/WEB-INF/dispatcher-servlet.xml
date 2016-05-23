@@ -34,14 +34,40 @@
 
     <context:component-scan base-package="com.tuotiansudai.api.controller"/>
 
-    <mvc:resources mapping="/style/**" location="/style/"/>
+    <mvc:resources mapping="/api/style/**" location="/api/style/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/api/js/**" location="/api/js/"/>
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_exception_handler">rethrow</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.api.configruration.FreeMarkerVariablesMap">
+        <property name="singleton" value="true"/>
+        <property name="staticServer" value="${web.static.server}"/>
+        <property name="javascriptLocation" value="${api.js.path}"/>
+        <property name="cssLocation" value="${api.css.path}"/>
+        <property name="sourceMap">
+            <map>
+                <entry key="percentFraction">
+                    <bean class="com.tuotiansudai.api.freemarker.directive.PercentFractionDirective"/>
+                </entry>
+                <entry key="percentInteger">
+                    <bean class="com.tuotiansudai.api.freemarker.directive.PercentIntegerDirective"/>
+                </entry>
+                <entry key="amount">
+                    <bean class="com.tuotiansudai.api.freemarker.directive.AmountDirective"/>
+                </entry>
+            </map>
+        </property>
     </bean>
 
 
