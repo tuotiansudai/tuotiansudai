@@ -16,10 +16,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class OperationDataServiceTest {
+
     @Autowired
     OperationDataService operationDataService;
-
-    @Test
     @Ignore
     public void testGetOperationDataModelFromDatabase()
     {
@@ -29,8 +28,7 @@ public class OperationDataServiceTest {
     }
 
     @Test
-    public void testUpdateRedisAndGetOperationDataFromRedis()
-    {
+    public void testUpdateRedisAndGetOperationDataFromRedis() {
         OperationDataDto operationDataDtoFromDB = operationDataService.getOperationDataFromDatabase();
         operationDataService.updateRedis(operationDataDtoFromDB);
         OperationDataDto operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis();
@@ -42,8 +40,7 @@ public class OperationDataServiceTest {
         List<String> investMonthAmountFromDB = operationDataDtoFromDB.getMoney();
         List<String> investMonthAMountFromRedis = operationDataDtoFromRedis.getMoney();
         assertEquals(investMonthFromDB.size(), investMonthFromRedis.size());
-        for(int i = 0; i < investMonthFromDB.size(); ++i)
-        {
+        for (int i = 0; i < investMonthFromDB.size(); ++i) {
             assertEquals(investMonthFromDB.get(i), investMonthFromRedis.get(i));
             assertEquals(investMonthAmountFromDB.get(i), investMonthAMountFromRedis.get(i));
         }

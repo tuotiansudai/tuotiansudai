@@ -90,13 +90,7 @@ public class InvestRepayMapperTest {
     public void shouldFindSumRepaidCorpusByLoginNameIsOk() {
         InvestModel investModel = this.getFakeInvestModel();
         investMapper.create(investModel);
-        InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
-        investRepayModel.setInvestId(investModel.getId());
-        investRepayModel.setPeriod(1);
-        investRepayModel.setStatus(RepayStatus.COMPLETE);
-        investRepayModel.setRepayDate(new Date());
-        investRepayModel.setCorpus(1000L);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 1000L, 0, 0, new Date(), RepayStatus.COMPLETE);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
         investRepayMapper.create(investRepayModels);
 
@@ -191,7 +185,27 @@ public class InvestRepayMapperTest {
         assertEquals(21, repayModelCountPaid);
         assertEquals(9, repayModelCountUnPaid);
     }
+    @Test
+    public void shouldFindLeftPeriodByTransferInvestIdAndPeriodIsSuccess(){
+        InvestModel fakeInvestModel = getFakeInvestModel();
+        investMapper.create(fakeInvestModel);
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            InvestRepayModel investRepayModel = new InvestRepayModel();
+            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setInvestId(fakeInvestModel.getId());
+            investRepayModel.setPeriod(i + 1);
+            investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
+            investRepayModel.setStatus(RepayStatus.REPAYING);
+            investRepayModels.add(investRepayModel);
+        }
+        investRepayMapper.create(investRepayModels);
 
+        int count = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(fakeInvestModel.getId(),2);
+
+        assertEquals(3,count);
+
+    }
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");
@@ -229,14 +243,8 @@ public class InvestRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel();
         userMapper.create(fakeUserModel);
         loanMapper.create(fakeLoanModel);
-        InvestModel fakeInvestModel = new InvestModel();
-        fakeInvestModel.setId(idGenerator.generate());
-        fakeInvestModel.setLoginName(fakeUserModel.getLoginName());
-        fakeInvestModel.setLoanId(fakeLoanModel.getId());
-        fakeInvestModel.setSource(Source.WEB);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }
-
-
 }
