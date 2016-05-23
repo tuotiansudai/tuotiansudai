@@ -17,10 +17,6 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <select id="findByLoginName" parameterType="string" resultMap="userMessageResultMap">
-        select * from user_message where login_name = #{loginName};
-    </select>
-
     <insert id="create" parameterType="UserMessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_message (`message_id`, `login_name`, `title`, `content`, `read`, `read_time`, `created_time`)
         value(#{messageId}, #{loginName}, #{title}, #{content}, #{read}, #{readTime}, #{createdTime})
@@ -37,4 +33,17 @@
             `created_time` = #{createdTime}
         where `id` = #{id}
     </update>
+
+    <select id="findMessagesByLoginName" parameterType="map" resultMap="userMessageResultMap">
+        select * from user_message
+        where login_name = #{loginName}
+        order by created_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countMessagesByLoginName" parameterType="string" resultType="long">
+        select count(1) from user_message where login_name = #{loginName}
+    </select>
 </mapper>
