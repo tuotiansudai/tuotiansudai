@@ -13,7 +13,6 @@
             <div class="form-group">
                 <label for="control-label">类型</label>
                 <select class="selectpicker" name="articleSectionType">
-                    <option value="">全部</option>
                     <#list articleSectionTypeList as sectionName>
                         <option value="${sectionName}"
                                 <#if (selected?has_content && selected == sectionName.articleSectionTypeName) >selected</#if>

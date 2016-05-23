@@ -28,7 +28,6 @@ public class LiCaiQuanArticleController {
     static Logger logger = Logger.getLogger(LiCaiQuanArticleController.class);
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
-    private DateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(value = "/article/create", method = RequestMethod.GET)
     public ModelAndView createArticle() {
@@ -47,10 +46,10 @@ public class LiCaiQuanArticleController {
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
     public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
-                                      @RequestParam(value = "create",required = false) String create) throws ParseException {
+                                      @RequestParam(value = "create",required = false) Date create) throws ParseException {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        if(create != null) liCaiQuanArticleDto.setCreateTime(sdf.parse(create));
+        if(create != null) liCaiQuanArticleDto.setCreateTime(create);
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,LoginUserInfo.getLoginName());
         return mv;
     }
