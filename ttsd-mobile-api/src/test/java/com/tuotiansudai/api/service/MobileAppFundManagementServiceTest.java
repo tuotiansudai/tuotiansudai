@@ -8,14 +8,19 @@ import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +29,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class MobileAppFundManagementServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppFundManagementServiceImpl mobileAppFundManagementService;
@@ -41,6 +49,8 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
     private PointService pointService;
     @Mock
     private UserCouponService userCouponService;
+    @Mock
+    private ReferrerManageMapper referrerManageMapper;
     @Test
     public void shouldQueryFundByUserIdIsOk(){
         AccountModel accountModel = fakeUserModel();
@@ -53,6 +63,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         when(investRepayService.findSumRepaidCorpusByLoginName(anyString())).thenReturn(1600l);
         when(userBillService.findSumRewardByLoginName(anyString())).thenReturn(1700l);
         when(pointService.getAvailablePoint(anyString())).thenReturn(1700l);
+        when(referrerManageMapper.findReferInvestTotalAmount("", null, null, null, null)).thenReturn(1700l);
         List<UserCouponView> userCouponViews = new ArrayList<>();
         userCouponViews.add(new UserCouponView());
         when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(userCouponViews);
