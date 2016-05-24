@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.message.repository.mapper.MessageMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="messageResultMap" type="MessageModel">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="template" property="template"/>
+        <result column="type" property="type"/>
+        <result column="user_groups" property="userGroups" typeHandler="com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler"/>
+        <result column="channels" property="channels" typeHandler="com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler"/>
+        <result column="status" property="status"/>
+        <result column="read_count" property="readCount"/>
+        <result column="activated_by" property="activatedBy"/>
+        <result column="activated_time" property="activatedTime"/>
+        <result column="expired_time" property="expiredTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
+        insert into message (`title`, `template`, `type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
+        value(#{title}, #{template}, #{type}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="MessageModel">
+        update message
+        set `title` = #{title},
+            `template` = #{template},
+            `type` = #{type},
+            `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
+            `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
+            `status` = #{status},
+            `read_count` = #{readCount},
+            `activated_by` = #{activatedBy} ,
+            `activated_time` = #{activatedTime},
+            `expired_time` = #{expiredTime},
+            `updated_by` = #{updatedBy},
+            `updated_time` = #{updatedTime},
+            `created_by` = #{createdBy},
+            `created_time` = #{createdTime}
+        where `id` = #{id}
+    </update>
+
+    <select id="findAssignableManualMessages" parameterType="string" resultMap="messageResultMap">
+        select * from message
+        where message.type = 'MANUAL'
+        and message.status = 'APPROVED'
+        and message.expired_time > NOW()
+        and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
+    </select>
+
+</mapper>
