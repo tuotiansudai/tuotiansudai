@@ -55,8 +55,6 @@
         <csrf disabled="true"/>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
-        <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
-        <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
