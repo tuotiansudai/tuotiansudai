@@ -51,7 +51,7 @@
                     <td>
                         ${article.title!}
                         <#if article.original >
-                            <a style="color: red;" href="/announce-manage/article/${article.articleId?c}/original">( 原文 )</a>
+                            <a style="color: red;" href="/announce-manage/article/${article.articleId?c}/preview">( 原文 )</a>
                         </#if>
                     </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
