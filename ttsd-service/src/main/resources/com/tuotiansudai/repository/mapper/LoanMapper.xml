@@ -472,6 +472,9 @@
         <if test="IsContainNewBie == 'false'">
             and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
         </if>
+        <if test="IsContainNewBie == 'true'">
+            and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
+        </if>
         ORDER BY duration ,loan.verify_time DESC, loan.created_time DESC
     </select>
 

@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
+import com.tuotiansudai.point.dto.SignInPoint;
 import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
@@ -16,6 +17,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +79,13 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
 
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
+        DateTime today = new DateTime().withTimeAtStartOfDay();
+        int signInCount = 0;
+        if (lastSignInPointDto != null && Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
+            signInCount = lastSignInPointDto.getSignInCount() + 1;
+        }
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
-        dataDto.setSignInTimes(lastSignInPointDto == null ? 0 : lastSignInPointDto.getSignInCount());
+        dataDto.setSignInTimes(signInCount);
         dataDto.setNextSignInPoint(lastSignInPointDto == null ? 0 : lastSignInPointDto.getNextSignInPoint());
 
         BaseResponseDto dto = new BaseResponseDto();
