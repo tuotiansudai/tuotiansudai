@@ -48,7 +48,12 @@
                         </#if>
                     ${article.section.articleSectionTypeName!}
                     </td>
-                    <td>${article.title!}</td>
+                    <td>
+                        ${article.title!}
+                        <#if article.original >
+                            <a style="color: red;" href="/announce-manage/article/${article.articleId?c}/original">( 原文 )</a>
+                        </#if>
+                    </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
                     <td>${article.author!}</td>
                     <td>${article.checker!}</td>

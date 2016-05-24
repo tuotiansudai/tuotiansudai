@@ -24,6 +24,7 @@ public class LiCaiQuanArticleDto implements Serializable{
     private long likeCount;
     private long readCount;
     private String creator;
+    private boolean original = false;
 
     public LiCaiQuanArticleDto(){}
 
@@ -166,4 +167,12 @@ public class LiCaiQuanArticleDto implements Serializable{
     public String getCreator() { return creator; }
 
     public void setCreator(String creator) { this.creator = creator; }
+
+    public boolean isOriginal() {
+        return original;
+    }
+
+    public void setOriginal(boolean original) {
+        this.original = original;
+    }
 }

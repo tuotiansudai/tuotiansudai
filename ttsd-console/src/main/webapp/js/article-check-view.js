@@ -24,6 +24,7 @@ require(['jquery', 'csrf'], function ($) {
             if (confirm("确认通过并发布!")) {
                 var id = $('#content').attr('data-id');
                 window.location.href = '/announce-manage/article/' + id + '/checkPass/';
+                alert("发布成功!");
             }
         }
     });
