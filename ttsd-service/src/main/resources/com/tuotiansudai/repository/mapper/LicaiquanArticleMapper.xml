@@ -40,6 +40,13 @@
         FROM `aa`.`licaiquan_article` WHERE id = #{id}
     </select>
 
+    <select id="findCarouselArticle" resultMap="licaiquanArticleModel">
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted
+        FROM `licaiquan_article` WHERE carousel = true and deleted = false
+        ORDER BY created_time DESC
+    </select>
+
     <update id="updateArticle" parameterType="LicaiquanArticleModel">
         UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creator}, checker_login_name = #{checker},
         author = #{author}, section = #{articleSection}, source = #{source}, carousel = #{carousel}, thumb = #{thumb},
@@ -76,4 +83,27 @@
         ORDER BY created_time DESC
         LIMIT #{size}
     </select>
+
+    <select id="findArticleByArticleSectionType" resultMap="licaiquanArticleModel" parameterType="map" >
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+        content, created_time, updated_time, deleted
+        FROM `aa`.`licaiquan_article`
+        WHERE deleted = FALSE
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findCountArticleByArticleSectionType" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM `aa`.`licaiquan_article`
+        WHERE deleted = FALSE
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+    </select>
+
+
 </mapper>

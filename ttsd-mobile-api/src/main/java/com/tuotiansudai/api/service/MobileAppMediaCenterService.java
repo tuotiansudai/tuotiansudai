@@ -14,4 +14,6 @@ public interface MobileAppMediaCenterService {
 
     BaseDto<BasePaginationDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize);
 
+    LiCaiQuanArticleDto obtainArticleContent(long articleId);
+
 }
