@@ -51,7 +51,7 @@
                     <td>
                         ${article.title!}
                         <#if article.original >
-                            <a style="color: red;" href="/announce-manage/article/${article.articleId?c}/original">( 原文 )</a>
+                            <a target="_Blank" style="color: red;" href="/announce-manage/article/${article.articleId?c}/original">( 原文 )</a>
                         </#if>
                     </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
@@ -70,8 +70,7 @@
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
                             <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
-                            <a href="/announce-manage/article/${article.articleId?c}/deleteArticle"
-                               onclick="return confirm('确定删除吗?')"> 删除</a>
+                            <a href="/announce-manage/article/${article.articleId?c}/deleteArticle" onclick="return confirm('确定删除吗?')"> 删除</a>
                         </#if>
                     </td>
                     <td>

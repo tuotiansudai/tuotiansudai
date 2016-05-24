@@ -125,7 +125,7 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}/deleteArticle/", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/{articleId}/deleteArticle", method = RequestMethod.GET)
     public ModelAndView deleteArticle(@PathVariable long articleId) {
         ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
         this.liCaiQuanArticleService.deleteArticle(articleId);
