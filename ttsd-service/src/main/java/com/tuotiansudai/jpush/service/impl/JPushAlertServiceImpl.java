@@ -492,7 +492,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
             for (InvestNotifyInfo notifyInfo : notifyInfoList) {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(), loanRepayModel.getPeriod());
-                long amount = (isAdvanceRepay ? notifyInfo.getAmount() : investRepayModel.getCorpus()) + investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+                long amount = investRepayModel.getRepayAmount();
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
                 loginNameMap.put(notifyInfo.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);

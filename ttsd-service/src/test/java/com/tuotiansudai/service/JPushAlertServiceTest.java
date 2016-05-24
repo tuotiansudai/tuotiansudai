@@ -122,6 +122,7 @@ public class JPushAlertServiceTest {
         investRepayModel.setExpectedFee(100);
         investRepayModel.setActualFee(100);
         investRepayModel.setPeriod(period);
+        investRepayModel.setRepayAmount(100);
         investRepayModel.setRepayDate(new Date());
         investRepayModel.setActualRepayDate(new Date());
         investRepayModel.setCreatedTime(new Date());
@@ -233,7 +234,7 @@ public class JPushAlertServiceTest {
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
 
         investRepayModels.add(createInvestRepayNoDefaultInterest(investId2, RepayStatus.COMPLETE, 1));
-        investRepayModels.add(createInvestRepayHasDefaultInterest(investId, RepayStatus.OVERDUE, 2));
+        investRepayModels.add(createInvestRepayNoDefaultInterest(investId, RepayStatus.OVERDUE, 2));
         investRepayModels.add(createInvestRepayNoDefaultInterest(investId2, RepayStatus.REPAYING, 1));
 
         publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", investRepayModels.get(1));
@@ -250,7 +251,7 @@ public class JPushAlertServiceTest {
         verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
-        assertEquals(createJPushAlert().getContent().replace("{0}", "2.00"), argumentAlert.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
     }
 
     @Test
@@ -319,6 +320,11 @@ public class JPushAlertServiceTest {
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
         verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+
+    }
+
+    @Test
+    public void shouldAutoJPushRepayAlert(){
 
 
     }
