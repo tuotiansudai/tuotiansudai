@@ -3,8 +3,8 @@ package com.tuotiansudai.repository.model;
 /**
  * Created by huoxuanbo on 16/5/13.
  */
-public enum ArticleSectionType {
-
+public enum  ArticleSectionType {
+    ALL("全部"),
     PLATFORM_ACTIVITY("平台活动"),
     PLATFORM_NEWS("平台新闻"),
     INDUSTRY_NEWS("行业资讯");

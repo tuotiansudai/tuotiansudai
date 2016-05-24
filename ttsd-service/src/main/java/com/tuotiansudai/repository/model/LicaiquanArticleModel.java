@@ -1,8 +1,13 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class LicaiquanArticleModel {
+public class LicaiquanArticleModel implements Serializable {
+
+    private static final long serialVersionUID = 8615696510049372781l;
     /**
      * 文章ID, 主键
      */
@@ -38,7 +43,7 @@ public class LicaiquanArticleModel {
     /**
      * 缩略图
      */
-    private String thumb;
+    private String thumbnail;
     /**
      * 展示图
      */
@@ -72,7 +77,7 @@ public class LicaiquanArticleModel {
         this.section = section;
         this.source = source;
         this.carousel = carousel;
-        this.thumb = thumb;
+        this.thumbnail = thumb;
         this.showPicture = showPicture;
         this.content = content;
         this.createdTime = createdTime;
@@ -144,12 +149,12 @@ public class LicaiquanArticleModel {
         this.carousel = carousel;
     }
 
-    public String getThumb() {
-        return thumb;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setThumb(String thumb) {
-        this.thumb = thumb;
+    public void setThumbnail(String thumb) {
+        this.thumbnail = thumb;
     }
 
     public String getShowPicture() {

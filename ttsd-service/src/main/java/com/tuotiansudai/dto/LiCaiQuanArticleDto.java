@@ -1,12 +1,14 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class LiCaiQuanArticleDto implements Serializable{
-    private long id;
+    private static final long serialVersionUID = 5982862020562402898l;
+    private Long articleId;
     private String title;
     private String author;
     private String thumbPicture;
@@ -16,13 +18,37 @@ public class LiCaiQuanArticleDto implements Serializable{
     private String content;
     private Date createTime;
     private ArticleStatus articleStatus;
+    private String source;
+    private Date updateTime;
+    private String checker;
+    private long likeCount;
+    private long readCount;
+    private String creator;
 
-    public long getId() {
-        return id;
+    public LiCaiQuanArticleDto(){}
+
+    public LiCaiQuanArticleDto(LicaiquanArticleModel model){
+        this.articleId = model.getId();
+        this.title = model.getTitle();
+        this.author = model.getAuthor();
+        this.thumbPicture = model.getThumbnail();
+        this.showPicture = model.getShowPicture();
+        this.carousel = model.isCarousel();
+        this.section = model.getArticleSection();
+        this.content = model.getContent();
+        this.createTime = model.getCreateTime();
+        this.articleStatus = ArticleStatus.PUBLISH;
+        this.source = model.getSource();
+        this.updateTime = model.getUpdateTime();
+        this.checker = model.getChecker();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -97,5 +123,47 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.articleStatus = articleStatus;
     }
 
+    public String getSource() {
+        return source;
+    }
 
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getChecker() {
+        return checker;
+    }
+
+    public void setChecker(String checker) {
+        this.checker = checker;
+    }
+
+    public long getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(long readCount) {
+        this.readCount = readCount;
+    }
+
+    public long getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getCreator() { return creator; }
+
+    public void setCreator(String creator) { this.creator = creator; }
 }

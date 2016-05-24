@@ -1,14 +1,20 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.constraints.Min;
+import java.text.ParseException;
+import java.util.Date;
 
 
 @Controller
@@ -25,11 +31,24 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
+    @RequestMapping(value = "/article/{articleId}/edit/", method = RequestMethod.GET)
+    public ModelAndView editArticle(@PathVariable long articleId) {
+        ModelAndView mv = new ModelAndView("/article-edit");
+        LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
+        mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
+        mv.addObject("dto", liCaiQuanArticleDto);
+        return mv;
+    }
+
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
-    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
+    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
+                                      @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime) throws ParseException {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        if (beginTime != null) {
+            liCaiQuanArticleDto.setCreateTime(beginTime);
+        }
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, LoginUserInfo.getLoginName());
         return mv;
     }
 
@@ -37,6 +56,20 @@ public class LiCaiQuanArticleController {
     @ResponseBody
     public BaseDto<PayDataDto> retraceArticle(@PathVariable long articleId) {
         return liCaiQuanArticleService.retrace(articleId);
+    }
+
+    @RequestMapping(value = "/article/list", method = RequestMethod.GET)
+    public ModelAndView findArticle(@RequestParam(value = "title", required = false) String title,
+                                    @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
+                                    @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        ModelAndView mv = new ModelAndView("/article-list");
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title, articleSectionType != null && articleSectionType.equals(ArticleSectionType.ALL) ? null : articleSectionType, pageSize, index);
+        mv.addObject("data", dto);
+        mv.addObject("title", title);
+        mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
+        mv.addObject("articleSectionTypeList", ArticleSectionType.values());
+        return mv;
     }
 
     @RequestMapping(value = "/article/{articleId}/preview/", method = RequestMethod.GET)
@@ -78,5 +111,19 @@ public class LiCaiQuanArticleController {
     public BaseDto<BaseDataDto> rejectArticle(@PathVariable long articleId, @RequestParam(value = "comment", required = false) String comment) {
         liCaiQuanArticleService.rejectArticle(articleId, comment);
         return new BaseDto<>();
+    }
+
+    @RequestMapping(value = "/article/checkPass/{articleId}", method = RequestMethod.GET)
+    public ModelAndView checkPass(@PathVariable long articleId) {
+        liCaiQuanArticleService.checkPassAndCreateArticle(articleId, LoginUserInfo.getLoginName());
+        ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
+        return mv;
+    }
+
+    @RequestMapping(value = "/article/deleteArticle/{articleId}", method = RequestMethod.GET)
+    public ModelAndView deleteArticle(@PathVariable long articleId) {
+        ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
+        this.liCaiQuanArticleService.deleteArticle(articleId);
+        return mv;
     }
 }

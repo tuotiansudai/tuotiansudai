@@ -42,10 +42,15 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             .done(function(data){
                 if(data.state){
                     if($self.hasClass('thumbPicture')){
-                        $('.article-thumbPicture').val(data.url)
+                        $('.article-thumbPicture').val(data.url);
+                        $('.thumbPictureImage').html('');
+                        $('.thumbPictureImage').append('<img style="width:100%" src="/upload/' + data.url + '" alt="缩略图">');
+
                     }
                     if($self.hasClass('showPicture')){
                         $('.article-showPicture').val(data.url)
+                        $('.showPictureImage').html('');
+                        $('.showPictureImage').append('<img style="width:100%" src="/upload/' + data.url + '" alt="展示图">');
                     }
                 }
             });

@@ -1,11 +1,19 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.ArticlePaginationDataDto;
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -28,6 +37,10 @@ public class LiCaiQuanArticleServiceTest {
     private IdGenerator idGenerator;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private LicaiquanArticleMapper licaiquanArticleMapper;
 
     private final static String articleRedisKey = "console:article:key";
     private final static String articleCommentRedisKey = "console:article:comment";
@@ -37,30 +50,99 @@ public class LiCaiQuanArticleServiceTest {
     @Test
     public void shouldRetraceIsSuccess() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
 
-        liCaiQuanArticleService.retrace(liCaiQuanArticleDto.getId());
-        LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getId()));
-        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getId()));
-        assertEquals(ArticleStatus.RETRACED, liCaiQuanArticleDtoNew.getArticleStatus());
-        assertNotEquals(liCaiQuanArticleDto.getArticleStatus(), liCaiQuanArticleDtoNew.getArticleStatus());
+        liCaiQuanArticleService.retrace(liCaiQuanArticleDto.getArticleId());
+        LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto)redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
+        redisWrapperClient.hdelSeri(articleRedisKey,String.valueOf(liCaiQuanArticleDto.getArticleId()));
+        assertEquals(ArticleStatus.RETRACED,liCaiQuanArticleDtoNew.getArticleStatus());
+        assertNotEquals(liCaiQuanArticleDto.getArticleStatus(),liCaiQuanArticleDtoNew.getArticleStatus());
     }
 
     @Test
     public void shouldCreateIsSuccess() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
-        LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getId()));
-        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getId()));
-        assertEquals(liCaiQuanArticleDto.getId(), liCaiQuanArticleDtoNew.getId());
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
+        LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto)redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
+        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
+        assertEquals(liCaiQuanArticleDto.getArticleId(), liCaiQuanArticleDtoNew.getArticleId());
         assertEquals(liCaiQuanArticleDto.getTitle(), liCaiQuanArticleDtoNew.getTitle());
-        assertEquals(liCaiQuanArticleDto.getArticleStatus(), liCaiQuanArticleDtoNew.getArticleStatus());
+        assertEquals(liCaiQuanArticleDto.getArticleStatus(),liCaiQuanArticleDtoNew.getArticleStatus());
         assertEquals(liCaiQuanArticleDto.isCarousel(), liCaiQuanArticleDtoNew.isCarousel());
+    }
+    @Test
+    public void shouldObtainEditArticleDtoFromRedisIsSuccess(){
+        prepareUsers();
+        LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
+        licaiquanArticleMapper.createArticle(createLicaiquanArticleModel(liCaiQuanArticleDto.getArticleId()));
+
+        LiCaiQuanArticleDto liCaiQuanArticleDtoReturn =  liCaiQuanArticleService.obtainEditArticleDto(liCaiQuanArticleDto.getArticleId());
+        LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId());
+        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
+        assertEquals(liCaiQuanArticleDto.getTitle(), liCaiQuanArticleDtoReturn.getTitle());
+        assertNotEquals(licaiquanArticleModel.getTitle(), liCaiQuanArticleDtoReturn.getTitle());
+
+    }
+
+    @Test
+    public void shouldObtainEditArticleDtoFromDbIsSuccess(){
+        prepareUsers();
+        long articleId = idGenerator.generate();
+        LicaiquanArticleModel licaiquanArticleModel = createLicaiquanArticleModel(articleId);
+
+        licaiquanArticleMapper.createArticle(licaiquanArticleModel);
+        LiCaiQuanArticleDto liCaiQuanArticleDtoReturn =  liCaiQuanArticleService.obtainEditArticleDto(articleId);
+        LicaiquanArticleModel licaiquanArticleModelReturn = licaiquanArticleMapper.findArticleById(articleId);
+        assertEquals(licaiquanArticleModel.getTitle(), licaiquanArticleModelReturn.getTitle());
+
+    }
+
+    private void prepareUsers() {
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("testCreator");
+        userModel.setPassword("e8ba3a39cef651c08fbd7f8df591760f6b7412a4");
+        userModel.setMobile("13812340000");
+        userModel.setRegisterTime(new Date());
+        userModel.setStatus(UserStatus.ACTIVE);
+        userModel.setSalt("083e54eaef1f42afaec76a077f571693");
+        userMapper.create(userModel);
+
+        userModel.setLoginName("testChecker");
+        userModel.setMobile("13812340001");
+        userMapper.create(userModel);
+
+        userModel.setLoginName("modifyCreator");
+        userModel.setMobile("13812340002");
+        userMapper.create(userModel);
+
+        userModel.setLoginName("modifyChecker");
+        userModel.setMobile("13812340003");
+        userMapper.create(userModel);
+    }
+
+    private LicaiquanArticleModel createLicaiquanArticleModel(long articleId) {
+        LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
+        licaiquanArticleModel.setId(articleId);
+        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setAuthor("testAuthor");
+        licaiquanArticleModel.setCarousel(false);
+        licaiquanArticleModel.setChecker("testChecker");
+        licaiquanArticleModel.setContent("testContent");
+        licaiquanArticleModel.setCreator("testCreator");
+        licaiquanArticleModel.setCreateTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setSource("testSource");
+        licaiquanArticleModel.setTitle("testTitle");
+        licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setShowPicture("testShowPicture");
+        licaiquanArticleModel.setThumbnail("testThumb");
+
+        return licaiquanArticleModel;
     }
 
     private LiCaiQuanArticleDto fakeLiCaiQuanArticleDto() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
-        liCaiQuanArticleDto.setId(idGenerator.generate());
+        liCaiQuanArticleDto.setArticleId(idGenerator.generate());
         liCaiQuanArticleDto.setTitle("tile");
         liCaiQuanArticleDto.setAuthor("author");
         liCaiQuanArticleDto.setCarousel(true);
@@ -88,11 +170,18 @@ public class LiCaiQuanArticleServiceTest {
     }
 
     @Test
+<<<<<<< HEAD
     public void testRejectArticle_getAllComments() throws InterruptedException {
         prepareArticleData(0, ArticleStatus.TO_APPROVE);
         prepareArticleData(1, ArticleStatus.TO_APPROVE);
         prepareArticleData(2, ArticleStatus.TO_APPROVE);
 
+=======
+    public void shouldFindLiCaiQuanArticleDtoIsOk() throws InterruptedException {
+        liCaiQuanArticleService.createAndEditArticle(fakeLiCaiQuanArticleDto(),"test");
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto("tile",ArticleSectionType.INDUSTRY_NEWS,10,1);
+        assertNotNull(dto);
+>>>>>>> manage_money_circle_master
         liCaiQuanArticleService.rejectArticle(0, "testComment0-1");
         Thread.currentThread().sleep(1000);
         liCaiQuanArticleService.rejectArticle(0, "testComment0-2");
@@ -136,10 +225,42 @@ public class LiCaiQuanArticleServiceTest {
         assertEquals(1, liCaiQuanArticleService.getReadCount(article1));
     }
 
+    @Test
+    public void shouldDeleteArticleIsOk(){
+        UserModel user = createUserByUserId("ceshi1");
+        LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
+        liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(),user.getLoginName());
+        liCaiQuanArticleService.deleteArticle(liCaiQuanArticleDto.getArticleId());
+        assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
+    }
+
+    @Test
+    public void shouldcheckPassAndCreateArticleIsOk(){
+        UserModel user = createUserByUserId("ceshi1");
+        LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
+        liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(),user.getLoginName());
+        assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
+    }
+
     @After
     public void clearRedis() {
         redisWrapperClient.del(articleCommentRedisKey);
         redisWrapperClient.del(articleLikeCounterKey);
         redisWrapperClient.del(articleReadCounterKey);
+    }
+
+    private UserModel createUserByUserId(String userId) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(userId);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
     }
 }
