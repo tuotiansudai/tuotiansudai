@@ -5,6 +5,7 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.Min;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 
 @Controller
@@ -35,6 +38,12 @@ public class LiCaiQuanArticleController {
     public ModelAndView editArticle(@PathVariable long articleId) {
         ModelAndView mv = new ModelAndView("/article-edit");
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
+        Map<String,String> comments = liCaiQuanArticleService.getAllComments(articleId);
+        Iterator iter = comments.entrySet().iterator();
+        if(iter.hasNext()){
+            mv.addObject("comment",((Map.Entry)iter.next()).getValue());
+        }
+
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
         mv.addObject("dto", liCaiQuanArticleDto);
         return mv;
