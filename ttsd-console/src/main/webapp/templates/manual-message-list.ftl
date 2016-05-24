@@ -58,10 +58,10 @@
                 打开数
             </th>
             <th>
-                状态
+                创建人/审核人
             </th>
             <th>
-                创建人/审核人
+                状态
             </th>
             <th>
                 操作
@@ -69,37 +69,56 @@
         </tr>
         </thead>
         <tbody>
-
+            <#list messageList as message>
                 <tr>
                     <td>
-                        收件人
+                        <#if message.userGroups?has_content>
+                            <#list message.userGroups as userGroup>
+                            ${userGroup.getDescription()!}<#sep>, </#sep>
+                            </#list>
+                        </#if>
                     </td>
                     <td>
-                        标题
+                        ${message.title!}
                     </td>
                     <td>
-                       内容
+                        ${message.template!}
                     </td>
                     <td>
-                        送达渠道
+                        <#if message.channels?has_content>
+                            <#list message.channels as channel>
+                            ${channel.getDescription()!}<#sep>, </#sep>
+                            </#list>
+                        </#if>
                     </td>
                     <td>
-                        发送时间
+                        ${message.createdTime?string('yyyy-MM-dd HH:mm:ss')}
                     </td>
                     <td>
-                        打开数
+                        ${message.readCount!}
                     </td>
-                        状态
+
                     <td>
-                        创建人/审核人
-                    </td>
-                    <td>
-                        caozuo
+                        ${message.createdBy!}/${message.activatedBy!}
                     </td>
                     <td>
-                        caozuo
+                        ${message.status.getDescription()!}
+                    </td>
+                    <td>
+                        <#if message.status == "TO_APPROVE">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                <a class="pass" href="#" data-messageId="${message.id?c}">审核</a>｜
+                                <a href="/message-manage/manual-message/${message.id?c}/reject" onclick="return confirm('确定驳回吗?')">驳回</a>
+                            </@security.authorize>
+                            <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
+                            <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                                <a href="/message-manage/manual-message/${message.id?c}/edit">编辑</a>｜
+                                <a href="/message-manage/manual-message/${message.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
+                            </@security.authorize>
+                        </#if>
                     </td>
                 </tr>
+            </#list>
         </tbody>
         </table>
     </div>

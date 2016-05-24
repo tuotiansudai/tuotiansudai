@@ -2,6 +2,7 @@ package com.tuotiansudai.message.repository.mapper;
 
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,15 @@ public interface MessageMapper {
 
     void update(MessageModel messageModel);
 
-    long findMessagePaginationCount(@Param(value = "title") String title,
+    long findMessageCount(@Param(value = "title") String title,
                                @Param(value = "messageStatus") MessageStatus messageStatus,
-                               @Param(value = "createdBy") String createdBy);
+                               @Param(value = "createdBy") String createdBy,
+                               @Param(value = "messageType") MessageType messageType);
 
-    List<MessageModel> findMessagePagination(@Param(value = "title") String title,
+    List<MessageModel> findMessageList(@Param(value = "title") String title,
                                              @Param(value = "messageStatus") MessageStatus messageStatus,
                                              @Param(value = "createdBy") String createdBy,
+                                             @Param(value = "messageType") MessageType messageType,
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
 

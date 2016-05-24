@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -59,6 +60,36 @@ public class MessageMapperTest {
         assertNotNull(actualMessageModel.getCreatedTime());
         assertThat(actualMessageModel.getUpdatedBy(), is(messageModel.getUpdatedBy()));
         assertNotNull(actualMessageModel.getUpdatedTime());
+    }
+
+    @Test
+    public void shouldFindMessageList(){
+
+        UserModel creator = getFakeUser("messageCreate");
+        userMapper.create(creator);
+
+        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageMapper.create(messageModelManual);
+
+        MessageModel messageModelAuto= new MessageModel("title", "template", MessageType.EVENT,
+                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageMapper.create(messageModelAuto);
+
+        List<MessageModel> manualMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.EVENT, 0, 10);
+        List<MessageModel> autoMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.MANUAL, 0, 10);
+        long manualMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.MANUAL);
+        long autoMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.EVENT);
+
+        assertEquals(1, manualMessageModelList.size());
+        assertEquals(1, autoMessageModelList.size());
+        assertEquals(1, manualMessageCount);
+        assertEquals(1, autoMessageCount);
+
     }
 
     private UserModel getFakeUser(String loginName) {

@@ -1,14 +1,16 @@
 package com.tuotiansudai.message.service;
 
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.jpush.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageType;
+
+import java.util.List;
 
 
 public interface MessageService {
 
-    BasePaginationDataDto<MessageModel> findMessagePaginationList(String title, MessageStatus messageStatus, String createBy, int index, int pageSize);
+    List<MessageModel> findMessageList(String title, MessageStatus messageStatus, String createBy, MessageType messageType, int index, int pageSize);
 
-    long findMessagePaginationCount(String title, MessageStatus messageStatus, String createBy);
+    long findMessageCount(String title, MessageStatus messageStatus, String createBy, MessageType messageType);
 
 }

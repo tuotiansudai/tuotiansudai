@@ -1,28 +1,22 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.jpush.dto.JpushReportDto;
-import com.tuotiansudai.jpush.repository.model.*;
-import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.util.DistrictUtil;
-import com.tuotiansudai.util.RequestIPParser;
+
+import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageType;
+import com.tuotiansudai.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/message-manage")
 public class MessageController {
+
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping(value = "/manual-message-list", method = RequestMethod.GET)
     @ResponseBody
@@ -31,6 +25,7 @@ public class MessageController {
                                     @RequestParam(value = "title", required = false) String title,
                                     @RequestParam(value = "createdBy", required = false) String createdBy,
                                     @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
+
         ModelAndView modelAndView = new ModelAndView("/manual-message-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -38,11 +33,10 @@ public class MessageController {
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", "");
+        modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.MANUAL, index, pageSize));
 
-        modelAndView.addObject("messageStatuses", Lists.newArrayList(messageStatus.values()));
-        modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
-        int messageCount = 0;
+        modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
+        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
         modelAndView.addObject("messageCount", messageCount);
         long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -68,11 +62,10 @@ public class MessageController {
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", "");
+        modelAndView.addObject("messageList",  messageService.findMessageList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
 
-        modelAndView.addObject("messageStatuses", Lists.newArrayList(messageStatus.values()));
-        modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
-        int messageCount = 0;
+        modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
+        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
         modelAndView.addObject("messageCount", messageCount);
         long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
