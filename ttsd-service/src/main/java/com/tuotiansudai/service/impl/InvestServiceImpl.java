@@ -185,8 +185,10 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+        int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
+
+
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
         List<InvestorInvestPaginationItemDataDto> items = Lists.newArrayList();
