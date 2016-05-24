@@ -67,22 +67,20 @@
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
-
-
-        <intercept-url pattern="/v1.**/register/sendsms" access="permitAll()" />
-        <intercept-url pattern="/v1.**/retrievepassword/sendsms" access="permitAll()" />
-        <intercept-url pattern="/v1.**/sms-captcha/send" access="permitAll()" />
-        <intercept-url pattern="/v1.**/retrievepassword" access="permitAll()" />
-        <intercept-url pattern="/v1.**/validatecaptcha" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/invests" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/loans" access="permitAll()"/>
-        <intercept-url pattern="/v1.**/get/loan" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/nodes" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/node" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/version" access="permitAll()" />
-        <intercept-url pattern="/v1.**/get/index" access="permitAll()" />
-        <intercept-url pattern="/v2.**/get/index" access="permitAll()" />
-
+        <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
+        <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
+        <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />
+        <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
+        <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/loans" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/loan" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/nodes" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/node" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
+        <intercept-url pattern="/v2.0/get/index" access="permitAll()" />
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
