@@ -1,9 +1,5 @@
 package com.tuotiansudai.jpush.aspect;
 
-/**
- * Created by gengbeijun on 16/3/29.
- */
-
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -30,9 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by gengbeijun on 16/3/18.
- */
 @Component
 @Aspect
 public class JPushAmountNotifyAspect {
@@ -40,9 +33,9 @@ public class JPushAmountNotifyAspect {
 
     public final static String REPAY = "Repay-{0}";
     public final static String RECHARGE = "Recharge-{0}";
-    public final static String WITHDRAWAPPLY = "WithDrawApply-{0}";
+    public final static String WITHDRAW_APPLY = "WithDrawApply-{0}";
     public final static String WITHDRAW = "WithDraw-{0}";
-    public final static String REFERRERREWARD = "ReferrerReward-{0}";
+    public final static String REFERRER_REWARD = "ReferrerReward-{0}";
     public final static String LOTTERYOBTAINCASH = "LotteryObtainCash-{0}";
 
     @Autowired
@@ -63,8 +56,11 @@ public class JPushAmountNotifyAspect {
     @Autowired
     private WithdrawMapper withdrawMapper;
 
-    @Pointcut("execution(* *..RepayService.postRepayCallback(..))")
-    public void postRepayCallbackPointcut() {}
+    @Pointcut("execution(* *..NormalRepayService.paybackInvest(..))")
+    public void normalRepayPaybackInvestPointcut() {}
+
+    @Pointcut("execution(* *..AdvanceRepayService.paybackInvest(..))")
+    public void advanceRepayPaybackInvestPointcut() {}
 
     @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
     public void rechargeCallbackPointcut() {}
@@ -78,13 +74,26 @@ public class JPushAmountNotifyAspect {
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
     public void transferCashPointcut() {}
 
-    @AfterReturning(value = "postRepayCallbackPointcut()", returning = "returnValue")
-    public void afterReturningPostRepayCallback(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
+    public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
             long LoanRepayId = (long)joinPoint.getArgs()[0];
             if((boolean)returnValue){
-                createAutoJPushRepayAlertJob(LoanRepayId);
+                createAutoJPushRepayAlertJob(LoanRepayId, false);
+            }
+        } catch (Exception e) {
+            logger.error("after repay aspect fail ", e);
+        }
+    }
+
+    @AfterReturning(value = "advanceRepayPaybackInvestPointcut()", returning = "returnValue")
+    public void afterReturningAdvanceRepayCallback(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after repay pointcut");
+        try {
+            long LoanRepayId = (long)joinPoint.getArgs()[0];
+            if((boolean)returnValue){
+                createAutoJPushRepayAlertJob(LoanRepayId, true);
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
@@ -130,14 +139,8 @@ public class JPushAmountNotifyAspect {
     public void afterReturningRewardReferrer(JoinPoint joinPoint) {
         logger.debug("after RewardReferrer pointcut");
         try {
-            List<InvestModel> successInvestList = (List<InvestModel>) joinPoint.getArgs()[1];
-            for (InvestModel invest : successInvestList) {
-                List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
-                for(ReferrerRelationModel referrerRelationModel : referrerRelationList){
-                    InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findByInvestIdAndReferrer(invest.getId(), referrerRelationModel.getReferrerLoginName());
-                    createAutoJPushReferrerRewardAlertJob(investReferrerRewardModel.getId());
-                }
-            }
+            LoanModel loanModel = (LoanModel) joinPoint.getArgs()[0];
+            createAutoJPushReferrerRewardAlertJob(loanModel.getId());
         } catch (Exception e) {
             logger.error("after RewardReferrer aspect fail ", e);
         }
@@ -160,12 +163,12 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
-    private void createAutoJPushRepayAlertJob(long LoanRepayId) {
+    private void createAutoJPushRepayAlertJob(long LoanRepayId, boolean isAdvanceRepay) {
         try {
-            Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
-                    .toDate();
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES).toDate();
             jobManager.newJob(JobType.AutoJPushRepayAlert, AutoJPushRepayAlertJob.class)
                     .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, LoanRepayId)
+                    .addJobData(AutoJPushRepayAlertJob.ADVANCE_REPAY_FLAG_KEY, isAdvanceRepay)
                     .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, LoanRepayId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
@@ -196,7 +199,7 @@ public class JPushAmountNotifyAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushWithDrawApplyAlert, AutoJPushWithDrawApplyAlertJob.class)
                     .addJobData(AutoJPushWithDrawApplyAlertJob.WITHDRAW_APPLY_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), formatMessage(WITHDRAWAPPLY, orderId))
+                    .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), formatMessage(WITHDRAW_APPLY, orderId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
@@ -220,18 +223,18 @@ public class JPushAmountNotifyAspect {
         }
     }
 
-    private void createAutoJPushReferrerRewardAlertJob(long orderId) {
+    private void createAutoJPushReferrerRewardAlertJob(long loanId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushReferrerRewardAlertJob.JPUSH_ALERT_REFERRER_REWARD_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushReferrerRewardAlert, AutoJPushReferrerRewardAlertJob.class)
-                    .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRERREWARD, orderId))
+                    .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRER_REWARD, loanId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
+            logger.error("create send AutoJPushReferrerRewardAlert job for loanId[" + loanId + "] fail", e);
         }
     }
 

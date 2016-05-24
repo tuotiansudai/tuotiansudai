@@ -26,6 +26,7 @@
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+    {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
@@ -43,7 +44,8 @@
     {"title":"推荐奖励", "url":"/about/refer-reward"},
     {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"常见问题", "url":"/about/qa"},
-    {"title":"联系我们", "url":"/about/contact"}
+    {"title":"联系我们", "url":"/about/contact"},
+    {"title":"运营数据", "url":"/about/operational"}
     ]}]/>
 
 <!DOCTYPE html>
@@ -84,7 +86,7 @@
     <#include "../top-menus.ftl"/>
 </#if>
 
-<div class="main-frame full-screen">
+<div class="main-frame full-screen clearfix">
     <#if !isAppSource>
         <#include "../left-menus.ftl"/>
     </#if>
@@ -189,6 +191,36 @@
     };
 
     phoneLoadFun();
+
+    document.getElementById('getMore').onclick=function(){
+        var obj = document. getElementById('getMore');  
+        toggleClass(obj,"active"); 
+    }
+
+    function hasClass(obj, cls) {  
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+    }  
+      
+    function addClass(obj, cls) {  
+        if (!this.hasClass(obj, cls)) obj.className += " " + cls;  
+    }  
+      
+    function removeClass(obj, cls) {  
+        if (hasClass(obj, cls)) {  
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+            obj.className = obj.className.replace(reg, ' ');  
+        }  
+    }  
+      
+    function toggleClass(obj,cls){  
+        if(hasClass(obj,cls)){  
+            removeClass(obj, cls);
+            document. getElementById('linkList').style.height='30px';  
+        }else{  
+            addClass(obj, cls);
+            document. getElementById('linkList').style.height='auto';  
+        }  
+    } 
 
 
 

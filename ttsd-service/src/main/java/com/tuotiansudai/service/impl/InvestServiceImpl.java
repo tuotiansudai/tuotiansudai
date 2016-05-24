@@ -1,21 +1,25 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -29,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +73,15 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestTransferService investTransferService;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -111,6 +125,10 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
+        if (ActivityType.NEWBIE == loan.getActivityType() && !canInvestNewbieLoan(investDto.getLoginName())) {
+            throw new InvestException(InvestExceptionType.OUT_OF_NOVICE_INVEST_LIMIT);
+        }
+
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
             throw new InvestException(InvestExceptionType.LESS_THAN_MIN_INVEST_AMOUNT);
@@ -144,6 +162,11 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
+    private boolean canInvestNewbieLoan(String loginName) {
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
+    }
+
     @Override
     public long estimateInvestIncome(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -153,8 +176,70 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        return this.getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+    public BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String loginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
+        startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
+        if (endTime == null) {
+            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        } else {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+
+        long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
+        int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+        index = index > totalPages ? totalPages : index;
+
+
+
+        List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
+        List<InvestorInvestPaginationItemDataDto> items = Lists.newArrayList();
+
+        for (InvestModel investModel : investModels) {
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            Optional<InvestRepayModel> nextInvestRepayOptional = Iterators.tryFind(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
+                @Override
+                public boolean apply(InvestRepayModel input) {
+                    return Lists.newArrayList(RepayStatus.REPAYING, RepayStatus.OVERDUE).contains(input.getStatus());
+                }
+            });
+
+            List<UserCouponDto> userCouponDtoList = Lists.newArrayList();
+            if (investModel.getStatus() == InvestStatus.SUCCESS) {
+                List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
+                for (UserCouponModel userCouponModel : userCouponModels) {
+                    userCouponDtoList.add(new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel));
+                }
+            }
+
+            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()).getName(), investModel,
+                    nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
+                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
+        }
+
+        BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);
+        dto.setStatus(true);
+
+        return dto;
+    }
+
+    @Override
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
+        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus,false);
+        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(), new Predicate<InvestPaginationItemDataDto>() {
+            @Override
+            public boolean apply(InvestPaginationItemDataDto input) {
+                return TransferStatus.TRANSFERABLE.getDescription().equals(input.getTransferStatus()) && investTransferService.isTransferable(input.getInvestId());
+            }
+        });
+        List<InvestPaginationItemDataDto>  items = Lists.newArrayList(filter);
+        int fromIndex = (index - 1) * pageSize;
+        int toIndex = fromIndex + pageSize;
+        if(fromIndex >= items.size()){
+            fromIndex = items.size();
+        }
+        if(toIndex >= items.size()){
+            toIndex = items.size();
+        }
+        return new InvestPaginationDataDto(index,pageSize,items.size(),items.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -162,19 +247,14 @@ public class InvestServiceImpl implements InvestService {
                                           String channel, Source source, String role,
                                           Date startTime, Date endTime,
                                           InvestStatus investStatus, LoanStatus loanStatus) {
-        if (startTime == null) {
-            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
-        } else {
-            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        }
+        startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
 
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        String strSource = source == null ? null : source.name();
-        return investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
+        return investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, loanStatus);
     }
 
     @Override
@@ -182,13 +262,14 @@ public class InvestServiceImpl implements InvestService {
                                                        String channel, Source source, String role,
                                                        int index, int pageSize,
                                                        Date startTime, Date endTime,
-                                                       InvestStatus investStatus, LoanStatus loanStatus) {
+                                                       InvestStatus investStatus, LoanStatus loanStatus, boolean isPagination) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
             startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         }
 
+        startTime = new DateTime(startTime == null ? 0 : startTime).withTimeAtStartOfDay().toDate();
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
@@ -197,15 +278,13 @@ public class InvestServiceImpl implements InvestService {
 
         List<InvestPaginationItemView> items = Lists.newArrayList();
 
-        String strSource = source == null ? null : source.name();
-
-        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
+        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, loanStatus);
         long investAmountSum = 0;
 
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
             for (InvestPaginationItemView investPaginationItemView : items) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
@@ -213,13 +292,21 @@ public class InvestServiceImpl implements InvestService {
                     investPaginationItemView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
                 }
             }
-            investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
+            investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, loanStatus);
         }
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                return new InvestPaginationItemDataDto(view);
+                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
+                investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
+                investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
+                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
+                if (loanRepayModel != null) {
+                    int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(view.getId(), loanRepayModel.getPeriod());
+                    investPaginationItemDataDto.setLeftPeriod(leftPeriod);
+                }
+                return investPaginationItemDataDto;
             }
         });
 
@@ -297,10 +384,5 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void markNoPasswordRemind(String loginName) {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
-    }
-
-    @Override
-    public boolean isRemindNoPassword(String loginName) {
-        return redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
     }
 }

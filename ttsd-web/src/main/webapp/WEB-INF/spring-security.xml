@@ -98,6 +98,7 @@
 
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
+        <intercept-url pattern="/transferrer/**" access="hasAuthority('INVESTOR')"/>
 
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
 

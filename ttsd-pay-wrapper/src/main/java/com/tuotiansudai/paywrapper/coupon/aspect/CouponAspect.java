@@ -48,22 +48,18 @@ public class CouponAspect {
     @Autowired
     private CouponActivationService couponActivationService;
 
-    @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
-    public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
-        logger.debug("after repay pointcut");
-        List<Object> args = Lists.newArrayList(proceedingJoinPoint.getArgs());
-        long loanRepayId = (long) args.get(0);
-        try {
-            boolean isSuccess = (boolean) proceedingJoinPoint.proceed();
-            if (isSuccess) {
-                couponRepayService.repay(loanRepayId);
-            }
-            return isSuccess;
-        } catch (Throwable throwable) {
-            logger.error(MessageFormat.format("Coupon repay aspect is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), throwable);
+    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+        long loanRepayId = (Long) joinPoint.getArgs()[0];
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+
+        if (returnValue) {
+            couponRepayService.repay(loanRepayId);
         }
 
-        return false;
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -101,7 +97,7 @@ public class CouponAspect {
 
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         try {
             couponInvestService.investCallback(investModel.getId());
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
@@ -111,7 +107,7 @@ public class CouponAspect {
                     UserGroup.AGENT,
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null,null);
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE), null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -136,6 +132,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
                     .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -150,6 +147,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
