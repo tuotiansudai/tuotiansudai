@@ -55,8 +55,11 @@
                     <td>${article.articleStatus.description!}</td>
                     <td>
                         <#if article.articleStatus.description == '待审核'>
-                            <@security.authorize access="hasAuthority('ADMIN')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                 <a href="/announce-manage/article/${article.articleId?c}/check-view/" >审核 </a>/
+                            </@security.authorize>
+                            <@security.authorize access="hasAuthority('OPERATOR')">
+                                <a href="/announce-manage/article/edit/${article.articleId?c}" >编辑 </a>/
                             </@security.authorize>
                             <a href="/announce-manage/article/retrace/${article.articleId?c}" > 撤销</a>
                         </#if>
