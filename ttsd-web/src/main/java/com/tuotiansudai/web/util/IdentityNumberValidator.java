@@ -117,7 +117,6 @@ public class IdentityNumberValidator {
     }
 
     private static boolean validateYearByAdult(String idCard){
-        System.out.print(Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,10)));
         if((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,10)) >= 18)){
             return true;
         }
