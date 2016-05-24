@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ArticlePaginationDataDto;
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
@@ -124,16 +123,16 @@ public class LiCaiQuanArticleServiceTest {
     private LicaiquanArticleModel createLicaiquanArticleModel(long articleId) {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
         licaiquanArticleModel.setId(articleId);
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setAuthor("testAuthor");
         licaiquanArticleModel.setCarousel(false);
-        licaiquanArticleModel.setChecker("testChecker");
+        licaiquanArticleModel.setCheckerLoginName("testChecker");
         licaiquanArticleModel.setContent("testContent");
-        licaiquanArticleModel.setCreator("testCreator");
-        licaiquanArticleModel.setCreateTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setCreatorLoginName("testCreator");
+        licaiquanArticleModel.setCreatedTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setSource("testSource");
         licaiquanArticleModel.setTitle("testTitle");
-        licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setUpdatedTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setShowPicture("testShowPicture");
         licaiquanArticleModel.setThumbnail("testThumb");
 
@@ -157,7 +156,7 @@ public class LiCaiQuanArticleServiceTest {
     private void prepareArticleData(long articleId, ArticleStatus articleStatus)
     {
         LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
-        liCaiQuanArticleDto.setId(articleId);
+        liCaiQuanArticleDto.setArticleId(articleId);
         liCaiQuanArticleDto.setTitle("testTitle");
         liCaiQuanArticleDto.setAuthor("testAuthor");
         liCaiQuanArticleDto.setCarousel(true);
@@ -170,18 +169,11 @@ public class LiCaiQuanArticleServiceTest {
     }
 
     @Test
-<<<<<<< HEAD
     public void testRejectArticle_getAllComments() throws InterruptedException {
         prepareArticleData(0, ArticleStatus.TO_APPROVE);
         prepareArticleData(1, ArticleStatus.TO_APPROVE);
         prepareArticleData(2, ArticleStatus.TO_APPROVE);
 
-=======
-    public void shouldFindLiCaiQuanArticleDtoIsOk() throws InterruptedException {
-        liCaiQuanArticleService.createAndEditArticle(fakeLiCaiQuanArticleDto(),"test");
-        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto("tile",ArticleSectionType.INDUSTRY_NEWS,10,1);
-        assertNotNull(dto);
->>>>>>> manage_money_circle_master
         liCaiQuanArticleService.rejectArticle(0, "testComment0-1");
         Thread.currentThread().sleep(1000);
         liCaiQuanArticleService.rejectArticle(0, "testComment0-2");

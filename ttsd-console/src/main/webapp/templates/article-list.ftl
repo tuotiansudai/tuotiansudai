@@ -56,7 +56,7 @@
                     <td>
                         <#if article.articleStatus.description == '待审核'>
                             <@security.authorize access="hasAuthority('ADMIN')">
-                                <a href="/announce-manage/article/check/${article.articleId?c}" >审核 </a>/
+                                <a href="/announce-manage/article/${article.articleId?c}/check-view/" >审核 </a>/
                             </@security.authorize>
                             <a href="/announce-manage/article/retrace/${article.articleId?c}" > 撤销</a>
                         </#if>

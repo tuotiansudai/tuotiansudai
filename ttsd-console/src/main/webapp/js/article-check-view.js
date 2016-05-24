@@ -20,6 +20,7 @@ function reject() {
             data: {comment: comment}
         }).done(function () {
             alert("已驳回");
+            window.location.href="/announce-manage/article/list";
         });
     }
 }

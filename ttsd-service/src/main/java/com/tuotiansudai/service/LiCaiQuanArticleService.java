@@ -8,8 +8,6 @@ import java.util.Map;
 public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
 
-    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,int size, int index);
-
     LiCaiQuanArticleDto getArticleContent(long articleId);
 
     BaseDto<BaseDataDto> checkArticleOnStatus(long articleId);
@@ -17,6 +15,8 @@ public interface LiCaiQuanArticleService {
     void rejectArticle(long articleId, String comment);
 
     Map<String, String> getAllComments(long articleId);
+
+    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType, int size, int index);
 
     long getLikeCount(long articleId);
 
@@ -33,6 +33,4 @@ public interface LiCaiQuanArticleService {
     void checkPassAndCreateArticle(long articleId,String checkName);
 
     void deleteArticle(long articleId);
-
-    void changeArticleStatus(long articleId, ArticleStatus articleStatus);
 }

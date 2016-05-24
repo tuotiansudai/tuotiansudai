@@ -85,6 +85,22 @@ public class LicaiquanArticleModel implements Serializable {
         this.deleted = false;
     }
 
+    public LicaiquanArticleModel(LiCaiQuanArticleDto dto){
+        this.id = dto.getArticleId();
+        this.title = dto.getTitle();
+        this.creatorLoginName = dto.getCreator();
+        this.checkerLoginName = dto.getChecker();
+        this.author = dto.getAuthor();
+        this.section = dto.getSection();
+        this.source = dto.getSource();
+        this.carousel = dto.isCarousel();
+        this.thumbnail = dto.getThumbPicture();
+        this.showPicture = dto.getShowPicture();
+        this.content = dto.getContent();
+        this.createdTime = dto.getCreateTime();
+        this.updatedTime = dto.getUpdateTime();
+    }
+
     public long getId() {
         return id;
     }

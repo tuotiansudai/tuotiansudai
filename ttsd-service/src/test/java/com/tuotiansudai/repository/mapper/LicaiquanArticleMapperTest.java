@@ -136,20 +136,6 @@ public class LicaiquanArticleMapperTest {
     }
 
     @Test
-    public void testFindDeletedArticleListOrderByCreateTime() {
-        prepareArticleData();
-        licaiquanArticleMapper.deleteArticle(articleId);
-        List<LicaiquanArticleModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime(null, null, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() > 0);
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() == 0);
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() == 0);
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() > 0);
-    }
-
-    @Test
     public void testUpdateArticle() {
         prepareArticleData();
 

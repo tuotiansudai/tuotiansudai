@@ -9,25 +9,25 @@
     <resultMap id="licaiquanArticleModel" type="LicaiquanArticleModel">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
-        <result column="creator_login_name" property="creator"/>
-        <result column="checker_login_name" property="checker"/>
+        <result column="creator_login_name" property="creatorLoginName"/>
+        <result column="checker_login_name" property="checkerLoginName"/>
         <result column="author" property="author"/>
-        <result column="section" property="articleSection"/>
+        <result column="section" property="section"/>
         <result column="source" property="source"/>
         <result column="carousel" property="carousel"/>
-        <result column="thumbnail" property="thumbnail"/>
+        <result column="thumb" property="thumb"/>
         <result column="show_picture" property="showPicture"/>
         <result column="content" property="content"/>
-        <result column="created_time" property="createTime"/>
-        <result column="updated_time" property="updateTime"/>
-        <result column="deleted" property="isDeleted"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="deleted" property="deleted"/>
     </resultMap>
 
     <insert id="createArticle" parameterType="LicaiquanArticleModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`licaiquan_article` (id, title, creator_login_name, checker_login_name, author, section,
-        source, carousel, thumbnail, show_picture, content, created_time, updated_time, deleted)
-        VALUE (#{id}, #{title}, #{creator}, #{checker}, #{author}, #{articleSection}, #{source}, #{carousel},
-        #{thumbnail}, #{showPicture}, #{content}, #{createTime}, #{updateTime}, #{isDeleted})
+        source, carousel, thumb, show_picture, content, created_time, updated_time, deleted)
+        VALUE (#{id}, #{title}, #{creator_login_name}, #{checker_login_name}, #{author}, #{section}, #{source}, #{carousel},
+        #{thumb}, #{showPicture}, #{content}, #{createdTime}, #{updatedTime}, #{deleted})
     </insert>
 
     <update id="deleteArticle">
@@ -35,23 +35,24 @@
     </update>
 
     <select id="findArticleById" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumbnail, show_picture,
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
         content, created_time, updated_time, deleted
         FROM `aa`.`licaiquan_article` WHERE id = #{id}
     </select>
 
     <update id="updateArticle" parameterType="LicaiquanArticleModel">
-        UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creator}, checker_login_name = #{checker},
-        author = #{author}, section = #{articleSection}, source = #{source}, carousel = #{carousel}, thumbnail = #{thumbnail},
-        show_picture = #{showPicture}, content = #{content}, created_time = #{createTime}, updated_time = #{updateTime}
+        UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creatorLoginName},
+        checker_login_name = #{checkerLoginName}, author = #{author}, section = #{section}, source = #{source},
+        carousel = #{carousel}, thumb = #{thumb}, show_picture = #{showPicture}, content = #{content},
+        created_time = #{createdTime}, updated_time = #{updatedTime}
         WHERE id = #{id}
     </update>
 
     <select id="findExistedArticleListOrderByCreateTime" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumbnail, show_picture,
+        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
         content, created_time, updated_time, deleted
         FROM `aa`.`licaiquan_article`
-        WHERE id >= #{startId} AND deleted = 0
+        WHERE id >= #{index} AND deleted = 0
         <if test="title != null and title != '' " >
             AND title LIKE CONCAT(CONCAT('%', #{title}), '%')
         </if>
@@ -59,33 +60,6 @@
             AND section = #{section}
         </if>
         ORDER BY id,created_time DESC
-        LIMIT #{size}
-    </select>
-
-    <select id="findDeletedArticleListOrderByCreateTime" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumbnail, show_picture,
-        content, created_time, updated_time, deleted
-        FROM `aa`.`licaiquan_article`
-        WHERE id >= #{startId} AND deleted = TRUE
-        <if test="title != null">
-            AND title = #{title}
-        </if>
-        <if test="section != null">
-            AND section = #{section}
-        </if>
-        ORDER BY created_time DESC
-        LIMIT #{size}
-    </select>
-
-    <select id="findExistedArticleListCount" parameterType="map" resultType="long">
-        SELECT count(id)
-        FROM `aa`.`licaiquan_article`
-        WHERE deleted = 0
-        <if test="title != null and title != '' " >
-            AND title LIKE CONCAT(CONCAT('%', #{title}), '%')
-        </if>
-        <if test="section != null">
-            AND section = #{section}
-        </if>
+        LIMIT #{pageSize}
     </select>
 </mapper>

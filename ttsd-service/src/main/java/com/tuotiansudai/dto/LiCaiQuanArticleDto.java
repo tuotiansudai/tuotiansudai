@@ -34,13 +34,13 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.thumbPicture = model.getThumbnail();
         this.showPicture = model.getShowPicture();
         this.carousel = model.isCarousel();
-        this.section = model.getArticleSection();
+        this.section = model.getSection();
         this.content = model.getContent();
-        this.createTime = model.getCreateTime();
+        this.createTime = model.getCreatedTime();
         this.articleStatus = ArticleStatus.PUBLISH;
         this.source = model.getSource();
-        this.updateTime = model.getUpdateTime();
-        this.checker = model.getChecker();
+        this.updateTime = model.getUpdatedTime();
+        this.checker = model.getCheckerLoginName();
     }
 
     public Long getArticleId() {

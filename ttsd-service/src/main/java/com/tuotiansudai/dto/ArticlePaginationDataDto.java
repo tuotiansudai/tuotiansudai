@@ -1,7 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.LicaiquanArticleModel;
-
 import java.util.List;
 
 
