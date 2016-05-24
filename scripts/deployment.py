@@ -46,8 +46,11 @@ class QADeployment(object):
     def mk_static_package(self):
         print "Making static package..."
         sh('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
+        sh('cd ./ttsd-mobile-api/src/main/webapp && zip -r staticApi.zip api/')
         sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
+        sh('mv ./ttsd-mobile-api/src/main/webapp/staticApi.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static.zip -d static')
+        sh('cd ./ttsd-web/build && unzip staticApi.zip -d static')
 
     def init_docker(self):
         print "Initialing docker..."
