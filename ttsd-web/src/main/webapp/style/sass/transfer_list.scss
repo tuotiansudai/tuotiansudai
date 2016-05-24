@@ -1,0 +1,169 @@
+@import 'variables';
+@import 'daterangepicker';
+@import "coupon_alert";
+
+
+.layui-layer-btn {
+  text-align: center !important;
+  .layui-layer-btn0 {
+    padding: 3px 35px;
+    background: nth($CK1, 2) !important;
+    border-radius: 4px;
+    border: 1px solid nth($CK1, 2) !important;
+    border-color: nth($CK1, 2) !important;
+    letter-spacing: 3px;
+    color: #fff;
+  }
+}
+/*transfer list*/
+.transfer-list-content {
+  .project-type{
+    margin-bottom: 15px;
+    li{
+      margin:0 15px;
+      display: inline-block;
+      a{
+        font-size:18px;
+        color:#0e050a;
+      }
+      &.active{
+        border-bottom:4px solid #ff9c1b;
+        a{
+          color:#ff9c1b;
+        }
+      }
+    }
+  }
+  .filter-list{
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    padding: 12px 12px 0 12px;
+    border-radius: 3px;
+    .wrapper-list {
+      li {
+        border-bottom: 1px solid #e6e6e6;
+        padding: 12px;
+        &:last-child{
+          border-bottom:none;
+        }
+        span {
+          padding-right: 10px;
+        }
+        a {
+          color: #000;
+          font-size: 12px;
+          padding: 7px 13px;
+          &:hover, &.active {
+            color: #fff;
+            background: #ffac2a;
+            border-radius: 3px;
+          }
+        }
+        &:nth-child(1) {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+  .transfer-list-box{
+    ul {
+      li {
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+        padding: 5px 2px;
+        margin-top: 10px;
+        position: relative;
+        cursor: pointer;
+        background: #fff;
+        &:hover {
+          background: #fff;
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
+        }
+        .transfer-info-frame {
+          width: 690px;
+          padding-bottom: 10px;
+          border-right: 1px solid #ccc;
+          text-align: center;
+          .transfer-top {
+            padding: 5px 20px 0 30px;
+            height: auto;
+            overflow: auto;
+            line-height: 50px;
+            .l-title {
+              font-size: 20px;
+              color: #4e4e4e;
+              display: inline-block;
+              width: 300px;
+              text-align: left;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .l-way {
+              font-size: 12px;
+              color: #b3b3b3;
+              border-radius: 12px;
+              border: 1px solid #e5e5e5;
+              display: inline;
+              line-height: 1;
+              padding: 6px 15px;
+              margin-top: 12px;
+            }
+          }
+          .transfer-info-dl {
+            width: 630px;
+            margin: 0px 30px;
+            line-height: 1.4;
+            dl {
+              width: 25%;
+              float:left;
+              color: #808080;
+              font-size: 17px;
+              dd {
+                color: #999;
+                em {
+                  font-size: 26px;
+                  color: #ff7200;
+                }
+                i {
+                  font-size: 16px;
+                  color: #ff7200;
+                }
+              }
+            }
+          }
+        }
+        .transfer-right {
+          float: left;
+          width: 240px;
+          margin: 10px 30px 0px 30px;
+          .transfer-time{
+            float:left;
+            width:100%;
+            text-align:center;
+            line-height:55px;
+          }
+          .rest-amount {
+            color: #ff752a;
+            font-size: 13px;
+            padding-top: 10px;
+            line-height: 1.3;
+            i {
+              font-size: 20px;
+            }
+            .btn-normal {
+              padding: 7px 0;
+              width: 100%;
+              font-size: 16px;
+              font-weight: bold;
+              margin-top: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width:700px) {
+  
+}

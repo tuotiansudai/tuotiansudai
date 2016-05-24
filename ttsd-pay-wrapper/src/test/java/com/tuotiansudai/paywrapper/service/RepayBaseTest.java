@@ -83,9 +83,7 @@ public class RepayBaseTest {
     }
 
     protected LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        LoanRepayModel fakeLoanRepay = new LoanRepayModel(loanRepayId, loanId, period, 0, expectedRepayDate, repayStatus);
-        fakeLoanRepay.setCorpus(corpus);
-        fakeLoanRepay.setExpectedInterest(expectedInterest);
+        LoanRepayModel fakeLoanRepay = new LoanRepayModel(loanRepayId, loanId, period, corpus, expectedInterest, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);
         return fakeLoanRepay;
     }

@@ -24,7 +24,13 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferNopwdRequestModel newInvestNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        return new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, "invest_notify");
+        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST, UmPayParticType.INVESTOR, "invest_notify");
+        return model;
+    }
+
+    public static ProjectTransferNopwdRequestModel newPurchaseNopwdRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER, UmPayParticType.INVESTOR, "invest_transfer_notify");
+        return model;
     }
 
     public static ProjectTransferNopwdRequestModel newRepayNopwdRequest(String projectId, String orderId, String userId, String amount) {
