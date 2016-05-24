@@ -13,6 +13,8 @@ public class IdentityNumberValidator {
 
     static Logger logger = Logger.getLogger(IdentityNumberValidator.class);
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+
     /***
      * 中国公民身份证号码最小长度。
      */
@@ -51,6 +53,11 @@ public class IdentityNumberValidator {
         if (!compareIdCard(idCard, countCode18(code17))) {
             return false;
         }
+
+        if(!validateYearByAdult(code17)){
+            return false;
+        }
+
         return true;
     }
 
@@ -69,14 +76,14 @@ public class IdentityNumberValidator {
         if (idCard.length() == CHINA_ID_MAX_LENGTH) {
             return idCard.substring(0, 17);
         } else if (idCard.length() == CHINA_ID_MIN_LENGTH) {
-            return conver15CardTo18(idCard).substring(0, 17);
+            return convert15CardTo18(idCard).substring(0, 17);
         }
         return null;
     }
 
-    private static boolean compareIdCard(String idCatd, String countIdCard) {
-        if (idCatd.length() == 18) {
-            if (!countIdCard.equals(idCatd)) {
+    private static boolean compareIdCard(String idCard, String countIdCard) {
+        if (idCard.length() == 18) {
+            if (!countIdCard.equals(idCard)) {
                 return false;
             }
         }
@@ -109,7 +116,15 @@ public class IdentityNumberValidator {
         return true;
     }
 
-    private static String conver15CardTo18(String idCard) {
+    private static boolean validateYearByAdult(String idCard){
+        System.out.print(Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,10)));
+        if((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,10)) >= 18)){
+            return true;
+        }
+        return false;
+    }
+
+    private static String convert15CardTo18(String idCard) {
         String birthday = idCard.substring(6, 12);
         Date birthDate = null;
         try {
