@@ -188,6 +188,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId, String exchangeCode) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
+        //防止并发领券
+        userMapper.lockByLoginName(loginName);
+
         List<CouponModel> coupons  = couponId == null || couponMapper.findById(couponId) == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
@@ -231,9 +234,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }));
 
         for (CouponModel couponModel : couponModels) {
-            CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
-            lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
-            couponMapper.updateCoupon(lockedCoupon);
+            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
+            couponMapper.updateCoupon(couponModel);
             Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
             Date endTime = new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
             if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
@@ -242,7 +244,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
             }
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
-            if (lockedCoupon.getUserGroup() == UserGroup.EXCHANGER_CODE && exchangeCode != null) {
+            if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE && exchangeCode != null) {
                 userCouponModel.setExchangeCode(exchangeCode);
             }
             userCouponMapper.create(userCouponModel);
