@@ -16,6 +16,7 @@
         <result property="projectName" column="project_name"/>
         <result property="projectAmount" column="project_amount"/>
         <result property="loanUserId" column="loan_user_id"/>
+        <result property="ctrlOverInvest" column="ctrl_over_invest"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
         <result property="requestTime" column="request_time"/>
@@ -27,8 +28,8 @@
     </select>
 
     <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectRequestModel">
-        insert into mer_bind_project_request (service, sign_type, sign, charset, mer_id, version, project_id,project_name,project_amount,loan_user_id, request_url, request_data,request_time,status)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{projectId}, #{projectName}, #{projectAmount}, #{loanUserId}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
+        insert into mer_bind_project_request (service, sign_type, sign, charset, mer_id, version, project_id,project_name,project_amount,loan_user_id, ctrl_over_invest, request_url, request_data,request_time,status)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{projectId}, #{projectName}, #{projectAmount}, #{loanUserId}, #{ctrlOverInvest}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">

@@ -20,6 +20,8 @@ public class PointPrizeWinnerViewDto implements Serializable{
 
     private String identityNumber;
 
+    private boolean active;
+
     public long getId() {
         return id;
     }
@@ -74,5 +76,13 @@ public class PointPrizeWinnerViewDto implements Serializable{
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

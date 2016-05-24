@@ -16,11 +16,11 @@
 
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
+    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.api.security.MobileAppDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-        <beans:property name="enableCaptchaVerify" value="false"/>
+        <beans:property name="enableCaptchaVerify" value="true"/>
     </beans:bean>
 
     <beans:bean id="mobileAppTokenProvider" class="com.tuotiansudai.api.security.MobileAppTokenProvider">
@@ -81,6 +81,7 @@
         <intercept-url pattern="/v1.0/get/node" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
 
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
@@ -88,6 +89,7 @@
         <intercept-url pattern="/v1.0/get/banner" access="permitAll()"/>
         <intercept-url pattern="/v1.0/register" access="permitAll()"/>
         <intercept-url pattern="/share-callback" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

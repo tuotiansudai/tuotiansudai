@@ -18,6 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
-        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
+        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
         loanDetailResponseDataDto.setLoanName(loan.getName());
         String repayTypeName = loan.getType().getRepayType();
         String interestPointName = loan.getType().getInterestPointName();
@@ -133,16 +134,20 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
         loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
+        loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
         return loanDetailResponseDataDto;
 
     }
 
     private List<EvidenceResponseDataDto> getEvidenceByLoanId(long loanId) {
-        EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
-        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findByLoanId(loanId);
-        List<String> imageUrlList = Lists.newArrayList();
+        EvidenceResponseDataDto evidenceResponseDataDto;
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(loanId);
+        List<String> imageUrlList;
         List<EvidenceResponseDataDto> evidenceResponseDataDtos = Lists.newArrayList();
         for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModels) {
+            imageUrlList = Lists.newArrayList();
+            evidenceResponseDataDto = new EvidenceResponseDataDto();
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
@@ -150,10 +155,11 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
                     imageUrlList.add(tempUrl);
                 }
             }
+            evidenceResponseDataDto.setTitle(loanTitleRelationModel.getTitle());
+            evidenceResponseDataDto.setImageUrl(imageUrlList);
+            evidenceResponseDataDtos.add(evidenceResponseDataDto);
         }
-        evidenceResponseDataDto.setTitle("");
-        evidenceResponseDataDto.setImageUrl(imageUrlList);
-        evidenceResponseDataDtos.add(evidenceResponseDataDto);
+
         return evidenceResponseDataDtos;
 
     }

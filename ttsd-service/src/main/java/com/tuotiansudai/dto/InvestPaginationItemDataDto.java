@@ -2,15 +2,14 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.InvestPaginationItemView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemDataDto implements Serializable {
 
@@ -52,7 +51,7 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private Date createdTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date nextRepayDate;
 
     private String nextRepayAmount;
@@ -68,6 +67,19 @@ public class InvestPaginationItemDataDto implements Serializable {
     private boolean birthdayCoupon;
 
     private double birthdayBenefit;
+
+    private String transferStatus;
+
+    private String baseRate;
+
+    private String activityRate;
+
+    private String sumRate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
+    private Date lastRepayDate;
+
+    private int leftPeriod;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
@@ -87,7 +99,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.isAutoInvest = view.isAutoInvest();
         this.loanType = view.getLoanType().getName();
         this.loanPeriods = view.getLoanPeriods();
-        this.createdTime = view.getCreatedTime();
+        this.createdTime = view.getTradingTime() == null ? view.getCreatedTime() : view.getTradingTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
@@ -97,6 +109,9 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.city = view.getCity();
         this.birthdayCoupon = view.isBirthdayCoupon();
         this.birthdayBenefit = view.getBirthdayBenefit();
+        this.baseRate = view.getLoanBaseRatePercent();
+        this.activityRate = view.getLoanActivityRatePercent();
+        this.sumRate = view.getSumRatePercent();
     }
 
     public boolean isStaff() {
@@ -277,5 +292,53 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public String getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
+    public String getBaseRate() {
+        return baseRate;
+    }
+
+    public void setBaseRate(String baseRate) {
+        this.baseRate = baseRate;
+    }
+
+    public String getActivityRate() {
+        return activityRate;
+    }
+
+    public void setActivityRate(String activityRate) {
+        this.activityRate = activityRate;
+    }
+
+    public Date getLastRepayDate() {
+        return lastRepayDate;
+    }
+
+    public void setLastRepayDate(Date lastRepayDate) {
+        this.lastRepayDate = lastRepayDate;
+    }
+
+    public int getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(int leftPeriod) {
+        this.leftPeriod = leftPeriod;
+    }
+
+    public String getSumRate() {
+        return sumRate;
+    }
+
+    public void setSumRate(String sumRate) {
+        this.sumRate = sumRate;
     }
 }

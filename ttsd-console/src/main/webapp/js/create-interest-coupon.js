@@ -82,9 +82,14 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 }
             },
             beforeCheck: function(curform) {
+                var rep_point1 = /^(\d+\.\d{1,1}|\d+)$/;
                 var couponRate = parseFloat($('.coupon-rate').val());
                 if (couponRate <= 0) {
                     showErrorMessage('加息券利率需要大于0', $('.coupon-rate', curform));
+                    return false;
+                }
+                if (!rep_point1.test(couponRate)) {
+                    showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
                     return false;
                 }
                 var fivenumber = parseInt($('.give-number', curform).val());
@@ -142,7 +147,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             $('.file-btn').hide();
             var userGroup = this.value;
             var $fileBtn = $('.file-btn');
-            if(userGroup != "IMPORT_USER" && userGroup != "EXCHANGER_CODE" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
+            if(userGroup != "IMPORT_USER" && userGroup != "EXCHANGER_CODE" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'NEW_REGISTERED_USER'){
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
@@ -153,7 +158,11 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $('.give-number').val('').prop('readonly', false);
-                $('.smsAlert').prop({disabled:true,checked:false});
+                $('.smsAlert').prop({disabled: true, checked: false});
+            } else if (userGroup == 'NEW_REGISTERED_USER') {
+                $fileBtn.hide();
+                $('.file-btn').find('input').val('');
+                $('.give-number').val('').prop('readonly', false);
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {

@@ -48,6 +48,7 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
         investDto.setSource(Source.WEB);
         String errorMessage = "投资失败，请联系客服！";
+        String errorType = "";
         try {
             investDto.setLoginName(LoginUserInfo.getLoginName());
             BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
@@ -59,9 +60,11 @@ public class InvestController {
             }
         } catch (InvestException e) {
             errorMessage = e.getMessage();
+            errorType = e.getType().name();
         }
 
         redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }

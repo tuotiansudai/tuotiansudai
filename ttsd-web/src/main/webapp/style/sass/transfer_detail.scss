@@ -1,0 +1,197 @@
+@import 'variables';
+@import 'daterangepicker';
+@import "coupon_alert";
+.layui-layer-btn {
+  text-align: center !important;
+  .layui-layer-btn1 {
+    padding: 3px 35px;
+    background: nth($CK1, 2) !important;
+    border-radius: 4px;
+    border: 1px solid nth($CK1, 2) !important;
+    border-color: nth($CK1, 2) !important;
+    letter-spacing: 3px;
+    color: #fff;
+  }
+  .layui-layer-btn0{
+    padding:3px 35px;
+    color:#808080!important;
+    border: 1px solid #dedede!important;
+    background: #f1f1f1!important;
+    border-radius: 4px;
+  }
+}
+/* loan detail */
+.transfer-detail-content {
+  .detail-intro{
+    float:left;
+    width:998px;
+    background:#fff;
+    border: 1px solid #d9d9d9;
+    border-radius:3px;
+    .transfer-top{
+      float:left;
+      width:100%;
+      border-bottom:1px solid #d9d9d9;
+      span{
+        line-height:50px;
+        &.product-name{
+          float:left;
+          font-size:20px;
+          color:#4c4c4c;
+          margin-left:40px;
+        }
+        &.product-type{
+          float:left;
+          font-size:18px;
+          color:#808080;
+          margin-left:20px;
+        }
+        &.product-tip{
+          float:right;
+          font-size:12px;
+          color:#4c4c4c;
+          margin-right:30px;
+        }
+      }
+    }
+    .transfer-info{
+      float:left;
+      width: 570px;
+      margin:10px 15px;
+      padding-right: 40px;
+      border-right: 1px solid #d9d9d9;
+      .transfer-info-dl {
+        float:left;
+        width: 100%;
+        dl {
+          width: 25%;
+          float:left;
+          color: #808080;
+          font-size: 16px;
+          text-align:center;
+          dd {
+            color: #999;
+            em {
+              font-size: 26px;
+              color: #ff7200;
+            }
+            i {
+              font-size: 16px;
+              color: #ff7200;
+            }
+          }
+        }
+      }
+      .info-detail{
+        float:left;
+        width:100%;
+        margin-top:40px;
+        border-top:1px dashed #d9d9d9;
+        padding:10px 0;
+        .detail-list{
+          float:left;
+          width:100%;
+          li{
+            float:left;
+            width:50%;
+            span{
+              float:left;
+              padding-left:30px;
+              font-size:12px;
+              color:#808080;
+            }
+          }
+        }
+      }
+    }
+    .transfer-operat{
+      float:left;
+      width:325px;
+      padding-top:10px;
+      margin: 10px 15px;
+      p{
+        float:left;
+        width:270px;
+        padding:0 10px;
+        font-size:14px;
+        color:#4c4c4c;
+        margin-bottom:5px;
+        &.get-money{
+          font-size:18px;
+          padding:15px 10px;
+          border:1px solid #efefef;
+        }
+        &.user-money{
+          color:#7f7f7f;
+          font-size:14px;
+        }
+        &.img-status{
+          padding: 20px 10px;
+          text-align: center;
+        }
+        &.status-text{
+          font-size:16px;
+        }
+        .btn-pay{
+          width: 100%;
+        }
+        span{
+          &.name-text{
+            float:left;
+          }
+          &.money-text{
+            float:right;
+            strong{
+              color:#ff752a;
+            }
+          }
+        }
+        .invest-btn{
+          width: 168px;
+          margin: 10px 15px 0;
+        }
+      }
+    }
+  }
+  .detail-record{
+    float:left;
+    width:998px;
+    background:#fff;
+    margin-top:20px;
+    margin-bottom:40px;
+    border: 1px solid #d9d9d9;
+    border-radius:3px;
+    .transfer-top{
+      float:left;
+      width:100%;
+      border-bottom:1px solid #d9d9d9;
+      span{
+        line-height:50px;
+        &.product-name{
+          float:left;
+          font-size:20px;
+          color:#4c4c4c;
+          margin-left:40px;
+        }
+      }
+    }
+    .transfer-table{
+      float:left;
+      width:920px;
+      padding:20px 40px;
+      table{
+        border:1px solid #d9d9d9;
+        i{
+          color:#0079e5;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+@media screen and (max-width:700px) {
+
+}
