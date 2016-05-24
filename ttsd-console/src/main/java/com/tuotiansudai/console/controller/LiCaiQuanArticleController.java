@@ -143,7 +143,7 @@ public class LiCaiQuanArticleController {
         if (null == liCaiQuanArticleDto) {
             modelAndView = new ModelAndView("redirect:/error/404");
         } else {
-            modelAndView = new ModelAndView("/article-check-view");
+            modelAndView = new ModelAndView("/article-preview");
             modelAndView.addObject("articleContent", liCaiQuanArticleDto);
         }
         return modelAndView;
