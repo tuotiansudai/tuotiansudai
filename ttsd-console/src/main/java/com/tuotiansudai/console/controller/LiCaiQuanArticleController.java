@@ -97,7 +97,7 @@ public class LiCaiQuanArticleController {
             return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-check-view");
-            modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
+            modelAndView.addObject("articleContent", liCaiQuanArticleDto);
             return modelAndView;
         }
     }
