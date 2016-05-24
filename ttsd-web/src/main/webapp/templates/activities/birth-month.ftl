@@ -56,7 +56,7 @@
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
                 <#else>
-                <a href="/loan-list?productType=WYX" class="click-btn time-btn">
+                <a href="/loan-list?productType=WYX" class="fl clearfix">
                 </#if>
                     <img src="${staticServer}/images/sign/actor/birth/90-wap.png" width="100%">
                 </a>
@@ -65,7 +65,7 @@
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
                 <#else>
-                <a href="/loan-list?productType=JYF" class="click-btn time-btn">
+                <a href="/loan-list?productType=JYF" class="fl clearfix">
                 </#if>
                     <img src="${staticServer}/images/sign/actor/birth/180-wap.png" width="100%">
                 </a>
@@ -74,7 +74,7 @@
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
                 <#else>
-                <a href="/loan-list?productType=JYF" class="click-btn time-btn">
+                <a href="/loan-list?productType=JYF" class="fl clearfix">
                 </#if>
                     <img src="${staticServer}/images/sign/actor/birth/360-wap.png" width="100%">
                 </a>
