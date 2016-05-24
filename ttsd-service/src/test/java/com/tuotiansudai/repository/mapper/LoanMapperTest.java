@@ -308,7 +308,7 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
 
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false"));
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true"));
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING));
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING));
     }
 }

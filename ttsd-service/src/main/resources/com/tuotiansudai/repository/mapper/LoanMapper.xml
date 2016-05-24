@@ -468,7 +468,7 @@
         FROM
         loan
         WHERE
-        loan.status = 'RAISING'
+        loan.status = #{loanStatus}
         <if test="IsContainNewBie == 'false'">
             and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
         </if>
