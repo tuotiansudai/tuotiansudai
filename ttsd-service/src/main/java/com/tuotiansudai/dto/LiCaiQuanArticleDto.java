@@ -42,6 +42,7 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.source = model.getSource();
         this.updateTime = model.getUpdatedTime();
         this.checker = model.getCheckerLoginName();
+        this.creator = model.getCreatorLoginName();
     }
 
     public Long getArticleId() {

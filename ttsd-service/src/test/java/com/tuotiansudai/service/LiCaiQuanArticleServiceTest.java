@@ -150,6 +150,9 @@ public class LiCaiQuanArticleServiceTest {
         liCaiQuanArticleDto.setShowPicture("showPicture");
         liCaiQuanArticleDto.setThumbPicture("ThumbPicture");
         liCaiQuanArticleDto.setCreateTime(new Date());
+        liCaiQuanArticleDto.setContent("123");
+        liCaiQuanArticleDto.setCreator("test");
+        liCaiQuanArticleDto.setChecker("test");
         return liCaiQuanArticleDto;
     }
 
@@ -219,7 +222,7 @@ public class LiCaiQuanArticleServiceTest {
 
     @Test
     public void shouldDeleteArticleIsOk(){
-        UserModel user = createUserByUserId("ceshi1");
+        UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(),user.getLoginName());
@@ -229,7 +232,7 @@ public class LiCaiQuanArticleServiceTest {
 
     @Test
     public void shouldcheckPassAndCreateArticleIsOk(){
-        UserModel user = createUserByUserId("ceshi1");
+        UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto,"test");
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(),user.getLoginName());

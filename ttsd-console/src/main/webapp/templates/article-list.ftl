@@ -55,13 +55,13 @@
                         </#if>
                     </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
-                    <td>${article.author!}</td>
+                    <td>${article.creator!}</td>
                     <td>${article.checker!}</td>
                     <td>${article.articleStatus.description!}</td>
                     <td>
                         <#if article.articleStatus.description == '待审核'>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                                <a href="/announce-manage/article/${article.articleId?c}/check-view">审核 </a>/
+                                <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>/
                             </@security.authorize>
                             <@security.authorize access="hasAuthority('OPERATOR')">
                                 <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
