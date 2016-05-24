@@ -97,7 +97,7 @@ public class InterestCalculator {
         return expectedFee;
     }
 
-    public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final DateTime currentRepayDate) {
+    public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels) {
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1);
 
         Ordering<LoanRepayModel> orderingByPeriodDesc = new Ordering<LoanRepayModel>() {
