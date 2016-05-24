@@ -48,7 +48,8 @@ public class LiCaiQuanArticleController {
         if (beginTime != null) {
             liCaiQuanArticleDto.setCreateTime(beginTime);
         }
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, LoginUserInfo.getLoginName());
+        liCaiQuanArticleDto.setCreator(LoginUserInfo.getLoginName());
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         return mv;
     }
 

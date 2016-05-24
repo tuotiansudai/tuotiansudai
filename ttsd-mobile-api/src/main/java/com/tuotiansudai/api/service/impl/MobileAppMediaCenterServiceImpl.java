@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationItemDto;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
