@@ -10,10 +10,10 @@
         <span id="author">作者：${articleContent.getAuthor()}</span>
         <span id="createTime" style="margin-left: 30px">${articleContent.getCreateTime()?date}</span>
     </p>
-             <p id="content" data-id=${articleContent.getId()}>${articleContent.getContent()}</p>
+             <p id="content">${articleContent.getContent()}</p>
     </div>
     <div align="center">
-        <input type="button" name="Submit" value="确认" onclick="window.close();"/>
+        <input type="button" name="Submit" value="确认" onclick="javascript:open(location, '_self').close();"/>
     </div>
 </div>
 

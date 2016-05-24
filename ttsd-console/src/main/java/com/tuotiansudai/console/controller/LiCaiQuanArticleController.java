@@ -31,7 +31,7 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}/edit/", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/{articleId}/edit", method = RequestMethod.GET)
     public ModelAndView editArticle(@PathVariable long articleId) {
         ModelAndView mv = new ModelAndView("/article-edit");
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
@@ -97,7 +97,7 @@ public class LiCaiQuanArticleController {
             return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-check-view");
-            modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
+            modelAndView.addObject("articleContent", liCaiQuanArticleDto);
             return modelAndView;
         }
     }
