@@ -51,4 +51,18 @@
             `created_time` = #{createdTime}
         where `id` = #{id}
     </update>
+
+    <select id="findMessagePaginationCount"  parameterType="map" resultType="long">
+        select count(*) from message
+        <where>
+            <if test="title != null and title !=''">
+                <![CDATA[and b.loaner_login_name like '${loginName}%']]>
+                and title = like '%{title}%'
+            </if>
+
+        </where>
+        where id = #{id};
+    </select>
+
+
 </mapper>
