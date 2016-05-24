@@ -304,7 +304,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public boolean deleteCoupon(String loginName, long couponId) {
-        if (CollectionUtils.isEmpty(userCouponMapper.findByCouponId(couponId))) {
+        if (CollectionUtils.isNotEmpty(userCouponMapper.findByCouponId(couponId))) {
             return false;
         }
         CouponModel couponModel = couponMapper.findById(couponId);

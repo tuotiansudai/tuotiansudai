@@ -5,9 +5,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.LotteryTransferCashJob;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
@@ -20,12 +17,9 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.DateUtil;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,12 +59,6 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     @Autowired
     private CouponActivationService couponActivationService;
-
-    @Autowired
-    private JobManager jobManager;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Autowired
     private UserMapper userMapper;
@@ -128,13 +116,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
 
             if (winPointPrize.getCouponId() != null) {
-                couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.WINNER), winPointPrize.getCouponId());
-            }
-
-            if (winPointPrize.getCash() != null) {
-                long orderId = idGenerator.generate();
-                TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), String.valueOf(winPointPrize.getCash()));
-                this.createTransferCashJob(transferCashDto);
+                couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.WINNER), winPointPrize.getCouponId(), null);
             }
 
             return winPointPrize.getName();
@@ -142,20 +124,6 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             return ALREADY_LOTTERY_NOT_SHARE;
         } else {
             return ALREADY_LOTTERY_SHARE;
-        }
-    }
-
-    private void createTransferCashJob(TransferCashDto transferCashDto) {
-        Date triggerTime = new DateTime().plusMinutes(LotteryTransferCashJob.TRANSFER_CASH_DELAY_MINUTES).toDate();
-        try {
-            jobManager.newJob(JobType.LotteryTransferCash, LotteryTransferCashJob.class)
-                    .addJobData(LotteryTransferCashJob.TRANSFER_CASH_KEY, transferCashDto)
-                    .withIdentity(JobType.LotteryTransferCash.name(), "LoginName-" + transferCashDto.getLoginName())
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create transfer cash job for login name [" + transferCashDto.getLoginName() + "] fail", e);
         }
     }
 

@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert','red-envelope-float','count_down'], function ($, _) {
+require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -11,7 +11,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
-        $dlAmount.find('i').filter(function(index) {
+        $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
                 valueAmount = value.replace(/[^\d|.]*/g, '');
             return valueAmount.length > 5;
@@ -24,45 +24,45 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
 
         leftWid = (picWid - screenWid) / 2;
 
-        $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
-        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2});
+        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
         $imgScroll.find('img').css({
             'margin-left': '-' + leftWid + 'px'
         });
 
 
-        $imgNum.click(function() {
+        $imgNum.click(function () {
             var num_nav = $imgNum.index(this);
             $(this).addClass("selected").siblings().removeClass("selected");
             $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
         });
-        $bannerBox.hover(function() {
+        $bannerBox.hover(function () {
             clearInterval(adTimer);
-        }, function() {
-            adTimer = setInterval(function() {
+        }, function () {
+            adTimer = setInterval(function () {
                 var index = ++n % $bannerImg.length;
                 $imgNum.eq(index).trigger('click');
             }, 6000);
         }).trigger('mouseleave');
 
 
-        $(".product-box .pad-m").click(function() {
-
+        $(".product-box .pad-m").click(function () {
             window.location.href = $(this).data("url");
         });
-        var viewport=commonFun.browserRedirect();
-        if(viewport=='pc') {
+
+        var viewport = commonFun.browserRedirect();
+
+        if (viewport == 'pc') {
             $imgScroll.find('img.iphone-img').remove();
-        } else if(viewport=='mobile') {
+        } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }
 
         var scrollTimer;
-        $(".scroll-top").hover(function() {
+        $(".scroll-top").hover(function () {
             clearInterval(scrollTimer);
-        }, function() {
-            scrollTimer = setInterval(function() {
+        }, function () {
+            scrollTimer = setInterval(function () {
                 scrollNews($(".scroll-top"));
             }, 2000);
         }).trigger("mouseout");
@@ -72,12 +72,15 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             var lineHeight = $self.find("li:first").height();
             $self.animate({
                 "margin-top": -lineHeight + "px"
-            }, 600, function() {
+            }, 600, function () {
                 $self.css({
                     "margin-top": "0px"
                 }).find("li:first").appendTo($self);
             })
         }
-
+        $('.loan-btn li').on('click', function(event) {
+            event.preventDefault();
+            window.location.href=$(this).attr('data-url');
+        });
     });
 });

@@ -199,13 +199,6 @@
   }
 }
 
-.layer-tip-box {
-  position: fixed;
-  right: 10px;
-  bottom: 360px;
-  z-index: 100;
-}
-
 .fix-nav-list {
   position: fixed;
   right: 22px;
@@ -476,7 +469,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .layer-tip-box, .fix-nav-list {
+  .fix-nav-list {
     display: none;
   }
 }
+

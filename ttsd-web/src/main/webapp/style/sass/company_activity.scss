@@ -2212,15 +2212,15 @@
     .ios{
       background: url("/images/sign/actor/download/download-ios.png") no-repeat center;
       left:48%;
-      top:54%;
-      background-size:100%;
+      top:53%;
+      background-size:74%;
     }
 
     .android{
       background: url("/images/sign/actor/download/download-android.png") no-repeat center;
       left:48%;
-      top:72%;
-      background-size:100%;
+      top:68%;
+      background-size:74%;
     }
   }
   .download-one{
@@ -2564,6 +2564,329 @@
   }
 }
 
+/*invest-achievement page*/
+.invest-achievement-container{
+  background:#e5f2ff;
+  .container-model{
+    float:left;
+    width:100%;
+  }
+  .content-list{
+    float:left;
+    width:100%;
+    .wp{
+      width:1000px;
+      margin:0 auto;
+      position: relative;
+      &:after{
+        clear:both;
+        display:block;
+      }
+      .left-line{
+        position: absolute;
+        top:0;
+        left:-200px;
+        width:200px;
+        height:100%;
+        background:url("/images/sign/actor/achievement/left-line.png") repeat center;
+      }
+      .right-line{
+        position: absolute;
+        top:0;
+        right:-200px;
+        width:200px;
+        height:100%;
+        background:url("/images/sign/actor/achievement/right-line.png") repeat center;
+      }
+      .actor-intro{
+        float:left;
+        width:800px;
+        padding:25px 100px 0 100px;
+        height:245px;
+        background:url("/images/sign/actor/achievement/info-bg.png") no-repeat center bottom;
+        p{
+          font-size:18px;
+          margin-bottom:0;
+        }
+      }
+      .actor-model{
+        float:left;
+        width:100%;
+        &.mt-top{
+          margin-top:-150px;
+        }
+        &.mt-50{
+          margin-top:50px;
+        }
+        h3{
+          text-align:center;
+          font-size:20px;
+          color:#ff4c00;
+          span{
+            position: relative;
+            strong{
+              color:#0f3d70;
+            }
+            i{
+              width:80px;
+              height:25px;
+              position: absolute;
+              top:0;
+              &.left-icon{
+                left:-85px;
+                background:url("/images/sign/actor/achievement/circle-left.png") no-repeat center;
+              }
+              &.right-icon{
+                right:-85px;
+                background:url("/images/sign/actor/achievement/circle-right.png") no-repeat center;
+              }
+            }
+          }
+        }
+        .actor-content{
+          float:left;
+          width:100%;
+          min-height:240px;
+          position: relative;
+          &.mt-30{
+            margin-top:30px;
+          }
+          .intro-text{
+            width:480px;
+            height:auto;
+            position: absolute;
+            top:50%;
+            left:50%;
+            margin-top:-60px;
+            margin-left:-242px;
+            border:2px solid #533010;
+            text-align:center;
+            padding:20px 0;
+            span{
+              color:#ff3232;
+            }
+            dt{
+              font-size:20px;
+            }
+            dd{
+              font-size:16px;
+              i{
+                width:30px;
+                height:30px;
+                display:inline-block;
+                position: relative;
+                top: 5px;
+                background:url("/images/sign/actor/achievement/icon-result.png") no-repeat;
+                &.first-card{
+                  background-position:5px 4px;
+                }
+                &.max-card{
+                  background-position: 3px -28px;
+                }
+                &.last-card{
+                  background-position: 0 -58px;
+                }
+              }
+            }
+          }
+        }
+        .btn-model{
+          float:left;
+          width:100%;
+          height:160px;
+          position: relative;
+          a{
+            position: absolute;
+            top:50%;
+            left:50%;
+            width:300px;
+            height:64px;
+            margin-top:-32px;
+            margin-left:-150px;
+            line-height:64px;
+            color:#fff;
+            font-size:22px;
+            display: inline-block;
+            text-align:center;
+            background:url("/images/sign/actor/achievement/btn-bg.png") no-repeat center;
+          }
+        }
+        .explanation-text{
+          float:left;
+          width:100%;
+          height:210px;
+          position: relative;
+          .explanation-content{
+            position: absolute;
+            width:580px;
+            height:190px;
+            top:0;
+            left:50%;
+            margin-left:-290px;
+            .title-name{
+              float:left;
+              width:30px;
+            }
+            .text-info{
+              float:left;
+              width:550px;
+              li{
+                float:left;
+                width:100%;
+                font-size:14px;
+                color:#011e3b;
+                &.tc{
+                  margin-top:20px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.invest-achievement-phone{
+  background:#e5f2ff;
+  display:none;
+  .phone-model{
+    float:left;
+    width:100%;
+    &.content-model{
+      margin-top:-45px;
+    }
+    .actor-intro{
+      float:left;
+      width:100%;
+      height:100px;
+      padding-top:15px;
+      background:url("/images/sign/actor/achievement/info-bg-phone.png") no-repeat center bottom;
+      background-size: 100%;
+      p{
+        font-size:12px;
+        margin-bottom:0;
+      }
+    }
+    .actor-model{
+      float:left;
+      width:100%;
+      &.mt-25{
+        margin-top:25px;
+      }
+      h3{
+        text-align:center;
+        font-size:14px;
+        color:#ff4c00;
+        span{
+          position: relative;
+          strong{
+            color:#0f3d70;
+          }
+          i{
+            width:40px;
+            height:25px;
+            position: absolute;
+            top:0;
+            &.left-icon{
+              left:-45px;
+              background:url("/images/sign/actor/achievement/circle-left.png") no-repeat center;
+              background-size: 100%;
+            }
+            &.right-icon{
+              right:-45px;
+              background:url("/images/sign/actor/achievement/circle-right.png") no-repeat center;
+              background-size: 100%;
+            }
+          }
+        }
+      }
+      .actor-content{
+        float:left;
+        width:100%;
+        &.mt-15{
+          margin-top:15px;
+        }
+        .intro-text{
+          border:1px solid #533010;
+          text-align:center;
+          padding:20px 0;
+          margin:30px 10px 0;
+          span{
+            color:#ff3232;
+          }
+          dt{
+            font-size:14px;
+          }
+          dd{
+            font-size:12px;
+            i{
+              width:30px;
+              height:30px;
+              display:inline-block;
+              position: relative;
+              top: 5px;
+              background:url("/images/sign/actor/achievement/icon-result.png") no-repeat;
+              &.first-card{
+                background-position:5px 4px;
+              }
+              &.max-card{
+                background-position: 3px -28px;
+              }
+              &.last-card{
+                background-position: 0 -58px;
+              }
+            }
+          }
+        }
+      }
+      .btn-model{
+        float:left;
+        width:100%;
+        height:80px;
+        position: relative;
+        a{
+          position: absolute;
+          top:50%;
+          left:50%;
+          width:150px;
+          height:32px;
+          margin-top:-16px;
+          margin-left:-75px;
+          line-height:32px;
+          color:#fff;
+          font-size:16px;
+          display: inline-block;
+          text-align:center;
+          background:url("/images/sign/actor/achievement/btn-bg.png") no-repeat center;
+          background-size:100%;
+        }
+      }
+      .explanation-text{
+        float:left;
+        padding:0 10px;
+        margin-bottom:30px;
+        .title-name{
+          float:left;
+          width:10%;
+        }
+        .text-info{
+          float:left;
+          width:90%;
+          li{
+            float:left;
+            width:100%;
+            font-size:12px;
+            color:#011e3b;
+            &.tc{
+              margin-top:10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 
 @media screen and (max-width:700px) {
   .red-envelope-container {
@@ -2801,7 +3124,12 @@
   .share-reward-phone{
     display:block;
   }
-
+  .invest-achievement-container{
+    display:none;
+  }
+  .invest-achievement-phone{
+    display:block;
+  }
 
 }
 

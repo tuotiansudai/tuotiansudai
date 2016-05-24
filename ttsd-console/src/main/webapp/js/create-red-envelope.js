@@ -45,7 +45,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.coupon-number').blur(function () {
+        $('.coupon-number, .give-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -74,6 +74,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 $errorDom.html('');
                 if (periods <= 0) {
                     showErrorMessage('红包金额最小为1', $('.coupon-number', curform));
+                    return false;
+                }
+                var fivenumber = parseInt($('.give-number', curform).val());
+                if (fivenumber <= 0) {
+                    showErrorMessage('发放数量最小为1', $('.give-number', curform));
                     return false;
                 }
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
@@ -115,6 +120,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.coupon-start').val('');
             $('.coupon-end').val('');
             $('.invest-quota').val('');
+            $('.give-number').val('');
             $('.productType').prop('checked',false).eq(0).prop('checked',true);
         }
 
@@ -126,10 +132,16 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
-                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER') {
+                $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
+            } else if (userGroup == "EXCHANGER_CODE") {
+                    $('.file-btn').find('input').val('');
+                    $('.give-number').val('').prop('readonly', false);
+            } else if (userGroup == 'NEW_REGISTERED_USER') {
+                    $('.file-btn').find('input').val('');
+                    $('.give-number').val('').prop('readonly', false);
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
@@ -203,6 +215,5 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 layer.msg(data.message);
             });
         });
-
     });
 });

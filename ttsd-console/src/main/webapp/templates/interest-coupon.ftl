@@ -15,7 +15,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">加息券利率(%): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
+                <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if>  datatype="*" errormsg="加息劵利率不能为空">
             </div>
         </div>
 
@@ -45,7 +45,7 @@
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                        <#if userGroup.name() != 'EXCHANGER' && userGroup.name() != 'WINNER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
                         </#if>
                     </#list>

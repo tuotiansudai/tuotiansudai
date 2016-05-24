@@ -29,21 +29,21 @@
     <div class="section box-benift">
         <div class="section-title">
             <div class="line"></div>
-            <b class="bg1">超高收益  最低门槛</b>
-            <em>最高46倍活期存款收益，最低投资门槛50元</em>
+            <b class="bg1">稳健收益  较低门槛</b>
+            <em>最高46倍活期存款预期收益，最低投资门槛50元</em>
         </div>
             <div class="page-width">
                 <img src="${staticServer}/images/sign/assure/benift.png" class="fl" />
                 <div class="fr">
                     <p>
                         拓天速贷收益高且稳定持久。<br/>
-                        最高年化收益16%，高达银行活期46倍。
+                        最高预期年化收益16%，高达银行活期46倍。
                     </p>
                     <P>
                         <b class="text-16">新开三条产品线</b><br/>
-                        速盈利，年化收益10%，高达银行活期28倍以上；<br/>
-                        稳盈绣，年化收益12%，高达银行定期8倍以上；<br/>
-                        久盈富，年化收益14%，高达银行定期9倍以上。
+                        速盈利，预期年化收益10%，高达银行活期28倍以上；<br/>
+                        稳盈绣，预期年化收益12%，高达银行定期8倍以上；<br/>
+                        久盈富，预期年化收益14%，高达银行定期9倍以上。
                     </P>
                     <p>拓天速贷投资门槛低，50元即可起投。</p>
                 </div>
@@ -54,14 +54,14 @@
     <div class="section box-wealth">
         <div class="section-title">
             <div class="line"></div>
-            <b class="bg2">三方托管 放心理财</b>
+            <b class="bg2">三方托管 放心投资</b>
             <em>第三方资金托管，第三方支付</em>
         </div>
             <div class="page-width wealth-content">
                 <img src="${staticServer}/images/sign/assure/wealth.png" class="page-img" />
                 <p class="article-one">
                     拓天速贷由联动优势提供第三方资金托管和交易;<br/>
-                    拓天速贷只撮合理财项目，不经手资金;<br/>
+                    拓天速贷只撮合投资项目，不经手资金;<br/>
                     这样的运营模式让资金去向更明确、更透明、有效隔离风险。
                 </p>
                 <p class="article-two">
@@ -88,7 +88,7 @@
             <div class="fl">
                 <p class="info-one">
                     <b class="text-18">在沪挂牌企业投资</b><br/>
-                    拓天速贷由在沪挂牌公司拓天伟业（北京）资产管理有限公司投资，提供更安全的理财产品，更全面的平台服务，更雄厚的资金保障。
+                    拓天速贷由在沪挂牌公司拓天伟业（北京）资产管理有限公司投资，提供更安全的投资产品，更全面的平台服务，更雄厚的资金保障。
                 </p>
                 <p>
                     <b class="sqr-title">抵押模式安全</b><br/>

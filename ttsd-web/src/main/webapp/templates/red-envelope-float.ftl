@@ -1,11 +1,6 @@
-<div id="layerTipBox" class="layer-tip-box">
-    <a href="/activity/red-envelope" onclick="cnzzPush.trackClick('61首页','悬浮窗模块','红包')" target="_blank">
-        <img src="${staticServer}/images/sign/activities/icon-monkey.png" alt="现金红包">
-    </a>
-</div>
 <div class="count-form">
 	<h3 class="hander">
-		<span>理财计算器</span>
+		<span>投资计算器</span>
 		<i class="close-count"></i>
 	</h3>
 	<form id="countForm" action="">
@@ -34,7 +29,7 @@
 <ul class="fix-nav-list">
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">理财<br/>计算器</span>
+		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">投资<br/>计算器</span>
 	</li>
 	<li>
 		<i class="icon-phone"></i>

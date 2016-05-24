@@ -89,6 +89,7 @@ class RechargesHandler(BaseHandler):
            `source`,
            `channel`,
            `bank_code`,
+           `status`,
            `amount`
       FROM `recharge`
      WHERE `created_time` BETWEEN %s
@@ -161,7 +162,9 @@ class InvestHandler(BaseHandler):
            `actual_repay_date`,
            `actual_interest`,
            `actual_fee`,
-           `status`
+           `default_interest`,
+           `status`,
+           `id`
       FROM `invest_repay`
      WHERE `invest_id`= %s
     '''

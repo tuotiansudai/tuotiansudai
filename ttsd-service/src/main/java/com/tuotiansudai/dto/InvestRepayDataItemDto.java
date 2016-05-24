@@ -1,14 +1,19 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
+import java.util.List;
 
 public class InvestRepayDataItemDto {
+
+    private long investId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
@@ -49,14 +54,14 @@ public class InvestRepayDataItemDto {
             this.actualFee = AmountConverter.convertCentToString(model.getActualFee());
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
-            this.actualAmount = AmountConverter.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee());
+            this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
             this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
         }
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
         this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = model.getStatus().getDescription();
+        this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
         this.period = model.getPeriod();
         this.amount = AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
     }
@@ -64,11 +69,12 @@ public class InvestRepayDataItemDto {
     public InvestRepayDataItemDto generateInvestRepayDataItemDto(InvestRepayModel model) {
         InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto();
         investRepayDataItemDto.setLoan(model.getLoan());
+        investRepayDataItemDto.setInvestId(model.getInvestId());
         investRepayDataItemDto.setPeriod(model.getPeriod());
         investRepayDataItemDto.setActualRepayDate(model.getActualRepayDate());
         investRepayDataItemDto.setRepayDate(model.getRepayDate());
         investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee()));
-        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee()));
+        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
         return investRepayDataItemDto;
     }
 
@@ -191,4 +197,13 @@ public class InvestRepayDataItemDto {
     public void setLoan(LoanModel loan) {
         this.loan = loan;
     }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
+
 }

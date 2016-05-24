@@ -73,8 +73,15 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 }
             },
             beforeCheck: function(curform) {
-                var periods = parseInt($('.coupon-number', curform).val());
                 $errorDom.html('');
+
+                var couponType = $('.couponType', curform).val();
+                if (couponType == '') {
+                    showErrorMessage('请选择体验券名称', $('.couponType', curform));
+                    return false;
+                }
+
+                var periods = parseInt($('.coupon-number', curform).val());
                 if (periods <= 0) {
                     showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
                     return false;
@@ -130,7 +137,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 $('.userGroup').selectpicker('refresh');
                 $('.user-group-hid').removeAttr("disabled");
             }else{
-                $('.give-number').addClass("invest-coupon-total_count");
                 $('.give-number').attr("readonly",true);
                 $('.user-group-hid').attr('disabled','disabled');
                 $('.userGroup').removeAttr("disabled");
@@ -162,33 +168,42 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
-                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                    $('.give-number').val(data);
-                })
-            } else if (userGroup == 'AGENT') {
-                $.get('/user-manage/user/agents', function(data) {
-                    if (data.length > 0 ) {
-                        $('.coupon-deposit').show();
+            var couponType = $('.couponType').val();
+            if(couponType == "INVEST_COUPON"){
+                if (userGroup != 'EXCHANGER_CODE') {
+                    if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
+                        $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                            $('.give-number').val(data);
+                        })
+                    } else if (userGroup == 'AGENT') {
+                        $.get('/user-manage/user/agents', function(data) {
+                            if (data.length > 0 ) {
+                                $('.coupon-deposit').show();
+                            }
+                            for (var i=0; i < data.length; i++) {
+                                $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
+                            }
+                        })
+                        $('.give-number').val('0');
+                    } else if (userGroup == 'CHANNEL') {
+                        $.get('/user-manage/user/channels', function(data) {
+                            if (data.length > 0) {
+                                $('.coupon-deposit').show();
+                            }
+                            for (var i=0; i < data.length; i++) {
+                                $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
+                            }
+                        })
+                        $('.give-number').val('0');
+                    } else {
+                        $('#file-in').trigger('click');
+                        $('.file-btn').show();
                     }
-                    for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
-                    }
-                })
-                $('.give-number').val('0');
-            } else if (userGroup == 'CHANNEL') {
-                $.get('/user-manage/user/channels', function(data) {
-                    if (data.length > 0) {
-                        $('.coupon-deposit').show();
-                    }
-                    for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
-                    }
-                })
-                $('.give-number').val('0');
-            } else {
-                $('#file-in').trigger('click');
-                $('.file-btn').show();
+                    $('.smsAlert').prop('disabled',false);
+                } else {
+                    $('.give-number').val('').prop('readonly', false);
+                    $('.smsAlert').prop({disabled:true,checked:false});
+                }
             }
         });
 

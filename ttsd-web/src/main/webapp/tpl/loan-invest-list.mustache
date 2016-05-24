@@ -1,25 +1,28 @@
-<table class="table-striped">
+<table class="invest-list table-striped">
     <thead>
     <tr>
         <th>出借人</th>
         <th class="tr">出借金额（元）</th>
         <th class="responsive-hide">出借方式</th>
-        <th class="responsive-hide tr">预期利息（元）</th>
+        <th class="responsive-hide tr">预期收益（元）</th>
         <th>出借时间</th>
     </tr>
     </thead>
     <tbody>
     {{#records}}
         <tr>
-            <td>{{loginName}}</td>
+            <td class="loan-td">
+                <span class="icon-list loan-icon-list">
+                    {{#achievements}}
+                        {{#achievementClass}}{{.}}{{/achievementClass}}
+                    {{/achievements}}
+                </span>
+                {{loginName}}
+            </td>
             <td class="tr">{{amount}}</td>
             <td class="responsive-hide">
-                {{#autoInvest}}
-                自动
-                {{/autoInvest}}
-                {{^autoInvest}}
-                    手动
-                {{/autoInvest}}
+                {{#autoInvest}} 自动 {{/autoInvest}}
+                {{^autoInvest}} 手动 {{/autoInvest}}
                 <span class="invest-{{source}}"></span>
             </td>
             <td class="responsive-hide tr">{{expectedInterest}}</td>

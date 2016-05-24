@@ -46,11 +46,10 @@
             <tr>
                 <th>编号</th>
                 <th>项目名称</th>
-                <th>产品类型</th>
+                <th>借款期限</th>
                 <th>借款人</th>
                 <th>代理人</th>
                 <th>借款金额(元)</th>
-                <th>借款期限</th>
                 <th>年化/活动(利率)</th>
                 <th>项目状态</th>
                 <th>发起时间</th>
@@ -71,7 +70,6 @@
                     <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
-                    <td class="td">${loanListDto.periods}</td>
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
