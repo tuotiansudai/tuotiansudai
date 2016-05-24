@@ -30,28 +30,52 @@
         <p class="text-pro">
             <span class="pro-list">
                 <img src="${staticServer}/images/sign/actor/birth/90.png" width="100%">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
+                <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
+                </#if>
             </span>
             <span class="pro-list">
                 <img src="${staticServer}/images/sign/actor/birth/180.png" width="100%">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
+                <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
+                </#if>
             </span>
             <span class="pro-list">
                 <img src="${staticServer}/images/sign/actor/birth/360.png" width="100%">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
+                <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
+                </#if>
             </span>
             <span class="pro-wap-list">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=WYX" class="click-btn time-btn">
+                </#if>
                     <img src="${staticServer}/images/sign/actor/birth/90-wap.png" width="100%">
                 </a>
             </span>
             <span class="pro-wap-list">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=JYF" class="click-btn time-btn">
+                </#if>
                     <img src="${staticServer}/images/sign/actor/birth/180-wap.png" width="100%">
                 </a>
             </span>
             <span class="pro-wap-list">
+                <#if !isAppSource>
                 <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=JYF" class="click-btn time-btn">
+                </#if>
                     <img src="${staticServer}/images/sign/actor/birth/360-wap.png" width="100%">
                 </a>
             </span>
