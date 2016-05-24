@@ -9,9 +9,12 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.InvestRepayService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class BindBankCardServiceImpl implements BindBankCardService {
@@ -25,6 +28,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private InvestRepayService investRepayService;
 
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
@@ -54,5 +59,21 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public boolean isReplacing(String loginName) {
         return CollectionUtils.isNotEmpty(bankCardMapper.findApplyBankCardByLoginName(loginName));
+    }
+
+    @Override
+    public boolean isManual(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (accountModel.getFreeze() > 0) {
+            return true;
+        }
+        if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
+            return true;
+        }
+        Map<String, String> data = payWrapperClient.getUserStatus(loginName);
+        if (Double.parseDouble(data.get("账户余额")) > 0) {
+            return true;
+        }
+        return false;
     }
 }

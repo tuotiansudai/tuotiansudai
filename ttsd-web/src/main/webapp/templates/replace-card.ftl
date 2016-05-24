@@ -41,24 +41,4 @@
 </div>
 </div>
 
-<div id="pop-replace-card" class="pad-m recharge-plat" style="display: none;">
-    <#if isFastPayOn>
-    <div class="ret">
-        <p class="replace-card">您更换银行卡的申请已经提交至第三方资金托管方，一般2个工作日内反馈结果，请耐心等候。</p>
-        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</p>
-        <div class="close-text">
-            <span class="close-btn">我知道了</span>
-        </div>
-    </div>
-    <#else>
-    <p>请在新打开的联动优势页面换卡完成后选择：</p>
-    <div class="ret">
-        <p>换卡成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
-        <p>换卡失败：<a href="/bind-card/replace" class="btn-normal" data-category="重新换卡" data-label="recharge">重新换卡</a>
-            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
-        </p>
-        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</p>
-    </div>
-    </#if>
-</div>
 </@global.main>
