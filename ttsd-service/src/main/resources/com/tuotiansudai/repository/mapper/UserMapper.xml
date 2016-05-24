@@ -456,4 +456,8 @@
        SELECT u.mobile from user u where u.login_name = #{loginName}
     </select>
 
+    <select id="findUsersCount" resultType="java.lang.Long">
+        SELECT count(1) FROM user
+    </select>
+
 </mapper>

@@ -54,6 +54,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     private String loanType;
 
+    private String transferStatus;
+
+    private String leftPeriod;
+
     public UserInvestRecordResponseDataDto() {
     }
 
@@ -66,7 +70,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.loanStatusDesc = loanStatus.getMessage();
         this.investId = String.valueOf(invest.getId());
         this.investMoney = AmountConverter.convertCentToString(invest.getAmount());
-        this.investTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getCreatedTime());
+        this.investTime = new SimpleDateFormat("yyyy-MM-dd").format(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime());
         this.investStatus = investStatus.getCode();
         this.investStatusDesc = investStatus.getMessage();
         this.investRate = String.format("%.1f", loan.getActivityRate() + loan.getBaseRate());
@@ -167,5 +171,21 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setLoanType(String loanType) {
         this.loanType = loanType;
+    }
+
+    public String getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
+    public String getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(String leftPeriod) {
+        this.leftPeriod = leftPeriod;
     }
 }

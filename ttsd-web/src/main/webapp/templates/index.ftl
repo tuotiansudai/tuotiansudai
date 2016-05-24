@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/activity/invest-achievement" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
+                <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+            </a>
             <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-landingpage.png" alt="" class="iphone-img">
@@ -19,7 +23,7 @@
                 <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
             </a>
-            <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+            <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
             </a>
@@ -34,6 +38,7 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
             <li></li>
@@ -120,7 +125,7 @@
 
     <div class="home-content" id="productFrame">
         <#list loans as loan>
-            <#if loan.periods == 1>
+            <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
                 <h3 class="label-title">
                     <span class="product-icon"></span>
@@ -137,7 +142,7 @@
                                     <dl>
                                         <dt>预期年化收益</dt>
                                         <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
-                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                            <i><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
                                                 <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%
@@ -147,8 +152,8 @@
                                     </dl>
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                 </div>
@@ -232,11 +237,8 @@
             <div class="loan-list-index fl">
                 <ul class="loan-box-inner loan-btn">
                 <#list loans as loan>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
-                            <#if loan.productType??>
-                                <span class="${loan.productType.name()?lower_case}"></span>
-                            </#if>
                             <div class="loan-info-frame fl">
                                 <div class="loan-top">
                                     <span class="l-title fl">${loan.name}</span>
@@ -255,8 +257,8 @@
 
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                     <dl>
@@ -328,7 +330,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                 <#list loans as loan>
-                    <#if loan.periods == 1>
+                    <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="new-user"></i>
@@ -346,7 +348,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i class="new-user-coupon">新手加息券</i></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">
@@ -393,7 +395,7 @@
                             </#if>
                         </div>
                     </#if>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="${loan.productType.name()?lower_case}"></i>
@@ -411,7 +413,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目总额</span></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">
@@ -471,19 +473,19 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                    <li><i>●</i><a rel="nofollow" href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                         <time>2016-03-31</time>
                     </li>
-                    <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
+                    <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
-                    <li><i>●</i><a href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
+                    <li><i>●</i><a rel="nofollow" href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
                         <time>2016-02-01</time>
                     </li>
-                    <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                    <li><i>●</i><a rel="nofollow" href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
                         <time>2016-01-20</time>
                     </li>
-                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                    <li><i>●</i><a rel="nofollow" href="http://toutiao.com/news/6233268186905575938/" onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
                     </li>
                 </ul>
@@ -498,8 +500,8 @@
 
             <div class="box-radius clearfix friend-links">
                 <ul>
-                    <li><a href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <i class="img-jingdu"></i></a></li>
-                    <li><a href="http://www.umpay.com/umpay_cms/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><i class="img-ump"></i></a></li>
+                    <li><a rel="nofollow" href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <i class="img-jingdu"></i></a></li>
+                    <li><a rel="nofollow" href="http://www.umpay.com/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><i class="img-ump"></i></a></li>
                 </ul>
             </div>
         </div>

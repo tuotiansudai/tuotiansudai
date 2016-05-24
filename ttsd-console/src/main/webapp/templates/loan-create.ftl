@@ -56,21 +56,6 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">产品线类型: </label>
-            <div class="col-sm-4">
-                <select class="selectpicker b-width">
-                    <option value="">请选择</option>
-                    <#list productTypes as productType>
-                        <option value="${productType.name()}" data-period="${productType.getPeriods()}">
-                        ${productType.getName()}
-                        </option>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-product-type" />
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="col-sm-2 control-label">代理用户: </label>
 
             <div class="col-sm-4">
@@ -121,11 +106,21 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4 product-line-period">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">
+                <select class="selectpicker b-width">
+                    <option value="">请选择</option>
+                    <#list productTypes as productType>
+                        <option value="${productType.getDuration()}" data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
+                        ${productType.getDuration()}
+                        </option>
+                    </#list>
+                </select>
+                <input type="hidden" class="jq-duration" value=""/>
+                <input type="hidden" class="jq-product-line" value="" >
+                <input type="hidden" class="jq-timer" value="" >
             </div>
             <div class="col-sm-3">
                 <div class="form-control-static">(单位：
-                    <label class="jq-piex">月</label>
+                    <label>天</label>
                     )
                 </div>
             </div>
