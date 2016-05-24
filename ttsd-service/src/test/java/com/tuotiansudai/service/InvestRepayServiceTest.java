@@ -76,6 +76,7 @@ public class InvestRepayServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         loanModel.setStatus(LoanStatus.REPAYING);
@@ -95,35 +96,18 @@ public class InvestRepayServiceTest {
     }
 
     private void createInvest(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        model.setCreatedTime(new Date());
-        model.setId(investId);
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.WEB);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
     }
 
     private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
-        InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
-        investRepayModel.setInvestId(investId);
-        investRepayModel.setStatus(repayStatus);
-        investRepayModel.setCorpus(100);
-        investRepayModel.setExpectedInterest(100);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new Date(), repayStatus);
         investRepayModel.setActualInterest(100);
-        investRepayModel.setDefaultInterest(100);
-        investRepayModel.setExpectedInterest(100);
-        investRepayModel.setExpectedFee(100);
         investRepayModel.setActualFee(100);
-        investRepayModel.setPeriod(period);
-        investRepayModel.setRepayDate(new Date());
+        investRepayModel.setDefaultInterest(100);
         investRepayModel.setActualRepayDate(new Date());
-        investRepayModel.setCreatedTime(new Date());
         investRepayModelList.add(investRepayModel);
         investRepayMapper.create(investRepayModelList);
     }

@@ -29,13 +29,11 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by huoxuanbo on 16/5/9.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class OperationDataServiceTest {
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -129,9 +127,9 @@ public class OperationDataServiceTest {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
 
-        createLoanByUserId("testUserLoaner", 10001, ProductType.SYL);
-        createLoanByUserId("testUserLoaner", 10002, ProductType.WYX);
-        createLoanByUserId("testUserLoaner", 10003, ProductType.JYF);
+        createLoanByUserId("testUserLoaner", 10001, ProductType._30);
+        createLoanByUserId("testUserLoaner", 10002, ProductType._90);
+        createLoanByUserId("testUserLoaner", 10003, ProductType._180);
 
 
         createInvest("testUserInvest", 10001, 1000, new Date());
@@ -162,9 +160,9 @@ public class OperationDataServiceTest {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
 
-        createLoanByUserId("testUserLoaner", 10001, ProductType.SYL);
-        createLoanByUserId("testUserLoaner", 10002, ProductType.WYX);
-        createLoanByUserId("testUserLoaner", 10003, ProductType.JYF);
+        createLoanByUserId("testUserLoaner", 10001, ProductType._30);
+        createLoanByUserId("testUserLoaner", 10002, ProductType._90);
+        createLoanByUserId("testUserLoaner", 10003, ProductType._180);
 
         createInvest("testUserInvest", 10001, 1000, testEndDate);
         createInvest("testUserInvest", 10001, 2000, testEndDate);

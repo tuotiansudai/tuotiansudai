@@ -65,7 +65,7 @@ public class InvestController {
             }
             response.setContentType("application/csv");
             long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, enumSource, role, startTime, endTime, investStatus, null);
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int) count, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int) count, startTime, endTime, investStatus, null,true);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();
             for (int i = 0; i < investPaginationItemDataDtos.size(); i++) {
@@ -96,7 +96,7 @@ public class InvestController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
             return null;
         } else {
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, index, pageSize, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, index, pageSize, startTime, endTime, investStatus, null,true);
             List<String> channelList = investService.findAllChannel();
 
             ModelAndView mv = new ModelAndView("/invest-list");

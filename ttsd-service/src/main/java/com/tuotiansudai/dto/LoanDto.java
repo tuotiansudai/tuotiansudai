@@ -213,6 +213,11 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     private String recheckLoginName;
 
+    /*
+        * 借款期限
+        * */
+    private int duration;
+
     public LoanDto() {
     }
 
@@ -527,5 +532,13 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setRecheckLoginName(String recheckLoginName) {
         this.recheckLoginName = recheckLoginName;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }
