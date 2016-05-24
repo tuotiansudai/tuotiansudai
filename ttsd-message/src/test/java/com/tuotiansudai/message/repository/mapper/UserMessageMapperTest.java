@@ -41,7 +41,7 @@ public class UserMessageMapperTest {
         userMapper.create(creator);
 
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);
