@@ -5,7 +5,9 @@ public enum ArticleStatus {
 
     TO_APPROVE("待审核"),
 
-    APPROVING("审核中");
+    APPROVING("审核中"),
+
+    PUBLISH("已发布");
 
     private String description;
 

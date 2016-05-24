@@ -1,10 +1,12 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
+import java.util.List;
 
-public class InvestPaginationItemDto {
+public class LoanDetailInvestPaginationItemDto {
 
     private String loginName;
 
@@ -17,6 +19,8 @@ public class InvestPaginationItemDto {
     private Date createdTime;
 
     private boolean autoInvest;
+
+    private List<InvestAchievement> achievements;
 
     public String getLoginName() {
         return loginName;
@@ -64,5 +68,13 @@ public class InvestPaginationItemDto {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public List<InvestAchievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(List<InvestAchievement> achievements) {
+        this.achievements = achievements;
     }
 }

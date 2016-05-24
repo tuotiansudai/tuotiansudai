@@ -104,6 +104,11 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="col-sm-4">
                     <button type="button" class="btn jq-btn-form btn-primary article-save">提交审核</button>
+                    <#if dto??>
+                        <div class='input-group date' style="display: none" id='datetimepicker1'>
+                            <input type='text'  class="form-control" name="beginTime" value="${(dto.createTime?string('yyyy-MM-dd'))!}"/>
+                        </div>
+                    </#if>
                 </div>
             </div>
         </form>

@@ -13,7 +13,7 @@
              <p id="content" data-id=${articleContent.getId()}>${articleContent.getContent()}</p>
     </div>
     <div align="center">
-        <input type="button" name="Submit" value="确认" onclick="javascript:window.close();"/>
+        <input type="button" name="Submit" value="确认" onclick="window.close();"/>
     </div>
 </div>
 

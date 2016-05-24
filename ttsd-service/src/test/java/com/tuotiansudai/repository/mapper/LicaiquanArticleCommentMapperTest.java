@@ -57,18 +57,18 @@ public class LicaiquanArticleCommentMapperTest {
     private LicaiquanArticleModel createLicaiquanArticleModel() {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
         licaiquanArticleModel.setId(articleId);
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setAuthor("testAuthor");
         licaiquanArticleModel.setCarousel(false);
-        licaiquanArticleModel.setChecker("testChecker");
+        licaiquanArticleModel.setCheckerLoginName("testChecker");
         licaiquanArticleModel.setContent("testContent");
-        licaiquanArticleModel.setCreator("testCreator");
-        licaiquanArticleModel.setCreateTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setCreatorLoginName("testCreator");
+        licaiquanArticleModel.setCreatedTime(new DateTime().parse("2015-12-12").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setSource("testSource");
         licaiquanArticleModel.setTitle("testTitle");
-        licaiquanArticleModel.setUpdateTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
+        licaiquanArticleModel.setUpdatedTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setShowPicture("testShowPicture");
-        licaiquanArticleModel.setThumb("testThumb");
+        licaiquanArticleModel.setThumbnail("testThumb");
 
         return licaiquanArticleModel;
     }

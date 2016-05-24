@@ -451,7 +451,8 @@ public class LoanServiceImpl implements LoanService {
         String loginName = investModel.getLoginName();
         if (callbackRequest.isSuccess()) {
             if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
-                investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
+                investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
+                investMapper.update(investModel);
                 try {
                     amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
                 } catch (AmountTransferException e) {
