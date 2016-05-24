@@ -134,7 +134,7 @@ public class LiCaiQuanArticleServiceTest {
         licaiquanArticleModel.setTitle("testTitle");
         licaiquanArticleModel.setUpdatedTime(new DateTime().parse("2016-1-1").withTimeAtStartOfDay().toDate());
         licaiquanArticleModel.setShowPicture("testShowPicture");
-        licaiquanArticleModel.setThumbnail("testThumb");
+        licaiquanArticleModel.setThumb("testThumb");
 
         return licaiquanArticleModel;
     }

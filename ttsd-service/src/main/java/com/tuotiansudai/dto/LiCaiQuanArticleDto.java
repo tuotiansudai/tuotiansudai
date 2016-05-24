@@ -24,6 +24,7 @@ public class LiCaiQuanArticleDto implements Serializable{
     private long likeCount;
     private long readCount;
     private String creator;
+    private boolean original = false;
 
     public LiCaiQuanArticleDto(){}
 
@@ -31,7 +32,7 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.articleId = model.getId();
         this.title = model.getTitle();
         this.author = model.getAuthor();
-        this.thumbPicture = model.getThumbnail();
+        this.thumbPicture = model.getThumb();
         this.showPicture = model.getShowPicture();
         this.carousel = model.isCarousel();
         this.section = model.getSection();
@@ -166,4 +167,12 @@ public class LiCaiQuanArticleDto implements Serializable{
     public String getCreator() { return creator; }
 
     public void setCreator(String creator) { this.creator = creator; }
+
+    public boolean isOriginal() {
+        return original;
+    }
+
+    public void setOriginal(boolean original) {
+        this.original = original;
+    }
 }
