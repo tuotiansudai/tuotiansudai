@@ -225,8 +225,11 @@ def jcversion():
     """
     generate_git_log_file()
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
+    versioning_min_files('ttsd-mobile-api/src/main/webapp/api/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
+    versioning_min_files('ttsd-mobile-api/src/main/webapp/api/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
+    replace_min_files_in_config_js_file('ttsd-mobile-api/src/main/webapp/api/js/dest/')
 
 
 def get_current_dir():
