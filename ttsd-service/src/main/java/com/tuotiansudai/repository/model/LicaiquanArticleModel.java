@@ -43,7 +43,7 @@ public class LicaiquanArticleModel implements Serializable {
     /**
      * 缩略图
      */
-    private String thumbnail;
+    private String thumb;
     /**
      * 展示图
      */
@@ -77,7 +77,7 @@ public class LicaiquanArticleModel implements Serializable {
         this.section = section;
         this.source = source;
         this.carousel = carousel;
-        this.thumbnail = thumb;
+        this.thumb = thumb;
         this.showPicture = showPicture;
         this.content = content;
         this.createdTime = createdTime;
@@ -94,7 +94,7 @@ public class LicaiquanArticleModel implements Serializable {
         this.section = dto.getSection();
         this.source = dto.getSource();
         this.carousel = dto.isCarousel();
-        this.thumbnail = dto.getThumbPicture();
+        this.thumb = dto.getThumbPicture();
         this.showPicture = dto.getShowPicture();
         this.content = dto.getContent();
         this.createdTime = dto.getCreateTime();
@@ -165,12 +165,12 @@ public class LicaiquanArticleModel implements Serializable {
         this.carousel = carousel;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getThumb() {
+        return thumb;
     }
 
-    public void setThumbnail(String thumb) {
-        this.thumbnail = thumb;
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
     }
 
     public String getShowPicture() {
