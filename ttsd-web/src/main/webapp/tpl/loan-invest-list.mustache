@@ -1,4 +1,4 @@
-<table class="table-striped">
+<table class="invest-list table-striped">
     <thead>
     <tr>
         <th>出借人</th>
@@ -11,15 +11,18 @@
     <tbody>
     {{#records}}
         <tr>
-            <td>{{loginName}}</td>
+            <td class="loan-td">
+                <span class="icon-list loan-icon-list">
+                    {{#achievements}}
+                        {{#achievementClass}}{{.}}{{/achievementClass}}
+                    {{/achievements}}
+                </span>
+                {{loginName}}
+            </td>
             <td class="tr">{{amount}}</td>
             <td class="responsive-hide">
-                {{#autoInvest}}
-                自动
-                {{/autoInvest}}
-                {{^autoInvest}}
-                    手动
-                {{/autoInvest}}
+                {{#autoInvest}} 自动 {{/autoInvest}}
+                {{^autoInvest}} 手动 {{/autoInvest}}
                 <span class="invest-{{source}}"></span>
             </td>
             <td class="responsive-hide tr">{{expectedInterest}}</td>

@@ -20,7 +20,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.console.util,
-                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer"/>
+                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer,com.tuotiansudai.console.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
