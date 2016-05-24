@@ -28,13 +28,32 @@
         <p class="text-font">不会赚怎么花？</br>超高的收益等你拿。</p>
         <p class="text-bg">Let's go！！！</p>
         <p class="text-pro">
-            <span class="product-left">
-                <img src="${staticServer}/images/sign/actor/birth/product-three-new.png">
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/90.png" width="100%">
                 <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
             </span>
-            <span class="product-right">
-                <img src="${staticServer}/images/sign/actor/birth/product-six-new.png">
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/180.png" width="100%">
+                <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
+            </span>
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/360.png" width="100%">
                 <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
+            </span>
+            <span class="pro-wap-list">
+                <a href="#" class="fl clearfix">
+                    <img src="${staticServer}/images/sign/actor/birth/90-wap.png" width="100%">
+                </a>
+            </span>
+            <span class="pro-wap-list">
+                <a href="#" class="fl clearfix">
+                    <img src="${staticServer}/images/sign/actor/birth/180-wap.png" width="100%">
+                </a>
+            </span>
+            <span class="pro-wap-list">
+                <a href="#" class="fl clearfix">
+                    <img src="${staticServer}/images/sign/actor/birth/360-wap.png" width="100%">
+                </a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
