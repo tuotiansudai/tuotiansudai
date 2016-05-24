@@ -116,6 +116,7 @@ public class OperationDataServiceTest {
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(model);
         return model;
     }
