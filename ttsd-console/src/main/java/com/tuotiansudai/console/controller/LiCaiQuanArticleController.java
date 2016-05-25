@@ -74,8 +74,7 @@ public class LiCaiQuanArticleController {
     }
 
     @RequestMapping(value = "/article/{articleId}/preview", method = RequestMethod.GET)
-    public ModelAndView previewArticle(@PathVariable long articleId) {
-        LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.getArticleContent(articleId);
+    public ModelAndView previewArticle(@PathVariable LiCaiQuanArticleDto liCaiQuanArticleDto) {
         if (null == liCaiQuanArticleDto) {
             return new ModelAndView("redirect:/error/404");
         } else {
