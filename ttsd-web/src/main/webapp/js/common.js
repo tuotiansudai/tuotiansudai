@@ -78,7 +78,7 @@ commonFun={
         document.getElementsByTagName("head")[0].appendChild(link);
     },
     parseURL:function(url) {
-        var a =  document.createElement('a');
+        var a =  document.createElement('a');
         a.href = url;
         return {
             source: url,
@@ -395,3 +395,5 @@ var MyChartsObject={
         }
     }
 };
+
+
