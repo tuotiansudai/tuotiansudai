@@ -92,16 +92,17 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                         }
                     }
                 }
-                if (CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
-                    userCouponIds.addAll(redEnvelopeCouponAlertDto.getCouponIds());
-                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
-                    return redEnvelopeCouponAlertDto;
-                }
 
                 if (CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
                     userCouponIds.addAll(newbieCouponAlertDto.getCouponIds());
                     redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
                     return newbieCouponAlertDto;
+                }
+
+                if (CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
+                    userCouponIds.addAll(redEnvelopeCouponAlertDto.getCouponIds());
+                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
+                    return redEnvelopeCouponAlertDto;
                 }
             }
         } catch (IOException e) {
