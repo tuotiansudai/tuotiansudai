@@ -124,4 +124,22 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
 
         return dto;
     }
+
+    @Override
+    public Long getUserBalance(String loginName){
+        AccountModel model = accountMapper.findByLoginName(loginName);
+        if (model == null) {
+            return null;
+        }
+
+        try {
+            UserSearchResponseModel responseModel = paySyncClient.send(UserSearchMapper.class, new UserSearchRequestModel(model.getPayUserId()), UserSearchResponseModel.class);
+            if (responseModel.isSuccess()) {
+                return responseModel.getBalance();
+            }
+        } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
 }
