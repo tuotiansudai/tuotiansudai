@@ -13,4 +13,6 @@ public interface UserMessageMapper {
     void create(UserMessageModel model);
 
     void update(UserMessageModel model);
+
+    UserMessageModel findById(long id);
 }

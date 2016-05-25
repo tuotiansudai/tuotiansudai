@@ -17,6 +17,10 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
+    <select id="findById" parameterType="long" resultMap="userMessageResultMap">
+        select * from user_message where id = #{id};
+    </select>
+
     <select id="findByLoginName" parameterType="string" resultMap="userMessageResultMap">
         select * from user_message where login_name = #{loginName};
     </select>
