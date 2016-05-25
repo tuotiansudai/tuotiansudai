@@ -27,43 +27,11 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
             });
         }
 
-        if($('#registerFlowStep').length) {
-            var $registerFlowStep=$('#registerFlowStep'),
-                $stepTab=$('.step-register-tab',$registerFlowStep),
-                $slideImgBox=$('.slide-img-box',$registerFlowStep),
-                $btnLast=$('img.last-step',$registerFlowStep),
-                $btnNext=$('img.next-step',$registerFlowStep),
-                cNum= 0,len=$stepTab.find('li').length;
-
-            $stepTab.find('li').click(function(index) {
-                var $this=$(this),
-                    num=$stepTab.find('li').index(this);
-                $this.addClass('on').siblings('li').removeClass('on');
-                $slideImgBox.find('li').eq(num).show().siblings('li').hide();
-            });
-            $btnNext.click(function() {
-                cNum=$stepTab.find('li.on').index();
-                var aNum=(cNum<len-1)?(cNum+1):0;
-                $stepTab.find('li').eq(aNum).addClass('on').siblings('li').removeClass('on');
-                $slideImgBox.find('li').eq(aNum).show().siblings('li').hide();
-            });
-            $btnLast.click(function() {
-                cNum=$stepTab.find('li.on').index();
-                var aNum=(cNum==0)?(len-1):(cNum-1);
-                $stepTab.find('li').eq(aNum).addClass('on').siblings('li').removeClass('on');
-                $slideImgBox.find('li').eq(aNum).show().siblings('li').hide();
-            });
-
-        }
-
         if($('#errorContainer').length) {
             setTimeout(function(){
                 window.location="/";
             },10000);
         }
-
-
-
         if($problemList.length) {
             $problemList.on('click', function(e) {
                 e.preventDefault();

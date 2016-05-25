@@ -2,11 +2,9 @@
 <@global.main pageCss="${css.register}" pageJavascript="${js.register_account}" activeLeftNav="" title="拓天速贷-实名验证" >
 
 <div class="register-container page-width">
-    <ul class="step-register-tab">
-        <li class="first"><s></s>1 注册<g></g></li>
-        <li class="second on"><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 开始投资<g></g></li>
-    </ul>
+    <div class="step-register-head tc">
+        欢迎注册拓天速贷  <span>已有账号？<a href="#"> 立即登录</a></span>
+    </div>
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-two">

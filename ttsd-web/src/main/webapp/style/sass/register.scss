@@ -5,10 +5,25 @@
   overflow: hidden;
   background: #fff;
   margin: 12px auto;
-  border: #f2f2f2 1px solid;
-  border-radius: 3px;
   position: relative;
   text-align: center;
+
+  .step-register-head {
+    border-bottom: 1px solid nth($borderColor,2);
+    color: nth($mainColor,1);
+    font-size: 24px;
+    padding: 25px 0 3px 0;
+    position: relative;
+
+    .text-m {
+      font-size: 14px;
+      display: inline-block;
+      position: absolute;
+      right: 110px;
+      bottom: 10px;
+      color: #4c4c4c;
+    }
+  }
 
   .register-box {
     margin-left: 322px;
@@ -245,20 +260,7 @@
       margin-left: -50%!important;
     }
   }
-  .step-register-tab {
-    font-size: 14px!important;
-    margin:0;
-    width:auto!important;
-    li {
-      width:33%!important;
-      height:40px!important;
-      line-height: 40px!important;
-      padding-right:0!important;
-      s,g {
-        display: none;
-      }
-    }
-  }
+
   .register-container {
     margin:0 auto;
     border-width: 0;
