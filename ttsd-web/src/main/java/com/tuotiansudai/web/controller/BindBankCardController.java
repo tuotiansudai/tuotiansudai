@@ -36,7 +36,6 @@ public class BindBankCardController {
         boolean isBindCard = bankCardModel != null;
         if (isBindCard) {
             view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
-            view.addObject("replaceCardAvailable", !bankCardModel.isFastPayOn());
             view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
@@ -62,7 +61,13 @@ public class BindBankCardController {
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/replace-card");
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
-        view.addObject("banks", BankCardUtil.getWithdrawBanks());
+
+        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        if (bankCardModel != null && bankCardModel.isFastPayOn()) {
+            view.addObject("banks", BankCardUtil.getFastPayBanks());
+        } else {
+            view.addObject("banks", BankCardUtil.getWithdrawBanks());
+        }
         return view;
     }
 
@@ -74,6 +79,20 @@ public class BindBankCardController {
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
         return view;
+    }
+
+    @RequestMapping(value = "/is-replacing", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean isReplacing() {
+        String loginName = LoginUserInfo.getLoginName();
+        return bindBankCardService.isReplacing(loginName);
+    }
+
+    @RequestMapping(value = "/is-manual", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean isManual() {
+        String loginName = LoginUserInfo.getLoginName();
+        return bindBankCardService.isManual(loginName);
     }
 
 }
