@@ -92,6 +92,10 @@ public class BindBankCardController {
     @ResponseBody
     public boolean isManual() {
         String loginName = LoginUserInfo.getLoginName();
+        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        if (bankCardModel != null && !bankCardModel.isFastPayOn()) {
+            return false;
+        }
         return bindBankCardService.isManual(loginName);
     }
 
