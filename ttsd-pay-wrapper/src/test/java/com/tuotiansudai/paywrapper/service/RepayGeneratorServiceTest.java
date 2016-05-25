@@ -367,11 +367,12 @@ public class RepayGeneratorServiceTest {
         userMapper.create(fakeUser);
         long loanAmount = 10000;
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
-        int periods = 100;
-        Date expectedRepayDay = recheckTime.plusDays(periods).minusSeconds(1).toDate();
+        int duration = 100;
+        Date expectedRepayDay = recheckTime.plusDays(duration).minusSeconds(1).toDate();
         double baseRate = 0.09;
         double activityRate = 0.03;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, loanAmount, periods, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, loanAmount, 1, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
+        fakeNormalLoan.setDuration(100);
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -426,11 +427,12 @@ public class RepayGeneratorServiceTest {
         userMapper.create(fakeUser);
         long loanAmount = 10000;
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
-        int periods = 100;
-        Date expectedRepayDay = recheckTime.plusDays(periods).withTimeAtStartOfDay().minusSeconds(1).toDate();
+        int duration = 100;
+        Date expectedRepayDay = recheckTime.plusDays(duration).withTimeAtStartOfDay().minusSeconds(1).toDate();
         double baseRate = 0.09;
         double activityRate = 0.03;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, loanAmount, periods, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, loanAmount, 1, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
+        fakeNormalLoan.setDuration(duration);
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -515,14 +517,8 @@ public class RepayGeneratorServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
-        InvestModel model = new InvestModel();
-        model.setId(idGenerator.generate());
-        model.setAmount(amount);
-        model.setLoanId(loanId);
-        model.setLoginName(loginName);
-        model.setSource(Source.ANDROID);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, investTime, Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
-        model.setCreatedTime(investTime);
         return model;
     }
 }

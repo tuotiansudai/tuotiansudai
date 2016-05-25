@@ -73,8 +73,15 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 }
             },
             beforeCheck: function(curform) {
-                var periods = parseInt($('.coupon-number', curform).val());
                 $errorDom.html('');
+
+                var couponType = $('.couponType', curform).val();
+                if (couponType == '') {
+                    showErrorMessage('请选择体验券名称', $('.couponType', curform));
+                    return false;
+                }
+
+                var periods = parseInt($('.coupon-number', curform).val());
                 if (periods <= 0) {
                     showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
                     return false;
