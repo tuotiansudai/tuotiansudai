@@ -88,7 +88,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setMinInvestMoney(loan.getMinInvestAmount() + "");
             loanResponseDataDto.setMaxInvestMoney(loan.getMaxInvestAmount() + "");
             loanResponseDataDto.setCardinalNumber(loan.getInvestIncreasingAmount() + "");
-            loanResponseDataDto.setLoanNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

@@ -38,7 +38,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String content;
     private String duration;
     private String raisingPeriod;
-    private String loanNewType;
+    private String productNewType;
 
 
     private List<EvidenceResponseDataDto> evidence;
@@ -333,7 +333,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setRaisingPeriod(String raisingPeriod) { this.raisingPeriod = raisingPeriod; }
 
-    public String getLoanNewType() { return loanNewType; }
+    public String getProductNewType() {
+        return productNewType;
+    }
 
-    public void setLoanNewType(String loanNewType) { this.loanNewType = loanNewType; }
+    public void setProductNewType(String productNewType) {
+        this.productNewType = productNewType;
+    }
 }

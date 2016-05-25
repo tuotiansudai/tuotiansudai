@@ -137,7 +137,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setDuration("" + loan.getDuration());
         loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
                 new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
-        loanDetailResponseDataDto.setLoanNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+        loanDetailResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
         return loanDetailResponseDataDto;
 
     }

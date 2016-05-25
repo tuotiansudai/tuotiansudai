@@ -16,7 +16,7 @@ public class LoanResponseDataDto {
     private String minInvestMoney;
     private String cardinalNumber;
     private String maxInvestMoney;
-    private String loanNewType;
+    private String productNewType;
 
     public String getLoanId() { return loanId; }
 
@@ -78,7 +78,11 @@ public class LoanResponseDataDto {
 
     public void setMaxInvestMoney(String maxInvestMoney) { this.maxInvestMoney = maxInvestMoney; }
 
-    public String getLoanNewType() { return loanNewType; }
+    public String getProductNewType() {
+        return productNewType;
+    }
 
-    public void setLoanNewType(String loanNewType) { this.loanNewType = loanNewType; }
+    public void setProductNewType(String productNewType) {
+        this.productNewType = productNewType;
+    }
 }
