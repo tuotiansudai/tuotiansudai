@@ -123,7 +123,7 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
     //change captcha images
     $('#captcha').on('click', function(event) {
         event.preventDefault();
-        $(this).attr('src', '/login/captcha?' + new Date().getTime().toString());
+        $(this).attr('src', '/feedback/captcha?' + new Date().getTime().toString());
     });
 
     //hide captcha error
@@ -166,7 +166,7 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
                 }
             })
             .done(function(data) {
-                if(data.status==true){
+                if(data.success==true){
                     $('#feedbackConatiner').hide();
                     feedValidator.resetForm();
                     $('#feedbackModel').show();
