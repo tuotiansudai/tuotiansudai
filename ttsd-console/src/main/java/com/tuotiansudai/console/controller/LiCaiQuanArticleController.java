@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
@@ -39,26 +40,17 @@ public class LiCaiQuanArticleController {
         ModelAndView mv = new ModelAndView("/article-edit");
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
         Map<String,String> comments = liCaiQuanArticleService.getAllComments(articleId);
-        Iterator iter = comments.entrySet().iterator();
-        if(iter.hasNext()){
-            mv.addObject("comment",((Map.Entry)iter.next()).getValue());
-        }
-
+        mv.addObject("comments",comments);
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
         mv.addObject("dto", liCaiQuanArticleDto);
         return mv;
     }
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
-    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
-                                      @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime) throws ParseException {
-        ModelAndView mv = new ModelAndView("/article-edit");
-        mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        if (beginTime != null) {
-            liCaiQuanArticleDto.setCreateTime(beginTime);
-        }
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, LoginUserInfo.getLoginName());
-        return mv;
+    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) throws ParseException {
+        liCaiQuanArticleDto.setCreator(LoginUserInfo.getLoginName());
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
+        return  new ModelAndView("redirect:/announce-manage/article/list");
     }
 
     @RequestMapping(value = "/article/{articleId}/retrace/", method = RequestMethod.POST)

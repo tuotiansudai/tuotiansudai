@@ -49,7 +49,7 @@ public class LiCaiQuanArticleServiceTest {
     @Test
     public void shouldRetraceIsSuccess() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, "test");
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
 
         liCaiQuanArticleService.retrace(liCaiQuanArticleDto.getArticleId());
         LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
@@ -61,7 +61,7 @@ public class LiCaiQuanArticleServiceTest {
     @Test
     public void shouldCreateIsSuccess() {
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, "test");
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
         redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
         assertEquals(liCaiQuanArticleDto.getArticleId(), liCaiQuanArticleDtoNew.getArticleId());
@@ -74,7 +74,7 @@ public class LiCaiQuanArticleServiceTest {
     public void shouldObtainEditArticleDtoFromRedisIsSuccess() {
         prepareUsers();
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, "test");
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         licaiquanArticleMapper.createArticle(createLicaiquanArticleModel(liCaiQuanArticleDto.getArticleId()));
 
         LiCaiQuanArticleDto liCaiQuanArticleDtoReturn = liCaiQuanArticleService.obtainEditArticleDto(liCaiQuanArticleDto.getArticleId());
@@ -224,7 +224,7 @@ public class LiCaiQuanArticleServiceTest {
     public void shouldDeleteArticleIsOk(){
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, "test");
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(), user.getLoginName());
         liCaiQuanArticleService.deleteArticle(liCaiQuanArticleDto.getArticleId());
         assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
@@ -234,7 +234,7 @@ public class LiCaiQuanArticleServiceTest {
     public void shouldcheckPassAndCreateArticleIsOk(){
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
-        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto, "test");
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(), user.getLoginName());
         assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
     }

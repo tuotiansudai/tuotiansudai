@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class LiCaiQuanArticleDto implements Serializable{
     private boolean carousel;
     private ArticleSectionType section;
     private String content;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
     private ArticleStatus articleStatus;
     private String source;

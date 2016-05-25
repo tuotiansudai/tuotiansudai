@@ -26,7 +26,7 @@ public interface LiCaiQuanArticleService {
 
     void updateReadCount(long articleId);
 
-    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto,String creator);
+    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
 
     LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
 
