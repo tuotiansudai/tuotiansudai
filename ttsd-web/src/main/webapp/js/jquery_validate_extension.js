@@ -170,11 +170,8 @@ require(['jquery', 'jquery.validate','commonFun'], function ($) {
             var y=currentDay.getFullYear(),
                 m=currentDay.getMonth()+ 1,
                 d=currentDay.getDate();
-            console.log(y+'-'+m+'-'+'d');
             var today = y+(m<10?('0'+m):m)+(d<10?('0'+d):d);
             var myAge=Math.floor((today-getAge)/10000);
-            console.log(today);
-            console.log(myAge);
             if(myAge<18) {
                 checkedAge=false;
             }
