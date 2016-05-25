@@ -10,6 +10,8 @@
         <result property="loginName" column="login_name"/>
         <result property="pointTaskId" column="point_task_id"/>
         <result property="createdTime" column="created_time"/>
+        <result property="taskLevel" column="task_level"/>
+        <result property="point" column="point"/>
         <association property="pointTask" javaType="PointTaskModel">
             <id property="id" column="point_task_id"/>
             <result property="name" column="point_task_name"/>
@@ -21,14 +23,16 @@
     </resultMap>
 
     <insert id="create" parameterType="UserPointTaskModel">
-        insert into user_point_task (login_name, point_task_id, created_time)
-        value(#{loginName}, #{pointTaskId}, #{createdTime})
+        insert into user_point_task (login_name, point_task_id, created_time,point,task_level)
+        value(#{loginName}, #{pointTaskId}, #{createdTime}, #{point}, #{taskLevel})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userPointTaskResultMap">
         select
          user_point_task.login_name as login_name,
          user_point_task.created_time as created_time,
+         user_point_task.point as point,
+         user_point_task.task_level as task_level,
          point_task.id as point_task_id,
          point_task.name as point_task_name,
          point_task.point as point_task_point,
