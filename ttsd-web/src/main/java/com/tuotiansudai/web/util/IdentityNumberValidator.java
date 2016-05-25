@@ -13,7 +13,7 @@ public class IdentityNumberValidator {
 
     static Logger logger = Logger.getLogger(IdentityNumberValidator.class);
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     /***
      * 中国公民身份证号码最小长度。
@@ -117,7 +117,7 @@ public class IdentityNumberValidator {
     }
 
     private static boolean validateYearByAdult(String idCard){
-        if((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,10)) >= 18)){
+        if(((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,14))) / 10000 >= 18)){
             return true;
         }
         return false;
