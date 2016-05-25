@@ -12,6 +12,8 @@ public class PointTaskModel implements Serializable {
     private long point;
 
     private Date createdTime;
+    private boolean startUsing;
+    private boolean repeatStatus;
 
     public long getId() {
         return id;
@@ -43,5 +45,21 @@ public class PointTaskModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public boolean isStartUsing() {
+        return startUsing;
+    }
+
+    public void setStartUsing(boolean startUsing) {
+        this.startUsing = startUsing;
+    }
+
+    public boolean isRepeatStatus() {
+        return repeatStatus;
+    }
+
+    public void setRepeatStatus(boolean repeatStatus) {
+        this.repeatStatus = repeatStatus;
     }
 }
