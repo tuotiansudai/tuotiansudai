@@ -6,7 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;

@@ -458,13 +458,4 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
             }
         });
     }
-
-    public Long hincrby(final String key, final String field, final long increasement) {
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hincrBy(key, field, increasement);
-            }
-        });
-    }
 }

@@ -582,12 +582,3 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.lunbo-icon{
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    background: url(../images/lunbo.png) no-repeat center;
-    background-size: 100%;
-}

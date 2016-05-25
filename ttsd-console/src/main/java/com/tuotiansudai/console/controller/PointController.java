@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.AccountItemDataDto;
-import com.tuotiansudai.point.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
