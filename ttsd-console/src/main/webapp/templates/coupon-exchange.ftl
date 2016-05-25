@@ -80,13 +80,21 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">使用条件: </label>
             <div class="col-sm-8">
-                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
+                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number invest_limit" name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
             </div>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="multiple" value="1">
         <input type="hidden" name="userGroup" value="EXCHANGER">
+        <div class="form-group ">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4 form-error">
+                <#if errorMessage?has_content>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                </#if>
+            </div>
+        </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">

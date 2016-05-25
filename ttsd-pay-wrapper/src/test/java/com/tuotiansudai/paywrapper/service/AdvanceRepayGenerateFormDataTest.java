@@ -70,13 +70,11 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(loan.getId(), loan.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
-        invest.setCreatedTime(recheckTime.minusDays(1).toDate());
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
-        investRepay2.setCorpus(invest.getAmount());
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         BaseDto<PayFormDataDto> formData = advanceRepayService.generateRepayFormData(loan.getId());
@@ -113,16 +111,14 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(loan.getId(), loan.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
-        invest.setCreatedTime(recheckTime.minusDays(1).toDate());
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
         investRepay1.setActualInterest(loanRepay1ExpectedInterest);
         investRepay1.setActualFee(100);
         investRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
-        investRepay2.setCorpus(invest.getAmount());
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         BaseDto<PayFormDataDto> formData = advanceRepayService.generateRepayFormData(loan.getId());

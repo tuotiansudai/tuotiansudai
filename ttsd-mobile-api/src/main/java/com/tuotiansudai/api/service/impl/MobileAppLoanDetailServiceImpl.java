@@ -18,6 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
-        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
+        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
         loanDetailResponseDataDto.setLoanName(loan.getName());
         String repayTypeName = loan.getType().getRepayType();
         String interestPointName = loan.getType().getInterestPointName();
@@ -133,6 +134,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
         loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
+        loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
         return loanDetailResponseDataDto;
 
     }

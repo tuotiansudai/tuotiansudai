@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,13 +14,28 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
-    List<LoanModel> findLoanListWeb(@Param(value = "productType") ProductType productType,
+    List<LoanModel> findLoanListWeb(@Param(value = "name") String name,
+                                    @Param(value = "status") LoanStatus status,
+                                    @Param(value = "rateStart") double rateStart,
+                                    @Param(value = "rateEnd") double rateEnd,
+                                    @Param(value = "durationStart") int durationStart,
+                                    @Param(value = "durationEnd") int durationEnd,
+                                    @Param(value = "index") int index);
+
+    int findLoanListCountWeb(@Param(value = "name") String name,
+                             @Param(value = "status") LoanStatus status,
+                             @Param(value = "rateStart") double rateStart,
+                             @Param(value = "rateEnd") double rateEnd,
+                             @Param(value = "durationStart") int durationStart,
+                             @Param(value = "durationEnd") int durationEnd);
+
+    List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
                                     @Param(value = "status") LoanStatus status,
                                     @Param(value = "rateStart") double rateStart,
                                     @Param(value = "rateEnd") double rateEnd,
                                     @Param(value = "index") int index);
 
-    int findLoanListCountWeb(@Param(value = "productType") ProductType productType,
+    int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
                              @Param(value = "status") LoanStatus status,
                              @Param(value = "rateStart") double rateStart,
                              @Param(value = "rateEnd") double rateEnd);
@@ -73,4 +86,9 @@ public interface LoanMapper {
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
     List<LoanModel> findHomeLoan();
+
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
+
+    long findLoanAchievementCount(@Param(value = "loginName") String loginName);
+
 }

@@ -10,12 +10,10 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +38,7 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class LoanServiceTest {
+
     @Autowired
     private LoanService loanService;
 
@@ -49,9 +47,6 @@ public class LoanServiceTest {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -68,8 +63,11 @@ public class LoanServiceTest {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-   @Autowired
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Before
     public void createLoanTitle(){
@@ -107,13 +105,8 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(date);
         loanDto.setFundraisingStartTime(date);
+        loanDto.setProductType(ProductType._30);
         return loanDto;
-    }
-    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
-        List<UserRoleModel> userRoleModels = Lists.newArrayList();
-        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
-        userRoleModels.add(userRoleModel);
-        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -129,6 +122,7 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
+        loanDto.setProductType(ProductType._30);
         return loanDto;
     }
 
@@ -326,127 +320,6 @@ public class LoanServiceTest {
         assertTrue(LoanStatus.WAITING_VERIFY == loanMapper.findById(loanId).getStatus());
     }
 
-    @Test
-    public void shouldGetTheInvests(){
-        long loanId = createLoanService();
-        createTestInvests(loanId, "loginName", 10);
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(null, loanId, 1, 5);
-        assertEquals(5, baseDto.getData().getRecords().size());
-    }
-
-    @Test
-    public void shouldGetTheInvestsAndNextPagePreviousPage(){
-        String mockUserName = "loginUser";
-        createMockUser(mockUserName);
-        long loanId = createLoanService();
-        // 虽然这里创建了10条投资记录，但是在上个方法里，已经创建了三条投资记录，其中已经包含了一个success的记录
-        createTestInvests(loanId, mockUserName, 10);
-
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(null, loanId, 1, 3);
-        assertEquals(3, baseDto.getData().getRecords().size());
-        assertEquals(11, baseDto.getData().getCount());
-
-        baseDto = loanService.getInvests(null, loanId, 4, 3);
-        BasePaginationDataDto data = baseDto.getData();
-        assertEquals(2, data.getRecords().size());
-    }
-
-    private void createTestInvests(long loanId, String loginName, int count){
-        for(int i=0;i<count;i++) {
-            InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
-            investModel.setLoanId(loanId);
-            investModel.setStatus(InvestStatus.SUCCESS);
-            investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
-            investMapper.create(investModel);
-        }
-    }
-
-    private long createLoanService(){
-        String fakeUserName = "loginName";
-        String fakeUserName2 = "investorName";
-        UserModel userModel = getFakeUser(fakeUserName);
-        UserModel userModel2 = getFakeUser(fakeUserName2);
-        userMapper.create(userModel);
-        userMapper.create(userModel2);
-
-        LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName(fakeUserName);
-        loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
-        loanModel.setId(id);
-        loanModel.setName("店铺资金周转");
-        loanModel.setActivityRate(12);
-        loanModel.setShowOnHome(true);
-        loanModel.setPeriods(30);
-        loanModel.setActivityType(ActivityType.EXCLUSIVE);
-        loanModel.setContractId(123);
-        loanModel.setDescriptionHtml("asdfasdf");
-        loanModel.setDescriptionText("asdfasd");
-        loanModel.setFundraisingEndTime(new Date());
-        loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
-        loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000l);
-        loanModel.setMinInvestAmount(0);
-        loanModel.setCreatedTime(new Date());
-        loanModel.setStatus(LoanStatus.WAITING_VERIFY);
-        loanModel.setLoanerLoginName(fakeUserName);
-        loanModel.setLoanerUserName("借款人");
-        loanModel.setLoanerIdentityNumber("111111111111111111");
-        loanMapper.create(loanModel);
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
-        loanTitleModel.setId(titleId);
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
-        loanTitleModel.setTitle("房产证");
-        loanTitleMapper.create(loanTitleModel);
-
-        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
-        for (int i = 0; i < 1; i++) {
-            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
-            loanTitleRelationModel.setLoanId(id);
-            loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleRelationModelList.add(loanTitleRelationModel);
-        }
-        loanTitleRelationMapper.create(loanTitleRelationModelList);
-
-        InvestModel investModel1 = getFakeInvestModel(id, fakeUserName2);
-        investModel1.setStatus(InvestStatus.SUCCESS);
-        InvestModel investModel2 = getFakeInvestModel(id, fakeUserName2);
-        investModel2.setStatus(InvestStatus.FAIL);
-
-        InvestModel investModel3 = getFakeInvestModel(id, fakeUserName2);
-        investModel3.setStatus(InvestStatus.WAIT_PAY);
-
-        investMapper.create(investModel1);
-        investMapper.create(investModel2);
-        investMapper.create(investModel3);
-
-        return id;
-
-    }
-
-    private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        InvestModel model = new InvestModel();
-        model.setAmount(50);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.WAIT_PAY);
-        model.setCreatedTime(new Date());
-        return model;
-    }
-
-
     public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(loginName);
@@ -459,24 +332,12 @@ public class LoanServiceTest {
         return userModelTest;
     }
 
-    private void createMockUser(String loginName){
-        UserModel um = getFakeUser(loginName);
-        userMapper.create(um);
-    }
-
-    private void mockLoginUser(String loginName, String mobile){
-        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
-        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
-        SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
-    }
-
-
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName1");
         investModel1.setId(100000L);
-        assertEquals("log***", loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -485,7 +346,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -494,7 +355,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals("ttdblvjing", loanService.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("ttdblvjing", randomUtils.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -503,7 +364,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -512,7 +373,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("loginName3");
         investModel1.setId(1000003L);
 
-        assertEquals("log***", loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     private String getDefaultkey(){
