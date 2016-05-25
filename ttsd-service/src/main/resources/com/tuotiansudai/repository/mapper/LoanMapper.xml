@@ -462,13 +462,19 @@
             limit 0, 1)
     </select>
 
-    <select id="findHomeLoanByIsContainNewBie" resultMap="loanResultMap" parameterType="String">
+    <select id="findHomeLoanByIsContainNewBie" resultMap="loanResultMap" parameterType="map">
         SELECT
         *
         FROM
         loan
         WHERE
-        loan.status = #{loanStatus}
+        <if test="loanStatus == 'RAISING'">
+            loan.status in ('RAISING','PREHEAT')
+        </if>
+        <if test="loanStatus == 'COMPLETE'">
+            loan.status = 'COMPLETE'
+        </if>
+
         <if test="IsContainNewBie == 'false'">
             and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
         </if>

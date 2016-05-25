@@ -88,7 +88,7 @@ public interface LoanMapper {
     List<LoanModel> findHomeLoan();
 
     List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "IsContainNewBie") String IsContainNewBie,
-                                                  @Param(value = "loanStatus") LoanStatus loanStatus);
+                                                  @Param(value = "loanStatus") String loanStatus);
 
     List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
 

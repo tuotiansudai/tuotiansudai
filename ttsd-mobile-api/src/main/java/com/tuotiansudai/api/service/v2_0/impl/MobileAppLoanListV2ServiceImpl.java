@@ -28,12 +28,11 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Override
     public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
         List<LoanModel> loanModels = new ArrayList<>();
-        baseParamDto.getBaseParam().setUserId("ssss1111");
-        List<LoanModel> notContainNewBieList = loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING);
+        List<LoanModel> notContainNewBieList = loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name());
         if(investMapper.sumSuccessInvestCountByLoginName(baseParamDto.getBaseParam().getUserId()) == 0){
-            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING);
+            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name());
             if(CollectionUtils.isEmpty(loanModels)){
-                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.COMPLETE);
+                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.COMPLETE.name());
                 if(CollectionUtils.isNotEmpty(completeLoanModels)){
                     loanModels.add(completeLoanModels.get(0));
                 }
