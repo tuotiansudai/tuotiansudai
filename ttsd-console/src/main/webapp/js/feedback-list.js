@@ -1,5 +1,10 @@
-require(['jquery', 'jquery-ui', 'bootstrap'], function ($) {
+require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
     $(function () {
+        $('.selectpicker').selectpicker();
+
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
+
         //自动完成提示
         var autoValue = '';
         $(".jq-loginName").autocomplete({
@@ -20,4 +25,34 @@ require(['jquery', 'jquery-ui', 'bootstrap'], function ($) {
             }
         });
     });
+
+    $('.feedback-status').on('click',function(e){
+        e.preventDefault();
+        var $self=$(this),
+            id=$self.attr('data-id'),
+            status=$self.prop('checked');
+
+        $.ajax({
+            url: "/announce-manage/updateStatus",
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            data: {
+                feedbackId:id,
+                status:status
+            }
+        }).done(function (data) {
+            console.log("done");
+            $self.prop('checked',status);
+        }).fail(function () {
+            console.log("error");
+            alert("提交失败");
+        });
+    });
+
+
+    $('.down-load').click(function () {
+        location.href = "/announce-manage/feedback?"+$('form').serialize()+"&export=csv";
+    });
+
 });

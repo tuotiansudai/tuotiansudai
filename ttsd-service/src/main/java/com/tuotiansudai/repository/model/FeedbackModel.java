@@ -6,8 +6,13 @@ import java.util.Date;
 public class FeedbackModel implements Serializable {
     private long id;
     private String loginName;
+    private String contact;
+    private Source source;
+    private FeedbackType type;
     private String content;
     private Date createdTime;
+    private ProcessStatus status;
+
 
     public long getId() {
         return id;
@@ -25,6 +30,14 @@ public class FeedbackModel implements Serializable {
         this.loginName = loginName;
     }
 
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     public String getContent() {
         return content;
     }
@@ -39,6 +52,30 @@ public class FeedbackModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public FeedbackType getType() {
+        return type;
+    }
+
+    public void setType(FeedbackType type) {
+        this.type = type;
+    }
+
+    public ProcessStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProcessStatus status) {
+        this.status = status;
     }
 }
 
