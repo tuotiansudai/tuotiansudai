@@ -9,7 +9,7 @@ package com.tuotiansudai.job;
  *
  *
  *
- * 在此枚举中添加字段时，请同步添加到 ttsd-job-worker/src/main/resources/job-worker.properties.deploy/job-worker-all.properties 里
+ * 在此枚举中添加字段时，请同步添加到 ttsd-job-worker/src/main/resources/job-worker.properties.  deploy/job-worker-all.properties 里
  *
  * 请不要将 InvestCallBack, InvestTransferCallBack 添加到上述文件中
  *
