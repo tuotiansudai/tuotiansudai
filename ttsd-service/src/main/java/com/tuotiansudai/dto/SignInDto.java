@@ -9,6 +9,10 @@ public class SignInDto extends BaseDataDto {
 
     private String captcha;
 
+    private String source;
+
+    private String deviceId;
+
     public String getUsername() {
         return username;
     }
@@ -37,10 +41,27 @@ public class SignInDto extends BaseDataDto {
 
     }
 
-    public SignInDto(String username, String password, String captcha) {
+    public SignInDto(String username, String password, String captcha, String source, String deviceId) {
         this.username = username;
         this.password = password;
         this.captcha = captcha;
+        this.source = source;
+        this.deviceId = deviceId;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }

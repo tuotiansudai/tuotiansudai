@@ -20,34 +20,9 @@
         <beans:property name="tokenExpiredSeconds" value="${mobile.app.token.expire.seconds}"/>
     </beans:bean>
 
-    <beans:bean id="mobileAppAuthenticationSuccessHandler"
-                class="com.tuotiansudai.api.security.MobileAppAuthenticationSuccessHandler"/>
-    <beans:bean id="mobileAppAuthenticationFailureHandler"
-                class="com.tuotiansudai.api.security.MobileAppAuthenticationFailureHandler"/>
-    <beans:bean id="mobileAppLogoutSuccessHandler" class="com.tuotiansudai.api.security.MobileAppLogoutSuccessHandler"/>
-
     <beans:bean id="tokenFilter" class="com.tuotiansudai.api.security.MobileAppAuthenticationTokenProcessingFilter">
         <beans:property name="ignoreUrls" value="/login"/>
         <beans:property name="refreshTokenUrl" value="/refresh-token"/>
-    </beans:bean>
-
-    <beans:bean id="loginFilter" class="com.tuotiansudai.api.security.MobileAppUsernamePasswordAuthenticationFilter">
-        <beans:property name="authenticationManager" ref="authenticationManager"/>
-        <beans:property name="usernameParameter" value="j_username"/>
-        <beans:property name="passwordParameter" value="j_password"/>
-        <beans:property name="authenticationSuccessHandler" ref="mobileAppAuthenticationSuccessHandler"/>
-        <beans:property name="authenticationFailureHandler" ref="mobileAppAuthenticationFailureHandler"/>
-    </beans:bean>
-
-    <beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-        <beans:constructor-arg ref="mobileAppLogoutSuccessHandler"/>
-        <beans:constructor-arg>
-            <beans:list>
-                <beans:bean
-                        class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
-            </beans:list>
-        </beans:constructor-arg>
-        <beans:property name="filterProcessesUrl" value="/usermember/logout"/>
     </beans:bean>
 
     <http auto-config="true" use-expressions="true" disable-url-rewriting="true"
@@ -55,6 +30,7 @@
         <csrf disabled="true"/>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
+
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>

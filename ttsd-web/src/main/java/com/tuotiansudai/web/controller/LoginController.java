@@ -4,6 +4,7 @@ import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
 import nl.captcha.Captcha;
@@ -48,7 +49,7 @@ public class LoginController {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
-        SignInDto signInDto = new SignInDto(username, password, captcha);
+        SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         Map<String, String> sessionIds = new HashMap<>();
         sessionIds.put("SESSION", baseDto.getData().getNewSessionId());

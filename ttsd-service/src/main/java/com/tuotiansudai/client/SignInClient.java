@@ -6,6 +6,7 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +67,7 @@ public class SignInClient extends BaseClient {
     private final static String SIGN_OUT_URL = "/logout";
 
     public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
-        RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
+        RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).add("source", dto.getSource()).add("deviceId", dto.getDeviceId()).build();
         return send(oldSessionId, SIGN_IN_URL, requestBody);
     }
 
@@ -96,8 +97,10 @@ public class SignInClient extends BaseClient {
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Cookie", "SESSION=" + oldSessionId);
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        if (StringUtils.isNotEmpty(oldSessionId)) {
+            request.addHeader("Cookie", "SESSION=" + oldSessionId);
+        }
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
             if (response.isSuccessful()) {

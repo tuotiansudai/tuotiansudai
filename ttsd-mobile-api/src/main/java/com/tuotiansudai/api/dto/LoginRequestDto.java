@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto;
 
-public class LoginRequestDto extends BaseParamDto {
+import java.io.Serializable;
+
+public class LoginRequestDto implements Serializable{
 
     private String j_username;
 

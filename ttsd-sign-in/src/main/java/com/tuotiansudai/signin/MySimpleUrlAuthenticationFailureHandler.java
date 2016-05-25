@@ -11,12 +11,12 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +46,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);
+        String strSource = request.getParameter("source");
+        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        loginLogService.generateLoginLog(request.getParameter("username"), source, RequestIPParser.parse(request), request.getParameter("deviceId"), false);
 
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
@@ -61,11 +63,8 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         PrintWriter out = response.getWriter();
         out.print(jsonBody);
         out.close();
-        return;
-
     }
 
-    @Transactional
     private void updateUserStatus(String loginName) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
         if (userModel == null) {
@@ -74,11 +73,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
         if (redisWrapperClient.exists(redisKey)) {
             int loginFailedTime = Integer.parseInt(redisWrapperClient.get(redisKey)) + 1;
-
             if (loginFailedTime < loginMaxTimes) {
                 redisWrapperClient.set(redisKey, String.valueOf(loginFailedTime));
             }
-
             if (loginFailedTime >= loginMaxTimes) {
                 redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
                 userModel.setStatus(UserStatus.INACTIVE);
@@ -88,4 +85,5 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             redisWrapperClient.set(redisKey, String.valueOf(1));
         }
     }
+
 }
