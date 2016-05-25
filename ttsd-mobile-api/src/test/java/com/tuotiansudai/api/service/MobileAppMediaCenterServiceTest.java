@@ -49,7 +49,7 @@ public class MobileAppMediaCenterServiceTest {
         List<LiCaiQuanArticleDto> liCaiQuanArticleDtos = mobileAppAgreementService.obtainCarouselArticle();
         assertEquals(1,liCaiQuanArticleDtos.size());
         assertEquals(licaiquanArticleModel.getTitle(),liCaiQuanArticleDtos.get(0).getTitle());
-        assertEquals(licaiquanArticleModel.getArticleSection(),liCaiQuanArticleDtos.get(0).getSection());
+        assertEquals(licaiquanArticleModel.getSection(),liCaiQuanArticleDtos.get(0).getSection());
         assertEquals(licaiquanArticleModel.getAuthor(),liCaiQuanArticleDtos.get(0).getAuthor());
         assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), liCaiQuanArticleDtos.get(0).getShowPicture());
 
@@ -94,15 +94,15 @@ public class MobileAppMediaCenterServiceTest {
         licaiquanArticleModel.setTitle("title");
         licaiquanArticleModel.setAuthor("author");
         licaiquanArticleModel.setCarousel(true);
-        licaiquanArticleModel.setIsDeleted(false);
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setDeleted(false);
+        licaiquanArticleModel.setSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setShowPicture("showPicture");
         licaiquanArticleModel.setThumb("ThumbPicture");
         licaiquanArticleModel.setContent("content");
-        licaiquanArticleModel.setCreateTime(new Date());
-        licaiquanArticleModel.setCreator(userModel.getLoginName());
-        licaiquanArticleModel.setChecker(userModel.getLoginName());
-        licaiquanArticleModel.setUpdateTime(new Date());
+        licaiquanArticleModel.setCreatedTime(new Date());
+        licaiquanArticleModel.setCreatorLoginName(userModel.getLoginName());
+        licaiquanArticleModel.setCheckerLoginName(userModel.getLoginName());
+        licaiquanArticleModel.setUpdatedTime(new Date());
         return licaiquanArticleModel;
     }
     private UserModel getUserModelTest() {

@@ -86,13 +86,26 @@
                     <input type="hidden" name="content" class="article-content" />
                 </div>
             </div>
+            <#if comment??>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">审核意见:</label>
+                    <div class="col-sm-10">
+                        ${comment}
+                    </div>
+
+                </div>
+
+            </#if>
             <div class="form-group">
                 <label class="col-sm-1 control-label"></label>
+                <#if dto??>
+                    <div class="col-sm-10">
+                        <a href="/announce-manage/article/${dto.articleId?c!}/preview" class="btn btn-success" target="_blank">预览</a>
+                    </div>
+                </#if>
 
-                <div class="col-sm-10">
-                    <button type="button" class="btn">预览</button>
-                </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
 

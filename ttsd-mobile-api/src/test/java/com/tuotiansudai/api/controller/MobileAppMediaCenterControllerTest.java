@@ -88,15 +88,15 @@ public class MobileAppMediaCenterControllerTest {
         licaiquanArticleModel.setTitle("title");
         licaiquanArticleModel.setAuthor("author");
         licaiquanArticleModel.setCarousel(true);
-        licaiquanArticleModel.setIsDeleted(false);
-        licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
+        licaiquanArticleModel.setDeleted(false);
+        licaiquanArticleModel.setSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setShowPicture("showPicture");
         licaiquanArticleModel.setThumb("ThumbPicture");
         licaiquanArticleModel.setContent("content");
-        licaiquanArticleModel.setCreateTime(new Date());
-        licaiquanArticleModel.setCreator("loginName");
-        licaiquanArticleModel.setChecker("loginName");
-        licaiquanArticleModel.setUpdateTime(new Date());
+        licaiquanArticleModel.setCreatedTime(new Date());
+        licaiquanArticleModel.setCheckerLoginName("loginName");
+        licaiquanArticleModel.setCheckerLoginName("loginName");
+        licaiquanArticleModel.setUpdatedTime(new Date());
         return licaiquanArticleModel;
     }
 
