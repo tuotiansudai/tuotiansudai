@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.web.util.IdentityNumberValidator;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,10 +45,13 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, RedirectAttributes redirectAttributes) {
-        registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        registerAccountDto.setMobile(LoginUserInfo.getMobile());
-        BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
-        boolean isRegisterSuccess = dto.getData().getStatus();
+        boolean isRegisterSuccess = false;
+        if(IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())){
+            registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
+            registerAccountDto.setMobile(LoginUserInfo.getMobile());
+            BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
+            isRegisterSuccess = dto.getData().getStatus();
+        }
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerAccountDto);
             redirectAttributes.addFlashAttribute("success", false);
@@ -55,4 +59,5 @@ public class RegisterAccountController {
 
         return new ModelAndView(isRegisterSuccess ? "redirect:/loan-list" : "redirect:/register/account");
     }
+
 }
