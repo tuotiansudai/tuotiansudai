@@ -55,8 +55,7 @@ public class MobileAppLoginController{
 
     @RequestMapping(value = "/usermember/logout", method = RequestMethod.GET)
     @ResponseBody
-    public BaseResponseDto logout(@RequestBody BaseParamDto baseParamDto) {
-        String token = baseParamDto.getBaseParam().getToken();
+    public BaseResponseDto logout(@RequestParam(value = "token") String token) {
         if (!Strings.isNullOrEmpty(token)) {
             mobileAppTokenProvider.deleteToken(token);
         }

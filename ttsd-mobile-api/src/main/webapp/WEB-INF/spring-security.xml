@@ -31,11 +31,14 @@
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
 
+        <form-login login-processing-url="/deny-login"/>
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
 
 
+        <intercept-url pattern="/login" access="permitAll()" />
+        <intercept-url pattern="/usermember/logout" access="permitAll()" />
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />

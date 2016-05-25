@@ -47,7 +47,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             if(StringUtils.isNotEmpty(captcha)) {
-                String deviceId = httpServletRequest.getParameter("j_deviceId");
+                String deviceId = httpServletRequest.getParameter("deviceId");
                 boolean result;
                 if (StringUtils.isNotEmpty(deviceId)) {
                     result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
