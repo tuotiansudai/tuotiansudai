@@ -82,6 +82,7 @@
         <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()" />
 
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
