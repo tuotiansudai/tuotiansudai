@@ -32,8 +32,8 @@ public class FeedbackController {
     @Autowired
     private CaptchaHelper captchaHelper;
 
-    @RequestMapping(value = "/submit", params = {"source", "contact", "type", "content"}, method = RequestMethod.POST)
-    public BaseDto feedback(Source source, String contact, FeedbackType type, String content, String captcha) {
+    @RequestMapping(value = "/submit", params = {"contact", "type", "content", "captcha"}, method = RequestMethod.POST)
+    public BaseDto feedback(String contact, FeedbackType type, String content, String captcha) {
 
         BaseDto baseDto = new BaseDto();
         BaseDataDto baseDataDto = new BaseDataDto();
@@ -55,7 +55,7 @@ public class FeedbackController {
             contact = LoginUserInfo.getMobile();
         }
 
-        feedbackService.create(loginName, contact, source, type, content);
+        feedbackService.create(loginName, contact, Source.WEB, type, content);
 
         return baseDto;
     }
