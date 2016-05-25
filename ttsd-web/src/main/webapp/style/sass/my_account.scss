@@ -1227,7 +1227,7 @@ body{
       }
       span.icon-list{
         position: absolute;
-        width: 40px;
+        width: 60px;
         height: 20px;
         left: 0;
         top: 50%;
@@ -1302,7 +1302,7 @@ body{
       .project-name {
         width: 175px;
         display: inline-block;
-        margin-left:20px;
+        margin-left:40px;
         @include text-overflow;
       }
     }
@@ -1582,7 +1582,7 @@ body{
                     .sign {
                       width: 13px;
                       display: inline-block;
-                      background: #ff7101;
+                      background: #8f8f8f;
                       word-wrap: break-word;
                       word-break: normal;
                       padding: 3px;
