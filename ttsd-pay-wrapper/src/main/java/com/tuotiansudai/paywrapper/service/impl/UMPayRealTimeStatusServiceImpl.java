@@ -126,7 +126,7 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     }
 
     @Override
-    public Long getUserBalance(String loginName){
+    public Map<String, String> getUserBalance(String loginName) {
         AccountModel model = accountMapper.findByLoginName(loginName);
         if (model == null) {
             return null;
@@ -135,7 +135,7 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
         try {
             UserSearchResponseModel responseModel = paySyncClient.send(UserSearchMapper.class, new UserSearchRequestModel(model.getPayUserId()), UserSearchResponseModel.class);
             if (responseModel.isSuccess()) {
-                return responseModel.getBalance();
+                return responseModel.generateHumanReadableBalanceInfo();
             }
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);

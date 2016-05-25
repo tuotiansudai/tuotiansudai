@@ -9,7 +9,7 @@ public interface UMPayRealTimeStatusService {
 
     Map<String, String> getUserStatus(String loginName);
 
-    Long getUserBalance(String loginName);
+    Map<String, String> getUserBalance(String loginName);
 
     Map<String, String> getPlatformStatus();
 

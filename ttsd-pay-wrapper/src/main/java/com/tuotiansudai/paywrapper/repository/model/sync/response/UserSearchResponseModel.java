@@ -95,7 +95,10 @@ public class UserSearchResponseModel extends BaseSyncResponseModel {
                 .build());
     }
 
-    public Long getBalance() {
-        return Strings.isNullOrEmpty(this.balance) ? null : Long.valueOf(this.balance);
+    public Map<String, String> generateHumanReadableBalanceInfo() {
+        return Maps.newLinkedHashMap(ImmutableMap.<String, String>builder()
+                .put("balance", AmountConverter.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
+                .build());
     }
+
 }

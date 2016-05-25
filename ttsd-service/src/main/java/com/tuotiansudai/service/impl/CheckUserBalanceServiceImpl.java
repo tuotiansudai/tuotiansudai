@@ -49,7 +49,8 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
             List<AccountModel> accountModelList = accountMapper.findAccountWithBalance(startIndex, BATCH_SIZE);
 
             for (AccountModel account : accountModelList) {
-                long balance = payWrapperClient.getUserBalance(account.getLoginName());
+                Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
+                long balance = Long.parseLong(balanceMap.get("balance"));
                 if(balance != account.getBalance()) {
                     mismatchUserList.add(account.getLoginName() + "-" + account.getBalance() + "-" + balance);
                 }
