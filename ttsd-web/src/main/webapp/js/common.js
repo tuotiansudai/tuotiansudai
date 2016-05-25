@@ -66,7 +66,7 @@ commonFun={
         if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {//如果是上述设备就会以手机域名打开
             return 'mobile';
         } else {
-        //否则就是电脑域名打开
+            //否则就是电脑域名打开
             return 'pc';
         }
     },
@@ -78,7 +78,7 @@ commonFun={
         document.getElementsByTagName("head")[0].appendChild(link);
     },
     parseURL:function(url) {
-        var a =  document.createElement('a');
+        var a =  document.createElement('a');
         a.href = url;
         return {
             source: url,
@@ -291,7 +291,7 @@ var MyChartsObject={
                         type: 'pie',
                         //radius: '65%',
                         radius : ['50%', '95%'],
-                       // center: ['30%', '48%'],
+                        // center: ['30%', '48%'],
                         center: ['70%', '48%'],
                         itemStyle : {
                             normal : {
@@ -329,7 +329,7 @@ var MyChartsObject={
                         subtext: bar_datas.sub,
                         textStyle:{
                             color: '#ff9c1b'
-                        } 
+                        }
                     },
                     tooltip : {
                         trigger: 'axis'
@@ -369,9 +369,9 @@ var MyChartsObject={
                                 formatter: "时间:{b}<br/>交易额:{c}"
                             }
                         }
-                        
+
                     ]
-            };
+                };
             return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
         }
     },
@@ -395,5 +395,3 @@ var MyChartsObject={
         }
     }
 };
-
-

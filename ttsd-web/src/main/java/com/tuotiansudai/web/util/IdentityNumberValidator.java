@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.util;
-import org.apache.log4j.Logger;
 
+
+import org.apache.log4j.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,12 +18,14 @@ public class IdentityNumberValidator {
      */
     public static final int CHINA_ID_MIN_LENGTH = 15;
 
-    /***
-     * 中国公民身份证号码最大长度。*/
+    /**
+     * 中国公民身份证号码最大长度。
+     */
     public static final int CHINA_ID_MAX_LENGTH = 18;
 
     /**
-     * 第18位校检码*/
+     * 第18位校检码
+     */
     private static String[] ValCodeArr = {
             "1", "0", "x", "9", "8", "7", "6", "5", "4", "3", "2"};
     /**
@@ -88,7 +91,7 @@ public class IdentityNumberValidator {
         int iSum = 0;
         for (int i = 0; i < 17; i++) {
             iSum = iSum
-                    +Integer.parseInt(String.valueOf(code17.charAt(i)))
+                    + Integer.parseInt(String.valueOf(code17.charAt(i)))
                     * Integer.parseInt(Wi[i]);
         }
         return code17 + ValCodeArr[iSum % 11];

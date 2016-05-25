@@ -59,4 +59,5 @@ public class RegisterAccountController {
 
         return new ModelAndView(isRegisterSuccess ? "redirect:/loan-list" : "redirect:/register/account");
     }
+
 }
