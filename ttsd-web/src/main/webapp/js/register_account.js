@@ -25,7 +25,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             },
             identityNumber: {
                 required: true,
-                regex: /^[1-9]\d{13,16}[a-zA-Z0-9]$/,
+                identityCheckValid:true,
+                identityCardAge:true,
                 isExist: "/register/account/identity-number/{0}/is-exist"
             }
         },
@@ -35,7 +36,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             },
             identityNumber: {
                 required: '请输入身份证',
-                regex: '身份证格式不正确',
+                identityCheckValid:'您的身份证号码不正确',
+                identityCardAge:'年龄未满18周岁',
                 isExist: "身份证已存在"
             }
         }
