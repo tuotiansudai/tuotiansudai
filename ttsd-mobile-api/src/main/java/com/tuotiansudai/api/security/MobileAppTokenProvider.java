@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -19,20 +19,20 @@ public class MobileAppTokenProvider {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName, String oldToken) {
         if (!Strings.isNullOrEmpty(oldToken)) {
-            redisWrapperClient.del(oldToken);
+            appTokenRedisWrapperClient.del(oldToken);
         }
         String tokenTemplate = "app-token:{0}:{1}";
         String token = MessageFormat.format(tokenTemplate, loginName, UUID.randomUUID().toString());
-        redisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
         return token;
     }
 
     public void deleteToken(String token) {
-        redisWrapperClient.del(token);
+        appTokenRedisWrapperClient.del(token);
     }
 
     public String getToken(InputStream inputStream) {
@@ -48,7 +48,7 @@ public class MobileAppTokenProvider {
     }
 
     public String getUserNameByToken(String token) {
-        return redisWrapperClient.get(token);
+        return appTokenRedisWrapperClient.get(token);
     }
 
     public BaseResponseDto generateResponseDto(String token) {

@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.util;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class AppTokenParser {
     private MyAuthenticationManager myAuthenticationManager;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String getLoginName(HttpServletRequest httpServletRequest) {
         if (RequestMethod.GET.name().equalsIgnoreCase(httpServletRequest.getMethod())) {
@@ -24,7 +24,7 @@ public class AppTokenParser {
         }
 
         String token = httpServletRequest.getParameter("token");
-        String loginName = redisWrapperClient.get(token);
+        String loginName = appTokenRedisWrapperClient.get(token);
 
         if (Strings.isNullOrEmpty(loginName)) {
             myAuthenticationManager.removeAuthentication();
