@@ -159,14 +159,17 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         }
 
         if (CollectionUtils.isNotEmpty(redisList) && CollectionUtils.isNotEmpty(databaseList)) {
-            for (LiCaiQuanArticleDto database : databaseList) {
-                for (LiCaiQuanArticleDto redis : redisList) {
-                    if (redis.getArticleId().equals(database.getArticleId())) {
-                        redis.setOriginal(true);
-                        break;
-                    }
-                }
+            Set<Long> ids = new HashSet<>();
+            for (LiCaiQuanArticleDto redis : redisList) {
+                ids.add(redis.getArticleId());
             }
+            for (LiCaiQuanArticleDto database : databaseList) {
+               if(ids.contains(database.getArticleId())){
+                   database.setOriginal(true);
+               }
+            }
+
+
         }
         return list;
     }
