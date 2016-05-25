@@ -83,6 +83,61 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
         randomPosition : false,
         hander: '.hander'
     });
+
+    //feedback click
+    $('.type-list dt').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $list=$self.siblings('dd');
+        $list.slideToggle('fast');
+    });
+    $('.type-list dd').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $parent=$self.parent('.type-list'),
+            $dt=$parent.find('dt'),
+            $dd=$parent.find('dd');
+        $dt.text($self.text());
+        $dd.hide();
+    });
+
+    $('.feed-close').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $showFeed=$('.fix-nav-list .show-feed'),
+            $tipDom=$self.closest('.feedback-model');
+        $tipDom.hide();
+        $showFeed.removeClass('active');
+    });
+
+    $('.fix-nav-list .show-feed').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $feedBack=$('.feedback-container');
+        $self.addClass('active');
+        $feedBack.show();
+    });
+    //support placeholder
+    function placeholder(nodes, pcolor) {
+      if (nodes.length && !("placeholder" in document_createElement_x("input"))) {
+        for (i = 0; i<nodes.length;i++){
+          var self = nodes[i],
+            placeholder = self.getAttribute('placeholder') || ''; self.onfocus = function() {
+            if (self.value == placeholder) {
+              self.value = '';
+              self.style.color = "";
+            }
+          }
+          self.onblur = function() {
+            if (self.value == '') {
+              self.value = placeholder;
+              self.style.color = pcolor;
+            }
+          }
+          self.value = placeholder; self.style.color = pcolor;
+        }
+      }
+    }
 });
 
 
