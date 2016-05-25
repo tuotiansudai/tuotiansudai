@@ -27,6 +27,8 @@ public class CouponModel implements Serializable {
 
     private Date endTime;
 
+    private Integer deadline;
+
     private long usedCount;
 
     private Long totalCount;
@@ -127,6 +129,14 @@ public class CouponModel implements Serializable {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
     }
 
     public long getUsedCount() {
@@ -322,6 +332,7 @@ public class CouponModel implements Serializable {
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
+        this.deadline = couponDto.getDeadline() != null ? couponDto.getDeadline() : 0;
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
