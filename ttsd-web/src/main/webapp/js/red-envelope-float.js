@@ -132,12 +132,14 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
         $('#captchaError').hide();
     });
 
-    var feedValidator=$("#feedForm").validate({
+    $("#feedForm").validate({
         debug:true,
         ignore: ".ignore",
         rules: {
             content: {
-                required: true
+                required: true,
+                minlength:14,
+                maxlength:200
             },
             captcha: {
                 required: true,
@@ -146,7 +148,9 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
         },
         messages: {
             content: {
-                required: '内容不能为空！'
+                required: '内容不能为空！',
+                minlength:'文字限制最小为14',
+                maxlength:'文字限制最大为200'
             },
             captcha: {
                 required: '验证码不能为空！',
@@ -168,7 +172,8 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
             .done(function(data) {
                 if(data.status==true){
                     $('#feedbackConatiner').hide();
-                    feedValidator.resetForm();
+                    $('#feedForm').find('input').val('');
+                    $('#captcha').trigger('click');
                     $('#feedbackModel').show();
                 }else{
                     $('#captchaError').text('验证码错误！').show();
