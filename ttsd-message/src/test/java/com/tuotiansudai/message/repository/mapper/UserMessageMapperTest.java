@@ -49,7 +49,7 @@ public class UserMessageMapperTest {
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
         userMessageMapper.create(userMessageModel);
 
-        List<UserMessageModel> userMessageModels = userMessageMapper.findByLoginName(creator.getLoginName());
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null, null);
         assertThat(userMessageModels.size(), is(1));
 
         UserMessageModel actualUserMessageModel = userMessageModels.get(0);
