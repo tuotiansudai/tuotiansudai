@@ -51,37 +51,44 @@
 		<span class="nav-text" onclick="cnzzPush.trackClick('65首页','悬浮窗模块','回到顶部')">返回<br/>顶部</span>
 	</li>
 </ul>
-<div class="feedback-container feedback-model">
+<div class="feedback-container feedback-model" id="feedbackConatiner">
 	<div class="feed-top">
 		<h3>意见反馈</h3>
 		<div class="feed-close"></div>
 	</div>
 	<div class="feed-content">
+	<form action="#" id="feedForm">
 		<div class="content-list">
-			<label>反馈类型：</label>
+			<label class="name-text">反馈类型：</label>
 			<dl class="type-list">
-				<dt data-type="1">意见</dt>
-				<dd data-type="1">意见</dd>
-				<dd data-type="1">投诉</dd>
-				<dd data-type="1">咨询</dd>
-				<dd data-type="1">其他</dd>
+				<dt data-type="opinion">意见</dt>
+				<dd data-type="opinion">意见</dd>
+				<dd data-type="complain">投诉</dd>
+				<dd data-type="consult">咨询</dd>
+				<dd data-type="other">其他</dd>
 				<i class="fa fa-sort-desc" aria-hidden="true"></i>
 			</dl>
 		</div>
 		<div class="content-list">
-			<textarea class="text-area" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200"></textarea>
+			<textarea class="text-area" name="content" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200" id="textArea"></textarea>
 		</div>
 		<div class="content-list">
-			<label>验证码：</label>
-			<input type="text" class="code-text" value="" maxlength="5">
-			<img src="http://dummyimage.com/80x35/4d494d/686a82.gif&text=gxme4" alt="gxme4">
+			<label class="name-text">联系方式：</label>
+			<input type="text" class="phone-text ignore" name="contact" value="" id="phoneText">
+		</div>
+		<div class="content-list">
+			<label class="name-text">验证码：</label>
+			<input type="text" class="code-text" name="captcha" value="" id="captchaText" maxlength="5">
+			<img src="/feedback/captcha" id="captcha">
+			<label class="error captcha-error" id="captchaError">验证码错误！</label>
 		</div>
 		<div class="content-list tc">
-			<a href="javascript:void(0)" class="btn submit-btn">提交意见</a>
+			<input type="submit" class="btn submit-btn" value="提交意见">
 		</div>
+	</form>
 	</div>
 </div>
-<div class="feed-tip feedback-model">
+<div class="feed-tip feedback-model" id="feedbackModel">
 	<div class="tip-top">
 		<h3>意见反馈</h3>
 		<div class="feed-close"></div>

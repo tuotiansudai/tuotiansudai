@@ -406,9 +406,9 @@
 .feedback-container{
   position: fixed;
   width:600px;
-  height:400px;
+  height:460px;
   right:100px;
-  bottom:20px;
+  bottom:40px;
   background: #fff;
   border: 1px solid #ccc;
   z-index: 99;
@@ -448,8 +448,9 @@
       width:100%;
       margin-bottom:20px;
       position: relative;
-      label{
+      .name-text{
         float:left;
+        width:70px;
         line-height:35px;
         font-size:14px;
         color:#4c4c4c;
@@ -494,15 +495,21 @@
       .text-area{
         float:left;
         width:518px;
-        height:118px;
+        height:98px;
         padding:10px;
         border:1px solid #e6e6e6;
         background:#f6f6f6;
         font-size:14px;
         color:#808080;
       }
+      .captcha-error{
+        display:none;
+      }
       .code-text{
         width:86px;
+      }
+      .phone-text{
+        width:190px;
       }
       .submit-btn{
         background:#ff9c1b;
