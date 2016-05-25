@@ -46,22 +46,22 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
 
     @Override
     @Transactional
-    public BaseResponseDto exchange(ExchangeRequestDto exchangeRequestDto) {
+    public BaseResponseDto<UserCouponListResponseDataDto> exchange(ExchangeRequestDto exchangeRequestDto) {
         String loginName = exchangeRequestDto.getBaseParam().getUserId();
         final String exchangeCode = exchangeRequestDto.getExchangeCode();
         long couponId = exchangeCodeService.getValueBase31(exchangeCode);
         final CouponModel couponModel = couponMapper.findById(couponId);
         if (!exchangeCodeService.checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
-           return new BaseResponseDto(ReturnMessage.EXCHANGE_CODE_IS_INVALID.getCode(),ReturnMessage.EXCHANGE_CODE_IS_INVALID.getMsg());
+           return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_INVALID.getCode(),ReturnMessage.EXCHANGE_CODE_IS_INVALID.getMsg());
         }
         if (exchangeCodeService.checkExchangeCodeExpire(couponModel)) {
-            return new BaseResponseDto(ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getCode(),ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getCode(),ReturnMessage.EXCHANGE_CODE_IS_EXPIRE.getMsg());
         }
         if (exchangeCodeService.checkExchangeCodeUsed(couponId, exchangeCode)){
-            return new BaseResponseDto(ReturnMessage.EXCHANGE_CODE_IS_USED.getCode(),ReturnMessage.EXCHANGE_CODE_IS_USED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_USED.getCode(),ReturnMessage.EXCHANGE_CODE_IS_USED.getMsg());
         }
         if (exchangeCodeService.checkExchangeCodeDailyCount(loginName)) {
-            return new BaseResponseDto(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(),ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(),ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
         }
         couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
         String isUsed = "1";
@@ -69,7 +69,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         if(CollectionUtils.isEmpty(userCouponModels)){
-            return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
         }
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
 
@@ -82,8 +82,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
             public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                BaseCouponResponseDataDto dataDto = new BaseCouponResponseDataDto(couponModel, userCouponModel);
-                return dataDto;
+                return new BaseCouponResponseDataDto(couponModel, userCouponModel);
 
             }
         });
