@@ -202,9 +202,9 @@
 .fix-nav-list {
   position: fixed;
   right: 22px;
-  bottom: 160px;
+  bottom: 180px;
   width: 60px;
-  height: 182px;
+  height: 244px;
   z-index: 1000;
   border: 1px solid #fff;
   border-bottom: none;
@@ -235,6 +235,9 @@
       }
       &.icon-calculator {
         @extend .sprite-global-calculator-icon;
+      }
+      &.icon-edit {
+        @extend .sprite-global-edit-icon;
       }
     }
     .nav-text {
@@ -396,6 +399,181 @@
       line-height: 20px;
       text-align: center;
       display: none;
+    }
+  }
+}
+
+.feedback-container{
+  position: fixed;
+  width:600px;
+  height:400px;
+  right:100px;
+  bottom:20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 99;
+  display:none;
+  .feed-top{
+    float:left;
+    width:100%;
+    height:50px;
+    background:#ff9c1b;
+    h3{
+      float:left;
+      font-size:18px;
+      line-height:50px;
+      color:#fff;
+      margin-left:30px;
+    }
+    .feed-close{
+      float:right;
+      width:24px;
+      height:24px;
+      margin:13px 20px;
+      cursor:pointer;
+      background-image: url("/images/compress/global_20160523.png");
+      -webkit-background-size: 408px 290px;
+      -moz-background-size: 408px 290px;
+      background-size: 408px 290px;
+      background-position: -308px -200px;
+    }
+  }
+  .feed-content{
+    float:left;
+    width:540px;
+    height:310px;
+    padding:20px 30px;
+    .content-list{
+      float:left;
+      width:100%;
+      margin-bottom:20px;
+      position: relative;
+      label{
+        float:left;
+        line-height:35px;
+        font-size:14px;
+        color:#4c4c4c;
+      }
+      .type-list{
+        position: absolute;
+        top: 0;
+        left: 70px;
+        width:188px;
+        cursor:pointer;
+        background:#f6f6f6;
+        border:1px solid #e6e6e6;
+        z-index: 101;
+        i{
+          position: absolute;
+          top: -5px;
+          right: 10px;
+          font-size: 30px;
+          color: #808080;
+        }
+        dt{
+          float:left;
+          width:170px;
+          line-height:35px;
+          padding-left:20px;
+          font-size:14px;
+          color:#4c4c4c;
+        }
+        dd{
+          float:left;
+          width:170px;
+          padding-left:20px;
+          line-height:35px;
+          font-size:14px;
+          color:#4c4c4c;
+          display:none;
+          &:hover{
+            background:#ccc;
+          }
+        }
+      }
+      .text-area{
+        float:left;
+        width:518px;
+        height:118px;
+        padding:10px;
+        border:1px solid #e6e6e6;
+        background:#f6f6f6;
+        font-size:14px;
+        color:#808080;
+      }
+      .code-text{
+        width:86px;
+      }
+      .submit-btn{
+        background:#ff9c1b;
+        color:#fff;
+        font-size:16px;
+        padding:8px 85px;
+        border:1px solid #ff9c1b;
+      }
+    }
+  }
+}
+.feed-tip{
+  position: fixed;
+  top:50%;
+  left:50%;
+  width:600px;
+  height:300px;
+  margin-top:-150px;
+  margin-left:-300px;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 100;
+  display:none;
+  .tip-top{
+    float:left;
+    width:100%;
+    height:50px;
+    background:#ff9c1b;
+    h3{
+      float:left;
+      font-size:18px;
+      line-height:50px;
+      color:#fff;
+      margin-left:30px;
+    }
+    .feed-close{
+      float:right;
+      width:24px;
+      height:24px;
+      margin:13px 20px;
+      cursor:pointer;
+      background-image: url("/images/compress/global_20160523.png");
+      -webkit-background-size: 408px 290px;
+      -moz-background-size: 408px 290px;
+      background-size: 408px 290px;
+      background-position: -308px -200px;
+    }
+  }
+  .tip-content{
+    float:left;
+    width:540px;
+    height:310px;
+    padding:20px 30px;
+    .content-list{
+      float:left;
+      width:100%;
+      font-size:18px;
+      color:#4d4d4d;
+      &.btn-model{
+        margin-top:70px;
+      }
+      &.mt-10{
+        margin-top:10px;
+      }
+      .feed-close{
+        background:#ff9c1b;
+        color:#fff;
+        font-size:16px;
+        padding:8px 85px;
+        border:1px solid #ff9c1b;
+      }
     }
   }
 }
