@@ -172,7 +172,7 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
             .done(function(data) {
                 if(data.success==true){
                     $('#feedbackConatiner').hide();
-                    $('#feedForm').find('input').val('');
+                    $('#feedForm').find('.int-text').val('');
                     $('#captcha').trigger('click');
                     $('#feedbackModel').show();
                 }else{

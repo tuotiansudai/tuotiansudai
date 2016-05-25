@@ -70,15 +70,15 @@
 			</dl>
 		</div>
 		<div class="content-list">
-			<textarea class="text-area" name="content" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200" id="textArea"></textarea>
+			<textarea class="text-area int-text" name="content" placeholder="欢迎反馈您遇到的问题，或者想要的功能（文字限制在14～200字）" maxlength="200" id="textArea"></textarea>
 		</div>
 		<div class="content-list">
 			<label class="name-text">联系方式：</label>
-			<input type="text" class="phone-text ignore" name="contact" value="" id="phoneText">
+			<input type="text" class="phone-text ignore int-text" name="contact" value="" id="phoneText">
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
-			<input type="text" class="code-text" name="captcha" value="" id="captchaText" maxlength="5">
+			<input type="text" class="code-text int-text" name="captcha" value="" id="captchaText" maxlength="5">
 			<img src="/feedback/captcha" id="captcha">
 			<label class="error captcha-error" id="captchaError">验证码错误！</label>
 		</div>
