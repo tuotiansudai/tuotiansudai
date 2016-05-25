@@ -38,6 +38,9 @@
             有效期限
         </th>
         <th>
+            有效天数
+        </th>
+        <th>
             可投标的
         </th>
         <th>
@@ -83,6 +86,9 @@
         </td>
         <td>
             ${exchangeCoupon.startTime?string('yyyy-MM-dd')}至${exchangeCoupon.endTime?string('yyyy-MM-dd')}
+        </td>
+        <td>
+            ${exchangeCoupon.deadline?string('0')}天
         </td>
         <td>
             <#list exchangeCoupon.productTypes as productType>
