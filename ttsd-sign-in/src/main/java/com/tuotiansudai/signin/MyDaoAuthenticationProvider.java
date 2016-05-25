@@ -31,6 +31,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+
         super.additionalAuthenticationChecks(userDetails, authentication);
         String loginName = userDetails.getUsername();
         UserModel userModel = userMapper.findByLoginName(loginName);

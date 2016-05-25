@@ -50,27 +50,14 @@ public class HomeServiceImpl implements HomeService {
                 for (CouponModel activeCoupon : allActiveCoupons) {
                     if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                             && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                            && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                            && activeCoupon.getProductTypes().contains(ProductType._30)
                             && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
                         newbieInterestCouponModel = activeCoupon;
                     }
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel, loan.getId(),
-                        loan.getName(),
-                        loan.getProductType(),
-                        loan.getActivityType(),
-                        loan.getType().getLoanPeriodUnit(),
-                        loan.getBaseRate(),
-                        loan.getActivityRate(),
-                        loan.getPeriods(),
-                        loan.getLoanAmount(),
-                        investAmount,
-                        loan.getStatus(),
-                        loan.getFundraisingStartTime(),
-                        loanRepayModels
-                        );
+                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels);
             }
         });
     }

@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
+require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'], function ($,tpl, Mustache, investRepayTemplate, moment, pagination, layer) {
     var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
         month = moment().subtract(1, 'month').format('YYYY-MM-DD'),
@@ -41,73 +41,149 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
 
         paginationElement.loadPagination(requestData, function (data) {
-            var html = Mustache.render(investListTemplate, data);
-            $('.invest-list').html(html);
-            $('.invest-list .show-invest-repay').click(function () {
-                $.ajax({
-                    url: $(this).data('url'),
-                    type: 'get',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                }).success(function (response) {
-                    var data = response.data;
-                    data.isLoanCompleted = status == 'COMPLETE';
-                    data.csrfToken = $("meta[name='_csrf']").attr("content");
-                    if (data.status) {
-                        _.each(data.records, function (item) {
-                            data.loanId = item.loanId;
-                            switch (item.loanRepayStatus) {
-                                case 'REPAYING':
-                                    item.status = '待还';
-                                    break;
-                                case 'COMPLETE':
-                                    item.status = '完成';
-                                    break;
-                                case 'CANCEL':
-                                    item.status = '流标';
-                                    break;
-                            }
-                        });
-                        var html = Mustache.render(investRepayTemplate, data);
-
-                        layer.open({
-                            type: 1,
-                            title: false,
-                            offset: '80px',
-                            area: ['1000px'],
-                            shadeClose: true,
-                            content: html
-                        });
-
+            $('#investList').html(tpl('investListTpl', data));
+        });
+    };
+    $('body').on('click','.show-invest-repay',function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: $(this).data('url'),
+            type: 'get',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).success(function (response) {
+            var data = response.data;
+            data.isLoanCompleted = status == 'COMPLETE';
+            data.csrfToken = $("meta[name='_csrf']").attr("content");
+            if (data.status) {
+                _.each(data.records, function (item) {
+                    data.loanId = item.loanId;
+                    switch (item.loanRepayStatus) {
+                        case 'REPAYING':
+                            item.status = '待还';
+                            break;
+                        case 'COMPLETE':
+                            item.status = '完成';
+                            break;
+                        case 'CANCEL':
+                            item.status = '流标';
+                            break;
                     }
                 });
-            });
-        });
-        $('.invest-list').on('mouseenter','.project-name',function() {
-            layer.closeAll('tips');
-            if($.trim($(this).text()).length>15){
-                layer.tips($(this).text(), $(this), {
-                    tips: [1, '#efbf5c'],
-                    time: 2000,
-                    tipsMore: true,
-                    area: 'auto',
-                    maxWidth: '500'
+                var html = Mustache.render(investRepayTemplate, data);
+                
+                layer.open({
+                    type: 1,
+                    title: false,
+                    offset: '80px',
+                    area: ['1000px'],
+                    shadeClose: true,
+                    content: html
                 });
+
             }
         });
-        $('.invest-list').on('mouseenter','.birth-icon',function() {
-            layer.closeAll('tips');
-            var num = parseFloat($(this).attr('data-benefit'));
-            var benefit = num + 1;
-            layer.tips('您已享受生日福利，首月收益翻'+benefit+'倍', $(this), {
+        event.stopPropagation();
+    })
+    .on('mouseenter','.project-name',function() {
+        layer.closeAll('tips');
+        if($.trim($(this).text()).length>15){
+            layer.tips($(this).text(), $(this), {
                 tips: [1, '#efbf5c'],
                 time: 2000,
                 tipsMore: true,
                 area: 'auto',
                 maxWidth: '500'
             });
+        }
+    })
+    .on('mouseenter','.birth-icon',function() {//birth icon event
+        layer.closeAll('tips');
+        var num = parseFloat($(this).data('benefit'));
+        var benefit = num + 1;
+        layer.tips('您已享受生日福利，首月收益翻'+ benefit +'倍', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
         });
-    };
+    })
+    .on('mouseenter','.coupon-icon',function() {//coupon icon event
+        layer.closeAll('tips');
+        var number = parseFloat($(this).data('benefit'));
+        var num = number == number.toFixed(0) ? number.toFixed(0) : number.toFixed(1);
+        layer.tips('您使用了' + num + '%加息券', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.money-icon',function() {//money icon event
+        layer.closeAll('tips');
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.newbie-icon',function() {//ticket icon event
+        layer.closeAll('tips');
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元体验金', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.ticket-icon',function() {//ticket icon event
+        layer.closeAll('tips');
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元体验金', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.first-icon',function() {//first icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.max-icon',function() {//max icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.5%加息券和100元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.last-icon',function() {//last icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    });
 
     changeDatePicker();
     loadLoanData();

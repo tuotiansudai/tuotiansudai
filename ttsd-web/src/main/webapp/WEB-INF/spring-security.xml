@@ -75,6 +75,7 @@
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
+        <intercept-url pattern="/transferrer/**" access="hasAuthority('INVESTOR')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
 

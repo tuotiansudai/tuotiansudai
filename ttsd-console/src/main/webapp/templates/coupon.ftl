@@ -10,6 +10,7 @@
 			<div class="col-sm-4">
 
                 <select class="selectpicker jq-b-type couponType" name="couponType">
+                    <option value="">请选择</option>
 					<#list couponTypes as couponType>
 						<#if couponType.name() == 'NEWBIE_COUPON' || couponType.name() == 'INVEST_COUPON'>
                         <option value="${couponType.name()}">${couponType.getName()}</option>
@@ -73,7 +74,7 @@
         </div>
 
 		<div class="form-group">
-			<label  class="col-sm-2 control-label ">有效期限: </label>
+			<label  class="col-sm-2 control-label ">活动期限: </label>
 			<div class="col-sm-2">
 				<div class='input-group date' id='startTime'>
 					<input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
@@ -92,6 +93,13 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
+            <div class="col-sm-8">
+                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            </div>
+        </div>
 
         <div class="form-group">
             <label  class="col-sm-2 control-label">使用条件: </label>
