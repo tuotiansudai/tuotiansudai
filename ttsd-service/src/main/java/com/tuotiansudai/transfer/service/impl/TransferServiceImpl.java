@@ -28,8 +28,6 @@ public class TransferServiceImpl implements TransferService {
 
     static Logger logger = Logger.getLogger(TransferServiceImpl.class);
 
-    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
-
     @Autowired
     private PayWrapperClient payWrapperClient;
 

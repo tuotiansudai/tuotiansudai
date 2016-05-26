@@ -88,7 +88,7 @@ public class TriggeredJobBuilder {
     }
 
     public TriggeredJobBuilder withDescription(String description) {
-        this.jobDescription = jobDescription;
+        this.jobDescription = description;
         return this;
     }
 

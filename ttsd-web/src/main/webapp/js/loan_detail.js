@@ -75,6 +75,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             index: 1
         }, function(data) {
             if (data.status) {
+                data.achievementClass = function () {
+                    return function (text, render) {
+                        var classMapping = { 'FIRST_INVEST': 'first-icon', 'MAX_AMOUNT': 'max-icon', 'LAST_INVEST': 'last-icon' };
+                        return "<i class='" + classMapping[render(text)] + "'></i>";
+                    }
+                };
                 var html = Mustache.render(investListTemplate, data);
                 $('.loan-list-con table').html(html);
             }

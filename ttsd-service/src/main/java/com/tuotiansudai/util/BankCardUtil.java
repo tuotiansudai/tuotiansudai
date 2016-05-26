@@ -44,8 +44,7 @@ public class BankCardUtil {
             "CZSB", "SPAB", "BHB", "LZB", "CMB", "ICBC");
 
     private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "BOC", "CEB",
-            "CIB", "CMBC", "HXB", "PSBC", "SPDB",
-            "COMM",  "GDB", "CITIC", "CMB", "SPAB");
+            "CIB", "CMBC", "SPDB", "COMM", "GDB", "CITIC", "CMB", "SPAB");
 
     private static final List<String> BIND_CARD_ONE_CENT_BANKS = Lists.newArrayList("CMB");
 
