@@ -3,6 +3,7 @@ package com.tuotiansudai.point.aspect;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
@@ -94,5 +95,16 @@ public class PointTaskAspect {
         pointTaskService.completeTask(PointTask.BIND_BANK_CARD, bankCardModel.getLoginName());
 
         logger.debug("after returning bind card, point task aspect completed");
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..UserService.registerUser(..))", returning = "returnValue")
+    public void afterReturningRegisterUser(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after returning registerUser success, point task aspect starting...");
+        RegisterUserDto registerUserDto =  (RegisterUserDto) joinPoint.getArgs()[0];
+        if((boolean)returnValue){
+            pointTaskService.completeTask(PointTask.EACH_RECOMMEND, registerUserDto.getReferrer());
+        }
+        logger.debug("after returning registerUser success, point task aspect completed");
     }
 }
