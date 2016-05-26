@@ -42,13 +42,13 @@
         from user_point_task inner join point_task on user_point_task.point_task_id = point_task.id
         where user_point_task.login_name = #{loginName} order by created_time desc;
     </select>
-    
+
     <select id="findByLoginNameAndId" parameterType="map" resultMap="userPointTaskResultMap">
       select * from user_point_task where point_task_id = #{pointTaskId} and login_name = #{loginName}
     </select>
 
-    <select id="findCountPointTaskPagination" resultType="int">
-        select count(*)  from point_task
+    <select id="findMaxTaskLevelByLoginName" resultType="int" parameterType="map">
+        select task_level from user_point_task where login_name = #{loginName} and point_task_id = #{pointTaskId} order by task_level desc  limit 1
     </select>
 
 </mapper>
