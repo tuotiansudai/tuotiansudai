@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.JpushRequestDto;
 
 public interface MobileAppJpushService {
 
-    BaseResponseDto storeJpushId(JpushRequestDto jpushRequestDto);
+    BaseResponseDto storeJPushId(JpushRequestDto JPushRequestDto);
 
 
 }
