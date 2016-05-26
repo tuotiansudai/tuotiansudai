@@ -1,7 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -21,9 +23,6 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by huoxuanbo on 16/5/9.
- */
 @Repository
 public class OperationDataServiceImpl implements OperationDataService {
     static Logger logger = Logger.getLogger(ReferrerRelationServiceImpl.class);
@@ -56,8 +55,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         return Joiner.on(",").join(list);
     }
 
-    private String getRedisKeyFromTemplateByDate(String template , Date timeStampDate)
-    {
+    private String getRedisKeyFromTemplateByDate(String template, Date timeStampDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
         return MessageFormat.format(template, String.valueOf(simpleDateFormat.format(timeStampDate)));
     }
@@ -162,7 +160,17 @@ public class OperationDataServiceImpl implements OperationDataService {
                 redisWrapperClient.hset(getRedisKeyFromTemplateByDate(TABLE_INFO_PUBLISH_KEY_TEMPLATE, endDate),
                         investDataView.getProductName(), investDataView.ConvertInvestDataViewToString(), timeout);
             }
+
+            investDataViewList = Lists.transform(investDataViewList, new Function<InvestDataView, InvestDataView>() {
+                @Override
+                public InvestDataView apply(InvestDataView input) {
+                    input.setTotalInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getTotalInvestAmount())));
+                    input.setAvgInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getAvgInvestAmount())));
+                    return input;
+                }
+            });
         }
+
         return investDataViewList;
     }
 }
