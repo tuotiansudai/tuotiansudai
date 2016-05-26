@@ -94,12 +94,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
         loanDetailResponseDataDto.setInvestedCount(investMapper.countSuccessInvest(loan.getId()));
-        if (loan.getVerifyTime() != null) {
-            loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
-        }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
             loanDetailResponseDataDto.setInvestBeginTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            loanDetailResponseDataDto.setVerifyTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         if(loan.getFundraisingEndTime() != null){
             loanDetailResponseDataDto.setFundRaisingEndTime(new DateTime(loan.getFundraisingEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
@@ -115,7 +113,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loan.getId());
         StringBuffer marqueeTitle = new StringBuffer();
         if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loan.getStatus())) {
-            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包  ");
+            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptLoginName(loginName, investModel.getLoginName(), 3, investModel.getId());
