@@ -1,19 +1,14 @@
 <#import "macro/global.ftl" as global>
-<#switch productType!"">
-    <#case 'SYL'>
-        <#assign title="速盈利_拓天产品_拓天速贷">
-        <#assign keywords="拓天速贷,拓天速盈利,拓天理财">
-        <#assign description="拓天速贷金融精英为您推荐拓天速贷快速理财产品“速盈利”先付利息后还本金,按天计息,放款后生息.">
+<#switch name!"">
+    <#case '房产抵押借款'>
+        <#assign title="房产抵押借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,资金周转">
+        <#assign description="拓天速贷P2P金融信息服务平台为您提供优质房产抵押借款,让您获得稳定收益的投资理财产品.">
         <#break>
-    <#case 'WYX'>
-        <#assign title="稳盈绣_个人资金周转_拓天速贷">
-        <#assign keywords="拓天速贷,拓天稳盈绣,资金周转,稳定收益">
-        <#assign description="拓天速贷P2P金融信息服务平台为您提供个人资金周转,让您获得稳定收益的投资理财产品.">
-        <#break>
-    <#case 'JYF'>
-        <#assign title="久盈富_个人资金借款_拓天速贷">
-        <#assign keywords="拓天速贷,拓天久盈富,拓天高收益,个人借款">
-        <#assign description="拓天速贷个人借款投资产品,年化利率13%起,高收益,高效率,低风险.">
+    <#case '车辆抵押借款'>
+        <#assign title="车辆抵押借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆抵押借款">
+        <#assign description="拓天速贷优质车辆抵押借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
         <#break>
     <#default>
         <#assign title="投资列表_投资产品_拓天速贷">
