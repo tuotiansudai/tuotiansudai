@@ -73,8 +73,8 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}/preview", method = RequestMethod.GET)
-    public ModelAndView previewArticle(@PathVariable LiCaiQuanArticleDto liCaiQuanArticleDto) {
+    @RequestMapping(value = "/article/preview", method = RequestMethod.POST)
+    public ModelAndView previewArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
         if (null == liCaiQuanArticleDto) {
             return new ModelAndView("redirect:/error/404");
         } else {
@@ -122,19 +122,6 @@ public class LiCaiQuanArticleController {
         this.liCaiQuanArticleService.deleteArticle(articleId);
         return mv;
     }
-
-    @RequestMapping(value = "article/{articleId}/appRead", method = RequestMethod.GET)
-    public BaseDto<BaseDataDto> appReadArticle(@PathVariable long articleId) {
-        liCaiQuanArticleService.updateReadCount(articleId);
-        return new BaseDto<>();
-    }
-
-    @RequestMapping(value = "article/{articleId}/appLike", method = RequestMethod.GET)
-    public BaseDto<BaseDataDto> appLikeArticle(@PathVariable long articleId) {
-        liCaiQuanArticleService.updateLikeCount(articleId);
-        return new BaseDto<>();
-    }
-
 
     @RequestMapping(value = "/article/{articleId}/original", method = RequestMethod.GET)
     public ModelAndView articleOriginal(@PathVariable long articleId) {

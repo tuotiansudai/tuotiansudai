@@ -12,9 +12,6 @@
     </p>
              <p id="content">${articleContent.getContent()}</p>
     </div>
-    <div align="center">
-        <input type="button" name="Submit" value="确认" onclick="javascript:open(location, '_self').close();"/>
-    </div>
 </div>
 
 <!-- content area end -->
