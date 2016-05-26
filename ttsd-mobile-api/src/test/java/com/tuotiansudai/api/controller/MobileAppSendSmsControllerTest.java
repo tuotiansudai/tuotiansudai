@@ -1,7 +1,10 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppSendSmsService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppSendSmsController;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.SendSmsCompositeRequestDto;
+import com.tuotiansudai.api.dto.v1_0.VerifyCaptchaRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppSendSmsService;
 import com.tuotiansudai.repository.model.CaptchaType;
 import org.junit.Test;
 import org.mockito.InjectMocks;

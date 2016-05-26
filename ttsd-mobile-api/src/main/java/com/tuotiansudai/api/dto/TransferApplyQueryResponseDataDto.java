@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
+
 public class TransferApplyQueryResponseDataDto extends BaseResponseDataDto {
 
     private String investAmount;

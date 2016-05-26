@@ -1,7 +1,10 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppAgreementServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.AgreementOperateRequestDto;
+import com.tuotiansudai.api.dto.v1_0.AgreementOperateResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppAgreementServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;

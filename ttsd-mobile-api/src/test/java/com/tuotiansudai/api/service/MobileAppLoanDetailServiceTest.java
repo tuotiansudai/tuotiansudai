@@ -1,13 +1,12 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.LoanDetailRequestDto;
-import com.tuotiansudai.api.dto.LoanDetailResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.impl.MobileAppLoanDetailServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanDetailServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -126,6 +124,9 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         LoanDetailRequestDto loanDetailRequestDto = new LoanDetailRequestDto();
         loanDetailRequestDto.setLoanId("300140750356480");
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("");
+        loanDetailRequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailResponseDataDto> baseResponseDto = mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
 
 
@@ -136,7 +137,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
-        assertEquals("1",baseResponseDto.getData().getRaisingPeriod());
+        assertNotNull(baseResponseDto.getData().getRaisingPeriod());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {

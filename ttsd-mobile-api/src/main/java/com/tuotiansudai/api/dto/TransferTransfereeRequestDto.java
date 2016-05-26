@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+
 public class TransferTransfereeRequestDto extends BaseParamDto {
 
     private Integer index;

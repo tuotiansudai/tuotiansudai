@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppExchangeService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppExchangeController;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppExchangeService;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
