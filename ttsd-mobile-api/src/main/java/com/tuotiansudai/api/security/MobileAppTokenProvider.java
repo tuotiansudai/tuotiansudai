@@ -45,8 +45,8 @@ public class MobileAppTokenProvider {
         try {
             BaseParamDto dto = objectMapper.readValue(inputStream, BaseParamDto.class);
             BaseParam baseParam = dto.getBaseParam();
-            log.debug(MessageFormat.format("[MobileAppTokenProvider][getToken] baseParam:{userId:{0} phoneNum:{1} token:{2} " +
-                            "platform:{3} appVersion:{4} osVersion:{5} deviceId:{6} deviceModel:{7} screenW:{8} screenH:{9} channel: {10}",
+            log.debug(MessageFormat.format("[MobileAppTokenProvider][getToken] baseParam:(userId:{0} phoneNum:{1} token:{2} " +
+                            "platform:{3} appVersion:{4} osVersion:{5} deviceId:{6} deviceModel:{7} screenW:{8} screenH:{9} channel: {10})",
                     baseParam.getUserId(), baseParam.getPhoneNum(), baseParam.getToken(), baseParam.getPlatform(),
                     baseParam.getAppVersion(), baseParam.getOsVersion(), baseParam.getDeviceId(), baseParam.getDeviceModel(),
                     baseParam.getScreenW(), baseParam.getScreenH(), baseParam.getChannel()));
