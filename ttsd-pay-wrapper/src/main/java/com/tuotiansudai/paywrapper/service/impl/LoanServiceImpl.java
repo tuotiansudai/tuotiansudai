@@ -165,7 +165,7 @@ public class LoanServiceImpl implements LoanService {
             if (!updateSuccess) {
                 MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
                         String.valueOf(loanModel.getLoanAmount()),
-                        String.valueOf(loanModel.getId()),
+                        loanModel.getName(),
                         loanStatus.getCode());
 
                 MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
