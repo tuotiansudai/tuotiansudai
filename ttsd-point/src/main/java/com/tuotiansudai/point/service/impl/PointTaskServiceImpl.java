@@ -64,6 +64,8 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private List<InvestTaskAward> firstInvestAward = null;
 
+    private List<InvestTaskAward> evertInvestAward = null;
+
     @Override
     @Transactional
     public void completeTask(PointTask pointTask, String loginName) {
@@ -158,6 +160,9 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return false;
             case FIRST_SINGLE_INVEST:
                 InvestTaskAward investTaskAward = getFirstInvestAwardLevel(investModel.getAmount());
+                if(investTaskAward != null){
+                    userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+                }
                 return false;
             case EVERY_INVITE_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(loginName);
@@ -205,6 +210,18 @@ public class PointTaskServiceImpl implements PointTaskService {
         return null;
     }
 
+    private InvestTaskAward getEvertInvestAwardLevel(long investAmount){
+        if(investAmount > 0){
+            evertInvestAward = getEvertInvestAward();
+            for(InvestTaskAward investTaskAward : firstInvestAward){
+                if(investAmount > investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
+                    return investTaskAward;
+                }
+            }
+        }
+        return null;
+    }
+
     private List<InvestTaskAward> getFirstInvestAward(){
         if(firstInvestAward == null){
             firstInvestAward = new ArrayList<>();
@@ -216,6 +233,18 @@ public class PointTaskServiceImpl implements PointTaskService {
             firstInvestAward.add(new InvestTaskAward(6,100000,1000000,10000000));
         }
         return firstInvestAward;
+    }
+
+    private List<InvestTaskAward> getEvertInvestAward(){
+        if(evertInvestAward == null){
+            evertInvestAward = new ArrayList<>();
+            evertInvestAward.add(new InvestTaskAward(1,1000,5000,10000));
+            evertInvestAward.add(new InvestTaskAward(2,2000,10000,50000));
+            evertInvestAward.add(new InvestTaskAward(3,5000,50000,100000));
+            evertInvestAward.add(new InvestTaskAward(4,10000,100000,500000));
+            evertInvestAward.add(new InvestTaskAward(5,50000,500000,1000000));
+        }
+        return evertInvestAward;
     }
 
     class InvestTaskAward{
