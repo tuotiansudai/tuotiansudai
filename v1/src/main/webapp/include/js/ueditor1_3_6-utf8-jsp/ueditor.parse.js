@@ -20,7 +20,7 @@
                     len = this.isBoolean(a[a.length - 1]) ? a.length - 1 : a.length;
                 for (var i = 1; i < len; i++) {
                     var x = a[i];
-                    for (var k in x) {
+                    for (var k in 
                         if (!notCover || !t.hasOwnProperty(k)) {
                             t[k] = x[k];
                         }
