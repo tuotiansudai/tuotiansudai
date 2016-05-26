@@ -1,7 +1,12 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppRechargeServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BankCardRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BankCardResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppRechargeServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;

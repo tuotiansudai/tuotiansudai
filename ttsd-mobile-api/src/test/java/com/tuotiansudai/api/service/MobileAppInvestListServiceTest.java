@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
+import com.tuotiansudai.api.dto.BaseParamTest;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -182,8 +183,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         assertEquals(INVEST_COUNT, dataDto.getTotalCount().intValue());
         assertEquals(10, dataDto.getInvestList().size());
-        assertEquals(com.tuotiansudai.api.dto.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
-        assertEquals(com.tuotiansudai.api.dto.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
+        assertEquals(com.tuotiansudai.api.dto.v1_0.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
+        assertEquals(com.tuotiansudai.api.dto.v1_0.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
         assertThat(dataDto.getInvestList().get(0).getTransferStatus(), is(TransferStatus.TRANSFERABLE.name()));
     }
 }

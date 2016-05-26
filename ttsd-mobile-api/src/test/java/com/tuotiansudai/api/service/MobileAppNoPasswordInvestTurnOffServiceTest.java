@@ -1,7 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;

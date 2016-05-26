@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service;
 
 
 import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 
 public interface MobileAppTransferApplicationService {
 

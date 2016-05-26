@@ -1,9 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.CertificationRequestDto;
-import com.tuotiansudai.api.dto.ReferrerInvestListRequestDto;
-import com.tuotiansudai.api.service.MobileAppCertificationService;
-import com.tuotiansudai.api.service.MobileAppReferrerInvestService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppReferrerInvestListController;
+import com.tuotiansudai.api.dto.v1_0.ReferrerInvestListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppReferrerInvestService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

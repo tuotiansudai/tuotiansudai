@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppAutoInvestPlanService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppAutoInvestPlanController;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

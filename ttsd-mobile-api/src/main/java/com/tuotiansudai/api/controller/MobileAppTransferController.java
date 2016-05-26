@@ -1,9 +1,10 @@
 package com.tuotiansudai.api.controller;
 
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.controller.v1_0.MobileAppBaseController;
 import com.tuotiansudai.api.dto.TransferPurchaseRequestDto;
 import com.tuotiansudai.api.dto.TransferTransfereeRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.MobileAppTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

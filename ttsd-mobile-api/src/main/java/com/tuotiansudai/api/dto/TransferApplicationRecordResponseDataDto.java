@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
@@ -9,7 +10,7 @@ import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
 
-public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDto{
+public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDto {
     private String transferApplicationId;
     private String name;
     private String transferAmount;
