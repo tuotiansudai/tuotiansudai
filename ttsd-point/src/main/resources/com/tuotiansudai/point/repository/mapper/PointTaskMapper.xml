@@ -11,8 +11,8 @@
         <result column="name" property="name"></result>
         <result column="point" property="point"></result>
         <result property="createdTime" column="created_time"/>
-        <result property="startUsing" column="start_using"/>
-        <result property="repeatStatus" column="repeat_status"/>
+        <result property="active" column="active"/>
+        <result property="multiple" column="multiple"/>
     </resultMap>
 
     <select id="findPointTaskPagination" resultMap="pointTaskResultMap" parameterType="map">
