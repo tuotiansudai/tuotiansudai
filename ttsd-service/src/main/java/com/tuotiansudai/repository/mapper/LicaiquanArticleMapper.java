@@ -18,6 +18,18 @@ public interface LicaiquanArticleMapper {
 
     List<LicaiquanArticleModel> findExistedArticleListOrderByCreateTime(@Param("title") String title,
                                                                         @Param("section") ArticleSectionType sectionType,
-                                                                        @Param("index") long index,
-                                                                        @Param("pageSize") int pageSize);
+                                                                        @Param("startId") long startId,
+                                                                        @Param("size") int size);
+
+    List<LicaiquanArticleModel> findDeletedArticleListOrderByCreateTime(@Param("title") String title,
+                                                                        @Param("section") ArticleSectionType sectionType,
+                                                                        @Param("startId") long startId,
+                                                                        @Param("size") int size);
+    List<LicaiquanArticleModel> findCarouselArticle();
+
+    List<LicaiquanArticleModel> findArticleByArticleSectionType(@Param("section") ArticleSectionType section,
+                                                                @Param("index") int index,
+                                                                @Param("pageSize") int pageSize);
+
+    int findCountArticleByArticleSectionType(@Param("section") ArticleSectionType section);
 }

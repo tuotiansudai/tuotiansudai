@@ -163,6 +163,8 @@ def generate_git_log_file():
 
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-mobile-api/src/main/webapp/api/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-mobile-api/src/main/webapp/api/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
@@ -225,8 +227,11 @@ def jcversion():
     """
     generate_git_log_file()
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
+    versioning_min_files('ttsd-mobile-api/src/main/webapp/api/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
+    versioning_min_files('ttsd-mobile-api/src/main/webapp/api/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
+    replace_min_files_in_config_js_file('ttsd-mobile-api/src/main/webapp/api/js/dest/')
 
 
 def get_current_dir():
@@ -236,3 +241,5 @@ def get_current_dir():
 def get_base_dir():
     test_dir = get_current_dir()
     return os.path.join(test_dir, 'test', 'ump_service')
+
+

@@ -11,8 +11,8 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.After;
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -225,6 +225,7 @@ public class LiCaiQuanArticleServiceTest {
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
+
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(), user.getLoginName());
         liCaiQuanArticleService.deleteArticle(liCaiQuanArticleDto.getArticleId());
         assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
@@ -235,6 +236,7 @@ public class LiCaiQuanArticleServiceTest {
         UserModel user = createUserByUserId("test");
         LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
+
         liCaiQuanArticleService.checkPassAndCreateArticle(liCaiQuanArticleDto.getArticleId(), user.getLoginName());
         assertNotNull(licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId()));
     }

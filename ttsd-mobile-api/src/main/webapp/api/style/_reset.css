@@ -1,0 +1,11 @@
+.clearfix:after, .clearfix:before,
+.clear:after, .clear:before {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+  font-size: 0; }
+
+/*# sourceMappingURL=_reset.css.map */

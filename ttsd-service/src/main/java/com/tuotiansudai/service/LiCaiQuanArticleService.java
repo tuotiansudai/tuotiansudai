@@ -8,6 +8,10 @@ import java.util.Map;
 public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
 
+    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
+
+    LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
+
     LiCaiQuanArticleDto getArticleContent(long articleId);
 
     BaseDto<BaseDataDto> checkArticleOnStatus(long articleId);
@@ -25,10 +29,6 @@ public interface LiCaiQuanArticleService {
     void updateLikeCount(long articleId);
 
     void updateReadCount(long articleId);
-
-    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
-
-    LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
 
     void checkPassAndCreateArticle(long articleId,String checkName);
 
