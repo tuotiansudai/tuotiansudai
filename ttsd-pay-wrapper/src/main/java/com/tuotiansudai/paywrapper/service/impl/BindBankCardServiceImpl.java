@@ -86,6 +86,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         BankCardModel bankCardModel = new BankCardModel(dto);
         bankCardModel.setId(idGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECKED);
+        bankCardModel.setIsFastPayOn(bankCardMapper.findByLoginNameAndIsFastPayOn(dto.getLoginName()) != null);
         PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
@@ -149,7 +150,16 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         if (callbackRequest == null) {
             return null;
         }
-
+        long orderId = Long.parseLong(callbackRequest.getOrderId());
+        BankCardModel bankCardModel = bankCardMapper.findById(orderId);
+        if (bankCardModel == null) {
+            logger.error(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
+            return null;
+        }
+        if (callbackRequest.isSuccess()) {
+            bankCardModel.setStatus(BankCardStatus.APPLY);
+            bankCardMapper.update(bankCardModel);
+        }
         return callbackRequest.getResponseData();
     }
 
