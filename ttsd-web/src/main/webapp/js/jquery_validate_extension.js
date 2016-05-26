@@ -131,7 +131,6 @@ require(['jquery', 'jquery.validate'], function ($) {
         }
 
         this.startRequest(element);
-
         var errorMessage = validator.defaultMessage(element, "captchaVerify");
 
         var successHandler = function (response) {

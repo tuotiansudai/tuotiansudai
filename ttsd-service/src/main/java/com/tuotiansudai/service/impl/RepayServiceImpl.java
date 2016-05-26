@@ -5,6 +5,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,6 +47,12 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -71,7 +81,7 @@ public class RepayServiceImpl implements RepayService {
             }
         });
 
-        boolean isLoanRepaying = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+        boolean isRepayingLoanRepayExist = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
                 return input.getStatus() == RepayStatus.REPAYING;
@@ -90,10 +100,10 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
         }
 
-        if (isLoanRepaying && !isWaitPayLoanRepayExist) {
+        if (loanModel.getStatus() != LoanStatus.OVERDUE && isRepayingLoanRepayExist && !isWaitPayLoanRepayExist) {
             dataDto.setAdvanceRepayEnabled(true);
             DateTime now = new DateTime();
-            DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
+            DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
             List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
             long advanceRepayInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastSuccessRepayDate, now);
             long corpus = loanRepayMapper.findLastLoanRepay(loanId).getCorpus();
@@ -133,6 +143,7 @@ public class RepayServiceImpl implements RepayService {
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
+        setCouponInterest(dataDto,investId);
         baseDto.setData(dataDto);
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
@@ -148,5 +159,22 @@ public class RepayServiceImpl implements RepayService {
 
         return baseDto;
     }
+
+    private List<String> setCouponInterest(InvestRepayDataDto dataDto,long investId){
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
+        List<String> couponList = new ArrayList<>();
+        long expectedInterest = 0l;
+        long actualInterest = 0l;
+        if(CollectionUtils.isNotEmpty(userCouponModels)){
+            for(UserCouponModel userCouponModel : userCouponModels){
+                expectedInterest += userCouponModel.getExpectedInterest();
+                actualInterest += userCouponModel.getActualInterest();
+            }
+        }
+        dataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+        dataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
+        return couponList;
+    }
+
 
 }

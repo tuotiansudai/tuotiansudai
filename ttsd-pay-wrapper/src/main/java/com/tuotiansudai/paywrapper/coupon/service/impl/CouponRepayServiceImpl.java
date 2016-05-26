@@ -19,8 +19,11 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -72,6 +75,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     @Autowired
     private SystemBillService systemBillService;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     @Override
     public void repay(long loanRepayId) {
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
@@ -83,6 +89,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel lastLoanRepayModel = this.getLastLoanRepayModel(currentLoanRepayModel, loanRepayModels);
 
         for (UserCouponModel userCouponModel : userCouponModels) {
+            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS));
+            if(CollectionUtils.isNotEmpty(transferApplicationModels)){
+                logger.info(MessageFormat.format("ID:{0},LOAN_ID:{1},LOAN_REPAY_ID:{2},INVEST_ID:{3} has transferred",
+                        String.valueOf(userCouponModel.getId()),
+                        userCouponModel.getLoanId() == null?"":userCouponModel.getLoanId(),
+                        String.valueOf(loanRepayId),
+                        userCouponModel.getInvestId() == null?"":userCouponModel.getInvestId()));
+               continue;
+            }
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
             long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);

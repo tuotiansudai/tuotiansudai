@@ -82,9 +82,19 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 }
             },
             beforeCheck: function(curform) {
+                var rep_point1 = /^(\d+\.\d{1,1}|\d+)$/;
                 var couponRate = parseFloat($('.coupon-rate').val());
                 if (couponRate <= 0) {
                     showErrorMessage('加息券利率需要大于0', $('.coupon-rate', curform));
+                    return false;
+                }
+                if (!rep_point1.test(couponRate)) {
+                    showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
+                    return false;
+                }
+                var deadline = parseInt($('.coupon-deadline', curform).val());
+                if (deadline <= 0) {
+                    showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
                     return false;
                 }
                 var fivenumber = parseInt($('.give-number', curform).val());

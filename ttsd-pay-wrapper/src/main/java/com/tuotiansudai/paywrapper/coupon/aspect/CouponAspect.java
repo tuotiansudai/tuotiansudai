@@ -95,7 +95,7 @@ public class CouponAspect {
 
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         try {
             couponInvestService.investCallback(investModel.getId());
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
@@ -105,7 +105,7 @@ public class CouponAspect {
                     UserGroup.AGENT,
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null,null);
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE), null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -130,6 +130,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
                     .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -144,6 +145,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
