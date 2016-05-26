@@ -16,9 +16,9 @@
         <#assign description="拓天速贷个人借款投资产品,年化利率13%起,高收益,高效率,低风险.">
         <#break>
     <#default>
-        <#assign title="投资列表_拓天投资_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,速盈利,稳盈绣,久盈富">
-        <#assign description="拓天速贷为您提供准确及时的P2P投资项目.投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您的收益速、稳、高.">
+        <#assign title="投资列表_投资产品_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆抵押借款">
+        <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
