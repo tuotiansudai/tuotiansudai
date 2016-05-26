@@ -132,7 +132,6 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(6L, baseResponseDto.getData().getInvestedCount().longValue());
         assertEquals("100.00",baseResponseDto.getData().getInvestedMoney());
-        assertEquals(5,baseResponseDto.getData().getInvestRecord().size());
         assertEquals(idCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(0).getTitle());
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());

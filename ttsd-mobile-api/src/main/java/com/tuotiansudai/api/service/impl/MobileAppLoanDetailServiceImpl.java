@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppLoanDetailService;
@@ -9,12 +8,10 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -109,24 +106,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
         loanDetailResponseDataDto.setLoanDetail(loan.getDescriptionHtml());
         loanDetailResponseDataDto.setEvidence(getEvidenceByLoanId(loan.getId()));
-        List<InvestModel> investAll = investMapper.findSuccessInvestsByLoanId(loan.getId());
-        loanDetailResponseDataDto.setInvestCount(investAll != null ? investAll.size() : 0);
-        if (CollectionUtils.isNotEmpty(investAll)) {
-            List<InvestModel> invests = null;
-            if (investAll.size() > 5) {
-                invests = investAll.subList(0, 5);
-            } else {
-                invests = investAll.subList(0, investAll.size());
-            }
-            List<InvestRecordResponseDataDto> investRecordResponseDataDtos = Lists.transform(invests, new Function<InvestModel, InvestRecordResponseDataDto>() {
-                @Override
-                public InvestRecordResponseDataDto apply(InvestModel input) {
-                    return new InvestRecordResponseDataDto(input);
-                }
-            });
-            loanDetailResponseDataDto.setInvestRecord(investRecordResponseDataDtos);
-        }
-
         loanDetailResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
         loanDetailResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
         loanDetailResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));

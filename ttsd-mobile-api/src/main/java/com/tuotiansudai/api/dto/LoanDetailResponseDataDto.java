@@ -20,7 +20,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String activityRatePercent;
     private Long investedCount;
     private String loanDetail;
-    private Integer investCount;
     private String agent;
     private String loaner;
     private String verifyTime;
@@ -40,8 +39,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
 
     private List<EvidenceResponseDataDto> evidence;
-
-    private List<InvestRecordResponseDataDto> investRecord;
 
     public String getLoanId() {
         return loanId;
@@ -123,14 +120,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.investedCount = investedCount;
     }
 
-    public Integer getInvestCount() {
-        return investCount;
-    }
-
-    public void setInvestCount(Integer investCount) {
-        this.investCount = investCount;
-    }
-
     public String getLoanDetail() {
         return loanDetail;
     }
@@ -145,14 +134,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setEvidence(List<EvidenceResponseDataDto> evidence) {
         this.evidence = evidence;
-    }
-
-    public List<InvestRecordResponseDataDto> getInvestRecord() {
-        return investRecord;
-    }
-
-    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
-        this.investRecord = investRecord;
     }
 
     public String getRatePercent() {
