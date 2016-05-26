@@ -165,4 +165,8 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         }).isPresent();
     }
+
+    public long findSumBirthdayAndInterestByLoginName(String loginName){
+        return userCouponMapper.findSumBirthdayAndInterestByLoginName(loginName);
+    }
 }

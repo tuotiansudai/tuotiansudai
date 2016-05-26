@@ -34,11 +34,13 @@
         <div class="assets-detail bRadiusBox fr bg-w">
             <ul class="detail-list">
                 <li><b>我的余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
-                <li><b>累计预期收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收预期收益：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收投资收益：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收推荐奖励：</b><span>${((collectedReward/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收红包奖励：</b><span></span>元</li>
             </ul>
         </div>
     </div>

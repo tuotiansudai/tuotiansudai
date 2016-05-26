@@ -250,4 +250,17 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
+    <select id="findSumBirthdayAndInterestByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(t.`actual_interest`- t.`actual_fee`), 0)
+        FROM
+        user_coupon t
+        JOIN coupon c
+        ON t.`coupon_id` = c.`id`
+        WHERE t.`login_name` = #{loginName}
+        AND t.`status` = 'SUCCESS'
+        and  c.`coupon_type` in ('INTEREST_COUPON','BIRTHDAY_COUPON');
+    </select>
+
+
 </mapper>
