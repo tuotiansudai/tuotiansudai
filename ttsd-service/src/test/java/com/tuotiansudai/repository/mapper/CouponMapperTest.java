@@ -58,13 +58,14 @@ public class CouponMapperTest {
         couponModel.setActive(false);
         couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());
+        couponModel.setDeadline(10);
         couponModel.setStartTime(new Date());
         couponModel.setCreatedBy("couponTest");
         couponModel.setTotalCount(1000L);
         couponModel.setUsedCount(500L);
         couponModel.setInvestLowerLimit(10000L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL, ProductType.WYX));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         return couponModel;
     }
 

@@ -90,11 +90,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     AuditLogUtil auditLogUtil;
 
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${web.server}")
-    private String domainName;
-
 
     @Override
     @Transactional
@@ -103,11 +99,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (StringUtils.isNotEmpty(jPushAlertDto.getId())) {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
+            if(jPushAlertModel.getJumpTo() != JumpTo.OTHER){
+                jPushAlertModel.setJumpToLink("");
+            }
             jPushAlertMapper.update(jPushAlertModel);
-
         } else {
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
+            jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER?"":jPushAlertModel.getJumpToLink());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
             jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
@@ -298,18 +297,18 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void autoJPushLoanAlert(long loanId) {
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
         if (jPushAlertModel != null) {
-            if (CollectionUtils.isEmpty(notifyInfos)) {
-                logger.debug("notifyInfos without data");
+            if (CollectionUtils.isEmpty(investModels)) {
+                logger.debug("investModels without data");
                 return;
             }
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
 
-            for (InvestNotifyInfo notifyInfo : notifyInfos) {
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-                loginNameMap.put(notifyInfo.getLoginName(), amountLists);
+            for (InvestModel investModel : investModels) {
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investModel.getAmount()));
+                loginNameMap.put(investModel.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
             }
@@ -337,16 +336,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         String[] jumpToOrLink = new String[]{"", ""};
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
-        String jumpToLink = jPushAlertDto.getJumpToLink();
-        if (StringUtils.isNotEmpty(jumpToLink)) {
+        if(jumpTo == JumpTo.OTHER){
             jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = domainName + jumpToLink;
-            return jumpToOrLink;
+            jumpToOrLink[1] = jPushAlertDto.getJumpToLink();
         }
-        if (jumpTo != null) {
+        else{
             jumpToOrLink[0] = "jumpTo";
             jumpToOrLink[1] = jumpTo.getIndex();
-            return jumpToOrLink;
         }
         return jumpToOrLink;
     }
@@ -485,20 +481,20 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushRepayAlert(long loanRepayId, boolean isAdvanceRepay) {
         LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
-        List<InvestNotifyInfo> notifyInfoList = investMapper.findSuccessInvestMobileEmailAndAmount(loanRepayModel.getLoanId());
+        List<InvestModel> investModelList = investMapper.findSuccessInvestsByLoanId(loanRepayModel.getLoanId());
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
         if (jPushAlertModel != null) {
-            if (CollectionUtils.isEmpty(notifyInfoList)) {
-                logger.debug("repay notifyInfoList without data");
+            if (CollectionUtils.isEmpty(investModelList)) {
+                logger.debug("repay investModelList without data");
                 return;
             }
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
 
-            for (InvestNotifyInfo notifyInfo : notifyInfoList) {
-                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(), loanRepayModel.getPeriod());
-                long amount = (isAdvanceRepay ? notifyInfo.getAmount() : investRepayModel.getCorpus()) + investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+            for (InvestModel investModel : investModelList) {
+                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
+                long amount = investRepayModel.getRepayAmount();
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
-                loginNameMap.put(notifyInfo.getLoginName(), amountLists);
+                loginNameMap.put(investModel.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
             }
@@ -566,26 +562,27 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushReferrerRewardAlert(long orderId) {
-        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(orderId);
-        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
-        if (investReferrerRewardModel == null) {
-            logger.error(MessageFormat.format("ReferrerReward callback order is not exist (orderId = {0})", orderId));
-            return;
-        }
-        AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(investModel.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-            loginNameMap.put(accountModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
-            loginNameMap.clear();
+    public void autoJPushReferrerRewardAlert(long loanId) {
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel invest : successInvestList) {
+            List<InvestReferrerRewardModel> investReferrerRewardModelList = investReferrerRewardMapper.findByInvestId(invest.getId());
+            for(InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList){
+                if(investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS){
+                    AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
+                    JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
+                    if (jPushAlertModel != null) {
+                        Map<String, List<String>> loginNameMap = Maps.newHashMap();
+                        List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
+                        loginNameMap.put(accountModel.getLoginName(), amountLists);
+                        autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                        loginNameMap.clear();
+                    } else {
+                        logger.debug("REFERRER_REWARD_ALERT is disabled");
+                    }
+                }
+            }
 
-        } else {
-            logger.debug("REFERRER_REWARD_ALERT is disabled");
         }
-
     }
 
 

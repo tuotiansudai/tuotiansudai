@@ -1,14 +1,16 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.service.impl.OperationDataServiceModel;
+import com.tuotiansudai.dto.OperationDataDto;
+import com.tuotiansudai.repository.model.InvestDataView;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by huoxuanbo on 16/5/9.
  */
 public interface OperationDataService {
-    OperationDataServiceModel getOperationDataFromDatabase();
+    OperationDataDto getOperationDataFromRedis(Date endDate);
 
-    OperationDataServiceModel getOperationDataFromRedis();
-
-    void updateRedis(OperationDataServiceModel operationDataServiceModel);
+    List<InvestDataView> getInvestDetail(Date endDate);
 }

@@ -37,6 +37,8 @@ public interface LoanRepayMapper {
 
     LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
 
+    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 
@@ -57,4 +59,6 @@ public interface LoanRepayMapper {
     List<LoanRepayModel> findNotCompleteLoanRepay();
 
     List<LoanRepayNotifyModel> findLoanRepayNotifyToday(@Param(value = "today") String today);
+
+    Date findLastRepayDateByLoanId(@Param(value="loanId") long loanId);
 }

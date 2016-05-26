@@ -18,9 +18,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by Administrator on 2015/9/8.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -31,12 +28,6 @@ public class RepayMapperTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -142,6 +133,7 @@ public class RepayMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setProductType(ProductType._30);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         loanDto.setLoanTitles(loanTitleRelationModelList);
         return loanDto;

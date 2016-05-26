@@ -73,12 +73,26 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 }
             },
             beforeCheck: function(curform) {
-                var periods = parseInt($('.coupon-number', curform).val());
                 $errorDom.html('');
+
+                var couponType = $('.couponType', curform).val();
+                if (couponType == '') {
+                    showErrorMessage('请选择体验券名称', $('.couponType', curform));
+                    return false;
+                }
+
+                var periods = parseInt($('.coupon-number', curform).val());
                 if (periods <= 0) {
                     showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
                     return false;
                 }
+
+                var deadline = parseInt($('.coupon-deadline', curform).val());
+                if (deadline <= 0) {
+                    showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
+                    return false;
+                }
+
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('最小为1', $('.coupon-number', curform));

@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,7 @@ public class InvestReferrerRewardMapperTest {
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime()/1000)*1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.ANDROID);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
