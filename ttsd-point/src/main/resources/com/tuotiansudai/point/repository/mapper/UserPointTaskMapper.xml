@@ -17,8 +17,8 @@
             <result property="name" column="point_task_name"/>
             <result property="point" column="point_task_point"/>
             <result property="createdTime" column="point_task_created_time"/>
-            <result property="startUsing" column="start_using"/>
-            <result property="repeatStatus" column="repeat_status"/>
+            <result property="active" column="point_task_active"/>
+            <result property="multiple" column="point_task_multiple"/>
         </association>
     </resultMap>
 
@@ -37,8 +37,8 @@
          point_task.name as point_task_name,
          point_task.point as point_task_point,
          point_task.created_time as point_task_created_time,
-         point_task.start_using as point_task_start_using,
-         point_task.repeat_status as point_task_repeat_status
+         point_task.active as point_task_active,
+         point_task.multiple as point_task_multiple
         from user_point_task inner join point_task on user_point_task.point_task_id = point_task.id
         where user_point_task.login_name = #{loginName} order by created_time desc;
     </select>
