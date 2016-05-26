@@ -3,14 +3,11 @@ package com.tuotiansudai.api.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.ArticleListResponseDataDto;
-import com.tuotiansudai.api.dto.ArticleResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleListResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
@@ -33,73 +30,73 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
 
 
     @Override
-    public BaseResponseDto<ArticleListResponseDataDto> obtainCarouselArticle() {
+    public BaseResponseDto<MediaArticleListResponseDataDto> obtainCarouselArticle() {
         List<LicaiquanArticleModel> liCaiQuanArticleModels = licaiquanArticleMapper.findCarouselArticle();
-        List<ArticleResponseDataDto> records = Lists.newArrayList();
-        ArticleListResponseDataDto articleListResponseDataDto = new ArticleListResponseDataDto();
+        List<MediaArticleResponseDataDto> records = Lists.newArrayList();
+        MediaArticleListResponseDataDto mediaArticleListResponseDataDto = new MediaArticleListResponseDataDto();
         if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
             records = convertModel2Dto(liCaiQuanArticleModels);
-            articleListResponseDataDto.setTotalCount(liCaiQuanArticleModels.size());
-            articleListResponseDataDto.setIndex(1);
-            articleListResponseDataDto.setPageSize(10);
-            articleListResponseDataDto.setArticleList(records);
+            mediaArticleListResponseDataDto.setTotalCount(liCaiQuanArticleModels.size());
+            mediaArticleListResponseDataDto.setIndex(1);
+            mediaArticleListResponseDataDto.setPageSize(10);
+            mediaArticleListResponseDataDto.setArticleList(records);
         }
 
-        BaseResponseDto<ArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(articleListResponseDataDto);
+        baseResponseDto.setData(mediaArticleListResponseDataDto);
         return baseResponseDto;
     }
 
     @Override
-    public BaseResponseDto<ArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize) {
+    public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize) {
         int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(articleSectionType);
-        List<ArticleResponseDataDto> records = Lists.newArrayList();
+        List<MediaArticleResponseDataDto> records = Lists.newArrayList();
         List<LicaiquanArticleModel> liCaiQuanArticleModels  = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, index, pageSize);
         if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
             records = convertModel2Dto(liCaiQuanArticleModels);
         }
 
-        ArticleListResponseDataDto articleListResponseDataDto = new ArticleListResponseDataDto();
-        articleListResponseDataDto.setTotalCount(count);
-        articleListResponseDataDto.setIndex(index);
-        articleListResponseDataDto.setPageSize(pageSize);
-        articleListResponseDataDto.setArticleList(records);
-        BaseResponseDto<ArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
+        MediaArticleListResponseDataDto mediaArticleListResponseDataDto = new MediaArticleListResponseDataDto();
+        mediaArticleListResponseDataDto.setTotalCount(count);
+        mediaArticleListResponseDataDto.setIndex(index);
+        mediaArticleListResponseDataDto.setPageSize(pageSize);
+        mediaArticleListResponseDataDto.setArticleList(records);
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(articleListResponseDataDto);
+        baseResponseDto.setData(mediaArticleListResponseDataDto);
         return baseResponseDto;
     }
-    public List<ArticleResponseDataDto> convertModel2Dto(List<LicaiquanArticleModel> liCaiQuanArticleModels){
+    public List<MediaArticleResponseDataDto> convertModel2Dto(List<LicaiquanArticleModel> liCaiQuanArticleModels){
 
-        return Lists.transform(liCaiQuanArticleModels, new Function<LicaiquanArticleModel, ArticleResponseDataDto>() {
+        return Lists.transform(liCaiQuanArticleModels, new Function<LicaiquanArticleModel, MediaArticleResponseDataDto>() {
             @Override
-            public ArticleResponseDataDto apply(LicaiquanArticleModel liCaiQuanArticleModel) {
+            public MediaArticleResponseDataDto apply(LicaiquanArticleModel liCaiQuanArticleModel) {
 
-                ArticleResponseDataDto articleResponseDataDto = new ArticleResponseDataDto(liCaiQuanArticleModel);
-                articleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
-                articleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
-                articleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
-                articleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
-                return articleResponseDataDto;
+                MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
+                mediaArticleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
+                mediaArticleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
+                mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
+                mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
+                return mediaArticleResponseDataDto;
             }
         });
     }
 
     @Override
-    public BaseResponseDto<ArticleResponseDataDto> obtainArticleContent(long articleId) {
+    public BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(long articleId) {
         LicaiquanArticleModel liCaiQuanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
-        ArticleResponseDataDto articleResponseDataDto = new ArticleResponseDataDto(liCaiQuanArticleModel);
-        articleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
-        articleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
-        articleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
-        articleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
-        BaseResponseDto<ArticleResponseDataDto> baseResponseDto = new BaseResponseDto<>();
+        MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
+        mediaArticleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
+        mediaArticleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
+        mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
+        mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
+        BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(articleResponseDataDto);
+        baseResponseDto.setData(mediaArticleResponseDataDto);
         return baseResponseDto;
     }
 

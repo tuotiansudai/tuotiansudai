@@ -57,15 +57,6 @@
         <property name="cssLocation" value="${api.css.path}"/>
         <property name="sourceMap">
             <map>
-                <entry key="percentFraction">
-                    <bean class="com.tuotiansudai.api.freemarker.directive.PercentFractionDirective"/>
-                </entry>
-                <entry key="percentInteger">
-                    <bean class="com.tuotiansudai.api.freemarker.directive.PercentIntegerDirective"/>
-                </entry>
-                <entry key="amount">
-                    <bean class="com.tuotiansudai.api.freemarker.directive.AmountDirective"/>
-                </entry>
             </map>
         </property>
     </bean>

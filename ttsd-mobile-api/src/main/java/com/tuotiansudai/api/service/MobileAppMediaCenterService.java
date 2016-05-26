@@ -1,18 +1,18 @@
 package com.tuotiansudai.api.service;
 
 
-import com.tuotiansudai.api.dto.ArticleListResponseDataDto;
-import com.tuotiansudai.api.dto.ArticleResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleListResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 
 
 public interface MobileAppMediaCenterService {
 
-    BaseResponseDto<ArticleListResponseDataDto> obtainCarouselArticle();
+    BaseResponseDto<MediaArticleListResponseDataDto> obtainCarouselArticle();
 
-    BaseResponseDto<ArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize);
+    BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize);
 
-    BaseResponseDto<ArticleResponseDataDto> obtainArticleContent(long articleId);
+    BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(long articleId);
 
 }

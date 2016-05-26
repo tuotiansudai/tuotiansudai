@@ -2,11 +2,11 @@ package com.tuotiansudai.api.dto;
 
 import java.util.List;
 
-public class ArticleListResponseDataDto extends BaseResponseDataDto {
+public class MediaArticleListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<ArticleResponseDataDto> articleList;
+    private List<MediaArticleResponseDataDto> articleList;
 
     public Integer getIndex() {
         return index;
@@ -32,11 +32,11 @@ public class ArticleListResponseDataDto extends BaseResponseDataDto {
         this.totalCount = totalCount;
     }
 
-    public List<ArticleResponseDataDto> getArticleList() {
+    public List<MediaArticleResponseDataDto> getArticleList() {
         return articleList;
     }
 
-    public void setArticleList(List<ArticleResponseDataDto> articleList) {
+    public void setArticleList(List<MediaArticleResponseDataDto> articleList) {
         this.articleList = articleList;
     }
 }

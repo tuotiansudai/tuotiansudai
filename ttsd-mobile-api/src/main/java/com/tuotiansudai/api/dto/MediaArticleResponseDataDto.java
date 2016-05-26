@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ArticleResponseDataDto extends BaseResponseDataDto implements Serializable {
+public class MediaArticleResponseDataDto extends BaseResponseDataDto implements Serializable {
     private Long articleId;
     private String title;
     private String author;
@@ -109,9 +109,9 @@ public class ArticleResponseDataDto extends BaseResponseDataDto implements Seria
         this.likeCount = likeCount;
     }
 
-    public ArticleResponseDataDto(){}
+    public MediaArticleResponseDataDto(){}
 
-    public ArticleResponseDataDto(LicaiquanArticleModel model){
+    public MediaArticleResponseDataDto(LicaiquanArticleModel model){
         this.articleId = model.getId();
         this.title = model.getTitle();
         this.author = model.getAuthor();

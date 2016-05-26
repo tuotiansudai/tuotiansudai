@@ -1,19 +1,14 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.ArticleListResponseDataDto;
-import com.tuotiansudai.api.dto.ArticleResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleListResponseDataDto;
+import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.dto.ArticleStatus;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -49,7 +43,7 @@ public class MobileAppMediaCenterServiceTest {
     public void shouldObtainCarouselArticleIsSuccess() {
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<ArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainCarouselArticle();
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainCarouselArticle();
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
         assertEquals(licaiquanArticleModel.getSection(),baseResponseDto.getData().getArticleList().get(0).getSection());
@@ -62,7 +56,7 @@ public class MobileAppMediaCenterServiceTest {
     public void shouldObtainArticleListIsSuccess(){
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<ArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,0,10);
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,0,10);
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
         assertEquals(ArticleSectionType.INDUSTRY_NEWS,baseResponseDto.getData().getArticleList().get(0).getSection());
@@ -76,7 +70,7 @@ public class MobileAppMediaCenterServiceTest {
     public void shouldObtainArticleContentIsSuccess(){
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<ArticleResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleContent(licaiquanArticleModel.getId());
+        BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleContent(licaiquanArticleModel.getId());
 
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getAuthor());
         assertEquals(ArticleSectionType.INDUSTRY_NEWS,baseResponseDto.getData().getSection());
