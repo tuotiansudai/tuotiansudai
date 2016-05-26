@@ -1,9 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
-<<<<<<< HEAD
-import org.junit.Ignore;
-=======
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -13,51 +12,42 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
->>>>>>> master
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class OperationDataServiceTest {
 
     @Autowired
-    OperationDataService operationDataService;
-<<<<<<< HEAD
-    @Ignore
-    public void testGetOperationDataModelFromDatabase()
-    {
-        OperationDataDto operationDataDto = operationDataService.getOperationDataFromDatabase();
-        assertEquals(314, operationDataDto.getOperationDays());
-        assertEquals(10, operationDataDto.getMonth().size());
-    }
+    private LoanMapper loanMapper;
 
-    @Test
-    public void testUpdateRedisAndGetOperationDataFromRedis() {
-        OperationDataDto operationDataDtoFromDB = operationDataService.getOperationDataFromDatabase();
-        operationDataService.updateRedis(operationDataDtoFromDB);
-        OperationDataDto operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis();
-        assertEquals(operationDataDtoFromDB.getOperationDays(), operationDataDtoFromRedis.getOperationDays());
-        assertEquals(operationDataDtoFromDB.getUsersCount(), operationDataDtoFromRedis.getUsersCount());
-        assertTrue(operationDataDtoFromRedis.getTradeAmount().equals(operationDataDtoFromDB.getTradeAmount()));
-        List<String> investMonthFromDB = operationDataDtoFromDB.getMonth();
-        List<String> investMonthFromRedis = operationDataDtoFromRedis.getMonth();
-        List<String> investMonthAmountFromDB = operationDataDtoFromDB.getMoney();
-        List<String> investMonthAMountFromRedis = operationDataDtoFromRedis.getMoney();
-        assertEquals(investMonthFromDB.size(), investMonthFromRedis.size());
-        for (int i = 0; i < investMonthFromDB.size(); ++i) {
-            assertEquals(investMonthFromDB.get(i), investMonthFromRedis.get(i));
-            assertEquals(investMonthAmountFromDB.get(i), investMonthAMountFromRedis.get(i));
-        }
-=======
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private IdGenerator idGenerator;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    OperationDataService operationDataService;
 
     @Autowired
     RedisWrapperClient redisWrapperClient;
@@ -213,6 +203,5 @@ public class OperationDataServiceTest {
         redisWrapperClient.del(redisKeyChart);
         String redisKeyTable = MessageFormat.format(REDIS_INFO_PUBLISH_TABLE_KEY_TEMPLATE, simpleDateFormat.format(testEndDate));
         redisWrapperClient.del(redisKeyTable);
->>>>>>> master
     }
 }
