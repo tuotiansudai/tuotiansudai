@@ -470,4 +470,9 @@
         select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
     </select>
 
+
+    <select id="countInvestSuccessByProductType" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id
+      where i.status = 'SUCCESS' and i.login_name = #{loginName} and l.product_type = #{productType}
+    </select>
 </mapper>

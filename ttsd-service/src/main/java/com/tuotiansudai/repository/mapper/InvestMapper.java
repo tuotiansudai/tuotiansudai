@@ -204,4 +204,9 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime);
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
+
+    int countInvestSuccessByProductType(@Param(value = "productType") ProductType productType,
+                                        @Param(value = "loginName") String loginName);
+
 }
