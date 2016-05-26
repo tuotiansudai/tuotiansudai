@@ -5,6 +5,8 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class InvestRecordResponseDataDto {
@@ -54,6 +56,14 @@ public class InvestRecordResponseDataDto {
         this.setUserName(input.getLoginName());
         this.setInvestMoney(AmountConverter.convertCentToString(input.getAmount()));
         this.setInvestTime(simpleDateFormat.format(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime()));
-        this.setAchievements(input.getAchievements());
+        List<InvestAchievement> investAchievements = input.getAchievements();
+        Collections.sort(investAchievements, new Comparator<InvestAchievement>() {
+            @Override
+            public int compare(InvestAchievement investAchievement1, InvestAchievement investAchievement2) {
+                return new Integer(investAchievement1.getPriority()).compareTo(new Integer(investAchievement2.getPriority()));
+            }
+        });
+        this.setAchievements(investAchievements);
     }
+
 }

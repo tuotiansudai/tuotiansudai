@@ -451,4 +451,8 @@
         select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
     </select>
 
+    <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
+        select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
+    </select>
+
 </mapper>
