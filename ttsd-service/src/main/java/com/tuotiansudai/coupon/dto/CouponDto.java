@@ -28,6 +28,8 @@ public class CouponDto implements Serializable {
 
     private Long totalCount;
 
+    private Integer deadline;
+
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
 
@@ -90,6 +92,10 @@ public class CouponDto implements Serializable {
     public Date getEndTime() {
         return endTime;
     }
+
+    public Integer getDeadline() { return deadline; }
+
+    public void setDeadline(Integer deadline) { this.deadline = deadline; }
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -280,6 +286,7 @@ public class CouponDto implements Serializable {
         this.amount = AmountConverter.convertCentToString(couponModel.getAmount());
         this.startTime = couponModel.getStartTime();
         this.endTime = couponModel.getEndTime();
+        this.deadline = couponModel.getDeadline();
         this.totalCount = couponModel.getTotalCount();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.productTypes = couponModel.getProductTypes();
