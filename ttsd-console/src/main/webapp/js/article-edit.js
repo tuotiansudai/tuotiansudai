@@ -3,6 +3,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
     $(function () {
         var $selectDom = $('.selectpicker'), //select表单
             $submitBtn = $('.article-save'), //提交按钮
+            $previewBtn = $('.preview'), //按钮
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'), //错误提示节点
             $articleForm = $('.article-form');
@@ -105,10 +106,22 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                 if (confirm("确认提交审核?")) {
                     $('.article-content').val(getContent());
                     $self.attr('disabled', 'disabled');
+                    $articleForm[0].action = "/announce-manage/article/create";
                     $articleForm[0].submit();
                 }
 
             }
+        });
+        //提交表单
+        $previewBtn.on('click', function(event) {
+            event.preventDefault();
+            var $self = $(this);
+            $('.article-content').val(getContent());
+            $self.attr('disabled', 'disabled');
+            $articleForm[0].action = "/announce-manage/article/preview";
+            $articleForm[0].submit();
+
+
         });
     });
 })
