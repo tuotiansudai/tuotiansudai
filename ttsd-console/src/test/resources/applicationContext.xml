@@ -20,7 +20,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.console.util,
-                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect"/>
+                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer,com.tuotiansudai.console.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -67,7 +67,8 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.console.bi.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.console.bi.repository.model,
+                                                    com.tuotiansudai.transfer.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -77,11 +78,9 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.console.bi.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.console.repository.mapper"/>
-
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.console.bi.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.mapper,
+                                            com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.console.repository.mapper"/>
     </bean>
-
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <!--for test-->

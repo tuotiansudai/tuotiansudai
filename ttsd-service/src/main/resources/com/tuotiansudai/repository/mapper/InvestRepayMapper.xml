@@ -17,6 +17,7 @@
         <result column="default_interest" property="defaultInterest"></result>
         <result column="expected_fee" property="expectedFee"></result>
         <result column="amount" property="investAmount"></result>
+        <result column="repay_amount" property="repayAmount"></result>
         <result column="status" property="status"></result>
     </resultMap>
 
@@ -29,10 +30,13 @@
         <result column="default_interest" property="defaultInterest"></result>
         <result column="expected_fee" property="expectedFee"></result>
         <result column="actual_fee" property="actualFee"></result>
+        <result column="repay_amount" property="repayAmount"></result>
         <result column="period" property="period"></result>
         <result column="repay_date" property="repayDate"></result>
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
+        <result column="is_transferred" property="isTransferred"></result>
+        <result column="transfer_status" property="transferStatus"></result>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -44,6 +48,7 @@
         <result column="default_interest" property="defaultInterest"></result>
         <result column="expected_fee" property="expectedFee"></result>
         <result column="actual_fee" property="actualFee"></result>
+        <result column="repay_amount" property="repayAmount"></result>
         <result column="period" property="period"></result>
         <result column="repay_date" property="repayDate"></result>
         <result column="actual_repay_date" property="actualRepayDate"></result>
@@ -75,18 +80,19 @@
             <result column="recheck_time" property="recheckTime"></result>
             <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
+            <result column="duration" property="duration"></result>
         </association>
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, period, repay_date, actual_repay_date, status, created_time
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime})
         </foreach>
     </insert>
 
@@ -99,7 +105,7 @@
     </select>
 
     <select id="findByLoginNameAndInvestId" parameterType="map" resultMap="investRepayResultMap">
-        select invest_repay.*
+        select invest_repay.*, invest.transfer_status AS transfer_status
         from invest_repay join invest on invest_repay.invest_id = invest.id
         where invest_id = #{investId}
         and invest.login_name = #{loginName}
@@ -110,20 +116,27 @@
         select * from invest_repay where invest_id = #{investId} and period = #{period}
     </select>
 
+    <select id="findByInvestIdAndLTPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period &lt; #{period}
+    </select>
+
     <select id="findCompletedInvestRepayByIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
         select * from invest_repay where invest_id = #{investId} and period = #{period} and status = 'COMPLETE'
     </select>
 
     <update id="update" parameterType="InvestRepayModel">
         update invest_repay
-        set expected_interest = #{expectedInterest},
+        set corpus = #{corpus},
+            expected_interest = #{expectedInterest},
             expected_fee = #{expectedFee},
             repay_date = #{repayDate},
             actual_interest = #{actualInterest},
             actual_fee = #{actualFee},
             actual_repay_date = #{actualRepayDate},
-            status = #{status},
-            default_interest = #{defaultInterest}
+            default_interest = #{defaultInterest},
+            is_transferred = #{isTransferred},
+            repay_amount = #{repayAmount},
+            status = #{status}
         where id = #{id}
     </update>
 
@@ -186,6 +199,7 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
+          t.duration,
           t.`loan_id`,
           t.type
         FROM
@@ -197,6 +211,7 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
+              l.`duration`,
               l.`id` as loan_id,
               l.`type`
             FROM
@@ -220,6 +235,7 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
+          t.duration,
           t.`loan_id`,
           t.type
         FROM
@@ -231,6 +247,7 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
+              l.`duration`,
               l.`id` as `loan_id`,
               l.type
             FROM
@@ -354,7 +371,7 @@
     </select>
 
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
-        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
+        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
         from invest_repay ir
         inner join invest on invest.id = ir.invest_id
         where invest.login_name = #{loginName}
@@ -389,7 +406,7 @@
           JOIN invest i
             ON ir.`invest_id` = i.`id`
             AND i.`loan_id` = #{loanId}
-        WHERE ir.`period` = #{period}
+        WHERE ir.`period` = #{period} AND ir.`status` != 'COMPLETE'
     </select>
 
     <select id="findByLoanId" parameterType="long" resultMap="investRepayResultMap">
@@ -398,5 +415,10 @@
             inner join invest on invest_repay.invest_id = invest.id
             inner join loan on loan.id = invest.loan_id
         where loan.id = #{loanId}
+    </select>
+    <select id="findLeftPeriodByTransferInvestIdAndPeriod" parameterType="map" resultType="int">
+
+        select count(1) from invest_repay where invest_id = #{transferInvestId} and period >= #{period}
+
     </select>
 </mapper>

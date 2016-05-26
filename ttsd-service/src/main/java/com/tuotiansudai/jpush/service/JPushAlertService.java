@@ -44,7 +44,7 @@ public interface JPushAlertService {
 
     void autoJPushLoanAlert(long loanId);
 
-    void autoJPushRepayAlert(long loanRepayId);
+    void autoJPushRepayAlert(long loanRepayId, boolean isAdvanceRepay);
 
     void autoJPushRechargeAlert(long orderId);
 
@@ -52,7 +52,7 @@ public interface JPushAlertService {
 
     void autoJPushWithDrawAlert(long orderId);
 
-    void autoJPushReferrerRewardAlert(long orderId);
+    void autoJPushReferrerRewardAlert(long loanId);
 
     void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto);
 

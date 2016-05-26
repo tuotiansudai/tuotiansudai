@@ -1,8 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
-import com.tuotiansudai.repository.model.Source;
-
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

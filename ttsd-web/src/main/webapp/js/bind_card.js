@@ -40,13 +40,4 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             });
         });
 
-        $btnReplaceCard.click(function() {
-            layer.open({
-                type: 1,
-                title: '登录到联动优势支付平台换卡',
-                area: ['520px', '290px'],
-                shadeClose: true,
-                content: $('#pop-replace-card')
-            });
-        });
     });
