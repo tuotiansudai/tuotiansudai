@@ -47,4 +47,8 @@
       select * from user_point_task where point_task_id = #{pointTaskId} and login_name = #{loginName}
     </select>
 
+    <select id="findCountPointTaskPagination" resultType="int">
+        select count(*)  from point_task
+    </select>
+
 </mapper>

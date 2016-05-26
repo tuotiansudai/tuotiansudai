@@ -19,7 +19,6 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PointTaskServiceImpl implements PointTaskService {
@@ -156,32 +154,33 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
             case SUM_INVEST_10000:
                 return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 1000000;
-            case EVERT_SUM_INVEST:
+            case EACH_SUM_INVEST:
                 return false;
             case FIRST_SINGLE_INVEST:
                 InvestTaskAward investTaskAward = getFirstInvestAwardLevel(investModel.getAmount());
                 if(investTaskAward != null){
+                    userPointTaskMapper.findByLoginName();
                     userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
                 }
                 return false;
-            case EVERY_INVITE_INVEST:
+            case EACH_REFERRER_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(loginName);
                 if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investModel.getAmount() > 1000){
                     createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0);
                 }
                 return true;
-            case FIRST_INVITE_FRIEND:
+            case FIRST_REFERRER_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(loginName);
                 if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0){
                     createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0);
                 }
                 return true;
-            case FIRST_INVEST_180D:
+            case FIRST_INVEST_180:
                 if(investMapper.countInvestSuccessByProductType(ProductType._180,investModel.getLoginName()) > 0){
                     userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),0));
                 }
                 return false;
-            case FIRST_INVEST_360D:
+            case FIRST_INVEST_360:
                 if(investMapper.countInvestSuccessByProductType(ProductType._360,investModel.getLoginName()) > 0){
                     userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),0));
                 }
@@ -210,16 +209,25 @@ public class PointTaskServiceImpl implements PointTaskService {
         return null;
     }
 
-    private InvestTaskAward getEvertInvestAwardLevel(long investAmount){
-        if(investAmount > 0){
-            evertInvestAward = getEvertInvestAward();
+    private InvestTaskAward getEachInvestAward(long investAmount){
+        InvestTaskAward returnInvestTaskAward = null;
+        if(investAmount > 5000){
+            evertInvestAward = getEachInvestAward();
             for(InvestTaskAward investTaskAward : firstInvestAward){
                 if(investAmount > investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
-                    return investTaskAward;
+                    returnInvestTaskAward = investTaskAward;
                 }
             }
+
+            if(returnInvestTaskAward == null){
+
+            }
         }
-        return null;
+        return returnInvestTaskAward;
+    }
+
+    private InvestTaskAward getMaxInvestAward(Long investAmount){
+
     }
 
     private List<InvestTaskAward> getFirstInvestAward(){
@@ -235,7 +243,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         return firstInvestAward;
     }
 
-    private List<InvestTaskAward> getEvertInvestAward(){
+    private List<InvestTaskAward> getEachInvestAward(){
         if(evertInvestAward == null){
             evertInvestAward = new ArrayList<>();
             evertInvestAward.add(new InvestTaskAward(1,1000,5000,10000));
@@ -243,6 +251,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             evertInvestAward.add(new InvestTaskAward(3,5000,50000,100000));
             evertInvestAward.add(new InvestTaskAward(4,10000,100000,500000));
             evertInvestAward.add(new InvestTaskAward(5,50000,500000,1000000));
+            evertInvestAward.add(new InvestTaskAward(6,100000,1000000,2000000));
         }
         return evertInvestAward;
     }
@@ -252,6 +261,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         private long point;
         private long beginMoney;
         private long endMoney;
+        private boolean isConfirm;
 
         InvestTaskAward(long level,long point,long beginMoney,long endMoney){
             this.level = level;
