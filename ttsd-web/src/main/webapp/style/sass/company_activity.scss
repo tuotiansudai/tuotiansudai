@@ -410,25 +410,31 @@
 
       &.text-pro {
         overflow: hidden;
-        margin: 40px 0 70px 0;
+        margin: 40px -20px 70px;
 
         span {
-          position: relative;
-
-          .click-btn {
-            position: absolute;
-            left: 25px;
-            bottom: 20px;
-            width: 300px;
-            height: 58px;
+          &.pro-list{
+            position: relative;
+            float:left;
+            margin:0 10px;
+            width:325px;
+            height:420px;
+            .click-btn {
+              position: absolute;
+              left: 20px;
+              bottom: 23px;
+              width: 285px;
+              height: 52px;
+            }
           }
-          &.product-left {
-            float: left;
-            margin-left: 100px;
-          }
-          &.product-right {
-            float: right;
-            margin-right: 100px;
+          &.pro-wap-list{
+            float:left;
+            width:100%;
+            display:none;
+            a{
+              padding:0 5%;
+              margin:10px 0;
+            }
           }
         }
       }
@@ -2527,7 +2533,7 @@
     }
     .share-example{
       height:500px;
-      background:url("/images/sign/actor/sharereward/share-phone-example.png") no-repeat center;
+      background:url("/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
     }
@@ -3055,27 +3061,11 @@
           margin: 20px 0;
 
           span {
-            width: 46%;
-            margin: 0 2%;
-
-            .click-btn {
-              left: 0;
-              bottom: 0;
-              width: 100%;
+            &.pro-list{
+              display:none;
             }
-            &.product-left {
-              margin-left: 2%;
-
-              img {
-                width: 100%;
-              }
-            }
-            &.product-right {
-              margin-right: 2%;
-
-              img {
-                width: 100%;
-              }
+            &.pro-wap-list{
+              display:block;
             }
           }
         }
