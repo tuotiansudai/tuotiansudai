@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -62,7 +64,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private List<InvestTaskAward> firstInvestAward = null;
 
-    private List<InvestTaskAward> evertInvestAward = null;
+    private List<InvestTaskAward> eachInvestAward = null;
 
     @Override
     @Transactional
@@ -126,28 +128,44 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
 
-    private void isNewCompletedTaskConditions(final PointTask pointTask, String loginName, InvestModel investModel) {
+    @Override
+    public void completeNewTask(PointTask pointTask, InvestModel investModel) {
+        InvestModel im = new InvestModel();
+        im.setLoginName("shenjiaojiao");
+        im.setAmount(6000);
+        isNewCompletedTaskConditions(PointTask.EACH_SUM_INVEST,im);
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
+        userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),  pointTaskModel.getId()));
+        pointBillService.createPointBill(investModel.getLoginName(),pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
+
+        logger.debug(MessageFormat.format("{0} has completed task {1}", investModel.getLoginName(), pointTask.name()));
+    }
+
+    private void isNewCompletedTaskConditions(final PointTask pointTask, InvestModel investModel) {
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
         List<ReferrerRelationModel> referrerRelationModelList;
         InvestTaskAward investTaskAward;
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,investModel.getLoginName());
-                investTaskAward = getInvestAwardLevel(getEachInvestAward(),investAmount);
-                if(!createUserPointTaskModel(investTaskAward,investModel,pointTaskModel)){
-
+                investTaskAward = compareInvestAward(getEachInvestAward(),investAmount);
+                if(!compareBaseDataUserPointTaskLevelAndCreate(investTaskAward,investModel,pointTaskModel)){
+                    investTaskAward = createGreaterUserPointTask(getEachInvestAward(),investAmount);
+                    if(investTaskAward != null){
+                        userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+                    }
                 }
             case FIRST_SINGLE_INVEST:
-                investTaskAward = getInvestAwardLevel(getFirstInvestAward(),investModel.getAmount());
-                createUserPointTaskModel(investTaskAward,investModel,pointTaskModel);
+                investTaskAward = compareInvestAward(getFirstInvestAward(),investModel.getAmount());
+                compareBaseDataUserPointTaskLevelAndCreate(investTaskAward,investModel,pointTaskModel);
             case EACH_REFERRER_INVEST:
-                referrerRelationModelList = referrerRelationMapper.findByLoginName(loginName);
+                referrerRelationModelList = referrerRelationMapper.findByLoginName(investModel.getLoginName());
                 if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investModel.getAmount() > 1000){
                     createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0);
                 }
             case FIRST_REFERRER_INVEST:
-                referrerRelationModelList = referrerRelationMapper.findByLoginName(loginName);
-                if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0){
+                referrerRelationModelList = referrerRelationMapper.findByLoginName(investModel.getLoginName());
+                if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName()) > 0){
                     createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0);
                 }
             case FIRST_INVEST_180:
@@ -168,15 +186,38 @@ public class PointTaskServiceImpl implements PointTaskService {
         return true;
     }
 
-    private UserPointTaskModel createGreaterUserPointTask(List<InvestTaskAward> investTaskAwardList){
-        UserPointTaskModel userPointTaskModel = null;
+    private InvestTaskAward createGreaterUserPointTask(List<InvestTaskAward> investTaskAwardList,long investAmount){
+        Collections.sort(investTaskAwardList,new Comparator<InvestTaskAward>(){
+            @Override
+            public int compare(InvestTaskAward o1, InvestTaskAward o2) {
+                return o1.getLevel() > o2.getLevel() ? 1 : -1;
+            }
+        });
 
+        if(investAmount < investTaskAwardList.get(investTaskAwardList.size()).getBeginMoney()){
+            return null;
+        }
 
-        return userPointTaskModel;
+        InvestTaskAward investTaskAward = investTaskAwardList.get(0);
+        InvestTaskAward newInvestTaskAward;
+        boolean flag = true;
+        long count = 1;
+        while (flag){
+            newInvestTaskAward = new InvestTaskAward(investTaskAward.getLevel() + count,
+                                                        investTaskAward.getPoint() * count,
+                                                        investTaskAward.getEndMoney(),
+                                                        investTaskAward.getEndMoney() * count);
+            if(investAmount > newInvestTaskAward.getBeginMoney() && investAmount < newInvestTaskAward.getEndMoney()){
+                return newInvestTaskAward;
+            }
+            count ++ ;
+        }
+        return null;
     }
 
 
-    private InvestTaskAward getInvestAwardLevel(List<InvestTaskAward> investTaskAwards,long investAmount){
+
+    private InvestTaskAward compareInvestAward(List<InvestTaskAward> investTaskAwards,long investAmount){
         if(investAmount > 0){
             for(InvestTaskAward investTaskAward : investTaskAwards){
                 if(investAmount > investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
@@ -187,7 +228,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         return null;
     }
 
-    private boolean createUserPointTaskModel(InvestTaskAward investTaskAward,InvestModel investModel,PointTaskModel pointTaskModel){
+    private boolean compareBaseDataUserPointTaskLevelAndCreate(InvestTaskAward investTaskAward,InvestModel investModel,PointTaskModel pointTaskModel){
         if(investTaskAward != null && userPointTaskMapper.findMaxTaskLevelByLoginName(investModel.getLoginName(),pointTaskModel.getId()) != investTaskAward.getLevel()){
             userPointTaskMapper.create(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
             return true;
@@ -209,16 +250,16 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
     private List<InvestTaskAward> getEachInvestAward(){
-        if(evertInvestAward == null){
-            evertInvestAward = new ArrayList<>();
-            evertInvestAward.add(new InvestTaskAward(1,1000,5000,10000));
-            evertInvestAward.add(new InvestTaskAward(2,2000,10000,50000));
-            evertInvestAward.add(new InvestTaskAward(3,5000,50000,100000));
-            evertInvestAward.add(new InvestTaskAward(4,10000,100000,500000));
-            evertInvestAward.add(new InvestTaskAward(5,50000,500000,1000000));
-            evertInvestAward.add(new InvestTaskAward(6,100000,1000000,2000000));
+        if(eachInvestAward == null){
+            eachInvestAward = new ArrayList<>();
+            eachInvestAward.add(new InvestTaskAward(1,1000,5000,10000));
+            eachInvestAward.add(new InvestTaskAward(2,2000,10000,50000));
+            eachInvestAward.add(new InvestTaskAward(3,5000,50000,100000));
+            eachInvestAward.add(new InvestTaskAward(4,10000,100000,500000));
+            eachInvestAward.add(new InvestTaskAward(5,50000,500000,1000000));
+            eachInvestAward.add(new InvestTaskAward(6,100000,1000000,2000000));
         }
-        return evertInvestAward;
+        return eachInvestAward;
     }
 
     class InvestTaskAward{
