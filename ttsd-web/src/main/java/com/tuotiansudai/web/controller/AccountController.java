@@ -62,6 +62,7 @@ public class AccountController {
         modelAndView.addObject("collectingInterest",investRepayService.findSumRepayingInterestByLoginName(loginName));
         modelAndView.addObject("collectedInterest",investRepayService.findSumRepaidInterestByLoginName(loginName));
         modelAndView.addObject("collectedBirthdayAndInterest",userCouponService.findSumBirthdayAndInterestByLoginName(loginName));
+        modelAndView.addObject("collectedRedEnvelopeInterest",userCouponService.findSumRedEnvelopeByLoginName(loginName));
 
         modelAndView.addObject("freeze",accountService.getFreeze(loginName));
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)){
