@@ -20,12 +20,6 @@ public class AgentCollector implements UserCollector{
     }
 
     @Override
-    public long count(long couponId) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
-        return couponUserGroupModel != null ? couponUserGroupModel.getUserGroupItems().size() : 0;
-    }
-
-    @Override
     public boolean contains(long couponId, String loginName) {
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
         return couponUserGroupModel != null && couponUserGroupModel.getUserGroupItems().contains(loginName);

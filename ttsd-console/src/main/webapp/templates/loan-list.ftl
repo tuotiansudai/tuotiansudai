@@ -68,7 +68,7 @@
                     </td>
                     <td><#if loanListDto.productType??>${loanListDto.productType.getName()}</#if></td>
                     <td>${loanListDto.loanerUserName}</td>
-                    <td>${loanListDto.agentLoginName}</td>
+                    <td>${loanListDto.agentLoginName!}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
                     <td>${loanListDto.status.getDescription()}</td>

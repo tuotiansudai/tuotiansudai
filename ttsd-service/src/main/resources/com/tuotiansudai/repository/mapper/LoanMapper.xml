@@ -586,4 +586,7 @@
         </if>
     </select>
 
+    <select id="findByProductType" resultMap="loanResultMap">
+        select * from loan where product_type = #{productType}
+    </select>
 </mapper>

@@ -25,11 +25,6 @@ public class RegisteredNotInvestedUserCollector implements UserCollector {
     }
 
     @Override
-    public long count(long couponId) {
-        return investMapper.findRegisteredNotInvestCount();
-    }
-
-    @Override
     public boolean contains(long couponId, String loginName) {
         return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) == 0;
     }

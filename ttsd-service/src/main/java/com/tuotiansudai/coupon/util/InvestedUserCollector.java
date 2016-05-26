@@ -23,11 +23,6 @@ public class InvestedUserCollector implements UserCollector {
     }
 
     @Override
-    public long count(long couponId) {
-        return investMapper.findInvestorCount();
-    }
-
-    @Override
     public boolean contains(long couponId, String loginName) {
         return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
     }

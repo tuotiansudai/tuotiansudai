@@ -265,6 +265,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
+                .put(UserGroup.EXPERIENCE_INVESTOR, this.exchangeCodeCollector)
                 .build()).get(userGroup);
     }
 

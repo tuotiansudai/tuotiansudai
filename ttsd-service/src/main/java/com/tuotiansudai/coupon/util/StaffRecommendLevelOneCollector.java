@@ -25,11 +25,6 @@ public class StaffRecommendLevelOneCollector implements UserCollector{
     }
 
     @Override
-    public long count(long couponId) {
-        return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
-    }
-
-    @Override
     public boolean contains(long couponId, final String loginName) {
         List<String> referrerRelationModels = userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build()));
         return CollectionUtils.isNotEmpty(referrerRelationModels) && Iterators.any(referrerRelationModels.iterator(), new Predicate<String>() {
