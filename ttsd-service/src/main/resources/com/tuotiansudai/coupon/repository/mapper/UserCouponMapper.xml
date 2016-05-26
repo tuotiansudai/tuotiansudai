@@ -259,7 +259,7 @@
         ON t.`coupon_id` = c.`id`
         WHERE t.`login_name` = #{loginName}
         AND t.`status` = 'SUCCESS'
-        and  c.`coupon_type` in ('INTEREST_COUPON','BIRTHDAY_COUPON');
+        and  c.`coupon_type` in ('INTEREST_COUPON','BIRTHDAY_COUPON','NEWBIE_COUPON');
     </select>
 
     <select id="findSumRedEnvelopeByLoginName" parameterType="map" resultType="long">
