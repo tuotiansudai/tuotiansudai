@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.web.util.IdentityNumberValidator;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,7 @@ public class RegisterAccountController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto,
                                         RedirectAttributes redirectAttributes,
                                         @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
@@ -60,4 +62,5 @@ public class RegisterAccountController {
 
         return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", redirect) : MessageFormat.format("redirect:/register/account?redirect={0}", redirect));
     }
+
 }

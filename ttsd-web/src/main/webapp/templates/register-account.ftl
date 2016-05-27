@@ -1,29 +1,42 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.register}" pageJavascript="${js.register_account}" activeLeftNav="" title="拓天速贷-实名验证" >
 
-<div class="register-container page-width">
-    <ul class="step-register-tab">
-        <li class="first"><s></s>1 注册<g></g></li>
-        <li class="second on"><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 开始投资<g></g></li>
-    </ul>
-    <div class="clear-blank"></div>
-    <div class="register-box">
-        <ul class="reg-list tl register-step-two">
-            <form class="register-account-form" action="/register/account?redirect=${redirect}" method="post">
+<div class="register-container page-width register-account">
+
+    <div class="step-account-head">
+        <i class="sprite-register-ic-account"></i>
+       <span>
+           为了保障您的账户及资金安全， <br/>
+       根据相关法律法规，我们会对您进行实名认证。
+       </span>
+
+    </div>
+    <div class="register-box ">
+        <form class="register-account-form" action="/register/account?redirect=${redirect}" method="post">
+            <ul class="reg-list tl register-step-two">
                 <li>
-                    <input type="text" name="userName" placeholder="请输入姓名" class="user-name" value = "${(originalFormData.userName)!}" />
+                    <label class="title">真实姓名</label>
+                    <input type="text" name="userName" placeholder="请输入您的真实姓名"
+                           class="user-name" value="${(originalFormData.userName)!}"/>
                 </li>
-                <li>
-                    <input type="text" name="identityNumber" placeholder="请输入身份证" class="identity-number" value="${(originalFormData.identityNumber)!}"/>
+                <li><label class="title">身份证号</label>
+                    <input type="text" name="identityNumber" placeholder="请输入您的身份证号码"
+                           class="identity-number"
+                           value="${(originalFormData.identityNumber)!}"/>
                 </li>
+            </ul>
+            <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <#if success?? && !success>
-                <label class="error">实名认证失败，请检查您提交的信息是否正确</label>
-                </#if>
-                <input type="submit" class="register-account" value="下一步" onclick="statisticsCnzzByRegister()"/>
-            </form>
-        </ul>
+                <div class="status">
+                    <#if success?? && !success>
+                    <span class="error">
+                    实名认证失败，请检查您提交的信息是否正确
+                    </span>
+                    </#if>
+                </div>
+                <input type="submit" class="register-account btn-success" value="认证"/>
+            </div>
+        </form>
     </div>
 </div>
 </@global.main>

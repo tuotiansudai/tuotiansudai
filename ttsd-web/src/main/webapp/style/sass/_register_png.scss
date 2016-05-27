@@ -1,0 +1,101 @@
+/* glue: 0.11.1 hash: dbc08c0c46 */
+.sprite-register-ic-account,
+.sprite-register-login-name,
+.sprite-register-ic-referrer,
+.sprite-register-ic-password,
+.sprite-register-ic-mobile,
+.sprite-register-ic-img-code,
+.sprite-register-ic-captcha,
+.sprite-register-arrow-right,
+.sprite-register-arrow-bottom,
+.sprite-register-yes-checked,
+.sprite-register-no-checked {
+  background-image: url('/images/compress/register_20160525.png');
+  background-repeat: no-repeat;
+}
+
+.sprite-register-ic-account {
+  background-position: 0 0;
+  width: 85px;
+  height: 85px;
+}
+
+.sprite-register-login-name {
+  background-position: -85px 0;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-ic-referrer {
+  background-position: -85px -28px;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-ic-password {
+  background-position: -85px -56px;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-ic-mobile {
+  background-position: 0 -85px;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-ic-img-code {
+  background-position: -28px -85px;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-ic-captcha {
+  background-position: -56px -85px;
+  width: 28px;
+  height: 28px;
+}
+
+.sprite-register-arrow-right {
+  background-position: -84px -85px;
+  width: 16px;
+  height: 18px;
+}
+
+.sprite-register-arrow-bottom {
+  background-position: -113px 0;
+  width: 18px;
+  height: 16px;
+}
+
+.sprite-register-yes-checked {
+  background-position: -113px -16px;
+  width: 16px;
+  height: 16px;
+}
+
+.sprite-register-no-checked {
+  background-position: -113px -32px;
+  width: 16px;
+  height: 16px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.0), screen and (min--moz-device-pixel-ratio: 1.0), screen and (-o-min-device-pixel-ratio: 100/100), screen and (min-device-pixel-ratio: 1.0), screen and (min-resolution: 1.0dppx) {
+  .sprite-register-ic-account,
+  .sprite-register-login-name,
+  .sprite-register-ic-referrer,
+  .sprite-register-ic-password,
+  .sprite-register-ic-mobile,
+  .sprite-register-ic-img-code,
+  .sprite-register-ic-captcha,
+  .sprite-register-arrow-right,
+  .sprite-register-arrow-bottom,
+  .sprite-register-yes-checked,
+  .sprite-register-no-checked {
+    background-image: url('/images/compress/register_20160525.png');
+    -webkit-background-size: 131px 113px;
+    -moz-background-size: 131px 113px;
+    background-size: 131px 113px;
+  }
+}
+        

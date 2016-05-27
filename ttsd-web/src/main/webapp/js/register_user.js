@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function (_, $, layer) {
+require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $, layer) {
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
         showAgreement = $('.show-agreement', registerUserForm),
@@ -7,10 +7,30 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaForm = $('.image-captcha-form', $imgCaptchaDialog),
         imageCaptchaElement = $('.image-captcha', $imgCaptchaDialog),
         imageCaptchaTextElement = $('.image-captcha-text', $imgCaptchaDialog),
-        imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
+        imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
+        $referrerOpen=$('.referrer-open',registerUserForm),
+        $checkbox=$('label.check-label',registerUserForm),
+        $registerSubmit=$('input[type="submit"]',registerUserForm);
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
-        fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
+        fetchCaptchaElement.prop('disabled', true);
+    });
+
+    $checkbox.on('click',function() {
+        var $this=$(this),
+            $agreeLast=$this.parents('.agree-last'),
+            $cIcon=$agreeLast.find('i');
+        var checked=$agreement.prop('checked');
+        $cIcon[0].className=checked?'sprite-register-no-checked':'sprite-register-yes-checked';
+
+    });
+    $referrerOpen.on('click',function() {
+        var $this=$(this),
+            checkOption=false,
+            iconArrow=$this.find('i');
+        $this.next('li').toggleClass('hide');
+        checkOption=$this.next('li').hasClass('hide');
+        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
     });
 
     showAgreement.click(function () {
@@ -73,10 +93,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
+                                fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
                             }
                             seconds--;
                         }, 1000);
@@ -189,18 +209,16 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         },
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
-                mobile = $('input.mobile', registerUserForm),
-                disableButton=$('.disable-button',registerUserForm);
-            if(!disableButton.length) {
+                mobile = $('input.mobile', registerUserForm);
+            //$registerSubmit.prop('disabled',true);
+            if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
-                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                    fetchCaptchaElement.prop('disabled', false);
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
-                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                    fetchCaptchaElement.prop('disabled', false);
                 }
             }
-
         }
     });
-
 });
