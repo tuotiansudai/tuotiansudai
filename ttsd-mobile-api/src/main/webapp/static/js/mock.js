@@ -12,7 +12,7 @@ var app = express();
 
 app.get('/media-center/article-detail/:articleId', function(req, res) {
 	res.send({
-		"code": "",
+		"code": "0000",
 		"message": "",
 		"data": {
 			"articleId": "11111", //文章ID
@@ -32,7 +32,7 @@ app.get('/media-center/article-detail/:articleId', function(req, res) {
 
 app.get('/media-center/article-list', function(req, res) {
 	res.send({
-		"code": "",
+		"code": "0000",
 		"message": "",
 		"data": {
 			"index": "", //当前页面
@@ -573,7 +573,7 @@ app.get('/media-center/article-list', function(req, res) {
 
 app.get('/media-center/banner', function(req, res) {
 	res.send({
-		"code": "",
+		"code": "0000",
 		"message": "",
 		"data": {
 			"index": "", //当前页面

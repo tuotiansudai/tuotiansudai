@@ -6,8 +6,8 @@ let ajax = function(json) {
 		"type": "GET", //发送类型
 		"data": null, //发送的数据 json格式，例：{'name':'abc'}
 		"async": true, //异步或同步
-		"contentType": true,
-		"dataType": "json"//如果要跨域请求
+		"contentType": "application/json;charset=UTF-8",
+		"dataType": "json"
 	};
 	for (let i in json) {
 		opt[i] = json[i];
@@ -15,16 +15,19 @@ let ajax = function(json) {
 
 	let isGet = opt.type.toLowerCase() === 'get';
 	if (isGet && opt.data) {
-		opt.url = opt.url + '?' + JSON.stringify(opt.data);
+		let str = "";
+		for (let i in opt.data) {
+			str += (i + "=" + opt.data[i] + "&");
+		}
+		str = str.substring(0, str.length - 1);
+		opt.url = opt.url + '?' + str;
 	}
 
 	//1.创建Ajax对象
 	let oAjax = new XMLHttpRequest();
 	//2.连接服务器
 	oAjax.open(opt.type.toUpperCase(), opt.url, opt.async);
-	if (opt.contentType === true) {
-		oAjax.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	} else {
+	if (opt.contentType) {
 		oAjax.setRequestHeader("Content-Type", opt.contentType);
 	}
 	//3.发送请求
@@ -38,15 +41,19 @@ let ajax = function(json) {
 		if (oAjax.readyState == 4) {
 			if (oAjax.status < 300) {
 				if (opt.dataType === 'json') {
-					opt.done(JSON.parse(oAjax.responseText));
+					let response = JSON.parse(oAjax.responseText);
+					if (response.code === '0000') {
+						opt.done(response);
+					} else {
+						console.error(response);
+						opt.fail(response);
+					}
 				} else {
 					opt.done(oAjax.responseText);
 				}
 			} else {
 				console.error(oAjax);
-				if (opt.fail) {
-					opt.fail(oAjax);
-				}
+				opt.fail(oAjax);
 			}
 		}
 	}

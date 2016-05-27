@@ -11,7 +11,7 @@ import Immutable from 'seamless-immutable';
 import shallowCompare from 'react-addons-shallow-compare';
 import Carousel from 'components/carousel/Carousel';
 
-const pageSize = 20;
+const pageSize = 10;
 const data = {
 	tabHeader: [{
 		label: '全部',
