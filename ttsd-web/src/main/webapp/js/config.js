@@ -32,6 +32,7 @@ var require = {
         'template':staticServer+'/js/libs/template.min',
         'fancybox':staticServer+'/js/libs/jquery.fancybox.min',
         'count_down': staticServer+'/js/dest/count_down.min',
+        'share': staticServer+'/js/libs/share.min'
     },
     'waitSeconds':0,
     'shim': {
