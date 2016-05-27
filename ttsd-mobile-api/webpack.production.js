@@ -7,6 +7,11 @@ var basePath = path.join(__dirname, 'src/main/webapp/static');
 
 module.exports = objectAssign(commonOptions, {
 	entry: [path.join(basePath, 'js/index.jsx')],
+	output: {
+		filename: "index.[hash].min.js",
+		path: path.join(basePath, 'dist'),
+		publicPath: '/assets/'
+	},
 	plugins: [
 		new webpack.DefinePlugin({
 	      'process.env': {
