@@ -3,10 +3,7 @@ package com.tuotiansudai.message.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
-import com.tuotiansudai.message.repository.model.MessageChannel;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageType;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.repository.model.UserModel;
@@ -47,13 +44,14 @@ public class MessageServiceTest {
         userMapper.create(creator);
 
         MessageModel manualMessageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+
         messageMapper.create(manualMessageModel);
 
         MessageModel autoMessageModel = new MessageModel("title", "template", MessageType.EVENT,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(autoMessageModel);
