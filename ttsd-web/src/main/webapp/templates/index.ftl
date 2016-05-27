@@ -124,6 +124,11 @@
     </div>
 
     <div class="home-content" id="productFrame">
+        <div class="page-width clearfix">
+            <div class="new-user-free">
+                
+            </div>
+        </div>
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
