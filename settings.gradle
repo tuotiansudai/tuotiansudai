@@ -1,2 +1,2 @@
-include "ttsd-service", "ttsd-web", "ttsd-console", "ttsd-pay-wrapper", "ttsd-sms-wrapper", "ttsd-job-worker", "ttsd-mobile-api", "ttsd-point", "ttsd-message"
+include "ttsd-service", "ttsd-web", "ttsd-console", "ttsd-pay-wrapper", "ttsd-sms-wrapper", "ttsd-job-worker", "ttsd-mobile-api", "ttsd-point", "ttsd-jpush", "ttsd-message"
 
