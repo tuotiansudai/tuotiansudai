@@ -41,7 +41,7 @@ public class UserMessageMapperTest {
         userMapper.create(creator);
 
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);
@@ -49,7 +49,7 @@ public class UserMessageMapperTest {
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
         userMessageMapper.create(userMessageModel);
 
-        List<UserMessageModel> userMessageModels = userMessageMapper.findByLoginName(creator.getLoginName());
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null, null);
         assertThat(userMessageModels.size(), is(1));
 
         UserMessageModel actualUserMessageModel = userMessageModels.get(0);

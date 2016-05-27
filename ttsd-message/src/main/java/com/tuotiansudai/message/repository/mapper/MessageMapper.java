@@ -6,7 +6,6 @@ import com.tuotiansudai.message.repository.model.MessageType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,5 +28,7 @@ public interface MessageMapper {
                                              @Param(value = "messageType") MessageType messageType,
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
+
+    List<MessageModel> findAssignableManualMessages(String loginName);
 
 }

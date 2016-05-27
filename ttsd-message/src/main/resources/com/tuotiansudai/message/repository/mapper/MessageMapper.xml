@@ -11,7 +11,7 @@
         <result column="title" property="title"/>
         <result column="template" property="template"/>
         <result column="type" property="type"/>
-        <result column="user_groups" property="userGroups" typeHandler="com.tuotiansudai.message.util.mybatis.UserGroupListTypeHandler"/>
+        <result column="user_groups" property="userGroups" typeHandler="com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler"/>
         <result column="channels" property="channels" typeHandler="com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler"/>
         <result column="status" property="status"/>
         <result column="read_count" property="readCount"/>
@@ -24,13 +24,9 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <select id="findById" parameterType="long" resultMap="messageResultMap">
-        select * from message where id = #{id};
-    </select>
-
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into message (`title`, `template`, `type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
-        value(#{title}, #{template}, #{type}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.UserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
+        value(#{title}, #{template}, #{type}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="MessageModel">
@@ -38,7 +34,7 @@
         set `title` = #{title},
             `template` = #{template},
             `type` = #{type},
-            `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.UserGroupListTypeHandler},
+            `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
             `status` = #{status},
             `read_count` = #{readCount},
@@ -90,5 +86,12 @@
         limit #{index}, #{pageSize}
     </select>
 
+    <select id="findAssignableManualMessages" parameterType="string" resultMap="messageResultMap">
+        select * from message
+        where message.type = 'MANUAL'
+        and message.status = 'APPROVED'
+        and message.expired_time > NOW()
+        and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
+    </select>
 
 </mapper>
