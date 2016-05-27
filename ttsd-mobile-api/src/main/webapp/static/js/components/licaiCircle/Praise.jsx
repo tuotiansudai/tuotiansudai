@@ -29,7 +29,6 @@ class Praise extends React.Component {
 		}
 		ajax({
 			url: `/media-center/${this.props.id}/like`,
-			type: 'post',
 			done: (response) => {
 				this.setState((previousState) => {
 					return {
