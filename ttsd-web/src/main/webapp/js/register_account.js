@@ -27,8 +27,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
 
                 },
                 error: function (errorMap) {
-                    $buttonLayer.find('.status').addClass('error').html(errorMap.responseText);
-                    //实名认证失败，请检查您提交的信息是否正确
+                    $buttonLayer.find('.status').addClass('error').html('认证失败，请检查');
                 },
                 complete: function () {
                     //$btnSubmit.prop('disabled', false);

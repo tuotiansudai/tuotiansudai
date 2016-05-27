@@ -8,6 +8,7 @@
     <div class="clear-blank"></div>
     <nav></nav>
     <div class="register-box">
+        <div id="summary"></div>
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
@@ -53,7 +54,7 @@
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-                <input type="submit" class="register-user btn-success" value="立即注册" />
+                <input type="submit" class="register-user btn-success" value="立即注册" disabled />
             </div>
 
         </form>
