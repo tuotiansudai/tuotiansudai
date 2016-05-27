@@ -1,5 +1,8 @@
 package com.tuotiansudai.message.repository.model;
 
 public enum MessageChannel {
-    WEBSITE;
+    WEBSITE,
+    APP_MESSAGE,
+    SMS,
+    MAIL;
 }

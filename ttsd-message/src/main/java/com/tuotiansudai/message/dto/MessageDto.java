@@ -1,12 +1,12 @@
-package com.tuotiansudai.message.repository.model;
+package com.tuotiansudai.message.dto;
 
-import com.tuotiansudai.message.dto.MessageDto;
+import com.tuotiansudai.message.repository.model.*;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class MessageModel implements Serializable {
+public class MessageDto implements Serializable{
     private long id;
     private String title;
     private String template;
@@ -23,38 +23,43 @@ public class MessageModel implements Serializable {
     private String createdBy;
     private Date createdTime;
 
-    public MessageModel() {
+    public MessageDto() {
     }
 
-    public MessageModel(String title, String template, MessageType type, List<MessageUserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, Date expiredTime, String createdBy) {
+    public MessageDto(long id, String title, String template, MessageType type, List<MessageUserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, long readCount, String activatedBy, Date activatedTime, Date expiredTime, String updatedBy, Date updatedTime, String createdBy, Date createdTime) {
+        this.id = id;
         this.title = title;
         this.template = template;
         this.type = type;
         this.userGroups = userGroups;
         this.channels = channels;
         this.status = status;
+        this.readCount = readCount;
+        this.activatedBy = activatedBy;
+        this.activatedTime = activatedTime;
         this.expiredTime = expiredTime;
+        this.updatedBy = updatedBy;
+        this.updatedTime = updatedTime;
         this.createdBy = createdBy;
-        this.createdTime = new Date();
-        this.updatedBy = this.createdBy;
-        this.updatedTime = this.createdTime;
+        this.createdTime = createdTime;
     }
 
-    public MessageModel(MessageDto messageDto) {
-        this.id = messageDto.getId();
-        this.template = messageDto.getTemplate();
-        this.type = messageDto.getType();
-        this.userGroups = messageDto.getUserGroups();
-        this.channels = messageDto.getChannels();
-        this.status = messageDto.getStatus();
-        this.readCount = messageDto.getReadCount();
-        this.activatedBy = messageDto.getActivatedBy();
-        this.activatedTime = messageDto.getActivatedTime();
-        this.expiredTime = messageDto.getExpiredTime();
-        this.updatedBy = messageDto.getUpdatedBy();
-        this.updatedTime = messageDto.getUpdatedTime();
-        this.createdBy = messageDto.getCreatedBy();
-        this.createdTime = messageDto.getCreatedTime();
+    public MessageDto(MessageModel messageModel) {
+        this.id = messageModel.getId();
+        this.title = messageModel.getTitle();
+        this.template = messageModel.getTemplate();
+        this.type = messageModel.getType();
+        this.userGroups = messageModel.getUserGroups();
+        this.channels = messageModel.getChannels();
+        this.status = messageModel.getStatus();
+        this.readCount = messageModel.getReadCount();
+        this.activatedBy = messageModel.getActivatedBy();
+        this.activatedTime = messageModel.getActivatedTime();
+        this.expiredTime = messageModel.getExpiredTime();
+        this.updatedBy = messageModel.getUpdatedBy();
+        this.updatedTime = messageModel.getUpdatedTime();
+        this.createdBy = messageModel.getCreatedBy();
+        this.createdTime = messageModel.getCreatedTime();
     }
 
     public long getId() {

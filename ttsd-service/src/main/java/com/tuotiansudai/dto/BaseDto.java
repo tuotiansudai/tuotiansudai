@@ -6,6 +6,13 @@ public class BaseDto<T extends BaseDataDto> {
 
     private T data;
 
+    public BaseDto() {
+    }
+
+    public BaseDto(T data) {
+        this.data = data;
+    }
+
     public boolean isSuccess() {
         return success;
     }
