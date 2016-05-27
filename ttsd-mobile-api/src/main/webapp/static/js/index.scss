@@ -1,0 +1,36 @@
+:global {
+	* {
+		box-sizing: border-box;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	}
+	html {
+		color: #2f3034;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		user-select: none;
+		line-height: 1.5;
+	}
+	a {
+		color: #2f3034;
+    	text-decoration: none;
+    	&:hover, &:active {
+    		text-decoration: none;
+    	}
+	}
+	img {
+		max-width: 100%;
+	}
+	.pull-left {
+		float: left;
+	}
+	.pull-right {
+		float: right;
+	}
+	.clearfix:before,
+	.clearfix:after {
+	    content: " ";
+	    display: table;
+	}
+	.clearfix:after {
+	    clear: both;
+	}
+}
