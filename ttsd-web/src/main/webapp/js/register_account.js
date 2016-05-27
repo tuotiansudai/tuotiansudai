@@ -1,6 +1,8 @@
 require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function (_, $) {
 
-    var registerAccountForm = $('.register-step-two .register-account-form');
+    var registerAccountForm = $('.register-account-form'),
+        $buttonLayer=$('.button-layer',registerAccountForm),
+        $btnSubmit=$('input[type="submit"]',registerAccountForm);
 
     registerAccountForm.validate({
         focusCleanup: true,
@@ -9,7 +11,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             this.element(element);
         },
         submitHandler: function (form) {
-            $('.register-account').toggleClass('loading');
+            $buttonLayer.find('.error').addClass('loading').html('认证中...');
+            $btnSubmit.prop('disabled',true);
             form.submit();
         },
         onkeyup: function (element, event) {

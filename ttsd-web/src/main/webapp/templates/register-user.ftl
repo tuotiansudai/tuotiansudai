@@ -12,41 +12,49 @@
         <ul class="reg-list tl register-step-one">
                 <li>
                     <label for="" class="reg-title">用户名:</label>
+                    <i class="sprite-register-login-name"></i>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
+            <li>
+                <label for="" class="reg-title">密码:</label>
+                <i class="sprite-register-ic-password"></i>
+                <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
+            </li>
                 <li>
                     <label for="" class="reg-title">手机号:</label>
+                    <i class="sprite-register-ic-mobile"></i>
                     <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
                 <li>
                     <label for="" class="reg-title">验证码:</label>
+                    <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
+                        <button type="button" class="fetch-captcha" disabled="disabled">获取验证码</button>
                     </span>
-
                 </li>
-                <li>
-                    <label for="" class="reg-title">密码:</label>
-                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-                </li>
-                <li>
+                <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
+                <li class="hide">
                     <label for="" class="reg-title">推荐人:</label>
+                    <i class="sprite-register-ic-referrer"></i>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li class="agree-last">
-                    <label for="agreement" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                    <label for="agreementInput" class="check-label" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
+                    <i class="sprite-register-no-checked"></i>
 
                 </li>
+        </ul>
+
+            <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-
-                <input type="submit" class="register-user" value="下一步"/>
-        </ul>
+                <input type="submit" class="register-user btn-success" value="立即注册" />
+            </div>
 
         </form>
     </div>
@@ -133,12 +141,13 @@
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <div class="image-captcha-inner">
+                <i class="sprite-register-ic-img-code"></i>
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-            <div class="tc">
-                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
             </div>
-            </div>
+        <div class="tc">
+            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
+        </div>
         </form>
 </div>
 </@global.main>

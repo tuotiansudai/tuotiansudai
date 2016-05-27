@@ -29,29 +29,6 @@ commonFun={
 
         }
     },
-    /* init radio style */
-    checkBoxInit:function($checkbox,$label) {
-        var numCheckbox=$checkbox.length;
-        if(numCheckbox) {
-            $checkbox.each(function(key,option) {
-                var $this=$(this);
-                if($this.is(':checked')) {
-                    $this.next('label').addClass('checked');
-                }
-                $this.next('label').click(function() {
-                    var $thisLab=$(this);
-                    if(/checked/.test(this.className)) {
-                        $thisLab.removeClass('checked');
-                    }
-                    else {
-                        $thisLab.addClass('checked');
-                    }
-                });
-            });
-
-        }
-    },
-
     browserRedirect: function () {
         var sUserAgent = navigator.userAgent.toLowerCase();
         var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";

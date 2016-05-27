@@ -1,5 +1,6 @@
 @import 'variables';
 @import "index_png";
+@import 'register_png';
 
 $landingPhoneColorGray: #F2F2F2;
 $landingPhoneColorRed: #FC4333;
@@ -109,7 +110,6 @@ form label.error {
       }
       ul.reg-list {
         font-size: 12px;
-
         .height {
           height: 20px;
         }
@@ -121,9 +121,18 @@ form label.error {
         }
         li {
           clear: both;
-
+          position: relative;
           .img-change {
             cursor: pointer;
+          }
+          i {
+            display: inline-block;
+            position: absolute;
+            left: 10px;
+            top: 4px;
+            z-index: 20;
+            filter:alpha(opacity=80);
+            -moz-opacity:0.8;
           }
           .reg-title {
             width: 60px;
@@ -163,27 +172,8 @@ form label.error {
             border: #cecece 1px solid;
             padding: 10px 2px 10px 47px;
             background-color: #fff;
+            &.captcha { width:100px;}
 
-            &.mobile {
-              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -110px;
-            }
-            &.appCaptcha {
-              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -148px;
-              width: 125px;
-            }
-            &.password {
-              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -72px;
-            }
-            &.captcha {
-              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px 4px;
-              width: 100px;
-            }
-            &.login-name {
-              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -35px;
-            }
-            &.identity-number {
-              background: url(/images/icons/register.png) no-repeat 6px -724px;
-            }
           }
           .agreement {
             display: inline-block;
