@@ -48,6 +48,44 @@
         where `id` = #{id}
     </update>
 
+    <select id="findMessageCount"  parameterType="map" resultType="long">
+        select count(id) from message
+        <where>
+            <if test="title != null and title !=''">
+                <![CDATA[and title like '%${title}%']]>
+            </if>
+            <if test="createdBy != null and createdBy !=''">
+                <![CDATA[and created_by like '%${createdBy}%']]>
+            </if>
+            <if test="messageStatus != null">
+                and status = #{messageStatus}
+            </if>
+            <if test="messageType != null">
+                and type = #{messageType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findMessageList"  parameterType="map" resultMap="messageResultMap">
+        select * from message
+        <where>
+            <if test="title != null and title !=''">
+                <![CDATA[and title like '%${title}%']]>
+            </if>
+            <if test="createdBy != null and createdBy !=''">
+                <![CDATA[and created_by like '%${createdBy}%']]>
+            </if>
+            <if test="messageStatus != null">
+                and status = #{messageStatus}
+            </if>
+            <if test="messageType != null">
+                and type = #{messageType}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
     <select id="findAssignableManualMessages" parameterType="string" resultMap="messageResultMap">
         select * from message
         where message.type = 'MANUAL'

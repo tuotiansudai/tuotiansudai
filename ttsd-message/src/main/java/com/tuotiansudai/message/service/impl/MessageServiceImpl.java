@@ -18,16 +18,20 @@ import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
+import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Service
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
@@ -87,6 +91,15 @@ public class MessageServiceImpl implements MessageService {
                 userMessageMapper.create(new UserMessageModel(message.getId(), loginName, message.getTitle(), message.getTemplate()));
             }
         }
+    }
+
+    @Override
+    public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType){
+        return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
+    }
+
+    public List<MessageModel> findMessageList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
+        return messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
     }
 
     @Override
@@ -199,12 +212,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public long getMessageReceiverCount(long messageId) {
-        if(!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
+        if (!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
             return 0L;
         }
-        MessageDto messageDto = (MessageDto)redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
-        if(messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            List<String> importUsers = (List<String>)redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(messageDto.getId()));
+        MessageDto messageDto = (MessageDto) redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
+        if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(messageDto.getId()));
             return importUsers.size();
         }
         //TODO:需要补全查询其他情形下数据的功能

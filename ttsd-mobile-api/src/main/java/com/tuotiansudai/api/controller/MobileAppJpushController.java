@@ -20,18 +20,18 @@ public class MobileAppJpushController extends MobileAppBaseController {
     static Logger log = Logger.getLogger(MobileAppJpushController.class);
 
     @Autowired
-    private MobileAppJpushService mobileAppJpushService;
+    private MobileAppJpushService mobileAppJPushService;
 
     @RequestMapping(value = "/jpush", method = RequestMethod.POST)
-    public BaseResponseDto storeJpushId(@Valid @RequestBody JpushRequestDto jpushRequestDto,BindingResult bindingResult){
+    public BaseResponseDto storeJPushId(@Valid @RequestBody JpushRequestDto jPushRequestDto,BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
             log.debug(MessageFormat.format("{0}:{1}",errorCode,errorMessage));
             return new BaseResponseDto(errorCode, errorMessage);
         } else {
-            jpushRequestDto.getBaseParam().setUserId(getLoginName());
-            return mobileAppJpushService.storeJpushId(jpushRequestDto);
+            jPushRequestDto.getBaseParam().setUserId(getLoginName());
+            return mobileAppJPushService.storeJPushId(jPushRequestDto);
         }
 
     }

@@ -17,6 +17,14 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
+    <select id="findById" parameterType="long" resultMap="userMessageResultMap">
+        select * from user_message where id = #{id};
+    </select>
+
+    <select id="findByLoginName" parameterType="string" resultMap="userMessageResultMap">
+        select * from user_message where login_name = #{loginName};
+    </select>
+
     <insert id="create" parameterType="UserMessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_message (`message_id`, `login_name`, `title`, `content`, `read`, `read_time`, `created_time`)
         value(#{messageId}, #{loginName}, #{title}, #{content}, #{read}, #{readTime}, #{createdTime})

@@ -60,6 +60,35 @@ public class MessageMapperTest {
     }
 
     @Test
+    public void shouldFindMessageList() {
+
+        UserModel creator = getFakeUser("messageCreate");
+        userMapper.create(creator);
+
+        userMapper.create(creator);
+        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+        messageMapper.create(messageModelManual);
+
+        MessageModel messageModelAuto = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageMapper.create(messageModelAuto);
+
+        List<MessageModel> manualMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.EVENT, 0, 10);
+        List<MessageModel> autoMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.MANUAL, 0, 10);
+        long manualMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.MANUAL);
+        long autoMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.EVENT);
+
+        assertEquals(1, manualMessageModelList.size());
+        assertEquals(1, autoMessageModelList.size());
+        assertEquals(1, manualMessageCount);
+        assertEquals(1, autoMessageCount);
+
+    }
     public void shouldFindAssignableManualMessages() throws Exception {
         UserModel creator = getFakeUser("messageCreator");
 
