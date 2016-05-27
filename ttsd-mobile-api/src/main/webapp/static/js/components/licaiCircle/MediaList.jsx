@@ -58,6 +58,7 @@ class MediaList extends React.Component {
 		this.setState({
 			active: value
 		});
+		this.listIndex = 1;
 		this.fetchData(1, value, (response) => {
 			this.setState((previousState) => {
 				return {
@@ -71,6 +72,7 @@ class MediaList extends React.Component {
 		hashHistory.push(event.target.dataset.id);
 	}
 	pagination() {
+		this.listIndex++;
 		this.fetchData(this.listIndex, this.state.active, (response) => {
 			this.setState((previousState) => {
 				return {
@@ -118,12 +120,12 @@ class MediaList extends React.Component {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			setTimeout(() => {
 				if (!this.myScroll) {
-					this.refs.scrollWrap.style.height = (window.screen.height * document.documentElement.dataset.dpr - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
+					let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']) + 50;
+					this.refs.scrollWrap.style.height = (window.screen.height * document.documentElement.dataset.dpr - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
 					this.myScroll = new IScroll(this.refs.scrollWrap);
 					this.myScroll.on('scrollEnd', () => {
 						if (this.myScroll.y <= this.myScroll.maxScrollY) {
 							if (this.state.isShowLoading) {
-								this.listIndex++;
 								this.pagination.call(this);
 							}
 						}
@@ -155,10 +157,10 @@ class MediaList extends React.Component {
 				</div>
 				<ul className="tab-header clearfix" ref="tabHeader">
 					{data.tabHeader.map((value, index) => {
-						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onClick={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body">
+				<div className="tab-body" ref="tabBody">
 					<div className="scroll-wrap" ref="scrollWrap">
 						<ul className="list">
 							{this.state.listData.map((value, index) => {
