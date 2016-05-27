@@ -14,21 +14,24 @@ import com.tuotiansudai.message.dto.MessageDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageUserGroup;
-import com.tuotiansudai.message.repository.model.UserMessageModel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageType;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.SerializeUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -94,7 +97,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType){
+    public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType) {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
     }
 
@@ -103,8 +106,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void createManualMessage(MessageDto messageDto, long importUsersId) {
-        if(messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+    public void createAndEditManualMessage(MessageDto messageDto, long importUsersId) {
+        long messageId = messageDto.getId();
+        if (redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
+            editManualMessage(messageDto, importUsersId);
+        } else {
+            createManualMessage(messageDto, importUsersId);
+        }
+    }
+
+    private void createManualMessage(MessageDto messageDto, long importUsersId) {
+        if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             messageDto.setId(importUsersId);
         } else {
             messageDto.setId(idGenerator.generate());
@@ -112,43 +124,73 @@ public class MessageServiceImpl implements MessageService {
         redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(messageDto.getId()), messageDto);
     }
 
-    @Override
-    public void editManualMessage(MessageDto messageDto, long importUsersId) {
-        long originMessageId = messageDto.getId();
-        if(messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            messageDto.setId(importUsersId);
+    private void editManualMessage(MessageDto messageDto, long importUsersId) {
+        if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+            long originMessageId = messageDto.getId();
+            redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(originMessageId));
             redisWrapperClient.hdelSeri(redisMessageDetails, String.valueOf(originMessageId));
-            redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(messageDto.getId()), messageDto);
+            messageDto.setId(importUsersId);
         }
-        else {
-            redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(originMessageId), messageDto);
+        redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(messageDto.getId()), messageDto);
+    }
+
+    private String getStringFromCell(HSSFCell hssfCell) {
+        switch (hssfCell.getCellType()) {
+            case Cell.CELL_TYPE_NUMERIC:
+                hssfCell.setCellType(Cell.CELL_TYPE_STRING);
+                return hssfCell.getStringCellValue();
+            case Cell.CELL_TYPE_STRING:
+                return hssfCell.getStringCellValue();
+            default:
+                return "";
         }
     }
 
     @Override
-    public long createImportReceivers(List<String> receivers) {
-        long messageId = idGenerator.generate();
-        redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(messageId), receivers);
-        return messageId;
+    public long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException {
+        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(oldImportUsersId))) {
+            redisWrapperClient.hdel(redisMessageReceivers, String.valueOf(oldImportUsersId));
+        }
+
+        long importUsersId = idGenerator.generate();
+
+        List<String> importUsers = new ArrayList<>();
+
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
+        HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
+        for (int rowIndex = hssfSheet.getFirstRowNum(); rowIndex <= hssfSheet.getLastRowNum(); ++rowIndex) {
+            HSSFRow hssfRow = hssfSheet.getRow(rowIndex);
+            for (int cellIndex = hssfRow.getFirstCellNum(); cellIndex <= hssfRow.getLastCellNum(); ++cellIndex) {
+                HSSFCell hssfCell = hssfRow.getCell(cellIndex);
+                String loginName = getStringFromCell(hssfCell);
+                if (!StringUtils.isEmpty(loginName)) {
+                    importUsers.add(loginName);
+                }
+            }
+        }
+
+        redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
+
+        return importUsersId;
     }
 
     @Override
     public MessageDto getMessageByMessageId(long messageId) {
-        return (MessageDto)redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
+        return (MessageDto) redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
     }
 
     private List<MessageDto> findMessagesFromRedis(String title, MessageStatus messageStatus, String creator) {
         Map<byte[], byte[]> map = redisWrapperClient.hgetAllSeri(redisMessageDetails);
         List<MessageDto> results = new ArrayList<>();
-        for(Map.Entry<byte[], byte[]> entry : map.entrySet()) {
-            MessageDto messageDto = (MessageDto)SerializeUtil.deserialize(entry.getValue());
-            if(null != title && !title.equals(messageDto.getTitle())) {
+        for (Map.Entry<byte[], byte[]> entry : map.entrySet()) {
+            MessageDto messageDto = (MessageDto) SerializeUtil.deserialize(entry.getValue());
+            if (null != title && !title.equals(messageDto.getTitle())) {
                 continue;
             }
-            if(null != messageStatus && !messageStatus.equals(messageDto.getStatus())) {
+            if (null != messageStatus && !messageStatus.equals(messageDto.getStatus())) {
                 continue;
             }
-            if(null != creator && !creator.equals(messageDto.getCreatedBy())) {
+            if (null != creator && !creator.equals(messageDto.getCreatedBy())) {
                 continue;
             }
             results.add(messageDto);
@@ -177,11 +219,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public BaseDto<BaseDataDto> rejectManualMessage(long messageId) {
-        if(!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
+        if (!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
-        MessageDto messageDto = (MessageDto)redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
-        if(MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
+        MessageDto messageDto = (MessageDto) redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
+        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
             messageDto.setStatus(MessageStatus.REJECTION);
             redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(messageId), messageDto);
             return new BaseDto<>(new BaseDataDto(true));
@@ -190,11 +232,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public BaseDto<BaseDataDto> approveManualMessage(long messageId) {
-        if(!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
+        if (!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
-        MessageDto messageDto = (MessageDto)redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
-        if(MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
+        MessageDto messageDto = (MessageDto) redisWrapperClient.hgetSeri(redisMessageDetails, String.valueOf(messageId));
+        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
             //TODO:需要添加实际发送部分
             messageDto.setStatus(MessageStatus.APPROVED);
             redisWrapperClient.hsetSeri(redisMessageDetails, String.valueOf(messageId), messageDto);
@@ -204,7 +246,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public BaseDto<BaseDataDto> deleteManualMessage(long messageId) {
-        if(!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
+        if (!redisWrapperClient.hexists(redisMessageDetails, String.valueOf(messageId))) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
         redisWrapperClient.hdelSeri(redisMessageDetails, String.valueOf(messageId));

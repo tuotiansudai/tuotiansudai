@@ -9,6 +9,8 @@ import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageType;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public interface MessageService {
@@ -19,11 +21,9 @@ public interface MessageService {
 
     BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize);
 
-    void createManualMessage(MessageDto messageDto, long importUsersId);
+    void createAndEditManualMessage(MessageDto messageDto, long importUsersId);
 
-    void editManualMessage(MessageDto messageDto, long importUsersId);
-
-    long createImportReceivers(List<String> receivers);
+    long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException;
 
     MessageDto getMessageByMessageId(long messageId);
 
