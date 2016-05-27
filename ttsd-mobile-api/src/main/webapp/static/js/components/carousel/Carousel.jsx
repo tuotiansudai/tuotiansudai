@@ -20,11 +20,13 @@ class Carousel extends React.Component {
 	}
 	componentDidMount() {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
-			this.destroySwiper.call(this);
-			this.swiper = new Swiper(this.refs.scrollWrap, {
-		       pagination: '.swiper-pagination',
-		       paginationClickable: true
-		   	});
+			setTimeout(() => {
+				this.destroySwiper.call(this);
+				this.swiper = new Swiper(this.refs.scrollWrap, {
+			       pagination: '.swiper-pagination',
+			       paginationClickable: true
+			   	});
+			}, 100);
 		});
 	}
 	componentWillUnmount() {
