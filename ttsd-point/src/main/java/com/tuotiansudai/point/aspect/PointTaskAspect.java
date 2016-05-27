@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.RechargeModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -97,12 +98,11 @@ public class PointTaskAspect {
         logger.debug("after returning bind card, point task aspect completed");
     }
 
-    @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "execution(* *..UserService.registerUser(..))", returning = "returnValue")
     public void afterReturningRegisterUser(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after returning registerUser success, point task aspect starting...");
         RegisterUserDto registerUserDto =  (RegisterUserDto) joinPoint.getArgs()[0];
-        if((boolean)returnValue){
+        if((boolean)returnValue && StringUtils.isNotEmpty(registerUserDto.getReferrer())){
             pointTaskService.completeTask(PointTask.EACH_RECOMMEND, registerUserDto.getReferrer());
         }
         logger.debug("after returning registerUser success, point task aspect completed");
