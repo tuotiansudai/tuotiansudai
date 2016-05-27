@@ -28,8 +28,7 @@
             <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="status">
-
-                <#if success?? && !success>
+                    <#if success?? && !success>
                 <span class="error">
                     实名认证失败，请检查您提交的信息是否正确
                 </span>

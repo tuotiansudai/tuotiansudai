@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension','jquery.form', 'jquery.ajax.extension'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension','jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $) {
 
     var registerAccountForm = $('.register-account-form'),
         $buttonLayer=$('.button-layer',registerAccountForm),
@@ -11,48 +11,31 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             this.element(element);
         },
         submitHandler: function (form) {
-            form.submit();
-           // var $form=$(form),
-           //     param=$form.serializeArray(),
-           //     jsonData;
-           // var ObjectFun = function (formData) {
-           //     var o = {};
-           //     $.each(formData, function () {
-           //         if (o[this.name]) {
-           //             if (!o[this.name].push) {
-           //                 o[this.name] = [o[this.name]];
-           //             }
-           //             o[this.name].push(this.value || '');
-           //         } else {
-           //             o[this.name] = this.value || '';
-           //         }
-           //     });
-           //     return o;
-           // };
-           //
-           // jsonData=ObjectFun(param);
-           // $buttonLayer.find('.error').addClass('loading').html('认证中...');
-           // $btnSubmit.prop('disabled',true);
-           //
-           // $(form).ajaxSubmit({
-           //
-           //     dataType: 'json',
-           //     beforeSubmit: function (arr, $form, options) {
-           //         $buttonLayer.find('.status').html('认证中...');
-           //         $btnSubmit.prop('disabled', true);
-           //     },
-           //     success: function (response) {
-           //         $buttonLayer.find('.status').html('认证成功1');
-           //     },
-           //     error: function () {
-           //
-           //     },
-           //     complete: function () {
-           //         $btnSubmit.prop('disabled', false);
-           //     }
-           // });
-           //
-           //return false;
+            //form.submit();
+            $(form).ajaxSubmit({
+                dataType: 'json',
+                beforeSubmit: function (arr, $form, options) {
+                    $buttonLayer.find('.status').removeClass('error').html('认证中...');
+                    $btnSubmit.prop('disabled', true);
+                },
+                success: function (response) {
+                    $buttonLayer.find('.status').html('认证成功');
+                    var getUrlParams=commonFun.parseURL(location.href).params;
+                    var getRedirect=getUrlParams.redirect;
+
+                    setTimeout(location.href=getRedirect, 3000 );
+
+                },
+                error: function (errorMap) {
+                    $buttonLayer.find('.status').addClass('error').html(errorMap.responseText);
+                    //实名认证失败，请检查您提交的信息是否正确
+                },
+                complete: function () {
+                    //$btnSubmit.prop('disabled', false);
+                }
+            });
+
+           return false;
         },
         onkeyup: function (element, event) {
             var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
