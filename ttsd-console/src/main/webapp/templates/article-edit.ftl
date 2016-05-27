@@ -86,13 +86,33 @@
                     <input type="hidden" name="content" class="article-content" />
                 </div>
             </div>
+            <#if comments??>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">审核意见:</label>
+                    <div class="col-sm-10">
+                        <table class="table table-border advice-list">
+                          <tbody>
+                            <#list comments?keys as comment>
+                            <tr>
+                                  <td> ${comment}</td>
+                                  <td>${comments[comment]}</td>
+                            </tr>
+                                </#list>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </#if>
             <div class="form-group">
                 <label class="col-sm-1 control-label"></label>
+                <#if dto??>
+                    <div class="col-sm-10">
+                        <a href="#" class="btn btn-success preview" target="_blank">预览</a>
+                    </div>
+                </#if>
 
-                <div class="col-sm-10">
-                    <button type="button" class="btn">预览</button>
-                </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
 
@@ -106,7 +126,7 @@
                     <button type="button" class="btn jq-btn-form btn-primary article-save">提交审核</button>
                     <#if dto??>
                         <div class='input-group date' style="display: none" id='datetimepicker1'>
-                            <input type='text'  class="form-control" name="beginTime" value="${(dto.createTime?string('yyyy-MM-dd'))!}"/>
+                            <input type='text'  class="form-control" name="createTime" value="${(dto.createTime?string('yyyy-MM-dd'))!}"/>
                         </div>
                     </#if>
                 </div>

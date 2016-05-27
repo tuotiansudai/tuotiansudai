@@ -2,8 +2,10 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.LicaiquanArticleCommentMapper;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.LicaiquanArticleCommentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -25,15 +29,15 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     private final static String articleCommentRedisKey = "console:article:comment";
     private final static String articleLikeCounterKey = "console:article:likeCounter";
     private final static String articleReadCounterKey = "console:article:readCounter";
-
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
     @Autowired
     private RedisWrapperClient redisWrapperClient;
-
     @Autowired
     private IdGenerator idGenerator;
-
     @Autowired
     private LicaiquanArticleMapper licaiquanArticleMapper;
+    @Autowired
+    private LicaiquanArticleCommentMapper licaiquanArticleCommentMapper;
 
     @Override
     public BaseDto<PayDataDto> retrace(long articleId) {
@@ -64,6 +68,10 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             liCaiQuanArticleDto.setArticleId(articleId);
             liCaiQuanArticleDto.setCreateTime(new Date());
         } else {
+            LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId());
+            if(licaiquanArticleModel != null){
+                liCaiQuanArticleDto.setCreateTime(new Date());
+            }
             liCaiQuanArticleDto.setUpdateTime(new Date());
         }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
@@ -154,14 +162,17 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         }
 
         if (CollectionUtils.isNotEmpty(redisList) && CollectionUtils.isNotEmpty(databaseList)) {
-            for (LiCaiQuanArticleDto database : databaseList) {
-                for (LiCaiQuanArticleDto redis : redisList) {
-                    if (redis.getArticleId().equals(database.getArticleId())) {
-                        database.setTitle(database.getTitle() + "(原文)");
-                        break;
-                    }
-                }
+            Set<Long> ids = new HashSet<>();
+            for (LiCaiQuanArticleDto redis : redisList) {
+                ids.add(redis.getArticleId());
             }
+            for (LiCaiQuanArticleDto database : databaseList) {
+               if(ids.contains(database.getArticleId())){
+                   database.setOriginal(true);
+               }
+            }
+
+
         }
         return list;
     }
@@ -242,6 +253,19 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             } else {
                 this.licaiquanArticleMapper.createArticle(model);
             }
+
+            List<LicaiquanArticleCommentModel> commentModelList = new ArrayList<>();
+            Map<String, String> comment = getAllComments(model.getId());
+            redisWrapperClient.hdel(articleCommentRedisKey, String.valueOf(model.getId()));
+            for(String key: comment.keySet()){
+                commentModelList.add(new LicaiquanArticleCommentModel(model.getId(),comment.get(key),new Date(key)));
+            }
+
+            if(CollectionUtils.isNotEmpty(commentModelList)){
+                for(LicaiquanArticleCommentModel commentModel : commentModelList){
+                    licaiquanArticleCommentMapper.createComment(commentModel);
+                }
+            }
         }
     }
 
@@ -268,5 +292,14 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 String.valueOf(articleId));
         liCaiQuanArticleDto.setArticleStatus(articleStatus);
         redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
+    }
+
+    @Override
+    public LiCaiQuanArticleDto getArticleContentByDataBase(long articleId){
+        LicaiquanArticleModel licaiquanArticleModel = this.licaiquanArticleMapper.findArticleById(articleId);
+        if(licaiquanArticleModel != null){
+            return new LiCaiQuanArticleDto(licaiquanArticleModel);
+        }
+        return new LiCaiQuanArticleDto();
     }
 }

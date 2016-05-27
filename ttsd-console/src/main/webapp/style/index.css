@@ -591,3 +591,9 @@ td.td {
     background: url(../images/lunbo.png) no-repeat center;
     background-size: 100%;
 }
+.advice-list{
+    border:1px solid #ccc;
+}
+.advice-list tr td{
+    border:1px solid #ccc;
+}

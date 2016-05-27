@@ -1,45 +1,40 @@
 package com.tuotiansudai.api.controller;
 
+import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-import java.util.List;
 
 @Controller
+@RequestMapping(value = "/media-center")
 public class MobileAppMediaCenterController {
     @Autowired
     private MobileAppMediaCenterService mobileAppMediaCenterService;
 
-    @RequestMapping(value = "/media-center", method = RequestMethod.GET)
-    public ModelAndView mediaCenter( @RequestParam(name = "articleSectionType",defaultValue = "ALL",required = false) ArticleSectionType articleSectionType,
+    @RequestMapping(value = "/article-list", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResponseDto obtainArticleList( @RequestParam(name = "articleSectionType",defaultValue = "ALL",required = false) ArticleSectionType section,
                                      @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                      @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        ModelAndView mv = new ModelAndView("/media-center");
-        List<LiCaiQuanArticleDto> carouselArticles = mobileAppMediaCenterService.obtainCarouselArticle();
 
-        BaseDto<BasePaginationDataDto> articleList = mobileAppMediaCenterService.obtainArticleList(articleSectionType, index, pageSize);
+        return mobileAppMediaCenterService.obtainArticleList(section, index, pageSize);
 
-        mv.addObject("carouselArticles",carouselArticles);
-        mv.addObject("articleList",articleList);
-
-        return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET)
-    public ModelAndView obtainArticle(@PathVariable long articleId) {
-        ModelAndView mv = new ModelAndView("/article-detail");
-        LiCaiQuanArticleDto liCaiQuanArticleDto = mobileAppMediaCenterService.obtainArticleContent(articleId);
+    @RequestMapping(value = "/article-detail/{articleId}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResponseDto obtainArticleContent(@PathVariable long articleId) {
+        return mobileAppMediaCenterService.obtainArticleContent(articleId);
+    }
 
-        mv.addObject("liCaiQuanArticleDto",liCaiQuanArticleDto);
-        return mv;
+    @RequestMapping(value = "/banner", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResponseDto obtainCarouselArticle() {
+        return mobileAppMediaCenterService.obtainCarouselArticle();
     }
 
 

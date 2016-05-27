@@ -1,51 +1,23 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class LiCaiQuanArticleDto implements Serializable{
-    private static final long serialVersionUID = 5982862020562402898l;
+public class MediaArticleResponseDataDto extends BaseResponseDataDto implements Serializable {
     private Long articleId;
     private String title;
     private String author;
     private String thumbPicture;
     private String showPicture;
-    private boolean carousel;
     private ArticleSectionType section;
     private String content;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
-    private ArticleStatus articleStatus;
     private String source;
-    private Date updateTime;
-    private String checker;
     private long likeCount;
     private long readCount;
-    private String creator;
-    private boolean original = false;
-
-    public LiCaiQuanArticleDto(){}
-
-    public LiCaiQuanArticleDto(LicaiquanArticleModel model){
-        this.articleId = model.getId();
-        this.title = model.getTitle();
-        this.author = model.getAuthor();
-        this.thumbPicture = model.getThumb();
-        this.showPicture = model.getShowPicture();
-        this.carousel = model.isCarousel();
-        this.section = model.getSection();
-        this.content = model.getContent();
-        this.createTime = model.getCreatedTime();
-        this.articleStatus = ArticleStatus.PUBLISH;
-        this.source = model.getSource();
-        this.updateTime = model.getUpdatedTime();
-        this.checker = model.getCheckerLoginName();
-        this.creator = model.getCreatorLoginName();
-    }
 
     public Long getArticleId() {
         return articleId;
@@ -87,14 +59,6 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.showPicture = showPicture;
     }
 
-    public boolean isCarousel() {
-        return carousel;
-    }
-
-    public void setCarousel(boolean carousel) {
-        this.carousel = carousel;
-    }
-
     public ArticleSectionType getSection() {
         return section;
     }
@@ -119,13 +83,6 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.createTime = createTime;
     }
 
-    public ArticleStatus getArticleStatus() {
-        return articleStatus;
-    }
-
-    public void setArticleStatus(ArticleStatus articleStatus) {
-        this.articleStatus = articleStatus;
-    }
 
     public String getSource() {
         return source;
@@ -135,21 +92,6 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.source = source;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getChecker() {
-        return checker;
-    }
-
-    public void setChecker(String checker) {
-        this.checker = checker;
-    }
 
     public long getReadCount() {
         return readCount;
@@ -167,15 +109,17 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.likeCount = likeCount;
     }
 
-    public String getCreator() { return creator; }
+    public MediaArticleResponseDataDto(){}
 
-    public void setCreator(String creator) { this.creator = creator; }
-
-    public boolean isOriginal() {
-        return original;
-    }
-
-    public void setOriginal(boolean original) {
-        this.original = original;
+    public MediaArticleResponseDataDto(LicaiquanArticleModel model){
+        this.articleId = model.getId();
+        this.title = model.getTitle();
+        this.author = model.getAuthor();
+        this.thumbPicture = model.getThumb();
+        this.showPicture = model.getShowPicture();
+        this.section = model.getSection();
+        this.content = model.getContent();
+        this.createTime = model.getCreatedTime();
+        this.source = model.getSource();
     }
 }

@@ -16,7 +16,7 @@
                     <#list articleSectionTypeList as sectionName>
                         <option value="${sectionName}"
                                 <#if (selected?has_content && selected == sectionName.articleSectionTypeName) >selected</#if>
-                        >${sectionName.articleSectionTypeName}</option>
+                                >${sectionName.articleSectionTypeName}</option>
                     </#list>
                 </select>
             </div>
@@ -48,24 +48,29 @@
                         </#if>
                     ${article.section.articleSectionTypeName!}
                     </td>
-                    <td>${article.title!}</td>
+                    <td>
+                        ${article.title!}
+                        <#if article.original >
+                            <a target="_Blank" style="color: red;" href="/announce-manage/article/${article.articleId?c}/original">( 原文 )</a>
+                        </#if>
+                    </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
-                    <td>${article.author!}</td>
+                    <td>${article.creator!}</td>
                     <td>${article.checker!}</td>
                     <td>${article.articleStatus.description!}</td>
                     <td>
                         <#if article.articleStatus.description == '待审核'>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                                <a href="/announce-manage/article/${article.articleId?c}/check-view/" >审核 </a>/
+                                <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>/
                             </@security.authorize>
                             <@security.authorize access="hasAuthority('OPERATOR')">
-                                <a href="/announce-manage/article/edit/${article.articleId?c}" >编辑 </a>/
+                                <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
                             </@security.authorize>
-                            <a href="/announce-manage/article/retrace/${article.articleId?c}" > 撤销</a>
+                            <a href="/announce-manage/article/${article.articleId?c}/retrace"> 撤销</a>
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
-                            <a href="/announce-manage/article/edit/${article.articleId?c}" >编辑 </a>/
-                            <a href="/announce-manage/article/deleteArticle/${article.articleId?c}" onclick="return confirm('确定删除吗?')"> 删除</a>
+                            <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
+                            <a href="/announce-manage/article/${article.articleId?c}/deleteArticle" onclick="return confirm('确定删除吗?')"> 删除</a>
                         </#if>
                     </td>
                     <td>
@@ -86,7 +91,8 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index - 1}&pageSize=${data.pageSize}" aria-label="Previous">
+                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index - 1}&pageSize=${data.pageSize}"
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -96,7 +102,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index + 1}&pageSize=${data.pageSize}" aria-label="Next">
+                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index + 1}&pageSize=${data.pageSize}"
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

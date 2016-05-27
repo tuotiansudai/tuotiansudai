@@ -26,7 +26,7 @@
     <insert id="createArticle" parameterType="LicaiquanArticleModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`licaiquan_article` (id, title, creator_login_name, checker_login_name, author, section,
         source, carousel, thumb, show_picture, content, created_time, updated_time, deleted)
-        VALUE (#{id}, #{title}, #{creator_login_name}, #{checker_login_name}, #{author}, #{section}, #{source}, #{carousel},
+        VALUE (#{id}, #{title}, #{creatorLoginName}, #{checkerLoginName}, #{author}, #{section}, #{source}, #{carousel},
         #{thumb}, #{showPicture}, #{content}, #{createdTime}, #{updatedTime}, #{deleted})
     </insert>
 

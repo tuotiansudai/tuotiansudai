@@ -1,10 +1,12 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.Min;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 
 @Controller
@@ -31,26 +35,22 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}/edit/", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/{articleId}/edit", method = RequestMethod.GET)
     public ModelAndView editArticle(@PathVariable long articleId) {
         ModelAndView mv = new ModelAndView("/article-edit");
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.obtainEditArticleDto(articleId);
+        Map<String,String> comments = liCaiQuanArticleService.getAllComments(articleId);
+        mv.addObject("comments",comments);
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
         mv.addObject("dto", liCaiQuanArticleDto);
         return mv;
     }
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
-    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto,
-                                      @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime) throws ParseException {
-        ModelAndView mv = new ModelAndView("/article-edit");
-        mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        if (beginTime != null) {
-            liCaiQuanArticleDto.setCreateTime(beginTime);
-        }
+    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) throws ParseException {
         liCaiQuanArticleDto.setCreator(LoginUserInfo.getLoginName());
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
-        return mv;
+        return  new ModelAndView("redirect:/announce-manage/article/list");
     }
 
     @RequestMapping(value = "/article/{articleId}/retrace/", method = RequestMethod.POST)
@@ -73,13 +73,10 @@ public class LiCaiQuanArticleController {
         return mv;
     }
 
-    @RequestMapping(value = "/article/{articleId}/preview/", method = RequestMethod.GET)
-    public ModelAndView previewArticle(@PathVariable long articleId) {
-        LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.getArticleContent(articleId);
+    @RequestMapping(value = "/article/{articleId}/preview", method = RequestMethod.GET)
+    public ModelAndView previewArticle(@PathVariable LiCaiQuanArticleDto liCaiQuanArticleDto) {
         if (null == liCaiQuanArticleDto) {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("redirect:/");
-            return modelAndView;
+            return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-preview");
             modelAndView.addObject("articleContent", liCaiQuanArticleDto);
@@ -97,34 +94,58 @@ public class LiCaiQuanArticleController {
     public ModelAndView checkViewArticle(@PathVariable long articleId) {
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.getArticleContent(articleId);
         if (null == liCaiQuanArticleDto) {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("redirect:/");
-            return modelAndView;
+            return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-check-view");
-            modelAndView.addObject("articleContent", liCaiQuanArticleService.getArticleContent(articleId));
+            modelAndView.addObject("articleContent", liCaiQuanArticleDto);
             return modelAndView;
         }
     }
 
-    @RequestMapping(value = "/article/{articleId}/reject/", method = RequestMethod.POST)
+    @RequestMapping(value = "/article/{articleId}/reject", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> rejectArticle(@PathVariable long articleId, @RequestParam(value = "comment", required = false) String comment) {
         liCaiQuanArticleService.rejectArticle(articleId, comment);
         return new BaseDto<>();
     }
 
-    @RequestMapping(value = "/article/checkPass/{articleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/{articleId}/checkPass/", method = RequestMethod.GET)
     public ModelAndView checkPass(@PathVariable long articleId) {
         liCaiQuanArticleService.checkPassAndCreateArticle(articleId, LoginUserInfo.getLoginName());
         ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
         return mv;
     }
 
-    @RequestMapping(value = "/article/deleteArticle/{articleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/{articleId}/deleteArticle", method = RequestMethod.GET)
     public ModelAndView deleteArticle(@PathVariable long articleId) {
         ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
         this.liCaiQuanArticleService.deleteArticle(articleId);
         return mv;
+    }
+
+    @RequestMapping(value = "article/{articleId}/appRead", method = RequestMethod.GET)
+    public BaseDto<BaseDataDto> appReadArticle(@PathVariable long articleId) {
+        liCaiQuanArticleService.updateReadCount(articleId);
+        return new BaseDto<>();
+    }
+
+    @RequestMapping(value = "article/{articleId}/appLike", method = RequestMethod.GET)
+    public BaseDto<BaseDataDto> appLikeArticle(@PathVariable long articleId) {
+        liCaiQuanArticleService.updateLikeCount(articleId);
+        return new BaseDto<>();
+    }
+
+
+    @RequestMapping(value = "/article/{articleId}/original", method = RequestMethod.GET)
+    public ModelAndView articleOriginal(@PathVariable long articleId) {
+        LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.getArticleContentByDataBase(articleId);
+        ModelAndView modelAndView;
+        if (null == liCaiQuanArticleDto) {
+            modelAndView = new ModelAndView("redirect:/error/404");
+        } else {
+            modelAndView = new ModelAndView("/article-preview");
+            modelAndView.addObject("articleContent", liCaiQuanArticleDto);
+        }
+        return modelAndView;
     }
 }

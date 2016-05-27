@@ -33,4 +33,6 @@ public interface LiCaiQuanArticleService {
     void checkPassAndCreateArticle(long articleId,String checkName);
 
     void deleteArticle(long articleId);
+
+    LiCaiQuanArticleDto getArticleContentByDataBase(long articleId);
 }
