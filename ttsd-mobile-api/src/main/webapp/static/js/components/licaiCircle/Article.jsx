@@ -33,7 +33,7 @@ class Article extends React.Component {
 	componentDidMount() {
 		changeTitle('文章详情');
 		ajax({
-			url: '/media-center/article-detail/1',
+			url: `/media-center/article-detail/${this.props.params.id}`,
 			type: 'get',
 			done: function(data) {
 				this.setState(data);

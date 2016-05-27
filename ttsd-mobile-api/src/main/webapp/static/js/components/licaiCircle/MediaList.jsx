@@ -118,11 +118,12 @@ class MediaList extends React.Component {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			setTimeout(() => {
 				if (!this.myScroll) {
+					this.refs.scrollWrap.style.height = (window.screen.height * document.documentElement.dataset.dpr - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight) + 'px';
 					this.myScroll = new IScroll(this.refs.scrollWrap);
 					this.myScroll.on('scrollEnd', () => {
 						if (this.myScroll.y <= this.myScroll.maxScrollY) {
 							if (this.state.isShowLoading) {
-								this.listIndex = this.listIndex++;
+								this.listIndex++;
 								this.pagination.call(this);
 							}
 						}
@@ -149,10 +150,10 @@ class MediaList extends React.Component {
 		}
 		return (
 			<section className={main}>
-				<div className="banner">
+				<div className="banner" ref="banner">
 					<Carousel data={this.state.bannerData} />
 				</div>
-				<ul className="tab-header clearfix">
+				<ul className="tab-header clearfix" ref="tabHeader">
 					{data.tabHeader.map((value, index) => {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onClick={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
