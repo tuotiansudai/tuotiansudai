@@ -455,4 +455,24 @@
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>
 
+    <select id="findInvestorInvestWithoutTransferPagination" parameterType="map" resultMap="investResultMap">
+        select invest.*
+        from invest
+        join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status = #{loanStatus}
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countInvestorInvestWithoutTransferPagination" parameterType="map" resultType="long">
+        select count(1)
+        from invest
+        join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status = #{loanStatus}
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null
+    </select>
+
 </mapper>

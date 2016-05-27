@@ -169,6 +169,10 @@
         select * from user_coupon where invest_id = #{investId}
     </select>
 
+    <select id="findUserCouponSuccessByInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
     <select id="findSumInvestAmountByCouponId" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(i.`amount`), 0)
