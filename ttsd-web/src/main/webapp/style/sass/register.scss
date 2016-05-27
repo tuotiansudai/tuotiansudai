@@ -169,12 +169,10 @@
       width: 362px;
       text-align: center;
       padding-bottom:20px;
-      span.error {
+      .status {
         display: block;
         height:25px;
-        &.loading {
-          color: #ffac2a;
-        }
+        color: #ffac2a;
       }
       .btn-success {
         padding: 10px 50px;

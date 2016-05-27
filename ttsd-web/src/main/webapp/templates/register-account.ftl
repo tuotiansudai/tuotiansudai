@@ -3,32 +3,38 @@
 
 <div class="register-container page-width register-account">
 
-   <div class="step-account-head">
-       <i class="sprite-register-ic-account"></i>
-       为了保障您的账户及资金安全， <br/>
+    <div class="step-account-head">
+        <i class="sprite-register-ic-account"></i>
+       <span>
+           为了保障您的账户及资金安全， <br/>
        根据相关法律法规，我们会对您进行实名认证。
-   </div>
+       </span>
+
+    </div>
     <div class="register-box ">
         <form class="register-account-form" action="/register/account" method="post">
-        <ul class="reg-list tl register-step-two">
-
-            <li>
-                   <label class="title">真实姓名</label> <input type="text" name="userName" placeholder="请输入您的真实姓名" class="user-name" value = "${(originalFormData.userName)!}" />
-                </li>
+            <ul class="reg-list tl register-step-two">
                 <li>
-                   <label class="title">身份证号</label> <input type="text" name="identityNumber" placeholder="请输入您的身份证号码" class="identity-number" value="${(originalFormData.identityNumber)!}"/>
+                    <label class="title">真实姓名</label>
+                    <input type="text" name="userName" placeholder="请输入您的真实姓名"
+                           class="user-name" value="${(originalFormData.userName)!}"/>
                 </li>
-                <li>
-                  </li>
-
-        </ul>
+                <li><label class="title">身份证号</label>
+                    <input type="text" name="identityNumber" placeholder="请输入您的身份证号码"
+                           class="identity-number"
+                           value="${(originalFormData.identityNumber)!}"/>
+                </li>
+            </ul>
             <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <span class="error">
+                <div class="status">
+
                 <#if success?? && !success>
+                <span class="error">
                     实名认证失败，请检查您提交的信息是否正确
+                </span>
                 </#if>
-            </span>
+                </div>
                 <input type="submit" class="register-account btn-success" value="认证"/>
             </div>
         </form>
