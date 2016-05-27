@@ -36,11 +36,12 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
         MediaArticleListResponseDataDto mediaArticleListResponseDataDto = new MediaArticleListResponseDataDto();
         if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
             records = convertModel2Dto(liCaiQuanArticleModels);
-            mediaArticleListResponseDataDto.setTotalCount(liCaiQuanArticleModels.size());
-            mediaArticleListResponseDataDto.setIndex(1);
-            mediaArticleListResponseDataDto.setPageSize(10);
-            mediaArticleListResponseDataDto.setArticleList(records);
         }
+
+        mediaArticleListResponseDataDto.setTotalCount(liCaiQuanArticleModels == null?0:liCaiQuanArticleModels.size());
+        mediaArticleListResponseDataDto.setIndex(1);
+        mediaArticleListResponseDataDto.setPageSize(10);
+        mediaArticleListResponseDataDto.setArticleList(records);
 
         BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -53,7 +54,7 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize) {
         int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(articleSectionType);
         List<MediaArticleResponseDataDto> records = Lists.newArrayList();
-        List<LicaiquanArticleModel> liCaiQuanArticleModels  = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, index, pageSize);
+        List<LicaiquanArticleModel> liCaiQuanArticleModels  = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, (index-1)*pageSize, pageSize);
         if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
             records = convertModel2Dto(liCaiQuanArticleModels);
         }
@@ -76,8 +77,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
             public MediaArticleResponseDataDto apply(LicaiquanArticleModel liCaiQuanArticleModel) {
 
                 MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
-                mediaArticleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
-                mediaArticleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
+                mediaArticleResponseDataDto.setShowPicture(domainName + "/upload/" + liCaiQuanArticleModel.getShowPicture());
+                mediaArticleResponseDataDto.setThumbPicture(domainName + "/upload/" + liCaiQuanArticleModel.getThumb());
                 mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
                 mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
                 return mediaArticleResponseDataDto;
@@ -89,8 +90,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     public BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(long articleId) {
         LicaiquanArticleModel liCaiQuanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
         MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
-        mediaArticleResponseDataDto.setShowPicture(domainName + "/" + liCaiQuanArticleModel.getShowPicture());
-        mediaArticleResponseDataDto.setThumbPicture(domainName + "/" + liCaiQuanArticleModel.getThumb());
+        mediaArticleResponseDataDto.setShowPicture(domainName + "/upload/" + liCaiQuanArticleModel.getShowPicture());
+        mediaArticleResponseDataDto.setThumbPicture(domainName + "/upload/" + liCaiQuanArticleModel.getThumb());
         mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
         mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
         BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = new BaseResponseDto<>();

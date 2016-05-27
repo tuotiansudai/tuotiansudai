@@ -67,6 +67,8 @@
         <intercept-url pattern="/api/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/api/js/**" access="permitAll()"/>
+        <intercept-url pattern="/static/dist/**" access="permitAll()"/>
+        <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
 
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />

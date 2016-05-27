@@ -70,6 +70,7 @@
                 <label  class="col-sm-1 control-label">栏目: </label>
                 <div class="col-sm-2">
                     <select class="selectpicker" name="section" >
+                        <option value="">全部</option>
                         <#list sectionList as sectionItem>
                             <option value="${sectionItem.name()}" <#if dto?? && dto.section?? && sectionItem == dto.section>selected</#if>> ${sectionItem.getArticleSectionTypeName()}</option>
                         </#list>
