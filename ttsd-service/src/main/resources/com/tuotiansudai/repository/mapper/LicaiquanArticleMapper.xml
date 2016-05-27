@@ -75,7 +75,7 @@
         content, created_time, updated_time, deleted
         FROM `aa`.`licaiquan_article`
         WHERE deleted = FALSE
-        <if test="section != null">
+        <if test="section != null  ">
             AND section = #{section}
         </if>
         ORDER BY created_time DESC
@@ -86,7 +86,7 @@
         SELECT count(1)
         FROM `aa`.`licaiquan_article`
         WHERE deleted = FALSE
-        <if test="section != null">
+        <if test="section != null ">
             AND section = #{section}
         </if>
     </select>
