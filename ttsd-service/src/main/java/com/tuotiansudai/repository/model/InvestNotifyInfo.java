@@ -31,7 +31,7 @@ public class InvestNotifyInfo implements Serializable {
         this.loanName = loanModel.getName();
         this.amount = investModel.getAmount();
         this.investId = investModel.getId();
-        this.loanName = investModel.getLoginName();
+        this.loginName = investModel.getLoginName();
         this.mobile = userModel.getMobile();
         this.email = userModel.getEmail();
         this.periods = loanModel.getPeriods();

@@ -16,6 +16,7 @@ import cn.jpush.api.schedule.model.TriggerPayload;
 import com.tuotiansudai.jpush.service.JPushScheduleAlertService;
 import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,12 @@ import static junit.framework.Assert.assertNotNull;
 public class JPushScheduleAlertServiceTest {
 
     @Autowired
-    private JPushScheduleAlertService jPushScheduleAlertService;
+    private JPushScheduleAlertService jPushScheduleAlertService ;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Test
+    @Ignore
     public void shouldSendJPushScheduleAlertIsOk(){
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
@@ -64,6 +66,7 @@ public class JPushScheduleAlertServiceTest {
     }
 
     @Test
+    @Ignore
     public void shouldSendJPushPeriodicalScheduleAlertIsOk(){
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
