@@ -6,14 +6,16 @@ import java.util.Date;
 public class PointTaskModel implements Serializable {
 
     private long id;
-
     private PointTask name;
-
     private long point;
-
     private Date createdTime;
     private boolean active;
     private boolean multiple;
+
+    public PointTaskModel(long id, long point){
+        this.id = id;
+        this.point = point;
+    }
 
     public long getId() {
         return id;
