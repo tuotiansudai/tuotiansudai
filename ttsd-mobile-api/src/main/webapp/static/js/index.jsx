@@ -21,6 +21,7 @@ class App extends React.Component {
 			<Router history={hashHistory}>
         		<Route path="media-center" component={MediaList} />
         		<Route path="media-center/article/:id" component={Article} />
+        		<Redirect from="/" to="media-center" />
 	        </Router>
 		)
 	}

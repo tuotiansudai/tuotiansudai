@@ -18,6 +18,5 @@ module.exports = objectAssign(commonOptions, {
 		new webpack.optimize.AggressiveMergingPlugin(),
 		new webpack.NoErrorsPlugin()
 	],
-	cache: false,
-	devtool: 'sourcemap'
+	cache: false
 });
