@@ -1,0 +1,4 @@
+ALTER TABLE point_task ADD active BOOLEAN DEFAULT 0;
+ALTER TABLE point_task ADD multiple BOOLEAN DEFAULT 0;
+ALTER TABLE user_point_task ADD point BIGINT UNSIGNED DEFAULT 0;
+ALTER TABLE user_point_task ADD task_level BIGINT UNSIGNED DEFAULT 0;

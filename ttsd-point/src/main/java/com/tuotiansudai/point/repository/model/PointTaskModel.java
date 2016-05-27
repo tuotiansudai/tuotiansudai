@@ -12,6 +12,8 @@ public class PointTaskModel implements Serializable {
     private long point;
 
     private Date createdTime;
+    private boolean active;
+    private boolean multiple;
 
     public long getId() {
         return id;
@@ -43,5 +45,21 @@ public class PointTaskModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 }
