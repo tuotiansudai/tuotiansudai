@@ -48,19 +48,17 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto,
-                                        RedirectAttributes redirectAttributes,
-                                        @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
-        registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        registerAccountDto.setMobile(LoginUserInfo.getMobile());
-        BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
-        boolean isRegisterSuccess = dto.getData().getStatus();
-        if (!isRegisterSuccess) {
-            redirectAttributes.addFlashAttribute("originalFormData", registerAccountDto);
-            redirectAttributes.addFlashAttribute("success", false);
+    public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
+        if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
+            registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
+            registerAccountDto.setMobile(LoginUserInfo.getMobile());
+            return this.userService.registerAccount(registerAccountDto);
         }
 
-        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", redirect) : MessageFormat.format("redirect:/register/account?redirect={0}", redirect));
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 
 }

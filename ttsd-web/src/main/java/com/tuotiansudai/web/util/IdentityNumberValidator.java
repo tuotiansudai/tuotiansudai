@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.util;
 
 
+import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,35 +39,20 @@ public class IdentityNumberValidator {
         if (idCard.length() != CHINA_ID_MIN_LENGTH && idCard.length() != CHINA_ID_MAX_LENGTH) {
             return false;
         }
-        if(!validateFistNumber(idCard)){
+        if (!validateFistNumber(idCard)) {
             return false;
         }
         String code17 = getIdCode17(idCard);
-        if (isNumeric(code17) == false) {
-            return false;
-        }
-        if (!validateTime(code17)) {
-            return false;
-        }
-        if (!compareIdCard(idCard, countCode18(code17))) {
-            return false;
-        }
-        if(!validateYearByAdult(code17)){
-            return false;
-        }
+        return isNumeric(code17) && validateTime(code17) && compareIdCard(idCard, countCode18(code17)) && validateYearByAdult(code17);
 
-        return true;
     }
 
     public static boolean isNumeric(String val) {
-        return val == null || "".equals(val) ? false : val.matches("^[0-9]*$");
+        return !Strings.isNullOrEmpty(val) && val.matches("^[0-9]*$");
     }
 
     private static boolean validateFistNumber(String idCard){
-        if(Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9){
-            return true;
-        }
-        return false;
+        return Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9;
     }
 
     private static String getIdCode17(String idCard) {
@@ -107,17 +93,11 @@ public class IdentityNumberValidator {
             return false;
         }
         String strDay = idCard.substring(12, 14);
-        if (Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0) {
-            return false;
-        }
-        return true;
+        return !(Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0);
     }
 
     private static boolean validateYearByAdult(String idCard){
-        if(((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6,14))) / 10000 >= 18)){
-            return true;
-        }
-        return false;
+        return ((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6, 14))) / 10000 >= 18);
     }
 
     private static String convert15CardTo18(String idCard) {
