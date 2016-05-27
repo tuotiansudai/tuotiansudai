@@ -451,4 +451,19 @@
         select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
     </select>
 
+    <select id="findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest" parameterType="map" resultMap="int">
+        select count(id) from invest
+        <where>
+            <if test="loginName != null">
+                and invest.loginName = #{loginName}
+            </if>
+            <if test="autoInvest != null">
+                and invest.is_auto_invest = #{autoInvest}
+            </if>
+            <if test="noPasswordInvest != null">
+                and invest.is_no_password_invest = #{noPasswordInvest}
+            </if>
+        </where>
+         and status = 'SUCCESS'
+    </select>
 </mapper>

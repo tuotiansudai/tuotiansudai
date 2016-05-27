@@ -59,6 +59,13 @@ public class PointTaskAspect {
         pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
         pointService.obtainPointInvest(investModel);
 
+        //投资成功后,根据当前投资的名字去查,account
+
+        if(investModel.isNoPasswordInvest()){
+            investModel.getLoginName();
+        }
+
+
         logger.debug("after returning invest, point task aspect completed");
     }
 
@@ -95,4 +102,6 @@ public class PointTaskAspect {
 
         logger.debug("after returning bind card, point task aspect completed");
     }
+
+
 }
