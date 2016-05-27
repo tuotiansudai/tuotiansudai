@@ -41,3 +41,82 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         }
     });
 });
+
+var registerAccountCnzzAddress = [
+    {
+        'function':'/recharge',
+        'category':'75实名认证页',
+        'action':'认证',
+        'label':'充值'
+    },
+    {
+        'function':'/bind-card',
+        'category':'77实名认证页',
+        'action':'认证',
+        'label':'绑卡'
+    },
+    {
+        'function':'/loan',
+        'category':'78实名认证页',
+        'action':'认证',
+        'label':'马上投资'
+    },
+    {
+        'function':'/account',
+        'category':'79实名认证页',
+        'action':'认证',
+        'label':'签到'
+    },
+    {
+        'function':'/point',
+        'category':'79实名认证页',
+        'action':'认证',
+        'label':'签到'
+    },
+    {
+        'function':'/auto-invest/agreement',
+        'category':'80实名认证页',
+        'action':'认证',
+        'label':'授权自动投标'
+    },
+    {
+        'function':'/personal-info',
+        'category':'82实名认证页',
+        'action':'认证',
+        'label':'开启免密'
+    },{
+        'function':'/register/user',
+        'category':'84实名认证页',
+        'action':'认证',
+        'label':'注册后'
+    }
+];
+
+function getReferrer() {
+    var referrer = '';
+    try {
+        referrer = window.top.document.referrer;
+    } catch(e) {
+        if(window.parent) {
+            try {
+                referrer = window.parent.document.referrer;
+            } catch(e2) {
+                referrer = '';
+            }
+        }
+    }
+    if(referrer === '') {
+        referrer = document.referrer;
+    }
+    return referrer;
+};
+
+function statisticsCnzzByRegister(){
+    var referrer = getReferrer();
+    for(var index in registerAccountCnzzAddress){
+        if(referrer.indexOf(registerAccountCnzzAddress[index].function) != -1){
+            cnzzPush.trackClick(registerAccountCnzzAddress[index].category,registerAccountCnzzAddress[index].action,registerAccountCnzzAddress[index].label);
+            break;
+        }
+    }
+}
