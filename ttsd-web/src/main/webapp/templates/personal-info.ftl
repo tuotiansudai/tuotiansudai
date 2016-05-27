@@ -2,7 +2,6 @@
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
 <div class="content-container auto-height personal-info">
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
-
     <ul class="info-list" id="personInfoBox">
         <li><span class="info-title"> 用户名</span>
             <em class="info">${loginName}</em>
@@ -50,7 +49,7 @@
             <#if bankCard??>
                 <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="/bind-card">修改</a>
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="javascript:void(0)" id="update-bank-card" data-url="${requestContext.getContextPath()}/bind-card/replace">修改</a>
                 </span>
             <#else>
                 <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
