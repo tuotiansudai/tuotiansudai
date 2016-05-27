@@ -3,22 +3,23 @@ import ajax from 'utils/ajax';
 
 class Praise extends React.Component {
 	static defaultProps = {
+		id: '',
 		likeCount: 0,
 		className: ''
 	};
 	state = {
 		likeCount: this.props.likeCount,
-		isLike: sessionStorage.getItem('praise')
+		isLike: sessionStorage.getItem(`praise${this.props.id}`)
 	};
-	componentWillMount() {
-		this.setState({
-			likeCount: this.props.likeCount
-		});
-	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.likeCount !== this.state.likeCount) {
 			this.setState({
 				likeCount: nextProps.likeCount
+			});
+		}
+		if (nextProps.id !== this.props.id) {
+			this.setState({
+				isLike: sessionStorage.getItem(`praise${nextProps.id}`)
 			});
 		}
 	}
@@ -26,19 +27,27 @@ class Praise extends React.Component {
 		if (this.state.isLike) {
 			return false;
 		}
-		this.setState((previousState) => {
-			return {
-				likeCount: previousState.likeCount + 1,
-				isLike: true
-			};
+		ajax({
+			url: `/media-center/${this.props.id}/like`,
+			type: 'post',
+			done: (response) => {
+				this.setState((previousState) => {
+					return {
+						likeCount: response.data.likeCount,
+						isLike: true
+					};
+				});
+				sessionStorage.setItem(`praise${this.props.id}`, 1);
+			}
 		});
-		sessionStorage.setItem('praise', 1);
 	}
 	render() {
-		return <div className={this.props.className} onTouchTap={this.tapHandler.bind(this)}>
-					<i style={{marginRight: 10, color: this.state.isLike ? 'red' : ''}} className="fa fa-thumbs-o-up active" aria-hidden="true"></i>
-					{this.state.likeCount}
-				</div>;
+		return (
+			<div className={this.props.className} onTouchTap={this.tapHandler.bind(this)}>
+				<i style={{marginRight: 10, color: this.state.isLike ? 'red' : ''}} className="fa fa-thumbs-o-up active" aria-hidden="true"></i>
+				{this.state.likeCount}
+			</div>
+		)
 	}
 }
 

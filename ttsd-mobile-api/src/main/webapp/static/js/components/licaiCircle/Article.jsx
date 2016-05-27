@@ -68,7 +68,7 @@ class Article extends React.Component {
 					</section>
 					<section className="info clearfix">
 						<div className="pull-left readed">阅读：{this.state.data.readCount}</div>
-						<Praise className="pull-right" likeCount={this.state.data.likeCount}></Praise>
+						<Praise className="pull-right" likeCount={this.state.data.likeCount} id={this.state.data.articleId}></Praise>
 					</section>
 				</article>
 			</div>

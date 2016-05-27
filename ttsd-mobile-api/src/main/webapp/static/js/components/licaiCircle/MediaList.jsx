@@ -43,13 +43,17 @@ class MediaList extends React.Component {
 		}
 	}
 	fetchData(index = 1, section = 'ALL', callback = function() {}) {
+		let sendData = {
+		    "index": index,//当前页面
+		    "pageSize": pageSize,
+		    "section": section
+		};
+		if (section === 'ALL') {
+			delete sendData.section;
+		}
 		ajax({
 			url: '/media-center/article-list',
-			data: {
-			    "index": index,//当前页面
-			    "pageSize": pageSize,
-			    "section": section
-			},
+			data: sendData,
 			done: callback
 		});
 	}
@@ -69,7 +73,7 @@ class MediaList extends React.Component {
 		});
 	}
 	listItemTapHandler(event) {
-		hashHistory.push(event.target.dataset.id);
+		hashHistory.push(`media-center/article/${event.target.dataset.id}`);
 	}
 	pagination() {
 		this.listIndex++;
@@ -168,7 +172,7 @@ class MediaList extends React.Component {
 									<li key={index} className="clearfix">
 										<div className="pull-left">
 											<a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>
-												<img src={value.thumbPicture} alt={value.title} />
+												<img src={value.thumbPicture} alt={value.title} data-id={value.articleId}/>
 											</a>
 										</div>
 										<h3><a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>{value.title}</a></h3>
@@ -176,7 +180,7 @@ class MediaList extends React.Component {
 											<time className="pull-left">{value.creatTime}</time>
 											<div className="pull-right">
 												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise" likeCount={value.likeCount}></Praise>
+												<Praise className="praise" likeCount={value.likeCount} id={value.articleId}></Praise>
 											</div>
 										</div>
 									</li>

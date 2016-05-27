@@ -632,6 +632,14 @@ app.get('/media-center/banner', function(req, res) {
 	});
 });
 
+app.post('/media-center/:id/like', function(req, res) {
+	res.send({
+		data: {
+			likeCount: 12121
+		}
+	});
+});
+
 app.listen(8889, function() {
 	console.log('mock server listening on port 8889!');
 });
