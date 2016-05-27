@@ -33,9 +33,6 @@ public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
             log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1}", request.getRequestURI(), bufferedRequest.getInputStreamString()));
         } else {
             String redisLoginName = mobileAppTokenProvider.getUserNameByToken(requestToken);
-            if (null == redisLoginName) {
-                log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1} THIS TOKEN NOT IN REDIS!", request.getRequestURI(), bufferedRequest.getInputStreamString()));
-            }
             log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1} redisTokenLoginName:{2}", request.getRequestURI(), bufferedRequest.getInputStreamString(), redisLoginName));
         }
 
