@@ -7,10 +7,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.SendCouponIncomeJob;
+import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -132,6 +132,7 @@ public class CouponAspect {
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
@@ -147,6 +148,7 @@ public class CouponAspect {
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
