@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private RandomUtils randomUtils;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -120,6 +122,32 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         LoanDetailDto loanDto = new LoanDetailDto(loanModel, investedAmount, loanTitleMapper.findAll(), loanTitleRelationMapper.findByLoanId(loanModel.getId()));
+        if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(),loginName);
+            long experienceProgress = 0;
+            LoanStatus loanStatus = LoanStatus.RAISING;
+            if(CollectionUtils.isNotEmpty(investModels)){
+                InvestModel investModel = investModels.get(0);
+                int day = Integer.parseInt(simpleDateFormat.format(investModel.getInvestTime())) - Integer.parseInt(simpleDateFormat.format(loanModel.getFundraisingStartTime()));
+                switch (day){
+                    case 1:
+                        experienceProgress = investMapper.countSuccessInvest(loanModel.getId()) % 100 * 100;
+                        break;
+                    case 2:
+                        loanStatus = LoanStatus.REPAYING;
+                        experienceProgress = 100;
+                        break;
+                    case 3:
+                        loanStatus = LoanStatus.COMPLETE;
+                        experienceProgress = 100;
+                        break;
+                }
+            }else{
+                experienceProgress = investMapper.countSuccessInvest(loanModel.getId()) % 100 * 100;
+            }
+            loanDto.setProgress(experienceProgress);
+            loanDto.setLoanStatus(loanStatus);
+        }
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
