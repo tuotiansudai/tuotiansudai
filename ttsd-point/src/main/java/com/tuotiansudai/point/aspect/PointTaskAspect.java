@@ -7,6 +7,7 @@ import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -36,6 +37,9 @@ public class PointTaskAspect {
     private RechargeMapper rechargeMapper;
 
     @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
     private BankCardMapper bankCardMapper;
 
     @AfterReturning(value = "execution(* *..RegisterService.register(..))", returning = "returnValue")
@@ -59,12 +63,13 @@ public class PointTaskAspect {
         pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
         pointService.obtainPointInvest(investModel);
 
-        //投资成功后,根据当前投资的名字去查,account
-
-        if(investModel.isNoPasswordInvest()){
-            investModel.getLoginName();
+        if(investModel.isNoPasswordInvest() && investMapper.findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest(investModel.getLoginName(), false, true) == 1){
+            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, investModel.getLoginName());
         }
 
+        if(investModel.isAutoInvest() && investMapper.findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest(investModel.getLoginName(), true, false) == 1){
+            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, investModel.getLoginName());
+        }
 
         logger.debug("after returning invest, point task aspect completed");
     }

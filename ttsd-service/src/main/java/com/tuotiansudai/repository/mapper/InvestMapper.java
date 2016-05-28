@@ -195,4 +195,8 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime);
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
+    int findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest(@Param(value = "loginName") String loginName,
+                                                                     @Param(value = "autoInvest") boolean autoInvest,
+                                                                     @Param(value = "noPasswordInvest") boolean noPasswordInvest);
 }
