@@ -51,9 +51,9 @@ public interface InvestMapper {
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestModel> findByLoginNameExceptTransfer(@Param(value = "loginName") String loginName,
-                                      @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize,
-                                      @Param(value = "isPagination") boolean isPagination);
+                                                    @Param(value = "index") Integer index,
+                                                    @Param(value = "pageSize") Integer pageSize,
+                                                    @Param(value = "isPagination") boolean isPagination);
 
     long findCountByLoginNameExceptTransfer(@Param(value = "loginName") String loginName);
 
@@ -113,15 +113,6 @@ public interface InvestMapper {
      */
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                     @Param(value = "afterTime") Date afterTime);
-
-    /**
-     * 查找成功投资的用户的手机号、金额以及标的名称
-     *
-     * @param loanId
-     * @return
-     */
-    List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
-
 
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
@@ -184,8 +175,6 @@ public interface InvestMapper {
 
     List<InvestDataView> getInvestDetail();
 
-    List<InvestModel> findInvestByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
-
     int countAchievementTimesByLoginName(@Param(value = "loginName") String loginName,
                                          @Param(value = "achievement") InvestAchievement achievement,
                                          @Param(value = "startTime") Date startTime,
@@ -205,8 +194,9 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
-
     int countInvestSuccessByProductType(@Param(value = "productType") ProductType productType,
                                         @Param(value = "loginName") String loginName);
 
+    List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
+                                               @Param(value = "loginName") String loginName);
 }

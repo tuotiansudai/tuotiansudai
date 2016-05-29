@@ -183,8 +183,8 @@ public class InvestTransferServiceImpl implements InvestTransferService{
                 logger.debug(MessageFormat.format("{0} is transferred",investModel.getLoanId()));
                 return false;
             }
-            DateTime transferTime = new DateTime(transferApplicationModelTemp.getTransferTime()).withTimeAtStartOfDay();
-            return transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(transferTime) != 0;
+            DateTime applyTransferTime = new DateTime(transferApplicationModelTemp.getApplicationTime()).withTimeAtStartOfDay();
+            return transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(applyTransferTime) != 0;
 
         }
 

@@ -51,6 +51,9 @@ body{
     width:100%;
     line-height: 40px;
     margin-bottom: 10px;
+    &.replace-card{
+      line-height:20px;
+    }
     &.text-m{
       margin-bottom:20px;
     }
@@ -862,7 +865,21 @@ body{
     }
   }
 }
-
+.recharge-plat{
+  .close-text {
+    text-align: center;
+    float: left;
+    width: 100%;
+    margin-top: 40px;
+    span {
+      padding: 10px 25px;
+      color: #fff;
+      background: #ff7200;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
 /* withdraw page*/
 .withdraw {
   line-height: 3 !important;

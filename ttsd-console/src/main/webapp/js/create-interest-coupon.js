@@ -92,6 +92,11 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
                     return false;
                 }
+                var deadline = parseInt($('.coupon-deadline', curform).val());
+                if (deadline <= 0) {
+                    showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
+                    return false;
+                }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('发放数量最小为1', $('.give-number', curform));
