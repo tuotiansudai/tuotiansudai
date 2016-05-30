@@ -1,6 +1,7 @@
 package com.tuotiansudai.jpush.service;
 
 
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 
@@ -54,6 +55,8 @@ public interface JPushAlertService {
     void autoJPushReferrerRewardAlert(long loanId);
 
     void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto);
+
+    void autoJPushCouponIncomeAlert(long loanRepayId);
 
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 

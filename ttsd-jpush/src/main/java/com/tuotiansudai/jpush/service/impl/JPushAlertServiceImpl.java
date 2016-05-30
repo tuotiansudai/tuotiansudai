@@ -6,11 +6,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -26,14 +29,12 @@ import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AuditLogUtil;
-import com.tuotiansudai.util.DistrictUtil;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -89,6 +91,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     AuditLogUtil auditLogUtil;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -500,6 +511,39 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             }
         } else {
             logger.debug("REPAY_ALERT is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushCouponIncomeAlert(long loanRepayId) {
+        LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
+        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
+        List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(),
+                Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON));
+
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.COUPON_INCOME_ALERT);
+
+        if (jPushAlertModel == null) {
+            logger.error("COUPON_INCOME_ALERT is disabled");
+            return;
+        }
+
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
+            long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
+            long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
+            if (actualInterest < 0) {
+                continue;
+            }
+            long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+            long transferAmount = actualInterest - actualFee;
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            if (transferAmount > 0) {
+                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
+                loginNameMap.put(userCouponModel.getLoginName(), amountLists);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            }
         }
     }
 
