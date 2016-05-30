@@ -1,6 +1,9 @@
 package com.tuotiansudai.scheduler.plugin;
 
 import com.tuotiansudai.job.*;
+import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
+import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
