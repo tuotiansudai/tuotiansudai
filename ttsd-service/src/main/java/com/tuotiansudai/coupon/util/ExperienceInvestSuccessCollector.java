@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExperienceInvestorCollector implements UserCollector {
+public class ExperienceInvestSuccessCollector implements UserCollector {
 
     @Autowired
     private InvestMapper investMapper;
