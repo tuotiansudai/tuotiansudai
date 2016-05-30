@@ -8,7 +8,7 @@ var basePath = path.join(__dirname, 'src/main/webapp/static');
 module.exports = objectAssign(commonOptions, {
 	entry: [path.join(basePath, 'js/index.jsx')],
 	output: {
-		filename: "index.[hash].min.js",
+		filename: "index.[hash:8].min.js",
 		path: path.join(basePath, 'dist'),
 		publicPath: '/assets/'
 	},
