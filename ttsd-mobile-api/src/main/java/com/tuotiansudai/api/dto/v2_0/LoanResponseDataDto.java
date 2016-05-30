@@ -17,6 +17,7 @@ public class LoanResponseDataDto {
     private String cardinalNumber;
     private String maxInvestMoney;
     private String productNewType;
+    private String investFeeRate;
 
     public String getLoanId() { return loanId; }
 
@@ -84,5 +85,13 @@ public class LoanResponseDataDto {
 
     public void setProductNewType(String productNewType) {
         this.productNewType = productNewType;
+    }
+
+    public String getInvestFeeRate() {
+        return investFeeRate;
+    }
+
+    public void setInvestFeeRate(String investFeeRate) {
+        this.investFeeRate = investFeeRate;
     }
 }
