@@ -54,6 +54,7 @@
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${web.static.server}"/>
         <property name="javascriptLocation" value="${api.js.path}"/>
+        <property name="cssLocation" value="${api.css.path}"/>
         <property name="sourceMap">
             <map>
             </map>
