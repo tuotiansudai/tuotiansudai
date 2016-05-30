@@ -21,7 +21,7 @@ public enum SmsTemplate {
 
     SMS_BIRTHDAY_NOTIFY_TEMPLATE(6482, "亲爱的天宝生日快乐！生日月投资收益翻倍，最高26%，不要错过哟！"),
 
-    SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(6482, "亲爱的用户，您投资的新手体验项目所得%s元现金红包奖励已发放，快来激活奖励吧！");
+    SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(8510, "亲爱的用户，您投资的新手体验项目所得%s元现金红包奖励已发放，快来激活奖励吧！");
 
     private long templateId;
 
