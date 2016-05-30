@@ -37,7 +37,7 @@
                 </li>
                 <li class="agree-last">
                     <label for="agreementInput" class="check-label" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                        <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
+                        <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check hide' />
                     <i class="sprite-register-no-checked"></i>
 
                 </li>

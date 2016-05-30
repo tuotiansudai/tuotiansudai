@@ -141,6 +141,7 @@
           position: relative;
           margin-left: 0;
           font-size: 14px;
+          height:45px;
           i {
             top: 8px;
             left: 0px;
@@ -148,8 +149,8 @@
           .check-label{
             position: absolute;
             top: 1px;
-            background: #fff;
             padding-left: 28px;
+            z-index: 40;
           }
           .agreement-check{
             margin-right: 300px;
