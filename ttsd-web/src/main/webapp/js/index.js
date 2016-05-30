@@ -82,5 +82,14 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             event.preventDefault();
             window.location.href=$(this).attr('data-url');
         });
+
+        $('.mask-btn').on('click', function(event) {
+            event.preventDefault();
+            $('.mask-model').hide();
+            $('.mask-bg').hide();
+        });
+        
+        $('body,html').animate({scrollTop:'550px'},"slow");
+        
     });
 });
