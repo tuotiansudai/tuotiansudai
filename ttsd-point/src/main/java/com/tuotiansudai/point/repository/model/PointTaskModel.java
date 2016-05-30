@@ -12,9 +12,21 @@ public class PointTaskModel implements Serializable {
     private boolean active;
     private boolean multiple;
 
+    public PointTaskModel() {
+    }
+
     public PointTaskModel(long id, long point){
         this.id = id;
         this.point = point;
+    }
+
+    public PointTaskModel(long id, PointTask name, long point, Date createdTime, boolean active, boolean multiple) {
+        this.id = id;
+        this.name = name;
+        this.point = point;
+        this.createdTime = createdTime;
+        this.active = active;
+        this.multiple = multiple;
     }
 
     public long getId() {
