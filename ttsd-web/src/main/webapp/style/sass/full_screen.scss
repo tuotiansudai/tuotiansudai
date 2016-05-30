@@ -367,7 +367,7 @@ body {
               left:0;
               width:56px;
               height:75px;
-              background:url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat;
+              background:url("/images/sign/index_sprites_20160530.png") 0px -170px no-repeat;
             }
             .loan-info-frame {
               width: 424px;
@@ -509,7 +509,7 @@ body {
         border: 1px solid #e6e6e6;
         background-color: #fff;
         overflow: hidden;
-        background:url("/images/sign/index_sprites_20160505.png") 0 0 no-repeat;
+        background:url("/images/sign/index_sprites_20160530.png") 0 0 no-repeat;
         a{
           float:left;
           width: 218px;
@@ -752,40 +752,12 @@ body {
               background: url("/images/icons/new-user.png") no-repeat;
               background-size: 80%;
             }
-            .hot {
-              width: 71px;
-              height: 71px;
-              background: url("/images/icons/hot-n.png") no-repeat;
+            .new-free{
               position: absolute;
-              left: -4px;
+              width: 40px;
+              height: 50px;
               top: -4px;
-              background-size: 80%;
-            }
-            .syl {
-              width: 71px;
-              height: 71px;
-              background: url("/images/icons/img-syl.png") no-repeat;
-              position: absolute;
-              left: -4px;
-              top: -4px;
-              background-size: 80%;
-            }
-            .wyx {
-              width: 71px;
-              height: 71px;
-              background: url("/images/icons/img-wyx.png") no-repeat;
-              position: absolute;
-              left: -4px;
-              top: -4px;
-              background-size: 80%;
-            }
-            .jyf {
-              width: 71px;
-              height: 71px;
-              background: url("/images/icons/img-jyf.png") no-repeat;
-              position: absolute;
-              left: -4px;
-              top: -4px;
+              background: url("/images/icons/new-free.png") no-repeat;
               background-size: 80%;
             }
             .pr-title {
@@ -920,16 +892,27 @@ body {
         background:#fff;
         border: 1px solid #e5e5e5;
         box-sizing:border-box;
+        &:hover{
+          background: #fff;
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
+        }
         .left-intro{
           float:left;
           width:240px;
           height:160px;
-          background:#ff752a;
+          background:url("/images/sign/index_sprites_20160530.png") no-repeat;
+          background-position: 0px -255px;
+          a{
+            float:left;
+            width:100%;
+            height:100%;
+          }
         }
         .center-detail{
           float:left;
-          width:440px;
+          width:370px;
           height:160px;
+          padding-left:70px;
           .loan-top{
             float:left;
             width:100%;
@@ -939,10 +922,18 @@ body {
               color: #4e4e4e;
               display: inline-block;
               width: 300px;
-              text-align: left;
+              text-align:left;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              .new-tip{
+                margin-left:10px;
+                font-size: 12px;
+                color: #ff9c1b;
+                border: 1px solid #ff9c1b;
+                padding: 2px 5px;
+                border-radius: 20px;
+              }
             }
           }
           .loan-info-dl{
@@ -971,6 +962,57 @@ body {
                   border-radius: 20px;
                 }
               }
+            }
+          }
+        }
+        .right-operat{
+          float:left;
+          width:240px;
+          padding-top:15px;
+          .p-title{
+            float: left;
+            width: 100%;
+            font-size: 12px;
+            color: #b3b3b3;
+            line-height: 1.8;
+            .point {
+              color: #ff752a;
+            }
+          }
+          .process-percent {
+            border-radius: 10px;
+            background: #ffe3d4;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            .percent {
+              border-radius: 10px;
+              width: 50px;
+              position: absolute;
+              height: 100%;
+              background: #ffa16e;
+            }
+          }
+          .rest-amount {
+            color: #ff752a;
+            font-size: 13px;
+            padding-top: 10px;
+            line-height: 1.3;
+            span{
+              float:left;
+              width:100%;
+              margin-top:10px;
+              i{
+                font-size:20px;
+              }
+            }
+            .btn-normal {
+              padding: 7px 0;
+              width: 100%;
+              font-size: 16px;
+              font-weight: bold;
+              margin-top: 8px;
             }
           }
         }
