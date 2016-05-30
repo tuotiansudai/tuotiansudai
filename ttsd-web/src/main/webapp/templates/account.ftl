@@ -186,7 +186,10 @@
                     <tr>
                         <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                         <td>
+                        <#if latestInvest.productType != 'EXPERIENCE'>
                             <i <#if latestInvest.birthdayCoupon>class="birth-icon" data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
+                        </#if>
+
                             <a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a>
                         </td>
                         <td>投资成功</td>
@@ -195,7 +198,7 @@
                         </td>
                         <td>
                                 ￥${((latestInvest.investAmount/100)?string('0.00'))!}
-                            <#if latestInvest.experience>
+                            <#if latestInvest.productType == 'EXPERIENCE'>
                                 (体验金)
                             </#if>
                         </td>

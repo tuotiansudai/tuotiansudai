@@ -210,7 +210,7 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
-            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()).getName(), investModel,
+            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()), investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
         }

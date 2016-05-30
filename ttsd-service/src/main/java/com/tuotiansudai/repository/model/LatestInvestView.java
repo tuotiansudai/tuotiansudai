@@ -32,7 +32,7 @@ public class LatestInvestView implements Serializable{
 
     private double birthdayBenefit;
 
-    private boolean experience;
+    private ProductType productType;
 
     public Date getInvestTime() {
         return investTime;
@@ -138,11 +138,11 @@ public class LatestInvestView implements Serializable{
         this.investId = investId;
     }
 
-    public boolean isExperience() {
-        return experience;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public void setExperience(boolean experience) {
-        this.experience = experience;
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

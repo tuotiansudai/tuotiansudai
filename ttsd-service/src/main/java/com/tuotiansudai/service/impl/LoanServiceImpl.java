@@ -549,28 +549,23 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
-                if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
-                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                if (LoanStatus.PREHEAT == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                }else{
-                    if (LoanStatus.PREHEAT == loanModel.getStatus()) {
-                        loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                        loanItemDto.setProgress(0.0);
-                        loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
-                        loanItemDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
-                    }
-                    if (LoanStatus.RAISING == loanModel.getStatus()) {
-                        loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                        loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
-                    }
-                    if (LoanStatus.RECHECK == loanModel.getStatus()) {
-                        loanItemDto.setAlert("放款审核");
-                        loanItemDto.setProgress(100);
-                    }
-                    if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loanModel.getStatus())) {
-                        loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
-                        loanItemDto.setProgress(100);
-                    }
+                    loanItemDto.setProgress(0.0);
+                    loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+                    loanItemDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
+                }
+                if (LoanStatus.RAISING == loanModel.getStatus()) {
+                    loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
+                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                }
+                if (LoanStatus.RECHECK == loanModel.getStatus()) {
+                    loanItemDto.setAlert("放款审核");
+                    loanItemDto.setProgress(100);
+                }
+                if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loanModel.getStatus())) {
+                    loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
+                    loanItemDto.setProgress(100);
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
 
