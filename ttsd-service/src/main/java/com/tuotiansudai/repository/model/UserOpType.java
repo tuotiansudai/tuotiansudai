@@ -17,4 +17,8 @@ public enum UserOpType {
     UserOpType(String desc) {
         this.desc = desc;
     }
+
+    public String getDesc() {
+        return desc;
+    }
 }
