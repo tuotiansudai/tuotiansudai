@@ -50,7 +50,8 @@ public enum JobType {
     AutoJPushWithDrawApplyAlert("用户资金变动推送-申请提现成功"),
     AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
     AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励"),
-    NewbieExperienceRepay("新手体验标还款");
+    ExperienceRepay("新手体验标还款"),
+    SendCouponIncome("优惠券收益发放推送");
 
     private final String description;
 

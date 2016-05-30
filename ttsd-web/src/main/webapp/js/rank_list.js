@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
+require(['jquery', 'rotate', 'layerWrapper','template','share', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
@@ -256,7 +256,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         },
         "share": {}
     };
-    with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://dn-iyz-file.qbox.me/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    
 
     $("#countForm").validate({
         debug: true,
