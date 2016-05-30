@@ -13,7 +13,8 @@ public enum UserGroup {
     EXCHANGER("兑换用户"),
     WINNER("中奖用户"),
     EXCHANGER_CODE("兑换码"),
-    EXPERIENCE_INVESTOR("新手体验标投资用户");
+    EXPERIENCE_INVEST_SUCCESS("新手体验标投资用户"),
+    EXPERIENCE_REPAY_SUCCESS("新手体验标收益用户");
 
     private final String description;
 
