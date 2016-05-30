@@ -91,4 +91,6 @@ public interface LoanMapper {
 
     long findLoanAchievementCount(@Param(value = "loginName") String loginName);
 
+    List<LoanModel> findByProductType(@Param(value = "productType") ProductType productType);
+
 }

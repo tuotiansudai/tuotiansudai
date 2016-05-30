@@ -112,7 +112,8 @@
             and t.duration BETWEEN #{durationStart} and #{durationEnd}
         </if>
         ) temp
-        order by case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,case temp.activity_type when 'NEWBIE' then '1' else '2' end,temp.verify_time desc,temp.created_time desc
+        order by CASE temp.product_type WHEN 'EXPERIENCE' THEN '1' ELSE '2' END ,
+        case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,case temp.activity_type when 'NEWBIE' then '1' else '2' end,temp.verify_time desc,temp.created_time desc
         limit #{index} , 10
     </select>
 
@@ -586,4 +587,7 @@
         </if>
     </select>
 
+    <select id="findByProductType" resultMap="loanResultMap">
+        select * from loan where product_type = #{productType}
+    </select>
 </mapper>

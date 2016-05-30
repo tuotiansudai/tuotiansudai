@@ -44,45 +44,56 @@
                 <tr>
                     <td>
                         <span class="icon-list">
-                            {{each $value.userCoupons}}
-                            {{if $value.couponType=='BIRTHDAY_COUPON'}}
-                            <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
-                            {{/if}}
-                            {{if $value.couponType=='INTEREST_COUPON'}}
-                            <i class="coupon-icon" data-benefit="{{$value.rate * 100}}"></i>
-                            {{/if}}
-                            {{if $value.couponType=='RED_ENVELOPE'}}
-                            <i class="money-icon" data-benefit="{{$value.amount / 100}}"></i>
-                            {{/if}}
-                            {{if $value.couponType=='NEWBIE_COUPON'}}
-                            <i class="newbie-icon" data-benefit="{{$value.amount / 100}}"></i>
-                            {{/if}}
-                            {{if $value.couponType=='INVEST_COUPON'}}
-                            <i class="ticket-icon" data-benefit="{{$value.amount / 100}}"></i>
-                            {{/if}}
-                            {{/each}}
+                            {{if $value.productType != 'EXPERIENCE'}}
+                                {{each $value.userCoupons}}
+                                {{if $value.couponType=='BIRTHDAY_COUPON'}}
+                                <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
+                                {{/if}}
+                                {{if $value.couponType=='INTEREST_COUPON'}}
+                                <i class="coupon-icon" data-benefit="{{$value.rate * 100}}"></i>
+                                {{/if}}
+                                {{if $value.couponType=='RED_ENVELOPE'}}
+                                <i class="money-icon" data-benefit="{{$value.amount / 100}}"></i>
+                                {{/if}}
+                                {{if $value.couponType=='NEWBIE_COUPON'}}
+                                <i class="newbie-icon" data-benefit="{{$value.amount / 100}}"></i>
+                                {{/if}}
+                                {{if $value.couponType=='INVEST_COUPON'}}
+                                <i class="ticket-icon" data-benefit="{{$value.amount / 100}}"></i>
+                                {{/if}}
+                                {{/each}}
 
-                            {{if $value.achievement=='FIRST_INVEST'}}
-                            <i class="first-icon"></i>
-                            {{/if}}
-                            {{if $value.achievement=='LAST_INVEST'}}
-                            <i class="last-icon"></i>
-                            {{/if}}
-                            {{if $value.achievement=='MAX_AMOUNT'}}
-                            <i class="max-icon"></i>
+                                {{if $value.achievement=='FIRST_INVEST'}}
+                                <i class="first-icon"></i>
+                                {{/if}}
+                                {{if $value.achievement=='LAST_INVEST'}}
+                                <i class="last-icon"></i>
+                                {{/if}}
+                                {{if $value.achievement=='MAX_AMOUNT'}}
+                                <i class="max-icon"></i>
+                                {{/if}}
                             {{/if}}
                         </span>
                         <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
                     </td>
-                    <td>{{$value.amount}}</td>
+                    <td>
+                        {{$value.amount}}
+                        {{if $value.productType=='EXPERIENCE'}}
+                            体验金
+                        {{/if}}
+                    </td>
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
-                    {{if $value.nextRepayDate}}
-                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
-                    {{else}}
-                     -- 
-                    {{/if}}
+                        {{if $value.productType=='EXPERIENCE'}}
+                            {{$value.nextRepayAmount}}(现金红包)
+                        {{else}}
+                            {{if $value.nextRepayDate}}
+                            {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                            {{else}}
+                            --
+                            {{/if}}
+                        {{/if}}
                     </td>
                     <td>
                     {{if $value.investRepayExist}}
