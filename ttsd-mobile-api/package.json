@@ -4,8 +4,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server & npm run mock",
-    "dist": "rm -rf ./src/main/webapp/static/dist & webpack --config webpack.production.js",
-    "mock": "nodemon -L src/main/webapp/static/js/mock.js"
+    "dist": "rm -rf ./src/main/webapp/api/js & webpack --config webpack.production.js",
+    "mock": "nodemon -L src/main/webapp/feSrc/js/mock.js"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

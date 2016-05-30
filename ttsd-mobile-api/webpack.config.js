@@ -5,7 +5,7 @@ var commonOptions = require('./webpack.common');
 var os = require('os');
 
 var port = 8888;
-var basePath = path.join(__dirname, 'src/main/webapp/static');
+var basePath = path.join(__dirname, 'src/main/webapp/feSrc');
 var getIP = function() {
 	var ipList = os.networkInterfaces();
 	var result = 'localhost';

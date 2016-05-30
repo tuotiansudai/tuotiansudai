@@ -1,7 +1,7 @@
 var path = require('path');
 var px2rem = require('postcss-px2rem');
 
-var basePath = path.join(__dirname, 'src/main/webapp/static');
+var basePath = path.join(__dirname, 'src/main/webapp/feSrc');
 
 module.exports = {
 	output: {

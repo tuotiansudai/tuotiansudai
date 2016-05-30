@@ -3,13 +3,13 @@ var webpack = require('webpack');
 var objectAssign = require('object-assign');
 var commonOptions = require('./webpack.common');
 
-var basePath = path.join(__dirname, 'src/main/webapp/static');
+var basePath = path.join(__dirname, 'src/main/webapp/feSrc');
 
 module.exports = objectAssign(commonOptions, {
 	entry: [path.join(basePath, 'js/index.jsx')],
 	output: {
 		filename: "index.[hash:8].min.js",
-		path: path.join(basePath, 'dist'),
+		path: path.join(basePath, '../api/js'),
 		publicPath: '/assets/'
 	},
 	plugins: [
