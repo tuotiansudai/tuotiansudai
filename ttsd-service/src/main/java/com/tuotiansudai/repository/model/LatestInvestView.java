@@ -32,6 +32,8 @@ public class LatestInvestView implements Serializable{
 
     private double birthdayBenefit;
 
+    private boolean experience;
+
     public Date getInvestTime() {
         return investTime;
     }
@@ -134,5 +136,13 @@ public class LatestInvestView implements Serializable{
 
     public void setInvestId(long investId) {
         this.investId = investId;
+    }
+
+    public boolean isExperience() {
+        return experience;
+    }
+
+    public void setExperience(boolean experience) {
+        this.experience = experience;
     }
 }

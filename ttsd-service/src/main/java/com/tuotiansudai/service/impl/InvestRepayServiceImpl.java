@@ -53,6 +53,10 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     @Override
     public List<InvestRepayDataItemDto> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        List<InvestRepayModel> experienceSuccessInvestRepayList = investRepayMapper.findByLoginNameAndTimeExperienceSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        if(CollectionUtils.isNotEmpty(experienceSuccessInvestRepayList)){
+            investRepayModels.addAll(experienceSuccessInvestRepayList);
+        }
         return investRepayCouponAll(investRepayModels, loginName);
     }
 
@@ -82,6 +86,13 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
+        }
+
+        List<LatestInvestView> investRepayModelList = investRepayMapper.findExperienceInvestByLoginName(loginName);
+        if(CollectionUtils.isNotEmpty(investRepayModelList)){
+            LatestInvestView latestInvestView = investRepayModelList.get(0);
+            latestInvestView.setExperience(true);
+            latestInvestViews.add(latestInvestView);
         }
         return latestInvestViews;
     }

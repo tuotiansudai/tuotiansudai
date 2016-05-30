@@ -421,4 +421,66 @@
         select count(1) from invest_repay where invest_id = #{transferInvestId} and period >= #{period}
 
     </select>
+
+
+    <select id="findExperienceInvestByLoginName" parameterType="map" resultMap="investRepayInAccountResultMap">
+        SELECT
+        invest.created_time,
+        loan.name AS loanName,
+        loan.id AS loanId,
+        invest.id AS investId,
+        repay.repay_date,
+        repay.corpus,
+        repay.expected_interest,
+        repay.default_interest,
+        repay.expected_fee,
+        invest.amount,
+        repay.status,
+        invest.login_name
+        FROM
+        invest invest
+        LEFT JOIN
+        loan loan ON invest.loan_id = loan.id
+        LEFT JOIN
+        invest_repay repay ON invest.id = repay.invest_id
+        WHERE
+        loan.product_type = 'EXPERIENCE'
+        AND invest.login_name = #{loginName}
+    </select>
+
+
+    <select id="findByLoginNameAndTimeExperienceSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+        SELECT
+        ir.*,
+        t.loanName AS `name`,
+        t.activity_rate,
+        t.base_rate,
+        t.periods,
+        t.duration,
+        t.`loan_id`,
+        t.type
+        FROM
+        invest_repay ir
+        JOIN
+       (SELECT
+              i.`id` AS investId,
+              l.`name` AS loanName,
+              l.`activity_rate`,
+              l.`base_rate`,
+              l.`periods`,
+              l.`duration`,
+              l.`id` as `loan_id`,
+              l.type
+            FROM
+              invest i
+              JOIN loan l
+                ON i.`loan_id` = l.`id`
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS' and l.product_type = 'EXPERIENCE') t
+        ON ir.`invest_id` = t.investId
+        WHERE ir.`status` != 'COMPLETE'
+        AND ir.`repay_date` BETWEEN #{startTime}
+        AND #{endTime}
+        ORDER BY ir.`repay_date`
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
 </mapper>
