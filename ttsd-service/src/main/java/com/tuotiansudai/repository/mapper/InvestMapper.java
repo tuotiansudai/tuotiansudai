@@ -197,5 +197,4 @@ public interface InvestMapper {
     List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
                                                @Param(value = "loginName") String loginName);
 
-    List<InvestModel> findExperienceSuccessByLoginName(@Param(value = "loginName") String loginName);
 }
