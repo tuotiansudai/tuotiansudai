@@ -196,4 +196,8 @@ public interface InvestMapper {
 
     List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
                                                @Param(value = "loginName") String loginName);
+
+    long countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
+                                       @Param(value = "startTime") Date startTime,
+                                       @Param(value = "endTime") Date endTime);
 }

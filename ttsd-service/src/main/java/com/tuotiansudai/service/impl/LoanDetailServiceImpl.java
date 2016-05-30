@@ -15,6 +15,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -124,15 +125,12 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         LoanDetailDto loanDto = new LoanDetailDto(loanModel, investedAmount, loanTitleMapper.findAll(), loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
             List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(),loginName);
-            long experienceProgress = 0;
+            long experienceProgress;
             LoanStatus loanStatus = LoanStatus.RAISING;
             if(CollectionUtils.isNotEmpty(investModels)){
                 InvestModel investModel = investModels.get(0);
-                int day = Integer.parseInt(simpleDateFormat.format(investModel.getInvestTime())) - Integer.parseInt(simpleDateFormat.format(loanModel.getFundraisingStartTime()));
+                int day = Integer.parseInt(simpleDateFormat.format(new Date())) - Integer.parseInt(simpleDateFormat.format(investModel.getInvestTime()));
                 switch (day){
-                    case 1:
-                        experienceProgress = investMapper.countSuccessInvest(loanModel.getId()) % 100 * 100;
-                        break;
                     case 2:
                         loanStatus = LoanStatus.REPAYING;
                         experienceProgress = 100;
@@ -141,9 +139,12 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         loanStatus = LoanStatus.COMPLETE;
                         experienceProgress = 100;
                         break;
+                    default:
+                        experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()) % 100 * 100;
+                        break;
                 }
             }else{
-                experienceProgress = investMapper.countSuccessInvest(loanModel.getId()) % 100 * 100;
+                experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()) % 100 * 100;
             }
             loanDto.setProgress(experienceProgress);
             loanDto.setLoanStatus(loanStatus);

@@ -448,6 +448,12 @@
     </select>
 
     <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
-        select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
+        select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS' order by invest_time desc
+    </select>
+
+    <select id="countSuccessInvestByInvestTime" parameterType="map" resultType="long">
+        select count(*)
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
     </select>
 </mapper>
