@@ -151,7 +151,7 @@
         select * from (
         select * from loan t
         where 1=1
-        and t.status != 'CANCEL'
+        and t.status != 'RECHECK'
         <if test="productType !=null">
             and t.product_type = #{productType}
         </if>
