@@ -31,7 +31,8 @@ public class MobileUserOpLogAspect {
         logModel.setLoginName(dto.getBaseParam().getUserId());
         logModel.setIp(dto.getIp());
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
-        logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.AUTO_INVEST);
         logModel.setCreatedTime(new Date());
         logModel.setDescription(dto.isEnabled() ? "Turn On" : "Turn Off");
@@ -48,7 +49,8 @@ public class MobileUserOpLogAspect {
         logModel.setLoginName(dto.getBaseParam().getUserId());
         logModel.setIp(ip);
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
-        logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
         logModel.setCreatedTime(new Date());
         logModel.setDescription("Turn On");
@@ -67,7 +69,8 @@ public class MobileUserOpLogAspect {
         logModel.setLoginName(dto.getBaseParam().getUserId());
         logModel.setIp(ip);
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
-        logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
         logModel.setCreatedTime(new Date());
         logModel.setDescription("Turn Off. " + (retDto.isSuccess() ? "Success" : "Fail"));

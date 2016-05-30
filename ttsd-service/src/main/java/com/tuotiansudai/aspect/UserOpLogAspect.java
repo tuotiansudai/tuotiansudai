@@ -41,7 +41,7 @@ public class UserOpLogAspect {
         logModel.setLoginName(loginName);
         logModel.setIp(ip);
         logModel.setDeviceId(deviceId);
-        logModel.setSource(Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.CHANGE_PASSWORD);
         logModel.setCreatedTime(new Date());
         logModel.setDescription((Boolean)returnValue ? "Success" : "Fail");
@@ -68,7 +68,7 @@ public class UserOpLogAspect {
         logModel.setLoginName(loginName);
         logModel.setIp(ip);
         logModel.setDeviceId(deviceId);
-        logModel.setSource(Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.BIND_CHANGE_EMAIL);
         logModel.setCreatedTime(new Date());
         logModel.setDescription(returnValue!=null ? "Success, bind Email: " + returnValue : "Fail");
