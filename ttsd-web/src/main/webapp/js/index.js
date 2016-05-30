@@ -88,8 +88,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             $('.mask-model').hide();
             $('.mask-bg').hide();
         });
-        
-        $('body,html').animate({scrollTop:'550px'},"slow");
+        $(window).width()<700?$('body,html').animate({scrollTop:'176px'},"slow"):$('body,html').animate({scrollTop:'550px'},"slow");
         
     });
 });
