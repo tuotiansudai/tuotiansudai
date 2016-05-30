@@ -6,25 +6,14 @@
         <li><span class="info-title"> 用户名</span>
             <em class="info">${loginName}</em>
         </li>
-        <li><span class="info-title"> 姓名</span>
+        <li><span class="info-title"> 实名认证</span>
             <#if userName??>
                 <em class="info">${userName}</em>
                 <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
             <#else>
-                <em class="info"></em>
+                <em class="info">为了保障您的账户及资金安全，我们会对您进行实名认证，认证后不可更改。</em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink" href="/register/account">实名认证</a>
-                </span>
-            </#if>
-        </li>
-        <li><span class="info-title"> 身份认证</span>
-            <#if identityNumber??>
-                <em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>
-                <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
-            <#else>
-                <em class="info"></em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink" href="/register/account">实名认证</a>
+                    <i class="fa fa-times-circle no"></i>未认证<a class="setlink setEmail" href="/register/account">认证</a>
                 </span>
             </#if>
         </li>

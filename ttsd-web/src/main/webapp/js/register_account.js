@@ -9,6 +9,10 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         focusInvalid: false,
         onfocusout: function (element) {
             this.element(element);
+            if($('input.valid',registerAccountForm).length==2) {
+                $btnSubmit.prop('disabled',false);
+            }
+            $buttonLayer.find('.status').removeClass('error').html('');
         },
         submitHandler: function (form) {
             //form.submit();
@@ -20,25 +24,30 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
                     $btnSubmit.prop('disabled', true);
                 },
                 success: function (response) {
-                    $buttonLayer.find('.status').html('认证成功');
-                    var getUrlParams = commonFun.parseURL(location.href).params;
-                    var getRedirect = getUrlParams.redirect;
-
-                    setTimeout(location.href = getRedirect, 3000);
+                    if(response.data.status) {
+                        $buttonLayer.find('.status').removeClass('error').html('认证成功');
+                        var redirect = document.referrer;
+                        setTimeout(location.href = redirect, 3000);
+                    }
+                    else {
+                        $buttonLayer.find('.status').addClass('error').html('认证失败，请检查');
+                        $btnSubmit.prop('disabled', false);
+                    }
 
                 },
                 error: function (errorMap) {
-                    $buttonLayer.find('.status').addClass('error').html(errorMap.responseText);
-                    //实名认证失败，请检查您提交的信息是否正确
+                    $buttonLayer.find('.status').addClass('error').html('认证失败，请检查');
+                    $btnSubmit.prop('disabled', false);
                 },
                 complete: function () {
-                    //$btnSubmit.prop('disabled', false);
+
                 }
             });
 
             return false;
         },
         onkeyup: function (element, event) {
+
             var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
 
             if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
@@ -61,7 +70,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
                 required: "请输入姓名"
             },
             identityNumber: {
-                required: '请输入身份证',
+                required: '请输入身份证号',
                 identityCheckValid: '您的身份证号码不正确',
                 identityCardAge: '年龄未满18周岁',
                 isExist: "身份证已存在"

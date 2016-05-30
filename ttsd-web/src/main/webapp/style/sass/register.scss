@@ -173,6 +173,9 @@
         display: block;
         height:25px;
         color: #ffac2a;
+        &.error {
+          color: red;
+        }
       }
       .btn-success {
         padding: 10px 50px;
@@ -311,9 +314,33 @@
     margin:0 auto;
     border-width: 0;
     padding:0px 5%;
+    .step-account-head {
+      .sprite-register-ic-account {
+        width:50px;
+        height:50px;
+        background-size: 80px 70px;
+        float: left;
+
+      }
+      .info-note {
+        width: calc(100% - 73px);
+        font-size:16px;
+        line-height: 25px;
+      }
+
+    }
+    .step-register-head {
+      text-align: left;
+      font-size: 20px;
+      background: red;
+      .text-m  {
+        right:0;
+      }
+    }
     .register-box {
       margin:0;
       width:100%;
+      overflow: hidden;
       ul.reg-list {
         li {
           .captcha-tag {
@@ -321,10 +348,9 @@
             display: inline-block;
             width:100%;
             .fetch-captcha {
-              padding: 7px;
               letter-spacing: 0;
               position: absolute;
-              right: 1px;
+              right: 2px;
               top: 3px;
               font-size: 12px;
             }
@@ -332,10 +358,6 @@
           input[type="text"], input[type="password"] {
             width: 100%;
             box-sizing: border-box;
-            border: #cecece 1px solid;
-            border-radius: 3px;
-            padding: 9px 2px 9px 30px;
-
           }
 
           .agreement {
@@ -372,6 +394,10 @@
           border: 0;
           cursor: pointer;
         }
+      }
+
+      .register-step-two {
+        margin-top:20px;
       }
     }
   }
