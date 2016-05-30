@@ -12,7 +12,7 @@ public enum SendCloudTemplate {
             "<div>结束时间：{endTime}</div></br>" +
             "<table border=\"1\"><thead><tr><th>用户名</th><th>拓天账户余额</th><th>联动优势账户余额</th></tr></thead><tbody>"),
 
-    USER_BALANCE_CHECK_RESULT_BODY("用户账户对账结果", "<td>{loginName}</td><td>{ttsdBalance}</td><td>{umpayBalance}</td>"),
+    USER_BALANCE_CHECK_RESULT_BODY("用户账户对账结果", "<tr><td>{loginName}</td><td>{ttsdBalance}</td><td>{umpayBalance}</td></tr>"),
 
     USER_BALANCE_CHECK_RESULT_TAIL("用户账户对账结果", "</tbody></table>");
 

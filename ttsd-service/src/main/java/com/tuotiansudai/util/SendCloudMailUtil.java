@@ -75,7 +75,9 @@ public class SendCloudMailUtil {
         String contentTail = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_TAIL.getTemplate();
 
         try {
-            sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.getTitle(), contentHeader + bodySb.toString() + contentTail, SendCloudType.CONTENT);
+            String title = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.getTitle();
+            String content = contentHeader + bodySb.toString() + contentTail;
+            sendCloudClient.sendMailBySendCloud(toAddress, title, content, SendCloudType.CONTENT);
             return true;
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
