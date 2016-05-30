@@ -24,7 +24,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     private String javascriptLocation;
 
-//    private String cssLocation;
 
     @Override
     protected Map<Object, Object> createInstance() {
@@ -32,10 +31,8 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
         map.put("staticServer", Strings.isNullOrEmpty(staticServer) ? "" : staticServer);
         map.put("jsPath", javascriptLocation);
-//        map.put("cssPath", cssLocation);
 
         map.put("js", buildStaticFiles(javascriptLocation, ".js"));
-//        map.put("css", buildStaticFiles(cssLocation, ".css"));
 
         return map;
     }
