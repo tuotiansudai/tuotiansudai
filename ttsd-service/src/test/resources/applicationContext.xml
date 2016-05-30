@@ -23,7 +23,7 @@
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.jpush.service,com.tuotiansudai.jpush.repository.mapper, com.tuotiansudai.jpush.client,com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.util,com.tuotiansudai.cache, com.tuotiansudai.coupon.aspect,com.tuotiansudai.coupon,com.tuotiansudai.transfer"/>
+    <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.util,com.tuotiansudai.cache, com.tuotiansudai.coupon.aspect,com.tuotiansudai.coupon,com.tuotiansudai.transfer"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
