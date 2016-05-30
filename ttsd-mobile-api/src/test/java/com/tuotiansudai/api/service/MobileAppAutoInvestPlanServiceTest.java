@@ -51,6 +51,7 @@ public class MobileAppAutoInvestPlanServiceTest {
     public void shouldCreateAutoInvestPlanIsSuccess(){
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
         autoInvestPlanRequestDto.setAutoPlanId("");
+        autoInvestPlanRequestDto.setIp("127.0.0.1");
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(true, baseDto.getData().isEnabled());
         assertNotNull(baseDto.getData().getAutoPlanId());
@@ -77,6 +78,7 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanMapper.create(autoInvestPlanModel);
 
         autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
+        autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(false,baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
@@ -105,6 +107,8 @@ public class MobileAppAutoInvestPlanServiceTest {
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
+        baseParam.setPlatform("WEB");
+        baseParam.setDeviceId("");
         baseParamDto.setBaseParam(baseParam);
         autoInvestPlanRequestDto.setBaseParam(baseParam);
 
@@ -135,6 +139,7 @@ public class MobileAppAutoInvestPlanServiceTest {
 
         autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
         autoInvestPlanRequestDto.setEnabled(false);
+        autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(false,baseDto.getData().isEnabled());
@@ -150,6 +155,7 @@ public class MobileAppAutoInvestPlanServiceTest {
 
         autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
         autoInvestPlanRequestDto.setEnabled(true);
+        autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(true,baseDto.getData().isEnabled());
