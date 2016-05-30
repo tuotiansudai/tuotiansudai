@@ -28,7 +28,62 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
             $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
             $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM),
+            $updateBankCard = $('#update-bank-card'),
             countTimer;
+
+        $updateBankCard.on('click', function(){
+            var url = $(this).attr('data-url');
+            $.ajax({
+                url: '/bind-card/is-replacing',
+                type: 'GET',
+                dataType: 'json'
+            })
+            .done(function(data) {
+                if (data) {
+                    layer.open({
+                        type: 1,
+                        title:false,
+                        area: ['400px', '120px'],
+                        btn:['确定'],
+                        shadeClose: true,
+                        content: '<p class="tc" style="margin-top:20px;">您已经提交了更换银行卡申请，请耐心等待结果。</p>',
+                        btn1:function(){
+                            layer.closeAll();
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '/bind-card/is-manual',
+                        type: 'GET',
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        if (data) {
+                            layer.open({
+                                type: 1,
+                                title:false,
+                                area: ['600px', '180px'],
+                                btn:['我已联系客服，确认更换'],
+                                shadeClose: true,
+                                content: '<p class="tc" style="margin-top:20px;line-height:20px">您的账户余额或待收本息不为0，为了您的资金安全，请先联系客服<br />并提交相关材料后再点击更换，否则无法更换成功。</p><p class="tc" style="margin-top:20px;line-height:20px">客服电话：400-169-1188（服务时间：9:00－20:00）</p>',
+                                btn1:function(){
+                                    location.href = url;
+                                }
+                            });
+                        } else {
+                            location.href = url;
+                        }
+                    })
+                    .fail(function() {
+                            layer.msg('请求失败，请重试！');
+                    });
+                }
+            })
+            .fail(function() {
+                layer.msg('请求失败，请重试！');
+            });
+
+        });
 
         $changeEmailLayer.on('click', function () {
             layer.open({
