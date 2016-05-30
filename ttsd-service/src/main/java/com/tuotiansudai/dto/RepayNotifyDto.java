@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class LoanRepayNotifyDto implements Serializable {
+public class RepayNotifyDto implements Serializable {
 
     @NotEmpty
     @Pattern(regexp = "^\\d{11}$")
