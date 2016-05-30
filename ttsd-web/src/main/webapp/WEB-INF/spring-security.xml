@@ -74,6 +74,7 @@
         <intercept-url pattern="/loan-list/**" access="permitAll()"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
+        <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
@@ -98,7 +99,7 @@
 
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
-        <intercept-url pattern="/transferrer/**" access="hasAuthority('INVESTOR')"/>
+
 
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
 

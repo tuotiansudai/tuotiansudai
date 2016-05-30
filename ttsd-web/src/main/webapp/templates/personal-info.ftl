@@ -13,7 +13,7 @@
             <#else>
                 <em class="info"></em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
+                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink" href="/register/account">实名认证</a>
                 </span>
             </#if>
         </li>
@@ -24,7 +24,7 @@
             <#else>
                 <em class="info"></em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
+                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink" href="/register/account">实名认证</a>
                 </span>
             </#if>
         </li>
