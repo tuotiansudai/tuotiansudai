@@ -54,7 +54,7 @@ class QADeployment(object):
         sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
 
-def init_docker(self):
+    def init_docker(self):
         print "Initialing docker..."
         import platform
 
