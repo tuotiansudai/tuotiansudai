@@ -129,8 +129,9 @@ public class LicaiquanArticleMapperTest {
         assertTrue(licaiquanArticleListItemModels.size() > 0);
         licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() == 0);
+        //前端不输入标题查询条件时，应当查询出结果
         licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() == 0);
+        assertTrue(licaiquanArticleListItemModels.size() == 1);
         licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() > 0);
     }
