@@ -124,9 +124,29 @@
     </div>
 
     <div class="home-content" id="productFrame">
-        <div class="page-width clearfix">
+        <div class="page-width clearfix new-model">
             <div class="new-user-free">
-                
+                <div class="left-intro">
+                    啊实打实大
+                </div>
+                <div class="center-detail">
+                    <div class="loan-top">
+                        <span class="l-title fl">房产抵押借款</span>
+                    </div>
+                    <div class="loan-info-dl">
+                        <dl>
+                            <dt>预期年化收益</dt>
+                            <dd><em class="active">11</em>
+                                <i>+3 %</i>
+                                <span>新手加息券</span>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>项目期限</dt>
+                            <dd><em>30</em>天</dd>
+                        </dl>
+                    </div>
+                </div>
             </div>
         </div>
         <#list loans as loan>

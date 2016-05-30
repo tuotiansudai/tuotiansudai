@@ -284,6 +284,9 @@ body {
     margin-top: 35px;
     padding-top: 35px;
     .page-width {
+      &.new-model{
+        margin-bottom:45px;
+      }
       .label-title {
         width: 100%;
         height: 45px;
@@ -914,10 +917,62 @@ body {
       .new-user-free{
         float:left;
         width:100%;
+        background:#fff;
+        border: 1px solid #e5e5e5;
+        box-sizing:border-box;
         .left-intro{
           float:left;
           width:240px;
           height:160px;
+          background:#ff752a;
+        }
+        .center-detail{
+          float:left;
+          width:440px;
+          height:160px;
+          .loan-top{
+            float:left;
+            width:100%;
+            line-height:50px;
+            .l-title{
+              font-size: 20px;
+              color: #4e4e4e;
+              display: inline-block;
+              width: 300px;
+              text-align: left;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+          .loan-info-dl{
+            float:left;
+            width:100%;
+            dl{
+              width: 50%;
+              float: left;
+              color: #808080;
+              font-size: 17px;
+              dd{
+                color:#999;
+                em{
+                  font-size: 26px;
+                  color: #ff7200;
+                }
+                i{
+                  font-size: 16px;
+                  color: #ff7200;
+                }
+                span{
+                  font-size: 12px;
+                  color: #ff9c1b;
+                  border: 1px solid #ff9c1b;
+                  padding: 2px 5px;
+                  border-radius: 20px;
+                }
+              }
+            }
+          }
         }
       }
     }
