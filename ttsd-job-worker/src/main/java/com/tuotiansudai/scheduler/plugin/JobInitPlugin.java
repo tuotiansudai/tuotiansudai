@@ -62,6 +62,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
+        if (JobType.NewbieExperienceRepay.equals(schedulerName)) {
+            createNewbieExperienceRepayJos();
+        }
     }
 
     @Override
@@ -183,6 +186,16 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createNewbieExperienceRepayJos() {
+        try {
+            jobManager.newJob(JobType.NewbieExperienceRepay, NewbieExperienceRepayJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 16 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.NewbieExperienceRepay.name(), JobType.NewbieExperienceRepay.name()).submit();
+        }catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
