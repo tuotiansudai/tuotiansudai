@@ -1,6 +1,6 @@
 import React from 'react';
 import swiper from 'swiper';
-import imagesLoaded from 'imagesLoaded';
+import imagesLoaded from 'imagesloaded';
 import { main } from './Carousel.scss';
 import { hashHistory } from 'react-router';
 
