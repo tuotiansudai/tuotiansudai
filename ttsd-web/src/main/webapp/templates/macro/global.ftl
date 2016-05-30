@@ -29,6 +29,7 @@
     {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
     {"title":"我的财豆", "url":"/point", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
