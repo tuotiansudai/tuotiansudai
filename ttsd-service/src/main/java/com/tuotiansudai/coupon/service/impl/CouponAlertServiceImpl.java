@@ -16,6 +16,7 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,13 +66,26 @@ public class CouponAlertServiceImpl implements CouponAlertService {
             newbieCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
             CouponAlertDto redEnvelopeCouponAlertDto = new CouponAlertDto();
             redEnvelopeCouponAlertDto.setCouponType(CouponType.RED_ENVELOPE);
+            CouponAlertDto experienceCouponAlertDto = new CouponAlertDto();
+            experienceCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
 
             List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {
                         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON) {
+
+                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && couponModel.getProductTypes().contains(ProductType.EXPERIENCE)) {
+                            experienceCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
+                            experienceCouponAlertDto.setAmount(couponModel.getAmount());
+                            if (experienceCouponAlertDto.getExpiredDate() == null) {
+                                experienceCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
+                            } else {
+                                experienceCouponAlertDto.setExpiredDate(experienceCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : experienceCouponAlertDto.getExpiredDate());
+                            }
+                        }
+
+                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && !couponModel.getProductTypes().contains(ProductType.EXPERIENCE)) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
                             if (newbieCouponAlertDto.getExpiredDate() == null) {
@@ -91,6 +105,12 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             }
                         }
                     }
+                }
+
+                if (CollectionUtils.isNotEmpty(experienceCouponAlertDto.getCouponIds())) {
+                    userCouponIds.addAll(experienceCouponAlertDto.getCouponIds());
+                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
+                    return experienceCouponAlertDto;
                 }
 
                 if (CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
