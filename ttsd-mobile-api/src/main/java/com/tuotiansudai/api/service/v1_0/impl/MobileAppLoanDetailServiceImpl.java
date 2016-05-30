@@ -5,6 +5,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +41,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private InvestMapper investMapper;
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -103,7 +114,17 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setFundRaisingEndTime(new DateTime(loan.getFundraisingEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
-        long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+        long investedAmount = 0l;
+        if (loan.getProductType() == ProductType.EXPERIENCE) {
+            long successCountToday = investMapper.countInvestSuccessExperienceToday();
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loan.getId(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+                investedAmount = new BigDecimal(successCountToday % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            }
+        } else {
+            investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+        }
         loanDetailResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         loanDetailResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
