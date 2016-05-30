@@ -131,7 +131,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             }
         });
 
-
         $('.couponType').change(function(){
             var couponType = this.value;
             iniForm();
