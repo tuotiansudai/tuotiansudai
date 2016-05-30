@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppTransferApplicationController;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
