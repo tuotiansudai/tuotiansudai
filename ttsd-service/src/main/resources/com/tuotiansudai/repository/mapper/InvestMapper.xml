@@ -451,7 +451,7 @@
         select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
     </select>
 
-    <select id="findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest" parameterType="map" resultMap="int">
+    <select id="findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest" parameterType="map" resultType="int">
         select count(id) from invest
         <where>
             <if test="loginName != null">
