@@ -80,7 +80,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName}"
+                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName!('')}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
