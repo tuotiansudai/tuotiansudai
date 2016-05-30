@@ -6,7 +6,6 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +22,9 @@ import static org.junit.Assert.assertNotEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class NewbieExperienceServiceTest {
+public class ExperienceRepayServiceTest {
     @Autowired
-    NewbieExperienceService newbieExperienceService;
+    ExperienceRepayService experienceRepayService;
 
     @Autowired
     UserMapper userMapper;
@@ -38,9 +37,6 @@ public class NewbieExperienceServiceTest {
 
     @Autowired
     InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();
@@ -149,7 +145,7 @@ public class NewbieExperienceServiceTest {
         calendar.set(Calendar.HOUR, 16);
         Date actualRepayDate = calendar.getTime();
 
-        newbieExperienceService.sendCouplesDaily(compareDate, actualRepayDate);
+        experienceRepayService.repay(compareDate, actualRepayDate);
 
         calendar.set(Calendar.MILLISECOND, 0);
         actualRepayDate = calendar.getTime();

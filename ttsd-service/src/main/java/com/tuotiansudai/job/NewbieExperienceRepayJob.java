@@ -1,6 +1,6 @@
 package com.tuotiansudai.job;
 
-import com.tuotiansudai.service.NewbieExperienceService;
+import com.tuotiansudai.service.ExperienceRepayService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -13,11 +13,11 @@ public class NewbieExperienceRepayJob implements Job {
     static Logger logger = Logger.getLogger(LoanRepayNotifyJob.class);
 
     @Autowired
-    private NewbieExperienceService newbieExperienceService;
+    private ExperienceRepayService experienceRepayService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger NewbieExperienceRepayJob job");
-        newbieExperienceService.sendCouplesDaily(new Date(), new Date());
+        experienceRepayService.repay(new Date(), new Date());
     }
 }

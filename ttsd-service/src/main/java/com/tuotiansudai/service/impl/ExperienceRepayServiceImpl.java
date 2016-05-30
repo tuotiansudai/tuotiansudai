@@ -1,40 +1,43 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.NewbieExperienceService;
+import com.tuotiansudai.service.ExperienceRepayService;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @Component
-public class NewbieExperienceServiceImpl implements NewbieExperienceService {
-    @Autowired
-    LoanMapper loanMapper;
+public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Autowired
-    InvestMapper investMapper;
+    private LoanMapper loanMapper;
 
     @Autowired
-    InvestRepayMapper investRepayMapper;
+    private InvestMapper investMapper;
 
     @Autowired
-    CouponActivationService couponActivationService;
+    private InvestRepayMapper investRepayMapper;
 
-    public void sendCouplesDaily(Date compareDate, Date repayDate) {
+    @Autowired
+    private CouponActivationService couponActivationService;
+
+    @Override
+    @Transactional
+    public void repay(Date compareDate, Date repayDate) {
         List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
-        if (null == loanModels || loanModels.size() == 0) {
+        if (CollectionUtils.isEmpty(loanModels) || loanModels.get(0).getStatus() != LoanStatus.RAISING) {
             return;
         }
         LoanModel loanModel = loanModels.get(0);
@@ -46,7 +49,7 @@ public class NewbieExperienceServiceImpl implements NewbieExperienceService {
 
         for (InvestModel investModel : investModels) {
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-            if (null == investRepayModels || investRepayModels.size() == 0) {
+            if (CollectionUtils.isEmpty(investModels)) {
                 continue;
             }
             for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -63,10 +66,8 @@ public class NewbieExperienceServiceImpl implements NewbieExperienceService {
                 investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
                 investRepayModel.setActualRepayDate(repayDate);
                 investRepayModel.setStatus(RepayStatus.COMPLETE);
-                List<UserGroup> userGroups = new ArrayList<>();
-                userGroups.add(UserGroup.EXPERIENCE_INVESTOR);
-                couponActivationService.assignUserCoupon(investModel.getLoginName(), userGroups, null, null);
                 investRepayMapper.update(investRepayModel);
+                couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
             }
         }
     }
