@@ -65,9 +65,8 @@
         <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
         <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
         <intercept-url pattern="/api/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
+        <intercept-url pattern="/api/images/**" access="permitAll()"/>
         <intercept-url pattern="/api/js/**" access="permitAll()"/>
-        <intercept-url pattern="/static/dist/**" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
 
