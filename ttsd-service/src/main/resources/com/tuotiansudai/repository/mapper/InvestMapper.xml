@@ -450,9 +450,4 @@
     <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
-
-    <select id="findExperienceSuccessByLoginName" parameterType="String" resultMap="investResultMap">
-        select * from invest invest left join loan loan on invest.loan_id = loan.id
-        where loan.product_type = 'EXPERIENCE' and status = 'SUCCESS' and invest.login_name = #{loginName}
-    </select>
 </mapper>

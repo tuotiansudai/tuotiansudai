@@ -219,26 +219,9 @@
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
+                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &gt; l.duration)
             WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
-            union all
-            SELECT
-              i.`id` AS investId,
-              l.`name` AS loanName,
-              l.`activity_rate`,
-              l.`base_rate`,
-              l.`periods`,
-              l.`duration`,
-              l.`id` as loan_id,
-              l.`type`
-            FROM
-              invest i
-              JOIN loan l
-                ON i.`loan_id` = l.`id`
-            WHERE i.`login_name` =  #{loginName}  and i.`status` = 'SUCCESS'
-            and l.product_type='EXPERIENCE'
-            and TO_DAYS(now()) - TO_DAYS(invest_time) &gt; 3
-            ) t
+           ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` = 'COMPLETE'
           AND ir.`actual_repay_date` BETWEEN #{startTime}
@@ -273,25 +256,9 @@
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
+                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &lt;= l.duration)
             WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
-            union all
-            SELECT
-            i.`id` AS investId,
-            l.`name` AS loanName,
-            l.`activity_rate`,
-            l.`base_rate`,
-            l.`periods`,
-            l.`duration`,
-            l.`id` as `loan_id`,
-            l.type
-            FROM
-            invest i
-            JOIN loan l
-            ON i.`loan_id` = l.`id`
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS' and l.product_type='EXPERIENCE'
-            and TO_DAYS(now()) - TO_DAYS(invest_time) &lt;= 3
-            ) t
+           ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` != 'COMPLETE'
           AND ir.`repay_date` BETWEEN #{startTime}
