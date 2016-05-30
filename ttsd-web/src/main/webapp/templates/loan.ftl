@@ -29,7 +29,9 @@
                     募集期限：${loan.raisingPeriod}天<br/>
                     还款方式：${loan.type.getName()}<br/>
                     投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
-                    <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
+                    <#if loan.productType != 'EXPERIENCE'>
+                        <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
+                    </#if>
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
                     <#if loan.newbieInterestCouponRate gt 0>
