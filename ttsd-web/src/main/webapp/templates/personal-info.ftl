@@ -6,28 +6,28 @@
         <li><span class="info-title"> 用户名</span>
             <em class="info">${loginName}</em>
         </li>
-        <li><span class="info-title"> 姓名</span>
+        <li><span class="info-title"> 实名认证</span>
             <#if userName??>
                 <em class="info">${userName}</em>
                 <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
             <#else>
-                <em class="info"></em>
+                <em class="info">为了保障您的账户及资金安全，我们会对您进行实名认证，认证后不可更改。</em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
+                    <i class="fa fa-times-circle no"></i>未认证<a class="setlink setEmail" href="/register/account">认证</a>
                 </span>
             </#if>
         </li>
-        <li><span class="info-title"> 身份认证</span>
-            <#if identityNumber??>
-                <em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>
-                <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
-            <#else>
-                <em class="info"></em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
-                </span>
-            </#if>
-        </li>
+        <#--<li><span class="info-title"> 身份认证</span>-->
+            <#--<#if identityNumber??>-->
+                <#--<em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>-->
+                <#--<span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>-->
+            <#--<#else>-->
+                <#--<em class="info"></em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>-->
+                <#--</span>-->
+            <#--</#if>-->
+        <#--</li>-->
         <li><span class="info-title"> 手机</span>
             <em class="info">${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</em>
             <span class="binding-set"><i class="fa fa-check-circle ok"></i>已绑定</span>
@@ -72,24 +72,24 @@
             </span>
             </li>
         </#if>
-        <li><span class="info-title"> 免密投资</span>
-            <#if noPasswordInvest>
-                <em class="info">您已开启免密投资，投资理财快人一步</em>
-                <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
-                </span>
-            <#elseif autoInvest>
-                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
-                </span>
-            <#else>
-                <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
-                </span>
-            </#if>
-        </li>
+        <#--<li><span class="info-title"> 免密投资</span>-->
+            <#--<#if noPasswordInvest>-->
+                <#--<em class="info">您已开启免密投资，投资理财快人一步</em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>-->
+                <#--</span>-->
+            <#--<#elseif autoInvest>-->
+                <#--<em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+            <#--<#else>-->
+                <#--<em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>-->
+                <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+            <#--</#if>-->
+        <#--</li>-->
     </ul>
 </div>
 

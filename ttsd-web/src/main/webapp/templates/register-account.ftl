@@ -5,7 +5,7 @@
 
     <div class="step-account-head">
         <i class="sprite-register-ic-account"></i>
-       <span>
+       <span class="info-note">
            为了保障您的账户及资金安全， <br/>
        根据相关法律法规，我们会对您进行实名认证。
        </span>
@@ -27,14 +27,8 @@
             </ul>
             <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="status">
-                    <#if success?? && !success>
-                    <span class="error">
-                    实名认证失败，请检查您提交的信息是否正确
-                    </span>
-                    </#if>
-                </div>
-                <input type="submit" class="register-account btn-success" value="认证"/>
+                <div class="status"></div>
+                <input type="submit" class="register-account btn-success" value="认证" disabled/>
             </div>
         </form>
     </div>

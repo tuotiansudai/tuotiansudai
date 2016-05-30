@@ -2,31 +2,28 @@
 <@global.main pageCss="${css.register}" pageJavascript="${js.register_user}" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务." >
 
 <div class="register-container page-width">
-    <div class="step-register-head tc">
+    <div class="step-register-head">
         欢迎注册拓天速贷  <span class="text-m">已有账号？<a href="#"> 立即登录</a></span>
     </div>
     <div class="clear-blank"></div>
     <nav></nav>
     <div class="register-box">
+        <div id="summary"></div>
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
-                    <label for="" class="reg-title">用户名:</label>
                     <i class="sprite-register-login-name"></i>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
             <li>
-                <label for="" class="reg-title">密码:</label>
                 <i class="sprite-register-ic-password"></i>
                 <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
             </li>
                 <li>
-                    <label for="" class="reg-title">手机号:</label>
                     <i class="sprite-register-ic-mobile"></i>
                     <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
                 <li>
-                    <label for="" class="reg-title">验证码:</label>
                     <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
@@ -35,7 +32,6 @@
                 </li>
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
                 <li class="hide">
-                    <label for="" class="reg-title">推荐人:</label>
                     <i class="sprite-register-ic-referrer"></i>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
@@ -53,7 +49,7 @@
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-                <input type="submit" class="register-user btn-success" value="立即注册" />
+                <input type="submit" class="register-user btn-success" value="立即注册" disabled />
             </div>
 
         </form>

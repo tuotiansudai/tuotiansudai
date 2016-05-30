@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $, layer) {
+require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'], function (_, $, layer) {
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
         showAgreement = $('.show-agreement', registerUserForm),
@@ -10,7 +10,9 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
         $referrerOpen=$('.referrer-open',registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
-        $registerSubmit=$('input[type="submit"]',registerUserForm);
+        $registerSubmit=$('input[type="submit"]',registerUserForm),
+        passedNumber=0;
+    $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
         fetchCaptchaElement.prop('disabled', true);
@@ -210,7 +212,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
                 mobile = $('input.mobile', registerUserForm);
-            //$registerSubmit.prop('disabled',true);
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
@@ -220,5 +221,21 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 }
             }
         }
+    });
+
+    function checkValidNum() {
+        passedNumber=$('input.valid',registerUserForm).length;
+        if(passedNumber==4 && $agreement.prop('checked')) {
+            $registerSubmit.prop('disabled',false);
+        }
+        else {
+            $registerSubmit.prop('disabled',true);
+        }
+    }
+    $agreement.on('click',function() {
+        checkValidNum();
+    });
+    $('input',registerUserForm).on('blur',function() {
+        checkValidNum();
     });
 });
