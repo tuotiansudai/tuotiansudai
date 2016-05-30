@@ -744,7 +744,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
 
 //share event
 function sendShare(){
-    console.log('1');
     $.ajax({
         url: '/activity/get-lottery-chance',
         type: 'POST',
