@@ -31,7 +31,7 @@ public class MobileAppJpushController extends MobileAppBaseController {
             return new BaseResponseDto(errorCode, errorMessage);
         } else {
             jPushRequestDto.getBaseParam().setUserId(getLoginName());
-            return mobileAppJPushService.storeJPushId(jPushRequestDto);
+            return mobileAppJPushService.storeJpushId(jPushRequestDto);
         }
 
     }
