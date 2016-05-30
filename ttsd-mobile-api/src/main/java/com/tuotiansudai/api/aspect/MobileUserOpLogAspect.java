@@ -18,7 +18,7 @@ import java.util.Locale;
 
 @Aspect
 @Component
-public class UserOpLogAspect {
+public class MobileUserOpLogAspect {
 
     @Autowired
     private UserOpLogMapper userOpLogMapper;
