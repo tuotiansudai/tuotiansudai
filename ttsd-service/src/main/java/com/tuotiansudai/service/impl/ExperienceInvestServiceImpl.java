@@ -91,6 +91,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         long amount = Long.parseLong(investDto.getAmount());
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel());
+        investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
@@ -156,7 +157,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
-        if (investMapper.findByLoanIdAndLoginName(loanId, investDto.getLoginName()) != null) {
+        if (CollectionUtils.isNotEmpty(investMapper.findByLoanIdAndLoginName(loanId, investDto.getLoginName()))) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) has already invested the loan({1})",
                     investDto.getLoginName(), String.valueOf(loanId)));
             return false;
