@@ -158,8 +158,6 @@
         WHERE
         1 = 1 AND temp.status != 'RECHECK'
         AND temp.status != 'COMPLETE'
-        AND temp.status != 'CANCEL'
-        AND temp.status != 'OVERDUE'
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
@@ -196,7 +194,7 @@
         loan t
         WHERE
         1 = 1
-        AND t.status IN ('COMPLETE' , 'CANCEL', 'OVERDUE')
+        AND t.status = 'COMPLETE'
         ORDER BY recheck_time DESC) temp )loan limit #{index} , 10
     </select>
 
