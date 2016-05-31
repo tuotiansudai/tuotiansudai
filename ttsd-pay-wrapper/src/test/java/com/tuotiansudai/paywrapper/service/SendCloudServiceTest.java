@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
@@ -44,6 +47,25 @@ public class SendCloudServiceTest {
                 .build());
 
         boolean flag = sendCloudMailUtil.sendMailByRepayCompleted("aaa@ccc.com",emailParameters );
+        assertTrue(flag);
+    }
+
+    @Test
+    public void shouldSendUserBalanceCheckingResult() throws UnsupportedEncodingException, MessagingException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("startTime", "2016-05-06 01:00:00");
+        map.put("endTime", "2016-05-06 02:00:00");
+
+        List<String> mismatchUserList = new ArrayList<>();
+        mismatchUserList.add("zbx-199-200");
+        mismatchUserList.add("zzz-199-200");
+        mismatchUserList.add("aaa-199-200");
+        mismatchUserList.add("vvvv-199-200");
+        mismatchUserList.add("cccc-199-200");
+
+        map.put("userList", mismatchUserList);
+
+        boolean flag = sendCloudMailUtil.sendUserBalanceCheckingResult("zhoubaoxin@tuotiansudai.com", map);
         assertTrue(flag);
     }
 
