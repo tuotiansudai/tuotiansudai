@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,6 +35,8 @@ public class MobileAppMediaCenterControllerTest extends ControllerTestBase{
 
     @Mock
     private MobileAppMediaCenterService service;
+    @Mock
+    private LiCaiQuanArticleService liCaiQuanArticleService;
 
     @Override
     protected Object getControllerObject() {
@@ -113,6 +117,8 @@ public class MobileAppMediaCenterControllerTest extends ControllerTestBase{
         baseResponseDto.setData(mediaArticleResponseDataDto);
 
         when(service.obtainArticleContent(anyLong())).thenReturn(baseResponseDto);
+        when(service.obtainArticleContent(anyLong())).thenReturn(baseResponseDto);
+        doNothing().when(liCaiQuanArticleService).updateReadCount(anyLong());
         this.mockMvc.perform(get("/media-center/article-detail/111111111111"))
                 .andExpect(jsonPath("$.code").value("0000"))
                 .andExpect(jsonPath("$.data.articleId").value(liCaiQuanArticleModel.getId()))

@@ -77,8 +77,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
             public MediaArticleResponseDataDto apply(LicaiquanArticleModel liCaiQuanArticleModel) {
 
                 MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
-                mediaArticleResponseDataDto.setShowPicture(domainName + "/upload/" + liCaiQuanArticleModel.getShowPicture());
-                mediaArticleResponseDataDto.setThumbPicture(domainName + "/upload/" + liCaiQuanArticleModel.getThumb());
+                mediaArticleResponseDataDto.setShowPicture(domainName + liCaiQuanArticleModel.getShowPicture());
+                mediaArticleResponseDataDto.setThumbPicture(domainName + liCaiQuanArticleModel.getThumb());
                 mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
                 mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
                 return mediaArticleResponseDataDto;
@@ -90,8 +90,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     public BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(long articleId) {
         LicaiquanArticleModel liCaiQuanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
         MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
-        mediaArticleResponseDataDto.setShowPicture(domainName + "/upload/" + liCaiQuanArticleModel.getShowPicture());
-        mediaArticleResponseDataDto.setThumbPicture(domainName + "/upload/" + liCaiQuanArticleModel.getThumb());
+        mediaArticleResponseDataDto.setShowPicture(domainName  + liCaiQuanArticleModel.getShowPicture());
+        mediaArticleResponseDataDto.setThumbPicture(domainName + liCaiQuanArticleModel.getThumb());
         mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
         mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
         BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = new BaseResponseDto<>();

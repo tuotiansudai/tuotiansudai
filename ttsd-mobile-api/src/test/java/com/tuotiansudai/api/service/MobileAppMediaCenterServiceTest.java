@@ -48,7 +48,7 @@ public class MobileAppMediaCenterServiceTest {
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
         assertEquals(licaiquanArticleModel.getSection(),baseResponseDto.getData().getArticleList().get(0).getSection());
         assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
-        assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(domainName  + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
 
     }
@@ -56,14 +56,14 @@ public class MobileAppMediaCenterServiceTest {
     public void shouldObtainArticleListIsSuccess(){
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,0,10);
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,1,10);
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
         assertEquals(ArticleSectionType.INDUSTRY_NEWS,baseResponseDto.getData().getArticleList().get(0).getSection());
         assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
         assertEquals(licaiquanArticleModel.getContent(),baseResponseDto.getData().getArticleList().get(0).getContent());
-        assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(),baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(domainName+ licaiquanArticleModel.getShowPicture(),baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
     }
     @Test
