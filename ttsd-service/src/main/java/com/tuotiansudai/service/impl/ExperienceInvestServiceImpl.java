@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +91,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         long amount = Long.parseLong(investDto.getAmount());
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel());
+        investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
-        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
         long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
 
         InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, amount, expectedInterest, expectedFee, repayDate, RepayStatus.REPAYING);
@@ -155,7 +157,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
-        if (investMapper.findByLoanIdAndLoginName(loanId, investDto.getLoginName()) != null) {
+        if (CollectionUtils.isNotEmpty(investMapper.findByLoanIdAndLoginName(loanId, investDto.getLoginName()))) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) has already invested the loan({1})",
                     investDto.getLoginName(), String.valueOf(loanId)));
             return false;
