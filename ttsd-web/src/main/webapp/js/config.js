@@ -31,7 +31,8 @@ var require = {
         'rotate': staticServer+'/js/libs/jqueryrotate.min',
         'template':staticServer+'/js/libs/template.min',
         'fancybox':staticServer+'/js/libs/jquery.fancybox.min',
-        'count_down': staticServer+'/js/dest/count_down.min'
+        'count_down': staticServer+'/js/dest/count_down.min',
+        'placeholder':staticServer+'/js/libs/jquery.enplaceholder'
     },
     'waitSeconds':0,
     'shim': {
@@ -50,7 +51,8 @@ var require = {
         'load-swiper':['swiper'],
         'drag':['jquery'],
         'rotate':['jquery'],
-        'fancybox':['jquery']
+        'fancybox':['jquery'],
+        'placeholder':['jquery']
     },
 
     config: {

@@ -1,4 +1,4 @@
-require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+require(['jquery','underscore', 'layerWrapper', 'placeholder','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function(){
         if($(window).width()<700){
             $('#phoneCaptcha').find('.captcha').attr({
@@ -23,6 +23,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
+        $('input[type="text"],input[type="password"]',$registerForm).placeholder();
         //form validate
         $registerForm.validate({
             focusInvalid: false,

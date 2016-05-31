@@ -433,9 +433,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         $('#tipListPhone').show();
                         $('#noLoginPhone').show();
                     }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
                 });
         }
     });

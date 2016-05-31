@@ -1,7 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
@@ -10,7 +8,6 @@ import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
