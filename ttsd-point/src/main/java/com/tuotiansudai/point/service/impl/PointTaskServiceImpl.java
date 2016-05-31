@@ -130,12 +130,9 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     @Override
     public void completeNewTask(PointTask pointTask, InvestModel investModel) {
-        InvestModel im = new InvestModel();
-        im.setLoginName("shenjiaojiao");
-        im.setAmount(6000);
-        List<UserPointTaskModel> userPointTaskModelList = isCompletedNewTaskConditions(PointTask.EACH_REFERRER_INVEST,im);
+        List<UserPointTaskModel> userPointTaskModelList = isCompletedNewTaskConditions(pointTask,investModel);
         for(UserPointTaskModel userPointTaskModel : userPointTaskModelList){
-            if(userPointTaskMapper.findByLoginNameAndIdAndtaskLevel(userPointTaskModel.getLoginName(),userPointTaskModel.getPointTaskId(),userPointTaskModel.getTaskLevel()) != 0){
+            if(userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(userPointTaskModel.getLoginName(),userPointTaskModel.getPointTaskId(),userPointTaskModel.getTaskLevel()) != 0){
                 continue;
             }
             userPointTaskMapper.create(userPointTaskModel);

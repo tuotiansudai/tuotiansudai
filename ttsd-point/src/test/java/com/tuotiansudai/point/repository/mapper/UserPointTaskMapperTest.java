@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -59,4 +60,13 @@ public class UserPointTaskMapperTest {
         return fakeUserModel;
     }
 
+    @Test
+    public void shouldFindByLoginNameAndIdAndTaskLevelIsOk(){
+        UserModel fakeUserModel = createFakeUserModel();
+        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination(0, 10);
+        new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModels.get(0).getId(),1000,0);
+        userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModels.get(0).getId(),1000,0));
+        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(fakeUserModel.getLoginName(),pointTaskModels.get(0).getId(),0);
+        assertTrue(count == 1);
+    }
 }

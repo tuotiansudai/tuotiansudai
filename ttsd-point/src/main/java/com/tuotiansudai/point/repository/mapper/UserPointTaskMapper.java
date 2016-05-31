@@ -17,7 +17,7 @@ public interface UserPointTaskMapper {
 
     long findMaxTaskLevelByLoginName(@Param(value = "loginName") String loginName, @Param(value = "pointTaskId") long pointTaskId);
 
-    int findByLoginNameAndIdAndtaskLevel(@Param(value = "loginName") String loginName,
+    long findByLoginNameAndIdAndTaskLevel(@Param(value = "loginName") String loginName,
                                          @Param(value = "pointTaskId") long pointTaskId,
                                          @Param(value = "taskLevel") long taskLevel);
 }
