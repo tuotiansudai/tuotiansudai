@@ -596,4 +596,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investForm.submit();
     }
+
+    $('.close-free').on('click', function(event) {
+        event.preventDefault();
+        $('#freeSuccess').hide();
+    });
+
 });

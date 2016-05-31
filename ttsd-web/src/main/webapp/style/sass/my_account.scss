@@ -4069,6 +4069,38 @@ body{
       }
     }
   }
+  .free-success{
+    .free-content{
+      width: 320px!important;
+      height: 330px!important;
+      margin-left: -160px!important;
+      margin-top: -115px!important;
+      .free-top{
+        height: 35px!important;
+        line-height: 35px!important;
+        font-size: 16px!important;
+        .close-free{
+          top: -15px!important;
+          right: -15px!important;
+          width: 30px!important;
+          height: 30px!important;
+        }
+      }
+      .free-detail{
+        width: 300px!important;
+        height:auto!important;
+        padding: 10px!important;
+        .text-info{
+          font-size:16px!important;
+        }
+        .free-use{
+          a{
+            font-size:16px!important;
+          }
+        }
+      }
+    }
+  }
 }
 @media screen \0 {
   //IE8-10
