@@ -200,17 +200,16 @@ public class PointTaskServiceImpl implements PointTaskService {
         }
 
         if(isMaxInvestMoney){
-            InvestTaskAward investTaskAward = investTaskAwardList.get(0);
-            InvestTaskAward newInvestTaskAward;
-            long count = 1;
+            InvestTaskAward newInvestTaskAward = investTaskAwardList.get(investTaskAwardList.size() - 1);
             while (isMaxInvestMoney){
-                newInvestTaskAward = new InvestTaskAward(investTaskAward.getLevel() + count,
-                        investTaskAward.getPoint() * count,
-                        investTaskAward.getInvestMoney() * count);
+                newInvestTaskAward = new InvestTaskAward(newInvestTaskAward.getLevel() + 1,
+                        newInvestTaskAward.getPoint() + newInvestTaskAward.getPoint(),
+                        newInvestTaskAward.getInvestMoney() + newInvestTaskAward.getInvestMoney());
                 if(investAmount > newInvestTaskAward.getInvestMoney()){
-                    userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+                    userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),newInvestTaskAward.getPoint(),newInvestTaskAward.getLevel()));
+                    continue;
                 }
-                count ++ ;
+                isMaxInvestMoney = false;
             }
         }
 
