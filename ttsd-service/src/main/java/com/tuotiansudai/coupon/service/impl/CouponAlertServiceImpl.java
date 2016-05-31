@@ -67,8 +67,6 @@ public class CouponAlertServiceImpl implements CouponAlertService {
             newbieCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
             CouponAlertDto redEnvelopeCouponAlertDto = new CouponAlertDto();
             redEnvelopeCouponAlertDto.setCouponType(CouponType.RED_ENVELOPE);
-            CouponAlertDto experienceCouponAlertDto = new CouponAlertDto();
-            experienceCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
 
             List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
@@ -76,42 +74,16 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {
                         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
 
-                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && couponModel.getProductTypes().contains(ProductType.EXPERIENCE)) {
-                            experienceCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
-                            experienceCouponAlertDto.setAmount(couponModel.getAmount());
-                            if (experienceCouponAlertDto.getExpiredDate() == null) {
-                                experienceCouponAlertDto.setExpiredDate(couponModel.getEndTime());
-                            } else {
-                                experienceCouponAlertDto.setExpiredDate(experienceCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? userCouponModel.getEndTime() : experienceCouponAlertDto.getExpiredDate());
-                            }
-                        }
-
-                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && !couponModel.getProductTypes().contains(ProductType.EXPERIENCE)) {
+                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON ) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
-                            if (newbieCouponAlertDto.getExpiredDate() == null) {
-                                newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
-                            } else {
-                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
-                            }
                         }
 
                         if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
-                            if (redEnvelopeCouponAlertDto.getExpiredDate() == null) {
-                                redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
-                            } else {
-                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
-                            }
                         }
                     }
-                }
-
-                if (CollectionUtils.isNotEmpty(experienceCouponAlertDto.getCouponIds())) {
-                    userCouponIds.addAll(experienceCouponAlertDto.getCouponIds());
-                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
-                    return experienceCouponAlertDto;
                 }
 
                 if (CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
