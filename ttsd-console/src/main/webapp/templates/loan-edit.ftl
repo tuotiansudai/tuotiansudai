@@ -61,17 +61,12 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <#if loanInfo.status!= "WAITING_VERIFY">
-                    <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空"
-                           value="${loanInfo.name}" disabled="disabled">
-                <#else>
-                    <select class="selectpicker jq-user">
-                        <option value="">请选择</option>
-                        <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
-                        <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                    </select>
-                </#if>
 
+                <select class="selectpicker jq-user">
+                    <option value="">请选择</option>
+                    <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
+                    <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
+                </select>
             </div>
         </div>
 

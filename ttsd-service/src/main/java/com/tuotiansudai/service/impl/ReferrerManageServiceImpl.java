@@ -51,24 +51,26 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     }
 
     @Override
-    public BasePaginationDataDto findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
+    public BasePaginationDataDto<ReferrerRelationView> findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
-        BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referRelationList);
-        return baseDto;
+        BasePaginationDataDto<ReferrerRelationView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, referRelationList);
+        dataDto.setStatus(true);
+        return dataDto;
     }
 
     @Override
-    public BasePaginationDataDto findReferInvestList(String referrerLoginName, String loginName, Date investStartTime, Date investEndTime, int index, int pageSize) {
+    public BasePaginationDataDto<ReferrerManageView> findReferInvestList(String referrerLoginName, String loginName, Date investStartTime, Date investEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         investEndTime = new DateTime(investEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerLoginName, loginName, investStartTime, investEndTime, level, (index - 1) * pageSize, pageSize);
         formatAmount(referrerManageViewList);
         int count = referrerManageMapper.findReferInvestCount(referrerLoginName, loginName, investStartTime, investEndTime, level);
-        BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referrerManageViewList);
-        return baseDto;
+        BasePaginationDataDto<ReferrerManageView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, referrerManageViewList);
+        dataDto.setStatus(true);
+        return dataDto;
     }
 
     private void formatAmount(List<ReferrerManageView> referrerManageViewList) {

@@ -37,13 +37,11 @@ public class RegisterUserController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
-        String channel = request.getParameter("channel");
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", referrer);
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
-
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody

@@ -58,6 +58,7 @@ public class CouponMapperTest {
         couponModel.setActive(false);
         couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());
+        couponModel.setDeadline(10);
         couponModel.setStartTime(new Date());
         couponModel.setCreatedBy("couponTest");
         couponModel.setTotalCount(1000L);

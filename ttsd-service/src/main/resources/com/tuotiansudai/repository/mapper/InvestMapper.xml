@@ -23,17 +23,7 @@
         <result column="trading_time" property="tradingTime"/>
         <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
     </resultMap>
-
-    <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
-        <result column="login_name" property="loginName"></result>
-        <result column="loan_name" property="loanName"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="email" property="email"></result>
-        <result column="amount" property="amount"></result>
-        <result column="invest_id" property="investId"></result>
-        <result column="periods" property="periods"></result>
-    </resultMap>
-
+    
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
         <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
@@ -189,15 +179,6 @@
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
         and created_time &gt;= #{afterTime}
-    </select>
-
-    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
-        select invest.id as invest_id, invest.amount, loan.name as loan_name,invest.login_name as login_name, loan.periods, user.mobile, user.email
-        from invest
-        inner join loan on invest.loan_id = loan.id
-        inner join user on user.login_name = invest.login_name
-        where loan.id = #{loanId}
-        and invest.status = 'SUCCESS'
     </select>
 
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">

@@ -17,7 +17,7 @@
             </p>
 
             <div class="btnBox tc">
-                <form action="/agreement" method="post" target="_blank">
+                <form action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                     <input type="hidden" name="autoInvest" value="true"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <button type="submit" id="btnAuthority" class="btn btn-normal">立即授权</button>

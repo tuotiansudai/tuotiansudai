@@ -114,15 +114,6 @@ public interface InvestMapper {
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                     @Param(value = "afterTime") Date afterTime);
 
-    /**
-     * 查找成功投资的用户的手机号、金额以及标的名称
-     *
-     * @param loanId
-     * @return
-     */
-    List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
-
-
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
