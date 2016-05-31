@@ -51,4 +51,8 @@
         select IFNULL(max(task_level),0) as task_level from user_point_task where login_name = #{loginName} and point_task_id = #{pointTaskId}
     </select>
 
+    <select id="findByLoginNameAndIdAndLevel" parameterType="int" resultMap="userPointTaskResultMap">
+        select count(1) from user_point_task where point_task_id = #{pointTaskId} and login_name = #{loginName} and taskLevel = #{taskLevel}
+    </select>
+
 </mapper>

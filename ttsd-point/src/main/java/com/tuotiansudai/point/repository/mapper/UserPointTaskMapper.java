@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.repository.mapper;
 
-import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +16,8 @@ public interface UserPointTaskMapper {
     UserPointTaskModel findByLoginNameAndId(@Param(value = "pointTaskId") long pointTaskId,@Param(value = "loginName") String loginName );
 
     long findMaxTaskLevelByLoginName(@Param(value = "loginName") String loginName, @Param(value = "pointTaskId") long pointTaskId);
+
+    int findByLoginNameAndIdAndtaskLevel(@Param(value = "loginName") String loginName,
+                                         @Param(value = "pointTaskId") long pointTaskId,
+                                         @Param(value = "taskLevel") long taskLevel);
 }
