@@ -6,10 +6,6 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
-import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
@@ -466,36 +462,6 @@ public class InvestServiceTest {
         AccountModel investorAccountModel = createAccountByUserId("investor");
         accountMapper.create(investorAccountModel);
 
-
-        LoanModel loanModel = new LoanModel(getLoanDto(loanId));
-        loanMapper.create(loanModel);
-
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
-        investMapper.create(investModel);
-
-        investService.investSuccess(investModel);
-    }
-
-    public InvestModel createData(String loginName,long loanId,long amount){
-        this.createUserByUserId(loginName);
-        AccountModel investorAccountModel = createAccountByUserId(loginName);
-        accountMapper.create(investorAccountModel);
-        LoanModel loanModel = new LoanModel(getLoanDto(loanId));
-        loanModel.setAgentLoginName(loginName);
-        loanMapper.create(loanModel);
-        InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
-        investModel.setLoanId(loanId);
-        investModel.setLoginName(loginName);
-        investModel.setAmount(amount);
-        investModel.setStatus(InvestStatus.SUCCESS);
-        investModel.setTransferStatus(TransferStatus.SUCCESS);
-        investModel.setSource(Source.IOS);
-        investMapper.create(investModel);
-        return investModel;
-    }
-
-    public LoanDto getLoanDto(long loanId){
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("loaner");
         loanDto.setLoanerUserName("借款人");
@@ -522,7 +488,13 @@ public class InvestServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
-        return loanDto;
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
+        investMapper.create(investModel);
+
+        investService.investSuccess(investModel);
     }
 
 }
