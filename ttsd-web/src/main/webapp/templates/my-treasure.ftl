@@ -94,18 +94,13 @@
                                 </p>
 
                                 <p>
-                                    <#if coupon.couponType == 'RED_ENVELOPE'>
+                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||
+                                    coupon.couponType == 'INVEST_COUPON' || coupon.couponType == 'INTEREST_COUPON'>
                                         <#if coupon.investLowerLimit == 0>
-                                            ［投资成功放款返现］
+                                            ［投资即可返现］
                                         <#else>
-                                            ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                            ［投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元即可返现］
                                         </#if>
-                                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
-                                        ［在拓天平台投资可用］
-                                    <#elseif coupon.couponType == 'INVEST_COUPON'>
-                                        ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
-                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［投资即可使用］
                                     </#if>
                                 </p>
 

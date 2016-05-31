@@ -85,6 +85,13 @@
                                                             <#break>
                                                         <#default>
                                                         ${maxBenefitUserCoupon.name}${(maxBenefitUserCoupon.amount / 100)?string("0.00")}元
+                                                        <p>
+                                                            <#if maxBenefitUserCoupon.investLowerLimit == '0'>
+                                                                [投资即可返现]
+                                                            <#else>
+                                                                [投资满<@amount>${(maxBenefitUserCoupon.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
+                                                            </#if>
+                                                        </p>
                                                     </#switch>
                                                 <#else>
                                                     请选择优惠券
