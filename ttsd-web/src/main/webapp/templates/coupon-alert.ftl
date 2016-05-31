@@ -14,7 +14,7 @@
             亲可以在“我的帐户－我的宝藏”中找到哦！
         </div>
         <#if (couponAlert.couponType == 'NEWBIE_COUPON')>
-            <a href="/" class="coupon-link">开始体验</a>
+            <a href="javascript:void(0)" class="coupon-link" id="getFree">开始体验</a>
         <#else>
             <a href="/my-treasure" class="coupon-link">立即使用</a>
         </#if>
