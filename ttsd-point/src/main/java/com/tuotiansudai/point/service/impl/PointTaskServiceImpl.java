@@ -145,17 +145,13 @@ public class PointTaskServiceImpl implements PointTaskService {
         List<UserPointTaskModel> userPointTaskModelList = new ArrayList<>();
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
         List<ReferrerRelationModel> referrerRelationModelList;
-        InvestTaskAward investTaskAward;
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,investModel.getLoginName());
                 userPointTaskModelList = createGreaterUserPointTask(getEachInvestAward(),investAmount,userPointTaskModelList,pointTaskModel,investModel);
                 break;
             case FIRST_SINGLE_INVEST:
-                investTaskAward = compareInvestAward(getFirstInvestAward(),investModel.getAmount());
-                if(investTaskAward != null && userPointTaskMapper.findMaxTaskLevelByLoginName(investModel.getLoginName(),pointTaskModel.getId()) != investTaskAward.getLevel()){
-                    userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
-                }
+                userPointTaskModelList = compareInvestAward(getFirstInvestAward(),investModel.getAmount(),userPointTaskModelList,pointTaskModel,investModel);
                 break;
             case EACH_REFERRER_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(investModel.getLoginName());
@@ -190,29 +186,32 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
     private List<UserPointTaskModel> createGreaterUserPointTask(List<InvestTaskAward> investTaskAwardList,long investAmount,List<UserPointTaskModel> userPointTaskModelList,PointTaskModel pointTaskModel,InvestModel investModel){
-        if(investAmount < investTaskAwardList.get(0).getBeginMoney()){
+        if(investAmount < investTaskAwardList.get(0).getInvestMoney()){
             return userPointTaskModelList;
         }
-
+        boolean isMaxInvestMoney = true;
         for(InvestTaskAward investTaskAward : investTaskAwardList){
-            if(investAmount >= investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
+            if(investAmount > investTaskAward.getInvestMoney()){
                 userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+            }else{
+                isMaxInvestMoney = false;
+                break;
             }
         }
 
-        InvestTaskAward investTaskAward = investTaskAwardList.get(0);
-        InvestTaskAward newInvestTaskAward;
-        boolean flag = true;
-        long count = 1;
-        while (flag){
-            newInvestTaskAward = new InvestTaskAward(investTaskAward.getLevel() + count,
-                                                        investTaskAward.getPoint() * count,
-                                                        investTaskAward.getEndMoney(),
-                                                        investTaskAward.getEndMoney() * count);
-            if(investAmount > newInvestTaskAward.getBeginMoney() && investAmount < newInvestTaskAward.getEndMoney()){
-                userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+        if(isMaxInvestMoney){
+            InvestTaskAward investTaskAward = investTaskAwardList.get(0);
+            InvestTaskAward newInvestTaskAward;
+            long count = 1;
+            while (isMaxInvestMoney){
+                newInvestTaskAward = new InvestTaskAward(investTaskAward.getLevel() + count,
+                        investTaskAward.getPoint() * count,
+                        investTaskAward.getInvestMoney() * count);
+                if(investAmount > newInvestTaskAward.getInvestMoney()){
+                    userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+                }
+                count ++ ;
             }
-            count ++ ;
         }
 
         return userPointTaskModelList;
@@ -220,24 +219,26 @@ public class PointTaskServiceImpl implements PointTaskService {
 
 
 
-    private InvestTaskAward compareInvestAward(List<InvestTaskAward> investTaskAwards,long investAmount){
+    private List<UserPointTaskModel> compareInvestAward(List<InvestTaskAward> investTaskAwards,long investAmount,List<UserPointTaskModel> userPointTaskModelList,PointTaskModel pointTaskModel,InvestModel investModel){
         for(InvestTaskAward investTaskAward : investTaskAwards){
-            if(investAmount > investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
-                return investTaskAward;
+            if(investAmount > investTaskAward.getInvestMoney()){
+                userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
+            }else{
+                break;
             }
         }
-        return null;
+        return userPointTaskModelList;
     }
 
     private List<InvestTaskAward> getFirstInvestAward(){
         if(firstInvestAward == null){
             firstInvestAward = new ArrayList<>();
-            firstInvestAward.add(new InvestTaskAward(1,2000,1000000,5000000));
-            firstInvestAward.add(new InvestTaskAward(2,5000,5000000,10000000));
-            firstInvestAward.add(new InvestTaskAward(3,10000,10000000,20000000));
-            firstInvestAward.add(new InvestTaskAward(4,20000,20000000,50000000));
-            firstInvestAward.add(new InvestTaskAward(5,50000,50000000,100000000));
-            firstInvestAward.add(new InvestTaskAward(6,100000,100000000,1000000000));
+            firstInvestAward.add(new InvestTaskAward(1,2000,1000000));
+            firstInvestAward.add(new InvestTaskAward(2,5000,5000000));
+            firstInvestAward.add(new InvestTaskAward(3,10000,10000000));
+            firstInvestAward.add(new InvestTaskAward(4,20000,20000000));
+            firstInvestAward.add(new InvestTaskAward(5,50000,50000000));
+            firstInvestAward.add(new InvestTaskAward(6,100000,100000000));
         }
         return firstInvestAward;
     }
@@ -245,12 +246,12 @@ public class PointTaskServiceImpl implements PointTaskService {
     private List<InvestTaskAward> getEachInvestAward(){
         if(eachInvestAward == null){
             eachInvestAward = new ArrayList<>();
-            eachInvestAward.add(new InvestTaskAward(1,1000,500000,1000000));
-            eachInvestAward.add(new InvestTaskAward(2,2000,1000000,5000000));
-            eachInvestAward.add(new InvestTaskAward(3,5000,5000000,10000000));
-            eachInvestAward.add(new InvestTaskAward(4,10000,10000000,50000000));
-            eachInvestAward.add(new InvestTaskAward(5,50000,50000000,100000000));
-            eachInvestAward.add(new InvestTaskAward(6,100000,100000000,200000000));
+            eachInvestAward.add(new InvestTaskAward(1,1000,500000));
+            eachInvestAward.add(new InvestTaskAward(2,2000,1000000));
+            eachInvestAward.add(new InvestTaskAward(3,5000,5000000));
+            eachInvestAward.add(new InvestTaskAward(4,10000,10000000));
+            eachInvestAward.add(new InvestTaskAward(5,50000,50000000));
+            eachInvestAward.add(new InvestTaskAward(6,100000,100000000));
         }
         return eachInvestAward;
     }
@@ -258,14 +259,12 @@ public class PointTaskServiceImpl implements PointTaskService {
     class InvestTaskAward{
         private long level;
         private long point;
-        private long beginMoney;
-        private long endMoney;
+        private long investMoney;
 
-        InvestTaskAward(long level,long point,long beginMoney,long endMoney){
+        InvestTaskAward(long level,long point,long investMoney){
             this.level = level;
             this.point = point;
-            this.beginMoney = beginMoney;
-            this.endMoney = endMoney;
+            this.investMoney = investMoney;
         }
 
         public long getLevel() { return level; }
@@ -276,9 +275,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
         public void setPoint(long point) { this.point = point; }
 
-        public long getBeginMoney() { return beginMoney; }
-
-        public long getEndMoney() {return endMoney; }
+        public long getInvestMoney() { return investMoney; }
     }
 
 }
