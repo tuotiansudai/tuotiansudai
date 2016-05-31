@@ -108,11 +108,11 @@
                                             <span class="unit-text">元</span>
                                         </p>
                                         <p>
-                                        <#if exchangeCouponDto.investLowerLimit == '0'>
-                                            [投资即可返现]
-                                        <#else>
-                                            [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
-                                        </#if>
+                                            <#if exchangeCouponDto.investLowerLimit == '0.00'>
+                                                [投资即可返现]
+                                            <#else>
+                                                [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
+                                            </#if>
                                         </p>
 									<#else>
                                         <p class="mt-10">
@@ -120,7 +120,7 @@
                                             <span class="unit-text">年化收益</span>
                                         </p>
                                         <p>
-                                            <#if exchangeCouponDto.investLowerLimit == '0'>
+                                            <#if exchangeCouponDto.investLowerLimit == '0.00'>
                                                 [投资即可返现]
                                             <#else>
                                                 [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]

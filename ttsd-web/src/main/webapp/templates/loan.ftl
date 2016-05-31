@@ -85,13 +85,6 @@
                                                             <#break>
                                                         <#default>
                                                         ${maxBenefitUserCoupon.name}${(maxBenefitUserCoupon.amount / 100)?string("0.00")}元
-                                                        <p>
-                                                            <#if maxBenefitUserCoupon.investLowerLimit == '0'>
-                                                                [投资即可返现]
-                                                            <#else>
-                                                                [投资满<@amount>${(maxBenefitUserCoupon.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
-                                                            </#if>
-                                                        </p>
                                                     </#switch>
                                                 <#else>
                                                     请选择优惠券
@@ -143,10 +136,10 @@
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
-                                                                    <i class="ticket-term lower-limit" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
+                                                                    <i class="ticket-term lower-limit" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元即可返现]</i>
                                                                 </#if>
                                                                 <#if coupon.investLowerLimit==0>
-                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>
+                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可返现]</#if>
                                                                     </i>
                                                                 </#if>
                                                             </#if>

@@ -96,10 +96,10 @@
                                 <p>
                                     <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||
                                     coupon.couponType == 'INVEST_COUPON' || coupon.couponType == 'INTEREST_COUPON'>
-                                        <#if coupon.investLowerLimit == 0>
-                                            ［投资即可返现］
-                                        <#else>
+                                        <#if coupon.investLowerLimit != 0>
                                             ［投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元即可返现］
+                                        <#else>
+                                            ［投资即可返现］
                                         </#if>
                                     </#if>
                                 </p>
