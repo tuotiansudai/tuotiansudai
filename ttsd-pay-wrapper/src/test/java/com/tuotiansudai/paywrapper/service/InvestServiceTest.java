@@ -68,12 +68,6 @@ public class InvestServiceTest {
     @Autowired
     private PaySyncClient paySyncClient;
 
-    @Autowired
-    private UserPointTaskMapper userPointTaskMapper;
-
-    @Autowired
-    private PointTaskMapper pointTaskMapper;
-
     @Value(value = "${pay.callback.web.host}")
     private String webRetUrl;
 
@@ -481,95 +475,6 @@ public class InvestServiceTest {
 
         investService.investSuccess(investModel);
     }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf0IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf1IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,500000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),1);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf2IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),2);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf3IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,5000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),3);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf4IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,10000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),4);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf5IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,50000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),5);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf6IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),6);
-        assertTrue(count == 0);
-    }
-
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf7IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,250000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),8);
-        assertTrue(count == 0);
-    }
-
 
     public InvestModel createData(String loginName,long loanId,long amount){
         this.createUserByUserId(loginName);
