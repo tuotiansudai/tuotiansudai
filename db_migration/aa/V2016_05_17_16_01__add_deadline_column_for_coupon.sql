@@ -1,0 +1,2 @@
+ALTER TABLE coupon ADD COLUMN deadline INT(10) NOT NULL DEFAULT 0
+AFTER end_time;

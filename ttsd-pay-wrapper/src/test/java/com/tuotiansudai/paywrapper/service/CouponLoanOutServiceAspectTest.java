@@ -143,6 +143,7 @@ public class CouponLoanOutServiceAspectTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
+        couponModel.setDeadline(10);
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);

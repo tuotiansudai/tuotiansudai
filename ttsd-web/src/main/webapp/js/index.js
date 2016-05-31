@@ -24,8 +24,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
 
         leftWid = (picWid - screenWid) / 2;
 
-        $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
-        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2});
+        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
         $imgScroll.find('img').css({
             'margin-left': '-' + leftWid + 'px'
         });

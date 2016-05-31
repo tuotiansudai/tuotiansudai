@@ -164,8 +164,7 @@ public class TriggeredJobBuilder {
             if (jobKey == null) {
                 throw new SchedulerException("jobKey is null, please set it via method: withIdentity");
             }
-            JobDetail jdExist = scheduler.getJobDetail(jobDetail.getKey());
-            if (jdExist != null) {
+            if (scheduler.checkExists(jobDetail.getKey())) {
                 scheduler.deleteJob(jobDetail.getKey());
             }
         }

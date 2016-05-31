@@ -57,6 +57,9 @@ body {
         top: 0;
         img {
           height: 350px;
+          @media (max-width: 1920px) {
+            margin-left: calc((1920px - 100%) / 2 * -1)
+          }
         }
       }
       a:first-child {
@@ -68,6 +71,7 @@ body {
       left: 500px;
       bottom: 10px;
       z-index: 2;
+      visibility: hidden;
       li {
         float: left;
         margin-right: 15px;
@@ -87,12 +91,13 @@ body {
     }
     .page-width {
       height: 100%;
+      position: relative;
     }
     .register-ad-box {
       position: absolute;
       z-index: 10;
-      top: 25px;
-      right: 100px;
+      top: -335px;
+      right: 0;
       width: 300px;
       height: 300px;
       box-sizing: border-box;
@@ -1146,7 +1151,7 @@ body {
       position: absolute;
       top:50%;
       left:50px;
-      margin-top:-180px; 
+      margin-top:-180px;
       p{
         color:#fff;
         margin-bottom:0;
@@ -1344,7 +1349,7 @@ body {
     position: absolute;
     top:50%;
     left:0;
-    margin-top:-180px; 
+    margin-top:-180px;
     p{
       color:#1c224e;
       margin-bottom:0;
@@ -1423,10 +1428,10 @@ body {
           strong{
             opacity:0;
           }
-          &:hover .red-icon{ 
+          &:hover .red-icon{
             transform: rotateY(180deg);
-            -webkit-transform:rotateY(180deg); 
-            -moz-transform:rotateY(180deg); 
+            -webkit-transform:rotateY(180deg);
+            -moz-transform:rotateY(180deg);
             -o-transform:rotateY(180deg);
             -webkit-animation-timing-function: ease-in;
             -webkit-animation-duration: 225ms;
@@ -1448,9 +1453,9 @@ body {
             top:0;
             left:0;
             transition: all 1s;
-            -webkit-transition:all 1s; 
-            -moz-transition:all 1s; 
-            -o-transition:all 1s; 
+            -webkit-transition:all 1s;
+            -moz-transition:all 1s;
+            -o-transition:all 1s;
           }
         }
         &.hover-text{
@@ -1478,7 +1483,7 @@ body {
       &.last-text{
         margin-top:20px;
       }
-    } 
+    }
     ul.intro-list{
       float:left;
       margin-top:20px;

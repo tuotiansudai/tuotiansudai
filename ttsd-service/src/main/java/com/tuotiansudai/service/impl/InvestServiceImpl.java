@@ -185,8 +185,10 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+        int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
+
+
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
         List<InvestorInvestPaginationItemDataDto> items = Lists.newArrayList();
@@ -284,6 +286,12 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
             for (InvestPaginationItemView investPaginationItemView : items) {
+                if(loanId != null){
+                    LoanModel loanModel = loanMapper.findById(loanId);
+                    if(loanModel != null){
+                        investPaginationItemView.setLoanName(loanModel.getName());
+                    }
+                }
                 List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
                 if (CollectionUtils.isNotEmpty(userCouponModels)) {
