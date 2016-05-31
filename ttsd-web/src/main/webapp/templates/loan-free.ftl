@@ -29,13 +29,10 @@
                     募集期限：${loan.raisingPeriod}天<br/>
                     还款方式：${loan.type.getName()}<br/>
                     投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
-                    <#if loan.productType != 'EXPERIENCE'>
-                        <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
-                    </#if>
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
                     <#if loan.newbieInterestCouponRate gt 0>
-                        <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
+                        <div class="product-type-text">新手体验项目</div>
                     </#if>
                 <#else>
                     <#if loan.productType??>
@@ -221,7 +218,6 @@
             项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
             还款方式：${loan.type.getName()}<br/>
             投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
-            <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
         </div>
         <div class="bg-w borderBox mt-20 project-model">
             <div class="model-nav">

@@ -3981,6 +3981,9 @@ body{
     .text-list{
       li{
         width:100% !important;
+        .intro-title{
+          margin-top:0;
+        }
         .intro-icon{
           border-right:none!important;
         }
