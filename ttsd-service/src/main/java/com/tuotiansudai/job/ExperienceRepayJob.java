@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
-public class NewbieExperienceRepayJob implements Job {
+public class ExperienceRepayJob implements Job {
     static Logger logger = Logger.getLogger(LoanRepayNotifyJob.class);
 
     @Autowired

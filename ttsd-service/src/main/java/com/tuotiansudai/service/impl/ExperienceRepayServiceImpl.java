@@ -34,7 +34,6 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private CouponActivationService couponActivationService;
 
     @Override
-    @Transactional
     public void repay(Date compareDate, Date repayDate) {
         List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
         if (CollectionUtils.isEmpty(loanModels) || loanModels.get(0).getStatus() != LoanStatus.RAISING) {
