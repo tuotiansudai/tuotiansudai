@@ -260,6 +260,23 @@
             </div>
         </div>
     </div>
+    <div class="free-success" id="freeSuccess">
+        <div class="free-content">
+            <div class="free-top">恭喜您体验成功!<span class="close-free"></span></div>
+            <div class="free-detail">
+                <p class="text-info">并获得以下奖励：</p>
+                <p>
+                    <img src="${staticServer}/images/sign/actor/gift-free.png" width="100%" alt=""/>
+                </p>
+                <p class="free-use">
+                    <a href="#" class="btn">立即使用</a>
+                </p>
+                <p class="free-tip">
+                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="#">立即认证>></a>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
     <#include "coupon-alert.ftl" />
 </div>
