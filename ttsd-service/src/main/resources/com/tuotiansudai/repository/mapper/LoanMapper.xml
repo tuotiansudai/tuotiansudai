@@ -158,6 +158,7 @@
         WHERE
         1 = 1 AND temp.status != 'RECHECK'
         AND temp.status != 'COMPLETE'
+        AND temp.status != 'CANCEL'
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
