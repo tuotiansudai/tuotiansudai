@@ -5,7 +5,8 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':ttsd-service'),
-            project(':ttsd-point')
+            project(':ttsd-point'),
+            project(':ttsd-jpush')
 }
 
 startScripts {
