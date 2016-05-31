@@ -1082,6 +1082,14 @@ body{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            .new-tip{
+              font-size: 12px;
+              color: #ff9c1b;
+              border: 1px solid #ff9c1b;
+              padding: 2px 5px;
+              border-radius: 20px;
+              margin-left:10px;
+            }
           }
           .l-way {
             font-size: 12px;
