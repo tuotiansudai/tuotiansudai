@@ -198,7 +198,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         }
 
         for(InvestTaskAward investTaskAward : investTaskAwardList){
-            if(investAmount > investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
+            if(investAmount >= investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
                 return investTaskAward;
             }
         }
