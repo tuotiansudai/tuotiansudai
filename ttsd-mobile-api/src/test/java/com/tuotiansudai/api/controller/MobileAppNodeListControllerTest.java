@@ -1,7 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.NodeListRequestDto;
-import com.tuotiansudai.api.service.MobileAppNodeListService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppNodeListController;
+import com.tuotiansudai.api.dto.v1_0.NodeListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppNodeListService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
