@@ -109,9 +109,9 @@
                                         </p>
                                         <p>
                                             <#if exchangeCouponDto.investLowerLimit == '0.00'>
-                                                [投资即可返现]
+                                                [投资即可使用]
                                             <#else>
-                                                [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
+                                                [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可使用]
                                             </#if>
                                         </p>
 									<#else>
@@ -121,9 +121,9 @@
                                         </p>
                                         <p>
                                             <#if exchangeCouponDto.investLowerLimit == '0.00'>
-                                                [投资即可返现]
+                                                [投资即可使用]
                                             <#else>
-                                                [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可返现]
+                                                [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可使用]
                                             </#if>
                                         </p>
 									</#if>
