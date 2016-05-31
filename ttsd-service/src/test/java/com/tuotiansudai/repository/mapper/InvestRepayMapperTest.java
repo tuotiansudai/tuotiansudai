@@ -274,13 +274,47 @@ public class InvestRepayMapperTest {
         investRepayModel.setInvestId(investModel.getId());
         investRepayModel.setId(idGenerator.generate());
         investRepayModel.setStatus(RepayStatus.COMPLETE);
-        investRepayModel.setActualRepayDate(sdf.parse("2016-05-20"));
-        investRepayModel.setRepayDate(sdf.parse("2016-05-20"));
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setRepayDate(new Date());
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         investRepayModels.add(investRepayModel);
         investMapper.create(investModel);
         investRepayMapper.create(investRepayModels);
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
-        assertTrue(investRepayModelList.size() > 0);
+        assertNotNull(investRepayModelList);
+        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
+    }
+
+    @Test
+    public void shouldFindByLoginNameAndTimeNotSuccessInvestRepayListIsOk(){
+        LoanModel loanModel = getFakeLoanModel();
+        loanModel.setProductType(ProductType.EXPERIENCE);
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        loanMapper.create(loanModel);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setLoginName(fakeUserModel.getLoginName());
+        investModel.setLoanId(loanModel.getId());
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setInvestTime(new Date());
+        investModel.setTransferStatus(TransferStatus.SUCCESS);
+        investModel.setSource(Source.IOS);
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date endTime = DateUtils.addMonths(startTime, 1);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setStatus(RepayStatus.REPAYING);
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setRepayDate(new Date());
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(investRepayModel);
+        investMapper.create(investModel);
+        investRepayMapper.create(investRepayModels);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
+        assertNotNull(investRepayModelList);
+        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
     }
 }
