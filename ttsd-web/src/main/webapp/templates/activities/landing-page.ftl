@@ -12,24 +12,28 @@
                     <ul class="reg-list tl register-step-one">
                         <li>
                             <label for="" class="reg-title">用户名:</label>
+                            <i class="sprite-register-login-name"></i>
                             <input type="text" id="login-name" class="login-name long" name="loginName"
                                    placeholder="用户名" maxlength="25" value="">
                         </li>
                         <li id="login-nameErr" class="height"></li>
                         <li>
                             <label for="" class="reg-title">密码:</label>
+                            <i class="sprite-register-ic-password"></i>
                             <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
                                    class="password long" value="">
                         </li>
                         <li id="passwordErr" class="height"></li>
                         <li>
                             <label for="" class="reg-title">手机号:</label>
+                            <i class="sprite-register-ic-mobile"></i>
                             <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
                                    maxlength="11" value="">
                         </li>
                         <li id="mobileErr" class="height"></li>
                         <li class="code">
                             <label for="" class="reg-title">验证码:</label>
+                            <i class="sprite-register-ic-img-code"></i>
                             <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="5"
                                    class="appCaptcha" value="">
                             <em class="image-captcha">
@@ -40,6 +44,7 @@
                         <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                         <li>
                             <label for="captcha" class="reg-title">手机验证码:</label>
+                            <i class="sprite-register-ic-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
                                 <input type="text" class="captcha" autocomplete="off"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
@@ -48,7 +53,6 @@
                             </span>
 
                         </li>
-                        <li class="height captcha-error"></li>
                         <li class="agree-last">
                             <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
                             <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
