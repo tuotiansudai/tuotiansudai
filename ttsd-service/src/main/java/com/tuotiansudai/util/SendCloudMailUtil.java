@@ -58,11 +58,12 @@ public class SendCloudMailUtil {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("startTime", (String) map.get("startTime"));
         headerMap.put("endTime", (String) map.get("endTime"));
+        List<String> mismatchUserList = (List<String>) map.get("userList");
+        headerMap.put("userCount", String.valueOf(mismatchUserList.size()));
 
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
 
         StringBuffer bodySb = new StringBuffer();
-        List<String> mismatchUserList = (List<String>) map.get("userList");
         for (String userInfo : mismatchUserList) {
             String[] userInfoArr = userInfo.split("-");
             Map<String, String> bodyLineMap = new HashMap<>();
