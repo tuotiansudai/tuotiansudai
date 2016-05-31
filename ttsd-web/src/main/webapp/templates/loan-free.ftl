@@ -5,7 +5,7 @@
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w borderBox">
             <div class="news-share fl">
-                <h2 class="title hd <#if loan.activityType == 'NEWBIE'>new</#if>">${loan.name}<#if loan.activityType == 'NEWBIE'><span class="new-user"></span></#if></h2>
+                <h2 class="title hd">${loan.name}</h2>
                 <div class="chart-box">
                     <div class="box" title="已投${loan.progress?string("0.00")}%">
                         <div class="bg"></div>
@@ -287,54 +287,8 @@
             </div>
         </#if>
 
-        <div class="bg-w clear-blank borderBox loan-detail">
-            <div class="loan-nav">
-                <ul>
-                    <li class="active">借款详情<i class="fa fa-caret-up"></i></li>
-                    <li>出借记录<i class="fa fa-caret-up"></i></li>
-                </ul>
-            </div>
-            <div class="loan-list pad-s invest-list-content">
-                <div class="loan-list-con">
-                    <div class="borderBox">
-                        <h3 class="b-title">借款详情：</h3>
-                        ${loan.descriptionHtml}
-                    </div>
-                    <div class="loan-material">
-                        <h3>申请材料：</h3>
-                        <div class="pic-list" id="picListBox">
-                            <#list loan.loanTitleDto as loanTitle>
-                                <#list loan.loanTitles as loanTitleRelation >
-                                    <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <div class="title">${loanTitle.title}：</div>
-                                            <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                                <a href="${title}" rel="example_group"><img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/></a>
-                                            </#list>
-                                    </#if>
-                                </#list>
-                            </#list>
-                        </div>
-                    </div>
-                </div>
-                <div class="loan-list-con">
-                <table class="table-striped invest-list">
-                </table>
-                <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-<div id="authorizeAgreementOptions" class="pad-s-tb tl fl hide">
-    <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
-    <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
-    <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
-    <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
-</div>
-<form action="/agreement" id="goAuthorize" method="post" target="_blank">
-    <input type="hidden" name = "noPasswordInvest" value="true" />
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form>
     <#include "coupon-alert.ftl" />
 </div>
     <#include "red-envelope-float.ftl" />
