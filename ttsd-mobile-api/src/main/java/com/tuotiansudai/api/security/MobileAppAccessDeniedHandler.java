@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.security;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuotiansudai.api.dto.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import org.apache.log4j.Logger;
@@ -16,8 +18,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
     static Logger log = Logger.getLogger(MobileAppAccessDeniedHandler.class);
@@ -31,10 +31,17 @@ public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
         BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(request);
 
         if (!StringUtils.isEmpty(bufferedRequest.getInputStreamString())) {
-            Pattern pattern = Pattern.compile("\"token\":\"(app-token:[\\w]+:[-\\w]+)\"");
-            Matcher matcher = pattern.matcher(bufferedRequest.getInputStreamString());
-            if (matcher.find()) {
-                String requestToken = matcher.group(1);
+            BaseParamDto baseParamDto;
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                baseParamDto = objectMapper.readValue(request.getInputStream(), BaseParamDto.class);
+            } catch (Exception e) {
+                baseParamDto = null;
+                log.debug(e);
+            }
+            if (null != baseParamDto && null != baseParamDto.getBaseParam() && !StringUtils.isEmpty(baseParamDto.getBaseParam().getToken())) {
+                String requestToken = baseParamDto.getBaseParam().getToken();
                 String redisLoginName = mobileAppTokenProvider.getUserNameByToken(requestToken);
                 log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1} searchToken: {2} redisTokenLoginName:{3}", request.getRequestURI(), bufferedRequest.getInputStreamString(), requestToken, redisLoginName));
             } else {
