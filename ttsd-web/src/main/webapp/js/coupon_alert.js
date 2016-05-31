@@ -10,11 +10,13 @@ define(['jquery'], function ($) {
     	event.preventDefault();
     	$couponClose.trigger('click');
         if($(window).width()<700){
-        	$('body,html').animate({scrollTop:'176px'},"slow");
-        	$('.product-box-inner').addClass('active');
+        	$('body,html').animate({scrollTop:'176px'},"slow",function(){
+                $('.product-box-inner').addClass('active');
+            });
         }else{
-        	$('body,html').animate({scrollTop:'550px'},"slow");
-        	$('.new-user-free').addClass('active');
+        	$('body,html').animate({scrollTop:'550px'},"slow",function(){
+                $('.new-user-free').addClass('active');
+            });
         }
     });
 });

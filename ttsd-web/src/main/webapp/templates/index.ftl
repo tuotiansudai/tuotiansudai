@@ -125,7 +125,7 @@
 
     <div class="home-content" id="productFrame">
         <div class="page-width clearfix new-model">
-            <div class="new-user-free active">
+            <div class="new-user-free">
                 <div class="left-intro">
                     <a href="#">
                     </a>
@@ -371,7 +371,7 @@
                 </ul>
             </div>
             <div class="product-box-list fl">
-                <div class="product-box-inner active">
+                <div class="product-box-inner">
                     <div class="free-guide">
                                 
                     </div>
