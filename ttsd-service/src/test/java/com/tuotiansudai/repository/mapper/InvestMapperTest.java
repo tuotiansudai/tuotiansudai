@@ -245,6 +245,6 @@ public class InvestMapperTest {
         investMapper.create(investModel);
 
         long count = investMapper.countSuccessInvestByInvestTime(newbieLoanId,new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-        assertTrue(count >=0 );
+        assertTrue(count == 1 );
     }
 }
