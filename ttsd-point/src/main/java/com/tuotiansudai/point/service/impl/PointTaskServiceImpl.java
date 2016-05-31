@@ -149,10 +149,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,investModel.getLoginName());
-                investTaskAward = createGreaterUserPointTask(getEachInvestAward(),investAmount);
-                if(investTaskAward != null){
-                    userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
-                }
+                userPointTaskModelList = createGreaterUserPointTask(getEachInvestAward(),investAmount,userPointTaskModelList,pointTaskModel,investModel);
                 break;
             case FIRST_SINGLE_INVEST:
                 investTaskAward = compareInvestAward(getFirstInvestAward(),investModel.getAmount());
@@ -192,14 +189,14 @@ public class PointTaskServiceImpl implements PointTaskService {
         return userPointTaskModelList;
     }
 
-    private InvestTaskAward createGreaterUserPointTask(List<InvestTaskAward> investTaskAwardList,long investAmount){
+    private List<UserPointTaskModel> createGreaterUserPointTask(List<InvestTaskAward> investTaskAwardList,long investAmount,List<UserPointTaskModel> userPointTaskModelList,PointTaskModel pointTaskModel,InvestModel investModel){
         if(investAmount < investTaskAwardList.get(0).getBeginMoney()){
-            return null;
+            return userPointTaskModelList;
         }
 
         for(InvestTaskAward investTaskAward : investTaskAwardList){
             if(investAmount >= investTaskAward.getBeginMoney() && investAmount < investTaskAward.getEndMoney()){
-                return investTaskAward;
+                userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
             }
         }
 
@@ -213,11 +210,12 @@ public class PointTaskServiceImpl implements PointTaskService {
                                                         investTaskAward.getEndMoney(),
                                                         investTaskAward.getEndMoney() * count);
             if(investAmount > newInvestTaskAward.getBeginMoney() && investAmount < newInvestTaskAward.getEndMoney()){
-                return newInvestTaskAward;
+                userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
             }
             count ++ ;
         }
-        return null;
+
+        return userPointTaskModelList;
     }
 
 
