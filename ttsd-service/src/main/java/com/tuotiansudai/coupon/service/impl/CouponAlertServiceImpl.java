@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,9 +80,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             experienceCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             experienceCouponAlertDto.setAmount(couponModel.getAmount());
                             if (experienceCouponAlertDto.getExpiredDate() == null) {
-                                experienceCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
+                                experienceCouponAlertDto.setExpiredDate(couponModel.getEndTime());
                             } else {
-                                experienceCouponAlertDto.setExpiredDate(experienceCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : experienceCouponAlertDto.getExpiredDate());
+                                experienceCouponAlertDto.setExpiredDate(experienceCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? userCouponModel.getEndTime() : experienceCouponAlertDto.getExpiredDate());
                             }
                         }
 
