@@ -223,70 +223,46 @@
             投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
             <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
         </div>
-
-        <#if loan.achievement??>
-            <div class="loan-designation bg-w clearfix borderBox">
-                <h3>称号争夺大作战<a href="/activity/invest-achievement" target="_blank">查看活动详情>></a></h3>
-                <table class="table design-table">
-                    <thead>
-                    <tr>
-                        <th class="title">称号</th>
-                        <th><i class="first-icon"></i>拓荒先锋</th>
-                        <th><i class="max-icon"></i>拓天标王</th>
-                        <th><i class="last-icon"></i>一锤定音</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="title">获得者</td>
-                        <td>${loan.achievement.firstInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
-                        <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
-                                ${loan.achievement.maxAmountAchievementLoginName}
-                                <#if loan.loanStatus == 'RAISING'>
-                                    <span class="text-lighter">(待定)</span>
-                                </#if>
-                            <#else>
-                                <span class="text-lighter">虚位以待</span>
-                            </#if>
-                        </td>
-                        <td>${loan.achievement.lastInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
-                    </tr>
-                    <tr>
-                        <td class="title">战况</td>
-                        <td>
-                            <#if loan.achievement.firstInvestAchievementLoginName??>
-                                ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 占领先锋
-                            <#else>
-                                --
-                            </#if>
-                        </td>
-                        <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
-                                以累积投资 ${loan.achievement.maxAmountAchievementAmount}元 夺得标王
-                            <#else>
-                                --
-                            </#if>
-                        </td>
-                        <td>
-                            <#if loan.achievement.lastInvestAchievementLoginName??>
-                                ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 一锤定音
-                            <#else>
-                                目前项目剩余${loan.achievement.loanRemainingAmount}元<br/>快来一锤定音吧
-                            </#if>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title">奖励</td>
-                        <td>0.2％加息券＋50元红包</td>
-                        <td><span class="text-reward">0.5％加息券＋100元红包</span></td>
-                        <td>0.2％加息券＋50元红包</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="bg-w borderBox mt-20 project-model">
+            <div class="model-nav">
+                <h3>项目描述</h3>
             </div>
-        </#if>
-
+            <div class="model-content">
+                <ul class="info-list">
+                    <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目。</li>
+                    <li>2、投资体验项目无需充值。</li>
+                    <li>3、新手体验券是由拓天速贷用平台活动方式，为新注册用于提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励</li>
+                    <li>4、新注册用户通过获得体验券后，在体验项目专区点击使用。</li>
+                    <li>5、新手体验项目不可转让。</li>
+                    <li>6、为防止不法分子恶意刷取平台奖励，红包奖励需投资真实项目后方可提现。</li>
+                    <li>本活动规则解释权归拓天速贷所有，如有疑问请联系在线客服或拨打400-169-1188</li>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-w borderBox mt-20 project-model">
+            <div class="model-nav">
+                <h3>安全保障</h3>
+            </div>
+            <div class="model-content">
+                <ul class="text-list">
+                    <li>
+                        <p class="intro-title">资金保障</p>
+                        <p class="intro-icon icon-one"></p>
+                        <p class="intro-text"><span>拓天速贷平台项目都是抵押债权，每笔债权都对应着相应的抵押物。如果投资过程中发生了资金风险，抵押物资将会被处理来为用户的资金提供保障。</span></p>
+                    </li>
+                    <li>
+                        <p class="intro-title">交易保障</p>
+                        <p class="intro-icon icon-two"></p>
+                        <p class="intro-text"><span>拓天速贷接入了联动优势电子商务有限公司的资金托管系统。交易过程中的充值、投资、提现都在第三方支付平台进行，保证了资金流转的透明和安全。</span></p>
+                    </li>
+                    <li>
+                        <p class="intro-title">信息保障</p>
+                        <p class="intro-icon icon-three"></p>
+                        <p class="intro-text"><span>采用银行级别的数据传输加密技术，保障用户的信息安全。在同城和异地均建立灾备设备，避免因自然灾害导致用户信息的损失</span></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
     <#include "coupon-alert.ftl" />
