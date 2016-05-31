@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
     static Logger log = Logger.getLogger(MobileAppAccessDeniedHandler.class);
@@ -28,12 +30,16 @@ public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(request);
 
-        String requestToken = bufferedRequest.getParameter("token");
-        if (StringUtils.isEmpty(requestToken)) {
-            log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1}", request.getRequestURI(), bufferedRequest.getInputStreamString()));
-        } else {
-            String redisLoginName = mobileAppTokenProvider.getUserNameByToken(requestToken);
-            log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1} redisTokenLoginName:{2}", request.getRequestURI(), bufferedRequest.getInputStreamString(), redisLoginName));
+        if (!StringUtils.isEmpty(bufferedRequest.getInputStreamString())) {
+            Pattern pattern = Pattern.compile("\"token\":\"(app-token:[\\w]+:[-\\w]+)\"");
+            Matcher matcher = pattern.matcher(bufferedRequest.getInputStreamString());
+            if (matcher.find()) {
+                String requestToken = matcher.group(1);
+                String redisLoginName = mobileAppTokenProvider.getUserNameByToken(requestToken);
+                log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1} searchToken: {2} redisTokenLoginName:{3}", request.getRequestURI(), bufferedRequest.getInputStreamString(), requestToken, redisLoginName));
+            } else {
+                log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1}", request.getRequestURI(), bufferedRequest.getInputStreamString()));
+            }
         }
 
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(ReturnMessage.UNAUTHORIZED);
