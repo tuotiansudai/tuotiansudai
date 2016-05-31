@@ -8,7 +8,7 @@
             <span style="padding-left: 45px;">如不想复投，请提前关闭自动投标，以免影响提现。</span>
         </div>
             <div class="planSwitch" id="planSwitchDom">
-                <form name="planForm" id="signPlanForm" method="post" action="/investor/auto-invest/turn-on">
+                <form name="planForm" id="signPlanForm" method="post" action="/auto-invest/turn-on">
                     <dl>
                         <dt>功能状态：</dt>
                         <dd class="switchBtn">
