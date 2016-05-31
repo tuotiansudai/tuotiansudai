@@ -52,8 +52,7 @@ public class FeedbackController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            long count = feedbackService.getFeedbackCount(loginName, source, type, status, startTime, endTime);
-            BasePaginationDataDto<FeedbackModel> feedbackModel = feedbackService.getFeedbackPagination(loginName, source, type, status, startTime, endTime, index, pageSize);
+            BasePaginationDataDto<FeedbackModel> feedbackModel = feedbackService.getFeedbackPagination(loginName, source, type, status, startTime, endTime, 1, Integer.MAX_VALUE);
             List<List<String>> data = Lists.newArrayList();
             List<FeedbackModel> feedbackModelList = feedbackModel.getRecords();
             for (int i = 0; i < feedbackModelList.size(); i++) {
