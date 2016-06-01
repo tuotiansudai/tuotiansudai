@@ -56,6 +56,12 @@ public class TransferApplicationController {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("MULTITERM");
         }
+        if (transferApplicationModels.size() == 1) {
+            if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(transferApplicationModels.get(0).getStatus())) {
+                baseDataDto.setStatus(false);
+                baseDataDto.setMessage(transferApplicationModels.get(0).getStatus().name());
+            }
+        }
         return baseDataDto;
     }
 
