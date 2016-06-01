@@ -241,7 +241,8 @@
                             </div>
                             <div class="right-coupon">
                                 <p class="mt-10">
-                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
+                                    <#assign couponTypes = ["RED_ENVELOPE", "NEWBIE_COUPON", "INVEST_COUPON"]>
+                                    <#if couponTypes?seq_contains(coupon.couponType)>
                                         <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
