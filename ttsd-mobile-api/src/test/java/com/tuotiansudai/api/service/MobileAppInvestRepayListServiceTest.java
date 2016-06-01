@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.BaseParamTest;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.InvestRepayListRequestDto;
-import com.tuotiansudai.api.dto.InvestRepayListResponseDataDto;
-import com.tuotiansudai.api.service.impl.MobileAppInvestRepayListServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.InvestRepayListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.InvestRepayListResponseDataDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestRepayListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

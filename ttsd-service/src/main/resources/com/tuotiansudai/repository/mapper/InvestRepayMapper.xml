@@ -85,14 +85,14 @@
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime})
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime}, now())
         </foreach>
     </insert>
 
@@ -136,7 +136,8 @@
             default_interest = #{defaultInterest},
             is_transferred = #{isTransferred},
             repay_amount = #{repayAmount},
-            status = #{status}
+            status = #{status},
+            updated_time = now()
         where id = #{id}
     </update>
 

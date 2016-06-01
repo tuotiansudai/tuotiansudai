@@ -1,12 +1,11 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.RetrievePasswordRequestDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppRetrievePasswordController;
+import com.tuotiansudai.api.dto.v1_0.RetrievePasswordRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppRetrievePasswordService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
