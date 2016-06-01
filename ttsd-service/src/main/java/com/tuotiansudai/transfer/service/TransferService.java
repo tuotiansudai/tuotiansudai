@@ -24,4 +24,6 @@ public interface TransferService {
 
     TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
 
+    BasePaginationDataDto generateTransferableInvest(String loginName,Integer index,Integer pageSize);
+
 }

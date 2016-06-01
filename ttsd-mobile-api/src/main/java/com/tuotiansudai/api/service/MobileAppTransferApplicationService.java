@@ -21,4 +21,7 @@ public interface MobileAppTransferApplicationService {
 
     BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto);
 
+    BaseResponseDto generateTransferableInvest(TransferableInvestRequestDto requestDto);
+
+
 }

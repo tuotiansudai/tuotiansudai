@@ -184,7 +184,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
                 return false;
             }
             DateTime applyTransferTime = new DateTime(transferApplicationModelTemp.getApplicationTime()).withTimeAtStartOfDay();
-            return transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(applyTransferTime) != 0;
+            if(transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(applyTransferTime) == 0){
+                return false;
+            }
 
         }
 
