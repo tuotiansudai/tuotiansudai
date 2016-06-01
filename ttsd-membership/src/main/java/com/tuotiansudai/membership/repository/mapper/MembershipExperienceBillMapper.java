@@ -2,7 +2,6 @@ package com.tuotiansudai.membership.repository.mapper;
 
 
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper">
+
+    <resultMap id="MembershipExperienceBillResultMap" type="MembershipExperienceBillModel">
+        <id column="id" property="id"/>
+        <result column="level" property="level"/>
+        <result column="experience" property="experience"/>
+        <result column="fee" property="fee"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipExperienceBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into membership_experience_bill (login_name, experience, created_time, description , type)
+        value(#{loginName}, #{experience}, #{createdTime}, #{description},  #{type})
+    </insert>
+
+    <update id="update" parameterType="MembershipExperienceBillModel">
+        update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, created_time = #{createdTime}, type = #{type} where id = #{id}
+    </update>
+
+    <update id="delete" parameterType="MembershipExperienceBillModel">
+        delete * from membership_experience_bill where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="MembershipExperienceBillResultMap" parameterType="long">
+        select * from membership_experience_bill where id = #{id}
+    </select>
+
+</mapper>

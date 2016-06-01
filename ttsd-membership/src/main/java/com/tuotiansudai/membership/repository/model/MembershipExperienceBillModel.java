@@ -1,8 +1,9 @@
 package com.tuotiansudai.membership.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MembershipExperienceBillModel {
+public class MembershipExperienceBillModel implements Serializable{
 
     private long id;
     private String loginName;

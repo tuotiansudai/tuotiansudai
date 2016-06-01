@@ -9,6 +9,13 @@ public class MembershipModel implements Serializable{
     private long experience;
     private double fee;
 
+    public MembershipModel(long id, String level, long experience, double fee) {
+        this.id = id;
+        this.level = level;
+        this.experience = experience;
+        this.fee = fee;
+    }
+
     public long getId() {
         return id;
     }
