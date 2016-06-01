@@ -237,7 +237,12 @@ public class PointTaskServiceTest {
         pointTaskService.completeNewTask(PointTask.EACH_REFERRER_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_REFERRER_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(referrerName,pointTaskModel.getId());
-        assertTrue(count == 3);
+        assertTrue(count == 2);
+    }
+
+    @Test
+    public void shouldFirstReferrerInvestIsOk(){
+
     }
 
 

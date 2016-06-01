@@ -160,7 +160,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                         for(int i = 0; i < awardCount; i ++){
                             for(ReferrerRelationModel referrerRelationModel : referrerRelationModelList){
                                 long level = getMaxTaskLevel(pointTaskLevel,referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId());
-                                userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level + 1));
+                                userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level));
                             }
                         }
                     }
