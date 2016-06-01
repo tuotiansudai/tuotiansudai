@@ -3,7 +3,7 @@ CREATE TABLE `aa`.`user_op_log` (
   `login_name`   VARCHAR(25)     NOT NULL,
   `op_type`      VARCHAR(50)     NOT NULL,
   `ip`           VARCHAR(25)     NOT NULL,
-  `device_id`    VARCHAR(50)     NOT NULL,
+  `device_id`    VARCHAR(50),
   `source`       VARCHAR(25)     NOT NULL,
   `created_time` DATETIME        NOT NULL,
   `description`  TEXT,

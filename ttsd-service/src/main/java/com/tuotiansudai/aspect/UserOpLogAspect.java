@@ -102,8 +102,7 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.BIND_CARD);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
-        logModel.setDescription(ret.getData().getMessage());
+        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
 
         userOpLogMapper.create(logModel);
     }
@@ -132,10 +131,20 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.REPLACE_CARD);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
-        logModel.setDescription(ret.getData().getMessage());
+        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
 
         userOpLogMapper.create(logModel);
+    }
+
+    private void setDescription(BaseDto<PayFormDataDto> returnValue, UserOpLogModel logModel) {
+        BaseDto<PayFormDataDto> ret = returnValue;
+        String desc;
+        if (ret == null || ret.getData() == null) {
+            desc = "Fail";
+        } else {
+            desc = ret.getData().getMessage();
+        }
+        logModel.setDescription(desc);
     }
 
     /**
@@ -172,8 +181,7 @@ public class UserOpLogAspect {
         logModel.setOpType(opType);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
-        logModel.setDescription(ret.getData().getMessage());
+        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
 
         userOpLogMapper.create(logModel);
 
@@ -186,7 +194,7 @@ public class UserOpLogAspect {
             noPasswordLogModel.setSource(source);
             noPasswordLogModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
             logModel.setCreatedTime(new Date());
-            noPasswordLogModel.setDescription(ret.getData().getMessage());
+            setDescription((BaseDto<PayFormDataDto>) returnValue, noPasswordLogModel);
             userOpLogMapper.create(noPasswordLogModel);
         }
     }
