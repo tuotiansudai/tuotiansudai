@@ -9,9 +9,11 @@ import com.tuotiansudai.repository.model.*;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.omg.CORBA.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.Object;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,7 +32,7 @@ public class UserOpLogAspect {
      */
     //String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId
     @AfterReturning(value = "execution(* com.tuotiansudai.service.UserService.changePassword(..))", returning = "returnValue")
-    public void afterChangePassword(JoinPoint joinPoint, Object returnValue){
+    public void afterChangePassword(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         String loginName = (String) args[0];
         String ip = (String) args[3];
@@ -44,7 +46,7 @@ public class UserOpLogAspect {
         logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.CHANGE_PASSWORD);
         logModel.setCreatedTime(new Date());
-        logModel.setDescription((Boolean)returnValue ? "Success" : "Fail");
+        logModel.setDescription((Boolean) returnValue ? "Success" : "Fail");
 
         userOpLogMapper.create(logModel);
     }
@@ -57,7 +59,7 @@ public class UserOpLogAspect {
      */
     // String loginName, String uuid, String ip, String platform, String deviceId
     @AfterReturning(value = "execution(* com.tuotiansudai.service.BindEmailService.verifyEmail(..))", returning = "returnValue")
-    public void afterBindEmail(JoinPoint joinPoint, Object returnValue){
+    public void afterBindEmail(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         String loginName = (String) args[0];
         String ip = (String) args[2];
@@ -71,7 +73,7 @@ public class UserOpLogAspect {
         logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.BIND_CHANGE_EMAIL);
         logModel.setCreatedTime(new Date());
-        logModel.setDescription(returnValue!=null ? "Success, bind Email: " + returnValue : "Fail");
+        logModel.setDescription(returnValue != null ? "Success, bind Email: " + returnValue : "Fail");
 
         userOpLogMapper.create(logModel);
     }
@@ -83,7 +85,7 @@ public class UserOpLogAspect {
      * @param returnValue
      */
     @AfterReturning(value = "execution(* com.tuotiansudai.service.BindBankCardService.bindBankCard(..))", returning = "returnValue")
-    public void afterBindBankCard(JoinPoint joinPoint, Object returnValue){
+    public void afterBindBankCard(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         BindBankCardDto dto = (BindBankCardDto) args[0];
 
@@ -100,7 +102,7 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.BIND_CARD);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>)returnValue;
+        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
         logModel.setDescription(ret.getData().getMessage());
 
         userOpLogMapper.create(logModel);
@@ -113,7 +115,7 @@ public class UserOpLogAspect {
      * @param returnValue
      */
     @AfterReturning(value = "execution(* com.tuotiansudai.service.BindBankCardService.replaceBankCard(..))", returning = "returnValue")
-    public void afterReplaceBankCard(JoinPoint joinPoint, Object returnValue){
+    public void afterReplaceBankCard(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         BindBankCardDto dto = (BindBankCardDto) args[0];
 
@@ -130,7 +132,7 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.REPLACE_CARD);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>)returnValue;
+        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
         logModel.setDescription(ret.getData().getMessage());
 
         userOpLogMapper.create(logModel);
@@ -143,16 +145,16 @@ public class UserOpLogAspect {
      * @param returnValue
      */
     @AfterReturning(value = "execution(* *.paywrapper.service.AgreementService.agreement(..))", returning = "returnValue")
-    public void afterAgreement(JoinPoint joinPoint, Object returnValue){
+    public void afterAgreement(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         AgreementDto dto = (AgreementDto) args[0];
 
         UserOpType opType;
 
         if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
-            opType =  UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
+            opType = UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
-            opType =  UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
+            opType = UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
         } else {
             return;
         }
@@ -170,13 +172,13 @@ public class UserOpLogAspect {
         logModel.setOpType(opType);
         logModel.setCreatedTime(new Date());
 
-        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>)returnValue;
+        BaseDto<PayFormDataDto> ret = (BaseDto<PayFormDataDto>) returnValue;
         logModel.setDescription(ret.getData().getMessage());
 
         userOpLogMapper.create(logModel);
 
         // 如果开通的是“免密支付”协议，那么默认会自动开通“免密投资”功能。
-        if (opType ==  UserOpType.NO_PASSWORD_AGREEMENT) {
+        if (opType == UserOpType.NO_PASSWORD_AGREEMENT) {
             UserOpLogModel noPasswordLogModel = new UserOpLogModel();
             noPasswordLogModel.setLoginName(loginName);
             noPasswordLogModel.setIp(ip);
@@ -196,7 +198,7 @@ public class UserOpLogAspect {
      */
     @AfterReturning(value = "execution(* com.tuotiansudai.service.InvestService.turnOnAutoInvest(..))")
     public void afterTurnOnAutoInvest(JoinPoint joinPoint) {
-        AutoInvestPlanModel model = (AutoInvestPlanModel)joinPoint.getArgs()[0];
+        AutoInvestPlanModel model = (AutoInvestPlanModel) joinPoint.getArgs()[0];
 
         UserOpLogModel logModel = new UserOpLogModel();
         logModel.setLoginName(model.getLoginName());
@@ -215,10 +217,12 @@ public class UserOpLogAspect {
      *
      * @param joinPoint
      */
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.InvestService.turnOffAutoInvest(..))")
-    public void afterTurnOffAutoInvest(JoinPoint joinPoint) {
-        String loginName = (String)joinPoint.getArgs()[0];
-        String ip = (String)joinPoint.getArgs()[1];
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.InvestService.turnOffAutoInvest(..))", returning = "returnValue")
+    public void afterTurnOffAutoInvest(JoinPoint joinPoint, Object returnValue) {
+        if (!(Boolean) returnValue) return;
+
+        String loginName = (String) joinPoint.getArgs()[0];
+        String ip = (String) joinPoint.getArgs()[1];
 
         UserOpLogModel logModel = new UserOpLogModel();
         logModel.setLoginName(loginName);

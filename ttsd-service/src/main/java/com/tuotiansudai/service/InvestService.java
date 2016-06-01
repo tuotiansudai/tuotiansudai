@@ -50,7 +50,7 @@ public interface InvestService {
 
     void turnOnAutoInvest(AutoInvestPlanModel model);
 
-    void turnOffAutoInvest(String loginName, String ip);
+    boolean turnOffAutoInvest(String loginName, String ip);
 
     AutoInvestPlanModel findAutoInvestPlan(String loginName);
 
