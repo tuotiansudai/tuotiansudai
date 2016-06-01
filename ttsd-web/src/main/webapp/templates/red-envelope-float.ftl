@@ -74,7 +74,7 @@
 		</div>
 		<div class="content-list">
 			<label class="name-text">联系方式：</label>
-			<input type="text" class="phone-text ignore int-text" name="contact" value="" id="phoneText">
+			<input type="text" class="phone-text ignore int-text" name="contact" value="" id="phoneText" maxlength="20">
 		</div>
 		<div class="content-list">
 			<label class="name-text">验证码：</label>
