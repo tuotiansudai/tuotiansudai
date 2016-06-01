@@ -7,10 +7,13 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +42,17 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             }
         }
 
-        loanModels.addAll(notContainNewBieList);
+        if (StringUtils.isEmpty(baseParamDto.getBaseParam().getUserId()) || investMapper.countInvestSuccessExperience(baseParamDto.getBaseParam().getUserId()) == 0) {
+            List<LoanModel> loanModelsExperience = loanMapper.findByProductType(ProductType.EXPERIENCE);
+            if (CollectionUtils.isNotEmpty(loanModelsExperience)) {
+                loanModels.add(loanModelsExperience.get(0));
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(notContainNewBieList)) {
+            loanModels.addAll(notContainNewBieList);
+        }
+
         if(CollectionUtils.isEmpty(loanModels)){
             List<LoanModel> completeLoanModels = loanMapper.findLoanListWeb(null, LoanStatus.COMPLETE, 0, 0, 0,0,0);
             if(CollectionUtils.isNotEmpty(completeLoanModels)){
@@ -88,7 +101,8 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
             loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
-            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
+            loanResponseDataDto.setInvestFeeRate(decimalFormat.format(loan.getInvestFeeRate() * 100));
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

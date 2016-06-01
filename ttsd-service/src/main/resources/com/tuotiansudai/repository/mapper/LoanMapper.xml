@@ -468,11 +468,12 @@
         FROM
         loan
         WHERE
+            loan.product_type != 'EXPERIENCE'
         <if test="loanStatus == 'RAISING'">
-            loan.status in ('RAISING','PREHEAT')
+            and loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus == 'COMPLETE'">
-            loan.status = 'COMPLETE'
+            and loan.status = 'COMPLETE'
         </if>
 
         <if test="IsContainNewBie == 'false'">

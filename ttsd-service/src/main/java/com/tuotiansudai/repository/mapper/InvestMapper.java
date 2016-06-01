@@ -194,6 +194,21 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
+    List<InvestModel> findInvestAchievementsByLoanId(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> findInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                   @Param(value = "index") int index,
+                                                   @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                       @Param(value = "loanStatus") LoanStatus loanStatus);
+
     List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
                                                @Param(value = "loginName") String loginName);
+
+    long countInvestSuccessExperience(@Param(value = "loginName") String loginName);
+
+    long countInvestSuccessExperienceToday();
+
 }
