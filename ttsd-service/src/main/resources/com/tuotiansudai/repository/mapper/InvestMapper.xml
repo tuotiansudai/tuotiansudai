@@ -54,12 +54,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, invest_time, trading_time, achievements
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -73,13 +73,14 @@
         channel = #{channel},
         is_no_password_invest = #{isNoPasswordInvest},
         created_time = #{createdTime},
+        updated_time = now(),
         trading_time = #{tradingTime},
         achievements = #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}
         where id = #{id}
     </update>
 
     <update id="updateTransferStatus" parameterType="map">
-        update invest set transfer_status = #{transferStatus} where id = #{id}
+        update invest set transfer_status = #{transferStatus}, updated_time = now() where id = #{id}
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
@@ -168,7 +169,7 @@
     </select>
 
     <update id="cleanWaitingInvest" parameterType="long">
-        update invest set status = 'FAIL'
+        update invest set status = 'FAIL', updated_time = now()
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
     </update>
