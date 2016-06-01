@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -41,7 +43,7 @@ public class LoanMapperTest {
     public void shouldCreateLoan() {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
-        LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT);
+        LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT,ActivityType.NEWBIE);
         loanMapper.create(fakeLoan);
 
         assertNotNull(loanMapper.findById(fakeLoan.getId()));
@@ -51,7 +53,7 @@ public class LoanMapperTest {
     public void shouldUpdateLoan() {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
-        LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT);
+        LoanModel fakeLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT,ActivityType.NEWBIE);
         loanMapper.create(fakeLoan);
 
         fakeLoan.setStatus(LoanStatus.COMPLETE);
@@ -65,10 +67,10 @@ public class LoanMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
-        LoanModel fakeRepayingLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING);
-        LoanModel fakeRepayingLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING);
-        LoanModel fakeRepayingLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING);
-        LoanModel fakeCompletedLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE);
+        LoanModel fakeRepayingLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING,ActivityType.NEWBIE);
+        LoanModel fakeRepayingLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING,ActivityType.NEWBIE);
+        LoanModel fakeRepayingLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING,ActivityType.NEWBIE);
+        LoanModel fakeCompletedLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NEWBIE);
 
         loanMapper.create(fakeRepayingLoan1);
         loanMapper.create(fakeRepayingLoan2);
@@ -118,10 +120,10 @@ public class LoanMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
-        LoanModel fakeCompletedLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE);
-        LoanModel fakeCompletedLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE);
-        LoanModel fakeCompletedLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE);
-        LoanModel fakeCanceledLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
+        LoanModel fakeCompletedLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NEWBIE);
+        LoanModel fakeCompletedLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NEWBIE);
+        LoanModel fakeCompletedLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NEWBIE);
+        LoanModel fakeCanceledLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
 
         loanMapper.create(fakeCompletedLoan1);
         loanMapper.create(fakeCompletedLoan2);
@@ -175,10 +177,10 @@ public class LoanMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
-        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
-        LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
-        LoanModel fakeCanceledLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
-        LoanModel fakeCompletedLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE);
+        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
+        LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
+        LoanModel fakeCanceledLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
+        LoanModel fakeCompletedLoan = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NEWBIE);
 
         loanMapper.create(fakeCanceledLoan1);
         fakeCanceledLoan1.setRecheckTime(new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate());
@@ -221,7 +223,7 @@ public class LoanMapperTest {
         assertThat(loanModels.get(1).getCanceledDate().getTime(), is(fakeCanceledLoan2.getRecheckTime().getTime()));
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
+    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");
@@ -232,7 +234,7 @@ public class LoanMapperTest {
         fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
         fakeLoanModel.setStatus(loanStatus);
-        fakeLoanModel.setActivityType(ActivityType.NORMAL);
+        fakeLoanModel.setActivityType(activityType);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
@@ -288,11 +290,25 @@ public class LoanMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
-        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
+        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId(), new Date());
 
         LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
         assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
+    }
+
+    @Test
+    public void shouldFindHomeLoanByIsContainNewBieIsOk(){
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+
+        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
+        LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NORMAL);
+        loanMapper.create(fakeCanceledLoan1);
+        loanMapper.create(fakeCanceledLoan2);
+
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name()));
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name()));
     }
 }
