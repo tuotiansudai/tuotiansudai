@@ -4,6 +4,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SendCloudClient;
+import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.util.SendCloudMailUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class SendCloudServiceTest {
 
     @Mock
     private SendCloudClient sendCloudClient;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -65,6 +67,7 @@ public class SendCloudServiceTest {
 
         map.put("userList", mismatchUserList);
 
+        sendCloudMailUtil.setEnvironment(Environment.DEV);
         boolean flag = sendCloudMailUtil.sendUserBalanceCheckingResult("zhoubaoxin@tuotiansudai.com", map);
         assertTrue(flag);
     }

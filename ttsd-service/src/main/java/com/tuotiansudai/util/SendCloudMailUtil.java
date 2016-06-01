@@ -91,4 +91,8 @@ public class SendCloudMailUtil {
         }
         return false;
     }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 }
