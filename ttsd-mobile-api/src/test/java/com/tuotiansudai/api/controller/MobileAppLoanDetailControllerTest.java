@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.LoanDetailRequestDto;
-import com.tuotiansudai.api.dto.LoanListRequestDto;
-import com.tuotiansudai.api.service.MobileAppLoanDetailService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppLoanDetailController;
+import com.tuotiansudai.api.dto.v1_0.LoanDetailRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

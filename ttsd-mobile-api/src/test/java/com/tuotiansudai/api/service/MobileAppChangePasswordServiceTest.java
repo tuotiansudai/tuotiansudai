@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.BaseParamTest;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ChangePasswordRequestDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.impl.MobileAppChangePasswordServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ChangePasswordRequestDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppChangePasswordServiceImpl;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
