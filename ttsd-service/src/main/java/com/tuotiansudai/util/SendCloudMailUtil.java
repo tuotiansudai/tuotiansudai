@@ -2,10 +2,13 @@ package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.SendCloudClient;
 import com.tuotiansudai.dto.SendCloudType;
+import com.tuotiansudai.repository.model.Environment;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,8 @@ public class SendCloudMailUtil {
     @Autowired
     private SendCloudClient sendCloudClient;
 
+    @Value("${common.environment}")
+    private Environment environment;
 
     public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {
         try {
@@ -60,6 +65,7 @@ public class SendCloudMailUtil {
         headerMap.put("endTime", (String) map.get("endTime"));
         List<String> mismatchUserList = (List<String>) map.get("userList");
         headerMap.put("userCount", String.valueOf(mismatchUserList.size()));
+        headerMap.put("env", environment.name());
 
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
 
