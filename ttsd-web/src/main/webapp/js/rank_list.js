@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper','template','share', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
+require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
@@ -238,26 +238,6 @@ require(['jquery', 'rotate', 'layerWrapper','template','share', 'jquery.validate
         })
     };
 
-
-
-    //share event
-    window._bd_share_config = {
-        "common": {
-            "bdSize": "32",
-            "bdText": "霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！",
-            "bdPic": staticServer + "/images/sign/actor/ranklist/share-images.png",
-            onAfterClick: function(cmd) {
-                $.ajax({
-                    url: '/activity/get-lottery-chance',
-                    type: 'POST',
-                    dataType: 'json'
-                });
-            }
-        },
-        "share": {}
-    };
-    
-
     $("#countForm").validate({
         debug: true,
         rules: {
@@ -453,9 +433,6 @@ require(['jquery', 'rotate', 'layerWrapper','template','share', 'jquery.validate
                         $('#tipListPhone').show();
                         $('#noLoginPhone').show();
                     }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
                 });
         }
     });
@@ -761,3 +738,12 @@ require(['jquery', 'rotate', 'layerWrapper','template','share', 'jquery.validate
     PcDataGetPhone();
 
 });
+
+//share event
+function sendShare(){
+    $.ajax({
+        url: '/activity/get-lottery-chance',
+        type: 'POST',
+        dataType: 'json'
+    });
+};

@@ -113,7 +113,7 @@ public class LoanServiceImpl implements LoanService {
                 loanerId,
                 String.valueOf(loanModel.getLoanAmount()),
                 String.valueOf(loanModel.getId()),
-                loanModel.getName()
+                String.valueOf(loanModel.getId())
         );
         try {
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,

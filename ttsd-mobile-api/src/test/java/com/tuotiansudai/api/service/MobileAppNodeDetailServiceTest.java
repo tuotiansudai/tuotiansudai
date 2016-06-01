@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.NodeDetailRequestDto;
-import com.tuotiansudai.api.dto.NodeDetailResponseDataDto;
-import com.tuotiansudai.api.service.impl.MobileAppNodeDetailServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.NodeDetailRequestDto;
+import com.tuotiansudai.api.dto.v1_0.NodeDetailResponseDataDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppNodeDetailServiceImpl;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
 import com.tuotiansudai.util.IdGenerator;

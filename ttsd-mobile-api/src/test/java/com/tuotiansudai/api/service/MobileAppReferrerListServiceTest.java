@@ -2,14 +2,12 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
-import com.tuotiansudai.api.service.impl.MobileAppReferrerListServiceImpl;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReferrerListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.ReferrerListResponseDataDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerListServiceImpl;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.service.impl.ReferrerManageServiceImpl;
 import org.junit.Test;
 import org.mockito.InjectMocks;
