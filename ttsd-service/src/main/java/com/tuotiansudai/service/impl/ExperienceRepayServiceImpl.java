@@ -14,10 +14,12 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @Component
 public class ExperienceRepayServiceImpl implements ExperienceRepayService {
+    static Logger logger = Logger.getLogger(ExperienceRepayServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -54,31 +57,65 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
         //调用时需要保证compareDate是new Date()
-        DateTime todayDateTime = new DateTime(compareDate).withTimeAtStartOfDay();
+        DateTime compareDateTime = new DateTime(compareDate).withTimeAtStartOfDay();
         repayDate = new DateTime(repayDate).withMillisOfSecond(0).toDate();
 
         List<InvestRepayModel> successInvestRepayModels = Lists.newArrayList();
         for (InvestModel investModel : investModels) {
-            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            if (null == investModel) {
+                continue;
+            }
+            List<InvestRepayModel> investRepayModels;
+            try {
+                investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[ExperienceRepayService][repay] findByInvestIdAndPeriodAse failed. " +
+                        "investId:{0}\nExceptionMessage: {1}", investModel.getId(), e.toString()));
+                continue;
+            }
+
             if (CollectionUtils.isEmpty(investModels)) {
                 continue;
             }
             for (InvestRepayModel investRepayModel : investRepayModels) {
+                if (null == investRepayModel) {
+                    continue;
+                }
                 if (investRepayModel.getStatus() != RepayStatus.REPAYING) {
                     continue;
                 }
+                try {
+                    DateTime repayDateTime = new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay();
+                    if (!repayDateTime.equals(compareDateTime)) {
+                        continue;
+                    }
 
-                DateTime repayDateTime = new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay();
+                    investRepayModel.setActualFee(investRepayModel.getExpectedFee());
+                    investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
+                    investRepayModel.setActualRepayDate(repayDate);
+                    investRepayModel.setStatus(RepayStatus.COMPLETE);
 
-                if (!repayDateTime.equals(todayDateTime)) {
+                    try {
+                        investRepayMapper.update(investRepayModel);
+                        logger.info("[ExperienceRepayService][repay] invest_repay table updated. investRepayModel: " + investRepayModel.toString());
+                    } catch (Exception e) {
+                        logger.error(MessageFormat.format("[ExperienceRepayService][repay] update invest_repay table error. " +
+                                "should updated investRepayModel: {0}\nExceptionMessage: {1}", investRepayModel.toString(), e.toString()));
+                        continue;
+                    }
+                    try {
+                        couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
+                        logger.info("sending experience coupon, loginName:" + investModel.getLoginName());
+                    } catch (Exception e) {
+                        logger.error(MessageFormat.format("[ExperienceRepayService][repay] invest_repay table has been updated, " +
+                                        "but sending coupon failed. assignUserCoupon() loginName: {0}, updated investRepayModel: {1}\nExceptionMessage: {2}",
+                                investModel.getLoginName(), investRepayModel.toString(), e.toString()));
+                        continue;
+                    }
+                } catch (Exception e) {
+                    logger.error(e.toString());
                     continue;
                 }
-                investRepayModel.setActualFee(investRepayModel.getExpectedFee());
-                investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
-                investRepayModel.setActualRepayDate(repayDate);
-                investRepayModel.setStatus(RepayStatus.COMPLETE);
-                investRepayMapper.update(investRepayModel);
-                couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
                 successInvestRepayModels.add(investRepayModel);
             }
         }

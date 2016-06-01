@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Date;
 
 public class InvestRepayModel implements Serializable {
@@ -36,6 +37,16 @@ public class InvestRepayModel implements Serializable {
     private Date createdTime = new Date();
 
     private TransferStatus transferStatus;
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("id:{0} investId:{1} period:{2} corpus:{3} expectedInterest:{4} actualInterest:{5} " +
+                        "defaultInterest:{6} expectedFee:{7} actualFee:{8} repayAmount:{9} repayDate:{10} actualRepayDate:{11} " +
+                        "status: {12} isTransferred:{13} createdTime:{14} transferStatus:{15}", this.id, this.investId,
+                this.period, this.corpus, this.expectedInterest, this.actualInterest, this.defaultInterest, this.expectedFee,
+                this.actualFee, this.repayAmount, this.repayDate, this.actualRepayDate, this.status, this.isTransferred,
+                this.createdTime, this.transferStatus);
+    }
 
     public InvestRepayModel() {
     }
