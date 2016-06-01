@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.aspect;
 
-import com.tuotiansudai.api.dto.AutoInvestPlanRequestDto;
-import com.tuotiansudai.api.dto.BaseParamDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.repository.mapper.UserOpLogMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserOpLogModel;
@@ -23,7 +23,7 @@ public class MobileUserOpLogAspect {
     @Autowired
     private UserOpLogMapper userOpLogMapper;
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.MobileAppAutoInvestPlanService.buildAutoInvestPlan(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService.buildAutoInvestPlan(..))")
     public void afterBuildAutoInvestPlan(JoinPoint joinPoint) {
         AutoInvestPlanRequestDto dto = (AutoInvestPlanRequestDto)joinPoint.getArgs()[0];
 
@@ -40,7 +40,7 @@ public class MobileUserOpLogAspect {
         userOpLogMapper.create(logModel);
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.MobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(..))")
     public void afterNoPasswordInvestTurnOn(JoinPoint joinPoint) {
         BaseParamDto dto = (BaseParamDto)joinPoint.getArgs()[0];
         String ip = (String)joinPoint.getArgs()[1];
@@ -58,7 +58,7 @@ public class MobileUserOpLogAspect {
         userOpLogMapper.create(logModel);
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.MobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(..))", returning = "returnValue")
     public void afterNoPasswordInvestTurnOff(JoinPoint joinPoint, Object returnValue) {
         BaseParamDto dto = (BaseParamDto)joinPoint.getArgs()[0];
         String ip = (String)joinPoint.getArgs()[1];

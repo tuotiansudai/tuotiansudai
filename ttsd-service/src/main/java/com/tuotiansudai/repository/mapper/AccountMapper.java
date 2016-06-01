@@ -45,4 +45,9 @@ public interface AccountMapper {
 
     List<String> findBirthOfAccountInDay();
 
+    int findTotalAccountCount();
+
+    List<AccountModel> findAccountWithBalance(@Param(value = "startLimit") int startLimit,
+                                              @Param(value = "endLimit") int endLimit);
+
 }
