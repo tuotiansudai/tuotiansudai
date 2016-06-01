@@ -108,7 +108,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         }
 
         try {
-            investTransferService.investTransferApply(transferApplicationDto);
+            boolean result = investTransferService.investTransferApply(transferApplicationDto);
+            if (!result) {
+                return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
+            }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
             return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
