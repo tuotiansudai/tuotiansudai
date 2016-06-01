@@ -3,7 +3,7 @@
 
 <div class="register-container page-width">
     <div class="step-register-head">
-        欢迎注册拓天速贷  <span class="text-m">已有账号？<a href="#"> 立即登录</a></span>
+        欢迎注册拓天速贷  <span class="text-m">已有账号？<a href="/login"> 立即登录</a></span>
     </div>
     <div class="clear-blank"></div>
     <nav></nav>
