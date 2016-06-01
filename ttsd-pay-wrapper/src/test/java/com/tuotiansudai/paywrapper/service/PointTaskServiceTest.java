@@ -242,7 +242,52 @@ public class PointTaskServiceTest {
 
     @Test
     public void shouldFirstReferrerInvestIsOk(){
+        long loanId = this.idGenerator.generate();
+        String loginName = "investor";
+        String referrerName = "referrer";
+        this.createUserByUserId(referrerName);
+        this.createUserByUserId(loginName);
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        referrerRelationModel.setLevel(1);
+        referrerRelationModel.setReferrerLoginName(referrerName);
+        AccountModel investorAccountModel = createAccountByUserId(loginName);
+        accountMapper.create(investorAccountModel);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setLoanId(loanId);
+        investModel.setLoginName(loginName);
+        investModel.setAmount(11);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setTransferStatus(TransferStatus.SUCCESS);
+        investModel.setSource(Source.IOS);
+        referrerRelationModel.setLoginName(investModel.getLoginName());
+        referrerRelationMapper.create(referrerRelationModel);
+        pointTaskService.completeNewTask(PointTask.FIRST_REFERRER_INVEST,investModel);
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_REFERRER_INVEST);
+        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(referrerName,pointTaskModel.getId());
+        assertTrue(count == 1);
+    }
 
+    @Test
+    public void shouldFirstInvest180IsOk(){
+        long loanId = this.idGenerator.generate();
+        String loginName = "investor";
+        InvestModel investModel = createData(loginName,loanId,250000);
+        pointTaskService.completeNewTask(PointTask.FIRST_INVEST_180,investModel);
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_INVEST_180);
+        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
+        assertTrue(count == 1);
+    }
+
+    @Test
+    public void shouldFirstInvest360IsOk(){
+        long loanId = this.idGenerator.generate();
+        String loginName = "investor";
+        InvestModel investModel = createData(loginName,loanId,250000);
+        pointTaskService.completeNewTask(PointTask.FIRST_INVEST_360,investModel);
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_INVEST_360);
+        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
+        assertTrue(count == 1);
     }
 
 

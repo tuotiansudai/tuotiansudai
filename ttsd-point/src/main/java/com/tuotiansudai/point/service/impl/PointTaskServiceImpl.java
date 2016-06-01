@@ -158,26 +158,25 @@ public class PointTaskServiceImpl implements PointTaskService {
                     if(awardCount > 0){
                         Map<String,Long> pointTaskLevel = new HashedMap();
                         for(int i = 0; i < awardCount; i ++){
-                            for(ReferrerRelationModel referrerRelationModel : referrerRelationModelList){
-                                long level = getMaxTaskLevel(pointTaskLevel,referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId());
-                                userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level));
-                            }
+                            userPointTaskModelList = createUserPointTaskModel(referrerRelationModelList,pointTaskModel,userPointTaskModelList,pointTaskLevel);
                         }
                     }
                 }
                 break;
             case FIRST_REFERRER_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(investModel.getLoginName());
-                if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName()) > 0){
-                    userPointTaskModelList = createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0,userPointTaskModelList);
+                if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName()) == 0){
+                    Map<String,Long> pointTaskLevel = new HashedMap();
+                    userPointTaskModelList = createUserPointTaskModel(referrerRelationModelList,pointTaskModel,userPointTaskModelList,pointTaskLevel);
                 }
                 break;
             case FIRST_INVEST_180:
-                if(investMapper.countInvestSuccessByProductType(ProductType._180,investModel.getLoginName()) > 0){
+                if(investMapper.countInvestSuccessByProductType(ProductType._180,investModel.getLoginName()) == 0){
                     userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),0));
                 }
+                break;
             case FIRST_INVEST_360:
-                if(investMapper.countInvestSuccessByProductType(ProductType._360,investModel.getLoginName()) > 0){
+                if(investMapper.countInvestSuccessByProductType(ProductType._360,investModel.getLoginName()) == 0){
                     userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),0));
                 }
                 break;
@@ -193,8 +192,9 @@ public class PointTaskServiceImpl implements PointTaskService {
         return pointTaskLevel.get(referrerLoginName);
     }
 
-    private List<UserPointTaskModel> createUserPointTaskModel(List<ReferrerRelationModel> referrerRelationModelList,PointTaskModel pointTaskModel,long level,List<UserPointTaskModel> userPointTaskModelList){
+    private List<UserPointTaskModel> createUserPointTaskModel(List<ReferrerRelationModel> referrerRelationModelList,PointTaskModel pointTaskModel,List<UserPointTaskModel> userPointTaskModelList,Map<String,Long> pointTaskLevel){
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModelList){
+            long level = getMaxTaskLevel(pointTaskLevel,referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId());
             userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level));
         }
         return userPointTaskModelList;

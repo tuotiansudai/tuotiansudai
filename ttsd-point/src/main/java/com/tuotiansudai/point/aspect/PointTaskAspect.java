@@ -57,15 +57,10 @@ public class PointTaskAspect {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        pointTaskService.completeNewTask(PointTask.EACH_RECOMMEND,investModel);
         pointTaskService.completeNewTask(PointTask.EACH_REFERRER_INVEST,investModel);
         pointTaskService.completeNewTask(PointTask.FIRST_REFERRER_INVEST,investModel);
         pointTaskService.completeNewTask(PointTask.FIRST_INVEST_180,investModel);
-        pointTaskService.completeNewTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,investModel);
-        pointTaskService.completeNewTask(PointTask.FIRST_TURN_ON_AUTO_INVEST,investModel);
         pointTaskService.completeNewTask(PointTask.FIRST_INVEST_360,investModel);
-        pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
-        pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
         pointService.obtainPointInvest(investModel);
 
         logger.debug("after returning invest, point task aspect completed");
