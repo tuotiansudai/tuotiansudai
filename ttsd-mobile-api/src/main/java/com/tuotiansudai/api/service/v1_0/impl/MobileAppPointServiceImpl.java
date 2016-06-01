@@ -82,10 +82,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
         DateTime today = new DateTime().withTimeAtStartOfDay();
         int signInCount = 0;
-        if (lastSignInPointDto != null) {
-            if(Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO){
-                signInCount = lastSignInPointDto.getSignInCount();
-            }
+        if (lastSignInPointDto != null && Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
+            signInCount = lastSignInPointDto.getSignInCount();
         }
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
         dataDto.setSignInTimes(signInCount);
