@@ -13,7 +13,7 @@
             <#else>
                 <em class="info">为了保障您的账户及资金安全，我们会对您进行实名认证，认证后不可更改。</em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未认证<a class="setlink setEmail" href="/register/account">认证</a>
+                    <i class="fa fa-times-circle no"></i>未认证<a class="setlink setEmail realName" href="/register/account">认证</a>
                 </span>
             </#if>
         </li>
