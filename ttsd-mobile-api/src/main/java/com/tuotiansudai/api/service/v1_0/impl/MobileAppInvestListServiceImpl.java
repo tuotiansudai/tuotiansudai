@@ -100,12 +100,32 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         int index = (requestDto.getIndex() - 1) * pageSize;
         List<InvestModel> investList;
         int investListCount;
-
-        investList = investMapper.findByLoginName(loginName, index, pageSize);
-        investListCount = (int) investMapper.findCountByLoginName(loginName);
+        if(isTransferApplicationTransferable(requestDto)){
+            investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, false);
+            UnmodifiableIterator<InvestModel> filter = Iterators.filter(investList.iterator(), new Predicate<InvestModel>() {
+                @Override
+                public boolean apply(InvestModel input) {
+                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId());
+                }
+            });
+            investList = Lists.newArrayList(filter);
+            int fromIndex = index;
+            int toIndex = fromIndex + pageSize;
+            investListCount = investList.size();
+            if(fromIndex >= investList.size()){
+                fromIndex = investList.size();
+            }
+            if(toIndex >= investList.size()){
+                toIndex = investList.size();
+            }
+            investList = investList.subList(fromIndex,toIndex);
+        }else{
+            investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, true);
+            investListCount = (int) investMapper.findCountByLoginNameExceptTransfer(loginName);
+        }
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investList));
+        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatus()));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount(investListCount);
@@ -119,7 +139,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         return dto;
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
+    private boolean isTransferApplicationTransferable(UserInvestListRequestDto requestDto) {
+        return org.apache.commons.collections.CollectionUtils.isNotEmpty(requestDto.getTransferStatus())
+                && requestDto.getTransferStatus().size() == 1 && requestDto.getTransferStatus().contains(TransferStatus.TRANSFERABLE);
+    }
+
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList, List<TransferStatus> transferStatuses) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
         if (investList != null) {

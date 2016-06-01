@@ -41,14 +41,6 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
     }
 
     @Test
-    public void shouldGenerateTransferableInvestIsSuccess() throws Exception{
-        when(service.generateTransferableInvest(any(TransferableInvestRequestDto.class))).thenReturn(successResponseDto);
-
-        doRequestWithServiceMockedTest("/get/transferable",
-                new PaginationRequestDto());
-    }
-
-    @Test
     public void shouldTransferApplyIsBadRequest() throws Exception{
         TransferApplyRequestDto transferApplyRequestDto =new TransferApplyRequestDto();
         transferApplyRequestDto.setTransferInvestId("123");

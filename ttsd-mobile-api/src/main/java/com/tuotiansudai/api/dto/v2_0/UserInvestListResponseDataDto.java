@@ -1,13 +1,13 @@
 package com.tuotiansudai.api.dto.v2_0;
 
+
 import java.util.List;
 
-
-public class LoanListResponseDataDto extends BaseResponseDataDto {
+public class UserInvestListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<LoanResponseDataDto> loanList;
+    private List<UserInvestRecordResponseDataDto> investList;
 
     public Integer getIndex() {
         return index;
@@ -33,12 +33,11 @@ public class LoanListResponseDataDto extends BaseResponseDataDto {
         this.totalCount = totalCount;
     }
 
-    public List<LoanResponseDataDto> getLoanList() {
-        return loanList;
+    public List<UserInvestRecordResponseDataDto> getInvestList() {
+        return investList;
     }
 
-    public void setLoanList(List<LoanResponseDataDto> loanList) {
-        this.loanList = loanList;
+    public void setInvestList(List<UserInvestRecordResponseDataDto> investList) {
+        this.investList = investList;
     }
 }
-

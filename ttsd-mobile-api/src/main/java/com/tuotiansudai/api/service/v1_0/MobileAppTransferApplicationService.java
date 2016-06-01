@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.TransferableInvestRequestDto;
 import com.tuotiansudai.api.dto.v1_0.*;
 
 public interface MobileAppTransferApplicationService {
@@ -21,8 +20,5 @@ public interface MobileAppTransferApplicationService {
     BaseResponseDto transferApplicationList(TransferApplicationListRequestDto requestDto);
 
     BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto);
-
-    BaseResponseDto generateTransferableInvest(TransferableInvestRequestDto requestDto);
-
 
 }

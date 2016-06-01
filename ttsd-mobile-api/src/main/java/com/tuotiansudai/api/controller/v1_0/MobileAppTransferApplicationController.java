@@ -27,18 +27,6 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.generateTransfereeApplication(requestDto);
     }
-    @RequestMapping(value = "/get/transferable", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseResponseDto generateTransferableInvest(@RequestBody TransferableInvestRequestDto requestDto,BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String errorCode = bindingResult.getFieldError().getDefaultMessage();
-            String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto(errorCode, errorMessage);
-        } else {
-            requestDto.getBaseParam().setUserId(getLoginName());
-            return mobileAppTransferApplicationService.generateTransferableInvest(requestDto);
-        }
-    }
 
     @RequestMapping(value = "/get/transfer-apply", method = RequestMethod.POST)
     @ResponseBody

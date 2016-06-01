@@ -276,34 +276,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setData(transferApplicationDetailResponseDataDto);
         return dto;
     }
-
-    @Override
-    public BaseResponseDto<UserInvestListResponseDataDto> generateTransferableInvest(TransferableInvestRequestDto requestDto) {
-        String loginName = requestDto.getBaseParam().getUserId();
-        Integer pageSize = requestDto.getPageSize();
-        Integer index = requestDto.getIndex();
-        if (index == null || index <= 0) {
-            index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
-        List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index-1)*pageSize, pageSize);
-        UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(transferableInvestList));
-        dtoData.setIndex(requestDto.getIndex());
-        dtoData.setPageSize(requestDto.getPageSize());
-        dtoData.setTotalCount((int)investMapper.findCountTransferableApplicationPaginationByLoginName(loginName));
-
-        BaseResponseDto<UserInvestListResponseDataDto> dto = new BaseResponseDto<>();
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        dto.setData(dtoData);
-
-        return dto;
-
-    }
-
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         Map<Long, LoanModel> loanMapCache = Maps.newHashMap();

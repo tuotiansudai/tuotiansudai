@@ -157,41 +157,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
-    @Test
-    public void shouldGenerateTransferableInvestIsSuccess(){
-        TransferRuleModel transferRuleModel = new TransferRuleModel();
-        transferRuleModel.setLevelOneFee(0.01);
-        transferRuleModel.setLevelOneLower(1);
-        transferRuleModel.setLevelOneUpper(29);
-
-        transferRuleModel.setLevelTwoFee(0.005);
-        transferRuleModel.setLevelTwoLower(30);
-        transferRuleModel.setLevelTwoUpper(90);
-
-        transferRuleModel.setLevelThreeFee(0.005);
-        transferRuleModel.setLevelThreeLower(91);
-        transferRuleModel.setLevelThreeUpper(365);
-
-        transferRuleModel.setDiscount(0.005);
-        TransferableInvestRequestDto transferableInvestRequestDto = new TransferableInvestRequestDto();
-        transferableInvestRequestDto.setIndex(1);
-        transferableInvestRequestDto.setPageSize(10);
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("testuser");
-        transferableInvestRequestDto.setBaseParam(baseParam);
-        long loanId = idGenerator.generate();
-        LoanModel loanModel = createLoanByUserId("testuser", loanId);
-        InvestModel investModel = createInvest("testuser", loanId);
-        when(investMapper.findTransferableApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(Lists.newArrayList(investModel));
-        when(investMapper.findCountTransferableApplicationPaginationByLoginName(anyString())).thenReturn(1L);
-        when(transferRuleMapper.find()).thenReturn(transferRuleModel);
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(investService.estimateInvestIncome(anyLong(),anyLong())).thenReturn(1000l);
-        BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransferableInvest(transferableInvestRequestDto);
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(String.valueOf(loanId), baseResponseDto.getData().getInvestList().get(0).getLoanId());
-        assertEquals(investModel.getTransferStatus().name(), baseResponseDto.getData().getInvestList().get(0).getTransferStatus());
-    }
 
     @Test
     public void shouldTransferPurchaseIsSuccess() throws Exception {

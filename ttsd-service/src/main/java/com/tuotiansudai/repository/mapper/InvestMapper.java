@@ -51,6 +51,13 @@ public interface InvestMapper {
 
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
+    List<InvestModel> findByLoginNameExceptTransfer(@Param(value = "loginName") String loginName,
+                                                    @Param(value = "index") Integer index,
+                                                    @Param(value = "pageSize") Integer pageSize,
+                                                    @Param(value = "isPagination") boolean isPagination);
+
+    long findCountByLoginNameExceptTransfer(@Param(value = "loginName") String loginName);
+
     /**
      * 计算标的的投资总额
      *
