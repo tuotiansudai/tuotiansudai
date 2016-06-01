@@ -54,12 +54,15 @@ public class PointTaskServiceTest {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
     @Test
     public void shouldGetEachSumInvestTaskLevelOf0IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,100);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
         assertTrue(count == 0);
@@ -70,7 +73,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,500000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 1);
@@ -81,7 +84,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 2);
@@ -103,7 +106,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,10000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 4);
@@ -114,7 +117,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,50000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 5);
@@ -125,7 +128,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,100000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 6);
@@ -136,7 +139,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,250000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 7);
@@ -146,8 +149,8 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf0IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,10000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 0);
@@ -158,7 +161,7 @@ public class PointTaskServiceTest {
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
         InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 1);
@@ -168,8 +171,8 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf2IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,5000000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 2);
@@ -179,8 +182,8 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf3IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,10000000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 3);
@@ -190,8 +193,8 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf4IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,20000000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 4);
@@ -201,8 +204,8 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf5IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,50000000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 5);
@@ -212,11 +215,29 @@ public class PointTaskServiceTest {
     public void shouldGetFirstSingleInvestTaskLevelOf6IsOk(){
         long loanId = this.idGenerator.generate();
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        investService.investSuccess(investModel);
+        InvestModel investModel = createData(loginName,loanId,100000000);
+        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
         PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
         long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
         assertTrue(count == 6);
+    }
+
+    @Test
+    public void shouldEachReferrerInvestIsOk(){
+        long loanId = this.idGenerator.generate();
+        String loginName = "investor";
+        String referrerName = "referrer";
+        this.createUserByUserId(referrerName);
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        referrerRelationModel.setLevel(1);
+        referrerRelationModel.setReferrerLoginName(referrerName);
+        InvestModel investModel = createData(loginName,loanId,250000);
+        referrerRelationModel.setLoginName(investModel.getLoginName());
+        referrerRelationMapper.create(referrerRelationModel);
+        pointTaskService.completeNewTask(PointTask.EACH_REFERRER_INVEST,investModel);
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_REFERRER_INVEST);
+        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(referrerName,pointTaskModel.getId());
+        assertTrue(count == 3);
     }
 
 

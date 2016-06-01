@@ -19,16 +19,14 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PointTaskServiceImpl implements PointTaskService {
@@ -156,7 +154,16 @@ public class PointTaskServiceImpl implements PointTaskService {
             case EACH_REFERRER_INVEST:
                 referrerRelationModelList = referrerRelationMapper.findByLoginName(investModel.getLoginName());
                 if(CollectionUtils.isNotEmpty(referrerRelationModelList) && investModel.getAmount() > 100000){
-                    userPointTaskModelList = createUserPointTaskModel(referrerRelationModelList,pointTaskModel,0,userPointTaskModelList);
+                    long awardCount = investModel.getAmount()/100000;
+                    if(awardCount > 0){
+                        Map<String,Long> pointTaskLevel = new HashedMap();
+                        for(int i = 0; i < awardCount; i ++){
+                            for(ReferrerRelationModel referrerRelationModel : referrerRelationModelList){
+                                long level = getMaxTaskLevel(pointTaskLevel,referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId());
+                                userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level + 1));
+                            }
+                        }
+                    }
                 }
                 break;
             case FIRST_REFERRER_INVEST:
@@ -178,6 +185,14 @@ public class PointTaskServiceImpl implements PointTaskService {
         return userPointTaskModelList;
     }
 
+    private long getMaxTaskLevel(Map<String,Long> pointTaskLevel,String referrerLoginName,long taskId){
+        if(pointTaskLevel.get(referrerLoginName) == null){
+            pointTaskLevel.put(referrerLoginName,userPointTaskMapper.findMaxTaskLevelByLoginName(referrerLoginName,taskId));
+        }
+        pointTaskLevel.put(referrerLoginName,pointTaskLevel.get(referrerLoginName) + 1);
+        return pointTaskLevel.get(referrerLoginName);
+    }
+
     private List<UserPointTaskModel> createUserPointTaskModel(List<ReferrerRelationModel> referrerRelationModelList,PointTaskModel pointTaskModel,long level,List<UserPointTaskModel> userPointTaskModelList){
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModelList){
             userPointTaskModelList.add(new UserPointTaskModel(referrerRelationModel.getReferrerLoginName(),pointTaskModel.getId(),pointTaskModel.getPoint(),level));
@@ -191,7 +206,7 @@ public class PointTaskServiceImpl implements PointTaskService {
         }
         boolean isMaxInvestMoney = true;
         for(InvestTaskAward investTaskAward : investTaskAwardList){
-            if(investAmount > investTaskAward.getInvestMoney()){
+            if(investAmount >= investTaskAward.getInvestMoney()){
                 userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
             }else{
                 isMaxInvestMoney = false;
@@ -220,7 +235,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private List<UserPointTaskModel> compareInvestAward(List<InvestTaskAward> investTaskAwards,long investAmount,List<UserPointTaskModel> userPointTaskModelList,PointTaskModel pointTaskModel,InvestModel investModel){
         for(InvestTaskAward investTaskAward : investTaskAwards){
-            if(investAmount > investTaskAward.getInvestMoney()){
+            if(investAmount >= investTaskAward.getInvestMoney()){
                 userPointTaskModelList.add(new UserPointTaskModel(investModel.getLoginName(),pointTaskModel.getId(),investTaskAward.getPoint(),investTaskAward.getLevel()));
             }else{
                 break;
