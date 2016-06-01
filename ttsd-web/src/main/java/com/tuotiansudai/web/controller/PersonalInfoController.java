@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.UserService;
@@ -34,22 +35,26 @@ public class PersonalInfoController {
     private BindBankCardService bindBankCardService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView home() {
-        String loginName = LoginUserInfo.getLoginName();
-        String mobile = LoginUserInfo.getMobile();
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+    public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
-        mv.addObject("loginName", loginName);
-        mv.addObject("userName", accountModel.getUserName());
-        mv.addObject("identityNumber", accountModel.getIdentityNumber());
-        mv.addObject("mobile", mobile);
-        mv.addObject("email", userMapper.findByLoginName(loginName).getEmail());
-        if (bankCard != null) {
-            mv.addObject("bankCard", bankCard.getCardNumber());
+        UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
+
+        AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
+
+        mv.addObject("loginName", userModel.getLoginName());
+        mv.addObject("mobile", userModel.getMobile());
+        mv.addObject("email", userModel.getEmail());
+        mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
+        mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
+
+        if (accountModel != null) {
+            mv.addObject("userName", accountModel.getUserName());
+            mv.addObject("identityNumber", accountModel.getIdentityNumber());
+            BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
+            if (bankCard != null) {
+                mv.addObject("bankCard", bankCard.getCardNumber());
+            }
         }
-        mv.addObject("noPasswordInvest",accountModel.isNoPasswordInvest());
-        mv.addObject("autoInvest",accountModel.isAutoInvest());
 
         return mv;
     }

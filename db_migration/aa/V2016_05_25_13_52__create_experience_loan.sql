@@ -24,7 +24,7 @@ INSERT INTO loan (`id`,
                   `verify_login_name`,
                   `verify_time`,
                   `status`,
-                  `creator_login_name`,
+                  `created_login_name`,
                   `created_time`,
                   `update_time`)
   SELECT
@@ -147,10 +147,10 @@ INSERT INTO coupon (`amount`,
     now(),
     'sidneygao',
     now(),
-    0,
+    10000,
     '_30,_90,_180,_360',
     'RED_ENVELOPE',
-    'EXPERIENCE_INVESTOR'
+    'EXPERIENCE_REPAY_SUCCESS'
   FROM dual
   WHERE EXISTS(SELECT *
                FROM `user`
