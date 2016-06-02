@@ -196,7 +196,7 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createNewbieExperienceRepayJos() {
         try {
             jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 16 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
         }catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
