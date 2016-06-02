@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, layer, _) {
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($) {
     var loanProgress = $('.loan-detail-content').data('loan-progress');
 
     if (loanProgress <= 50) {
@@ -10,32 +10,41 @@ require(['jquery', 'layerWrapper','underscore', 'jquery.ajax.extension', 'autoNu
         $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
-    //submit  form
-    function investSubmit(){
-        $('#investForm').ajaxSubmit({
+    $.ajax({
+        url: '/calculate-expected-coupon-interest/loan/1/amount/0',
+        data: $.param([{
+            'name': 'couponIds',
+            'value': $("input[name='userCouponIds']").data("coupon-id")
+        }]),
+        type: 'get',
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8'
+    }).done(function(amount) {
+        $(".principal-income").text(amount);
+    });
+
+    $('#investSubmit').on('click', function(event) {
+        var self = $(this);
+        $("#investForm").ajaxSubmit({
             dataType: 'json',
-            url: '/no-password-invest',
+            url: '/experience-invest',
             beforeSubmit: function (arr, $form, options) {
-                $form.addClass("loading");
+                self.addClass("loading");
             },
             success: function (response, statusText, xhr, $form) {
-                $form.removeClass("loading");
                 var data = response.data;
                 if (data.status) {
-                    location.href = "/invest-success";
-                } else if (data.message == '新手标投资已超上限') {
-                    showLayer();
-                } else {
-                    showInputErrorTips(data.message);
+                    $("#freeSuccess").show();
                 }
+                self.removeClass("loading");
             }
         });
-
-    }
+        return false;
+    });
 
     $('.close-free').on('click', function(event) {
         event.preventDefault();
         $('#freeSuccess').hide();
+        window.location.reload();
     });
-
 });

@@ -34,7 +34,7 @@ public class ExperienceLoanDetailController {
         }
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", dto);
-        modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), 1));
+        modelAndView.addObject("coupon", userCouponService.getExperienceInvestUserCoupon(LoginUserInfo.getLoginName()));
 
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
         return modelAndView;

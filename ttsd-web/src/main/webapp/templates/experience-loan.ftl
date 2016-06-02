@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
 <div class="loan-detail-content" data-loan-progress="${loan.progress?string.computer}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w borderBox">
@@ -31,7 +31,7 @@
             <div class="account-info fl">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if loan.loanStatus == 'RAISING'>
-                    <form action="/invest" method="post" id="investForm">
+                    <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list">
                             <dd>
                                 <span class="fl">可投金额：</span>
@@ -40,31 +40,34 @@
                                 </em>
                             </dd>
 
-                            <dd class="invest-amount tl">
-                                <span class="fl">投资金额：</span>
-                                <input type="text" name="amount" value="10000" class="text-input-amount fr position-width"/>
-                            </dd>
+                            <input type="hidden" name="loanId" value="1"/>
+                            <input type="hidden" name="userCouponIds" value="<#if coupon??>${coupon.id?string.computer}</#if>" data-coupon-id="<#if coupon??>${coupon.couponId?string.computer}</#if>"/>
+                            <input type="hidden" name="amount" value="0"/>
 
-                            <dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                            <dd class="experience-ticket clearfix">
                                 <span class="fl">优惠券：</span>
                                 <div class="fr experience-ticket-box">
-                                    <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
-                                        <span>5888</span>
+                                    <em class="experience-ticket-input <#if coupon??==false>disabled</#if>" id="use-experience-ticket">
+                                        <span>
+                                            <#if coupon??>
+                                            ${coupon.name}<@amount>${coupon.amount?string.computer}</@amount>元
+                                            <#else>
+                                                无可用体验金
+                                            </#if>
+                                        </span>
                                     </em>
                                 </div>
                             </dd>
 
-                            <dd class="expected-interest-dd tc" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                            <dd class="expected-interest-dd tc">
                                 <span>预计总收益：</span>
-                                <span class="principal-income">0.00</span>
-                                <span class="experience-income"></span>
-                                元
+                                <span class="principal-income">0.00</span> 元
                             </dd>
 
                             <dd>
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
-                                <button id="investSubmit" class="btn-pay btn-normal" type="button">立即体验</button>
+                                <button id="investSubmit" class="btn-pay btn-normal" type="button"
+                                        <#if coupon?? == false>disabled="disabled"</#if>>立即体验
+                                </button>
                             </dd>
                         </dl>
                     </form>
@@ -140,10 +143,10 @@
                     <img src="${staticServer}/images/sign/actor/gift-free.png" width="100%" alt=""/>
                 </p>
                 <p class="free-use">
-                    <a href="#" class="btn">立即使用</a>
+                    <a href="/loan-list" class="btn">立即使用</a>
                 </p>
-                <p class="free-tip">
-                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="#">立即认证>></a>
+                <p class="free-tip <@global.role hasRole="'INVESTOR'">hide</@global.role>">
+                    温馨提示：体验收益发放后需实名认证并进行过投资后方可提现<a href="/register/account">立即认证>></a>
                 </p>
             </div>
         </div>
