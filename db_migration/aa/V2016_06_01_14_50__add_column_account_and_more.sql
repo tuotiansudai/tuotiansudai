@@ -31,11 +31,12 @@ CREATE TABLE `aa`.`user_membership` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE `aa`.`membership_experience_bill` (
-  `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `login_name`     VARCHAR(50) NOT NULL,
-  `experience`     BIGINT UNSIGNED NOT NULL,
-  `created_time`   datetime,
-  `description`    varchar(100),
+  `id`                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login_name`        VARCHAR(50) NOT NULL,
+  `experience`        BIGINT UNSIGNED NOT NULL,
+  `total_experience`  BIGINT UNSIGNED NOT NULL,
+  `created_time`      datetime,
+  `description`       varchar(100),
   PRIMARY KEY (`id`),
   CONSTRAINT FK_MEMBERSHIP_EXPERIENCE_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
