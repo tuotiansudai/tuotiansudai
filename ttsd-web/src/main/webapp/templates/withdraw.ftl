@@ -4,7 +4,7 @@
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
 
     <div class="pad-s">
-        <div class="borderBox withdraw">
+        <div class="borderBox withdraw" data-access="${hasAccess}">
             可提现额度：<i class="color-note">${balance}</i>元<br/>
             <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-l-zero="deny"
                                                       data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
@@ -16,8 +16,6 @@
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
             <div class="clear-blank"></div>
-            <input id="hasAccess" type="hidden" value="${hasAccess}"/>
-
             <form action="/withdraw" method="post"
                   <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <input name="amount" type="hidden" value=""/>
