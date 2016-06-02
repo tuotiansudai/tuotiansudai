@@ -16,8 +16,10 @@ import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
@@ -37,6 +39,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;

@@ -175,18 +175,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl"
-                       errormsg="投资手续费比例需要正确填写" value="${(loanInfo.investFeeRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
             <div class="col-sm-4">
