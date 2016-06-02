@@ -318,9 +318,11 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long estimateCouponExpectedInterest(double investFeeRage, long loanId, List<Long> couponIds, long amount) {
+    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
+        //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
+        double investFeeRate = 0.1;
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
@@ -328,7 +330,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRage, loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
             totalInterest += expectedInterest - expectedFee;
         }
 

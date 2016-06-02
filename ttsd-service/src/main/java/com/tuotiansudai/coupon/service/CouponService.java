@@ -43,7 +43,7 @@ public interface CouponService {
 
     int findBirthdayCouponsCount();
 
-    long estimateCouponExpectedInterest(double investFeeRate, long loanId, List<Long> couponIds, long amount);
+    long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount);
 
     List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize);
 
