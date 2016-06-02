@@ -86,7 +86,13 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             }
 
             if(latestInvestView.getProductType().equals(ProductType.EXPERIENCE)){
-                latestInvestView.setInvestAmount(userCouponMapper.findCouponAmountByLoginNameAndLoanId(loginName,latestInvestView.getLoanId()));
+                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(latestInvestView.getInvestId());
+                for(UserCouponModel userCouponModel : userCouponModelList){
+                    if(userCouponModel.getStatus().equals(InvestStatus.SUCCESS)){
+                        latestInvestView.setInvestAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
+                        break;
+                    }
+                }
             }
         }
         return latestInvestViews;

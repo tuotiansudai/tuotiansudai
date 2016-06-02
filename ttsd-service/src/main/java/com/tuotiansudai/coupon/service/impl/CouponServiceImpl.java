@@ -320,6 +320,10 @@ public class CouponServiceImpl implements CouponService {
     public long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
+        if (CollectionUtils.isEmpty(couponIds)) {
+            return totalInterest;
+        }
+
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);

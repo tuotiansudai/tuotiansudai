@@ -250,7 +250,4 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
-    <select id="findCouponAmountByLoginNameAndLoanId" parameterType="map" resultType="long">
-        SELECT c.amount FROM user_coupon uc LEFT JOIN coupon c ON uc.coupon_id = c.id WHERE login_name = #{loginName} AND loan_id = #{loanId}
-    </select>
 </mapper>

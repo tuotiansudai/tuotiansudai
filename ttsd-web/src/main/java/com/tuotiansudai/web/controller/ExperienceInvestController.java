@@ -26,8 +26,6 @@ public class ExperienceInvestController {
     public BaseDto<BaseDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setSource(Source.WEB);
         investDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<BaseDataDto> dto = experienceInvestService.invest(investDto);
-        return dto;
-
+        return experienceInvestService.invest(investDto);
     }
 }

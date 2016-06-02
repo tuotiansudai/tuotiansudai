@@ -5,10 +5,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ExperienceLoanModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -56,8 +53,8 @@ public class HomeController {
         Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         long experienceProgress = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
         List<CouponModel> couponModels = couponMapper.findCouponExperienceAmount(CouponType.NEWBIE_COUPON, ProductType.EXPERIENCE);
-        ExperienceLoanModel experienceLoanModel = new ExperienceLoanModel(loanMapper.findById(experienceLoanId),experienceProgress,couponModels.get(0));
-        modelAndView.addObject("experienceLoanModel", experienceLoanModel);
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),experienceProgress,couponModels.get(0));
+        modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         return modelAndView;
     }
 }

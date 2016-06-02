@@ -5,9 +5,8 @@ import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
-public class ExperienceLoanModel implements Serializable {
+public class ExperienceLoanDto implements Serializable {
     /***
      * 标的号
      ***/
@@ -21,10 +20,10 @@ public class ExperienceLoanModel implements Serializable {
      */
     private int duration;
 
-    /***
-     * 项目描述（纯文本）
-     ***/
-    private String descriptionText;
+    /**
+     * 项目金额
+     */
+    private String loanAmount;
 
     /***
      * 可投金额
@@ -41,14 +40,16 @@ public class ExperienceLoanModel implements Serializable {
      */
     private long progress;
 
-    public ExperienceLoanModel(LoanModel loanModel,long experienceProgress,CouponModel couponModels) {
+    private LoanStatus loanStatus;
+
+    public ExperienceLoanDto(LoanModel loanModel, long experienceProgress, CouponModel couponModels) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
         this.duration = loanModel.getDuration();
-        this.descriptionText = loanModel.getDescriptionText();
         this.baseRate = new BigDecimal(String.valueOf(couponModels.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         this.progress = experienceProgress;
-        this.investAmount =AmountConverter.convertCentToString(loanModel.getLoanAmount() - (couponModels.getAmount() * experienceProgress));
+        this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - (couponModels.getAmount() * experienceProgress));
+        this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
     }
 
     public long getId() {
@@ -75,14 +76,6 @@ public class ExperienceLoanModel implements Serializable {
         this.duration = duration;
     }
 
-    public String getDescriptionText() {
-        return descriptionText;
-    }
-
-    public void setDescriptionText(String descriptionText) {
-        this.descriptionText = descriptionText;
-    }
-
     public String getInvestAmount() {
         return investAmount;
     }
@@ -105,5 +98,21 @@ public class ExperienceLoanModel implements Serializable {
 
     public void setProgress(long progress) {
         this.progress = progress;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
+    public String getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(String loanAmount) {
+        this.loanAmount = loanAmount;
     }
 }
