@@ -45,6 +45,12 @@
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
     </resultMap>
+    <resultMap id="heroRankingView" type="HeroRankingView">
+        <result column="login_name" property="loginName"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
 
     <resultMap id="investDataView" type="InvestDataView">
         <result column="productName" property="productName"></result>
@@ -450,6 +456,37 @@
 
     <select id="findInvestByTransferInvestId" parameterType="map" resultMap="investResultMap">
         select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
+    </select>
+
+    <select id="findHeroRankingByTradingTime" parameterType="map" resultMap="heroRankingView">
+        SELECT
+            invest.login_name,
+            SUM(invest.amount) sumAmount,
+            account.user_name,
+            user.mobile
+        FROM
+            invest
+        INNER JOIN
+            account ON invest.login_name = account.login_name
+        INNER JOIN
+            user ON invest.login_name = user.login_name
+        WHERE
+            invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
+        AND invest.trading_time BETWEEN '2016-07-01' AND '2016-07-31'
+        AND NOT EXISTS
+            (   SELECT
+                  1
+                FROM
+                  transfer_application ta
+                WHERE
+                  ta.login_name = invest.login_name
+                AND ta.application_time between '2016-07-01' and #{tradingTime}
+            )
+        GROUP BY login_name , account.user_name , user.mobile
+        ORDER BY sumAmount DESC , MIN(invest.trading_time)
+        LIMIT 0 , 10;
     </select>
 
 </mapper>
