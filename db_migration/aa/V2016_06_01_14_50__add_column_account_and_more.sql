@@ -6,7 +6,7 @@ AFTER loan_id;
 
 CREATE TABLE `aa`.`membership` (
   `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `level`          VARCHAR(10) NOT NULL,
+  `level`          int UNSIGNED NOT NULL,
   `experience`     BIGINT UNSIGNED NOT NULL,
   `fee`            double,
   PRIMARY KEY (`id`)
