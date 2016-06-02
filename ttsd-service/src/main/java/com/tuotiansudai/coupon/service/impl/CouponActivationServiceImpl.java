@@ -157,7 +157,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             this.createSmsNotifyJob(couponId);
         }
 
-        exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE) {
+            exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
+        }
 
     }
 
