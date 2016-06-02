@@ -1,31 +1,34 @@
 package com.tuotiansudai.coupon.util;
 
+
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class RegisteredNotInvestedUserCollector implements UserCollector {
+public class NotAccountNotInvestedUserCollector implements UserCollector {
 
     @Autowired
     private InvestMapper investMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private UserMapper userMapper;
 
     @Override
     public List<String> collect(long couponId) {
         List<String> investorLoginNames = investMapper.findInvestorLoginNames();
-        List<String> accountLoginNames = accountMapper.findLoginNames();
-        accountLoginNames.removeAll(investorLoginNames);
-        return accountLoginNames;
+        List<String> userLoginNames = userMapper.findLoginNames();
+        userLoginNames.removeAll(investorLoginNames);
+        return userLoginNames;
     }
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) == 0 && accountMapper.findByLoginName(loginName) != null;
+        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) == 0;
     }
+
 }
