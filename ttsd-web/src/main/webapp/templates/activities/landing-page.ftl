@@ -66,26 +66,54 @@
         </div>
     </div>
 
-
+    <div class="content-three">
+        <div class="three-title">
+            <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="content-wp">
+            <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，</p>
+            <p>成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
+            <img src="${staticServer}/images/sign/actor/landingpage/gift-list.png" width="100%">
+        </div>
+    </div>
+    <div class="content-four">
+        <div class="four-title">
+            <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="content-wp">
+            <ul>
+                <li>
+                    <a href="#">
+                    <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                    <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="content-one">
         <div class="one-title">
-            拓天速贷的优势
+            <h3><span><i class="left-icon"></i>拓天速贷的优势<i class="right-icon"></i></span></h3>
         </div>
         <div class="content-wp">
             <ul>
                 <li>
                     <div class="icon-one"></div>
-						 <span class="one-text">
-							 <b class="clearfix">稳健收益</b>
-							预期年化收益可达13%
-						</span>
+					<span class="one-text">
+						 <b class="clearfix">稳健收益</b>
+						预期年化收益可达13%
+					</span>
                 </li>
                 <li>
                     <div class="icon-two"></div>
-						<span class="clearfix">
-							<b class="clearfix">抵押模式</b>
-							公认的安全抵押债权
-						</span>
+					<span class="clearfix">
+						<b class="clearfix">抵押模式</b>
+						公认的安全抵押债权
+					</span>
                 </li>
                 <li>
                     <div class="icon-three"></div>
@@ -97,127 +125,12 @@
             </ul>
         </div>
     </div>
-    <div class="content-two">
-        <div class="two-title">
-            为您精选理财产品
-        </div>
-        <div class="product-wp">
-            <ul class="clearfix">
-                <#list loans as loan>
-                    <#if loan.periods == 1>
-                        <li class="new-product">
-                            <i class="new-user"></i>
-                            <div class="product-left">
-                                <h3>${loan.name}</h3>
-                                <div class="loan-info-dl clearfix">
-                                    <dl>
-                                        <dt>预期年化收益</dt>
-                                        <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
-                                            <i>
-                                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
-                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                                </#if>%
-                                            </i>
-                                            <span>新手加息券</span>
-                                        </dd>
-                                    </dl>
-
-                                    <dl>
-                                        <dt>项目期限</dt>
-                                        <dd>${loan.duration} 天</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                            <div class="product-right">
-                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
-                            </div>
-                        </li>
-                    <#else>
-                        <li>
-                            <div class="product-left">
-                                <h3>${loan.name}</h3>
-                                <div class="loan-info-dl clearfix">
-                                    <dl>
-                                        <dt>预期年化收益</dt>
-                                        <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
-                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                </#if>%
-                                            </i>
-                                        </dd>
-                                    </dl>
-
-                                    <dl>
-                                        <dt>项目期限</dt>
-                                        <dd>${loan.duration} 天</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                            <div class="product-right">
-                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
-                            </div>
-                        </li>
-                    </#if>
-
-                </#list>
-            </ul>
-        </div>
-    </div>
-    <div class="content-three">
-        <div class="three-title">
-            <span>投资</span>即有壕礼相送
-        </div>
-        <div class="content-wp">
-            <img src="${staticServer}/images/sign/actor/landingpage/three-title.png"/>
-
-            <div class="table">
-                <div class="title">
-                    投资攒天豆，<span>冲击排行榜</span>，大奖等您拿
-                </div>
-                <ul>
-                    <li class="border">天豆获取方式：霸道总裁活动期间，投资即可获得</li>
-                    <li>财豆获取方式：投资、签到、完成新手任务即可获得</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="content-four">
-        <div class="four-title">
-            呼朋唤友<span>赚佣金</span>
-        </div>
-        <div class="text">
-            <p>拓天速贷推荐制度是为了广大用户可以在投资的时候，邀请朋友共同赚取奖励的贴心活动。</p>
-
-            <p>当您在平台完成一系列操作之后，即可将自己的<span>用户名发送给身边的朋友</span>，当您的推荐人</p>
-
-            <p>成功投资后，您即可<span>获得奖励</span></p>
-        </div>
-        <table class="imagetable">
-            <tr>
-                <th></th>
-                <th>投资人</th>
-                <th>一级推荐人</th>
-                <th>二级推荐人</th>
-            </tr>
-            <tr>
-                <td>奖励机制</td>
-                <td class="slash"></td>
-                <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
-                <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
-            </tr>
-            <tr>
-                <td>投资实例</td>
-                <td>投资半年期标的10万元</td>
-                <td><span>奖励</span>约500元</td>
-                <td><span>奖励</span>约500元</td>
-            </tr>
-        </table>
-    </div>
+    
+    
+    
     <div class="content-five">
         <div class="five-title">
-            主流媒体眼中的我们
+            <h3><span><i class="left-icon"></i>主流媒体眼中的我们<i class="right-icon"></i></span></h3>
         </div>
         <div class="content-wp">
             <div class="left">
@@ -246,9 +159,23 @@
                 </p>
             </div>
         </div>
-        <div class="registered"><span>立即注册</span></div>
+        
     </div>
-
+    <div class="content-two">
+        <div class="two-title">
+            <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="product-wp clearfix">
+            <ul>
+                <li><i class="fa fa-circle"></i>活动时间：2016年6月10日;</li>
+                <li><i class="fa fa-circle"></i>奖励可在“我的账户-我的宝藏”查看;</li>
+                <li><i class="fa fa-circle"></i>成功投资新手体验项目后可获得588元现金红包及3%加息券;</li>
+                <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
+                <li><i class="fa fa-circle"></i>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</li>
+            </ul>
+            <div class="registered"><span>注册领取5888体验金</span></div>
+        </div>
+    </div>
 
     <div id="agreementBox" class="pad-m" style="display: none;">
         <p>
@@ -622,208 +549,76 @@
     <div class="landing-phone-logo">
         <a href="/"><img src="${staticServer}/images/icons/logo.png" class="landing-phone-logo-image"></a>
     </div>
-    <img src="${staticServer}/images/sign/actor/landingphone/landingpagebanner_app.png" class="landing-phone-banner">
-
-    <div class="tuotian-advantage">
-        <div class="landing-phone-section-header-left">
-        </div>
+    <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" class="landing-phone-banner">
+    
+    <div class="tuotian-newuser">
         <div class="landing-phone-section-header">
-            拓天速贷的优势
+            <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
         </div>
-        <div class="landing-phone-section-header-right">
+        <div class="wp tc">
+            <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
+            <div id="slideBox" class="slideBox"> 
+                <div class="bd"> 
+                    <ul> 
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/big-money.png" width="60%"/></li> 
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/small-money.png" width="60%"/></li> 
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li> 
+                    </ul> 
+                </div> 
+                <a class="prev" href="javascript:void(0)"></a> 
+                <a class="next" href="javascript:void(0)"></a> 
+            </div> 
+            <p>奖励请前往“我的账户--我的宝藏”查看</p>
+        </div>
+    </div>
+    <div class="tuotian-products">
+        <div class="landing-phone-section-header">
+            <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="product-box-list fl">
+            <ul>
+                <li>
+                    <a href="#">
+                    <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                    <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tuotian-advantage">
+        <div class="landing-phone-section-header">
+            <h3><span><i class="left-icon"></i>拓天速贷的优势<i class="right-icon"></i></span></h3>
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-interest.png"
+                    src="${staticServer}/images/sign/actor/landingpage/landing-phone-interest.png"
                     class="img-icon"></span>
             <span class="landing-phone-span-right">稳健收益<br/><span>预期年化收益13%</span></span>
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-guaranty.png"
+                    src="${staticServer}/images/sign/actor/landingpage/landing-phone-guaranty.png"
                     class="img-icon"></span>
             <span class="landing-phone-span-right">抵押模式<br/><span>公认的安全抵押债权</span></span>
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-fund.png" class="img-icon"></span>
+                    src="${staticServer}/images/sign/actor/landingpage/landing-phone-fund.png" class="img-icon"></span>
             <span class="landing-phone-span-right">资金透明<br/><span>第三方资金托管</span></span>
         </div>
     </div>
-    <div class="tuotian-products">
-        <div class="landing-phone-section-header-left">
-        </div>
-        <div class="landing-phone-section-header">
-            为您精选投资产品
-        </div>
-        <div class="landing-phone-section-header-right">
-        </div>
-        <div class="product-box-list fl">
-            <div class="product-box-inner">
-                <#list loans as loan>
-                    <#if loan.periods == 1>
-                        <div class="product-box tc product-type">
-                            <i class="new-user"></i>
-                            <div class="pad-m">
-                                <h2 class="pr-title">${loan.name}</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em>
-                                            <b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
-                                            <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                                            <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
-                                                <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                            </#if>%
-                                        </em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.duration}</i>天</dd>
-                                </dl>
-                            </div>
-                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
-                        </div>
-                    <#else>
-                        <div class="product-box tc product-type">
-                            <div class="pad-m">
-                                <h2 class="pr-title">${loan.name}</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em>
-                                            <b><@percentInteger>${loan.baseRate}</@percentInteger></b>
-                                            <@percentFraction>${loan.baseRate}</@percentFraction>
-                                            <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                            <@percentFraction>${loan.activityRate}</@percentFraction>
-                                            </#if>%
-                                        </em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.duration}</i>天</dd>
-                                </dl>
-                            </div>
-                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
-                        </div>
-                    </#if>
-                </#list>
-            </div>
-        </div>
-    </div>
-    <div class="tuotian-gifts">
-        <div class="landing-phone-section-header-left">
-        </div>
-        <div class="landing-phone-section-header">
-            <span>投资</span>既有壕礼送
-        </div>
-        <div class="landing-phone-section-header-right">
-        </div>
-        <img class="landing-phone-gift-header"
-             src="/images/sign/actor/landingphone/landing-phone-gift-header.png"></img>
-
-        <div class="gifts-content-container">
-            <div class="gifts-content-title">
-                投资攒天豆，<span>冲击排行榜，</span>大奖等您拿
-            </div>
-            <p>
-                天豆获取方式：霸道总裁活动期间，投资即可获得
-            </p>
-
-            <p>
-                财豆获取方式：投资、签到、完成新手任务即可获得
-            </p>
-        </div>
-        <img class="landing-phone-gift-footer"
-             src="/images/sign/actor/landingphone/landing-phone-gift-footer.png"></img>>
-    </div>
-    <div class="tuotian-rewards">
-        <div class="landing-phone-section-header-left">
-        </div>
-        <div class="landing-phone-section-header">
-            呼朋唤友<span>赚佣金</span>
-        </div>
-        <div class="landing-phone-section-header-right">
-        </div>
-        <div class="rewards-header">
-            拓天速贷推荐制度是为了广大用户可以在投资的时候，邀请朋友共同赚取奖励的贴心活动。当您在平台完成一系列操作之后，即可将自己的
-            <span>用户名发送给身边的朋友</span>，当您的推荐人成功投资后，您即可<span>获得奖励</span>。
-        </div>
-        <table>
-            <thead>
-            <tr>
-                <th>
-                </th>
-                <th>
-                    投资人
-                </th>
-                <th>
-                    一级推荐人
-                </th>
-                <th>
-                    二级推荐人
-                </th>
-            </tr>
-            </thead>
-            <tr>
-                <td>
-                    奖励机制
-                </td>
-                <td>
-                    ---
-                </td>
-                <td>
-                    <p>
-                        奖励预期年化
-                    </p>
-
-                    <p>
-                        <span>收益1%</span>
-                    </p>
-                </td>
-                <td>
-                    <p>
-                        奖励预期年化
-                    </p>
-
-                    <p>
-                        <span>收益1%</span>
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    投资示例
-                </td>
-                <td>
-                    <p>
-                        投资半年期
-                    </p>
-
-                    <p>
-                        标的10万元
-                    </p>
-                </td>
-                <td>
-                    <span>奖励</span>约500元
-                </td>
-                <td>
-                    <span>奖励</span>约500元
-                </td>
-            </tr>
-        </table>
-    </div>
     <div class="tuotian-aboutus">
-        <div class="landing-phone-section-header-left">
-        </div>
         <div class="landing-phone-section-header">
-            <span id="white-title">媒体眼中的我们</span>
-        </div>
-        <div class="landing-phone-section-header-right">
+            <h3><span><i class="left-icon"></i>媒体眼中的我们<i class="right-icon"></i></span></h3>
         </div>
         <div class="aboutus-content-container">
             <img class="landing-phone-aboutus-header"
-                 src="/images/sign/actor/landingphone/landing-phone-aboutus-header.png"></img>
+                 src="/images/sign/actor/landingpage/landing-phone-aboutus-header.png"></img>
 
             <div>
                 <span>今日头条</span>
@@ -833,13 +628,23 @@
             </p>
         </div>
     </div>
-    <div class="tuotian-register">
-        <div class="landing-phone-section-header-left">
-        </div>
+    <div class="tuotian-rewards">
         <div class="landing-phone-section-header">
-            现在就注册吧
+            <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
         </div>
-        <div class="landing-phone-section-header-right">
+        <div class="rewards-header">
+            <ul>
+                <li><i class="fa fa-circle"></i>活动时间：2016年6月10日;</li>
+                <li><i class="fa fa-circle"></i>奖励可在“我的账户-我的宝藏”查看;</li>
+                <li><i class="fa fa-circle"></i>成功投资新手体验项目后可获得588元现金红包及3%加息券;</li>
+                <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
+                <li><i class="fa fa-circle"></i>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tuotian-register">
+        <div class="landing-phone-section-header">
+            <h3><span><i class="left-icon"></i>现在就注册吧<i class="right-icon"></i></span></h3>
         </div>
 
         <#if isAppSource>
