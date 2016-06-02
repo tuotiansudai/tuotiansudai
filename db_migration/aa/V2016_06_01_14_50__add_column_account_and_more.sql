@@ -1,12 +1,11 @@
-ALTER TABLE account ADD COLUMN membership_point bigint(20) DEFAULT 0
-AFTER auto_repay;
+ALTER TABLE account ADD COLUMN membership_point BIGINT UNSIGNED DEFAULT 0
+AFTER point;
 
 ALTER TABLE invest ADD COLUMN invest_fee_rate double DEFAULT 0.1
-AFTER is_no_password_invest;
-
+AFTER loan_id;
 
 CREATE TABLE `aa`.`membership` (
-  `id`             int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `level`          VARCHAR(10) NOT NULL,
   `experience`     BIGINT UNSIGNED NOT NULL,
   `fee`            double,
@@ -16,20 +15,10 @@ CREATE TABLE `aa`.`membership` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-BEGIN;
-  insert into `aa`.`membership` value(1,'V0',0,'0.1');
-  insert into `aa`.`membership` value(2,'V1',5000,'0.1');
-  insert into `aa`.`membership` value(3,'V2',50000,'0.09');
-  insert into `aa`.`membership` value(4,'V3',300000,'0.08');
-  insert into `aa`.`membership` value(5,'V4',1500000,'0.08');
-  insert into `aa`.`membership` value(6,'V5',5000000,'0.07');
-COMMIT;
-
-
 CREATE TABLE `aa`.`user_membership` (
-  `id`             int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`     VARCHAR(50) NOT NULL,
-  `membership_id`  int UNSIGNED NOT NULL,
+  `membership_id`  BIGINT UNSIGNED NOT NULL,
   `expired_time`   datetime,
   `created_time`   datetime,
   `type`           varchar(10),
@@ -41,9 +30,8 @@ CREATE TABLE `aa`.`user_membership` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-
 CREATE TABLE `aa`.`membership_experience_bill` (
-  `id`             int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`     VARCHAR(50) NOT NULL,
   `experience`     BIGINT UNSIGNED NOT NULL,
   `created_time`   datetime,
