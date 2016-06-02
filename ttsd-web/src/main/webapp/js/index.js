@@ -85,10 +85,12 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
 
         $('.mask-btn').on('click', function(event) {
             event.preventDefault();
-            $('.mask-model').hide();
-            $('.mask-bg').hide();
+            $('.new-user-free').removeClass('active');
         });
-        $(window).width()<700?$('body,html').animate({scrollTop:'176px'},"slow"):$('body,html').animate({scrollTop:'550px'},"slow");
+        $('.guide-btn').on('click', function(event) {
+            event.preventDefault();
+            $('.product-box-inner').removeClass('active');
+        });
         
     });
 });

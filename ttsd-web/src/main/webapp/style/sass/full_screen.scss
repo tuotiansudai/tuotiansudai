@@ -728,6 +728,17 @@ body {
         .product-box-inner {
           margin: 0 -20px;
           box-sizing: border-box;
+          &.active{
+            .new-free-pro{
+              z-index:9999;
+            }
+            .free-guide{
+              display:block;
+            }
+            .guide-img{
+              display:block!important;
+            }
+          }
           .product-box {
             box-sizing: border-box;
             width: 318px;
@@ -874,6 +885,38 @@ body {
                 border-color: #ff9c1b;
               }
             }
+            .guide-img{
+              position: absolute;
+              top:115px;
+              left:50%;
+              margin-left:-100px;
+              width:200px;
+              height:100px;
+              background:url("/images/sign/actor/guide-img.png") no-repeat center;
+              background-size: 100%;
+              display:none;
+              .guide-btn{
+                position: absolute;
+                width:110px;
+                height:50px;
+                top:110px;
+                left:50%;
+                margin-left:-55px;
+                background:url("/images/sign/actor/guide-btn.png") no-repeat center;
+                background-size: 80%;
+              }
+            }
+          }
+          .free-guide{
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,.5);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);
+            z-index:999;
+            display:none;
           }
         }
       }
@@ -896,6 +939,14 @@ body {
         &:hover{
           background: #fff;
           box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
+        }
+        &.active{
+          .mask-model{
+            display:block;
+          }
+          .mask-bg{
+            display:block;
+          }
         }
         .left-intro{
           float:left;
@@ -1026,6 +1077,7 @@ body {
           background:url("/images/sign/index_sprites_20160530.png") no-repeat;
           background-position: 0px -425px;
           z-index:9999;
+          display:none;
           .mask-btn{
             float:left;
             width:230px;
@@ -1044,6 +1096,7 @@ body {
           height:100%;
           background:rgba(0,0,0,.5);
           z-index:9998;
+          display:none;
         }
       }
     }
@@ -1752,9 +1805,6 @@ body {
               position: relative;
               padding-bottom: 22px;
               text-align: left;
-              .img-syl,.img-wyx,.img-jyf{
-                background-size:70%!important;
-              }
               .pr-title {
                 font-size: 15px;
                 text-overflow: ellipsis;
@@ -1879,7 +1929,6 @@ body {
                 }
               }
             }
-
           }
           &.fl {
             float: none !important;

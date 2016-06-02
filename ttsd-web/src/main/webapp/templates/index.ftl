@@ -372,7 +372,10 @@
             </div>
             <div class="product-box-list fl">
                 <div class="product-box-inner">
-                    <div class="product-box tc product-type">
+                    <div class="free-guide">
+                                
+                    </div>
+                    <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
                             <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
                                 <h2 class="pr-title">新手体验项目</h2>
@@ -398,10 +401,11 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                            <a href="/loan/" class="btn-normal">预热中</a>
                             <a href="/loan/" class="btn-normal">立即投资</a>
+                            <div class="guide-img">
+                                <span class="guide-btn"></span>
+                            </div>
                         </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">

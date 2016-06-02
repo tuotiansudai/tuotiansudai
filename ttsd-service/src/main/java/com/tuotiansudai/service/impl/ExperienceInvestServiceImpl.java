@@ -92,6 +92,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel());
         investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
@@ -121,7 +122,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         if (investAmount != 0) {
-            logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount(1) is not 0",
+            logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) is not 0",
                     investDto.getLoginName(), investDto.getAmount()));
             return false;
         }
@@ -149,7 +150,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
         if (couponModel.getProductTypes().contains(loanModel.getProductType()) && investAmount < couponModel.getInvestLowerLimit()) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) with a using invalid({2}, {3}) user coupon({4})",
-                    investDto.getLoginName(), String.valueOf(investDto.getUserCouponIds().size()),
+                    investDto.getLoginName(),
                     String.valueOf(investAmount),
                     Joiner.on(",").join(couponModel.getProductTypes()),
                     String.valueOf(couponModel.getInvestLowerLimit()),
