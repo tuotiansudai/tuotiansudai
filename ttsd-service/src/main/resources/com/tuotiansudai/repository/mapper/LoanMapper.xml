@@ -148,16 +148,12 @@
     </select>
 
     <select id="findLoanListMobileApp" parameterType="map" resultMap="loanResultMap">
-        SELECT * FROM ( SELECT
-        *
-        FROM
-        (SELECT
+        SELECT
         *
         FROM
         loan temp
         WHERE
         1 = 1
-        AND (temp.status = 'PREHEAT' OR temp.status = 'RAISING'	)
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
@@ -181,38 +177,20 @@
         ORDER BY CASE temp.status
         WHEN 'RAISING' THEN '1'
         WHEN 'PREHEAT' THEN '2'
-        END , temp.duration , temp.verify_time DESC , temp.created_time DESC) loan UNION ALL
-        SELECT
-        *
-        FROM
-        (SELECT
-        *
-        FROM
-        loan temp
-        WHERE
-        1 = 1
-        AND (temp.status = 'COMPLETE'  OR temp.status = 'REPAYING' OR temp.status = 'OVERDUE')
-        <if test="productType !=null">
-            and temp.product_type = #{productType}
-        </if>
-        <if test="status != null">
-            and temp.status = #{status}
-        </if>
-        <if test="status == null">
-            and temp.status != 'WAITING_VERIFY'
-        </if>
-        <if test="rateStart != 0">
-            <if test="rateEnd !=0">
-                <![CDATA[ and (temp.base_rate + temp.activity_rate) >=  #{rateStart} ]]>
-            </if>
-            <if test="rateEnd ==0">
-                <![CDATA[ and (temp.base_rate + temp.activity_rate) >  #{rateStart} ]]>
-            </if>
-        </if>
-        <if test="rateEnd != 0">
-            <![CDATA[ and (temp.base_rate + temp.activity_rate) <=  #{rateEnd}]]>
-        </if>
-        ORDER BY recheck_time DESC) temp )loan limit #{index} , 10
+        WHEN 'REPAYING' THEN '3'
+        WHEN 'COMPLETE' THEN '4'
+        WHEN 'OVERDUE' THEN '5'
+        ELSE '6' END,
+        CASE temp.status WHEN 'RAISING' THEN duration END asc,
+        CASE temp.status WHEN 'RAISING' THEN verify_time END DESC,
+        CASE temp.status WHEN 'RAISING' THEN created_time END DESC,
+        CASE temp.status WHEN 'PREHEAT' THEN duration END,
+        CASE temp.status WHEN 'PREHEAT' THEN verify_time END DESC,
+        CASE temp.status WHEN 'PREHEAT' THEN created_time END DESC,
+        CASE temp.status WHEN 'REPAYING' THEN recheck_time END DESC,
+        CASE temp.status WHEN 'COMPLETE' THEN recheck_time END DESC,
+        CASE temp.status WHEN 'OVERDUE' THEN recheck_time END DESC
+        limit #{index} , 10
     </select>
 
     <select id="findLoanListCountMobileApp" parameterType="map" resultType="int">

@@ -8,8 +8,8 @@
                 <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-landingpage.png" alt="" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">

@@ -16,6 +16,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,12 +130,13 @@ public class TransferServiceImpl implements TransferService {
     public TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(TransferApplicationId);
         TransferApplicationRecodesDto transferApplicationRecodesDto = new TransferApplicationRecodesDto();
+        List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
             transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptLoginName(loginName, investModel.getLoginName(),6,investModel.getId()));
             transferApplicationRecodesDto.setReceiveAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             transferApplicationRecodesDto.setSource(investModel.getSource());
-            transferApplicationRecodesDto.setExpecedInterest(AmountConverter.convertCentToString(calculateExpectedInterest(transferApplicationModel)));
+            transferApplicationRecodesDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
             transferApplicationRecodesDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
             transferApplicationRecodesDto.setTransferTime(transferApplicationModel.getTransferTime());
             transferApplicationRecodesDto.setStatus(true);
@@ -143,6 +145,11 @@ public class TransferServiceImpl implements TransferService {
             transferApplicationRecodesDto.setStatus(false);
         }
         return transferApplicationRecodesDto;
+    }
+    @Override
+    public List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId){
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+        return  transferApplicationMapper.findByTransferInvestId(transferApplicationModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
     }
 
 
@@ -169,12 +176,13 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginNme, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
+        List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginNme);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginNme, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
-            transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(calculateExpectedInterest(transferApplicationModel)));
+            transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
         }
         else if(transferApplicationModel.getStatus() == TransferStatus.SUCCESS){
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
@@ -183,15 +191,6 @@ public class TransferServiceImpl implements TransferService {
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }
         return transferApplicationDetailDto;
-    }
-
-    private long calculateExpectedInterest(TransferApplicationModel transferApplicationModel) {
-        List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
-        long totalExpectedInterestAmount = 0;
-        for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
-            totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
-        }
-        return totalExpectedInterestAmount;
     }
 
 }
