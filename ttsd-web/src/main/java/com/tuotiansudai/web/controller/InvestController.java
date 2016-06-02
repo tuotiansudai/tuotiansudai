@@ -165,7 +165,7 @@ public class InvestController {
 
     @RequestMapping(value = "/calculate-expected-coupon-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public String calculateCouponExpectedInterest(@PathVariable long loanId,
+    public String calculateCouponExpectedInterestcalculateCouponExpectedInterest(@PathVariable long loanId,
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
         long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponIds, amount);

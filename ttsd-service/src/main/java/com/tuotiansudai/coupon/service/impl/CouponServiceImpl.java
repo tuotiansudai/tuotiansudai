@@ -327,6 +327,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
+            
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
             totalInterest += expectedInterest - expectedFee;
         }
