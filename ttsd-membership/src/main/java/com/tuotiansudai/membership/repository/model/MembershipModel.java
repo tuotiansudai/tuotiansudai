@@ -2,21 +2,15 @@ package com.tuotiansudai.membership.repository.model;
 
 import java.io.Serializable;
 
-public class MembershipModel implements Serializable{
+public class MembershipModel implements Serializable {
 
     private long id;
-    private String level;
+    private int level;
     private long experience;
     private double fee;
 
-    public MembershipModel(){
+    public MembershipModel() {
 
-    }
-
-    public MembershipModel(String level, long experience, double fee) {
-        this.level = level;
-        this.experience = experience;
-        this.fee = fee;
     }
 
     public long getId() {
@@ -27,11 +21,11 @@ public class MembershipModel implements Serializable{
         this.id = id;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 

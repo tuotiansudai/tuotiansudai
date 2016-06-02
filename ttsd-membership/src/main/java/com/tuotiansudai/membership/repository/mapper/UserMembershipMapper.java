@@ -4,6 +4,8 @@ package com.tuotiansudai.membership.repository.mapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserMembershipMapper {
 
@@ -12,4 +14,6 @@ public interface UserMembershipMapper {
     void update(UserMembershipModel userMembershipModel);
 
     UserMembershipModel findById(long id);
+
+    List<UserMembershipModel> findByLoginName(String loginName);
 }

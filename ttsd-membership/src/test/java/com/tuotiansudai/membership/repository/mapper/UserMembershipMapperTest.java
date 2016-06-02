@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
-import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -33,42 +33,42 @@ public class UserMembershipMapperTest {
     public void shouldCreateUserMembership() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), new Date(), "system");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.UPGRADE);
 
         userMembershipMapper.create(userMembershipModel);
 
         assertThat(userMembershipModel.getLoginName(), is(fakeUser.getLoginName()));
         assertThat(userMembershipModel.getMembershipId(), is(2L));
-        assertThat(userMembershipModel.getType(), is("system"));
+        assertThat(userMembershipModel.getType(), is(UserMembershipType.UPGRADE));
     }
 
     @Test
     public void shouldUpdateUserMembership() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), new Date(), "system");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
-        UserMembershipModel updateUserMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 5, new Date(), new Date(), "manual");
+        UserMembershipModel updateUserMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 5, new Date(), UserMembershipType.GIVEN);
         userMembershipMapper.update(updateUserMembershipModel);
 
         assertThat(updateUserMembershipModel.getLoginName(), is(fakeUser.getLoginName()));
         assertThat(updateUserMembershipModel.getMembershipId(), is(5L));
-        assertThat(updateUserMembershipModel.getType(), is("manual"));
+        assertThat(updateUserMembershipModel.getType(), is(UserMembershipType.GIVEN));
     }
 
     @Test
     public void shouldUserMembershipFindById() throws Exception {
 
         UserModel fakeUser = createFakeUser();
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), new Date(), "system");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
 
         UserMembershipModel membershipModel1 = userMembershipMapper.findById(userMembershipModel.getId());
 
         assertThat(membershipModel1.getLoginName(), is(fakeUser.getLoginName()));
         assertThat(membershipModel1.getMembershipId(), is(2L));
-        assertThat(membershipModel1.getType(), is("system"));
+        assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
 
     }
 

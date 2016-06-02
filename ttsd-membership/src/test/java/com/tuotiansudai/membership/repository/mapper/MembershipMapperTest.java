@@ -1,7 +1,5 @@
 package com.tuotiansudai.membership.repository.mapper;
 
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,39 +19,12 @@ public class MembershipMapperTest {
     private MembershipMapper membershipMapper;
 
     @Test
-    public void shouldCreateMembership() throws Exception {
-        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
-        membershipMapper.create(membershipModel);
-
-        assertThat(membershipModel.getLevel(), is("V0"));
-        assertThat(membershipModel.getExperience(), is(0L));
-        assertThat(membershipModel.getFee(), is(0.1));
-
-    }
-
-    @Test
-    public void shouldUpdateMembership() throws Exception {
-        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
-        membershipMapper.create(membershipModel);
-
-        MembershipModel updateMembershipModel = new MembershipModel("V5", 5000000, 0.07);
-        membershipMapper.update(updateMembershipModel);
-
-        assertThat(updateMembershipModel.getLevel(), is("V5"));
-        assertThat(updateMembershipModel.getExperience(), is(5000000L));
-        assertThat(updateMembershipModel.getFee(), is(0.07));
-    }
-
-    @Test
     public void shouldMembershipFindById() throws Exception {
-        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
-        membershipMapper.create(membershipModel);
-
-        MembershipModel membershipModel1 = membershipMapper.findById(membershipModel.getId());
-
-        assertThat(membershipModel1.getLevel(), is("V0"));
-        assertThat(membershipModel1.getExperience(), is(0L));
-        assertThat(membershipModel1.getFee(), is(0.1));
+        assertThat(membershipMapper.findById(1).getLevel(), is(0));
+        assertThat(membershipMapper.findById(2).getLevel(), is(1));
+        assertThat(membershipMapper.findById(3).getLevel(), is(2));
+        assertThat(membershipMapper.findById(4).getLevel(), is(3));
+        assertThat(membershipMapper.findById(5).getLevel(), is(4));
+        assertThat(membershipMapper.findById(6).getLevel(), is(5));
     }
-
 }
