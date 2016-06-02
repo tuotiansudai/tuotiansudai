@@ -154,7 +154,7 @@ public class UserOpLogAspect {
      * @param joinPoint
      * @param returnValue
      */
-    @AfterReturning(value = "execution(* *.paywrapper.service.AgreementService.agreement(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* *..paywrapper.service.AgreementService.agreement(..))", returning = "returnValue")
     public void afterAgreement(JoinPoint joinPoint, Object returnValue) {
         Object[] args = joinPoint.getArgs();
         AgreementDto dto = (AgreementDto) args[0];
