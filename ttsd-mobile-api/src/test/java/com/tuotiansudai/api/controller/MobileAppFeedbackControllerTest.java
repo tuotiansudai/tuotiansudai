@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.FeedbackRequestDto;
+import com.tuotiansudai.api.controller.v1_0.MobileAppFeedbackController;
+import com.tuotiansudai.api.dto.v1_0.FeedbackRequestDto;
 import com.tuotiansudai.service.FeedbackService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
