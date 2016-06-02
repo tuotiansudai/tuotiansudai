@@ -3,6 +3,8 @@ package com.tuotiansudai.api.controller.v1_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FeedbackRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.repository.model.FeedbackType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Locale;
 
 
 @RestController
@@ -28,7 +31,10 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
             return new BaseResponseDto(errorCode, errorMessage);
         }
-        feedbackService.create(getLoginName(), feedbackRequestDto.getContent());
+
+        Source source = Source.valueOf(feedbackRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
+
+        feedbackService.create(getLoginName(), feedbackRequestDto.getBaseParam().getPhoneNum(), source, FeedbackType.opinion, feedbackRequestDto.getContent());
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 }
