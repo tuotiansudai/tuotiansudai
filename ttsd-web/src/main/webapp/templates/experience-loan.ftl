@@ -89,19 +89,12 @@
         </div>
 
         <div class="chart-info-responsive bg-w">
-<<<<<<< HEAD
-            项目金额：<@amount>${loan.loanAmount?string.computer}</@amount> 元<br/>
-            项目期限：${loan.periods} 天<br/>
+            项目金额：${loan.loanAmount}元<br/>
+            项目期限：${loan.duration}天<br/>
             起息时间：即投即生息<br/>
                     还款方式：到期付息,体验金收回。<br/>
                     投资要求：新手体验标仅能使用新手体验券进行投资。<br/>
                     项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。<br/>
-=======
-            项目金额：元<br/>
-            项目期限：${loan.duration} 天<br/>
-            还款方式：<br/>
-            投资要求：<br/>
->>>>>>> 5246b1c458b8af68ec58fdf49a50fd532e1ee82d
         </div>
         <div class="bg-w borderBox mt-20 project-model">
             <div class="model-nav">

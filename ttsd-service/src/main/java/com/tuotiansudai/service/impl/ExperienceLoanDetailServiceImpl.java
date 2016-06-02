@@ -27,7 +27,7 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
     @Autowired
     private CouponMapper couponMapper;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId,String loginName) {
@@ -39,8 +39,8 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
         LoanStatus loanStatus = LoanStatus.RAISING;
         if(CollectionUtils.isNotEmpty(investModels)){
             InvestModel investModel = investModels.get(0);
-            int day = Integer.parseInt(simpleDateFormat.format(new Date())) - Integer.parseInt(simpleDateFormat.format(investModel.getInvestTime()));
-            switch (day){
+            long day = (new Date().getTime() - investModel.getInvestTime().getTime()) / (1000 * 60 * 60 * 24);
+            switch ((int)day){
                 case 2:
                     loanStatus = LoanStatus.REPAYING;
                     experienceProgress = 100;

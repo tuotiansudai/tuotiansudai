@@ -1,7 +1,10 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
@@ -28,20 +31,20 @@ public class ExperienceLoanDetailController {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private CouponMapper couponMapper;
+
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {
         ExperienceLoanDto experienceLoanDto = ExperienceLoanDetailService.findExperienceLoanDtoDetail(1,LoginUserInfo.getLoginName());
-        List<UserCouponView> userCouponViewList = userCouponMapper.findUnusedCoupons(LoginUserInfo.getLoginName());
-        UserCouponView coupon = null;
-        if(CollectionUtils.isNotEmpty(userCouponViewList)){
-            for(UserCouponView userCouponView : userCouponViewList){
-                if(userCouponView.getProductTypeList().get(0).equals(ProductType.EXPERIENCE)){
-                    coupon = userCouponView;
-                    break;
-                }
+        UserCouponDto coupon = null;
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findExperienceUnusedByLoginName(LoginUserInfo.getLoginName());
+        if(CollectionUtils.isNotEmpty(userCouponModelList)){
+            for(UserCouponModel userCouponModel: userCouponModelList){
+                coupon = new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+                break;
             }
         }
-
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("coupon", coupon);
