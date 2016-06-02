@@ -30,12 +30,23 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric'], func
         }
         $(".withdraw form input[name='amount']").val(amount);
         formElement.submit();
-        layer.open({
-            type: 1,
-            title: '登录到联动优势支付平台充值',
-            area: ['560px', '270px'],
-            shadeClose: true,
-            content: $('#popWithdraw')
-        });
+        var hasAccess = document.getElementById("hasAccess").value;
+        if (hasAccess == 'true') {
+            layer.open({
+                type: 1,
+                title: '登录到联动优势支付平台充值',
+                area: ['560px', '270px'],
+                shadeClose: true,
+                content: $('#popWithdraw')
+            });
+        } else {
+            layer.open({
+                type: 1,
+                title: '提现失败',
+                area: ['560px', '270px'],
+                shadeClose: true,
+                content: $('#popWithdrawFail')
+            })
+        }
     });
 });
