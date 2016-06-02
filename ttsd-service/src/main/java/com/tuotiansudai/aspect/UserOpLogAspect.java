@@ -5,15 +5,16 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.UserOpLogMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.UserOpType;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.omg.CORBA.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.Object;
 import java.util.Date;
 import java.util.Locale;
 
@@ -139,10 +140,10 @@ public class UserOpLogAspect {
     private void setDescription(BaseDto<PayFormDataDto> returnValue, UserOpLogModel logModel) {
         BaseDto<PayFormDataDto> ret = returnValue;
         String desc;
-        if (ret == null || ret.getData() == null) {
+        if (ret == null || !ret.isSuccess() || ret.getData() == null || !ret.getData().getStatus()) {
             desc = "Fail";
         } else {
-            desc = ret.getData().getMessage();
+            desc = "Success";
         }
         logModel.setDescription(desc);
     }
