@@ -1,4 +1,5 @@
 @import 'variables';
+@import "fancybox";
 /*about us*/
 .about-us-container {
   background: #fff;
@@ -124,7 +125,9 @@
     padding-bottom: 15px;
     padding-top: 15px;
     color: #4c4c4c;
-
+    &.com-list{
+      border-bottom:none;
+    }
     img {
       &.fl {
         margin-right: 80px;
@@ -132,11 +135,28 @@
       &.fr {
         margin-left: 80px;
       }
+      &.com-img{
+        float:left;
+        margin-right:20px;
+      }
     }
     dl {
       overflow: hidden;
       margin-top: 20px;
-
+      &.company-user{
+        margin-top:0;
+        dt{
+          padding-bottom:0;
+          span{
+            font-size:12px;
+            color:#ff7200;
+            margin-left: 10px;
+          }
+        }
+        dd{
+          font-size:12px;
+        }
+      }
       dt {
         font-size: 16px;
         font-weight: bold;
@@ -197,6 +217,141 @@
       border-bottom-width: 0;
     }
   }
+  .com-place{
+    float:left;
+    width:100%;
+    li{
+      float:left;
+      width:240px;
+      height:200px;
+      margin-right:15px;
+      margin-bottom:15px;
+      position: relative;
+      span{
+        width:100%;
+        line-height:50px;
+        position: absolute;
+        bottom:0;
+        left:0;
+        font-size:18px;
+        color:#fff;
+        text-align:center;
+        background:rgba(0,0,0,.5)
+      }
+    }
+  }
+  .partner-list{
+    float:left;
+    width:100%;
+    li{
+      float:left;
+      width:100%;
+      padding:20px 0;
+      border-bottom:1px dashed #ff7200;
+      &:last-child{
+        border-bottom:none;
+      }
+      p{
+        float:left;
+        margin-bottom:0;
+        &.icon-logo{
+          width:170px;
+          height:80px;
+          border: 1px solid #e5e5e5;
+          background-image: url("/images/sign/aboutus/icon-list.jpg");
+        }
+        &.logo-one{
+          background-position: -170px 0;
+        }
+        &.logo-two{
+          background-position: 0 0;
+        }
+        &.partner-intro{
+          width:570px;
+          margin-left:20px;
+          span{
+            float:left;
+            width:100%;
+            font-size:12px;
+            color:#808080;
+            &.partner-name{
+              font-size:14px;
+              color:#4c4c4c;
+            }
+          }
+        }
+      }
+    }
+  }
+  .data-model{
+    float:left;
+    width:100%;
+    h3{
+      float:left;
+      width:100%;
+      margin-bottom:20px;
+    }
+    .model-container{
+      float:left;
+      width:100%;
+      margin-bottom:20px;
+      &.chart-dom{
+        width:765px;
+        height:250px;
+      }
+      .model-title{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:180px;
+          height:80px;
+          padding-top:20px;
+          &.model-one{
+            background:#e9ecf2;
+            margin-right:100px;
+            p{
+              color:#1a1a1a;
+            }
+          }
+          &.model-two{
+            background:#ff9c1b;
+            margin-right:100px;
+            p{
+              color:#fff;
+            }
+          }
+          &.model-three{
+            background:#e9ecf2;
+            p{
+              color:#1a1a1a;
+            }
+          }
+          p{
+            text-align: center;
+            margin-bottom: 0;
+            line-height: 30px;
+            font-size: 20px;
+          }
+        }
+      }
+      .table{
+        border:1px solid #b3b3b3;
+        thead{
+          th{
+            color:#fff;
+            background:#15aacd;
+            border:1px solid #b3b3b3;
+          }
+        }
+        tbody{
+          td{
+            border:1px solid #b3b3b3;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 700px){
@@ -235,25 +390,95 @@
         margin-bottom:0;
       }
     }
-
     &.company-summary {
-      h3 { text-align: center;}
+      h3 {
+        text-align: center;
+      }
       p{
         margin-bottom: 5px;
         font-size: 13px;
       }
       .refer-reward-box {
-      &.pc {
-        display: none;
+        &.pc {
+          display: none;
+        }
+        &.mobile {
+          display: block;
+          height:auto;
+          margin-bottom:15px;
+        }
       }
-      &.mobile {
-        display: block;
-        height:auto;
-        margin-bottom:15px;
-      }
-    }
       .info span {
         display: block;
+      }
+    }
+    .team-box{
+      .com-img{
+        height:auto!important;
+      }
+    }
+    .com-place{
+      li{
+        width:100%;
+        margin-right:0;
+        img{
+          width:100%;
+          height: 100%;
+        }
+      }
+    }
+    .partner-list{
+      li{
+        p{
+          &.icon-logo{
+            display:none;
+          }
+          &.logo-one{
+            background-position: -170px 0;
+          }
+          &.logo-two{
+            background-position: 0 0;
+          }
+          &.partner-intro{
+            width:100%;
+            margin-left:0;
+            span{
+              float:left;
+              width:100%;
+              font-size:12px;
+              color:#808080;
+              &.partner-name{
+                font-size:14px;
+                color:#4c4c4c;
+              }
+            }
+          }
+        }
+      }
+    }
+    .data-model{
+      &.cheat-model{
+        overflow:hidden;
+        overflow-x:scroll;
+      }
+      .model-container{
+        .model-title{
+          li{
+            float:left;
+            width:33.333333%;
+            height:auto;
+            padding:10px 0;
+            &.model-one{
+              margin-right:0;
+            }
+            &.model-two{
+              margin-right:0;
+            }
+            p{
+              font-size:12px;
+            }
+          }
+        }
       }
     }
   }

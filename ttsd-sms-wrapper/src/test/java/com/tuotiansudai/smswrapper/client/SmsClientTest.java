@@ -5,6 +5,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import okio.Buffer;
 import org.junit.After;
@@ -17,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
-import java.text.MessageFormat;
+import java.net.URLDecoder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,8 @@ public class SmsClientTest {
     private SmsClient smsClient;
 
     private MockWebServer server;
+
+    private String SUCCESS_RESPONSE_BODY = "{\"code\":200,\"msg\":\"sendid\",\"obj\":1}";
 
     @Before
     public void setUp() throws Exception {
@@ -45,24 +48,22 @@ public class SmsClientTest {
     @Transactional
     public void shouldGetResultCode() throws Exception {
         MockResponse mockResponse = new MockResponse();
-        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
-        String resultCode = "resultCode";
-        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
 
         String mobile = "13900000000";
-        String content = "content";
-        BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content, "127.0.0.1");
+        BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, "", "127.0.0.1");
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();
 
-        String requestBody = new String(body.readByteArray(), "UTF8");
+        String requestBody = URLDecoder.decode(new String(body.readByteArray(), "UTF8"), "utf-8");
 
-        assertTrue(requestBody.contains("mobile=" + mobile));
-        assertTrue(requestBody.contains("content=" + content));
+        assertTrue(requestBody.contains("templateid=" + SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE.getTemplateId()));
+        assertTrue(requestBody.contains("mobiles=[\"" + mobile + "\"]"));
+        assertTrue(requestBody.contains("params=[\"\"]"));
         assertTrue(dto.getData().getStatus());
     }
 }

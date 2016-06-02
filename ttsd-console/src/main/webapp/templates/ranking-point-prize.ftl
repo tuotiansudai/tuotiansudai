@@ -8,6 +8,7 @@
         <tr>
             <th>奖品</th>
             <th>中奖人数</th>
+            <th>状态</th>
             <th></th>
         </tr>
         </thead>
@@ -16,6 +17,7 @@
             <tr>
                 <td>${pointPrizeWinnerGroup.description!}</td>
                 <td>${pointPrizeWinnerGroup.num?string('0')!}</td>
+                <td>${pointPrizeWinnerGroup.active?string('已生效','未生效')}</td>
                 <td><a href="/activity-manage/point-prize-detail?pointPrizeId=${pointPrizeWinnerGroup.id?string('0')!}">查看详情</a></td>
             </tr>
         </#list>

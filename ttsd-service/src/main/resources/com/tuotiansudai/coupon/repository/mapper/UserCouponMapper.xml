@@ -204,7 +204,7 @@
             and t.status = 'SUCCESS'
         </if>
         <if test="isUsed != null and !isUsed">
-            and t.status != 'SUCCESS'
+            and (t.status != 'SUCCESS' or t.status is null)
         </if>
         order by t.used_time desc
         limit #{index}, #{pageSize}
@@ -234,7 +234,7 @@
             and t.status = 'SUCCESS'
         </if>
         <if test="isUsed != null and !isUsed">
-            and t.status != 'SUCCESS'
+            and (t.status != 'SUCCESS' or t.status is null)
         </if>
     </select>
 

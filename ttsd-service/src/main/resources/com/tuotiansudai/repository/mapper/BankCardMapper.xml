@@ -45,4 +45,8 @@
         where id = #{id}
     </update>
 
+    <select id="findApplyBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'APPLY' and is_fast_pay_on = true
+    </select>
+
 </mapper>

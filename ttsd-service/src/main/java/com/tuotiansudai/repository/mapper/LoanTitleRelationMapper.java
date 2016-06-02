@@ -13,4 +13,6 @@ public interface LoanTitleRelationMapper {
     List<LoanTitleRelationModel> findByLoanId(@Param("loanId") long loanId);
 
     void delete(@Param("loanId") long loanId);
+
+    List<LoanTitleRelationModel> findLoanTitleRelationAndTitleByLoanId(@Param("loanId") long loanId);
 }

@@ -304,7 +304,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public boolean deleteCoupon(String loginName, long couponId) {
-        if (CollectionUtils.isEmpty(userCouponMapper.findByCouponId(couponId))) {
+        if (CollectionUtils.isNotEmpty(userCouponMapper.findByCouponId(couponId))) {
             return false;
         }
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -326,7 +326,7 @@ public class CouponServiceImpl implements CouponService {
             if (loanModel == null || couponModel == null) {
                 continue;
             }
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
             totalInterest += expectedInterest - expectedFee;
         }

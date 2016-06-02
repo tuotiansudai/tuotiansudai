@@ -129,12 +129,9 @@ public class InvestServicePaybackExceptionTest {
         investService.asyncInvestCallback();
         investService.processOneCallback(model);
 
-        ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<InvestStatus> accountModelArgumentCaptor2 = ArgumentCaptor.forClass(InvestStatus.class);
-        verify(investMapper, times(1)).updateStatus(accountModelArgumentCaptor1.capture(), accountModelArgumentCaptor2.capture());
-        long investModelId = accountModelArgumentCaptor1.getValue();
-        InvestStatus investModelStatus = accountModelArgumentCaptor2.getValue();
-        assertThat(investModelStatus, is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
+        ArgumentCaptor<InvestModel> investModelArgumentCaptor = ArgumentCaptor.forClass(InvestModel.class);
+        verify(investMapper, times(1)).update(investModelArgumentCaptor.capture());
+        assertThat(investModelArgumentCaptor.getValue().getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
     }
 
     // case7: 超投，返款抛出 Exception 异常，需要集成测试中验证

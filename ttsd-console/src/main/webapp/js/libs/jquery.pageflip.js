@@ -1,5 +1,4 @@
 ﻿; (function ($) {
-
     jQuery.pageflip = {
 
         paging: function (recordCount,option) {

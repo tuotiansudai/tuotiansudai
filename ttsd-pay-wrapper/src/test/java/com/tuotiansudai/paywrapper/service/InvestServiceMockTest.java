@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.service.impl.InvestServiceImpl;
@@ -46,7 +47,7 @@ public class InvestServiceMockTest {
 
         investService.investCallback(null, null);
 
-        verify(redisWrapperClient, times(1)).incr(InvestServiceImpl.JOB_TRIGGER_KEY);
+        verify(redisWrapperClient, times(1)).incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
     }
 
     @Test
@@ -55,6 +56,6 @@ public class InvestServiceMockTest {
 
         investService.investCallback(null, null);
 
-        verify(redisWrapperClient, times(0)).incr(InvestServiceImpl.JOB_TRIGGER_KEY);
+        verify(redisWrapperClient, times(0)).incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
     }
 }

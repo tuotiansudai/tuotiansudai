@@ -53,7 +53,7 @@ public class RegisterServiceImpl implements RegisterService {
         PayDataDto dataDto = new PayDataDto();
 
         try {
-            UserModel userModel = userMapper.lockByLoginName(dto.getLoginName());
+            UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
 
             MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(
                     MessageFormat.format(REGISTER_ORDER_ID_TEMPLATE, String.valueOf(userModel.getId()), String.valueOf(new Date().getTime())),

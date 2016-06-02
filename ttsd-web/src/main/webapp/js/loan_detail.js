@@ -8,6 +8,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
         $errorTip = $('.errorTip'),
+        $errorType = $('.errorType'),
         $investSubmit=$('#investSubmit'),
         $noPasswordTips=$('#noPasswordTips'),
         $authorizeAgreement=$('#goAuthorize'),
@@ -38,8 +39,25 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
 
-    if ($errorTip.length) {
+    if ($errorTip.length > 0 && $errorTip.text() != '' && $errorType.val() != 'OUT_OF_NOVICE_INVEST_LIMIT') {
         showInputErrorTips($errorTip.text());
+    }
+
+    var showLayer = function() {
+        layer.open({
+            shadeClose: false,
+            title: '新手体验特权',
+            btn: ['确认'],
+            area: ['500px', '180px'],
+            content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
+            btn1: function () {
+                layer.closeAll();
+            }
+        });
+    }
+
+    if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
+        showLayer();
     }
 
     var loanProgress = $loanDetail.data('loan-progress');
@@ -57,6 +75,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             index: 1
         }, function(data) {
             if (data.status) {
+                data.achievementClass = function () {
+                    return function (text, render) {
+                        var classMapping = { 'FIRST_INVEST': 'first-icon', 'MAX_AMOUNT': 'max-icon', 'LAST_INVEST': 'last-icon' };
+                        return "<i class='" + classMapping[render(text)] + "'></i>";
+                    }
+                };
                 var html = Mustache.render(investListTemplate, data);
                 $('.loan-list-con table').html(html);
             }
@@ -558,6 +582,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                             var data = response.data;
                             if (data.status) {
                                 location.href = "/invest-success";
+                            } else if (data.message == '新手标投资已超上限') {
+                                showLayer();
                             } else {
                                 showInputErrorTips(data.message);
                             }

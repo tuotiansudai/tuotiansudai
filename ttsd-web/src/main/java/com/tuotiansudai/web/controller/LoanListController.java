@@ -29,21 +29,25 @@ public class LoanListController {
     private CouponAlertService couponAlertService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView webLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
+    public ModelAndView webLoanList(@RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "status", required = false) LoanStatus status,
                                     @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
                                     @RequestParam(value = "rateEnd", defaultValue = "0", required = false) double rateEnd,
+                                    @RequestParam(value = "durationStart", defaultValue = "0", required = false) int durationStart,
+                                    @RequestParam(value = "durationEnd", defaultValue = "0", required = false) int durationEnd,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        int count = loanService.findLoanListCountWeb(productType, status, rateStart, rateEnd);
-        List<LoanItemDto> loanItemList = loanService.findLoanItems(productType, status, rateStart, rateEnd, index);
+        int count = loanService.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
+        List<LoanItemDto> loanItemList = loanService.findLoanItems(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
 
         ModelAndView modelAndView = new ModelAndView("/loan-list");
+        modelAndView.addObject("index", index);
         modelAndView.addObject("count", count);
         modelAndView.addObject("loanItemList", loanItemList);
-        modelAndView.addObject("index", index);
         modelAndView.addObject("rateStart", rateStart);
         modelAndView.addObject("rateEnd", rateEnd);
-        modelAndView.addObject("productType", productType);
+        modelAndView.addObject("durationStart", durationStart);
+        modelAndView.addObject("durationEnd", durationEnd);
+        modelAndView.addObject("name", name);
         modelAndView.addObject("status", status);
         int maxIndex = count / 10 + (count % 10 > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);

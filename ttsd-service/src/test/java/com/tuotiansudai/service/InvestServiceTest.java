@@ -65,6 +65,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
     }
@@ -86,14 +87,7 @@ public class InvestServiceTest {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel();
-            model.setAmount(1000000);
-            model.setCreatedTime(cal.getTime());
-            model.setId(i);
-            model.setIsAutoInvest(false);
-            model.setLoginName(loginName);
-            model.setLoanId(loanId);
-            model.setSource(Source.ANDROID);
+            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }

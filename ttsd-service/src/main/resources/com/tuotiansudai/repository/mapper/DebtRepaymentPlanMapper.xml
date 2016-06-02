@@ -61,7 +61,7 @@
           l.`repay_date` AS expert_repay_date,
           IF(
             l.`status` = 'COMPLETE',
-            l.`corpus` + l.`actual_interest` + l.`default_interest`,
+            l.`repay_amount`,
             l.`corpus` + l.`expected_interest` + l.`default_interest`
           ) AS repay_amount,
           t.`name` AS loan_name,

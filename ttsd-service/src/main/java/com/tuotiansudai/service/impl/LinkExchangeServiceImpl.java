@@ -50,25 +50,28 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
     public LinkExchangeDto getLinkExchangeById(String id) {
         LinkExchangeDto linkExchangeDto = new LinkExchangeDto();
         String values = redisWrapperClient.hget(LINK_EXCHANGE_KEY, id);
-        String[] linkExchangeDtaValues = values.split("\\|");
-        linkExchangeDto.setId(Long.parseLong(linkExchangeDtaValues[0]));
-        linkExchangeDto.setTitle(linkExchangeDtaValues[1]);
-        linkExchangeDto.setLinkUrl(linkExchangeDtaValues[2]);
-        linkExchangeDto.setUpdateTime(new Date());
-        linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
+        if(values != null){
+            String[] linkExchangeDtaValues = values.split("\\|");
+            linkExchangeDto.setId(Long.parseLong(linkExchangeDtaValues[0]));
+            linkExchangeDto.setTitle(linkExchangeDtaValues[1]);
+            linkExchangeDto.setLinkUrl(linkExchangeDtaValues[2]);
+            linkExchangeDto.setUpdateTime(new Date());
+            linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
+        }
         return linkExchangeDto;
     }
 
     @Override
     public void create(LinkExchangeDto linkExchangeDto) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(String.valueOf(System.currentTimeMillis()), linkExchangeDto.convertToString());
+        map.put(String.valueOf(linkExchangeDto.getId()), linkExchangeDto.convertToString());
         redisWrapperClient.hmset(LINK_EXCHANGE_KEY, map);
     }
 
     @Override
     public void update(LinkExchangeDto linkExchangeDto) {
-            String values = redisWrapperClient.hget(LINK_EXCHANGE_KEY,String.valueOf(linkExchangeDto.getId()));
+        String values = redisWrapperClient.hget(LINK_EXCHANGE_KEY,String.valueOf(linkExchangeDto.getId()));
+        if(values != null) {
             String[] linkExchangeDtaValues = values.split("\\|");
             linkExchangeDto.setId(Long.parseLong(linkExchangeDtaValues[0]));
             linkExchangeDto.setTitle(linkExchangeDto.getTitle());
@@ -76,6 +79,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             linkExchangeDto.setUpdateTime(new Date());
             linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
             redisWrapperClient.hset(LINK_EXCHANGE_KEY, String.valueOf(linkExchangeDto.getId()), linkExchangeDto.convertToString());
+        }
     }
 
     @Override

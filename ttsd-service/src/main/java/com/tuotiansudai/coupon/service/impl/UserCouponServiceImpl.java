@@ -13,6 +13,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -20,11 +21,11 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +43,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
@@ -124,7 +122,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
@@ -154,5 +152,16 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         return orderingMaxBenefitUserCoupons.isEmpty() ? null :
                 new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0));
+    }
+
+    @Override
+    public boolean isUsableUserCouponExist(String loginName) {
+        final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        return Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel input) {
+                return InvestStatus.SUCCESS != input.getStatus() && input.getEndTime().after(new Date());
+            }
+        }).isPresent();
     }
 }

@@ -85,14 +85,15 @@ class RechargesHandler(BaseHandler):
     SELECT `id`,
            `login_name` as user_id,
            `created_time`,
+           `updated_time`,
            `fast_pay`,
            `source`,
            `channel`,
            `bank_code`,
+           `status`,
            `amount`
       FROM `recharge`
-     WHERE `created_time` BETWEEN %s
-       AND %s
+     WHERE `updated_time` BETWEEN %s AND %s
 '''
 
     def get(self):
@@ -101,6 +102,7 @@ class RechargesHandler(BaseHandler):
             rows = self.settings['db'].query(self.SQL, start_time, end_time)
             for row in rows:
                 row['created_time'] = row.created_time.isoformat()
+                row['updated_time'] = row.updated_time.isoformat()
             self.write({'recharges': rows})
         else:
             raise HTTPError(400)
@@ -111,18 +113,14 @@ class WithdrawsHandler(BaseHandler):
     SELECT `id`,
            `login_name`,
            `created_time`,
+           `updated_time`,
            `apply_notify_time`,
            `notify_time` as `final_notify_time`,
            `source`,
            `status`,
            `amount`
       FROM `withdraw`
-     WHERE `created_time` BETWEEN %(start_time)s
-       AND %(end_time)s
-        OR `apply_notify_time` BETWEEN %(start_time)s
-       AND %(end_time)s
-        OR `notify_time` BETWEEN %(start_time)s
-       AND %(end_time)s
+     WHERE `updated_time` BETWEEN %(start_time)s AND %(end_time)s
 '''
 
     def get(self):
@@ -131,6 +129,7 @@ class WithdrawsHandler(BaseHandler):
             rows = self.settings['db'].query(self.SQL, **{'start_time': start_time, 'end_time': end_time})
             for row in rows:
                 row['created_time'] = row.created_time.isoformat()
+                row['updated_time'] = row.updated_time.isoformat()
                 row['apply_notify_time'] = row.apply_notify_time.isoformat() if row.apply_notify_time else None
                 row['final_notify_time'] = row.final_notify_time.isoformat() if row.final_notify_time else None
             self.write({'withdraws': rows})
@@ -145,6 +144,7 @@ class InvestHandler(BaseHandler):
            `source`,
            `channel`,
            `created_time`,
+           `updated_time`,
            `is_auto_invest`,
            `amount`,
            `status`
@@ -161,6 +161,7 @@ class InvestHandler(BaseHandler):
            `actual_repay_date`,
            `actual_interest`,
            `actual_fee`,
+           `default_interest`,
            `status`,
            `id`
       FROM `invest_repay`
@@ -171,6 +172,7 @@ class InvestHandler(BaseHandler):
         invest = self.settings['db'].get(self.SQL_INVEST, invest_id)
         if invest:
             invest['created_time'] = invest.created_time.isoformat()
+            invest['updated_time'] = invest.updated_time.isoformat()
             invest_repays = self.settings['db'].query(self.SQL_INVEST_REPAY, invest_id)
             for repay in invest_repays:
                 repay['repay_date'] = repay.repay_date.isoformat()
@@ -188,11 +190,12 @@ class InvestsHandler(BaseHandler):
            `source`,
            `channel`,
            `created_time`,
+           `updated_time`,
            `is_auto_invest`,
            `amount`,
            `status`
       FROM `invest`
-      WHERE `created_time` BETWEEN %s AND %s
+      WHERE `updated_time` BETWEEN %s AND %s
     '''
 
     def get(self):
@@ -201,7 +204,41 @@ class InvestsHandler(BaseHandler):
             rows = self.settings['db'].query(self.SQL, start_time, end_time)
             for row in rows:
                 row['created_time'] = row.created_time.isoformat()
+                row['updated_time'] = row.updated_time.isoformat()
             self.write({'invests': rows})
+        else:
+            raise HTTPError(400)
+
+
+class InvestRepaysHandler(BaseHandler):
+    SQL = '''
+    SELECT `period`,
+           `repay_date`,
+           `corpus` as `principal_balance`,
+           `expected_interest`,
+           `expected_fee`,
+           `actual_repay_date`,
+           `actual_interest`,
+           `actual_fee`,
+           `default_interest`,
+           `status`,
+           `id`,
+           `created_time`,
+           `updated_time`
+      FROM `invest_repay`
+     WHERE `updated_time` BETWEEN %s AND %s
+    '''
+
+    def get(self):
+        start_time, end_time = self.get_argument('start_time', None), self.get_argument('end_time', None)
+        if start_time and end_time:
+            rows = self.settings['db'].query(self.SQL, start_time, end_time)
+            for row in rows:
+                row['created_time'] = row.created_time.isoformat()
+                row['updated_time'] = row.updated_time.isoformat()
+                row['repay_date'] = row.repay_date.isoformat()
+                row['actual_repay_date'] = row.actual_repay_date.isoformat() if row.actual_repay_date else None
+            self.write({'invest_repays': rows})
         else:
             raise HTTPError(400)
 
@@ -293,6 +330,7 @@ if __name__ == '__main__':
         (r'/cs/invests', InvestsHandler),
         (r'/cs/user', UserHandler),
         (r'/cs/balances', BalancesHandler),
+        (r'/cs/invest_repays', InvestRepaysHandler),
         (r'/', BaseHandler),
         (r'/cs/recharges', RechargesHandler)], **settings)
     app.listen(options.port)

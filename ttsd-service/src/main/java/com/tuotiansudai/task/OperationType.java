@@ -10,6 +10,8 @@ public enum OperationType implements Serializable{
 
     USER("用户", "修改用户"),
 
+    TRANSFER_RULE("债权转让", "修改债权转让规则"),
+
     PUSH("App推送", "新建App推送");
 
     private String targetType;

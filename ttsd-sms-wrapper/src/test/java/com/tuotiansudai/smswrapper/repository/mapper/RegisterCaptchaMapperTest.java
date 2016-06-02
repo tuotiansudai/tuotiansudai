@@ -28,9 +28,6 @@ public class RegisterCaptchaMapperTest {
         SmsModel model = new SmsModel();
         model.setMobile("13800000000");
         model.setContent("content");
-        model.setExt("ext");
-        model.setRrid("rrid");
-        model.setStime(now);
         model.setSendTime(now);
         model.setResultCode("result");
 

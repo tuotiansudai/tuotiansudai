@@ -76,6 +76,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     showErrorMessage('红包金额最小为1', $('.coupon-number', curform));
                     return false;
                 }
+                var deadline = parseInt($('.coupon-deadline', curform).val());
+                if (deadline <= 0) {
+                    showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
+                    return false;
+                }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('发放数量最小为1', $('.give-number', curform));
@@ -132,11 +137,14 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE') {
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER') {
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
             } else if (userGroup == "EXCHANGER_CODE") {
+                    $('.file-btn').find('input').val('');
+                    $('.give-number').val('').prop('readonly', false);
+            } else if (userGroup == 'NEW_REGISTERED_USER') {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
             } else if (userGroup == 'AGENT') {

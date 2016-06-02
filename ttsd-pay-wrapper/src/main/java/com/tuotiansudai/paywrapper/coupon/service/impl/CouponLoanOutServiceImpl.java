@@ -53,7 +53,6 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     private SystemBillService systemBillService;
 
     @Override
-    @Transactional
     public void sendRedEnvelope(long loanId) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
@@ -87,6 +86,8 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
                             transferAmount,
                             couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
+                    userCouponModel.setActualInterest(transferAmount);
+                    userCouponMapper.update(userCouponModel);
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                 }

@@ -183,17 +183,7 @@ public class MockReferrerRewardServiceTest {
     }
 
     private InvestModel getFakeInvestModel(LoanModel loanModel,UserModel userModel) {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000L);
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(userModel.getLoginName());
-        model.setLoanId(loanModel.getId());
-        model.setSource(Source.WEB);
-        model.setStatus(InvestStatus.SUCCESS);
-        return model;
+        return new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000L, userModel.getLoginName(), new Date(), Source.WEB, null);
     }
 
     private UserModel createFakeUser(String loginName) {

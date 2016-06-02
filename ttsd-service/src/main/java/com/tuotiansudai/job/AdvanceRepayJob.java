@@ -10,6 +10,8 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 @Component
 public class AdvanceRepayJob implements Job {
 
@@ -22,15 +24,24 @@ public class AdvanceRepayJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("trigger advance repay , prepare do job");
-
         long loanRepayId = (Long) context.getJobDetail().getJobDataMap().get(LOAN_REPAY_ID);
 
-        logger.info("trigger advance repay, loanRepayId = " + String.valueOf(loanRepayId));
+        logger.info(MessageFormat.format("[Advance Repay {0}] invest payback job is starting...", String.valueOf(loanRepayId)));
 
-        BaseDto<PayDataDto> dto = payWrapperClient.postAdvanceRepay(loanRepayId);
+        BaseDto<PayDataDto> dto;
+
+        try {
+            dto = payWrapperClient.postAdvanceRepay(loanRepayId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Advance Repay {0}] invest payback job execution is failed", String.valueOf(loanRepayId)));
+            return;
+        }
+
+        logger.info(MessageFormat.format("[Advance Repay {0}] invest payback job is done", String.valueOf(loanRepayId)));
 
         if (!dto.getData().getStatus()) {
+            logger.error(MessageFormat.format("[Advance Repay {0}] invest payback job result is {1}",
+                    String.valueOf(loanRepayId), String.valueOf(dto.getData().getStatus())));
             throw new JobExecutionException();
         }
     }

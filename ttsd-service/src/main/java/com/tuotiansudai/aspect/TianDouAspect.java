@@ -42,7 +42,7 @@ public class TianDouAspect {
         logger.debug("after returning invest, tianDou assign starting...");
         DateTime activityStartTime = new DateTime(2016, 4, 1, 0, 0, 0);
         DateTime now = new DateTime();
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
 
         if (now.isBefore(activityStartTime)) {
             logger.info("ranking activity not started. Start time is: 2016-04-01 00:00:00. loginName:" + investModel.getLoginName()

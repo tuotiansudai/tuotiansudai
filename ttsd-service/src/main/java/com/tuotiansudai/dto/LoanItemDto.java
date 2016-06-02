@@ -19,6 +19,8 @@ public class LoanItemDto {
 
     private double activityRate;
 
+    private double interestCouponRate;
+
     private long periods;
 
     private LoanType type;
@@ -36,6 +38,8 @@ public class LoanItemDto {
     private Date fundraisingStartTime;
 
     private long preheatSeconds;
+
+    private int duration;
 
     public long getId() {
         return id;
@@ -75,6 +79,14 @@ public class LoanItemDto {
 
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
+    }
+
+    public double getInterestCouponRate() {
+        return interestCouponRate;
+    }
+
+    public void setInterestCouponRate(double interestCouponRate) {
+        this.interestCouponRate = interestCouponRate;
     }
 
     public long getPeriods() {
@@ -147,5 +159,13 @@ public class LoanItemDto {
 
     public void setPreheatSeconds(long preheatSeconds) {
         this.preheatSeconds = preheatSeconds;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

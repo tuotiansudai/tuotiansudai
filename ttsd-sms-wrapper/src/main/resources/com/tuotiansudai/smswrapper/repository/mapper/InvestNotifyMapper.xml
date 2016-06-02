@@ -7,16 +7,13 @@
         <id property="id" column="id"/>
         <result property="mobile" column="mobile"/>
         <result property="content" column="content"/>
-        <result property="ext" column="ext"/>
-        <result property="stime" column="stime"/>
-        <result property="rrid" column="rrid"/>
         <result property="sendTime" column="send_time"/>
         <result property="resultCode" column="result_code"/>
     </resultMap>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="SmsModel">
-        insert into invest_notify (mobile, content, ext, stime, rrid, send_time, result_code)
-        values (#{mobile}, #{content}, #{ext}, #{stime}, #{rrid}, #{sendTime}, #{resultCode})
+        insert into invest_notify (mobile, content, send_time, result_code)
+        values (#{mobile}, #{content}, #{sendTime}, #{resultCode})
     </insert>
 
     <select id="findByMobile" resultMap="smsModelMap" parameterType="map">

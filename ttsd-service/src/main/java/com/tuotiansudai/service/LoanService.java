@@ -41,19 +41,15 @@ public interface LoanService {
 
     BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
 
-    List<LoanItemDto> findLoanItems(ProductType productType, LoanStatus status, double rateStart, double rateEnd, int currentPageNo);
+    List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd, int currentPageNo);
 
-    int findLoanListCountWeb(ProductType productType, LoanStatus status, double rateStart, double rateEnd);
+    int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd);
 
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
 
     BaseDto<PayDataDto> loanOut(LoanDto loanDto);
-
-    LoanDetailDto getLoanDetail(String loginName, long loanId);
-
-    BaseDto<BasePaginationDataDto> getInvests(String loginName, long loanId, int index, int pageSize);
 
     BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 
@@ -63,5 +59,4 @@ public interface LoanService {
 
     BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto);
 
-    String encryptLoginName(String loginName, String recordsLoginName, int showLength, long investId);
 }

@@ -6,7 +6,7 @@ public enum SystemBillBusinessType {
 
     BIND_BANK_CARD("绑卡"),
 
-    REPLACE_BANK_CARD("绑卡"),
+    REPLACE_BANK_CARD("换卡"),
 
     RECHARGE_SUCCESS("充值"),
 
@@ -17,6 +17,8 @@ public enum SystemBillBusinessType {
     SYSTEM_RECHARGE("平台充值"),
 
     INVEST_FEE("利息管理费"),
+
+    TRANSFER_FEE("债权转让手续费"),
 
     ADMIN_INTERVENTION("管理员干预"),
 

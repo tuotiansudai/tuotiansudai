@@ -1,0 +1,1 @@
+alter table transfer_application add column left_period int(11) not null AFTER period;

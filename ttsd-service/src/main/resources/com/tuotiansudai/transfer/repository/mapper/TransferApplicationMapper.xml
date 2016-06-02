@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="transferApplicationResultMap" type="TransferApplicationModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="loan_id" property="loanId"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="period" property="period"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="transfer_fee" property="transferFee"></result>
+        <result column="status" property="status"></result>
+        <result column="deadline" property="deadline"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="application_time" property="applicationTime"></result>
+        <result column="left_period" property="leftPeriod"></result>
+    </resultMap>
+
+    <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
+        <result column="id" property="transferApplicationId"></result>
+        <result column="name" property="name"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="status" property="transferStatus"></result>
+        <result column="loan_id" property="loanId"></result>
+        <result column="transferrer_loginName" property="transferrerLoginName"></result>
+        <result column="transferee_loginName" property="transfereeLoginName"></result>
+        <result column="transfer_fee" property="transferFee"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="period" property="period"></result>
+        <result column="left_period" property="leftPeriod"></result>
+        <result column="deadline" property="deadLine"></result>
+        <result column="application_time" property="applicationTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
+    </insert>
+
+    <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
+        select * from transfer_application
+        <where>
+            <if test="transferInvestId != null">
+                transfer_invest_id = #{transferInvestId}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and status in
+                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findTransferApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        order by case ta.status when 'TRANSFERRING' then '1' when 'SUCCESS' then '2' when 'CANCEL' then '3' else '4' end,ta.application_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransferApplicationPaginationByLoginName" parameterType="map" resultType="int">
+        select count(1) from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate
+        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
+        </where>
+        order by ta.transfer_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultType="int">
+        select count(*) from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
+        </where>
+    </select>
+
+    <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
+        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,ta.application_time,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        <where>
+            <if test="transferApplicationId != null">
+                ta.id = #{transferApplicationId}
+            </if>
+            <if test="startTime != null">
+                and ta.application_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and ta.application_time <= #{endTime} ]]>
+            </if>
+            <if test="status">
+               and ta.status = #{status}
+            </if>
+            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
+              and ta.login_name = #{transferrerLoginName}
+            </if>
+            <if test="transfereeLoginName != null and transfereeLoginName != ''">
+              and i.login_name = #{transfereeLoginName}
+            </if>
+            <if test="loanId != null">
+              and i.loan_id = #{loanId}
+            </if>
+
+        </where>
+        order by application_time
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.invest_id,ta.deadline,
+        ta.transfer_invest_id,ta.period,ta.left_period, l.base_rate AS baseRate from transfer_application ta left JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="transferStatus == null || transferStatus.size == 0">
+                and ta.status in ('SUCCESS','TRANSFERRING')
+            </if>
+            <if test="transferStatus != null and transferStatus.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatus" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="rateStart > 0 and rateStart != 0.14">
+                and l.base_rate >= #{rateStart}
+            </if>
+            <if test="rateStart > 0 and rateStart == 0.14">
+                and l.base_rate > #{rateStart}
+            </if>
+            <if test="rateEnd > 0 and rateEnd != 0.14">
+                <![CDATA[ and l.base_rate  < #{rateEnd} ]]>
+            </if>
+            <if test="rateEnd > 0 and rateEnd == 0.14">
+                <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
+            </if>
+        </where>
+        order by transfer_time
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountAllTransferApplicationPagination" parameterType="map" resultType="int">
+
+        select count(1)
+        from transfer_application ta left JOIN loan l on ta.loan_id = l.id
+        <where>
+
+            <if test="transferStatus == null || transferStatus.size == 0">
+                and ta.status in ('SUCCESS','TRANSFERRING')
+            </if>
+            <if test="transferStatus != null and transferStatus.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatus" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="rateStart > 0 and rateStart != 0.14">
+                and l.base_rate >= #{rateStart}
+            </if>
+            <if test="rateStart > 0 and rateStart == 0.14">
+                and l.base_rate > #{rateStart}
+            </if>
+            <if test="rateEnd > 0 and rateEnd != 0.14">
+                <![CDATA[ and l.base_rate  < #{rateEnd} ]]>
+            </if>
+            <if test="rateEnd > 0 and rateEnd == 0.14">
+                <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findCountTransferApplicationPagination" parameterType="map" resultType="int">
+
+        select count(1)
+        from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        <where>
+            <if test="transferApplicationId != null">
+                ta.id = #{transferApplicationId}
+            </if>
+            <if test="startTime != null">
+                and ta.application_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and ta.application_time <= #{endTime} ]]>
+            </if>
+            <if test="status != null">
+                and ta.status = #{status}
+            </if>
+            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
+                and ta.login_name = #{transferrerLoginName}
+            </if>
+            <if test="transfereeLoginName != null and transfereeLoginName != ''">
+                and i.login_name = #{transfereeLoginName}
+            </if>
+            <if test="loanId != null">
+                and i.loan_id = #{loanId}
+            </if>
+
+        </where>
+    </select>
+
+
+    <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
+    <update id="update" parameterType="TransferApplicationModel">
+        update transfer_application
+        set name = #{name},
+        loan_id = #{loanId},
+        transfer_invest_id = #{transferInvestId},
+        invest_id = #{investId},
+        period = #{period},
+        login_name = #{loginName},
+        invest_amount = #{investAmount},
+        transfer_amount = #{transferAmount},
+        transfer_fee = #{transferFee},
+        status = #{status},
+        deadline = #{deadline},
+        transfer_time = #{transferTime},
+        application_time = #{applicationTime},
+        left_period = #{leftPeriod}
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where id = #{id}
+    </select>
+
+
+    <resultMap id="transferInvestDetailMap" type="TransferInvestDetailDto">
+        <result column="id" property="id"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="transferrer_loginName" property="transferrerLoginName"></result>
+        <result column="transferee_loginName" property="transfereeLoginName"></result>
+        <result column="loan_id" property="loanId"></result>
+    </resultMap>
+
+    <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap">
+        select
+            ta.id as id,
+            ta.name as loan_name,
+            ta.transfer_amount,
+            ta.invest_amount,
+            ta.transfer_time,
+            (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE')) as next_repay_date,
+            (select ir.expected_interest + ir.corpus - ir.expected_fee
+             from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE')
+             and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE'))
+            ) as next_repay_amount,
+            i.id as invest_id,
+            ta.transfer_invest_id,
+            ta.login_name as transferrer_loginName,
+            i.login_name as transferee_loginName,
+            ta.loan_id
+        from invest i
+        join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
+        <if test="loanStatus != null">
+        join loan l on l.id = ta.loan_id and l.status = #{loanStatus}
+        </if>
+        <where>
+            i.login_name = #{investorLoginName}
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and i.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by i.created_time desc, i.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountInvestTransferPagination" resultType="long" parameterType="map">
+        select
+            count(1)
+        from invest i
+        join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
+        <if test="loanStatus != null">
+            join loan l on l.id = ta.loan_id and l.status = #{loanStatus}
+        </if>
+        <where>
+            i.login_name = #{investorLoginName}
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and i.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

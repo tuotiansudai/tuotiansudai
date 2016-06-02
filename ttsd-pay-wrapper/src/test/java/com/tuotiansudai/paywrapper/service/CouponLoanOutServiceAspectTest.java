@@ -143,8 +143,9 @@ public class CouponLoanOutServiceAspectTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
+        couponModel.setDeadline(10);
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);
         return couponModel.getId();
     }
@@ -223,14 +224,7 @@ public class CouponLoanOutServiceAspectTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel();
-        im.setAmount(amount);
-        im.setCreatedTime(new Date());
-        im.setId(idGenerator.generate());
-        im.setSource(Source.WEB);
-        im.setLoanId(loanId);
-        im.setIsAutoInvest(false);
-        im.setLoginName(loginName);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 

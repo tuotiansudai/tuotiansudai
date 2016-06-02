@@ -88,7 +88,7 @@ public class SendCloudClient {
                 transport.close();
                 break;
             } catch (MessagingException e) {
-                logger.debug("send cloud is fail by" + e.getMessage());
+                logger.error("send cloud is fail by: " + e.getMessage());
             }
         }
 

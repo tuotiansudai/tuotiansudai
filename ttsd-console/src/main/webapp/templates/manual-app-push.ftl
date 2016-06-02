@@ -98,7 +98,7 @@
             <label  class="col-sm-2 control-label">预设推送时间: </label>
             <div class="col-sm-3">
                 <div class='input-group date' id='datetimepicker6'>
-                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写" name="expectPushTime" <#if jPushAlert??>value="${jPushAlert.expectPushTime!}" </#if>/>
+                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="预设推送时间需要正确填写" name="expectPushTime" <#if jPushAlert??>value="${jPushAlert.expectPushTime!}" </#if>/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -114,7 +114,7 @@
                         <option value="${jumpTo.name()}" <#if jPushAlert?? && jPushAlert.jumpTo == jumpTo>selected</#if>> ${jumpTo.getDescription()}</option>
                     </#list>
                 </select>
-                <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if jPushAlert??>value="${jPushAlert.jumpToLink}"</#if> placeholder=""  datatype="*" errormsg="链接地址不能为空"></div>
+                <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if jPushAlert??>value="${jPushAlert.jumpToLink}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="链接地址不能为空"></div>
             </div>
         </div>
 

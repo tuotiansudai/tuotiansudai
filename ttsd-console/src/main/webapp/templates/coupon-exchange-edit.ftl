@@ -36,7 +36,7 @@
         </#if>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label ">有效期限: </label>
+            <label  class="col-sm-2 control-label ">活动期限: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control coupon-start" name="startTime" <#if exchangeCouponDto??>value="${(exchangeCouponDto.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
@@ -56,6 +56,12 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
+            <div class="col-sm-8">
+                <div class="item-invest">优惠券发放后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if exchangeCouponDto??>value="${exchangeCouponDto.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">所需财豆</label>
             <div class="col-sm-4">
@@ -86,7 +92,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">使用条件: </label>
             <div class="col-sm-8">
-                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit"
+                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number invest_limit" name="investLowerLimit"
                                                          <#if exchangeCouponDto??>value="${exchangeCouponDto.investLowerLimit}"</#if> placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
             </div>
         </div>
@@ -95,6 +101,15 @@
         <input type="hidden" name="multiple" value="1">
         <input type="hidden" name="id" <#if exchangeCouponDto??>value="${exchangeCouponDto.id?string('0')}"</#if>/>
         <input type="hidden" name="userGroup" value="EXCHANGER">
+
+        <div class="form-group ">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4 form-error">
+                <#if errorMessage?has_content>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                </#if>
+            </div>
+        </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">

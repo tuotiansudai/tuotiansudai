@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppExchangeService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppExchangeController;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppExchangeService;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
@@ -49,7 +50,7 @@ public class MobileAppExchangeControllerTest extends ControllerTestBase{
         item.setStartDate(new Date());
         item.setEndDate(new Date());
         item.setInvestLowerLimit("1.00");
-        item.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        item.setProductTypes(Lists.newArrayList(ProductType._30.getProductLine(), ProductType._90.getProductLine(), ProductType._180.getProductLine()));
         UserCouponListResponseDataDto userCouponListResponseDataDto = new UserCouponListResponseDataDto(Lists.newArrayList(item));
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -67,9 +68,9 @@ public class MobileAppExchangeControllerTest extends ControllerTestBase{
                 .andExpect(jsonPath("$.data.coupons[0].startDate").value(new DateTime(item.getStartDate()).toString("yyyy-MM-dd")))
                 .andExpect(jsonPath("$.data.coupons[0].endDate").value(new DateTime(item.getEndDate()).toString("yyyy-MM-dd")))
                 .andExpect(jsonPath("$.data.coupons[0].investLowerLimit").value(item.getInvestLowerLimit()))
-                .andExpect(jsonPath("$.data.coupons[0].productTypes[0]").value("JYF"))
+                .andExpect(jsonPath("$.data.coupons[0].productTypes[0]").value("SYL"))
                 .andExpect(jsonPath("$.data.coupons[0].productTypes[1]").value("WYX"))
-                .andExpect(jsonPath("$.data.coupons[0].productTypes[2]").value("SYL"));
+                .andExpect(jsonPath("$.data.coupons[0].productTypes[2]").value("JYF"));
 
     }
 

@@ -1,0 +1,42 @@
+<table class="invest-list table-striped">
+    <thead>
+        <tr>
+            <th>转让项目名称</th>
+            <th>转让价格(元)</th>
+            <th>项目本金(元)</th>
+            <th>承接时间</th>
+            <th>下次回款(元)</th>
+            <th>详情</th>
+        </tr>
+    </thead>
+    <tbody>
+       {{#records}}
+        <tr>
+            <td>
+                <a href="/transfer/{{id}}" class="project-name">{{loanName}}</a>
+            </td>
+            <td>{{transferAmountStr}}</td>
+            <td>{{investAmountStr}}</td>
+            <td>{{transferTime}}</td>
+            <td>
+                {{#nextRepayDate}}
+                    {{nextRepayDate}} / {{nextRepayAmountStr}}
+                {{/nextRepayDate}}
+                {{^nextRepayDate}}
+                    --
+                {{/nextRepayDate}}
+            </td>
+            <td>
+            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</a> |
+            <a class="red" href="/contract/investor/loanId/{{loanId}}" target="_blank">合同</a>
+            </td>
+        </tr>
+        {{/records}}
+
+        {{^records}}
+         <td colspan="7" class="no-data">暂时没有债权转让投资记录</td>
+        {{/records}}
+    </tbody>
+</table>
+
+

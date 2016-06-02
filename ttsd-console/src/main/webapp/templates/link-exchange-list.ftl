@@ -29,7 +29,7 @@
                 <#list linkExchangeList as linkExchange>
                 <tr>
                     <td>${linkExchange.title!}</td>
-                    <td>${linkExchange.linkUrl!}</td>
+                    <td><span class="text-overflow" title="${linkExchange.linkUrl!}">${linkExchange.linkUrl!}</span></td>
                     <td>${(linkExchange.updateTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>
                     <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">

@@ -9,7 +9,7 @@ require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun'
                 });
 
                 $('body').delegate('#finishAuthor', 'click', function () {
-                    location.href = '/investor/auto-invest/plan';
+                    location.href = '/auto-invest/plan';
                 });
             });
         }
@@ -56,7 +56,7 @@ require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun'
                 }
                 else {
                     $.ajax({
-                        url: '/investor/auto-invest/turn-off',
+                        url: '/auto-invest/turn-off',
                         type: 'POST',
                         dataType: 'json',
                         contentType: 'application/json; charset=UTF-8'
@@ -122,7 +122,7 @@ require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun'
                     return false;
                 }
                 $.ajax({
-                    url: '/investor/auto-invest/turn-on',
+                    url: '/auto-invest/turn-on',
                     data: JSON.stringify(requestData),
                     type: 'POST',
                     dataType: 'json',
