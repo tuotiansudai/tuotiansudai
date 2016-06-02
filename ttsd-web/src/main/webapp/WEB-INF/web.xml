@@ -19,6 +19,11 @@
     </listener>
 
     <filter>
+        <filter-name>XssSqlFilter</filter-name>
+        <filter-class>com.tuotiansudai.web.interceptors.XssFilter</filter-class>
+    </filter>
+
+    <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
@@ -47,10 +52,12 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
-    <filter>
+
+    <filter-mapping>
         <filter-name>XssSqlFilter</filter-name>
-        <filter-class>com.tuotiansudai.web.interceptors.XssFilter</filter-class>
-    </filter>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
@@ -84,11 +91,6 @@
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>XssSqlFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>
