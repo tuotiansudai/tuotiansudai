@@ -19,6 +19,7 @@
         <result column="amount" property="investAmount"></result>
         <result column="repay_amount" property="repayAmount"></result>
         <result column="status" property="status"></result>
+        <result column="product_type" property="productType"></result>
     </resultMap>
 
     <resultMap id="investRepayResultMap" type="InvestRepayModel">
@@ -219,8 +220,9 @@
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &gt; l.duration)
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+           ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` = 'COMPLETE'
           AND ir.`actual_repay_date` BETWEEN #{startTime}
@@ -255,8 +257,9 @@
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &lt;= l.duration)
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+           ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` != 'COMPLETE'
           AND ir.`repay_date` BETWEEN #{startTime}
@@ -277,14 +280,16 @@
           temp2.`default_interest`,
           temp2.`expected_fee`,
           temp.`amount`,
-          temp2.`status`
+          temp2.`status`,
+          product_type
         FROM
           (SELECT
             i.`id`,
             i.`created_time`,
             i.`amount`,
             l.`name`,
-            l.`id` AS loanId
+            l.`id` AS loanId,
+            l.product_type
           FROM
             invest i
             JOIN loan l
@@ -422,4 +427,5 @@
         select count(1) from invest_repay where invest_id = #{transferInvestId} and period >= #{period}
 
     </select>
+
 </mapper>

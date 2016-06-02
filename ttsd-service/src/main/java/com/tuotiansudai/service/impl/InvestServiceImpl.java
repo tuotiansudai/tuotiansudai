@@ -210,7 +210,12 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
-            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()).getName(), investModel,
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+                investModel.setAmount(userCouponMapper.findCouponAmountByLoginNameAndLoanId(loginName,investModel.getLoanId()));
+            }
+
+            items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
         }
