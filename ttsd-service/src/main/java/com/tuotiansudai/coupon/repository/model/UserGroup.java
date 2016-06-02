@@ -4,6 +4,7 @@ public enum UserGroup {
     ALL_USER("全部用户"),
     INVESTED_USER("已投资用户"),
     REGISTERED_NOT_INVESTED_USER("已实名未投资用户"),
+    NOT_ACCOUNT_NOT_INVESTED_USER("已注册未投资用户"),
     STAFF("业务员"),
     STAFF_RECOMMEND_LEVEL_ONE("业务员一代用户"),
     AGENT("代理商"),
