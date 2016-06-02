@@ -55,4 +55,16 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         location.href = "/announce-manage/feedback?"+$('form').serialize()+"&export=csv";
     });
 
+    $('.pagination .previous').click(function () {
+        if ($(this).hasClass("disabled")) {
+            return false;
+        }
+    });
+
+    $('.pagination .next').click(function () {
+        if ($(this).hasClass("disabled")) {
+            return false;
+        }
+    });
+
 });

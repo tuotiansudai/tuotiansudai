@@ -110,29 +110,42 @@
         <!-- pagination  -->
         <nav class="pagination-control">
             <div><span class="bordern">总共${feedbackCount}条,每页显示${pageSize}条</span></div>
-            <ul class="pagination pull-left">
-                <li>
-                    <#if hasPreviousPage >
-                    <a href="?loginName=${loginName!}&index=${index-1}&pageSize=${pageSize}">
-                    <#else>
-                    <a href="#">
-                    </#if>
-                    <span>« Prev</span>
-                </a>
+
+            <ul class="pagination">
+                <li <#if !hasPreviousPage>class="disabled"</#if>>
+                    <a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index-1}&pageSize=${pageSize}" class="previous <#if !hasPreviousPage>disabled</#if>"><span
+                            aria-hidden="true">&laquo;</span></a>
                 </li>
-                <li><a>${index}</a></li>
-                <li>
-                    <#if hasNextPage>
-                    <a href="?loginName=${loginName!}&index=${index+1}&pageSize=${pageSize}">
-                    <#else>
-                    <a href="#">
-                    </#if>
-                    <span>Next »</span>
-                </a>
+                <li class="disabled"><a class="current-page" data-index="${index}">${index}</a></li>
+                <li <#if !hasNextPage>class="disabled"</#if>>
+                    <a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index+1}&pageSize=${pageSize}" class="next <#if !hasNextPage>disabled</#if>"><span
+                            aria-hidden="true">&raquo;</span></a>
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+
+            <#--<ul class="pagination pull-left">-->
+                <#--<li>-->
+                    <#--<#if hasPreviousPage >-->
+                    <#--<a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index-1}&pageSize=${pageSize}">-->
+                    <#--<#else>-->
+                    <#--<a href="#">-->
+                    <#--</#if>-->
+                    <#--<span>« Prev</span>-->
+                <#--</a>-->
+                <#--</li>-->
+                <#--<li><a>${index}</a></li>-->
+                <#--<li>-->
+                    <#--<#if hasNextPage>-->
+                    <#--<a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index+1}&pageSize=${pageSize}">-->
+                    <#--<#else>-->
+                    <#--<a href="#">-->
+                    <#--</#if>-->
+                    <#--<span>Next »</span>-->
+                <#--</a>-->
+                <#--</li>-->
+            <#--</ul>-->
         </nav>
+        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
     </div>
 </div>
 <!-- content area end -->
