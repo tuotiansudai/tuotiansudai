@@ -122,28 +122,6 @@
                             aria-hidden="true">&raquo;</span></a>
                 </li>
             </ul>
-
-            <#--<ul class="pagination pull-left">-->
-                <#--<li>-->
-                    <#--<#if hasPreviousPage >-->
-                    <#--<a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index-1}&pageSize=${pageSize}">-->
-                    <#--<#else>-->
-                    <#--<a href="#">-->
-                    <#--</#if>-->
-                    <#--<span>« Prev</span>-->
-                <#--</a>-->
-                <#--</li>-->
-                <#--<li><a>${index}</a></li>-->
-                <#--<li>-->
-                    <#--<#if hasNextPage>-->
-                    <#--<a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index+1}&pageSize=${pageSize}">-->
-                    <#--<#else>-->
-                    <#--<a href="#">-->
-                    <#--</#if>-->
-                    <#--<span>Next »</span>-->
-                <#--</a>-->
-                <#--</li>-->
-            <#--</ul>-->
         </nav>
         <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
     </div>
