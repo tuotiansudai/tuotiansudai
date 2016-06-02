@@ -9,7 +9,18 @@ public class MembershipExperienceBillModel implements Serializable{
     private String loginName;
     private long experience;
     private Date createdTime;
-    private String desc;
+    private String description;
+
+    public MembershipExperienceBillModel(){
+
+    }
+
+    public MembershipExperienceBillModel(String loginName, long experience, Date createdTime, String description) {
+        this.loginName = loginName;
+        this.experience = experience;
+        this.createdTime = createdTime;
+        this.description = description;
+    }
 
     public long getId() {
         return id;
@@ -43,11 +54,11 @@ public class MembershipExperienceBillModel implements Serializable{
         this.createdTime = createdTime;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

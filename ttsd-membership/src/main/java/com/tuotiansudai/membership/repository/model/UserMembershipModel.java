@@ -7,10 +7,22 @@ public class UserMembershipModel implements Serializable{
 
     private long id;
     private String loginName;
-    private long memberShipId;
+    private long membershipId;
     private Date expiredTime;
     private Date createdTime;
     private String type;
+
+    public UserMembershipModel(){
+
+    }
+
+    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, Date createdTime, String type) {
+        this.loginName = loginName;
+        this.membershipId = membershipId;
+        this.expiredTime = expiredTime;
+        this.createdTime = createdTime;
+        this.type = type;
+    }
 
     public long getId() {
         return id;
@@ -36,12 +48,12 @@ public class UserMembershipModel implements Serializable{
         this.expiredTime = expiredTime;
     }
 
-    public long getMemberShipId() {
-        return memberShipId;
+    public long getMembershipId() {
+        return membershipId;
     }
 
-    public void setMemberShipId(long memberShipId) {
-        this.memberShipId = memberShipId;
+    public void setMembershipId(long membershipId) {
+        this.membershipId = membershipId;
     }
 
     public String getLoginName() {

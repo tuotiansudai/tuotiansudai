@@ -16,7 +16,7 @@ CREATE TABLE `aa`.`membership` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-BEGIN
+BEGIN;
   insert into `aa`.`membership` value(1,'V0',0,'0.1');
   insert into `aa`.`membership` value(2,'V1',5000,'0.1');
   insert into `aa`.`membership` value(3,'V2',50000,'0.09');
@@ -47,7 +47,7 @@ CREATE TABLE `aa`.`membership_experience_bill` (
   `login_name`     VARCHAR(50) NOT NULL,
   `experience`     BIGINT UNSIGNED NOT NULL,
   `created_time`   datetime,
-  `desc`    varchar(100),
+  `description`    varchar(100),
   PRIMARY KEY (`id`),
   CONSTRAINT FK_MEMBERSHIP_EXPERIENCE_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )

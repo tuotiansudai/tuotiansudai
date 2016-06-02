@@ -11,7 +11,5 @@ public interface UserMembershipMapper {
 
     void update(UserMembershipModel userMembershipModel);
 
-    void delete(UserMembershipModel userMembershipModel);
-
     UserMembershipModel findById(long id);
 }

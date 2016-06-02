@@ -4,24 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="MembershipExperienceBillResultMap" type="MembershipExperienceBillModel">
         <id column="id" property="id"/>
-        <result column="level" property="level"/>
+        <result column="login_name" property="loginName"/>
         <result column="experience" property="experience"/>
-        <result column="fee" property="fee"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="description" property="description"/>
     </resultMap>
 
     <insert id="create" parameterType="MembershipExperienceBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into membership_experience_bill (login_name, experience, created_time, description , type)
-        value(#{loginName}, #{experience}, #{createdTime}, #{description},  #{type})
+        insert into membership_experience_bill (login_name, experience, created_time, description)
+        value(#{loginName}, #{experience}, #{createdTime}, #{description})
     </insert>
 
     <update id="update" parameterType="MembershipExperienceBillModel">
-        update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, created_time = #{createdTime}, type = #{type} where id = #{id}
-    </update>
-
-    <update id="delete" parameterType="MembershipExperienceBillModel">
-        delete * from membership_experience_bill where id = #{id}
+        update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, created_time = #{createdTime}, description = #{description} where id = #{id}
     </update>
 
     <select id="findById" resultMap="MembershipExperienceBillResultMap" parameterType="long">

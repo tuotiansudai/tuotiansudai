@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,29 +22,38 @@ public class MembershipMapperTest {
 
     @Test
     public void shouldCreateMembership() throws Exception {
-        MembershipModel membershipModel = new MembershipModel(1, "V0", 0, 0.1);
+        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
         membershipMapper.create(membershipModel);
 
-        MembershipModel membershipModel1 = membershipMapper.findById(1);
+        assertThat(membershipModel.getLevel(), is("V0"));
+        assertThat(membershipModel.getExperience(), is(0L));
+        assertThat(membershipModel.getFee(), is(0.1));
 
-        assertNotNull(membershipModel1);
     }
 
     @Test
     public void shouldUpdateMembership() throws Exception {
-        MembershipModel membershipModel = new MembershipModel(1, "V0", 0, 0.1);
+        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
         membershipMapper.create(membershipModel);
 
-        MembershipModel updateMembershipModel = new MembershipModel(1, "V1", 5000, 0.1);
-
+        MembershipModel updateMembershipModel = new MembershipModel("V5", 5000000, 0.07);
         membershipMapper.update(updateMembershipModel);
 
-        MembershipModel afterMembershipModel = membershipMapper.findById(1);
-
-        assertThat(afterMembershipModel.getLevel(), is("V1"));
-        assertThat(afterMembershipModel.getExperience(), is(5000L));
-
+        assertThat(updateMembershipModel.getLevel(), is("V5"));
+        assertThat(updateMembershipModel.getExperience(), is(5000000L));
+        assertThat(updateMembershipModel.getFee(), is(0.07));
     }
 
+    @Test
+    public void shouldMembershipFindById() throws Exception {
+        MembershipModel membershipModel = new MembershipModel("V0", 0, 0.1);
+        membershipMapper.create(membershipModel);
+
+        MembershipModel membershipModel1 = membershipMapper.findById(membershipModel.getId());
+
+        assertThat(membershipModel1.getLevel(), is("V0"));
+        assertThat(membershipModel1.getExperience(), is(0L));
+        assertThat(membershipModel1.getFee(), is(0.1));
+    }
 
 }

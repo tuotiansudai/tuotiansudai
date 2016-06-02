@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="membershipResultMap" type="MembershipModel">
+        <id column="id" property="id"/>
+        <result column="level" property="level"/>
+        <result column="experience" property="experience"/>
+        <result column="fee" property="fee"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipModel" useGeneratedKeys="true" keyProperty="id">
+        insert into membership (level, experience, fee)
+        value(#{level}, #{experience}, #{fee})
+    </insert>
+
+    <update id="update" parameterType="MembershipModel">
+        update membership set level = #{level}, experience = #{experience}, fee = #{fee} where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="membershipResultMap" parameterType="long">
+        select * from membership where id = #{id}
+    </select>
+
+</mapper>

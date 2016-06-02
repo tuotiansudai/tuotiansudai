@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.UserMembershipMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="UserMembershipResultMap" type="UserMembershipModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="membership_id" property="membershipId"/>
+        <result column="expired_time" property="expiredTime"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserMembershipModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_membership (login_name, membership_id, expired_time, created_time, type)
+        value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type})
+    </insert>
+
+    <update id="update" parameterType="UserMembershipModel">
+        update user_membership set login_name = #{loginName}, membership_id = #{membershipId}, expired_time = #{expiredTime}, expired_time = #{createdTime}, type = #{type} where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="UserMembershipResultMap" parameterType="long">
+        select * from user_membership where id = #{id}
+    </select>
+
+</mapper>

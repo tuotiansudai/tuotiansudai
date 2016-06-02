@@ -11,7 +11,5 @@ public interface MembershipMapper {
 
     void update(MembershipModel membershipModel);
 
-    void delete(MembershipModel membershipModel);
-
     MembershipModel findById(long id);
 }

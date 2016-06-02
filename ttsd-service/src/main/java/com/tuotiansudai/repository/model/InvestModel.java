@@ -73,6 +73,10 @@ public class InvestModel implements Serializable {
      */
     private List<InvestAchievement> achievements = Lists.newArrayList();
 
+    /**
+     * 手续费费率
+     * */
+    private double investFeeRate;
 
     public InvestModel() {
     }
@@ -210,5 +214,13 @@ public class InvestModel implements Serializable {
 
     public void setAchievements(List<InvestAchievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public double getInvestFeeRate() {
+        return investFeeRate;
+    }
+
+    public void setInvestFeeRate(double investFeeRate) {
+        this.investFeeRate = investFeeRate;
     }
 }
