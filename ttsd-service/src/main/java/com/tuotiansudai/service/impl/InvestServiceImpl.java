@@ -346,7 +346,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public boolean turnOffAutoInvest(String loginName, String ip) {
         AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
-        if (!model.isEnabled()) {
+        if (model == null || !model.isEnabled()) {
             return false;
         }
         autoInvestPlanMapper.disable(loginName);
