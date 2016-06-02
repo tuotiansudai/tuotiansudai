@@ -13,15 +13,6 @@
         <result column="fee" property="fee"/>
     </resultMap>
 
-    <insert id="create" parameterType="MembershipModel" useGeneratedKeys="true" keyProperty="id">
-        insert into membership (level, experience, fee)
-        value(#{level}, #{experience}, #{fee})
-    </insert>
-
-    <update id="update" parameterType="MembershipModel">
-        update membership set level = #{level}, experience = #{experience}, fee = #{fee} where id = #{id}
-    </update>
-
     <select id="findById" resultMap="membershipResultMap" parameterType="long">
         select * from membership where id = #{id}
     </select>

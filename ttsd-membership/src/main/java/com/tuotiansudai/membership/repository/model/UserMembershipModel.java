@@ -10,17 +10,17 @@ public class UserMembershipModel implements Serializable{
     private long membershipId;
     private Date expiredTime;
     private Date createdTime;
-    private String type;
+    private UserMembershipType type;
 
     public UserMembershipModel(){
 
     }
 
-    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, Date createdTime, String type) {
+    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, UserMembershipType type) {
         this.loginName = loginName;
         this.membershipId = membershipId;
         this.expiredTime = expiredTime;
-        this.createdTime = createdTime;
+        this.createdTime = new Date();
         this.type = type;
     }
 
@@ -64,11 +64,11 @@ public class UserMembershipModel implements Serializable{
         this.loginName = loginName;
     }
 
-    public String getType() {
+    public UserMembershipType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(UserMembershipType type) {
         this.type = type;
     }
 }

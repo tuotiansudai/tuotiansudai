@@ -28,4 +28,8 @@
         select * from user_membership where id = #{id}
     </select>
 
+    <select id="findByLoginName" resultMap="UserMembershipResultMap" parameterType="string">
+        select * from user_membership where login_name = #{loginName}
+    </select>
+
 </mapper>
