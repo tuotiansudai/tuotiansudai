@@ -123,32 +123,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         LoanDetailDto loanDto = new LoanDetailDto(loanModel, investedAmount, loanTitleMapper.findAll(), loanTitleRelationMapper.findByLoanId(loanModel.getId()));
-        if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
-            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(),loginName);
-            long experienceProgress;
-            LoanStatus loanStatus = LoanStatus.RAISING;
-            if(CollectionUtils.isNotEmpty(investModels)){
-                InvestModel investModel = investModels.get(0);
-                int day = Integer.parseInt(simpleDateFormat.format(new Date())) - Integer.parseInt(simpleDateFormat.format(investModel.getInvestTime()));
-                switch (day){
-                    case 2:
-                        loanStatus = LoanStatus.REPAYING;
-                        experienceProgress = 100;
-                        break;
-                    case 3:
-                        loanStatus = LoanStatus.COMPLETE;
-                        experienceProgress = 100;
-                        break;
-                    default:
-                        experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()) % 100 * 100;
-                        break;
-                }
-            }else{
-                experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()) % 100 * 100;
-            }
-            loanDto.setProgress(experienceProgress);
-            loanDto.setLoanStatus(loanStatus);
-        }
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {

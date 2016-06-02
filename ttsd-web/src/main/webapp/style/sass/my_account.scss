@@ -1061,6 +1061,14 @@ body{
         height: 75px;
         background: url("/images/sign/index_sprites_20160530.png") 0px -170px no-repeat;
       }
+      .new-free{
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 56px;
+        height: 75px;
+        background: url("/images/icons/new-free.png") no-repeat center;
+      }
       .loan-info-frame {
         width: 690px;
         padding-bottom: 10px;
@@ -1082,6 +1090,14 @@ body{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            .new-tip{
+              font-size: 12px;
+              color: #ff9c1b;
+              border: 1px solid #ff9c1b;
+              padding: 2px 5px;
+              border-radius: 20px;
+              margin-left:10px;
+            }
           }
           .l-way {
             font-size: 12px;
