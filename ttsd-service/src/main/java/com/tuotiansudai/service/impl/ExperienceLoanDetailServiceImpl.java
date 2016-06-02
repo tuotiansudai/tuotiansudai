@@ -54,7 +54,7 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
                     break;
             }
         }else{
-            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate()) % 100 * 100;
+            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
         }
 
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanModel,experienceProgress,couponModels.get(0));
