@@ -176,7 +176,7 @@ public class UserOpLogAspect {
             noPasswordLogModel.setDeviceId(deviceId);
             noPasswordLogModel.setSource(source);
             noPasswordLogModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
-            logModel.setCreatedTime(new Date());
+            noPasswordLogModel.setCreatedTime(new Date());
             userOpLogMapper.create(noPasswordLogModel);
         }
     }
