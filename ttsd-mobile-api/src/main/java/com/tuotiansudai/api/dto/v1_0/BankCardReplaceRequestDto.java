@@ -30,6 +30,7 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
         bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setIp(this.getIp());
+        bindBankCardDto.setDeviceId(this.getBaseParam().getDeviceId());
         return bindBankCardDto;
 
     }
