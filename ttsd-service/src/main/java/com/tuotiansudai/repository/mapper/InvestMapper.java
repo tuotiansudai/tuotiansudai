@@ -200,4 +200,5 @@ public interface InvestMapper {
     long countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);
+
 }

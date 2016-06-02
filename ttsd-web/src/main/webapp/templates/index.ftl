@@ -137,28 +137,28 @@
                     <div class="loan-info-dl">
                         <dl>
                             <dt>预期年化收益</dt>
-                            <dd><em class="active">15</em>
+                            <dd><em class="active">${experienceLoanModel.baseRate}</em>
                                 <i>%</i>
                             </dd>
                         </dl>
                         <dl>
                             <dt>项目期限</dt>
-                            <dd><em>3</em>天</dd>
+                            <dd><em>${experienceLoanModel.duration}</em>天</dd>
                         </dl>
                     </div>
                 </div>
                 <div class="right-operat">
                     <div class="p-title">
                         <span class="fl">项目进度</span>
-                        <span class="point fr">0.00 %</span>
+                        <span class="point fr">${experienceLoanModel.progress} %</span>
                     </div>
                     <div class="process-percent">
                         <div class="percent" style="width:0%">
                         </div>
                     </div>
                     <div class="rest-amount">
-                        <span>可投额度：<i>1.00 元</i></span>
-                        <a href="#" class="btn-invest btn-normal">马上投资</a>
+                        <span>可投额度：<i>${experienceLoanModel.investAmount} 元</i></span>
+                        <a href="" class="btn-invest btn-normal">马上投资</a>
                     </div>
                 </div>
                 <div class="mask-model">

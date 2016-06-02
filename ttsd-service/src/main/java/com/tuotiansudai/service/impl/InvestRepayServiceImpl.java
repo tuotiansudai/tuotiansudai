@@ -10,9 +10,8 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestRepayModel;
-import com.tuotiansudai.repository.model.LatestInvestView;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestRepayService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,9 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
@@ -81,6 +83,10 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+
+            if(latestInvestView.getProductType().equals(ProductType.EXPERIENCE)){
+                latestInvestView.setInvestAmount(userCouponMapper.findCouponAmountByLoginNameAndLoanId(loginName,latestInvestView.getLoanId()));
             }
         }
         return latestInvestViews;
