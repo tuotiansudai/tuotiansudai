@@ -74,7 +74,7 @@ public class UserOpLogAspect {
         logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.BIND_CHANGE_EMAIL);
         logModel.setCreatedTime(new Date());
-        logModel.setDescription(returnValue != null ? "Success, bind Email: " + returnValue : "Fail");
+        logModel.setDescription(returnValue != null ? "Success, Email: " + returnValue : "Fail");
 
         userOpLogMapper.create(logModel);
     }
@@ -103,8 +103,6 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.BIND_CARD);
         logModel.setCreatedTime(new Date());
 
-        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
-
         userOpLogMapper.create(logModel);
     }
 
@@ -132,20 +130,7 @@ public class UserOpLogAspect {
         logModel.setOpType(UserOpType.REPLACE_CARD);
         logModel.setCreatedTime(new Date());
 
-        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
-
         userOpLogMapper.create(logModel);
-    }
-
-    private void setDescription(BaseDto<PayFormDataDto> returnValue, UserOpLogModel logModel) {
-        BaseDto<PayFormDataDto> ret = returnValue;
-        String desc;
-        if (ret == null || !ret.isSuccess() || ret.getData() == null || !ret.getData().getStatus()) {
-            desc = "Fail";
-        } else {
-            desc = "Success";
-        }
-        logModel.setDescription(desc);
     }
 
     /**
@@ -181,9 +166,6 @@ public class UserOpLogAspect {
         logModel.setSource(source);
         logModel.setOpType(opType);
         logModel.setCreatedTime(new Date());
-
-        setDescription((BaseDto<PayFormDataDto>) returnValue, logModel);
-
         userOpLogMapper.create(logModel);
 
         // 如果开通的是“免密支付”协议，那么默认会自动开通“免密投资”功能。
@@ -195,7 +177,6 @@ public class UserOpLogAspect {
             noPasswordLogModel.setSource(source);
             noPasswordLogModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
             logModel.setCreatedTime(new Date());
-            setDescription((BaseDto<PayFormDataDto>) returnValue, noPasswordLogModel);
             userOpLogMapper.create(noPasswordLogModel);
         }
     }
