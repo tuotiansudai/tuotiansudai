@@ -104,6 +104,14 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             return false;
         }
 
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), null);
+        for (TransferApplicationModel transferApplicationModel : transferApplicationModels) {
+            if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).contains(transferApplicationModel.getStatus()) ||
+                    (transferApplicationModel.getStatus() == TransferStatus.CANCEL &&
+                            new DateTime(transferApplicationModel.getApplicationTime()).withTimeAtStartOfDay().toDate().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) == 0)) {
+                return false;
+            }
+        }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
