@@ -48,6 +48,12 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return cleanXSS(value);
     }
 
+    /**
+     * will parse : < > ( ) ' eval((.*)) "javascript:..." script
+     *
+     * @param value
+     * @return
+     */
     private String cleanXSS(String value) {
 
         value = value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
