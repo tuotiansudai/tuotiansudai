@@ -1,14 +1,13 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppAutoInvestPlanInfoService;
-import com.tuotiansudai.api.service.MobileAppBankCardService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppAutoInvestPlanInfoController;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanInfoService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;

@@ -124,6 +124,49 @@
     </div>
 
     <div class="home-content" id="productFrame">
+        <div class="page-width clearfix new-model">
+            <div class="new-user-free">
+                <div class="left-intro">
+                    <a href="#">
+                    </a>
+                </div>
+                <div class="center-detail">
+                    <div class="loan-top">
+                        <span class="l-title fl">新手体验项目<i class="new-tip">仅限使用体验金投资</i></span>
+                    </div>
+                    <div class="loan-info-dl">
+                        <dl>
+                            <dt>预期年化收益</dt>
+                            <dd><em class="active">15</em>
+                                <i>%</i>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>项目期限</dt>
+                            <dd><em>3</em>天</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="right-operat">
+                    <div class="p-title">
+                        <span class="fl">项目进度</span>
+                        <span class="point fr">0.00 %</span>
+                    </div>
+                    <div class="process-percent">
+                        <div class="percent" style="width:0%">
+                        </div>
+                    </div>
+                    <div class="rest-amount">
+                        <span>可投额度：<i>1.00 元</i></span>
+                        <a href="#" class="btn-invest btn-normal">马上投资</a>
+                    </div>
+                </div>
+                <div class="mask-model">
+                    <div class="mask-btn"></div>
+                </div>
+                <div class="mask-bg"></div>
+            </div>
+        </div>
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
@@ -329,6 +372,41 @@
             </div>
             <div class="product-box-list fl">
                 <div class="product-box-inner">
+                    <div class="free-guide">
+                                
+                    </div>
+                    <div class="product-box tc product-type new-free-pro">
+                            <i class="new-free"></i>
+                            <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
+                                <h2 class="pr-title">新手体验项目</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em><b>15</b>
+                                           %</em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
+                                    <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
+                                </dl>
+                                <div class="project-schedule clear-blank clearfix">
+                                    <div class="pro">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">20%</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:20%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/loan/" class="btn-normal">立即投资</a>
+                            <div class="guide-img">
+                                <span class="guide-btn"></span>
+                            </div>
+                        </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">

@@ -1,6 +1,9 @@
 package com.tuotiansudai.scheduler.plugin;
 
 import com.tuotiansudai.job.*;
+import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
+import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -61,6 +64,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
+        }
+        if (JobType.ExperienceRepay.equals(schedulerName)) {
+            createNewbieExperienceRepayJos();
+        }
+        if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
+            createCheckUserBalanceJob();
         }
     }
 
@@ -182,6 +191,26 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createNewbieExperienceRepayJos() {
+        try {
+            jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 16 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createCheckUserBalanceJob() {
+        try {
+            jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
