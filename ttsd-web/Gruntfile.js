@@ -98,13 +98,22 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['clean:js', 'uglify']
             }
-        }
+        },
+        connect: {
+           server: {
+             options: {
+               port: 8080,
+               hostname: '*',
+               base: 'src/main/webapp'
+             }
+           }
+         }
     });
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin', 'watch']);
+    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin', 'connect', 'watch']);
 
 };
