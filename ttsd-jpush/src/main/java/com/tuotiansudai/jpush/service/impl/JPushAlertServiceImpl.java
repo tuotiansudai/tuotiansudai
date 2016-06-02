@@ -532,11 +532,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
+            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             if (actualInterest < 0) {
                 continue;
             }
-            long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
             long transferAmount = actualInterest - actualFee;
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             if (transferAmount > 0) {

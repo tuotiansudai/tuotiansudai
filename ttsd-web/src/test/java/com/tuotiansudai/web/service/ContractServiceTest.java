@@ -88,7 +88,6 @@ public class ContractServiceTest {
         lm.setDescriptionText("123");
         lm.setDescriptionHtml("<p>123</p>");
         lm.setLoanAmount(1300);
-        lm.setInvestFeeRate(0.1);
         lm.setMinInvestAmount(100);
         lm.setMaxInvestAmount(1300);
         lm.setInvestIncreasingAmount(1);

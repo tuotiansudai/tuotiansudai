@@ -100,11 +100,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             }
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
+            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             if (actualInterest < 0) {
                 continue;
             }
-            long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
             long transferAmount = actualInterest - actualFee;
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) is {2}, repay amount is  {3}({4} - {5})",
                     String.valueOf(currentLoanRepayModel.getId()),

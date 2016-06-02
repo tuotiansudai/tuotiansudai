@@ -20,6 +20,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
@@ -317,7 +318,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount) {
+    public long estimateCouponExpectedInterest(double investFeeRage, long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
         for (Long couponId : couponIds) {
@@ -327,8 +328,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRage, loanModel, couponModel, amount);
             totalInterest += expectedInterest - expectedFee;
         }
 

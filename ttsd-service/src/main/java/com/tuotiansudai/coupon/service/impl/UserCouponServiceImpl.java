@@ -129,7 +129,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
             InvestModel investModel = investMapper.findById(usableUserCoupon.getInvestId());
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investModel, loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investModel.getInvestFeeRate(), loanModel, couponModel, amount);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
                 maxBenefitUserCoupons.add(usableUserCoupon);
