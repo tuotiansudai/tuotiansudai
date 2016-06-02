@@ -85,19 +85,22 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
 
         });
 
-        $changeEmailLayer.on('click', function () {
-            layer.open({
-                type: 1,
-                move: false,
-                offset: "200px",
-                title: '绑定邮箱',
-                area: ['490px', '220px'],
-                shadeClose: true,
-                content: $changeEmailDOM,
-                cancel: function () {
-                    $EmailForm.validate().resetForm();
-                }
-            });
+        $changeEmailLayer.on('click', function (event) {
+            if(!/realName/.test(event.target.className)) {
+                layer.open({
+                    type: 1,
+                    move: false,
+                    offset: "200px",
+                    title: '绑定邮箱',
+                    area: ['490px', '220px'],
+                    shadeClose: true,
+                    content: $changeEmailDOM,
+                    cancel: function () {
+                        $EmailForm.validate().resetForm();
+                    }
+                });
+            }
+
         });
         $turnOnNoPasswordInvestLayer.on('click', function () {
             $.ajax({
