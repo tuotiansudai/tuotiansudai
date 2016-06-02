@@ -1493,11 +1493,19 @@ body{
       }
       .account-list {
         margin-left: 10px;
-
+        &.new-text{
+          font-size:14px;
+        }
         dd {
           clear: both;
           margin-bottom: 5px;
-
+          &.experience-info{
+            margin-top:30px;
+            margin-bottom: 20px;
+          }
+          &.mb-20{
+            margin-bottom:20px;
+          }
           .position-width {
             width: 230px;
             text-align: right;
