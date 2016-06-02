@@ -10,12 +10,15 @@
         <id column="id" property="id"></id>
         <result column="login_name" property="loginName"></result>
         <result column="content" property="content"></result>
+        <result column="source" property="source"></result>
+        <result column="type" property="type"></result>
+        <result column="status" property="status"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="FeedbackModel" useGeneratedKeys="true" keyProperty="id">
-        insert into feedback(login_name, content, created_time)
-        value(#{loginName}, #{content}, #{createdTime})
+        insert into feedback(`login_name`, `contact`, `source`, `type`, `content`, `status`, `created_time`)
+        value(#{loginName},#{contact},#{source},#{type},#{content},#{status},#{createdTime})
     </insert>
 
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
@@ -24,6 +27,21 @@
             <if test="loginName != null and loginName != ''">
                 login_name = #{loginName}
             </if>
+            <if test="source != null">
+                and source = #{source}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="startTime != null">
+                and created_time > #{startTime}
+            </if>
+            <if test="endTime != null">
+                and created_time &lt; #{endTime}
+            </if>
         </where>
         order by created_time desc
         limit #{rowLimit}
@@ -31,11 +49,30 @@
     </select>
 
     <select id="findAllCount" parameterType="map" resultType="long">
-        select count(*) from feedback
+        select count(1) from feedback
         <where>
             <if test="loginName != null and loginName != ''">
                 login_name = #{loginName}
             </if>
+            <if test="source != null">
+                and source = #{source}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="startTime != null">
+                and created_time > #{startTime}
+            </if>
+            <if test="endTime != null">
+                and created_time &lt; #{endTime}
+            </if>
         </where>
     </select>
+
+    <update id="updateStatus" parameterType="map">
+        update feedback set status = #{status} where id = #{feedbackId}
+    </update>
 </mapper>
