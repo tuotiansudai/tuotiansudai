@@ -2,8 +2,11 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.service.UserOpLogService;
 import com.tuotiansudai.task.OperationType;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class SecurityLogController {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    @Autowired
+    private UserOpLogService userOpLogService;
 
     @RequestMapping(path = "/login-log", method = RequestMethod.GET)
     public ModelAndView loginLog(@RequestParam(name = "loginName", required = false) String loginName,
@@ -90,6 +96,30 @@ public class SecurityLogController {
 
         modelAndView.addObject("operationTypes", Lists.newArrayList(OperationType.values()));
 
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/user-op-log", method = RequestMethod.GET)
+    public ModelAndView userOpLog(@RequestParam(name = "loginName", required = false) String loginName,
+                                  @RequestParam(name = "opType", required = false) UserOpType opType,
+                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        BasePaginationDataDto<UserOpLogModel> data = userOpLogService.getUserOpLogPaginationData(loginName, opType, startTime, endTime, index, pageSize);
+
+        ModelAndView modelAndView = new ModelAndView("/user-op-log");
+
+        modelAndView.addObject("data", data);
+        modelAndView.addObject("opType", opType);
+        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+
+        modelAndView.addObject("opTypes", Lists.newArrayList(UserOpType.values()));
         return modelAndView;
     }
 

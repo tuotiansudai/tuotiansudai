@@ -140,6 +140,7 @@ class WithdrawsHandler(BaseHandler):
 class InvestHandler(BaseHandler):
     SQL_INVEST = '''
     SELECT `id`,
+           `login_name`,
            `loan_id`,
            `source`,
            `channel`,
@@ -163,6 +164,7 @@ class InvestHandler(BaseHandler):
            `actual_fee`,
            `default_interest`,
            `status`,
+           `invest_id`,
            `id`
       FROM `invest_repay`
      WHERE `invest_id`= %s
@@ -186,6 +188,7 @@ class InvestHandler(BaseHandler):
 class InvestsHandler(BaseHandler):
     SQL = '''
     SELECT `id`,
+           `login_name`,
            `loan_id`,
            `source`,
            `channel`,
@@ -223,6 +226,7 @@ class InvestRepaysHandler(BaseHandler):
            `default_interest`,
            `status`,
            `id`,
+           `invest_id`,
            `created_time`,
            `updated_time`
       FROM `invest_repay`
