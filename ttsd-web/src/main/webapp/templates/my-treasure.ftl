@@ -94,18 +94,13 @@
                                 </p>
 
                                 <p>
-                                    <#if coupon.couponType == 'RED_ENVELOPE'>
-                                        <#if coupon.investLowerLimit == 0>
-                                            ［投资成功放款返现］
+                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||
+                                    coupon.couponType == 'INVEST_COUPON' || coupon.couponType == 'INTEREST_COUPON'>
+                                        <#if coupon.investLowerLimit != 0>
+                                            ［投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元即可使用］
                                         <#else>
-                                            ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                            ［投资即可使用］
                                         </#if>
-                                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
-                                        ［在拓天平台投资可用］
-                                    <#elseif coupon.couponType == 'INVEST_COUPON'>
-                                        ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
-                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［投资即可使用］
                                     </#if>
                                 </p>
 
@@ -246,7 +241,8 @@
                             </div>
                             <div class="right-coupon">
                                 <p class="mt-10">
-                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
+                                    <#assign couponTypes = ["RED_ENVELOPE", "NEWBIE_COUPON", "INVEST_COUPON"]>
+                                    <#if couponTypes?seq_contains(coupon.couponType)>
                                         <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>

@@ -96,19 +96,19 @@ public class InvestAchievementServiceTest {
 
         UserModel investor1 = getFakeUser("investor1");
         InvestModel loan1InvestModel = new InvestModel(idGenerator.generate(), fakeLoan1.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null);
-        loan1InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(1).toDate());
+        loan1InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(1).toDate());
         loan1InvestModel.setStatus(InvestStatus.SUCCESS);
         loan1InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan1InvestModel);
 
         InvestModel loan2InvestModel = new InvestModel(idGenerator.generate(), fakeLoan2.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null);
-        loan2InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(2).toDate());
+        loan2InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(2).toDate());
         loan2InvestModel.setStatus(InvestStatus.SUCCESS);
         loan2InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan2InvestModel);
 
         InvestModel loan3InvestModel = new InvestModel(idGenerator.generate(), fakeLoan3.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null);
-        loan3InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(3).toDate());
+        loan3InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(3).toDate());
         loan3InvestModel.setStatus(InvestStatus.SUCCESS);
         loan3InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan3InvestModel);
