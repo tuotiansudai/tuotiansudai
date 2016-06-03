@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -32,6 +33,9 @@ public class WithdrawController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private BlacklistService blacklistService;
+
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
@@ -42,9 +46,11 @@ public class WithdrawController {
             return new ModelAndView("redirect:/bind-card");
         }
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
+        boolean hasAccess = !blacklistService.userIsInBlacklist(LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/withdraw");
-        modelAndView.addObject("balance",AmountConverter.convertCentToString(balance));
-        modelAndView.addObject("withdrawFee",AmountConverter.convertCentToString(withdrawFee));
+        modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
+        modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
+        modelAndView.addObject("hasAccess", String.valueOf(hasAccess));
         return modelAndView;
     }
 
@@ -52,6 +58,9 @@ public class WithdrawController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         String loginName = LoginUserInfo.getLoginName();
+        if (blacklistService.userIsInBlacklist(loginName)) {
+            return new ModelAndView("/");
+        }
         withdrawDto.setLoginName(loginName);
         BaseDto<PayFormDataDto> baseDto = withdrawService.withdraw(withdrawDto);
         return new ModelAndView("/pay", "pay", baseDto);
