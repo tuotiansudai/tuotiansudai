@@ -198,6 +198,8 @@ public interface InvestMapper {
 
     List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime);
 
-    List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime);
+    List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
 
 }

@@ -19,14 +19,22 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/hero-ranking")
+@RequestMapping(value = "/hero-ranking")
 public class HeroRankingController {
+
     @Autowired
     private HeroRankingService heroRankingService;
+
     @Autowired
     private RandomUtils randomUtils;
 
-    @RequestMapping(path = "/invest/{tradingTime}", method = RequestMethod.GET)
+    @RequestMapping(value = "/referrer-invest/{tradingTime}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseListDataDto<HeroRankingView> obtainHeroRankingByReferrer(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+        return heroRankingService.findHeroRankingByReferrer(tradingTime, LoginUserInfo.getLoginName(), 1, 3);
+    }
+
+    @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
      @ResponseBody
      public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime){
         final String loginName = LoginUserInfo.getLoginName();
@@ -45,7 +53,6 @@ public class HeroRankingController {
         return baseListDataDto;
     }
 
-
     @RequestMapping(method = RequestMethod.GET)
     public BaseListDataDto obtainHeroRankingByLoginName(){
 //        String loginName = LoginUserInfo.getLoginName();
@@ -53,6 +60,7 @@ public class HeroRankingController {
 //        baseListDataDto.setRecords(heroRankingService.obtainHeroRanking(tradingTime));
 //        baseListDataDto.setStatus(true);
 //        return baseListDataDto;
+        return null;
     }
 
 }

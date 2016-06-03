@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface HeroRankingService {
 
-    BaseListDataDto findHeroRankingByReferrer(Date tradingTime, String loginName);
+    BaseListDataDto findHeroRankingByReferrer(Date tradingTime, String loginName, int index, int pageSize);
+
+    Integer findHeroRankingByReferrerLoginName(String loginName);
 
     List<HeroRankingView> obtainHeroRanking(Date tradingTime);
 

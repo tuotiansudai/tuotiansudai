@@ -2,6 +2,8 @@ package com.tuotiansudai.service.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -42,22 +44,24 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     }
 
     @Override
-    public BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName) {
+    public BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName, int index, int pageSize) {
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
         Date startDate = new DateTime("2016-07-01").withTimeAtStartOfDay().toDate();
         Date endDate = new DateTime("2016-08-01").withTimeAtStartOfDay().toDate();
         if (tradingTime.before(startDate) || tradingTime.after(endDate)) {
             baseListDataDto.setStatus(false);
         } else {
-            List<HeroRankingView> heroRankingViewList = investMapper.findHeroRankingByReferrer(tradingTime);
+            List<HeroRankingView> heroRankingViewList = investMapper.findHeroRankingByReferrer(tradingTime, (index - 1) * pageSize, pageSize);
             baseListDataDto.setStatus(true);
-            baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
-                @Override
-                public HeroRankingView apply(HeroRankingView input) {
-                    input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6));
-                    return input;
-                }
-            }));
+            if (CollectionUtils.isNotEmpty(heroRankingViewList)) {
+                baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
+                    @Override
+                    public HeroRankingView apply(HeroRankingView input) {
+                        input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6));
+                        return input;
+                    }
+                }));
+            }
         }
         return baseListDataDto;
     }
@@ -67,5 +71,19 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
         return null;
     }
-    
+
+    @Override
+    public Integer findHeroRankingByReferrerLoginName(final String loginName) {
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(), 0, 20);
+        if (CollectionUtils.isEmpty(heroRankingViews)) {
+            return null;
+        }
+        return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
+            @Override
+            public boolean apply(HeroRankingView input) {
+                return loginName.equalsIgnoreCase(input.getLoginName());
+            }
+        });
+    }
+
 }

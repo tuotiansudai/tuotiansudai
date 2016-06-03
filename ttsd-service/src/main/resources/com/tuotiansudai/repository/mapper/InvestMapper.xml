@@ -501,7 +501,7 @@
           JOIN invest t
             ON rr.`login_name` = t.`login_name`
             AND t.`status` = 'SUCCESS'
-            AND t.`trading_time` = #{tradingTime}
+            AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
             AND t.`trading_time` BETWEEN '2016-07-01 00:00:00'
             AND '2016-08-01 00:00:00'
           JOIN account a
@@ -514,7 +514,7 @@
           u.`mobile`
         ORDER BY SUM(t.`amount`) DESC,
           MAX(t.`trading_time`)
-        LIMIT 0, 10
+        LIMIT #{index}, #{pageSize}
     </select>
 
 </mapper>
