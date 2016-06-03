@@ -58,7 +58,7 @@ class MembershipDataFiller(object):
         self.db_wrapper.commit()
 
     def __set_user_membership(self, login_name, membership_id, expired_time, created_time):
-        sql = '''INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time) VALUES (%s, %s, %s, %s)'''
+        sql = '''INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time, type) VALUES (%s, %s, %s, %s, 'UPGRADE')'''
         self.db_wrapper.execute(sql, (login_name, membership_id, expired_time, created_time))
         self.db_wrapper.commit()
 
