@@ -129,6 +129,9 @@ public enum ReturnMessage {
     /******签到******/
     MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
 
+    /******安全******/
+    WITHDRAW_IN_BLACKLIST("1000", "命中提现黑名单"),
+
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
 

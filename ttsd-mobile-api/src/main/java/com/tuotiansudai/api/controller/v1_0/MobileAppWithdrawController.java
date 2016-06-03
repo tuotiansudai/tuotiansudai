@@ -1,11 +1,8 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.WithdrawListRequestDto;
-import com.tuotiansudai.api.dto.v1_0.WithdrawOperateRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
-import com.tuotiansudai.repository.mapper.BlacklistMapper;
+import com.tuotiansudai.service.BlacklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +15,7 @@ public class MobileAppWithdrawController extends MobileAppBaseController {
     private MobileAppWithdrawService mobileAppWithDrawService;
 
     @Autowired
-    private BlacklistMapper blacklistMapper;
+    private BlacklistService blacklistService;
 
     @RequestMapping(value = "/get/userwithdrawlogs", method = RequestMethod.POST)
     public BaseResponseDto queryUserWithdrawLogs(@RequestBody WithdrawListRequestDto requestDto) {
@@ -30,9 +27,9 @@ public class MobileAppWithdrawController extends MobileAppBaseController {
     public BaseResponseDto generateWithdrawRequest(@RequestBody WithdrawOperateRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         String loginName = getLoginName();
-        if (blacklistMapper.userIsInBlacklist(loginName)) {
-            BaseResponseDto<BaseResponseDataDto> baseResponseDto = new BaseResponseDto();
-            baseResponseDto.setCode(BaseResponseDto.ACCESS_FAIL_CODE);
+        if (blacklistService.userIsInBlacklist(loginName)) {
+            BaseResponseDto<BaseResponseDataDto> baseResponseDto = new BaseResponseDto<>();
+            baseResponseDto.setCode(ReturnMessage.WITHDRAW_IN_BLACKLIST.getCode());
             baseResponseDto.setMessage("操作失败(错误代码:YM001), 请联系客服");
             return baseResponseDto;
         }
