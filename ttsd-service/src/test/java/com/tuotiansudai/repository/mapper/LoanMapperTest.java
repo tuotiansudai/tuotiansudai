@@ -344,11 +344,14 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,false,0);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,true,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);
         assertEquals(loanModels.get(2).getStatus(),LoanStatus.REPAYING);
         assertEquals(loanModels.get(3).getStatus(),LoanStatus.COMPLETE);
         assertEquals(loanModels.get(2).getProductType(),ProductType.EXPERIENCE);
+
+        loanModels = loanMapper.findLoanListMobileApp(null,null,0,0,false,0);
+        assertTrue(loanModels.size() == 3);
     }
 }

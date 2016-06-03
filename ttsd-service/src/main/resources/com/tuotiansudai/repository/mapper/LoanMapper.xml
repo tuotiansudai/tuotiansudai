@@ -174,8 +174,8 @@
         <if test="rateEnd != 0">
             <![CDATA[ and (temp.base_rate + temp.activity_rate) <=  #{rateEnd}]]>
         </if>
-        <if test="loanIsDisplayExperience">
-            and  <![CDATA[ temp.product_type <> 'EXPERIENCE' ]]>
+        <if test="loanIsDisplayExperience == false">
+            and temp.product_type != 'EXPERIENCE'
         </if>
         ORDER BY CASE temp.status
         WHEN 'RAISING' THEN '1'
