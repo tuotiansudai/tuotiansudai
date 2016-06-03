@@ -30,7 +30,7 @@ public class MobileAppWithdrawController extends MobileAppBaseController {
     public BaseResponseDto generateWithdrawRequest(@RequestBody WithdrawOperateRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         String loginName = getLoginName();
-        if(blacklistMapper.userIsInBlacklist(loginName)) {
+        if (blacklistMapper.userIsInBlacklist(loginName)) {
             BaseResponseDto<BaseResponseDataDto> baseResponseDto = new BaseResponseDto();
             baseResponseDto.setCode(BaseResponseDto.ACCESS_FAIL_CODE);
             baseResponseDto.setMessage("操作失败(错误代码:YM001), 请联系客服");
