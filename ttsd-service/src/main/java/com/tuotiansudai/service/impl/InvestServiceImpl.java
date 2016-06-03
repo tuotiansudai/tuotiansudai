@@ -282,7 +282,7 @@ public class InvestServiceImpl implements InvestService {
         long investAmountSum = 0;
 
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
             for (InvestPaginationItemView investPaginationItemView : items) {
@@ -344,8 +344,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public void turnOffAutoInvest(String loginName) {
+    public boolean turnOffAutoInvest(String loginName, String ip) {
+        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
+        if (model == null || !model.isEnabled()) {
+            return false;
+        }
         autoInvestPlanMapper.disable(loginName);
+        return true;
     }
 
     @Override
@@ -380,7 +385,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     @Transactional
-    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn) {
+    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);

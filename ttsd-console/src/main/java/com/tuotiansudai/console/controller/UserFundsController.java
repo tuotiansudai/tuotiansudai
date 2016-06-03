@@ -84,7 +84,7 @@ public class UserFundsController {
             modelAndView.addObject("userFundsCount", userFundsCount);
             modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
             modelAndView.addObject("operationTypeList", UserBillOperationType.values());
-            long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 ? 1 : 0);
+            long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 || userFundsCount == 0? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);

@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -19,8 +21,9 @@ public class MobileAppAutoInvestPlanController extends MobileAppBaseController {
     private MobileAppAutoInvestPlanService mobileAppAutoInvestPlanService;
 
     @RequestMapping(value = "/auto-invest-plan", method = RequestMethod.POST)
-    public BaseResponseDto buildAutoInvestPlan(@Valid @RequestBody AutoInvestPlanRequestDto autoInvestPlanRequestDto, BindingResult bindingResult) {
+    public BaseResponseDto buildAutoInvestPlan(@Valid @RequestBody AutoInvestPlanRequestDto autoInvestPlanRequestDto, BindingResult bindingResult, HttpServletRequest request) {
         autoInvestPlanRequestDto.getBaseParam().setUserId(getLoginName());
+        autoInvestPlanRequestDto.setIp(RequestIPParser.parse(request));
 
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();

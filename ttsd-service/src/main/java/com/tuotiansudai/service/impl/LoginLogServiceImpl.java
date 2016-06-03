@@ -49,7 +49,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 
         List<LoginLogModel> data = Lists.newArrayList();
         if (count > 0 ) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             data = loginLogMapper.getPaginationData(loginName, success, (index - 1) * pageSize, pageSize, loginLogTableName);
         }
