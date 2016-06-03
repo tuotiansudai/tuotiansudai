@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,8 @@ public class HeroRankingController {
     public ModelAndView obtainHeroRankingByLoginName(){
         ModelAndView mv = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
-        Integer ranking = heroRankingService.obtainHeroRankingByLoginName(loginName);
+        Date tradingTime = new DateTime().toDate();
+        Integer ranking = heroRankingService.obtainHeroRankingByLoginName(tradingTime,loginName);
         mv.addObject("ranking",ranking);
         return mv;
     }
