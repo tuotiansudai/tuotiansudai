@@ -242,14 +242,12 @@ public class InvestMapperTest {
         investModel.setLoanId(newbieLoanId);
         investModel.setLoginName(User_ID2);
         investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
-        investModel.setAmount(100);
         investModel.setStatus(InvestStatus.SUCCESS);
 
         InvestModel investModel2 = this.getFakeInvestModel();
         investModel2.setLoanId(newbieLoanId);
         investModel2.setLoginName(User_ID2);
         investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
-        investModel2.setAmount(100);
         investModel2.setStatus(InvestStatus.SUCCESS);
 
         investModel.setTransferInvestId(investModel2.getId());
@@ -257,6 +255,6 @@ public class InvestMapperTest {
         investMapper.create(investModel);
 
         long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
-        assertEquals(investAmount,investModel2.getAmount());
+        assertEquals(investAmount,investModel.getAmount());
     }
 }
