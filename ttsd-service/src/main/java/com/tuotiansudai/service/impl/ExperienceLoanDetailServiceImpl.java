@@ -27,8 +27,6 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
     @Autowired
     private CouponMapper couponMapper;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     @Override
     public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId,String loginName) {
         LoanModel loanModel = loanMapper.findById(loanId);
