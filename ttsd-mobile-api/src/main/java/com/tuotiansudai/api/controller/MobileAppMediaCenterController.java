@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.MediaArticleLikeCountResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;

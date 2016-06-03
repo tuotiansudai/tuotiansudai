@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.MediaArticleListResponseDataDto;
 import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 
 

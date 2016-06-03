@@ -2,6 +2,8 @@ package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
@@ -49,7 +51,7 @@ public class MobileAppMediaCenterControllerTest extends ControllerTestBase{
         mediaArticleResponseDataDto.setReadCount(100000000000000L);
         mediaArticleResponseDataDto.setLikeCount(100000000000001L);
         List<MediaArticleResponseDataDto> mediaArticleResponseDataDtos = Lists.newArrayList(mediaArticleResponseDataDto);
-        BaseResponseDto<MediaArticleListResponseDataDto>  baseResponseDto = new BaseResponseDto();
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
         MediaArticleListResponseDataDto mediaArticleListResponseDataDto = new MediaArticleListResponseDataDto();
         mediaArticleListResponseDataDto.setPageSize(10);
         mediaArticleListResponseDataDto.setIndex(1);

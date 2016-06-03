@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 
