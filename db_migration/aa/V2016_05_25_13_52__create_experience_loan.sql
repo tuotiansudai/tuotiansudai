@@ -24,7 +24,7 @@ INSERT INTO loan (`id`,
                   `verify_login_name`,
                   `verify_time`,
                   `status`,
-                  `creator_login_name`,
+                  `created_login_name`,
                   `created_time`,
                   `update_time`)
   SELECT

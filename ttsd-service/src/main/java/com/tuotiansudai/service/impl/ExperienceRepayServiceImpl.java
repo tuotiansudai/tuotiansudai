@@ -49,7 +49,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Override
     public void repay(Date repayDate) {
-        logger.error(MessageFormat.format("[Experience Repay] starting at {0}", repayDate.toString()));
+        logger.debug(MessageFormat.format("[Experience Repay] starting at {0}", new Date().toString()));
 
         List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
 
@@ -66,9 +66,9 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
             for (InvestModel investModel : investModels) {
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
-                    DateTime investRepayDate = new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay();
+                    DateTime investRepayDate = new DateTime(investRepayModel.getRepayDate());
 
-                    if (investRepayModel.getStatus() == RepayStatus.REPAYING && new DateTime(repayDate).isEqual(investRepayDate)) {
+                    if (investRepayModel.getStatus() == RepayStatus.REPAYING && new DateTime(repayDate).withTimeAtStartOfDay().isEqual(investRepayDate.withTimeAtStartOfDay())) {
                         try {
                             investRepayModel.setActualFee(investRepayModel.getExpectedFee());
                             investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
@@ -90,6 +90,8 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         }
 
         this.sendSms(repaySuccessInvestRepayModels);
+
+        logger.debug(MessageFormat.format("[Experience Repay] done at {0}", new Date().toString()));
     }
 
     private void sendSms(List<InvestRepayModel> successInvestRepayModels) {

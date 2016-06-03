@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -8,6 +9,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -41,6 +42,19 @@ public class ExperienceRepayServiceTest {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    private long loanId;
+
+    private long investId;
+
+    private long investRepayId;
+
+    @Before
+    public void setUp() throws Exception {
+        loanId = idGenerator.generate();
+        investId = idGenerator.generate();
+        investRepayId = idGenerator.generate();
+    }
 
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();
@@ -111,14 +125,10 @@ public class ExperienceRepayServiceTest {
         investRepayModel.setStatus(repayStatus);
         investRepayModel.setCreatedTime(new Date());
         investRepayModel.setExpectedFee(5);
-        investRepayModel.setActualFee(0);
         investRepayModel.setExpectedInterest(10);
-        investRepayModel.setActualInterest(0);
         investRepayModel.setRepayDate(repayDate);
-        investRepayModel.setActualRepayDate(new Date());
-        List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(investRepayModel);
-        investRepayMapper.create(investRepayModels);
+        investRepayModel.setPeriod(1);
+        investRepayMapper.create(Lists.newArrayList(investRepayModel));
         return investRepayModel;
     }
 
@@ -126,56 +136,23 @@ public class ExperienceRepayServiceTest {
         createUserByLoginName("testLoanUser");
         createUserByLoginName("testInvestUser");
 
-        long loanId = idGenerator.generate();
         createLoanByLoginName("testLoanUser", loanId, ProductType.EXPERIENCE);
 
-        createInvest(11, "testInvestUser", loanId, 5888);
+        createInvest(investId, "testInvestUser", loanId, 5888);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
-        createInvestRepay(111, 11, RepayStatus.REPAYING, calendar.getTime());
-        createInvestRepay(112, 11, RepayStatus.COMPLETE, calendar.getTime());
-        calendar.set(2016, Calendar.MAY, 23, 0, 0, 0);
-        createInvestRepay(113, 11, RepayStatus.REPAYING, calendar.getTime());
-        calendar.set(2016, Calendar.MAY, 22, 23, 0, 0);
-        createInvestRepay(114, 11, RepayStatus.REPAYING, calendar.getTime());
+        createInvestRepay(investRepayId, investId, RepayStatus.REPAYING, new Date());
     }
 
     @Test
     public void testNewbieExperienceService() {
         prepareData();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
-        calendar.set(Calendar.HOUR, 16);
-        Date actualRepayDate = calendar.getTime();
+        Date repayDate = new Date();
+        experienceRepayService.repay(repayDate);
 
-        experienceRepayService.repay(actualRepayDate);
-
-        calendar.set(Calendar.MILLISECOND, 0);
-        actualRepayDate = calendar.getTime();
-
-        InvestRepayModel investRepayModel = investRepayMapper.findById(111);
+        InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
         assertEquals(RepayStatus.COMPLETE, investRepayModel.getStatus());
         assertEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
         assertEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
-        assertEquals(actualRepayDate, investRepayModel.getActualRepayDate());
-
-        investRepayModel = investRepayMapper.findById(112);
-        assertNotEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
-        assertNotEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
-        assertNotEquals(actualRepayDate, investRepayModel.getActualRepayDate());
-
-        investRepayModel = investRepayMapper.findById(113);
-        assertEquals(RepayStatus.REPAYING, investRepayModel.getStatus());
-        assertNotEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
-        assertNotEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
-        assertNotEquals(actualRepayDate, investRepayModel.getActualRepayDate());
-
-        investRepayModel = investRepayMapper.findById(114);
-        assertEquals(RepayStatus.COMPLETE, investRepayModel.getStatus());
-        assertEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
-        assertEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
-        assertEquals(actualRepayDate, investRepayModel.getActualRepayDate());
     }
 }

@@ -68,6 +68,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ExperienceRepay.equals(schedulerName)) {
             createNewbieExperienceRepayJos();
         }
+        if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
+            createCheckUserBalanceJob();
+        }
     }
 
     @Override
@@ -198,7 +201,17 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
-        }catch (SchedulerException e) {
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createCheckUserBalanceJob() {
+        try {
+            jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
+        } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }

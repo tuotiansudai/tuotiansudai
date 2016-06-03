@@ -56,6 +56,34 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
+
+            // 移动端滑动切换
+            (function() {
+                var startX, startY;
+                $bannerBox.on('touchstart', function(event) {
+                    startX = event.originalEvent.changedTouches[0].pageX;
+                    startY = event.originalEvent.changedTouches[0].pageY;
+                });
+                $bannerBox.on('touchmove', function(event) {
+                    event.preventDefault();
+                })
+                $bannerBox.on('touchend', function(event) {
+                    var endX, endY;
+                     endX = event.originalEvent.changedTouches[0].pageX;
+                     endY = event.originalEvent.changedTouches[0].pageY;
+                     var direction = GetSlideDirection(startX, startY, endX, endY);
+                     switch(direction) {
+                         case 3:
+                            var index = ++n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                         case 4:
+                            var index = --n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                     }
+                });
+            })();
         }
 
         var scrollTimer;
@@ -93,4 +121,30 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
         });
         
     });
+
+
+    function GetSlideAngle(dx, dy) {
+        return Math.atan2(dy, dx) * 180 / Math.PI;
+    }
+    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
+    function GetSlideDirection(startX, startY, endX, endY) {
+         var dy = startY - endY;
+         var dx = endX - startX;
+         var result = 0;
+         if(Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+             return result;
+         }
+         var angle = GetSlideAngle(dx, dy);
+         if(angle >= -45 && angle < 45) {
+             result = 4;
+         }else if (angle >= 45 && angle < 135) {
+             result = 1;
+         }else if (angle >= -135 && angle < -45) {
+             result = 2;
+         }
+         else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+             result = 3;
+         }
+         return result;
+    }
 });
