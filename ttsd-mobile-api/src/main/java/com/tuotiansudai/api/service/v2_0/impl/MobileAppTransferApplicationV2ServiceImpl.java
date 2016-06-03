@@ -3,7 +3,11 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.api.dto.v2_0.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.UserInvestRecordResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppTransferApplicationV2Service;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -47,7 +51,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
     private LoanRepayMapper loanRepayMapper;
 
     @Override
-    public BaseResponseDto<UserInvestListResponseDataDto> generateTransferableInvest(UserInvestListRequestDto requestDto) {
+    public BaseResponseDto<UserInvestListResponseDataDto> generateTransferableInvest(TransferableInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         Integer pageSize = requestDto.getPageSize();
         Integer index = requestDto.getIndex();

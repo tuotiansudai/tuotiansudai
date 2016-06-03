@@ -2,10 +2,10 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v2_0.UserInvestListRequestDto;
-import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppTransferApplicationV2ServiceImpl;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.*;
@@ -72,7 +72,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         transferRuleModel.setLevelThreeUpper(365);
 
         transferRuleModel.setDiscount(0.005);
-        UserInvestListRequestDto transferableInvestRequestDto = new UserInvestListRequestDto();
+        TransferableInvestListRequestDto transferableInvestRequestDto = new TransferableInvestListRequestDto();
         transferableInvestRequestDto.setIndex(1);
         transferableInvestRequestDto.setPageSize(10);
         BaseParam baseParam = new BaseParam();
