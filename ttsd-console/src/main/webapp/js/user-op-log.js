@@ -9,12 +9,12 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSel
     $endTime.datetimepicker({format: 'YYYY-MM-DD', locale: 'zh-cn'});
 
     $('form button[type="reset"]').click(function () {
-        location.href = "/security-log/audit-log";
+        location.href = "/security-log/user-op-log";
     });
 
     //自动完成提示
     var autoValue = '';
-    $("#operator-login-name, #auditor-login-name").autocomplete({
+    $("#login-name").autocomplete({
         source: function (query, process) {
             $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                 autoValue = respData;
@@ -22,7 +22,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSel
             });
         }
     });
-    $("#operator-login-name, #auditor-login-name").blur(function () {
+    $("#login-name").blur(function () {
         for (var i = 0; i < autoValue.length; i++) {
             if ($(this).val() == autoValue[i]) {
                 $(this).removeClass('Validform_error');
@@ -32,6 +32,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSel
             }
         }
     });
+
 
     $('.pagination .previous').click(function () {
         if ($(this).hasClass("disabled")) {
@@ -44,4 +45,5 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSel
             return false;
         }
     });
+
 });
