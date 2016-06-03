@@ -120,10 +120,7 @@ module.exports = function(grunt) {
                     base: 'src/main/webapp',
                     middleware: function(connect, options, middlewares) {
                         middlewares.unshift(function(req, res, next) {
-                            if (/woff2|woff|ttf/.test(req.url)) {
-                                res.setHeader('Access-Control-Allow-Origin', '*');
-                                return next();
-                            }
+                            res.setHeader('Access-Control-Allow-Origin', '*');
                             return next();
                         });
                         return middlewares;
@@ -138,7 +135,8 @@ module.exports = function(grunt) {
                 options: {
                     target: ['./src/main/webapp/images/**/*.*'],
                     fixDirLevel: false,
-                    maxBytes: 1024 * 8
+                    maxBytes: 1024 * 8,
+                    baseDir: './src/main/webapp'
                 }
             }
         }
