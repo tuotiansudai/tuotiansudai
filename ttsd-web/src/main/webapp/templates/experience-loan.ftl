@@ -37,7 +37,7 @@
                             <dd class="experience-info clearfix">
                                 <span class="fl">可投金额：</span>
                                 <em class="fr">
-                                    <i class="amountNeedRaised-i" data-amount-need-raised="${loan.investAmount}"></i> 元
+                                    <i class="amountNeedRaised-i" data-amount-need-raised="${loan.investAmount}">${loan.investAmount}</i> 元
                                 </em>
                             </dd>
 
