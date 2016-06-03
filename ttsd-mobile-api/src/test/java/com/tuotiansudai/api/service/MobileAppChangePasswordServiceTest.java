@@ -23,26 +23,26 @@ public class MobileAppChangePasswordServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldChangePasswordSuccess() {
-        when(userService.changePassword(anyString(), anyString(), anyString())).thenReturn(true);
+        when(userService.changePassword(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(true);
 
         ChangePasswordRequestDto requestDto = new ChangePasswordRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setOriginPassword("123456");
         requestDto.setNewPassword("123abc");
-        BaseResponseDto responseDto = mobileAppChangePasswordService.changePassword(requestDto);
+        BaseResponseDto responseDto = mobileAppChangePasswordService.changePassword(requestDto, "127.0.0.1");
 
         assertEquals(true, responseDto.isSuccess());
     }
 
     @Test
     public void shouldChangePasswordFail() {
-        when(userService.changePassword(anyString(), anyString(), anyString())).thenReturn(false);
+        when(userService.changePassword(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(false);
 
         ChangePasswordRequestDto requestDto = new ChangePasswordRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setOriginPassword("123456");
         requestDto.setNewPassword("123abc");
-        BaseResponseDto responseDto = mobileAppChangePasswordService.changePassword(requestDto);
+        BaseResponseDto responseDto = mobileAppChangePasswordService.changePassword(requestDto, "127.0.0.1");
 
         assertEquals(false, responseDto.isSuccess());
         assertEquals(ReturnMessage.CHANGEPASSWORD_INVALID_PASSWORD.getCode(), responseDto.getCode());
