@@ -49,7 +49,7 @@
 </div>
 
 <div id="popWithdrawFail" class="pad-m recharge-plat" style="display: none;">
-    <p>提现失败，请联系客服</p>
+    <p>操作失败(错误代码:YM001), 请联系客服</p>
     <span>客服电话:400-169-1188 (服务时间:9:00-20:00)</span>
 </div>
 </@global.main>

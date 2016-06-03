@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class BaseResponseDto<T extends BaseResponseDataDto> {
     public static final String SUCCESS_CODE = "0000";
+    public static final String ACCESS_FAIL_CODE = "0001";
 
     private String code;
 
