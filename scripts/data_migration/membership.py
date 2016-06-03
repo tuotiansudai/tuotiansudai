@@ -112,14 +112,17 @@ description) VALUES (%s,%s,%s,%s,%s)'''
             loan_id = invest[1]
             amount = invest[3]
             invest_time = invest[4]
-            total_amount += (amount/100)
-            self.__set_membership_experience_bill(login_name, amount/100, total_amount, invest_time, loan_id, float(amount)/100.0)
+            total_amount += (amount / 100)
+            self.__set_membership_experience_bill(login_name, amount / 100, total_amount, invest_time, loan_id,
+                                                  float(amount) / 100.0)
             current_level = self.__get_vip_id_by_experience(total_amount)[1]
             if current_level > user_level:
-                self.__set_membership_experience_bill_level_up(login_name, total_amount, invest_time, current_level, False)
+                self.__set_membership_experience_bill_level_up(login_name, total_amount, invest_time, current_level,
+                                                               False)
                 user_level = current_level
         membership_id = self.__get_vip_id_by_experience(total_amount)
-        self.__set_user_membership(login_name, membership_id[0], '2035-12-31 0:0:0', time.strftime("%Y-%m-%d %X", time.localtime()))
+        self.__set_user_membership(login_name, membership_id[0], '2035-12-31 0:0:0',
+                                   time.strftime("%Y-%m-%d %X", time.localtime()))
         self.__update_account(login_name, total_amount)
 
     def __find_all_login_names(self):
@@ -130,6 +133,39 @@ description) VALUES (%s,%s,%s,%s,%s)'''
         login_names = self.__find_all_login_names()
         for login_name in login_names:
             self.__fill_membership_data(login_name)
+
+
+class InvestFeeRateMover(object):
+    def __init__(self, username, password, host, db_name):
+        self.db_wrapper = DBWrapper(user=username, password=password, host=host, db_name=db_name)
+
+    def close(self):
+        self.db_wrapper.close()
+
+    def __get_all_invests(self):
+        sql = '''SELECT id, loan_id FROM `aa`.`invest`'''
+        return self.db_wrapper.execute(sql).fetchall()
+
+    def __get_fee_rate_from_loan(self, loan_id):
+        sql = '''SELECT invest_fee_rate FROM `aa`.`loan` WHERE id = %s'''
+        return self.db_wrapper.execute(sql, (loan_id,)).fetchall()
+
+    def __set_fee_rate_in_invest(self, invest_id, fee_rate):
+        sql = '''UPDATE `aa`.`invest` SET invest_fee_rate = %s WHERE id = %s'''
+        self.db_wrapper.execute(sql, (fee_rate, invest_id))
+        self.db_wrapper.commit()
+
+    def __remove_loan_invest_fee_rate_column(self):
+        sql = '''ALTER TABLE `aa`.`loan` DROP COLUMN `invest_fee_rate`'''
+        self.db_wrapper.execute(sql)
+        self.db_wrapper.commit()
+
+    def run(self):
+        invests = self.__get_all_invests()
+        for invest_id, loan_id in invests:
+            fee_rate = self.__get_fee_rate_from_loan(loan_id=loan_id)
+            self.__set_fee_rate_in_invest(invest_id, fee_rate)
+        self.__remove_loan_invest_fee_rate_column()
 
 
 def main():
@@ -148,6 +184,12 @@ def main():
         membership_data_filler.run()
     finally:
         membership_data_filler.close()
+
+    invest_fee_rate_mover = InvestFeeRateMover(username=username, password=password, host=host, db_name=db_name)
+    try:
+        invest_fee_rate_mover.run()
+    finally:
+        invest_fee_rate_mover.close()
 
 
 if __name__ == '__main__':
