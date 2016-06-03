@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.*;
@@ -29,9 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -217,7 +214,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -231,8 +228,9 @@ public class InvestServiceTest {
 
         assert amount == 100;
     }
+
     @Test
-    public void shouldAutoInvestNewBieByNewInvestorIsSuccess(){
+    public void shouldAutoInvestNewBieByNewInvestorIsSuccess() {
         this.createUserByUserId("testLoan");
         this.createUserByUserId("testInvest");
         this.createUserByUserId("testNewInvest");
@@ -246,23 +244,23 @@ public class InvestServiceTest {
         LoanModel loanModel = createLoanModel();
         loanMapper.create(loanModel);
 
-        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null);
+        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         modelOld.setStatus(InvestStatus.SUCCESS);
         investMapper.create(modelOld);
         createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
         createUserAutoInvestPlan("testNewInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
 
 
-
         this.investService.autoInvest(loanModel.getId());
 
-        List<InvestModel> investModels = investMapper.findByStatus(loanModel.getId(),0,10,InvestStatus.WAIT_PAY);
+        List<InvestModel> investModels = investMapper.findByStatus(loanModel.getId(), 0, 10, InvestStatus.WAIT_PAY);
 
-        assertEquals(1,investModels.size());
-        assertEquals("testNewInvest",investModels.get(0).getLoginName());
+        assertEquals(1, investModels.size());
+        assertEquals("testNewInvest", investModels.get(0).getLoginName());
 
     }
-    private LoanModel createLoanModel(){
+
+    private LoanModel createLoanModel() {
         long loanId = this.idGenerator.generate();
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
@@ -350,7 +348,7 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void  shouldInvestWebRetUrlIsSuccess() {
+    public void shouldInvestWebRetUrlIsSuccess() {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
@@ -397,12 +395,12 @@ public class InvestServiceTest {
         investDto.setSource(Source.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals( MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
 
     }
 
     @Test
-    public void  shouldInvestRetAppUrlIsSuccess() {
+    public void shouldInvestRetAppUrlIsSuccess() {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
@@ -449,7 +447,7 @@ public class InvestServiceTest {
         investDto.setSource(Source.IOS);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals(MessageFormat.format("{0}/callback/{1}",appRetUrl ,"project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/callback/{1}", appRetUrl, "project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
     }
 
     @Test
@@ -491,7 +489,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null, 1.0);
         investMapper.create(investModel);
 
         investService.investSuccess(investModel);

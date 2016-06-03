@@ -5,6 +5,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,36 @@ public class UserMembershipMapperTest {
         assertThat(membershipModel1.getMembershipId(), is(2L));
         assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
 
+    }
+
+    @Test
+    public void shouldFindActiveByLoginName() throws Exception {
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 2, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        UserMembershipModel membershipModel1 = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
+
+        assertThat(membershipModel1.getLoginName(), is(fakeUser.getLoginName()));
+        assertThat(membershipModel1.getMembershipId(), is(2L));
+        assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
+    }
+
+    @Test
+    public void shouldFindRateByLoginName() throws Exception {
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        double rate = userMembershipMapper.findRateByLoginName(fakeUser.getLoginName());
+
+        assertThat(rate, is(0.09));
     }
 
     private UserModel createFakeUser() {

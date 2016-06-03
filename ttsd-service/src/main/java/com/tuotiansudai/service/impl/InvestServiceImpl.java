@@ -11,11 +11,14 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -33,7 +36,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,6 +84,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -168,10 +176,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, long amount) {
+    public long estimateInvestIncome(long loanId, String loginName, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(membershipModel.getFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
 

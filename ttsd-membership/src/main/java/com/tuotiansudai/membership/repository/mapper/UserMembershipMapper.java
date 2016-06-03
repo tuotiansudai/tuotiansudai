@@ -16,4 +16,8 @@ public interface UserMembershipMapper {
     UserMembershipModel findById(long id);
 
     List<UserMembershipModel> findByLoginName(String loginName);
+
+    UserMembershipModel findActiveByLoginName(String loginName);
+
+    Double findRateByLoginName(String loginName);
 }
