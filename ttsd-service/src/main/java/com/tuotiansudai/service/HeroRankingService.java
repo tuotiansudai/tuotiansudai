@@ -9,5 +9,5 @@ public interface HeroRankingService {
 
     List<HeroRankingView> obtainHeroRanking(Date tradingTime);
 
-    List<HeroRankingView> obtainHeroRankingByLoginName(Date tradingTime,String loginName);
+    Integer obtainHeroRankingByLoginName(Date tradingTime, String loginName);
 }

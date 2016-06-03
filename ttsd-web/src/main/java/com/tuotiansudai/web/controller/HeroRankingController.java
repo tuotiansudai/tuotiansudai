@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -47,12 +48,12 @@ public class HeroRankingController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public BaseListDataDto obtainHeroRankingByLoginName(){
-//        String loginName = LoginUserInfo.getLoginName();
-//        BaseListDataDto baseListDataDto = new BaseListDataDto();
-//        baseListDataDto.setRecords(heroRankingService.obtainHeroRanking(tradingTime));
-//        baseListDataDto.setStatus(true);
-//        return baseListDataDto;
+    public ModelAndView obtainHeroRankingByLoginName(){
+        ModelAndView mv = new ModelAndView();
+        String loginName = LoginUserInfo.getLoginName();
+        Integer ranking = heroRankingService.obtainHeroRankingByLoginName(loginName);
+        mv.addObject("ranking",ranking);
+        return mv;
     }
 
 }

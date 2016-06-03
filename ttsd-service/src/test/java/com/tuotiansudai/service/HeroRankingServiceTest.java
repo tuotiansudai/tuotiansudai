@@ -141,5 +141,45 @@ public class HeroRankingServiceTest {
         return loanModel;
     }
 
+    @Test
+    public void shouldObtainHeroRankingByLoginNameIsSuccess(){
+        UserModel loaner = createUserByUserId("loaner");
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+        LoanModel loanModel = createLoan(loaner.getLoginName(), idGenerator.generate(), ActivityType.NORMAL, LoanStatus.REPAYING);
+        loanMapper.create(loanModel);
+
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName(),loanModel.getId());
+        investModel1.setAmount(2000);
+        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel1);
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(),loanModel.getId());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+        Integer ranking1 = heroRankingService.obtainHeroRankingByLoginName(new DateTime(2016,7,5,23,59,59).toDate(),investModel3.getLoginName());
+
+        assertEquals(1, ranking1.intValue());
+        Integer ranking2 = heroRankingService.obtainHeroRankingByLoginName(new DateTime(2016,7,5,23,59,59).toDate(),investModel1.getLoginName());
+
+        assertEquals(2, ranking2.intValue());
+
+        Integer ranking3 = heroRankingService.obtainHeroRankingByLoginName(new DateTime(2016,7,5,23,59,59).toDate(),investModel2.getLoginName());
+
+        assertEquals(3,ranking3.intValue());
+    }
+
 
 }
