@@ -309,9 +309,8 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
 
-        loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name());
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name()));
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name()));
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),false));
+        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie(true,LoanStatus.RAISING.name(),false));
     }
 
     @Test
@@ -340,14 +339,16 @@ public class LoanMapperTest {
         fakeCanceledLoan4.setBaseRate(999999992);
         fakeCanceledLoan4.setActivityRate(1);
         fakeCanceledLoan4.setVerifyTime(new Date());
+        fakeCanceledLoan4.setProductType(ProductType.EXPERIENCE);
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,false,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);
         assertEquals(loanModels.get(2).getStatus(),LoanStatus.REPAYING);
         assertEquals(loanModels.get(3).getStatus(),LoanStatus.COMPLETE);
+        assertEquals(loanModels.get(2).getProductType(),ProductType.EXPERIENCE);
     }
 }
