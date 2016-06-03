@@ -48,7 +48,7 @@ public class LoanListController {
         modelAndView.addObject("loanListDtos", loanListDtos);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        long totalPages = loanListCount / pageSize + (loanListCount % pageSize > 0 ? 1 : 0);
+        long totalPages = loanListCount / pageSize + (loanListCount % pageSize > 0 || loanListCount == 0? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

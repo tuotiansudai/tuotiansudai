@@ -13,12 +13,9 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -71,6 +67,8 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
+        couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
+
         couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
@@ -111,6 +109,8 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
+        couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
+
         couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.NEW_REGISTERED_USER), exchangeCouponDto.getId(), null);
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
@@ -133,6 +133,8 @@ public class CouponServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
         couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
 
@@ -157,6 +159,8 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
+        couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
+
         couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
@@ -179,6 +183,8 @@ public class CouponServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
         couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
 
