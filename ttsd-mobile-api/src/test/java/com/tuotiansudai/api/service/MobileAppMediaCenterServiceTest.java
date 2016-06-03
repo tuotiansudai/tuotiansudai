@@ -77,7 +77,7 @@ public class MobileAppMediaCenterServiceTest {
         assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getAuthor());
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getTitle());
         assertEquals(licaiquanArticleModel.getContent(),baseResponseDto.getData().getContent());
-        assertEquals(domainName  + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getShowPicture());
+        assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getShowPicture());
 
     }
 
