@@ -102,7 +102,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             public boolean apply(UserCouponModel userCouponModel) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 return couponModel.getProductTypes().contains(ProductType.EXPERIENCE)
-                        && InvestStatus.SUCCESS == userCouponModel.getStatus()
+                        && userCouponModel.getStatus() != InvestStatus.SUCCESS
                         && userCouponModel.getEndTime().after(new Date());
             }
         });
