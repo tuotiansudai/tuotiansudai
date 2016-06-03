@@ -16,6 +16,7 @@ env.roledefs = {
     'sms': ['shenzhen'],
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
+    'cms': ['wuhan'],
 }
 
 
@@ -238,7 +239,7 @@ def remove_old_logs():
     execute(remove_static_logs)
 
 
-@roles('portal', 'pay', 'worker', 'api')
+@roles('portal', 'pay', 'worker', 'api', 'cms')
 @parallel
 def restart_logstash_service():
     """

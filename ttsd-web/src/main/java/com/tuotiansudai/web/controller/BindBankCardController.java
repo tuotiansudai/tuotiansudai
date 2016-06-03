@@ -3,10 +3,12 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -40,7 +43,10 @@ public class BindBankCardController {
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
 
-        view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
+        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
+        if (accountModel != null) {
+            view.addObject("userName", accountModel.getUserName());
+        }
         view.addObject("isBindCard", isBindCard);
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
 
@@ -49,8 +55,9 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
+    public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto, HttpServletRequest request) {
         bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
+        bindBankCardDto.setIp(RequestIPParser.parse(request));
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
@@ -73,8 +80,9 @@ public class BindBankCardController {
 
     @RequestMapping(value = "/replace", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView replaceBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
+    public ModelAndView replaceBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto, HttpServletRequest request) {
         bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
+        bindBankCardDto.setIp(RequestIPParser.parse(request));
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.replaceBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
