@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
@@ -52,6 +53,9 @@ public class ExchangeCodeServiceTest {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponActivationService couponActivationService;
 
     @Test
     public void shouldExchangeCodeFailed1() {
@@ -149,6 +153,7 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
         couponService.createCoupon("couponTest", exchangeCouponDto);
         long couponId = exchangeCouponDto.getId();
+        couponActivationService.active(userModel.getLoginName(), couponId, "");
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
         redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
