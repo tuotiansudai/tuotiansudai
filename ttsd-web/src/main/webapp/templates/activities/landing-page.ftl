@@ -83,12 +83,12 @@
         <div class="content-wp">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
