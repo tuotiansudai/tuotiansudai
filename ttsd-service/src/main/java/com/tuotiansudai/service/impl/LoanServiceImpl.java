@@ -5,8 +5,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
@@ -82,6 +85,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
+
+    @Autowired
+    private CouponService couponService;
 
     /**
      * @param loanTitleDto
@@ -564,9 +570,12 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setProgress(100);
                 }
                 if(loanItemDto.getProductType().equals(ProductType.EXPERIENCE)){
-                    long investCount = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-                    List<CouponModel> couponModels = couponMapper.findCouponExperienceAmount(CouponType.NEWBIE_COUPON, ProductType.EXPERIENCE);
-                    loanItemDto.setAlert(AmountConverter.convertCentToString(loanModel.getLoanAmount() - (couponModels.get(0).getAmount() * investCount)));
+                    Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
+                    Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+                    List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),beginTime,endTime);
+                    long investCount = investModelList.size();
+                    long investAmount = couponService.findExperienceInvestAmount(investModelList);
+                    loanItemDto.setAlert(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount));
                     loanItemDto.setProgress(investCount);
                 }
                 loanItemDto.setDuration(loanModel.getDuration());

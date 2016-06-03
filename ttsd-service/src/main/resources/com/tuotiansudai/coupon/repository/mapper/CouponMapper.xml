@@ -252,12 +252,4 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findCouponExperienceAmount" parameterType="map" resultMap="couponResultMap">
-        SELECT
-        c.*
-        FROM
-        coupon c
-        where coupon_Type = #{couponType} and product_types = #{product_types}
-    </select>
-
 </mapper>

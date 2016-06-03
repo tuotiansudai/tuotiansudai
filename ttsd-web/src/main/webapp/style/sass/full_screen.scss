@@ -367,7 +367,7 @@ body {
               left:0;
               width:56px;
               height:75px;
-              background:url("/images/sign/index_sprites_20160530.png") 0px -170px no-repeat;
+              background:url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
             }
             .loan-info-frame {
               width: 424px;
@@ -509,7 +509,7 @@ body {
         border: 1px solid #e6e6e6;
         background-color: #fff;
         overflow: hidden;
-        background:url("/images/sign/index_sprites_20160530.png") 0 0 no-repeat;
+        background:url("/images/sign/index_sprites_20160601.png") 0 0 no-repeat;
         a{
           float:left;
           width: 218px;
@@ -936,6 +936,7 @@ body {
         border: 1px solid #e5e5e5;
         box-sizing:border-box;
         position: relative;
+        cursor:pointer;
         &:hover{
           background: #fff;
           box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);

@@ -1,17 +1,18 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ExperienceLoanDto;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,13 +26,13 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Override
     public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId,String loginName) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<CouponModel> couponModels = couponMapper.findCouponExperienceAmount(CouponType.NEWBIE_COUPON, ProductType.EXPERIENCE);
-
+        Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
+        Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(),loginName);
         long experienceProgress;
         LoanStatus loanStatus = LoanStatus.RAISING;
@@ -48,16 +49,16 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
                     experienceProgress = 100;
                     break;
                 default:
-                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
+                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
                     break;
             }
         }else{
-            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
+            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
         }
 
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanModel,experienceProgress,couponModels.get(0));
+        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime);
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(loanId),experienceProgress,couponService.findExperienceInvestAmount(investModelList));
         experienceLoanDto.setLoanStatus(loanStatus);
-
         return experienceLoanDto;
     }
 }

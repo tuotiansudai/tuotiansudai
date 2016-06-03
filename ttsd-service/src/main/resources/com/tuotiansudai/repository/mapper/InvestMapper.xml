@@ -452,8 +452,8 @@
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
-    <select id="countSuccessInvestByInvestTime" parameterType="map" resultType="long">
-        select count(*)
+    <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
+        select *
         from invest
         where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
     </select>

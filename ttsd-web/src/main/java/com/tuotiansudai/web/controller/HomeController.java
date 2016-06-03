@@ -1,13 +1,11 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -40,7 +38,7 @@ public class HomeController {
     private LoanMapper loanMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -51,9 +49,8 @@ public class HomeController {
         long experienceLoanId = 1;
         Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
         Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        long experienceProgress = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
-        List<CouponModel> couponModels = couponMapper.findCouponExperienceAmount(CouponType.NEWBIE_COUPON, ProductType.EXPERIENCE);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),experienceProgress,couponModels.get(0));
+        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),investModelList.size(),couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         return modelAndView;
     }

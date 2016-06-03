@@ -233,18 +233,4 @@ public class InvestMapperTest {
         assertTrue(investDataViews.size() >=0 );
     }
 
-    @Test
-    public void shouldCountSuccessInvestByInvestTimeIsOk(){
-        long newbieLoanId = idGenerator.generate();
-        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
-
-        InvestModel investModel = this.getFakeInvestModel();
-        investModel.setLoanId(newbieLoanId);
-        investModel.setLoginName(User_ID2);
-        investModel.setInvestTime(new Date());
-        investMapper.create(investModel);
-
-        long count = investMapper.countSuccessInvestByInvestTime(newbieLoanId,new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-        assertTrue(count == 1 );
-    }
 }

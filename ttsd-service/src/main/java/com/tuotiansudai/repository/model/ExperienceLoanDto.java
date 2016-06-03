@@ -42,13 +42,13 @@ public class ExperienceLoanDto implements Serializable {
 
     private LoanStatus loanStatus;
 
-    public ExperienceLoanDto(LoanModel loanModel, long experienceProgress, CouponModel couponModels) {
+    public ExperienceLoanDto(LoanModel loanModel, long experienceProgress, long investAmount) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
         this.duration = loanModel.getDuration();
-        this.baseRate = new BigDecimal(String.valueOf(couponModels.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+        this.baseRate = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         this.progress = experienceProgress;
-        this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - (couponModels.getAmount() * experienceProgress));
+        this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - (investAmount * experienceProgress));
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
     }
 

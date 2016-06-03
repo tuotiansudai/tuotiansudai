@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -51,6 +52,9 @@ public class ExperienceLoanDetailServiceTest {
     @Mock
     private CouponMapper couponMapper;
 
+    @Mock
+    private CouponService couponService;
+
     @Autowired
     private IdGenerator idGenerator;
 
@@ -78,13 +82,13 @@ public class ExperienceLoanDetailServiceTest {
         InvestModel investModel1 = getFakeInvestModel(loanModel.getId(), fakeUserName);
         investModel1.setInvestTime(new Date());
         investModels.add(investModel1);
-        long experienceProgress = 0;
+        long investAmount = 1000;
+        when(couponService.findExperienceInvestAmount(investModels)).thenReturn(investAmount);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(couponMapper.findCouponExperienceAmount(CouponType.NEWBIE_COUPON, ProductType.EXPERIENCE)).thenReturn(couponModels);
         when(investMapper.findByLoanIdAndLoginName(anyLong(),anyString())).thenReturn(investModels);
-        when(investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate())).thenReturn(experienceProgress);
+        when(investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate())).thenReturn(investModels);
         ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
-        assertTrue(experienceLoanDto.getProgress() == 0);
+        assertTrue(experienceLoanDto.getProgress() == 1);
         investModel1.setInvestTime(DateUtils.addDays(new Date(),-2));
         experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
         assertTrue(experienceLoanDto.getProgress() == 100);
