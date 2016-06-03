@@ -35,7 +35,7 @@ public class PointController {
         List<AccountItemDataDto> accountItemDataDtoList = accountService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
         modelAndView.addObject("userPointList", accountItemDataDtoList);
         int count = accountService.findUsersAccountPointCount(loginName, userName, mobile);
-        long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -64,7 +64,7 @@ public class PointController {
 
         modelAndView.addObject("userPointDetailList", pointBillPaginationItemDataDtoList);
         long count = pointBillService.getPointBillCountByLoginName(loginName);
-        long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
