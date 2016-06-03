@@ -1,11 +1,15 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,22 @@ public class ExperienceRepayServiceTest {
     @Autowired
     InvestRepayMapper investRepayMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
+    private long loanId;
+
+    private long investId;
+
+    private long investRepayId;
+
+    @Before
+    public void setUp() throws Exception {
+        loanId = idGenerator.generate();
+        investId = idGenerator.generate();
+        investRepayId = idGenerator.generate();
+    }
+
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(loginName);
@@ -47,6 +67,40 @@ public class ExperienceRepayServiceTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
         return userModelTest;
+    }
+
+    private LoanModel createLoanByLoginName(String loginName, long loanId, ProductType productType) {
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName(loginName);
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName(loginName);
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(31);
+        loanDto.setActivityType(ActivityType.NEWBIE);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("5888000");
+        loanDto.setProductType(productType);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setUpdateTime(new Date());
+        loanMapper.create(loanModel);
+        return loanModel;
     }
 
     private InvestModel createInvest(long id, String loginName, long loanId, long amount) {
@@ -71,15 +125,10 @@ public class ExperienceRepayServiceTest {
         investRepayModel.setStatus(repayStatus);
         investRepayModel.setCreatedTime(new Date());
         investRepayModel.setExpectedFee(5);
-        investRepayModel.setActualFee(0);
         investRepayModel.setExpectedInterest(10);
-        investRepayModel.setActualInterest(0);
         investRepayModel.setRepayDate(repayDate);
-        investRepayModel.setActualRepayDate(new Date());
         investRepayModel.setPeriod(1);
-        List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(investRepayModel);
-        investRepayMapper.create(investRepayModels);
+        investRepayMapper.create(Lists.newArrayList(investRepayModel));
         return investRepayModel;
     }
 
@@ -87,33 +136,23 @@ public class ExperienceRepayServiceTest {
         createUserByLoginName("testLoanUser");
         createUserByLoginName("testInvestUser");
 
-        createInvest(11, "testInvestUser", 1, 5888);
+        createLoanByLoginName("testLoanUser", loanId, ProductType.EXPERIENCE);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
-        createInvestRepay(111, 11, RepayStatus.REPAYING, calendar.getTime());
+        createInvest(investId, "testInvestUser", loanId, 5888);
+
+        createInvestRepay(investRepayId, investId, RepayStatus.REPAYING, new Date());
     }
 
     @Test
     public void testNewbieExperienceService() {
         prepareData();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
-        Date compareDate = calendar.getTime();
-        calendar.set(Calendar.HOUR, 16);
-        Date actualRepayDate = calendar.getTime();
+        Date repayDate = new Date();
+        experienceRepayService.repay(repayDate);
 
-        experienceRepayService.repay(compareDate, actualRepayDate);
-
-        calendar.set(Calendar.MILLISECOND, 0);
-        actualRepayDate = calendar.getTime();
-
-        InvestRepayModel investRepayModel = investRepayMapper.findById(111);
+        InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
         assertEquals(RepayStatus.COMPLETE, investRepayModel.getStatus());
         assertEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
         assertEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
-        assertEquals(actualRepayDate, investRepayModel.getActualRepayDate());
-
     }
 }
