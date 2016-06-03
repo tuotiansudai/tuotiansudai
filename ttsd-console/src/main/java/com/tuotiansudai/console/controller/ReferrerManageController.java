@@ -97,7 +97,7 @@ public class ReferrerManageController {
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("referrerManageViews", referrerManageViews);
             modelAndView.addObject("referrerManageCount", referrerManageCount);
-            long totalPages = referrerManageCount / pageSize + (referrerManageCount % pageSize > 0 ? 1 : 0);
+            long totalPages = referrerManageCount / pageSize + (referrerManageCount % pageSize > 0 || referrerManageCount == 0? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);

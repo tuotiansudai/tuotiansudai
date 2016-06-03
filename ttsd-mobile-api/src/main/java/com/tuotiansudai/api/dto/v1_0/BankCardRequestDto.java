@@ -33,6 +33,8 @@ public class BankCardRequestDto extends BaseParamDto{
      */
     private String rechargeAmount;
 
+    private String ip;
+
     public String getUserId() {
         return userId;
     }
@@ -89,6 +91,14 @@ public class BankCardRequestDto extends BaseParamDto{
         this.rechargeAmount = rechargeAmount;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public RechargeDto convertToRechargeDto(){
         RechargeDto rechargeDto = new RechargeDto();
         rechargeDto.setAmount(this.rechargeAmount);
@@ -102,8 +112,10 @@ public class BankCardRequestDto extends BaseParamDto{
         BindBankCardDto bindBankCardDto = new BindBankCardDto();
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        bindBankCardDto.setDeviceId(this.getBaseParam().getDeviceId());
         bindBankCardDto.setCardNumber(this.getCardNo());
         bindBankCardDto.setFastPay(this.isOpenFastPayment());
+        bindBankCardDto.setIp(this.getIp());
         return bindBankCardDto;
     }
 
@@ -112,6 +124,8 @@ public class BankCardRequestDto extends BaseParamDto{
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         agreementDto.setLoginName(this.getUserId());
         agreementDto.setFastPay(this.isOpenFastPayment());
+        agreementDto.setIp(this.getIp());
+        agreementDto.setDeviceId(this.getBaseParam().getDeviceId());
         return agreementDto;
     }
 }
