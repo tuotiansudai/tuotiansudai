@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,9 @@ public class ExperienceRepayServiceTest {
 
     @Autowired
     InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     private UserModel createUserByLoginName(String loginName) {
         UserModel userModelTest = new UserModel();
@@ -80,6 +84,7 @@ public class ExperienceRepayServiceTest {
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setUpdateTime(new Date());
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -121,9 +126,10 @@ public class ExperienceRepayServiceTest {
         createUserByLoginName("testLoanUser");
         createUserByLoginName("testInvestUser");
 
-        createLoanByLoginName("testLoanUser", 1, ProductType.EXPERIENCE);
+        long loanId = idGenerator.generate();
+        createLoanByLoginName("testLoanUser", loanId, ProductType.EXPERIENCE);
 
-        createInvest(11, "testInvestUser", 1, 5888);
+        createInvest(11, "testInvestUser", loanId, 5888);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
@@ -141,11 +147,10 @@ public class ExperienceRepayServiceTest {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2016, Calendar.MAY, 22, 0, 0, 0);
-        Date compareDate = calendar.getTime();
         calendar.set(Calendar.HOUR, 16);
         Date actualRepayDate = calendar.getTime();
 
-        experienceRepayService.repay(compareDate, actualRepayDate);
+        experienceRepayService.repay(actualRepayDate);
 
         calendar.set(Calendar.MILLISECOND, 0);
         actualRepayDate = calendar.getTime();

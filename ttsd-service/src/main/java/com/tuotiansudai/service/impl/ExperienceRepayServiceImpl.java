@@ -13,11 +13,10 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceRepayService;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -25,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 
-@Component
+@Service
 public class ExperienceRepayServiceImpl implements ExperienceRepayService {
+
     static Logger logger = Logger.getLogger(ExperienceRepayServiceImpl.class);
 
     @Autowired
@@ -48,79 +48,48 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private SmsWrapperClient smsWrapperClient;
 
     @Override
-    public void repay(Date compareDate, Date repayDate) {
+    public void repay(Date repayDate) {
+        logger.error(MessageFormat.format("[Experience Repay] starting at {0}", repayDate.toString()));
+
         List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
-        if (CollectionUtils.isEmpty(loanModels) || loanModels.get(0).getStatus() != LoanStatus.RAISING) {
-            return;
-        }
-        LoanModel loanModel = loanModels.get(0);
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
-        //调用时需要保证compareDate是new Date()
-        DateTime compareDateTime = new DateTime(compareDate).withTimeAtStartOfDay();
-        repayDate = new DateTime(repayDate).withMillisOfSecond(0).toDate();
+        List<InvestRepayModel> repaySuccessInvestRepayModels = Lists.newArrayList();
 
-        List<InvestRepayModel> successInvestRepayModels = Lists.newArrayList();
-        for (InvestModel investModel : investModels) {
-            if (null == investModel) {
-                continue;
-            }
-            List<InvestRepayModel> investRepayModels;
-            try {
-                investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[ExperienceRepayService][repay] findByInvestIdAndPeriodAse failed. " +
-                        "investId:{0}\nExceptionMessage: {1}", investModel.getId(), e.toString()));
+        for (LoanModel loanModel : loanModels) {
+            if (loanModel.getStatus() != LoanStatus.RAISING) {
+                logger.error(MessageFormat.format("[Experience Repay] experience loan({0}) status({1}) is not RAISING", String.valueOf(loanModel.getId()), loanModel.getStatus()));
                 continue;
             }
 
-            if (CollectionUtils.isEmpty(investModels)) {
-                continue;
-            }
-            for (InvestRepayModel investRepayModel : investRepayModels) {
-                if (null == investRepayModel) {
-                    continue;
-                }
-                if (investRepayModel.getStatus() != RepayStatus.REPAYING) {
-                    continue;
-                }
-                try {
-                    DateTime repayDateTime = new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay();
-                    if (!repayDateTime.equals(compareDateTime)) {
-                        continue;
-                    }
+            List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
-                    investRepayModel.setActualFee(investRepayModel.getExpectedFee());
-                    investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
-                    investRepayModel.setActualRepayDate(repayDate);
-                    investRepayModel.setStatus(RepayStatus.COMPLETE);
+            for (InvestModel investModel : investModels) {
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    DateTime investRepayDate = new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay();
 
-                    try {
-                        investRepayMapper.update(investRepayModel);
-                        logger.info("[ExperienceRepayService][repay] invest_repay table updated. investRepayModel: " + investRepayModel.toString());
-                    } catch (Exception e) {
-                        logger.error(MessageFormat.format("[ExperienceRepayService][repay] update invest_repay table error. " +
-                                "should updated investRepayModel: {0}\nExceptionMessage: {1}", investRepayModel.toString(), e.toString()));
-                        continue;
+                    if (investRepayModel.getStatus() == RepayStatus.REPAYING && new DateTime(repayDate).isEqual(investRepayDate)) {
+                        try {
+                            investRepayModel.setActualFee(investRepayModel.getExpectedFee());
+                            investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
+                            investRepayModel.setActualRepayDate(repayDate);
+                            investRepayModel.setStatus(RepayStatus.COMPLETE);
+                            investRepayMapper.update(investRepayModel);
+                            logger.debug(MessageFormat.format("[Experience Repay] invest({0}) repay is success", String.valueOf(investModel.getId())));
+
+                            couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
+                            logger.debug(MessageFormat.format("[Experience Repay] assign invest({0}) user coupon is success", String.valueOf(investModel.getId())));
+
+                            repaySuccessInvestRepayModels.add(investRepayModel);
+                        } catch (Exception e) {
+                            logger.error(MessageFormat.format("[Experience Repay] invest repay failed", String.valueOf(investModel.getId())));
+                        }
                     }
-                    try {
-                        couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
-                        logger.info("sending experience coupon, loginName:" + investModel.getLoginName());
-                    } catch (Exception e) {
-                        logger.error(MessageFormat.format("[ExperienceRepayService][repay] invest_repay table has been updated, " +
-                                        "but sending coupon failed. assignUserCoupon() loginName: {0}, updated investRepayModel: {1}\nExceptionMessage: {2}",
-                                investModel.getLoginName(), investRepayModel.toString(), e.toString()));
-                        continue;
-                    }
-                } catch (Exception e) {
-                    logger.error(e.toString());
-                    continue;
                 }
-                successInvestRepayModels.add(investRepayModel);
             }
         }
 
-        this.sendSms(successInvestRepayModels);
+        this.sendSms(repaySuccessInvestRepayModels);
     }
 
     private void sendSms(List<InvestRepayModel> successInvestRepayModels) {
