@@ -80,4 +80,8 @@ public interface TransferApplicationMapper {
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 
+    TransferApplicationModel lockByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
+
+    TransferApplicationModel findSuccessByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
+
 }

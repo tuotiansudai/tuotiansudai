@@ -51,16 +51,9 @@ public class TransferApplicationController {
     @ResponseBody
     public BaseDataDto IsPurchase(@PathVariable long transferApplicationId) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        List<TransferApplicationModel> transferApplicationModels = transferService.getTransferApplicaationByTransferInvestId(transferApplicationId);
-        if (transferApplicationModels.size() > 1) {
+        if(transferService.getTransferApplicationByTransferInvestId(transferApplicationId)){
             baseDataDto.setStatus(false);
-            baseDataDto.setMessage("MULTITERM");
-        }
-        if (transferApplicationModels.size() == 1) {
-            if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(transferApplicationModels.get(0).getStatus())) {
-                baseDataDto.setStatus(false);
-                baseDataDto.setMessage(transferApplicationModels.get(0).getStatus().name());
-            }
+            baseDataDto.setMessage(TransferStatus.SUCCESS.name());
         }
         return baseDataDto;
     }

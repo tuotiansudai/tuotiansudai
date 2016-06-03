@@ -147,11 +147,11 @@ public class TransferServiceImpl implements TransferService {
         return transferApplicationRecodesDto;
     }
     @Override
-    public List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId){
+    public boolean getTransferApplicationByTransferInvestId(long transferApplicationId){
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        return  transferApplicationMapper.findByTransferInvestId(transferApplicationModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
+        transferApplicationMapper.lockByTransferInvestId(transferApplicationModel.getTransferInvestId());
+        return transferApplicationMapper.findSuccessByTransferInvestId(transferApplicationModel.getTransferInvestId()) == null?false:true;
     }
-
 
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginNme, int showLoginNameLength) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();

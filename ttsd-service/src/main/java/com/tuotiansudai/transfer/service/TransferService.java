@@ -25,6 +25,6 @@ public interface TransferService {
 
     TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
 
-    List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId);
+    boolean getTransferApplicationByTransferInvestId(long transferApplicationId);
 
 }

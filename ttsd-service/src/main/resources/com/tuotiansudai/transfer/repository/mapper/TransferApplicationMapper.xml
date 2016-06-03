@@ -336,5 +336,15 @@
                 and i.created_time between #{startTime} and #{endTime}
             </if>
         </where>
-    </select>
+
+        </select>
+
+        <select id="lockByTransferInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+            select * from transfer_application where transfer_invest_id = #{transferInvestId} for update
+        </select>
+
+        <select id="findSuccessByTransferInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+            select * from transfer_application where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
+        </select>
+
 </mapper>
