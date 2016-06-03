@@ -936,6 +936,7 @@ body {
         border: 1px solid #e5e5e5;
         box-sizing:border-box;
         position: relative;
+        cursor:pointer;
         &:hover{
           background: #fff;
           box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);

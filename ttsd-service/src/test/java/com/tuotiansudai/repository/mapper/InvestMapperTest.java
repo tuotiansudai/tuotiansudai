@@ -232,4 +232,5 @@ public class InvestMapperTest {
         List<InvestDataView> investDataViews = investMapper.getInvestDetail();
         assertTrue(investDataViews.size() >=0 );
     }
+
 }

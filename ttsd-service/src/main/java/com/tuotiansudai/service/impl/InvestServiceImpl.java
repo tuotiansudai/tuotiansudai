@@ -210,7 +210,18 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
-            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()).getName(), investModel,
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            if(loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+                for(UserCouponModel userCouponModel : userCouponModelList){
+                    if(userCouponModel.getStatus().equals(InvestStatus.SUCCESS)){
+                        investModel.setAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
+                        break;
+                    }
+                }
+            }
+
+            items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
         }

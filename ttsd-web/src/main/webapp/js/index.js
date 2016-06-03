@@ -110,7 +110,10 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             event.preventDefault();
             window.location.href=$(this).attr('data-url');
         });
-
+        $('.new-user-free').on('click', function(event) {
+            event.preventDefault();
+            window.location.href=$(this).attr('data-url');
+        });
         $('.mask-btn').on('click', function(event) {
             event.preventDefault();
             $('.new-user-free').removeClass('active');
