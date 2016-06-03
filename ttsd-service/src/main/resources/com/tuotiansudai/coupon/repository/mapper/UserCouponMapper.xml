@@ -250,17 +250,4 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
-    <select id="findExperienceUnusedByLoginName" parameterType="map" resultMap="userCouponResultMap">
-        SELECT
-            t.*
-        FROM
-            user_coupon t
-                JOIN
-            coupon m ON t.coupon_id = m.id
-                AND m.product_types = 'EXPERIENCE'
-        WHERE
-            t.login_name = #{loginName}
-            and t.status is null
-    </select>
-
 </mapper>
