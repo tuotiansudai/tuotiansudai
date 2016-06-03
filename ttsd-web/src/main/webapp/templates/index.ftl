@@ -216,7 +216,7 @@
                                     </div>
                                     <div class="rest-amount finish-invest">
                                         <span class="give-progress">还款进度：${loan.completedPeriods}/${loan.periods}期</span>
-                                        <button class="btn-normal" disabled="">已售罄</button>
+                                        <button class="btn-normal disabled" disabled="disabled">已售罄</button>
                                     </div>
                                 </div>
                             </#if>
