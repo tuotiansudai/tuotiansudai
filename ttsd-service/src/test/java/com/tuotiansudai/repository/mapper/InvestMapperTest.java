@@ -233,4 +233,29 @@ public class InvestMapperTest {
         assertTrue(investDataViews.size() >=0 );
     }
 
+    @Test
+    public void shouldSumSuccessInvestAmountIsOk(){
+        long newbieLoanId = idGenerator.generate();
+        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(newbieLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
+        investModel.setStatus(InvestStatus.SUCCESS);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(newbieLoanId);
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
+        investModel2.setStatus(InvestStatus.SUCCESS);
+
+        investModel.setTransferInvestId(investModel2.getId());
+        investMapper.create(investModel2);
+        investMapper.create(investModel);
+
+        long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
+        assertEquals(investAmount,investModel.getAmount());
+    }
+    
 }

@@ -166,7 +166,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             this.createSmsNotifyJob(couponId);
         }
 
-        exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE) {
+            exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
+        }
 
     }
 
@@ -200,7 +202,20 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         //防止并发领券
         userMapper.lockByLoginName(loginName);
 
-        List<CouponModel> coupons  = couponId == null || couponMapper.findById(couponId) == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
+        if (couponId != null && couponMapper.findById(couponId) == null) {
+            logger.error(MessageFormat.format("assign user coupon error, coupon({0}) is not exist", String.valueOf(couponId)));
+            return;
+        }
+
+        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+
+        if (couponId != null) {
+            coupons = Lists.newArrayList();
+            CouponModel couponModel = couponMapper.findById(couponId);
+            if (couponModel.isActive() && couponModel.getEndTime().after(new Date())) {
+                coupons.add(couponMapper.findById(couponId));
+            }
+        }
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
