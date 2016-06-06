@@ -53,6 +53,20 @@
         <result column="avgInvestAmount" property="avgInvestAmount"></result>
     </resultMap>
 
+    <resultMap id="transferableInvestView" type="TransferableInvestView">
+        <result column="loan_id" property="loanId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="amount" property="amount"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="create_time" property="createdTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="transfer_status" property="transferStatus"></result>
+
+    </resultMap>
+
     <sql id="columns">
         id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements
     </sql>
@@ -102,6 +116,7 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
+        and invest.transfer_invest_id is null
         and loan.status &lt;&gt; 'CANCEL'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc
         limit #{index}, #{pageSize}
@@ -254,9 +269,7 @@
             </if>
         </where>
         order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
-        <if test="isPagination == true">
-            limit #{index}, #{pageSize}
-        </if>
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
@@ -506,6 +519,218 @@
         select *
         from invest
         where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+    </select>
+
+    <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map" resultMap="transferableInvestView">
+        SELECT
+            invest.loan_id,
+            invest.id as invest_id,
+            invest.amount ,
+            invest.created_time,
+            invest.transfer_status,
+            loan.name as loan_name,
+            loan.base_rate,
+            loan.activity_rate,
+            ( select
+                min(ir.repay_date)
+              from invest_repay ir
+              where ir.invest_id = invest.id and ir.status in ('REPAYING')
+            ) as next_repay_date,
+
+            (select ir.expected_interest + ir.corpus - ir.expected_fee
+              from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING')
+              and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING'))
+            ) as next_repay_amount
+        FROM
+          invest
+        INNER JOIN
+          loan ON invest.loan_id = loan.id
+        LEFT JOIN
+          loan_repay lr ON invest.loan_id = lr.loan_id
+        LEFT JOIN
+          transfer_application ta ON invest.id = ta.transfer_invest_id
+
+        WHERE
+            invest.login_name = #{loginName}
+            AND loan.status = 'REPAYING'
+            AND invest.status = 'SUCCESS'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND invest.transfer_invest_id IS NULL
+            AND lr.period = (
+                    SELECT
+                    MIN(period)
+                    FROM
+                    loan_repay future_repay
+                    JOIN
+                    loan ON future_repay.loan_id = loan.id
+                    WHERE
+                    future_repay.loan_id = lr.loan_id
+                    AND DATE(NOW()) >= DATE(loan.recheck_time)
+                    AND DATE(future_repay.repay_date) >= DATE(NOW())
+                )
+            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                    SELECT
+                    days_limit
+                    FROM
+                    transfer_rule
+                )
+            AND (
+                    ta.id IS NULL OR
+                    (ta.status = 'CANCEL'
+                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+                )
+            ORDER BY invest.created_time DESC
+            limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findWebCountTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map" resultType="long">
+        SELECT
+          count(1)
+        FROM
+          invest
+        INNER JOIN
+          loan ON invest.loan_id = loan.id
+        LEFT JOIN
+          loan_repay lr ON invest.loan_id = lr.loan_id
+        LEFT JOIN
+          transfer_application ta ON invest.id = ta.transfer_invest_id
+
+        WHERE
+            invest.login_name = #{loginName}
+            AND loan.status = 'REPAYING'
+            AND invest.status = 'SUCCESS'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND invest.transfer_invest_id IS NULL
+            AND lr.period = (
+                    SELECT
+                    MIN(period)
+                    FROM
+                    loan_repay future_repay
+                    JOIN
+                    loan ON future_repay.loan_id = loan.id
+                    WHERE
+                    future_repay.loan_id = lr.loan_id
+                    AND DATE(NOW()) >= DATE(loan.recheck_time)
+                    AND DATE(future_repay.repay_date) >= DATE(NOW())
+                )
+            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                    SELECT
+                    days_limit
+                    FROM
+                    transfer_rule
+                )
+            AND (
+                    ta.id IS NULL OR
+                    (ta.status = 'CANCEL'
+                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+                )
+    </select>
+
+
+    <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap" useCache="false">
+        SELECT
+        invest.id,
+        invest.transfer_invest_id,
+        invest.login_name,
+        invest.loan_id,
+        invest.amount,
+        invest.status,
+        invest.transfer_status,
+        invest.source,
+        invest.is_auto_invest,
+        invest.created_time,
+        invest.invest_time
+        FROM
+          invest
+        INNER JOIN
+          loan ON invest.loan_id = loan.id
+        LEFT JOIN
+          loan_repay lr ON invest.loan_id = lr.loan_id
+        LEFT JOIN
+          transfer_application ta ON invest.id = ta.transfer_invest_id
+
+        WHERE
+            invest.login_name = #{loginName}
+            AND loan.status = 'REPAYING'
+            AND invest.status = 'SUCCESS'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND invest.transfer_invest_id IS NULL
+            AND lr.period = (
+                    SELECT
+                    MIN(period)
+                    FROM
+                    loan_repay future_repay
+                    JOIN
+                    loan ON future_repay.loan_id = loan.id
+                    WHERE
+                    future_repay.loan_id = lr.loan_id
+                    AND DATE(NOW()) >= DATE(loan.recheck_time)
+                    AND DATE(future_repay.repay_date) >= DATE(NOW())
+                )
+            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                    SELECT
+                    days_limit
+                    FROM
+                    transfer_rule
+                )
+            AND (
+                    ta.id IS NULL OR
+                    (ta.status = 'CANCEL'
+                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+                )
+            ORDER BY invest.created_time DESC
+            limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransferableApplicationPaginationByLoginName" parameterType="map" resultType="long" useCache="false">
+        SELECT
+          count(1)
+        FROM
+          invest
+        INNER JOIN
+          loan ON invest.loan_id = loan.id
+        LEFT JOIN
+          loan_repay lr ON invest.loan_id = lr.loan_id
+        LEFT JOIN
+          transfer_application ta ON invest.id = ta.transfer_invest_id
+
+        WHERE
+            invest.login_name = #{loginName}
+            AND loan.status = 'REPAYING'
+            AND invest.status = 'SUCCESS'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND invest.transfer_invest_id IS NULL
+            AND lr.period = (
+                    SELECT
+                    MIN(period)
+                    FROM
+                    loan_repay future_repay
+                    JOIN
+                    loan ON future_repay.loan_id = loan.id
+                    WHERE
+                    future_repay.loan_id = lr.loan_id
+                    AND DATE(NOW()) >= DATE(loan.recheck_time)
+                    AND DATE(future_repay.repay_date) >= DATE(NOW())
+                )
+            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                    SELECT
+                    days_limit
+                    FROM
+                    transfer_rule
+                )
+            AND (
+                    ta.id IS NULL OR
+                    (ta.status = 'CANCEL'
+                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+                )
     </select>
 
 </mapper>
