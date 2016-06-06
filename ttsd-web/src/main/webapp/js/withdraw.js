@@ -31,7 +31,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric'], func
         $(".withdraw form input[name='amount']").val(amount);
 
         var hasAccess = $("div.withdraw").data("access");
-        if (hasAccess == 'true') {
+        if (hasAccess) {
             formElement.submit();
             layer.open({
                 type: 1,
