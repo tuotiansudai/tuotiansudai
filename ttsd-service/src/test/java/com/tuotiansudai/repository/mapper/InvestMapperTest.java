@@ -537,5 +537,5 @@ public class InvestMapperTest {
         long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
         assertEquals(investAmount,investModel.getAmount());
     }
-    
+
 }

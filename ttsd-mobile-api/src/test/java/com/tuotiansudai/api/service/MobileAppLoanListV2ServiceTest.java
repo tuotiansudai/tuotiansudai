@@ -26,6 +26,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +53,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         baseParam.setUserId("shenjiaojiao");
         baseParamDto.setBaseParam(baseParam);
 
-        when(loanMapper.findHomeLoanByIsContainNewBie(anyString(),anyString())).thenReturn(null);
+        when(loanMapper.findHomeLoanByIsContainNewBie(anyBoolean(),anyString(),anyBoolean())).thenReturn(null);
 
         when(investMapper.countInvestSuccessExperience(anyString())).thenReturn(0l);
 
