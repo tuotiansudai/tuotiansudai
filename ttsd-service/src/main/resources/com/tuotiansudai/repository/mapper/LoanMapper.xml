@@ -195,6 +195,7 @@
         CASE temp.status WHEN 'REPAYING' THEN recheck_time END DESC,
         CASE temp.status WHEN 'COMPLETE' THEN recheck_time END DESC,
         CASE temp.status WHEN 'OVERDUE' THEN recheck_time END DESC
+        limit #{index} , 10
     </select>
 
     <select id="findLoanListCountMobileApp" parameterType="map" resultType="int">
