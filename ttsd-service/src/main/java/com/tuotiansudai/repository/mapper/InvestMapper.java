@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -51,9 +52,9 @@ public interface InvestMapper {
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestModel> findByLoginNameExceptTransfer(@Param(value = "loginName") String loginName,
-                                      @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize,
-                                      @Param(value = "isPagination") boolean isPagination);
+                                                    @Param(value = "index") Integer index,
+                                                    @Param(value = "pageSize") Integer pageSize,
+                                                    @Param(value = "isPagination") boolean isPagination);
 
     long findCountByLoginNameExceptTransfer(@Param(value = "loginName") String loginName);
 
@@ -134,8 +135,7 @@ public interface InvestMapper {
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
-                                                        @Param(value = "loanStatus") LoanStatus loanStatus,
-                                                        @Param(value = "isPagination") boolean isPagination);
+                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
 
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,
@@ -195,4 +195,16 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime);
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
+    List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,
+                                                                                                      @Param(value = "index") Integer index,
+                                                                                                      @Param(value = "pageSize") Integer pageSize);
+
+    long findWebCountTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName);
+
+    List<InvestModel> findTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName,
+                                      @Param(value = "index") Integer index,
+                                      @Param(value = "pageSize") Integer pageSize);
+
+    long findCountTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName);
 }
