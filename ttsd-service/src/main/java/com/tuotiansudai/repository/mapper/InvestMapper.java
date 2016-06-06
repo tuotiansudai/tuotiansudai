@@ -195,4 +195,8 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime);
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
+    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime);
+
+
 }
