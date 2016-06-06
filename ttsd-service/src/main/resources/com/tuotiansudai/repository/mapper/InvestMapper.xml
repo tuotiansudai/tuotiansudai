@@ -147,7 +147,7 @@
         select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId}
-        and status = 'SUCCESS' and transfer_status != 'SUCCESS'
+        and status = 'SUCCESS' and transfer_invest_id is null
     </select>
 
     <select id="findByStatus" parameterType="map" resultMap="investResultMap">
