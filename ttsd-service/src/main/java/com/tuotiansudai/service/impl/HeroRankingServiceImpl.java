@@ -77,7 +77,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public void saveMysteriousPrize(MysteriousPrizeDto mysteriousPrizeDto) {
-        String prizeDate = new DateTime().withTimeAtStartOfDay().toString();
+        String prizeDate = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY,prizeDate,mysteriousPrizeDto);
     }
 

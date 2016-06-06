@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -42,6 +44,10 @@ public class HeroRankingServiceTest {
     private IdGenerator idGenerator;
     @Autowired
     private LoanMapper loanMapper;
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
     @Test
     public void shouldObtainHeroRankingIsSuccess(){
@@ -178,7 +184,22 @@ public class HeroRankingServiceTest {
 
         Integer ranking3 = heroRankingService.obtainHeroRankingByLoginName(new DateTime(2016,7,5,23,59,59).toDate(),investModel2.getLoginName());
 
-        assertEquals(3,ranking3.intValue());
+        assertEquals(3, ranking3.intValue());
+    }
+
+    @Test
+    public void shouldSaveMysteriousPrizeIsSuccess(){
+        MysteriousPrizeDto mysteriousPrizeDto = new MysteriousPrizeDto();
+        mysteriousPrizeDto.setImageUrl("imageUrl");
+        mysteriousPrizeDto.setPrizeName("name");
+        heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
+        String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
+        MysteriousPrizeDto mysteriousPrizeDtoReturn = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,now);
+        assertEquals(mysteriousPrizeDto.getImageUrl(),mysteriousPrizeDtoReturn.getImageUrl());
+        assertEquals(mysteriousPrizeDto.getPrizeName(),mysteriousPrizeDtoReturn.getPrizeName());
+        redisWrapperClient.hdelSeri(MYSTERIOUSREDISKEY,now);
+
+
     }
 
 
