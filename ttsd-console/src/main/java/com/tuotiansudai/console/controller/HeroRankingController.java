@@ -39,6 +39,8 @@ public class HeroRankingController {
             avgInvestAmount += heroRankingView.getSumAmount();
         }
 
+        modelAndView.addObject("tradingTime", tradingTime);
+
         modelAndView.addObject("heroRankingViewReferrerList", heroRankingViewReferrerList);
 
         modelAndView.addObject("heroRankingViewInvestList", heroRankingViewInvestList);
