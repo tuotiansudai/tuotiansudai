@@ -1,6 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ExperienceInvestServiceImpl implements ExperienceInvestService {
@@ -65,20 +68,20 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return dto;
         }
 
+        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
+
         UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
 
         InvestModel investModel = this.generateInvest(investDto, userCouponModel.getCouponId());
-
         userCouponModel.setLoanId(Long.parseLong(investDto.getLoanId()));
         userCouponModel.setInvestId(investModel.getId());
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponMapper.update(userCouponModel);
 
         CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
         couponModel.setUsedCount(couponModel.getUsedCount() + 1);
         couponMapper.updateCoupon(couponModel);
-
-        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
 
         dataDto.setStatus(true);
 
@@ -92,6 +95,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel());
         investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
@@ -121,7 +125,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         if (investAmount != 0) {
-            logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount(1) is not 0",
+            logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) is not 0",
                     investDto.getLoginName(), investDto.getAmount()));
             return false;
         }
@@ -149,7 +153,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
         if (couponModel.getProductTypes().contains(loanModel.getProductType()) && investAmount < couponModel.getInvestLowerLimit()) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) with a using invalid({2}, {3}) user coupon({4})",
-                    investDto.getLoginName(), String.valueOf(investDto.getUserCouponIds().size()),
+                    investDto.getLoginName(),
                     String.valueOf(investAmount),
                     Joiner.on(",").join(couponModel.getProductTypes()),
                     String.valueOf(couponModel.getInvestLowerLimit()),

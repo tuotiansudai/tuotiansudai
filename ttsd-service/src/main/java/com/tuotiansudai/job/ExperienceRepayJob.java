@@ -18,6 +18,6 @@ public class ExperienceRepayJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger NewbieExperienceRepayJob job");
-        experienceRepayService.repay(new Date(), new Date());
+        experienceRepayService.repay(new Date());
     }
 }

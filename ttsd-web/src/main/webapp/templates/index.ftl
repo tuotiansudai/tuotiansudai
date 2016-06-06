@@ -8,8 +8,8 @@
                 <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-landingpage.png" alt="" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
@@ -125,10 +125,8 @@
 
     <div class="home-content" id="productFrame">
         <div class="page-width clearfix new-model">
-            <div class="new-user-free">
+            <div class="new-user-free" data-url="/loan/1">
                 <div class="left-intro">
-                    <a href="#">
-                    </a>
                 </div>
                 <div class="center-detail">
                     <div class="loan-top">
@@ -137,28 +135,28 @@
                     <div class="loan-info-dl">
                         <dl>
                             <dt>预期年化收益</dt>
-                            <dd><em class="active">15</em>
+                            <dd><em class="active">${experienceLoanDto.baseRate}</em>
                                 <i>%</i>
                             </dd>
                         </dl>
                         <dl>
                             <dt>项目期限</dt>
-                            <dd><em>3</em>天</dd>
+                            <dd><em>${experienceLoanDto.duration}</em>天</dd>
                         </dl>
                     </div>
                 </div>
                 <div class="right-operat">
                     <div class="p-title">
                         <span class="fl">项目进度</span>
-                        <span class="point fr">0.00 %</span>
+                        <span class="point fr">${experienceLoanDto.progress} %</span>
                     </div>
                     <div class="process-percent">
                         <div class="percent" style="width:0%">
                         </div>
                     </div>
                     <div class="rest-amount">
-                        <span>可投额度：<i>1.00 元</i></span>
-                        <a href="#" class="btn-invest btn-normal">马上投资</a>
+                        <span>可投额度：<i>${experienceLoanDto.investAmount} 元</i></span>
+                        <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
                     </div>
                 </div>
                 <div class="mask-model">

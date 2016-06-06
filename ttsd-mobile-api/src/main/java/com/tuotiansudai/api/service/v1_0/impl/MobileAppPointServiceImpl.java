@@ -15,6 +15,7 @@ import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -77,16 +79,12 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
             return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
-
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
         DateTime today = new DateTime().withTimeAtStartOfDay();
         int signInCount = 0;
-        if (lastSignInPointDto != null) {
-            if(Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE){
-                signInCount = lastSignInPointDto.getSignInCount() + 1;
-            }else{
-                signInCount = lastSignInPointDto.getSignInCount();
-            }
+        if (lastSignInPointDto != null && (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE
+                        || Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO)) {
+            signInCount = lastSignInPointDto.getSignInCount();
         }
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
         dataDto.setSignInTimes(signInCount);

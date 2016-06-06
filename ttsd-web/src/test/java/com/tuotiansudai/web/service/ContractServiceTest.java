@@ -62,7 +62,7 @@ public class ContractServiceTest {
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
         assertNotNull(pdfStr);
-        if(pdfStr.indexOf("baisong") == -1){
+        if(pdfStr.indexOf("contractTest") == -1){
             assertFalse(true);
         }
         if(pdfStr.indexOf("5天") == -1){
@@ -78,10 +78,10 @@ public class ContractServiceTest {
         LoanModel lm = new LoanModel();
         lm.setId(idGenerator.generate());
         lm.setName("12标的");
-        lm.setLoanerUserName("baisong");
-        lm.setAgentLoginName("baisong");
-        lm.setLoanerLoginName("baisong");
-        lm.setLoanerLoginName("baisong");
+        lm.setLoanerUserName("contractTest");
+        lm.setAgentLoginName("contractTest");
+        lm.setLoanerLoginName("contractTest");
+        lm.setLoanerLoginName("contractTest");
         lm.setLoanerIdentityNumber("22012219881003356X");
         lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         lm.setPeriods(3);
@@ -100,17 +100,17 @@ public class ContractServiceTest {
         lm.setFundraisingStartTime(df.parse("2016-03-09 12:00:00"));
         lm.setFundraisingEndTime(df.parse("2016-03-15 12:00:00"));
         lm.setVerifyTime(df.parse("2016-03-09 11:46:18"));
-        lm.setVerifyLoginName("baisong");
+        lm.setVerifyLoginName("contractTest");
         lm.setStatus(LoanStatus.RECHECK);
         lm.setShowOnHome(false);
         lm.setCreatedTime(df.parse("2016-03-09 11:46:05"));
-        lm.setCreatedLoginName("baisong");
+        lm.setCreatedLoginName("contractTest");
         lm.setUpdateTime(df.parse("2016-03-09 11:46:18"));
         return lm;
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "baisong", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "contractTest", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null);
         investModel.setCreatedTime(df.parse("2016-03-09 17:52:38"));
         return investModel;
 
@@ -119,12 +119,12 @@ public class ContractServiceTest {
     private UserModel getUserModel() throws ParseException {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
-        um.setLoginName("baisong");
+        um.setLoginName("contractTest");
         um.setPassword("1234567");
         um.setMobile("1823123123");
         um.setRegisterTime(df.parse("2016-03-08 16:27:46"));
         um.setLastModifiedTime(df.parse("2016-03-09 17:06:57"));
-        um.setLastModifiedUser("baisong");
+        um.setLastModifiedUser("contractTest");
         um.setStatus(UserStatus.ACTIVE);
         um.setSalt("12313");
         um.setChannel("123");
@@ -143,7 +143,7 @@ public class ContractServiceTest {
         al.setInvestId(investId);
         al.setPeriod(2);
         al.setLeftPeriod(1);
-        al.setLoginName("baisong");
+        al.setLoginName("contractTest");
         al.setInvestAmount(100);
         al.setTransferAmount(100);
         al.setTransferFee(1);
@@ -155,7 +155,7 @@ public class ContractServiceTest {
     }
 
     public AccountModel getAccountModel(){
-        AccountModel accountModel = new AccountModel("baisong", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("contractTest", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         return accountModel;
     }
 

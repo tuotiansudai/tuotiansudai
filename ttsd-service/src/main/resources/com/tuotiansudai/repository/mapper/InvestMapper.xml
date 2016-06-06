@@ -502,4 +502,10 @@
           AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
     </select>
 
+    <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+    </select>
+
 </mapper>

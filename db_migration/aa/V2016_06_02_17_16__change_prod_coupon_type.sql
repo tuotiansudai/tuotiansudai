@@ -1,0 +1,5 @@
+BEGIN;
+
+update coupon set user_group = 'EXPERIENCE_INVEST_SUCCESS' where id in (100028, 100029, 100030, 100031, 100032, 100033);
+
+COMMIT;

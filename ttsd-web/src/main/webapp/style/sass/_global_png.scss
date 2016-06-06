@@ -9,11 +9,12 @@
 .sprite-global-qq-icon,
 .sprite-global-mobile-icon,
 .sprite-global-calculator-icon,
+.sprite-global-edit-icon,
 .sprite-global-back-icon,
 .sprite-global-logo-tip,
 .sprite-global-close,
 .sprite-global-close-tip {
-            background-image: url('/images/compress/global_20160425.png');
+            background-image: url('/images/compress/global_20160523.png');
             background-repeat: no-repeat;
         }
         
@@ -76,7 +77,12 @@
             width: 60px;
             height: 60px;
         }
-        
+
+        .sprite-global-edit-icon {
+          background-position: -290px -230px;
+          width: 60px;
+          height: 60px;
+        }
         .sprite-global-back-icon {
             background-position: -180px -230px;
             width: 60px;
@@ -112,11 +118,12 @@
     .sprite-global-qq-icon,
     .sprite-global-mobile-icon,
     .sprite-global-calculator-icon,
+    .sprite-global-edit-icon,
     .sprite-global-back-icon,
     .sprite-global-logo-tip,
     .sprite-global-close,
     .sprite-global-close-tip {
-                background-image: url('/images/compress/global_20160425.png');
+                background-image: url('/images/compress/global_20160523.png');
                 -webkit-background-size: 408px 290px;
                 -moz-background-size: 408px 290px;
                 background-size: 408px 290px;
