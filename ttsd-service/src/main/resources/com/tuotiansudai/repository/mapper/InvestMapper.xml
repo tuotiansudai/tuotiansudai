@@ -45,6 +45,7 @@
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
     </resultMap>
+
     <resultMap id="heroRankingView" type="HeroRankingView">
         <result column="login_name" property="loginName"/>
         <result column="sumAmount" property="sumAmount"/>
@@ -487,6 +488,33 @@
         GROUP BY login_name , account.user_name , user.mobile
         ORDER BY sumAmount DESC , MIN(invest.trading_time)
         LIMIT 0 , 20;
+    </select>
+
+    <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
+        SELECT
+          rr.`referrer_login_name` AS login_name,
+          SUM(t.`amount`) AS sumAmount,
+          a.`user_name`,
+          u.`mobile`
+        FROM
+          referrer_relation rr
+          JOIN invest t
+            ON rr.`login_name` = t.`login_name`
+            AND t.`status` = 'SUCCESS'
+            AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
+            AND t.`trading_time` BETWEEN '2016-07-01 00:00:00'
+            AND '2016-08-01 00:00:00'
+          JOIN account a
+            ON rr.`referrer_login_name` = a.`login_name`
+          JOIN user u
+            ON rr.`referrer_login_name` = u.`login_name`
+        WHERE rr.`level` = 1
+        GROUP BY rr.`referrer_login_name`,
+          a.`user_name`,
+          u.`mobile`
+        ORDER BY SUM(t.`amount`) DESC,
+          MAX(t.`trading_time`)
+        LIMIT #{index}, #{pageSize}
     </select>
 
 </mapper>
