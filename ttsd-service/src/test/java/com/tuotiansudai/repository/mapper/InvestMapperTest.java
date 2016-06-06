@@ -233,4 +233,20 @@ public class InvestMapperTest {
         assertTrue(investDataViews.size() >=0 );
     }
 
+    @Test
+    public void shouldFindCountInvestPagination(){
+        long newbieLoanId = idGenerator.generate();
+        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(newbieLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
+        investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
+        investMapper.create(investModel);
+
+        long count = investMapper.findCountInvestPagination(newbieLoanId,User_ID,"",null,"",null,null,null,null);
+        assertTrue(count == 0);
+    }
+
 }

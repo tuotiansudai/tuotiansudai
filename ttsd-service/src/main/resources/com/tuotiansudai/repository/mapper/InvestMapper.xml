@@ -228,6 +228,7 @@
         left join account ra on ra.login_name = u.referrer
         <where>
             invest.transfer_invest_id is null
+            and invest.transfer_status != 'NONTRANSFERABLE'
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
@@ -302,6 +303,7 @@
         from invest join loan on invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id is null
+            and invest.transfer_status != 'NONTRANSFERABLE'
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
