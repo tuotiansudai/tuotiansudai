@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -71,6 +72,25 @@ public class MembershipExperienceBillMapperTest {
         assertThat(membershipExperienceBillModel1.getExperience(), is(5000L));
         assertThat(membershipExperienceBillModel1.getTotalExperience(), is(10000L));
         assertThat(membershipExperienceBillModel1.getDescription(), is("投资了5000.增加5000成长值,累计成长值10000"));
+
+    }
+
+    @Test
+    public void shouldMembershipExperienceBillListByLoginName() throws Exception{
+        UserModel fakeUser = createFakeUser();
+        MembershipExperienceBillModel membershipExperienceBillModel1 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 5000, 10000,new Date(), "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel2 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 10000, 20000,new Date(), "投资了10000.增加10000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModel3 = new MembershipExperienceBillModel(fakeUser.getLoginName(), 20000, 20000,new Date(), "投资了5000.增加5000成长值");
+        membershipExperienceBillMapper.create(membershipExperienceBillModel1);
+        membershipExperienceBillMapper.create(membershipExperienceBillModel2);
+        membershipExperienceBillMapper.create(membershipExperienceBillModel3);
+
+        List<MembershipExperienceBillModel> membershipExperienceBillModelList = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(fakeUser.getLoginName(), 0, 10);
+
+        long membershipExperienceBillCount = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(fakeUser.getLoginName());
+
+        assertThat(membershipExperienceBillModelList.size(), is(3));
+        assertThat(membershipExperienceBillCount, is(3L));
 
     }
 

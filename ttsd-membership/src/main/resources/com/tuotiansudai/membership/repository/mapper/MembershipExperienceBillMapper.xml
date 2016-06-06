@@ -28,4 +28,16 @@
         select * from membership_experience_bill where id = #{id}
     </select>
 
+
+    <select id="findMembershipExperienceBillByLoginName" resultMap="MembershipExperienceBillResultMap" parameterType="map">
+        select * from membership_experience_bill
+        where login_name = #{loginName}
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findMembershipExperienceBillCountByLoginName" resultType="long" parameterType="String">
+        select count(id) from membership_experience_bill where login_name = #{loginName}
+    </select>
+
 </mapper>
