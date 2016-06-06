@@ -163,8 +163,6 @@ def generate_git_log_file():
 
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-mobile-api/src/main/webapp/api/js | awk \'{print $3,$4}\' >> git_version.log')
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-mobile-api/src/main/webapp/api/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
