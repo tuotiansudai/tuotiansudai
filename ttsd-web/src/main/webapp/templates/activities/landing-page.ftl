@@ -83,12 +83,12 @@
         <div class="content-wp">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
@@ -634,11 +634,10 @@
         </div>
         <div class="rewards-header">
             <ul>
-                <li><i class="fa fa-circle"></i><span>活动时间：2016年6月10日;</span></li>
                 <li><i class="fa fa-circle"></i><span>奖励可在“我的账户-我的宝藏”查看;</span></li>
                 <li><i class="fa fa-circle"></i><span>成功投资新手体验项目后可获得588元现金红包及3%加息券;</span></li>
                 <li><i class="fa fa-circle"></i><span>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</span></li>
-                <li><i class="fa fa-circle"></i><span>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</span></li>
+                <li><i class="fa fa-circle"></i><span>每个用户仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</span></li>
             </ul>
         </div>
     </div>

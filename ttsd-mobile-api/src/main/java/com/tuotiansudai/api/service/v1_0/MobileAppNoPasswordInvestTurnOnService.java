@@ -5,5 +5,5 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 
 public interface MobileAppNoPasswordInvestTurnOnService {
-    BaseResponseDto noPasswordInvestTurnOn(BaseParamDto baseParamDto);
+    BaseResponseDto noPasswordInvestTurnOn(BaseParamDto baseParamDto, String ip);
 }

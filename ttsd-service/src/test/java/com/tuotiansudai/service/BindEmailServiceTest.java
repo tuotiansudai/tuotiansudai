@@ -38,7 +38,7 @@ public class BindEmailServiceTest {
         userMapper.create(fakeUser);
         mockLoginUser("loginname", "11900000000");
         redisWrapperClient.set("web:loginname:uuid", "loginname:testafter@tuotiansudai.com");
-        bindEmailService.verifyEmail("loginname", "uuid");
+        bindEmailService.verifyEmail("loginname", "uuid", "127.0.0.1", "WEB", "");
         UserModel userModel = userMapper.findByLoginName("loginname");
         String value = redisWrapperClient.get("web:loginname:uuid");
         assertNull(value);
