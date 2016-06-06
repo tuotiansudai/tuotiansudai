@@ -12,6 +12,7 @@
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
         <div class="profile-box">
             <span><em>您好：${loginName!}</em></span>
+            <span><em>会员等级：${userMembershipLevel!}</em></span>
             <ul class="proList">
                 <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
                 <#if signedIn?? && signedIn>

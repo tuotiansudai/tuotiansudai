@@ -51,4 +51,9 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
 
         return membershipMapper.findById(max.getMembershipId());
     }
+
+    @Override
+    public MembershipModel getMembershipByLevel(int level){
+        return membershipMapper.findByLevel(level);
+    }
 }
