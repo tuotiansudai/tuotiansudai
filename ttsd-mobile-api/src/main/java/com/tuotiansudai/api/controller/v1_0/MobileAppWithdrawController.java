@@ -30,7 +30,7 @@ public class MobileAppWithdrawController extends MobileAppBaseController {
         if (blacklistService.userIsInBlacklist(loginName)) {
             BaseResponseDto<BaseResponseDataDto> baseResponseDto = new BaseResponseDto<>();
             baseResponseDto.setCode(ReturnMessage.WITHDRAW_IN_BLACKLIST.getCode());
-            baseResponseDto.setMessage("操作失败(错误代码:YM001), 请联系客服");
+            baseResponseDto.setMessage(ReturnMessage.WITHDRAW_IN_BLACKLIST.getMsg());
             return baseResponseDto;
         }
         return mobileAppWithDrawService.generateWithdrawRequest(requestDto);
