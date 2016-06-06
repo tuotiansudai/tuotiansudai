@@ -4,13 +4,11 @@ import com.tuotiansudai.api.controller.v1_0.MobileAppWithdrawController;
 import com.tuotiansudai.api.dto.v1_0.WithdrawListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.WithdrawOperateRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
-import com.tuotiansudai.service.BlacklistService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppWithdrawControllerTest extends ControllerTestBase {
@@ -18,8 +16,6 @@ public class MobileAppWithdrawControllerTest extends ControllerTestBase {
     private MobileAppWithdrawController controller;
     @Mock
     private MobileAppWithdrawService service;
-    @Mock
-    private BlacklistService blacklistService;
 
     @Override
     protected Object getControllerObject() {
@@ -28,7 +24,6 @@ public class MobileAppWithdrawControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldGenerateWithdrawRequestIsOk() throws Exception {
-        when(blacklistService.userIsInBlacklist(anyString())).thenReturn(false);
         when(service.generateWithdrawRequest(any(WithdrawOperateRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/withdraw",
                 new WithdrawOperateRequestDto());
