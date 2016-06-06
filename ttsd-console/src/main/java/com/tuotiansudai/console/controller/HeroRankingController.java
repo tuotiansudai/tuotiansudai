@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class HeroRankingController {
 
         modelAndView.addObject("heroRankingViewInvestList", heroRankingViewInvestList);
 
-        modelAndView.addObject("avgInvestAmount", avgInvestAmount);
+        modelAndView.addObject("avgInvestAmount", new BigDecimal(avgInvestAmount).divide(new BigDecimal(10)).setScale(0, RoundingMode.DOWN));
 
         return modelAndView;
     }
