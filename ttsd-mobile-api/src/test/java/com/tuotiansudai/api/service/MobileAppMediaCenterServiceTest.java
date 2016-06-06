@@ -48,7 +48,7 @@ public class MobileAppMediaCenterServiceTest {
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
         assertEquals(licaiquanArticleModel.getSection(),baseResponseDto.getData().getArticleList().get(0).getSection());
         assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
-        assertEquals(domainName  + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(domainName  + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
 
     }
@@ -63,7 +63,7 @@ public class MobileAppMediaCenterServiceTest {
         assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
         assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
         assertEquals(licaiquanArticleModel.getContent(),baseResponseDto.getData().getArticleList().get(0).getContent());
-        assertEquals(domainName+ licaiquanArticleModel.getShowPicture(),baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(domainName+ "/" + licaiquanArticleModel.getShowPicture(),baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
     }
     @Test
