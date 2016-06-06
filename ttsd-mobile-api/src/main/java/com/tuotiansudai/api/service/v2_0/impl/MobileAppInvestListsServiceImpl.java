@@ -2,7 +2,7 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListRequestDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestRecordResponseDataDto;
@@ -107,6 +107,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setUserCoupons(couponTypes);
                 dto.setUsedCoupon(CollectionUtils.isNotEmpty(couponTypes) && !couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
+                dto.setProductNewType(loanModel.getProductType().name());
                 list.add(dto);
             }
         }
