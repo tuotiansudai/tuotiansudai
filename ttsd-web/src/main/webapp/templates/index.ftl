@@ -8,8 +8,8 @@
                 <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-landingpage.png" alt="" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
             </a>
             <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
@@ -124,6 +124,47 @@
     </div>
 
     <div class="home-content" id="productFrame">
+        <div class="page-width clearfix new-model">
+            <div class="new-user-free" data-url="/loan/1">
+                <div class="left-intro">
+                </div>
+                <div class="center-detail">
+                    <div class="loan-top">
+                        <span class="l-title fl">新手体验项目<i class="new-tip">仅限使用体验金投资</i></span>
+                    </div>
+                    <div class="loan-info-dl">
+                        <dl>
+                            <dt>预期年化收益</dt>
+                            <dd><em class="active">${experienceLoanDto.baseRate}</em>
+                                <i>%</i>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>项目期限</dt>
+                            <dd><em>${experienceLoanDto.duration}</em>天</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="right-operat">
+                    <div class="p-title">
+                        <span class="fl">项目进度</span>
+                        <span class="point fr">${experienceLoanDto.progress} %</span>
+                    </div>
+                    <div class="process-percent">
+                        <div class="percent" style="width:0%">
+                        </div>
+                    </div>
+                    <div class="rest-amount">
+                        <span>可投额度：<i>${experienceLoanDto.investAmount} 元</i></span>
+                        <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                    </div>
+                </div>
+                <div class="mask-model">
+                    <div class="mask-btn"></div>
+                </div>
+                <div class="mask-bg"></div>
+            </div>
+        </div>
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
@@ -329,6 +370,41 @@
             </div>
             <div class="product-box-list fl">
                 <div class="product-box-inner">
+                    <div class="free-guide">
+                                
+                    </div>
+                    <div class="product-box tc product-type new-free-pro">
+                            <i class="new-free"></i>
+                            <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
+                                <h2 class="pr-title">新手体验项目</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em><b>15</b>
+                                           %</em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
+                                    <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
+                                </dl>
+                                <div class="project-schedule clear-blank clearfix">
+                                    <div class="pro">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">20%</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:20%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/loan/" class="btn-normal">立即投资</a>
+                            <div class="guide-img">
+                                <span class="guide-btn"></span>
+                            </div>
+                        </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">

@@ -72,4 +72,6 @@ public interface UserMapper {
     String findUsersMobileByLoginName(@Param(value = "loginName") String loginName);
 
     long findUsersCount();
+
+    List<String> findLoginNames();
 }

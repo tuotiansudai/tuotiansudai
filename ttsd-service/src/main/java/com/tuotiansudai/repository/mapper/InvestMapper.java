@@ -175,8 +175,6 @@ public interface InvestMapper {
 
     List<InvestDataView> getInvestDetail();
 
-    List<InvestModel> findInvestByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
-
     int countAchievementTimesByLoginName(@Param(value = "loginName") String loginName,
                                          @Param(value = "achievement") InvestAchievement achievement,
                                          @Param(value = "startTime") Date startTime,
@@ -207,4 +205,25 @@ public interface InvestMapper {
                                       @Param(value = "pageSize") Integer pageSize);
 
     long findCountTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName);
+    List<InvestModel> findInvestAchievementsByLoanId(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> findInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                   @Param(value = "index") int index,
+                                                   @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                       @Param(value = "loanStatus") LoanStatus loanStatus);
+
+    List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
+                                               @Param(value = "loginName") String loginName);
+
+    long countInvestSuccessExperience(@Param(value = "loginName") String loginName);
+
+    long countInvestSuccessExperienceToday();
+
+    List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
+                                       @Param(value = "startTime") Date startTime,
+                                       @Param(value = "endTime") Date endTime);
+
 }
