@@ -44,6 +44,16 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                                 location.href = "/transfer-list";
                             }
                         });
+                    }else if(data.message == "MULTITERM"){
+                        layer.open({
+                            title: '温馨提示',
+                            btn: ['确定'],
+                            content: '该项目已被承接或已取消，请选择其他项目。',
+                            btn1: function(index, layero){
+                                layer.closeAll();
+                                location.href = "/transfer-list";
+                            }
+                        });
                     }else{
                         layer.open({
                             type: 1,

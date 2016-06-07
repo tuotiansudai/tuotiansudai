@@ -9,6 +9,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(path = "/auto-invest")
@@ -83,7 +86,7 @@ public class AutoInvestController {
 
     @RequestMapping(value = "/turn-on", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
+    public BaseDto<BaseDataDto> turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto, HttpServletRequest request) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
@@ -95,6 +98,7 @@ public class AutoInvestController {
         model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
         model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
         model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
+        model.setIp(RequestIPParser.parse(request));
         if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
             dataDto.setStatus(false);
         }
@@ -104,8 +108,9 @@ public class AutoInvestController {
 
     @RequestMapping(value = "/turn-off", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto turnOffAutoInvestPlan() {
-        investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
+    public BaseDto turnOffAutoInvestPlan(HttpServletRequest request) {
+        String ip = RequestIPParser.parse(request);
+        investService.turnOffAutoInvest(LoginUserInfo.getLoginName(), ip);
         return new BaseDto();
     }
 }

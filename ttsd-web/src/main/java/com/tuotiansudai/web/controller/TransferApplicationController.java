@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/transfer")
@@ -50,10 +51,16 @@ public class TransferApplicationController {
     @ResponseBody
     public BaseDataDto IsPurchase(@PathVariable long transferApplicationId) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
-        if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(dto.getTransferStatus())) {
+        List<TransferApplicationModel> transferApplicationModels = transferService.getTransferApplicaationByTransferInvestId(transferApplicationId);
+        if (transferApplicationModels.size() > 1) {
             baseDataDto.setStatus(false);
-            baseDataDto.setMessage(dto.getTransferStatus().name());
+            baseDataDto.setMessage("MULTITERM");
+        }
+        if (transferApplicationModels.size() == 1) {
+            if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(transferApplicationModels.get(0).getStatus())) {
+                baseDataDto.setStatus(false);
+                baseDataDto.setMessage(transferApplicationModels.get(0).getStatus().name());
+            }
         }
         return baseDataDto;
     }

@@ -22,6 +22,7 @@ import java.util.*;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -183,7 +184,7 @@ public class TransferServiceTest {
         transferStatuses.add(TransferStatus.TRANSFERRING);
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = transferService.findAllTransferApplicationPaginationList(transferStatuses, 0.15, 0.18, 1, 10);
 
-        assertThat(basePaginationDataDto.getRecords().size(), is(1));
+        assertTrue(basePaginationDataDto.getRecords().size() > 0);
     }
 
     @Test

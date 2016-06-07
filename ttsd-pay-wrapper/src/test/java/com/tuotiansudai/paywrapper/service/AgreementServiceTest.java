@@ -154,6 +154,7 @@ public class AgreementServiceTest {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
         agreementDto.setFastPay(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZKJP0700.name()));
@@ -178,6 +179,7 @@ public class AgreementServiceTest {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
         agreementDto.setAutoInvest(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
@@ -200,6 +202,7 @@ public class AgreementServiceTest {
         agreementDto.setLoginName(userId);
         agreementDto.setAutoInvest(true);
         agreementDto.setNoPasswordInvest(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
