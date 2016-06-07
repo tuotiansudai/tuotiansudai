@@ -7,4 +7,6 @@ public interface UserMembershipEvaluator {
     MembershipModel evaluate(String loginName);
 
     MembershipModel getMembershipByLevel(int level);
+
+    int getProgressBarPercent(String loginName);
 }

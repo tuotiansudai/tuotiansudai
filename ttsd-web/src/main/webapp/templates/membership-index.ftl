@@ -8,17 +8,17 @@
 			<div class="avatar fl">
 				<img src="${staticServer}/images/sign/head.png" />
 				<#-- 更改下面这个i标签的class值来改变显示的等级 0级对应vip-0 1级对应vip-1 以此类推-->
-				<i class="vip-no-bg vip-0"></i>
+				<i class="vip-no-bg vip-${membershipLevel!}"></i>
 			</div>
 			<div class="text">
-				<p><span class="orange font20">您好！水电费水电费</span><span class="font14">会员有效期还有：<strong class="font22">300</strong>天</span></p>
-				<p class="font14">我的成长值：<strong class="font22">2000</strong></p>
+				<p><span class="orange font20">您好！${loginName!}</span><span class="font14">会员有效期还有：<strong class="font22">300</strong>天</span></p>
+				<p class="font14">我的成长值：<strong class="font22">${membershipPoint!}</strong></p>
 			</div>
 		</div>
 		<div class="progress">
 			<div class="progress-bar">
 				<#-- 下面这个标签的style属性里的width的值为 用户当前成长值占总值的百分比 例如30% -->
-				<div class="progress-bar-fill" style="width: 30%"></div>
+				<div class="progress-bar-fill" style="width: ${progressBarPercent!}%"></div>
 				<div class="vip-bg vip-0"></div>
 				<div class="vip-bg vip-1"></div>
 				<div class="vip-bg vip-2"></div>
@@ -27,7 +27,7 @@
 				<div class="vip-bg vip-5"></div>
 				<#-- 更改下面这个div标签的class值来改变显示的等级 0级对应popup-0 1级对应popup-1 以此类推-->
 				<#-- 更改下面这个i标签的class值来改变显示的等级 0级对应vip-0 1级对应vip-1 以此类推-->
-				<div class="popup popup-1">还需<strong>430000</strong>成长值就能就能尊享<i class="vip-no-bg vip-0"></i>特权了哦！<i class="triangle"></i></div>
+				<div class="popup popup-1">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
 			</div>
 		</div>
 	</div>
