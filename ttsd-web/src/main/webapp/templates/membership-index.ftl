@@ -32,25 +32,34 @@
 		</div>
 	</div>
 	<#-- 未登录 -->
-	<div class="user-info-block page-width">
+	<div class="user-info-block page-width no-login">
 		<div class="info clearfix">
 			<div class="avatar fl">
 				<img src="${staticServer}/images/sign/head.png" />
 			</div>
 			<div class="text">
-				<p><span class="orange font20">您好！水电费水电费</span><span class="font14">会员有效期还有：<strong class="font22">300</strong>天</span></p>
-				<p class="font14">我的成长值：<strong class="font22">2000</strong></p>
+				亲，成为会员可享受多种特权哦~ <br />
+				了解更多请 <a href="/login" class="btn-normal">登录</a>
 			</div>
 		</div>
 		<div class="progress">
-			<div class="progress-bar">
+			<div class="progress-bar" style="margin-top: 45px;">
 				<div class="vip-bg vip-0"></div>
 				<div class="vip-bg vip-1"></div>
 				<div class="vip-bg vip-2"></div>
 				<div class="vip-bg vip-3"></div>
 				<div class="vip-bg vip-4"></div>
 				<div class="vip-bg vip-5"></div>
+				<div class="popup-number vip-0">0</div>
+				<div class="popup-number vip-1">5000</div>
+				<div class="popup-number vip-2">50,000</div>
+				<div class="popup-number vip-3">300,000</div>
+				<div class="popup-number vip-4">1,500,000</div>
+				<div class="popup-number vip-5">5,000,000</div>
 			</div>
+		</div>
+		<div class="register">
+			新用户请 <a href="/register">注册</a>
 		</div>
 	</div>
 

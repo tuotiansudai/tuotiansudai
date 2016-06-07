@@ -241,6 +241,7 @@
 		padding: 30px 25px 0;
 		height: 300px;
 		background: url("/images/membership/user-info-bg.png") no-repeat 50% 50%;
+		position: relative;
 		.avatar {
 			$size: 127px;
 			width: $size;
@@ -277,7 +278,7 @@
 			}
 		}
 		.progress {
-			width: 95%;
+			width: 90%;
 			margin: 0 auto;
 			.progress-bar {
 				margin-top: 75px;
@@ -365,6 +366,75 @@
 						right: 20px;
 					}
 				}
+			}
+		}
+		.register {
+			position: absolute;
+			top: 0;
+			right: 10px;
+			font-size: 18px;
+			color: #a54e05;
+			a {
+				color: #570909;
+				border-bottom: 1px solid #570909;
+			}
+		}
+		&.no-login {
+			.avatar {
+				margin-left: 350px;
+			}
+			.text {
+				font-size: 18px;
+				padding-top: 20px;
+				color: #a54e05;
+				.btn-normal {
+					padding: 5px 10px;
+				}
+			}
+		}
+		.popup-number {
+			position: absolute;
+				top: 40px;
+				left: 0;
+			background: #fff;
+			color: #fa9a00;
+			font-size: 22px;
+			border-radius: 5px;
+			line-height: 1;
+			padding: 5px 10px;
+			&:before {
+				content: '';
+				position: absolute;
+					top: -8px;;
+					left: 50%;
+				margin-left: -8px;
+				width: 15px;
+				height: 8px;
+				background: url("/images/membership/triangle-top.png") no-repeat 50% 50%;
+			}
+			&.vip-0 {
+				margin-left: -10px;
+				left: 0;
+			}
+			&.vip-1 {
+				margin-left: -28px;
+				left: 20%;
+			}
+			&.vip-2 {
+				margin-left: -40px;
+				left: 40%;
+			}
+			&.vip-3 {
+				margin-left: -46px;
+				left: 60%;
+			}
+			&.vip-4 {
+				margin-left: -56px;
+				left: 80%;
+			}
+			&.vip-5 {
+				margin-left: -54px;
+				left: 100%;
 			}
 		}
 	}
