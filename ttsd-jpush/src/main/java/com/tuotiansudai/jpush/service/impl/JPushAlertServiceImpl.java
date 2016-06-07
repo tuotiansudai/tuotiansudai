@@ -500,13 +500,17 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-
+            Map<String,String> extras = Maps.newHashMap();
             for (InvestModel investModel : investModelList) {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
                 long amount = investRepayModel.getRepayAmount();
+                LoanModel loanModel = loanMapper.findById(investModel.getId());
+                extras.put("investId",String.valueOf(investModel.getId()));
+                extras.put("loanId",String.valueOf(investModel.getLoanId()));
+                extras.put("isCompleted",String.valueOf(loanModel.getStatus().equals(LoanStatus.COMPLETE) ? 1 : 0));
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
                 loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                autoJPushManyExtrasByRegistrationId(jPushAlertModel, loginNameMap,extras);
                 loginNameMap.clear();
             }
         } else {
@@ -711,6 +715,32 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         logger.debug(MessageFormat.format("jpushId:{0} begin", value));
         redisWrapperClient.hset(JPUSH_ID_KEY, loginName, value);
         logger.debug(MessageFormat.format("jpushId:{0} end", value));
+    }
+
+    private void autoJPushManyExtrasByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects,Map<String,String> extras) {
+        Iterator<Map.Entry<String, List<String>>> iterator = pushObjects.<String, List<String>>entrySet().iterator();
+        List<String> registrationIds = Lists.newArrayList();
+        while (iterator.hasNext()) {
+            Map.Entry<String, List<String>> entry = iterator.next();
+            String loginName = entry.getKey();
+            if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
+                String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                if (registrationId.indexOf("-") > 0) {
+                    registrationId = registrationId.split("-")[1];
+                }
+                registrationIds.add(registrationId);
+                List<String> params = entry.getValue();
+                String content = jPushAlertModel.getContent();
+                if (CollectionUtils.isNotEmpty(params)) {
+                    for (int i = 0; i < params.size(); i++) {
+                        content = content.replace("{" + i + "}", params.get(i));
+
+                    }
+                }
+                mobileAppJPushClient.sendPushAlertManyExtrasByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, extras, PushSource.ALL);
+                registrationIds.clear();
+            }
+        }
     }
 
 }
