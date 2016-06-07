@@ -1,0 +1,14 @@
+.main {
+	:global {
+		.swiper-container {
+			width: 100%;
+	        height: 100%;
+		}
+		.swiper-slide {
+			img {
+				width: 10rem;
+				display: block;
+			}
+		}
+	}
+}

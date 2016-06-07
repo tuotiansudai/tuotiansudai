@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     private PayWrapperClient payWrapperClient;
     @Autowired
     private WithdrawMapper withdrawMapper;
+    @Autowired
+    private BlacklistService blacklistService;
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
@@ -76,11 +79,14 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     public BaseResponseDto generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
+        String loginName = withdrawDto.getLoginName();
+        if (blacklistService.userIsInBlacklist(loginName)) {
+            return new BaseResponseDto(ReturnMessage.WITHDRAW_IN_BLACKLIST.getCode(), ReturnMessage.WITHDRAW_IN_BLACKLIST.getMsg());
+        }
         long withdrawAmount = AmountConverter.convertStringToCent(withdrawDto.getAmount());
         if (withdrawAmount <= withdrawFee) {
             return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
         }
-        String loginName = withdrawDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         if (bankCardModel == null) {
             return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
