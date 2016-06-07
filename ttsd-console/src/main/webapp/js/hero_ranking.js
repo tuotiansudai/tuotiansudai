@@ -3,29 +3,54 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
         var boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('.prize-save'), //提交按钮
-            $articleForm = $('.prize-form');
+            $prizeForm = $('.prize-form');
+        var _URL = window.URL || window.webkitURL;
         $('.prize-image').on('change',function(){
-            console.log("into");
-            var $self = $(this);
-            var file = $self.find('input').get(0).files[0];
-            var formData = new FormData();
-            formData.append('upfile',file);
-            $.ajax({
-                url:'/ueditor?action=uploadimage',
-                type:'POST',
-                data:formData,
-                dataType:'JSON',
-                contentType: false,
-                processData: false
-            })
-                .done(function(data){
-                    if(data.state){
-                        $('.image-url').val(data.title);
-                        $('.thumbImage').html('');
-                        $('.thumbImage').append('<img style="width:100%" src="/' + data.title + '" alt="神秘大奖缩略图">');
-                    }
+            var $self = $(this),
+                file = $self.find('input').get(0).files[0];
+                checkImage(file).done(function(){
+                    var formData = new FormData();
+                    formData.append('upfile',file);
+                    $.ajax({
+                        url:'/ueditor?action=uploadimage',
+                        type:'POST',
+                        data:formData,
+                        dataType:'JSON',
+                        contentType: false,
+                        processData: false
+                    })
+                        .done(function(data){
+                            if(data.state){
+                                $('.image-url').val(data.title);
+                                $('.thumbImage').html('');
+                                $('.thumbImage').append('<img style="width:100%" src="/' + data.title + '" alt="神秘大奖缩略图">');
+                            }
+                        });
+                }).fail(function(message){
+                    showErrorMessage(message, $('.image-url', $prizeForm));
                 });
+
         });
+
+        var checkImage = function(file){
+            var defer = $.Deferred(),
+                img = new Image();
+                img.src = _URL.createObjectURL(file);
+                img.onload = function(){
+                    if(this.width > 250){
+                        defer.reject('图片长宽应为250px!');
+                        return;
+
+                    }
+                    if(this.height > 250){
+                        defer.reject('图片长宽应为250px!');
+                        return;
+                    }
+                    defer.resolve(file);
+                }
+            return defer.promise();
+
+        };
 
         //表单校验初始化参数
         $(".prize-form").Validform({
@@ -63,7 +88,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             if (boolFlag) {
                 if (confirm("确认提交更新?")) {
                     $self.attr('disabled', 'disabled');
-                    $articleForm[0].submit();
+                    $prizeForm[0].submit();
                 }
 
             }
