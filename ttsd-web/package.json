@@ -12,6 +12,7 @@
     "grunt-contrib-sass": "0.4.0",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-watch": "0.4.3",
+    "grunt-data-uri": "^0.3.0",
     "matchdep": "~0.1.1"
   },
   "description": "\"grunt\": \"~0.4.5\",",
