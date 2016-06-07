@@ -46,7 +46,11 @@
                         <#if article.carousel>
                             <i class="lunbo-icon"></i>
                         </#if>
-                    ${article.section.articleSectionTypeName!}
+                        <#if article.section??>
+                            ${article.section.articleSectionTypeName!}
+                        <#else >
+                            全部
+                        </#if>
                     </td>
                     <td>
                         ${article.title!}
