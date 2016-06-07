@@ -118,7 +118,11 @@
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(successSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${successSumInvestRepay.actualAmount!}</td>
+                        <td>${successSumInvestRepay.actualAmount!}
+                            <#if successSumInvestRepay.loan.productType == 'EXPERIENCE'>
+                                (现金红包)
+                            </#if>
+                        </td>
                         <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -155,6 +159,9 @@
                         <td>${(notSuccessSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
                         <td>${notSuccessSumInvestRepay.amount!}
+                            <#if notSuccessSumInvestRepay.loan.productType == 'EXPERIENCE'>
+                                (现金红包)
+                            </#if>
                         </td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>

@@ -71,6 +71,7 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
+
         }
         return investRepayDataItemDtoList;
     }
