@@ -30,10 +30,11 @@ public interface LoanMapper {
                              @Param(value = "durationEnd") int durationEnd);
 
     List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
-                                    @Param(value = "status") LoanStatus status,
-                                    @Param(value = "rateStart") double rateStart,
-                                    @Param(value = "rateEnd") double rateEnd,
-                                    @Param(value = "index") int index);
+                                          @Param(value = "status") LoanStatus status,
+                                          @Param(value = "rateStart") double rateStart,
+                                          @Param(value = "rateEnd") double rateEnd,
+                                          @Param(value = "loanIsDisplayExperience") boolean loanIsDisplayExperience,
+                                          @Param(value = "index") int index);
 
     int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
                              @Param(value = "status") LoanStatus status,
@@ -87,8 +88,9 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "IsContainNewBie") String IsContainNewBie,
-                                                  @Param(value = "loanStatus") String loanStatus);
+    List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "isContainNewBie") boolean isContainNewBie,
+                                                  @Param(value = "loanStatus") String loanStatus,
+                                                  @Param(value = "loanIsDisplayExperience") boolean loanIsDisplayExperience);
 
     List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
 

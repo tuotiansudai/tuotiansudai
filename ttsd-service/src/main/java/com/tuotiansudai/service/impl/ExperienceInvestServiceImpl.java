@@ -1,8 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -29,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class ExperienceInvestServiceImpl implements ExperienceInvestService {
@@ -68,11 +65,12 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return dto;
         }
 
-        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
-
         UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
 
         InvestModel investModel = this.generateInvest(investDto, userCouponModel.getCouponId());
+
+        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
+
         userCouponModel.setLoanId(Long.parseLong(investDto.getLoanId()));
         userCouponModel.setInvestId(investModel.getId());
         userCouponModel.setUsedTime(new Date());

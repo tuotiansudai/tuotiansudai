@@ -16,15 +16,12 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -77,11 +74,13 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                         if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON ) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
+                            newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
 
                         if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
+                            redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
                     }
                 }

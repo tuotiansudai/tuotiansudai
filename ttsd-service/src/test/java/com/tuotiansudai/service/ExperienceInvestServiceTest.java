@@ -158,6 +158,7 @@ public class ExperienceInvestServiceTest {
         couponModel.setUserGroup(UserGroup.EXPERIENCE_INVEST_SUCCESS);
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
+        couponModel.setActive(true);
         couponMapper.create(couponModel);
         return couponModel;
     }
