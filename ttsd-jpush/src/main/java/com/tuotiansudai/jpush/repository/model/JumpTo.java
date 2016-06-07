@@ -12,7 +12,7 @@ public enum JumpTo {
     INVEST_RECEIVABLES("9","我的投资-已收款页"),
     WITHDRAW_RECORDS("10","提现记录"),
     REFERRER_INVEST_LIST("11","推荐人投资列表"),
-    INVEST_INFO("12","标的详情"),
+    INVEST_REPAY("12","回款计划"),
     OTHER("0","其他");
 
     private final String index;

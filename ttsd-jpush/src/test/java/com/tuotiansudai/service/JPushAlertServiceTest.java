@@ -265,13 +265,19 @@ public class JPushAlertServiceTest {
         AccountModel accountModel = new AccountModel(loginName, "test", "32424234", "test", "1233", new Date());
         accountModel.setBalance(10);
 
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        loanModel.setId(loanId);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
 
         when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
 
         when(investRepayMapper.findByInvestIdAndPeriod(anyInt(), anyInt())).thenReturn(investRepayModel);
 
-        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyString(), anyString(), any(PushSource.class))).thenReturn(true);
+        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), any(HashMap.class), any(PushSource.class))).thenReturn(true);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(createInvestSuccessList(loanId1));
 
@@ -297,12 +303,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
@@ -321,12 +326,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
@@ -348,12 +352,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
@@ -368,12 +371,10 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
-
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
     }
 
@@ -445,12 +446,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "65.21"), argumentAlert.getValue());
@@ -478,7 +478,7 @@ public class JPushAlertServiceTest {
         ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertManyExtrasByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
         assertEquals(String.valueOf(1),argumentCaptorExtras.getAllValues().get(0).get("isCompleted"));

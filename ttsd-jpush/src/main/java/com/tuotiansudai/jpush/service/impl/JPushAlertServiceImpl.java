@@ -31,6 +31,8 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -194,8 +196,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 });
             }
             if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushDistricts() == null) {
-                String[] jumpToOrLink = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
-                mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], jPushAlertModel.getPushSource());
+                Map extras = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
+                mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
             } else {
                 List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
                 if (CollectionUtils.isEmpty(loginNames)) {
@@ -320,7 +322,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             for (InvestModel investModel : investModels) {
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investModel.getAmount()));
                 loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
                 loginNameMap.clear();
             }
         } else {
@@ -336,7 +338,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
             loginNameMap.put(transferCashDto.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             loginNameMap.clear();
 
         } else {
@@ -344,24 +346,22 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
     }
 
-    private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
-        String[] jumpToOrLink = new String[]{"", ""};
+    private Map chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
+        Map<String,String> extras = Maps.newHashMap();
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
         if(jumpTo == JumpTo.OTHER){
-            jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = jPushAlertDto.getJumpToLink();
+            extras.put("jumpToLink",jPushAlertDto.getJumpToLink());
         }
         else{
-            jumpToOrLink[0] = "jumpTo";
-            jumpToOrLink[1] = jumpTo.getIndex();
+            extras.put("jumpTo",jumpTo.getIndex());
         }
-        return jumpToOrLink;
+        return extras;
     }
 
 
     private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects, PushSource pushSource) {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
-        String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
+        Map extras = chooseJumpToOrLink(jPushAlertDto);
         List<String> registrationIds = Lists.newArrayList();
         int iosTargetNum = 0;
         int androidTargetNum = 0;
@@ -389,7 +389,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 registrationIds.add(registrationId);
             }
             if (registrationIds.size() == 1000 || (i == pushObjects.size() - 1 && registrationIds.size() > 0)) {
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], pushSource);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), extras, pushSource);
                 if (sendResult) {
                     logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
                 } else {
@@ -461,9 +461,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         return baseDto;
     }
 
-    private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects) {
-        JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
-        String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
+    private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects,Map<String,String> extras) {
         Iterator<Map.Entry<String, List<String>>> iterator = pushObjects.<String, List<String>>entrySet().iterator();
         List<String> registrationIds = Lists.newArrayList();
         while (iterator.hasNext()) {
@@ -483,7 +481,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
                     }
                 }
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1], PushSource.ALL);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, extras, PushSource.ALL);
                 registrationIds.clear();
             }
         }
@@ -508,9 +506,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 extras.put("investId",String.valueOf(investModel.getId()));
                 extras.put("loanId",String.valueOf(investModel.getLoanId()));
                 extras.put("isCompleted",String.valueOf(loanModel.getStatus().equals(LoanStatus.COMPLETE) ? 1 : 0));
+                extras.putAll(chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
                 loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushManyExtrasByRegistrationId(jPushAlertModel, loginNameMap,extras);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap,extras);
                 loginNameMap.clear();
             }
         } else {
@@ -546,7 +545,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             if (transferAmount > 0) {
                 List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
                 loginNameMap.put(userCouponModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             }
         }
     }
@@ -561,7 +560,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(rechargeModel.getAmount()), AmountConverter.convertCentToString(totalAmount));
             loginNameMap.put(rechargeModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             loginNameMap.clear();
 
         } else {
@@ -581,7 +580,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
             loginNameMap.put(withdrawModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             loginNameMap.clear();
 
         } else {
@@ -601,7 +600,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
             loginNameMap.put(withdrawModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             loginNameMap.clear();
 
         } else {
@@ -622,7 +621,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                         Map<String, List<String>> loginNameMap = Maps.newHashMap();
                         List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
                         loginNameMap.put(accountModel.getLoginName(), amountLists);
-                        autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                        autoJPushByRegistrationId(jPushAlertModel, loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
                         loginNameMap.clear();
                     } else {
                         logger.debug("REFERRER_REWARD_ALERT is disabled");
@@ -716,31 +715,4 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         redisWrapperClient.hset(JPUSH_ID_KEY, loginName, value);
         logger.debug(MessageFormat.format("jpushId:{0} end", value));
     }
-
-    private void autoJPushManyExtrasByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects,Map<String,String> extras) {
-        Iterator<Map.Entry<String, List<String>>> iterator = pushObjects.<String, List<String>>entrySet().iterator();
-        List<String> registrationIds = Lists.newArrayList();
-        while (iterator.hasNext()) {
-            Map.Entry<String, List<String>> entry = iterator.next();
-            String loginName = entry.getKey();
-            if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
-                String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
-                if (registrationId.indexOf("-") > 0) {
-                    registrationId = registrationId.split("-")[1];
-                }
-                registrationIds.add(registrationId);
-                List<String> params = entry.getValue();
-                String content = jPushAlertModel.getContent();
-                if (CollectionUtils.isNotEmpty(params)) {
-                    for (int i = 0; i < params.size(); i++) {
-                        content = content.replace("{" + i + "}", params.get(i));
-
-                    }
-                }
-                mobileAppJPushClient.sendPushAlertManyExtrasByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, extras, PushSource.ALL);
-                registrationIds.clear();
-            }
-        }
-    }
-
 }
