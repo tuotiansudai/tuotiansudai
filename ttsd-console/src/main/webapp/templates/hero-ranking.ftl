@@ -1,21 +1,27 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="heroRanking" title="周年庆管理">
+<@global.main pageCss="" pageJavascript="hero_ranking.js" headLab="activity-manage" sideLab="heroRanking" title="周年庆管理">
 
-<div class="col-md-10">
-
-    <div class="btn">投资榜单查看</div>
-    <div class="btn">推荐榜单查看</div>
-    <div class="btn">发布神秘大奖</div>
-
-    <div class='input-group date' id='datepicker'>
-        <input type='text' class="form-control" name="tradeTime" value="${(tradeTime?string('yyyy-MM-dd'))!}"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+<div class="col-md-10" style="margin-bottom:50px;">
+    <div class="col-md-12">
+        <div class="btn btn-default invest active">投资榜单查看</div>
+        <div class="btn btn-default referrer">推荐榜单查看</div>
     </div>
-    当日前十平均投资金额：${avgInvestAmount/100?string('0.00')!}元
-    <br>
-    <div class="table-responsive">
+</div>
+<div class="col-md-10" style="margin-bottom:20px;">
+    <div class="col-md-2">
+        <div class='input-group date' id='datepicker'>
+            <input type='text' class="form-control" id = 'tradingTime' value="${tradingTime?string('yyyy-MM-dd')}"/>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-10" style="line-height: 34px;">
+        <strong>当日前十平均投资金额：${(avgInvestAmount/100)?string('0.00')}元</strong>
+    </div>
+</div>
+<div class="col-md-10">
+    <div class="table-responsive col-md-8 invest-ranking">
         <table class="table table-bordered table-hover ">
             <thead>
                 <tr>
@@ -32,16 +38,16 @@
             <tr>
                 <td>${varInvest+1}</td>
                 <td>${heroRankingViewInvest.loginName!}</td>
-                <td>${heroRankingViewInvest.mobile?string('0')!}</td>
+                <td>${heroRankingViewInvest.mobile?string('0')}</td>
                 <td>${heroRankingViewInvest.userName!}</td>
-                <td>${heroRankingViewInvest.sumAmount/100?string('0.00')!}</td>
+                <td>${(heroRankingViewInvest.sumAmount/100)?string('0.00')}</td>
             </tr>
             </#list>
             </tbody>
         </table>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive col-md-8 referrer-ranking" style="display: none">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
@@ -58,17 +64,13 @@
             <tr>
                 <td>${varReferrer+1}</td>
                 <td>${heroRankingViewReferrer.loginName!}</td>
-                <td>${heroRankingViewReferrer.mobile?string('0')!}</td>
+                <td>${heroRankingViewReferrer.mobile?string('0')}</td>
                 <td>${heroRankingViewReferrer.userName!}</td>
-                <td>${heroRankingViewReferrer.sumAmount/100?string('0.00')!}</td>
+                <td>${(heroRankingViewReferrer.sumAmount/100)?string('0.00')}</td>
             </tr>
             </#list>
             </tbody>
         </table>
-    </div>
-
-    <div>
-        
     </div>
 
 </div>

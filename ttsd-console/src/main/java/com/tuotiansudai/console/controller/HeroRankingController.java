@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,9 +26,13 @@ public class HeroRankingController {
     private HeroRankingService heroRankingService;
 
     @RequestMapping(value = "/activity-manage/hero-ranking", method = RequestMethod.GET)
-    public ModelAndView heroRanking(@RequestParam(value = "tradingTime") Date tradingTime) {
+    public ModelAndView heroRanking(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
 
         ModelAndView modelAndView = new ModelAndView("/hero-ranking");
+
+        if (tradingTime == null) {
+            tradingTime = new Date();
+        }
 
         List<HeroRankingView> heroRankingViewReferrerList = investMapper.findHeroRankingByReferrer(tradingTime, 1, 10);
 

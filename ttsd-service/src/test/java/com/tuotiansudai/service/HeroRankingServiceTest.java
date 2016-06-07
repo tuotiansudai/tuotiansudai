@@ -1,10 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -21,7 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,6 +42,52 @@ public class HeroRankingServiceTest {
     private IdGenerator idGenerator;
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
+    @Test
+    public void shouldFindHeroRankingByReferrer() {
+        UserModel loaner = createUserByUserId("loaner");
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+        ReferrerRelationModel referrerRelationModel1 = new ReferrerRelationModel();
+        referrerRelationModel1.setLevel(1);
+        referrerRelationModel1.setReferrerLoginName(investor1.getLoginName());
+        referrerRelationModel1.setLoginName(investor2.getLoginName());
+        referrerRelationMapper.create(referrerRelationModel1);
+
+        ReferrerRelationModel referrerRelationModel2 = new ReferrerRelationModel();
+        referrerRelationModel2.setLevel(1);
+        referrerRelationModel2.setReferrerLoginName(investor1.getLoginName());
+        referrerRelationModel2.setLoginName(investor3.getLoginName());
+        referrerRelationMapper.create(referrerRelationModel2);
+
+        LoanModel loanModel = createLoan(loaner.getLoginName(),idGenerator.generate() , ActivityType.NORMAL,LoanStatus.REPAYING);
+        loanMapper.create(loanModel);
+
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(),loanModel.getId());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+
+        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor1.getLoginName(), 1, 10);
+        assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
+        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(investor1.getLoginName()));
+    }
 
     @Test
     public void shouldObtainHeroRankingIsSuccess(){
