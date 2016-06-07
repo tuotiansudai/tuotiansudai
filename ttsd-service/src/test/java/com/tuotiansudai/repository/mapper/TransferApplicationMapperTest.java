@@ -255,4 +255,34 @@ public class TransferApplicationMapperTest {
         return loanModel;
     }
 
+    @Test
+    public void shouldFindCountTransferApplicationByApplicationTimeIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel transferModel = createUserByUserId("transfer");
+        UserModel transfereeModel = createUserByUserId("transferee");
+        LoanModel loanModel = createLoanByUserId("transfer", loanId);
+        InvestModel transferInvestModel = createInvest("transfer", loanId);
+        InvestModel transfereeInvestModel = createInvest("transferee", loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setTransferInvestId(transferInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new DateTime(2016, 7, 5, 12, 0, 0).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        long count1 = transferApplicationMapper.findCountTransferApplicationByApplicationTime(transferModel.getLoginName(),new DateTime(2016,7,5,23,59,59).toDate());
+
+        assertEquals(1,count1);
+
+        long count2 = transferApplicationMapper.findCountTransferApplicationByApplicationTime(transferModel.getLoginName(),new DateTime(2016,7,4,23,59,59).toDate());
+
+        assertEquals(0,count2);
+    }
 }

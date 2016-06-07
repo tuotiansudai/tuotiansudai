@@ -1,11 +1,13 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,5 +56,15 @@ public class HeroRankingController {
 
         return modelAndView;
     }
+
+    @RequestMapping(value = "/activity-manage/upload-image", method = RequestMethod.POST)
+    public ModelAndView uploadMysteriousPrize(@ModelAttribute MysteriousPrizeDto mysteriousPrizeDto){
+        ModelAndView mv = new ModelAndView("/hero-ranking");
+        mv.addObject("mysteriousPrizeDto",mysteriousPrizeDto);
+        heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
+        return mv;
+    }
+
+
 
 }

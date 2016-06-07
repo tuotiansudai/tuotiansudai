@@ -4,11 +4,14 @@ import com.tuotiansudai.api.dto.v1_0.BankCardReplaceRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BankCardRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBankCardService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class MobileAppBankCardController extends MobileAppBaseController {
@@ -22,9 +25,10 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      * @function 绑卡
      */
     @RequestMapping(value = "/bankcard/bind", method = RequestMethod.POST)
-    public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto) {
+    public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto, HttpServletRequest request) {
         bankCardRequestDto.setUserId(getLoginName());
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
+        bankCardRequestDto.setIp(RequestIPParser.parse(request));
         return mobileAppBankCardService.bindBankCard(bankCardRequestDto);
     }
 
@@ -34,7 +38,8 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      * @function 换卡
      */
     @RequestMapping(value = "/bankcard/replace", method = RequestMethod.POST)
-    public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto) {
+    public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto, HttpServletRequest request) {
+        requestDto.setIp(RequestIPParser.parse(request));
         return mobileAppBankCardService.replaceBankCard(requestDto);
     }
 

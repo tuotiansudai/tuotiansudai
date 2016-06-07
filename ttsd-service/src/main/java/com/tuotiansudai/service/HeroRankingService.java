@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.dto.BaseListDataDto;
+import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.model.HeroRankingView;
 
 import java.util.Date;
@@ -15,6 +16,8 @@ public interface HeroRankingService {
 
     List<HeroRankingView> obtainHeroRanking(Date tradingTime);
 
-    List<HeroRankingView> obtainHeroRankingByLoginName(Date tradingTime,String loginName);
+    Integer obtainHeroRankingByLoginName(Date tradingTime, String loginName);
+
+    void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
 
 }

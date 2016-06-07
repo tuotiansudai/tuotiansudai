@@ -5,6 +5,7 @@
     <div class="col-md-12">
         <div class="btn btn-default invest active">投资榜单查看</div>
         <div class="btn btn-default referrer">推荐榜单查看</div>
+        <div class="btn btn-default upload">上传神秘大奖</div>
     </div>
 </div>
 <div class="col-md-10" style="margin-bottom:20px;">
@@ -71,6 +72,43 @@
             </#list>
             </tbody>
         </table>
+    </div>
+
+    <div class="mysteriousPrize upload-image" style="display: none">
+        <form class="prize-form" action="/activity-manage/upload-image" method="post">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">名称: </label>
+                <div class="col-sm-4">
+                    <input type="text" name="prizeName"  class="form-control prize-ame" value="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName!}</#if>" placeholder="" datatype="*" errormsg="名称不能为空">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">图片: </label>
+                <div class="col-sm-4 ">
+                    <input type="text" name="imageUrl" value="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl!}</#if>" readonly class="form-control image-url" placeholder="" datatype="*" errormsg="图片不能为空">
+                    <div class="thumbImage">
+                        <#if mysteriousPrizeDto??>
+                            <img style="width:100%" src="/${mysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                        </#if>
+                    </div>
+                </div>
+                <div class="col-sm-4 prize-image">
+                    <input type="file" name="prizeImage"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-4 form-error">
+                </div>
+             </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">操作: </label>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <div class="col-sm-4">
+                    <button type="button" class="btn jq-btn-form btn-primary prize-save">更新</button>
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>

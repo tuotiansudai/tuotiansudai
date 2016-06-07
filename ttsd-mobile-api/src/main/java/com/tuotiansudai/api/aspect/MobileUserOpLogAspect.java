@@ -1,0 +1,80 @@
+package com.tuotiansudai.api.aspect;
+
+import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.repository.mapper.UserOpLogMapper;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.UserOpType;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.Locale;
+
+@Aspect
+@Component
+public class MobileUserOpLogAspect {
+
+    @Autowired
+    private UserOpLogMapper userOpLogMapper;
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService.buildAutoInvestPlan(..))")
+    public void afterBuildAutoInvestPlan(JoinPoint joinPoint) {
+        AutoInvestPlanRequestDto dto = (AutoInvestPlanRequestDto)joinPoint.getArgs()[0];
+
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(dto.getBaseParam().getUserId());
+        logModel.setIp(dto.getIp());
+        logModel.setDeviceId(dto.getBaseParam().getDeviceId());
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.AUTO_INVEST);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription(dto.isEnabled() ? "Turn On" : "Turn Off");
+
+        userOpLogMapper.create(logModel);
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(..))")
+    public void afterNoPasswordInvestTurnOn(JoinPoint joinPoint) {
+        BaseParamDto dto = (BaseParamDto)joinPoint.getArgs()[0];
+        String ip = (String)joinPoint.getArgs()[1];
+
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(dto.getBaseParam().getUserId());
+        logModel.setIp(ip);
+        logModel.setDeviceId(dto.getBaseParam().getDeviceId());
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription("Turn On");
+
+        userOpLogMapper.create(logModel);
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(..))", returning = "returnValue")
+    public void afterNoPasswordInvestTurnOff(JoinPoint joinPoint, Object returnValue) {
+        BaseParamDto dto = (BaseParamDto)joinPoint.getArgs()[0];
+        String ip = (String)joinPoint.getArgs()[1];
+
+        BaseResponseDto retDto = (BaseResponseDto) returnValue;
+
+        UserOpLogModel logModel = new UserOpLogModel();
+        logModel.setLoginName(dto.getBaseParam().getUserId());
+        logModel.setIp(ip);
+        logModel.setDeviceId(dto.getBaseParam().getDeviceId());
+        String platform = dto.getBaseParam().getPlatform();
+        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription("Turn Off. " + (retDto.isSuccess() ? "Success" : "Fail"));
+
+        userOpLogMapper.create(logModel);
+    }
+}

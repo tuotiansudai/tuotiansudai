@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.HeroRankingService;
+import com.tuotiansudai.util.RandomUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,6 +47,8 @@ public class HeroRankingControllerTest {
 
     @InjectMocks
     private HeroRankingController heroRankingController;
+    @Mock
+    private RandomUtils randomUtils;
 
     @Before
     public void init() {
@@ -68,6 +73,7 @@ public class HeroRankingControllerTest {
         List<HeroRankingView> heroRankingViews = Lists.newArrayList(heroRankingView);
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
+        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt())).thenReturn(heroRankingView.getLoginName());
 
         this.mockMvc.perform(get("/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())

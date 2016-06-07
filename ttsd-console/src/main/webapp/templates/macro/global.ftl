@@ -84,6 +84,7 @@
                 "sidebar":[
                     {"name":"loginLog","text":"登录日志","link":"/security-log/login-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"userOpLog","text":"用户行为日志","link":"/security-log/user-op-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"clearCache","text":"清除DB Cache","link":"/security-log/clear-db-cache","role":"'ADMIN'"}
                 ]
             },
