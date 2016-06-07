@@ -107,6 +107,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setUserCoupons(couponTypes);
                 dto.setUsedCoupon(CollectionUtils.isNotEmpty(couponTypes) && !couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
+                dto.setProductNewType(loanModel.getProductType().name());
                 list.add(dto);
             }
         }

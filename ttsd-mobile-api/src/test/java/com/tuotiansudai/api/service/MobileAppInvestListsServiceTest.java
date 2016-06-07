@@ -160,6 +160,7 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
         assertEquals(baseResponseDto.getData().getInvestList().get(0).getActualInterest(), "0.00");
         assertEquals(baseResponseDto.getData().getInvestList().get(0).isUsedCoupon(), false);
         assertEquals(baseResponseDto.getData().getInvestList().get(0).isUsedRedEnvelope(), false);
+        assertEquals(baseResponseDto.getData().getInvestList().get(0).getProductNewType(), ProductType._30.name());
 
     }
 

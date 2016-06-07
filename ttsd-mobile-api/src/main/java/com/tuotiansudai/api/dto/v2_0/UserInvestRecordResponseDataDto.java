@@ -41,6 +41,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
 
     private boolean usedRedEnvelope;
 
+    private String productNewType;
+
     public String getLoanId() {
         return loanId;
     }
@@ -160,6 +162,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     public void setUsedRedEnvelope(boolean usedRedEnvelope) {
         this.usedRedEnvelope = usedRedEnvelope;
     }
+
+    public String getProductNewType() { return productNewType; }
+
+    public void setProductNewType(String productNewType) { this.productNewType = productNewType; }
 
     public UserInvestRecordResponseDataDto() {
 
