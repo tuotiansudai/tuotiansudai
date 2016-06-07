@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -7,10 +8,14 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,22 +29,34 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Autowired
     private InvestMapper investMapper;
 
+    @Value("${mobile.experience.loan.display}")
+    private boolean loanIsDisplayExperience;
 
     @Override
     public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
         List<LoanModel> loanModels = new ArrayList<>();
-        List<LoanModel> notContainNewBieList = loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name());
+        List<LoanModel> notContainNewBieList = loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),loanIsDisplayExperience);
         if(investMapper.sumSuccessInvestCountByLoginName(baseParamDto.getBaseParam().getUserId()) == 0){
-            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name());
+            loanModels = loanMapper.findHomeLoanByIsContainNewBie(true,LoanStatus.RAISING.name(),loanIsDisplayExperience);
             if(CollectionUtils.isEmpty(loanModels)){
-                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.COMPLETE.name());
+                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie(true,LoanStatus.COMPLETE.name(),loanIsDisplayExperience);
                 if(CollectionUtils.isNotEmpty(completeLoanModels)){
                     loanModels.add(completeLoanModels.get(0));
                 }
             }
         }
 
-        loanModels.addAll(notContainNewBieList);
+        if (StringUtils.isEmpty(baseParamDto.getBaseParam().getUserId()) || investMapper.countInvestSuccessExperience(baseParamDto.getBaseParam().getUserId()) == 0) {
+            List<LoanModel> loanModelsExperience = loanMapper.findByProductType(ProductType.EXPERIENCE);
+            if (CollectionUtils.isNotEmpty(loanModelsExperience)) {
+                loanModels.add(loanModelsExperience.get(0));
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(notContainNewBieList)) {
+            loanModels.addAll(notContainNewBieList);
+        }
+
         if(CollectionUtils.isEmpty(loanModels)){
             List<LoanModel> completeLoanModels = loanMapper.findLoanListWeb(null, LoanStatus.COMPLETE, 0, 0, 0,0,0);
             if(CollectionUtils.isNotEmpty(completeLoanModels)){

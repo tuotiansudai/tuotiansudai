@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -26,6 +27,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private LoanMapper loanMapper;
     @Autowired
     private InvestMapper investMapper;
+    @Value("${mobile.experience.loan.display}")
+    private boolean loanIsDisplayExperience;
 
 
     @Override
@@ -37,7 +40,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(),loanIsDisplayExperience, index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
@@ -109,6 +112,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+            loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

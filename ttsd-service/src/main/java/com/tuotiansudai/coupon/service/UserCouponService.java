@@ -18,6 +18,8 @@ public interface UserCouponService {
 
     List<UserCouponView> getExpiredUserCoupons(String loginName);
 
+    UserCouponDto getExperienceInvestUserCoupon(String loginName);
+
     UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount);
 
     boolean isUsableUserCouponExist(String loginName);

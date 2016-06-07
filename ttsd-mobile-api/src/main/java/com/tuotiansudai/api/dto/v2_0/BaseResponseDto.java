@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 
 

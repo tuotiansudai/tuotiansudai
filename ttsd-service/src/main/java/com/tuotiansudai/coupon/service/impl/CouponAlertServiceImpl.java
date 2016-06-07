@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -71,37 +70,31 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {
                         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON) {
+
+                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON ) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
-                            if (newbieCouponAlertDto.getExpiredDate() == null) {
-                                newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
-                            } else {
-                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
-                            }
+                            newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
 
                         if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
-                            if (redEnvelopeCouponAlertDto.getExpiredDate() == null) {
-                                redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
-                            } else {
-                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
-                            }
+                            redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
                     }
-                }
-                if (CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
-                    userCouponIds.addAll(redEnvelopeCouponAlertDto.getCouponIds());
-                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
-                    return redEnvelopeCouponAlertDto;
                 }
 
                 if (CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
                     userCouponIds.addAll(newbieCouponAlertDto.getCouponIds());
                     redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
                     return newbieCouponAlertDto;
+                }
+
+                if (CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
+                    userCouponIds.addAll(redEnvelopeCouponAlertDto.getCouponIds());
+                    redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
+                    return redEnvelopeCouponAlertDto;
                 }
             }
         } catch (IOException e) {

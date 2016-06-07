@@ -40,16 +40,6 @@ public class ImportUserCollector implements UserCollector {
     }
 
     @Override
-    public long count(long couponId) {
-        String values = redisWrapperClient.hget(MessageFormat.format(IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE, String.valueOf(couponId)), "success");
-        if (Strings.isNullOrEmpty(values)) {
-            return 0;
-        }
-
-        return values.split(",").length;
-    }
-
-    @Override
     public boolean contains(long couponId, String loginName) {
         String values = redisWrapperClient.hget(MessageFormat.format(IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE, String.valueOf(couponId)), "success");
 
