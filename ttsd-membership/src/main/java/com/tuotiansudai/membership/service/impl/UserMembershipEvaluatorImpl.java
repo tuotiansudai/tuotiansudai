@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +28,6 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
 
     @Override
     public MembershipModel evaluate(String loginName) {
@@ -55,46 +52,6 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
         }.max(filter);
 
         return membershipMapper.findById(max.getMembershipId());
-    }
-
-    @Override
-    public MembershipModel getMembershipByLevel(int level){
-        return membershipMapper.findByLevel(level);
-    }
-
-    @Override
-    public int getProgressBarPercent(String loginName) {
-        int progressBarPercent = 0;
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        //分两部分 1.国定 V0 20 V1 40 V3 60 V4 80 V5 100
-        //        2. 变化部分  计算公式  用还需成长值/当前等级的最大值
-        MembershipModel membershipModel = this.evaluate(loginName);
-        MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(membershipModel.getLevel() + 1);
-        double changeable = (accountModel.getMembershipPoint() - membershipModel.getExperience())/(NextLevelMembershipModel.getExperience() - membershipModel.getExperience())*0.2*100;
-        switch (membershipModel.getLevel()){
-           case 0:
-               progressBarPercent = 0;
-               break;
-           case 1:
-               progressBarPercent = 20;
-               break;
-           case 2:
-               progressBarPercent = 40;
-               break;
-           case 3:
-               progressBarPercent = 60;
-               break;
-           case 4:
-               progressBarPercent = 80;
-               break;
-           case 5:
-               progressBarPercent = 100;
-               break;
-           default:
-               progressBarPercent = 0;
-               break;
-       }
-        return (int)(progressBarPercent + changeable);
     }
 
 }

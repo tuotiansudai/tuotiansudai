@@ -11,7 +11,7 @@
 		<div class="levels-list">
 			<#-- 下面这些li标签 如果想让图标变灰色就把className最后加一个 “-hui” 例如第一个 -->
 			<ul class="clearfix">
-				<li class="multi-ensuring-hui">
+				<li class="multi-ensuring">
 					<h3>多重保障</h3>
 					<p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
 				</li>
