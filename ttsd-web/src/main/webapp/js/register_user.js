@@ -19,7 +19,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     $checkbox.on('click',function(event) {
-        if(event.target.tagName=='A') {
+        if(event.target.tagName.toUpperCase()=='A') {
             return;
         }
         var $this=$(this),
