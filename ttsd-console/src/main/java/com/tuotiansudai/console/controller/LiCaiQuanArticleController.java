@@ -70,6 +70,7 @@ public class LiCaiQuanArticleController {
         mv.addObject("title", title);
         mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
         mv.addObject("articleSectionTypeList", ArticleSectionType.values());
+        mv.addObject("userName",LoginUserInfo.getLoginName());
         return mv;
     }
 

@@ -73,6 +73,13 @@
                             </@security.authorize>
                             <a href="/announce-manage/article/${article.articleId?c}/retrace"> 撤销</a>
                         </#if>
+                        <#if article.articleStatus.description == '审核中'>
+                            <#if article.creator == userName>
+                                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                    <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>
+                                </@security.authorize>
+                            </#if>
+                        </#if>
                         <#if article.articleStatus.description == '已发布'>
                             <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
                             <a href="/announce-manage/article/${article.articleId?c}/deleteArticle" onclick="return confirm('确定删除吗?')"> 删除</a>
