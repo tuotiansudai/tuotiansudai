@@ -17,4 +17,11 @@
         select * from membership where id = #{id}
     </select>
 
+    <select id="findByLevel" resultMap="membershipResultMap" parameterType="long">
+        SELECT * FROM `aa`.`membership` WHERE level = #{level}
+    </select>
+
+    <select id="findAllLevels" resultType="java.lang.Integer">
+        SELECT `level` FROM `aa`.`membership`
+    </select>
 </mapper>

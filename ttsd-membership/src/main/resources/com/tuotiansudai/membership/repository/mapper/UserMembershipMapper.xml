@@ -15,6 +15,17 @@
         <result column="type" property="type"/>
     </resultMap>
 
+    <resultMap id="UserMembershipItemResultMap" type="UserMembershipItemModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="realName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="membership_point" property="membershipPoint"/>
+        <result column="level" property="membershipLevel"/>
+        <result column="type" property="userMembershipType"/>
+        <result column="register_time" property="registerTime"/>
+    </resultMap>
+
     <insert id="create" parameterType="UserMembershipModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_membership (login_name, membership_id, expired_time, created_time, type)
         value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type})
@@ -30,6 +41,39 @@
 
     <select id="findByLoginName" resultMap="UserMembershipResultMap" parameterType="string">
         select * from user_membership where login_name = #{loginName}
+    </select>
+
+    <select id="findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel"
+            resultMap="UserMembershipItemResultMap">
+        SELECT user_membership.id, user_membership.login_name, account.user_name, user.mobile, account.membership_point,
+        membership.level, user_membership.type, user.register_time
+        FROM `aa`.`user_membership` join `aa`.`membership` join `aa`.`user` join `aa`.`account`
+        ON `user_membership`.`membership_id` = `membership`.`id` AND `user_membership`.`login_name` =
+        `user`.`login_name` AND
+        `user_membership`.`login_name` = `account`.`login_name`
+        <where>
+            <if test="loginName != null">
+                user_membership.login_name = #{loginName}
+            </if>
+            <if test="mobile != null">
+                AND user.mobile = #{mobile}
+            </if>
+            <if test="registerStartTime != null">
+                AND user.register_time &gt;= #{registerStartTime}
+            </if>
+            <if test="registerEndTime != null">
+                AND user.register_time &lt;= #{registerEndTime}
+            </if>
+            <if test="type != null">
+                AND user_membership.type = #{type}
+            </if>
+            <if test="levels != null">
+                AND membership.level in
+                <foreach collection="levels" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
     </select>
 
 </mapper>

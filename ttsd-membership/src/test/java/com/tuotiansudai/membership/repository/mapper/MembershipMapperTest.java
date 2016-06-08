@@ -7,6 +7,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -26,5 +28,27 @@ public class MembershipMapperTest {
         assertThat(membershipMapper.findById(4).getLevel(), is(3));
         assertThat(membershipMapper.findById(5).getLevel(), is(4));
         assertThat(membershipMapper.findById(6).getLevel(), is(5));
+    }
+
+    @Test
+    public void testFindByLevel() throws Exception {
+        assertThat(membershipMapper.findByLevel(0).getId(), is(1L));
+        assertThat(membershipMapper.findByLevel(1).getId(), is(2L));
+        assertThat(membershipMapper.findByLevel(2).getId(), is(3L));
+        assertThat(membershipMapper.findByLevel(3).getId(), is(4L));
+        assertThat(membershipMapper.findByLevel(4).getId(), is(5L));
+        assertThat(membershipMapper.findByLevel(5).getId(), is(6L));
+    }
+
+    @Test
+    public void testFindAllLevels() throws Exception {
+        List<Integer> levels = membershipMapper.findAllLevels();
+        assertThat(levels.size(), is(6));
+        assertThat(levels.get(0), is(0));
+        assertThat(levels.get(1), is(1));
+        assertThat(levels.get(2), is(2));
+        assertThat(levels.get(3), is(3));
+        assertThat(levels.get(4), is(4));
+        assertThat(levels.get(5), is(5));
     }
 }
