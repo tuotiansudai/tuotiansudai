@@ -1,15 +1,20 @@
 package com.tuotiansudai.membership.service.impl;
 
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +28,9 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Override
     public MembershipModel getMembershipByLevel(int level) {
@@ -125,7 +133,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Override
     public String[] showDisable(String loginName) {
-        String[] privilegeShow = new String[7];
+        String[] privilegeShow = new String[8];
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         switch (membershipModel.getLevel()) {
             case 0:
@@ -136,6 +144,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "-hui";
                 privilegeShow[5] = "-hui";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
             case 1:
                 privilegeShow[0] = "";
@@ -145,6 +154,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "-hui";
                 privilegeShow[5] = "-hui";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
             case 2:
                 privilegeShow[0] = "";
@@ -154,6 +164,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "-hui";
                 privilegeShow[5] = "-hui";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
             case 3:
                 privilegeShow[0] = "";
@@ -163,6 +174,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "";
                 privilegeShow[5] = "-hui";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
             case 4:
                 privilegeShow[0] = "";
@@ -172,6 +184,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "";
                 privilegeShow[5] = "";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
             case 5:
                 privilegeShow[0] = "";
@@ -181,6 +194,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "";
                 privilegeShow[5] = "";
                 privilegeShow[6] = "";
+                privilegeShow[7] = "";
                 break;
             default:
                 privilegeShow[0] = "";
@@ -190,8 +204,20 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 privilegeShow[4] = "-hui";
                 privilegeShow[5] = "-hui";
                 privilegeShow[6] = "-hui";
+                privilegeShow[7] = "-hui";
                 break;
         }
         return privilegeShow;
+    }
+
+    @Override
+    public int getExpireDayByLoginName(String loginName) {
+        long leftDays = 0;
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        if(membershipModel != null){
+            UserMembershipModel  userMembershipModel = userMembershipMapper.findByMembershipId(membershipModel.getId());
+            leftDays = DateUtil.differenceDay(new Date(), userMembershipModel.getExpiredTime());
+        }
+        return (int)leftDays;
     }
 }

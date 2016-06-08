@@ -40,14 +40,17 @@ public class MembershipController {
             MembershipModel NextLevelMembershipModel = userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
 
+
             modelAndView.addObject("membershipLevel", membershipModel != null?membershipModel.getLevel():"");
-            modelAndView.addObject("membershipNextLevel", NextLevelMembershipModel != null?NextLevelMembershipModel.getLevel():"");
+
+            modelAndView.addObject("membershipNextLevel", NextLevelMembershipModel != null?NextLevelMembershipModel.getLevel():membershipModel.getLevel());
+
             modelAndView.addObject("membershipNextLevelValue", NextLevelMembershipModel != null?(NextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()):"");
             modelAndView.addObject("membershipPoint", accountModel != null?accountModel.getMembershipPoint():"");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("privilegeList", userMembershipService.getPrivilege(loginName));
             modelAndView.addObject("privilegeShow", userMembershipService.showDisable(loginName));
-            //modelAndView.addObject("expireDay",);
+            modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);
 

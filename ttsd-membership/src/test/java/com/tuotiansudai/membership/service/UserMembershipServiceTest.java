@@ -1,9 +1,12 @@
 package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
@@ -33,7 +36,13 @@ public class UserMembershipServiceTest {
     private UserMembershipMapper userMembershipMapper;
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
 
     @Test
     public void shouldEvaluateWhenLoginNameIsNotExist() throws Exception {
@@ -66,6 +75,22 @@ public class UserMembershipServiceTest {
         assertThat(userMembershipEvaluator.evaluate(fakeUser.getLoginName()).getLevel(), is(3));
     }
 
+
+    @Test
+    public void shouldGetMembershipByLevel(){
+        MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership().getLevel());
+
+        assertThat(membershipModel.getLevel(), is(1));
+        assertThat(membershipModel.getFee(), is(0.1));
+        assertThat(membershipModel.getExperience(), is(5000L));
+    }
+
+    @Test
+    public void shouldGetProgressBarPercentByLoginName(){
+
+
+    }
+
     private UserModel getFakeUser(String loginName) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);
@@ -77,5 +102,20 @@ public class UserMembershipServiceTest {
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUser);
         return fakeUser;
+    }
+
+    private MembershipModel createMembership(){
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setId(10000001);
+        membershipModel.setLevel(1);
+        membershipModel.setExperience(5000);
+        membershipModel.setFee(0.1);
+        return membershipModel;
+    }
+    private AccountModel createAccount(){
+        AccountModel accountModel = new AccountModel(getFakeUser("testuser").getLoginName(), "username", "", "", "", new Date());
+        accountModel.setMembershipPoint(6000);
+        accountMapper.create(accountModel);
+        return accountModel;
     }
 }

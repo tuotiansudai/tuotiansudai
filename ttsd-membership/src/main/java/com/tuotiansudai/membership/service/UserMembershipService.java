@@ -14,4 +14,6 @@ public interface UserMembershipService {
 
     String[] showDisable(String loginName);
 
+    int getExpireDayByLoginName(String loginName);
+
 }

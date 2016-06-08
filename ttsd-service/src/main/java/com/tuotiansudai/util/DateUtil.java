@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,5 +29,4 @@ public class DateUtil {
         }
         return (int)(end.getTime() - begin.getTime()) / 1000;
     }
-
 }
