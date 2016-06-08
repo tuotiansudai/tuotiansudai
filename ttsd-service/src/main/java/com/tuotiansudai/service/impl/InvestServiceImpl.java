@@ -168,10 +168,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, long amount) {
+    public long estimateInvestIncome(String loginName, long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
+
+        //根据loginName查询出会员的相关信息
+        double investFeeRate = 0.1;
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
 

@@ -96,7 +96,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                        amount = investService.estimateInvestIncome(loginName, input.getLoanId(), input.getAmount());
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
