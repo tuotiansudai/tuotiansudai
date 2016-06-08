@@ -392,6 +392,32 @@
 				}
 			}
 		}
+		&.structure {
+			height: 350px;
+			.title {
+				position: absolute;
+				top: 5px;
+				left: 0;
+				color: #333;
+				font-size: 18px;
+				padding-left: 20px;
+				border-left: 3px solid #428edf;
+			}
+			.avatar {
+				margin-left: 400px;
+			}
+			.text {
+				float: left;
+				width: 100%;
+				text-align: center;
+				margin-top: 15px;
+				font-size: 16px;
+				color: #50120e;
+				i {
+					margin: 0 15px;
+				}
+			}
+		}
 		.popup-number {
 			position: absolute;
 				top: 40px;
@@ -475,6 +501,88 @@
 		}
 		.service-fee-discount {
 			background: url("/images/icons/service-fee-discount.png") no-repeat 50% 50%;
+		}
+	}
+	.instructions {
+		background: #fff;
+		margin-top: 20px;
+		.inner-block {
+			padding: 25px 20px;
+		}
+		.item {
+			height: 43px;
+			overflow: hidden;
+			padding-left: 20px;
+			&.active {
+				height: auto;
+				background: #f5f8fa;
+				.question {
+					color: #428edf;
+				}
+			}
+		}
+		.question {
+			line-height: 42px;
+			font-size: 18px;
+			border-bottom: 1px dashed #e6e6e6;
+		}
+		.answer {
+			padding: 10px 0 10px 2em;
+			text-indent: -2em;
+		}
+	}
+	.structure-detail {
+		background: #fff;
+		margin-top: 20px;
+		padding-bottom: 25px;
+		.inner-block {
+			padding: 0 25px;
+		}
+		.filter-bar {
+			padding: 15px 25px;
+			.buttons {
+				span {
+					color: #808080;
+					font-size: 16px;
+					cursor: pointer;
+					line-height: 35px;
+					padding: 0 10px;
+					display: inline-block;
+					&.active {
+						background: #428edf;
+						color: #fff;
+					}
+				}
+			}
+			label {
+				font-size: 16px;
+				padding-right: 10px;
+			}
+		}
+		.table {
+			border: 1px solid #e6e6e6;
+			tr {
+				border-top: 1px solid #e6e6e6;
+			}
+			th {
+				background: #f4f4f4;
+			}
+			thead {
+				tr {
+					&:first-child {
+						border: none;
+					}
+				}
+			}
+			tbody {
+				td {
+					line-height: 38px;
+					padding: 0;
+					&:last-child {
+						color: #428edf;
+					}
+				}
+			}
 		}
 	}
 }
