@@ -134,6 +134,10 @@ public enum ReturnMessage {
 
     /******签到******/
     MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
+
+    /******安全******/
+    WITHDRAW_IN_BLACKLIST("0102", "操作失败(错误代码:YM001), 请联系客服"),   //命中提现黑名单
+
     /******债权转让******/
     TRANSFER_IS_NOT_EXIST("0071", "该债权不能申请转让"),
 
