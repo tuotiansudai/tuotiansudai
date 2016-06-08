@@ -71,5 +71,6 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
         for (String address : notifyEmailAddressList) {
             sendCloudMailUtil.sendUserBalanceCheckingResult(address, resultMap);
         }
+        logger.debug("end checkUserBalance.");
     }
 }
