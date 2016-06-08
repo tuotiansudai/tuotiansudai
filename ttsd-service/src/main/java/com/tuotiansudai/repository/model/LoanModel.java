@@ -60,10 +60,6 @@ public class LoanModel implements Serializable {
      ***/
     private long loanAmount;
     /***
-     * 投资手续费比例
-     ***/
-    private double investFeeRate;
-    /***
      * 最小投资金额
      ***/
     private long minInvestAmount;
@@ -189,7 +185,6 @@ public class LoanModel implements Serializable {
         this.id = loanDto.getId();
         this.name = loanDto.getProjectName();
         this.activityRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getActivityRate()));
-        this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
         this.activityType = loanDto.getActivityType();
         this.productType = loanDto.getProductType();
@@ -312,14 +307,6 @@ public class LoanModel implements Serializable {
 
     public void setLoanAmount(long loanAmount) {
         this.loanAmount = loanAmount;
-    }
-
-    public double getInvestFeeRate() {
-        return investFeeRate;
-    }
-
-    public void setInvestFeeRate(double investFeeRate) {
-        this.investFeeRate = investFeeRate;
     }
 
     public long getMinInvestAmount() {

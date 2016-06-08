@@ -202,7 +202,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -279,7 +278,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -313,7 +311,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -368,7 +365,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -420,7 +416,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -477,7 +472,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);

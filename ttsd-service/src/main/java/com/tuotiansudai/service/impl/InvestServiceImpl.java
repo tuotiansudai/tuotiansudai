@@ -178,11 +178,15 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public long estimateInvestIncome(long loanId, String loginName, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
+
+        //根据loginName查询出会员的相关信息
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
 
         UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+        double investFeeRate = membershipModel.getFee();
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(membershipModel.getFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+         expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
 
@@ -355,8 +359,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public void turnOffAutoInvest(String loginName) {
+    public boolean turnOffAutoInvest(String loginName, String ip) {
+        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
+        if (model == null || !model.isEnabled()) {
+            return false;
+        }
         autoInvestPlanMapper.disable(loginName);
+        return true;
     }
 
     @Override
@@ -391,7 +400,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     @Transactional
-    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn) {
+    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);

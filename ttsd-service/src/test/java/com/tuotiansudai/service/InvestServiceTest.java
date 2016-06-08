@@ -57,7 +57,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -125,7 +124,7 @@ public class InvestServiceTest {
         assert dbModel.getLoginName().equals(loginName);
         assert dbModel.isEnabled();
 
-        investService.turnOffAutoInvest(loginName);
+        investService.turnOffAutoInvest(loginName, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;

@@ -17,7 +17,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
     private AccountMapper accountMapper;
 
     @Override
-    public BaseResponseDto noPasswordInvestTurnOn(BaseParamDto baseParamDto) {
+    public BaseResponseDto noPasswordInvestTurnOn(BaseParamDto baseParamDto, String ip) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

@@ -84,6 +84,7 @@
                 "sidebar":[
                     {"name":"loginLog","text":"登录日志","link":"/security-log/login-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"userOpLog","text":"用户行为日志","link":"/security-log/user-op-log","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"clearCache","text":"清除DB Cache","link":"/security-log/clear-db-cache","role":"'ADMIN'"}
                 ]
             },
@@ -103,6 +104,13 @@
                     {"name":"tiandouPrize","text":"天豆奖品管理","link":"/activity-manage/tiandou-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"pointPrize","text":"财豆奖品管理","link":"/activity-manage/point-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                ]
+            },
+            {
+                "name":"membership-manage",
+                "header":{"text":"会员管理"},
+                "sidebar":[
+                    {"name":"membershipQuery","text":"会员等级查询","link":"/membership-manage/membership-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
