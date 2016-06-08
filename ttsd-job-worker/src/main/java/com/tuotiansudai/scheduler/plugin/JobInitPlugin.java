@@ -195,8 +195,9 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void createCheckUserBalanceJob() {
         try {
+            // "0 0 1 ? * 7#1 *"
             jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 1 9 JUN ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
