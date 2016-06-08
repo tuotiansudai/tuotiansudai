@@ -18,7 +18,10 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         fetchCaptchaElement.prop('disabled', true);
     });
 
-    $checkbox.on('click',function() {
+    $checkbox.on('click',function(event) {
+        if(event.target.tagName=='A') {
+            return;
+        }
         var $this=$(this),
             $agreeLast=$this.parents('.agree-last'),
             $cIcon=$agreeLast.find('i');
@@ -36,6 +39,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     showAgreement.click(function () {
+        //$agreement.trigger('click');
         layer.open({
             type: 1,
             title: '拓天速贷服务协议',
