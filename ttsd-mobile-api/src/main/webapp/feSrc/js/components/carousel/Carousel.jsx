@@ -26,7 +26,7 @@ class Carousel extends React.Component {
 			       pagination: '.swiper-pagination',
 			       paginationClickable: true
 			   	});
-			}, 100);
+			}, 300);
 		});
 	}
 	componentWillUnmount() {
