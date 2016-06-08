@@ -418,7 +418,6 @@ public class InvestTransferPurchaseServiceTest {
         fakeLoanModel.setStatus(LoanStatus.REPAYING);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setBaseRate(baseRate);
-        fakeLoanModel.setInvestFeeRate(0.1);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");

@@ -20,6 +20,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
@@ -317,9 +318,11 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount) {
+    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
+        //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
+        double investFeeRate = 0.1;
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
@@ -327,7 +330,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
             totalInterest += expectedInterest - expectedFee;
         }
 

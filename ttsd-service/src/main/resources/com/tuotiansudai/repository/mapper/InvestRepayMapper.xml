@@ -65,7 +65,6 @@
             <result column="description_html" property="descriptionHtml"></result>
             <result column="base_rate" property="baseRate"></result>
             <result column="loan_amount" property="loanAmount"></result>
-            <result column="invest_fee_rate" property="investFeeRate"></result>
             <result column="min_invest_amount" property="minInvestAmount"></result>
             <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
             <result column="max_invest_amount" property="maxInvestAmount"></result>

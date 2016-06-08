@@ -136,7 +136,6 @@ public class TransferRuleUtilTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000000");
         loanDto.setType(loanType);

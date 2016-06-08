@@ -233,7 +233,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             //实际利息
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
             //实际手续费
-            long actualFee = new BigDecimal(actualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+            long actualFee = new BigDecimal(actualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             //实收金额
             long repayAmount = investModel.getAmount() + actualInterest - actualFee;
 
