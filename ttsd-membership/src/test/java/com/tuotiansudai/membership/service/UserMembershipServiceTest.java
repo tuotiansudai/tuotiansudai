@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.service;
 
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
@@ -34,6 +35,9 @@ public class UserMembershipServiceTest {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -78,7 +82,7 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldGetMembershipByLevel(){
-        MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership().getLevel());
+        MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership(1).getLevel());
 
         assertThat(membershipModel.getLevel(), is(1));
         assertThat(membershipModel.getFee(), is(0.1));
@@ -86,9 +90,24 @@ public class UserMembershipServiceTest {
     }
 
     @Test
-    public void shouldGetProgressBarPercentByLoginName(){
+    public void shouldGetProgressBarPercentByLoginNameWhenLevelEqualsV0(){
+        AccountModel accountModel = createAccount(4000);
+        MembershipModel membershipModel = createMembership(1);
+        UserMembershipModel userMembershipModel = createUserMembership(membershipModel.getId());
+        int process = userMembershipService.getProgressBarPercent(accountModel.getLoginName());
+        assertThat(membershipModel.getLevel(), is(0));
+        assertThat(process, is(16));
+    }
 
+    @Test
+    public void shouldGetProgressBarPercentByLoginNameWhenLevelMoreThanV5(){
+        AccountModel accountModel = createAccount(6000000);
+        MembershipModel membershipModel = createMembership(6);
+        UserMembershipModel userMembershipModel = createUserMembership(membershipModel.getId());
+        int process = userMembershipService.getProgressBarPercent(accountModel.getLoginName());
 
+        assertThat(membershipModel.getLevel(), is(5));
+        assertThat(process, is(100));
     }
 
     private UserModel getFakeUser(String loginName) {
@@ -104,17 +123,19 @@ public class UserMembershipServiceTest {
         return fakeUser;
     }
 
-    private MembershipModel createMembership(){
-        MembershipModel membershipModel = new MembershipModel();
-        membershipModel.setId(10000001);
-        membershipModel.setLevel(1);
-        membershipModel.setExperience(5000);
-        membershipModel.setFee(0.1);
+    private MembershipModel createMembership(int level){
+        MembershipModel membershipModel = membershipMapper.findById(level);
         return membershipModel;
     }
-    private AccountModel createAccount(){
+
+    private UserMembershipModel createUserMembership(long membershipId){
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testuser", membershipId, new DateTime().plusDays(130).toDate() , UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+        return userMembershipModel;
+    }
+    private AccountModel createAccount(long membershipPoint){
         AccountModel accountModel = new AccountModel(getFakeUser("testuser").getLoginName(), "username", "", "", "", new Date());
-        accountModel.setMembershipPoint(6000);
+        accountModel.setMembershipPoint(membershipPoint);
         accountMapper.create(accountModel);
         return accountModel;
     }
