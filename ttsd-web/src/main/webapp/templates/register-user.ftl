@@ -21,7 +21,7 @@
             </li>
                 <li>
                     <i class="sprite-register-ic-mobile"></i>
-                    <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
+                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>

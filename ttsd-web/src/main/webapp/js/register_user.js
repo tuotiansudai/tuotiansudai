@@ -221,6 +221,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
+                    mobile.attr('preValue',mobile.val());
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
@@ -233,7 +234,10 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         var $frontInput=registerUserForm.find('input:lt(4)'),
             passedNumber= 0,
             referrerValid;
+        var referrerInput=$('input.referrer',registerUserForm),
+            mobile = $('input.mobile', registerUserForm);;
 
+        $frontInput.push(referrerInput[0]);
         $frontInput.each(function(key,option) {
             if($(option).hasClass('valid')) {
                 passedNumber+=1;
@@ -241,9 +245,9 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         });
 
         referrerValid=$('input.referrer',registerUserForm).hasClass('error');
-        if(passedNumber==4 && $agreement.prop('checked') && !referrerValid) {
+        if(passedNumber>=4 && $agreement.prop('checked') && !referrerValid) {
             $registerSubmit.prop('disabled',false);
-            if(event.target.name=='mobile' && countTimer) {
+            if(event.target.name=='mobile' && countTimer && mobile.attr('preValue')!=mobile.val()) {
                 clearInterval(countTimer);
                 $('input.captcha', registerUserForm).removeClass('valid').val('')
                     .next('label')
