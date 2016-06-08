@@ -39,7 +39,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     showAgreement.click(function () {
-        //$agreement.trigger('click');
         layer.open({
             type: 1,
             title: '拓天速贷服务协议',
