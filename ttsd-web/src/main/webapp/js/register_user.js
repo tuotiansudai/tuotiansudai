@@ -11,7 +11,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $referrerOpen=$('.referrer-open',registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
-        passedNumber=0;
+        passedNumber= 0,
+        countTimer;
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
@@ -82,6 +83,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
             }
+
         },
         submitHandler: function (form) {
             var self = this;
@@ -96,11 +98,11 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     var data = response.data;
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
-                        var seconds = 60;
-                        var count = setInterval(function () {
+                        var seconds = 60
+                         countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
-                                clearInterval(count);
+                                clearInterval(countTimer);
                                 fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
                             }
                             seconds--;
@@ -215,6 +217,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
                 mobile = $('input.mobile', registerUserForm);
+
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
@@ -226,19 +229,37 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         }
     });
 
-    function checkValidNum() {
-        passedNumber=$('input.valid',registerUserForm).length;
-        if(passedNumber==4 && $agreement.prop('checked')) {
+    function checkValidNum(event) {
+        var $frontInput=registerUserForm.find('input:lt(4)'),
+            passedNumber= 0,
+            referrerValid;
+
+        $frontInput.each(function(key,option) {
+            if($(option).hasClass('valid')) {
+                passedNumber+=1;
+            }
+        });
+
+        referrerValid=$('input.referrer',registerUserForm).hasClass('error');
+        if(passedNumber==4 && $agreement.prop('checked') && !referrerValid) {
             $registerSubmit.prop('disabled',false);
+            if(event.target.name=='mobile' && countTimer) {
+                clearInterval(countTimer);
+                $('input.captcha', registerUserForm).removeClass('valid').val('')
+                    .next('label')
+                    .html('请输入验证码');
+                fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
+                $registerSubmit.prop('disabled',true);
+            }
         }
         else {
             $registerSubmit.prop('disabled',true);
         }
     }
-    $agreement.on('click',function() {
-        checkValidNum();
+    $agreement.on('click',function(event) {
+        checkValidNum(event);
     });
-    $('input',registerUserForm).on('blur',function() {
-        checkValidNum();
+    $('input',registerUserForm).on('blur',function(event) {
+        checkValidNum(event);
     });
 });
