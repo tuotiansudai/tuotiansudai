@@ -127,7 +127,7 @@
 					</div>
 					<div class="fr">
 						<label>日期</label>
-						<input type="text" />
+						<input type="text" id="date-time-picker" />
 					</div>
 				</div>
 			</div>
