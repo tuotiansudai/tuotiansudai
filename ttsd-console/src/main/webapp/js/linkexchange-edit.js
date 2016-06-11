@@ -11,7 +11,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
             var dataForm = JSON.stringify({
                 "id":$('.jq-id').val(),
                 "title":$('.jq-title').val(),
-                "linkUrl":$('.jq-linkurl').val()
+                "linkUrl": $('.jq-linkurl').val(),
+                "noFollow": IsNoFollow()
             });
             if($('.jq-title').val() == ''
                 || $('.jq-linkurl').val().trim() == ''){
@@ -75,6 +76,15 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
                 return false;
             }else{
                 return true;
+            }
+        }
+
+        function IsNoFollow() {
+            var noFollowRadio = document.getElementsByName("noFollow")
+            for (var i = 0; i < noFollowRadio.length; ++i) {
+                if (noFollowRadio[i].checked) {
+                    return noFollowRadio[i].value
+                }
             }
         }
 

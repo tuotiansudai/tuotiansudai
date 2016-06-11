@@ -24,6 +24,16 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-1 control-label">noFollow: </label>
+
+                <div class="col-sm-4">
+                    <input type="radio" class="form-control jq-noFollow" name="noFollow" value="true"
+                           <#if ((linkExchange.noFollow)!true)>checked="checked"</#if>/>是
+                        <input type="radio" class="form-control jq-notFollow" name="noFollow" value="false"
+                               <#if !((linkExchange.noFollow)!true)>checked="checked""</#if>/>否
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-4 form-error">
                 </div>

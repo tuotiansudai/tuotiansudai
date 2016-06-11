@@ -21,6 +21,7 @@
             <tr>
                 <th>标题</th>
                 <th>链接</th>
+                <th>noFollow</th>
                 <th>更新时间</th>
                 <th>操作</th>
             </tr>
@@ -30,6 +31,7 @@
                 <tr>
                     <td>${linkExchange.title!}</td>
                     <td><span class="text-overflow" title="${linkExchange.linkUrl!}">${linkExchange.linkUrl!}</span></td>
+                    <td><#if linkExchange.noFollow>是<#else>否</#if></td>
                     <td>${(linkExchange.updateTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>
                     <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
