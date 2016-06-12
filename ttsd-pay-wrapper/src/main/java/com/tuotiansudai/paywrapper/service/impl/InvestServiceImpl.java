@@ -8,7 +8,6 @@ import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -49,6 +48,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+//import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+//import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 
 @Service
 public class InvestServiceImpl implements InvestService {

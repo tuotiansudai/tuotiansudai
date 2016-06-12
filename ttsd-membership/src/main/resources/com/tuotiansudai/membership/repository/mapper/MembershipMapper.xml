@@ -17,4 +17,8 @@
         select * from membership where id = #{id}
     </select>
 
+    <select id="findByLevel" resultMap="membershipResultMap" parameterType="int">
+        select * from membership where `level` = #{level}
+    </select>
+
 </mapper>

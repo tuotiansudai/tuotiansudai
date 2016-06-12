@@ -109,7 +109,7 @@ public class ContractServiceTest {
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "baisong", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "baisong", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null, 0.1);
         investModel.setCreatedTime(df.parse("2016-03-09 17:52:38"));
         return investModel;
 

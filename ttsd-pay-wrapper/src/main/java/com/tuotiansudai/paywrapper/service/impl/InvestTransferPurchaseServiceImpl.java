@@ -8,6 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -86,6 +87,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private SystemBillService systemBillService;
 
     @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
@@ -112,6 +116,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        double rate = userMembershipMapper.findRateByLoginName(loginName);
         InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
@@ -119,7 +124,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 loginName,
                 transferrerModel.getInvestTime(),
                 investDto.getSource(),
-                investDto.getChannel());
+                investDto.getChannel(),
+                rate);
 
         investMapper.create(investModel);
 
@@ -164,13 +170,15 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return dto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        double rate = userMembershipMapper.findRateByLoginName(transferee);
         InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
                 transferrerModel.getAmount(),
                 transferee,
                 transferrerModel.getInvestTime(), investDto.getSource(),
-                investDto.getChannel());
+                investDto.getChannel(),
+                rate);
 
         investMapper.create(investModel);
 
