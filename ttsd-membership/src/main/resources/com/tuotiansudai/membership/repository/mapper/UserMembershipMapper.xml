@@ -32,4 +32,8 @@
         select * from user_membership where login_name = #{loginName}
     </select>
 
+    <select id="findByMembershipId" resultMap="UserMembershipResultMap" parameterType="long">
+        select * from user_membership where membership_id = #{membershipId}
+    </select>
+
 </mapper>
