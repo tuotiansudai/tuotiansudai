@@ -36,4 +36,8 @@
         select * from user_membership where membership_id = #{membershipId}
     </select>
 
+    <select id="findMembershipPointByLoginName" resultType="long" parameterType="string">
+        select membership_point from account where login_name = #{loginName}
+    </select>
+
 </mapper>

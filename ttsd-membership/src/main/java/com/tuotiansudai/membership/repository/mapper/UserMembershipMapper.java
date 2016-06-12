@@ -18,4 +18,6 @@ public interface UserMembershipMapper {
     List<UserMembershipModel> findByLoginName(String loginName);
 
     UserMembershipModel findByMembershipId(long membershipId);
+
+    Long findMembershipPointByLoginName(String loginName);
 }

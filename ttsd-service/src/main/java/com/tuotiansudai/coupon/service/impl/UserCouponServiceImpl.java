@@ -13,19 +13,17 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -41,13 +39,16 @@ public class UserCouponServiceImpl implements UserCouponService {
     private LoanMapper loanMapper;
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "pay.interest.fee")
+    private double defaultFee;
 
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
@@ -123,13 +124,15 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         }));
 
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+
         List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            InvestModel investModel = investMapper.findById(usableUserCoupon.getInvestId());
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investModel.getInvestFeeRate(), loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
                 maxBenefitUserCoupons.add(usableUserCoupon);
