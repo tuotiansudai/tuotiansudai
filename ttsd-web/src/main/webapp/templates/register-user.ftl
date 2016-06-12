@@ -49,7 +49,7 @@
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-                <input type="submit" class="register-user btn-success" value="立即注册" disabled />
+                <input type="submit" class="register-user btn-success" value="立即注册" />
             </div>
 
         </form>
