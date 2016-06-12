@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -71,13 +72,13 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {
                         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
 
-                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON ) {
+                        if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && couponModel.getUserGroup() != UserGroup.EXPERIENCE_INVEST_SUCCESS) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
                             newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                         }
 
-                        if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
+                        if (couponModel.getCouponType() == CouponType.RED_ENVELOPE && couponModel.getUserGroup() != UserGroup.EXPERIENCE_INVEST_SUCCESS) {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
                             redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
@@ -106,7 +107,6 @@ public class CouponAlertServiceImpl implements CouponAlertService {
 
     @Override
     public void BirthdayNotify() {
-
         List<String> userMobileList = userMapper.findUsersBirthdayMobile();
         for (String mobile : userMobileList) {
             SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
