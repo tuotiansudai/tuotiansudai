@@ -563,9 +563,9 @@
         'COMPLETE'
         )) temp
         <if test="loginName != null and loginName != ''">
-            WHERE temp.max_amount_login_name = #{loginName}
-            OR temp.last_invest_login_name = #{loginName}
-            OR temp.first_invest_login_name = #{loginName}
+        WHERE temp.max_amount_login_name = #{loginName}
+        OR temp.last_invest_login_name = #{loginName}
+        OR temp.first_invest_login_name = #{loginName}
         </if>
         ORDER BY temp.created_time DESC
         limit #{index}, #{pageSize}
