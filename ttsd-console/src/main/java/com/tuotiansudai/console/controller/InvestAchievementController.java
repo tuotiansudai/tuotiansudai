@@ -82,7 +82,7 @@ public class InvestAchievementController {
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("loginName", loginName);
             long investAchievementCount = investAchievementService.findInvestAchievementCount(loginName);
-            long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 ? 1 : 0);
+            long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 || investAchievementCount == 0? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);

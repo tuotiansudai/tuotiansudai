@@ -168,17 +168,6 @@ public class UserOpLogAspect {
         logModel.setCreatedTime(new Date());
         userOpLogMapper.create(logModel);
 
-        // 如果开通的是“免密支付”协议，那么默认会自动开通“免密投资”功能。
-        if (opType == UserOpType.NO_PASSWORD_AGREEMENT) {
-            UserOpLogModel noPasswordLogModel = new UserOpLogModel();
-            noPasswordLogModel.setLoginName(loginName);
-            noPasswordLogModel.setIp(ip);
-            noPasswordLogModel.setDeviceId(deviceId);
-            noPasswordLogModel.setSource(source);
-            noPasswordLogModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
-            noPasswordLogModel.setCreatedTime(new Date());
-            userOpLogMapper.create(noPasswordLogModel);
-        }
     }
 
     /**

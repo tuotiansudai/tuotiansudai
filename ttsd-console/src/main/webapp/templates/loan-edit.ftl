@@ -180,7 +180,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写"
                        value="${(loanInfo.minInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK"&& loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
@@ -189,7 +189,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl" errormsg="投资递增金额需要正确填写"
                        value="${(loanInfo.investIncreasingAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
@@ -198,7 +198,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl"
                        errormsg="单笔最大投资金额需要正确填写" value="${(loanInfo.maxInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE">disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
