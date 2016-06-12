@@ -118,7 +118,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        InvestModel investModel = getInvestModel(investDto, loginName, transferApplicationModel, transferrerModel);
+        InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel);
 
         investMapper.create(investModel);
 
@@ -146,20 +146,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         return baseDto;
     }
 
-    private InvestModel getInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) {
-        InvestModel investModel =  new InvestModel(idGenerator.generate(),
-                    transferApplicationModel.getLoanId(),
-                    transferApplicationModel.getTransferInvestId(),
-                    transferrerModel.getAmount(),
-                    loginName,
-                    transferrerModel.getInvestTime(),
-                    investDto.getSource(),
-                    investDto.getChannel());
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        investModel.setInvestFeeRate(membershipModel.getFee());
-        return investModel;
-    }
-
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> purchase(InvestDto investDto) {
@@ -177,7 +163,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return dto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        InvestModel investModel = getInvestModel(investDto, transferee, transferApplicationModel, transferrerModel);
+        InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel);
 
         investMapper.create(investModel);
 
@@ -390,12 +376,13 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
         for (InvestRepayModel transferrerTransferredInvestRepayModel : transferrerTransferredInvestRepayModels) {
+            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue(),;
             InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(idGenerator.generate(),
                     investId,
                     transferrerTransferredInvestRepayModel.getPeriod(),
                     transferrerTransferredInvestRepayModel.getCorpus(),
                     transferrerTransferredInvestRepayModel.getExpectedInterest(),
-                    new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue(),
+                    expectedFee,
                     transferrerTransferredInvestRepayModel.getRepayDate(),
                     transferrerTransferredInvestRepayModel.getStatus());
 
@@ -504,5 +491,19 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private void sendFatalNotify(String message) {
         SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+    }
+
+    private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) {
+        InvestModel investModel =  new InvestModel(idGenerator.generate(),
+                transferApplicationModel.getLoanId(),
+                transferApplicationModel.getTransferInvestId(),
+                transferrerModel.getAmount(),
+                loginName,
+                transferrerModel.getInvestTime(),
+                investDto.getSource(),
+                investDto.getChannel());
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        investModel.setInvestFeeRate(membershipModel.getFee());
+        return investModel;
     }
 }

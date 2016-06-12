@@ -27,6 +27,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +66,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "pay.interest.fee")
+    private double defaultFee;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -324,11 +328,8 @@ public class CouponServiceImpl implements CouponService {
         long totalInterest = 0;
 
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
-        double investFeeRate = 0.1;
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        if (membershipModel != null) {
-            investFeeRate = membershipModel.getFee();
-        }
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);

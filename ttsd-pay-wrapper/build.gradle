@@ -5,8 +5,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             project(':ttsd-service'),
             project(':ttsd-point'),
-            project(':ttsd-jpush'),
-            project(':ttsd-membership')
+            project(':ttsd-jpush')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

@@ -4,8 +4,7 @@ apply plugin: 'java'
 dependencies {
     compile project(':ttsd-service'),
             project(':ttsd-point'),
-            project(':ttsd-jpush'),
-            project(':ttsd-membership')
+            project(':ttsd-jpush')
 }
 
 startScripts {
