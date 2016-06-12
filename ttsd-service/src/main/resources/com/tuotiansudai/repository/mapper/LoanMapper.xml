@@ -489,7 +489,7 @@
             loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus == 'COMPLETE'">
-            loan.status = 'COMPLETE'
+            loan.status in ('COMPLETE','REPAYING')
         </if>
 
         <if test="IsContainNewBie == 'false'">
@@ -498,13 +498,19 @@
         <if test="IsContainNewBie == 'true'">
             and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
         </if>
-        ORDER BY
+        ORDER BY CASE loan.status
+        WHEN 'RAISING' THEN '1'
+        WHEN 'PREHEAT' THEN '2'
+        WHEN 'REPAYING' THEN '3'
+        WHEN 'COMPLETE' THEN '4'
+        ELSE '5' END,
         CASE loan.status WHEN 'RAISING' THEN duration END asc,
         CASE loan.status WHEN 'RAISING' THEN verify_time END DESC,
         CASE loan.status WHEN 'RAISING' THEN created_time END DESC,
         CASE loan.status WHEN 'PREHEAT' THEN duration END,
         CASE loan.status WHEN 'PREHEAT' THEN verify_time END DESC,
         CASE loan.status WHEN 'PREHEAT' THEN created_time END DESC,
+        CASE loan.status WHEN 'REPAYING' THEN recheck_time END DESC,
         CASE loan.status WHEN 'COMPLETE' THEN recheck_time END DESC
     </select>
 
