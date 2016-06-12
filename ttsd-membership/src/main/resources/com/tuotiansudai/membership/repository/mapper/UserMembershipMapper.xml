@@ -40,7 +40,7 @@
         select m.fee from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() order by um.created_time desc limit 1
     </select>
 
-    <select id="findRealLevelByLoginName" resultType="int" parameterType="string">
+    <select id="findRealLevelByLoginName" resultType="Integer" parameterType="string">
         select m.level from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() and um.type = 'UPGRADE' order by um.created_time desc limit 1
     </select>
 </mapper>

@@ -7,6 +7,9 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
@@ -19,6 +22,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,6 +90,9 @@ public class InvestControllerTest {
     @Autowired
     InvestNotifyRequestMapper investNotifyRequestMapper;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     private ObjectMapper objectMapper;
     private MockWebServer mockServer;
 
@@ -137,6 +144,8 @@ public class InvestControllerTest {
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
 
+        mockUserMembership(mockInvestLoginName);
+
         long orderId = investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
 
         List<InvestNotifyRequestModel> investNotifyTodoList = investNotifyRequestMapper.getTodoList(10);
@@ -170,6 +179,10 @@ public class InvestControllerTest {
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
+
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
 
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
@@ -212,6 +225,11 @@ public class InvestControllerTest {
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
+
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
+        mockUserMembership(mockInvestLoginName4);
 
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
@@ -268,6 +286,12 @@ public class InvestControllerTest {
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
+
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
+        mockUserMembership(mockInvestLoginName4);
+        mockUserMembership(mockInvestLoginName5);
 
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
@@ -332,6 +356,12 @@ public class InvestControllerTest {
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
 
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
+        mockUserMembership(mockInvestLoginName4);
+        mockUserMembership(mockInvestLoginName5);
+
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
@@ -393,6 +423,16 @@ public class InvestControllerTest {
         mockAccounts(mockUserNames, mockInitAmount);
         mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
 
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
+        mockUserMembership(mockInvestLoginName4);
+
+        mockUserMembership(mockInvestLoginName1);
+        mockUserMembership(mockInvestLoginName2);
+        mockUserMembership(mockInvestLoginName3);
+        mockUserMembership(mockInvestLoginName4);
+
         long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
@@ -448,7 +488,7 @@ public class InvestControllerTest {
                 "ret_msg=%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F%E3%80%82&service=project_tranfer_notify&" +
                 "trade_no=1509025074065552&version=4.0&" +
                 "sign=uCQvu1tGvZuJAl%2FGoQHgZYjceelWgQ71ubOOtjqgw%2BOMOsh6VfZcukgtuAk1Pjh00HnfXeRi%2BXfT50bcaesv1NKjJ%2FgFp6oMPZh0rqL32FqugCBZFDrz4HNPjJGljUuhatUmJJvvZMUMMJmlnU7j61ByZ77mvukZ%2Fk4v0AEsi5s%3D&" +
-                "sign_type=RSA", orderId+"X"+System.currentTimeMillis(), retCode))
+                "sign_type=RSA", orderId + "X" + System.currentTimeMillis(), retCode))
                 .andExpect(status().isOk());
     }
 
@@ -553,6 +593,12 @@ public class InvestControllerTest {
         lm.setStatus(LoanStatus.RAISING);
 //        lm.setUpdateTime(new Date());
         loanMapper.create(lm);
+    }
+
+    private void mockUserMembership(String loginName) {
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
     }
 
     private Map<String, String> getFakeCallbackParamsMap(String orderId) {

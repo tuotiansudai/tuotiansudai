@@ -21,5 +21,5 @@ public interface UserMembershipMapper {
 
     Double findRateByLoginName(String loginName);
 
-    int findRealLevelByLoginName(String loginName);
+    Integer findRealLevelByLoginName(String loginName);
 }

@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.membership.aspect;
 
-
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -24,8 +23,8 @@ import java.util.Date;
 @Component
 @Aspect
 public class MembershipAspect {
-    private static Logger logger = Logger.getLogger(MembershipAspect.class);
 
+    private static Logger logger = Logger.getLogger(MembershipAspect.class);
 
     @Autowired
     AccountMapper accountMapper;
@@ -47,6 +46,7 @@ public class MembershipAspect {
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
+        logger.debug("into MembershipAspect afterReturningInvestSuccess, loginName: " + investModel.getLoginName());
         try {
             String loginName = investModel.getLoginName();
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -56,18 +56,19 @@ public class MembershipAspect {
             accountModel.setMembershipPoint(totalPoint);
             accountMapper.update(accountModel);
 
-            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount, totalPoint, new Date(), "invest success.");
+            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount, totalPoint, new Date(), "UPGRADE");
             membershipExperienceBillMapper.create(billModel);
 
-            int level = userMembershipMapper.findRealLevelByLoginName(loginName);
-            MembershipModel membershipModel = membershipMapper.findByLevel(level + 1);
-            if (membershipModel != null && totalPoint >= membershipModel.getExperience()) {
-                UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+            Integer level = userMembershipMapper.findRealLevelByLoginName(loginName);
+            MembershipModel newMembership = membershipMapper.findByExperience(totalPoint);
+            if (newMembership.getLevel() > level) {
+                UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, newMembership.getId(), new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
                 userMembershipMapper.create(userMembershipModel);
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        logger.debug("left MembershipAspect afterReturningInvestSuccess, loginName: " + investModel.getLoginName());
     }
 
 
