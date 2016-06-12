@@ -83,6 +83,8 @@
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
                     <#if loanItem.productType == 'EXPERIENCE'>
                         <span class="new-free"></span>
+                    <#elseif loanItem.activityType == 'NEWBIE'>
+                        <span class="new-user"></span>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
