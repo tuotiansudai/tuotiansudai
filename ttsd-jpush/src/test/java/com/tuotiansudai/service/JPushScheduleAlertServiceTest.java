@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -90,9 +91,11 @@ public class JPushScheduleAlertServiceTest {
         ArgumentCaptor argumentCaptorSchedulePayload = ArgumentCaptor.forClass(SchedulePayload.class);
         verify(scheduleClient).createSchedule((SchedulePayload) argumentCaptorSchedulePayload.capture());
         String schedulePayloadString = argumentCaptorSchedulePayload.getAllValues().get(0).toString();
-
         verify(scheduleClient).getSchedule((String)findId.capture());
         verify(scheduleClient).updateSchedule((String)findId.capture(),(SchedulePayload) argumentCaptorSchedulePayload.capture());
+        assertTrue(schedulePayloadString.indexOf("testSchedule") != -1);
+        assertTrue(schedulePayloadString.indexOf("手动推送测试") != -1);
+        assertTrue(schedulePayloadString.indexOf("3") != -1);
     }
 
     private PushPayload createCommonPushPayLoad(){
