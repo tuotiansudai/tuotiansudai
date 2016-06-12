@@ -65,7 +65,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
-        if (JobType.ExperienceRepay.equals(schedulerName)) {
+        if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJos();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
