@@ -146,7 +146,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
 
     registerUserForm.validate({
         focusInvalid: false,
-        onkeyup:true,
+        //onkeyup:true,
         ignore: "",
         rules: {
             loginName: {
