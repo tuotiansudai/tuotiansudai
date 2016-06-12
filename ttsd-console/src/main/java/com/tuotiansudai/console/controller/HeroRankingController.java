@@ -28,9 +28,13 @@ public class HeroRankingController {
     private HeroRankingService heroRankingService;
 
     @RequestMapping(value = "/activity-manage/hero-ranking", method = RequestMethod.GET)
-    public ModelAndView heroRanking(@RequestParam(value = "tradingTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public ModelAndView heroRanking(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
 
         ModelAndView modelAndView = new ModelAndView("/hero-ranking");
+
+        if (tradingTime == null) {
+            tradingTime = new Date();
+        }
 
         List<HeroRankingView> heroRankingViewReferrerList = investMapper.findHeroRankingByReferrer(tradingTime, 1, 10);
 

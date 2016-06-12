@@ -1,5 +1,47 @@
-require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csrf'], function ($) {
-    $(function () {
+require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatetimepicker','jquery-ui','csrf'], function ($) {
+    $(function() {
+
+        $('#datepicker').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        $('#datepicker').on('dp.change', function(){
+            location.href = '/activity-manage/hero-ranking?tradingTime=' + $('#tradingTime').val();
+        });
+
+        $('.invest').on('click', function(){
+            if (!$(this).hasClass('active')) {
+                $(this).addClass('active');
+            }
+            $('.referrer').removeClass('active');
+            $('.upload').removeClass('active');
+            $('.invest-ranking').show();
+            $('.referrer-ranking').hide();
+            $('.upload-image').hide();
+        });
+
+        $('.referrer').on('click', function(){
+            if (!$(this).hasClass('active')) {
+                $(this).addClass('active');
+            }
+            $('.invest').removeClass('active');
+            $('.upload').removeClass('active');
+            $('.referrer-ranking').show();
+            $('.invest-ranking').hide();
+            $('.upload-image').hide();
+        });
+
+        $('.upload').on('click', function(){
+            if (!$(this).hasClass('active')) {
+                $(this).addClass('active');
+            }
+            $('.invest').removeClass('active');
+            $('.referrer').removeClass('active');
+            $('.upload-image').show();
+            $('.referrer-ranking').hide();
+            $('.invest-ranking').hide();
+        });
+
         var boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('.prize-save'), //提交按钮
@@ -109,5 +151,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             html += '</div>';
             $errorDom.append(html);
         }
+
     });
-})
+});
