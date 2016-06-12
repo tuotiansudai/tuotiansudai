@@ -2,9 +2,6 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -12,17 +9,17 @@ import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.List;
 
@@ -106,4 +103,13 @@ public class MembershipController {
 
         return records;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/receive", method = RequestMethod.GET)
+    public String receive(){
+        String receiveMsg = "";
+        LoginUserInfo.getLoginName();
+        return receiveMsg;
+    }
+
 }

@@ -16,7 +16,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,4 +57,19 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
         return membershipMapper.findById(max.getMembershipId());
     }
 
+    @Override
+    public String receiveMembership(String loanName) throws ParseException {
+        String receiveMsg = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date membershipOpenDate = sdf.parse("2016-07-01");
+        if(Calendar.getInstance().getTime().getTime() < membershipOpenDate.getTime()){
+            receiveMsg = "7月1日00：00开放领取哦亲!";
+        }else if(loanName == null || loanName.equals("")){
+            receiveMsg = "完成注册并实名认证即可免费领取会员V5超级特权哦!";
+        }else if(true){
+
+        }
+
+        return receiveMsg;
+    }
 }
