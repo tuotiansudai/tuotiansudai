@@ -24,4 +24,6 @@ public interface UserMembershipMapper {
     Integer findRealLevelByLoginName(String loginName);
 
     UserMembershipModel findByMembershipId(long membershipId);
+
+    Long findMembershipPointByLoginName(String loginName);
 }

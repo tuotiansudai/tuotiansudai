@@ -9,6 +9,8 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -42,6 +44,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -95,6 +98,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private InvestTransferNotifyRequestMapper investTransferNotifyRequestMapper;
 
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
     @Value("${common.environment}")
     private Environment environment;
 
@@ -117,15 +123,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         double rate = userMembershipMapper.findRateByLoginName(loginName);
-        InvestModel investModel = new InvestModel(idGenerator.generate(),
-                transferApplicationModel.getLoanId(),
-                transferApplicationModel.getTransferInvestId(),
-                transferrerModel.getAmount(),
-                loginName,
-                transferrerModel.getInvestTime(),
-                investDto.getSource(),
-                investDto.getChannel(),
-                rate);
+        InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
 
@@ -171,14 +169,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         double rate = userMembershipMapper.findRateByLoginName(transferee);
-        InvestModel investModel = new InvestModel(idGenerator.generate(),
-                transferApplicationModel.getLoanId(),
-                transferApplicationModel.getTransferInvestId(),
-                transferrerModel.getAmount(),
-                transferee,
-                transferrerModel.getInvestTime(), investDto.getSource(),
-                investDto.getChannel(),
-                rate);
+        InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
 
@@ -379,7 +370,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private void updateInvestRepay(TransferApplicationModel transferApplicationModel) {
         long transferInvestId = transferApplicationModel.getTransferInvestId();
         long investId = transferApplicationModel.getInvestId();
-
+        InvestModel investModel = investMapper.findById(investId);
         final int transferBeginWithPeriod = transferApplicationModel.getPeriod();
 
         List<InvestRepayModel> transferrerTransferredInvestRepayModels = Lists.newArrayList(Iterables.filter(investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestId), new Predicate<InvestRepayModel>() {
@@ -391,12 +382,13 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
         for (InvestRepayModel transferrerTransferredInvestRepayModel : transferrerTransferredInvestRepayModels) {
+            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(idGenerator.generate(),
                     investId,
                     transferrerTransferredInvestRepayModel.getPeriod(),
                     transferrerTransferredInvestRepayModel.getCorpus(),
                     transferrerTransferredInvestRepayModel.getExpectedInterest(),
-                    transferrerTransferredInvestRepayModel.getExpectedFee(),
+                    expectedFee,
                     transferrerTransferredInvestRepayModel.getRepayDate(),
                     transferrerTransferredInvestRepayModel.getStatus());
 
@@ -505,5 +497,20 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private void sendFatalNotify(String message) {
         SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+    }
+
+    private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel, double rate) {
+        InvestModel investModel =  new InvestModel(idGenerator.generate(),
+                transferApplicationModel.getLoanId(),
+                transferApplicationModel.getTransferInvestId(),
+                transferrerModel.getAmount(),
+                loginName,
+                transferrerModel.getInvestTime(),
+                investDto.getSource(),
+                investDto.getChannel(),
+                rate);
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        investModel.setInvestFeeRate(membershipModel.getFee());
+        return investModel;
     }
 }

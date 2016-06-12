@@ -1,5 +1,26 @@
 @import "./daterangepicker";
 
+.nav-container {
+	.nav ul {
+		margin-right: 120px;
+		li a.active, li a:hover {
+			color: #428edf;
+			border-top: #428edf 3px solid;
+		}
+	}
+	.go-home {
+		a {
+			margin-top: 21px;
+			color: #fff;
+			background: #428edf;
+			font-size: 16px;
+			display: block;
+			padding: 0 20px;
+			border-radius: 20px;
+		}
+	}
+}
+
 .global-member-ship {
 	$borderColor: #e6e6e6;
 	.vip-no-bg {
