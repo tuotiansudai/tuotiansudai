@@ -49,9 +49,9 @@ public class MembershipExperienceBillServiceTest {
         membershipExperienceBillMapper.create(membershipExperienceBillModelTwo);
         membershipExperienceBillMapper.create(membershipExperienceBillModelThree);
 
-        List<MembershipExperienceBillModel> membershipExperienceBillModelList = membershipExperienceBillService.findMembershipExperienceBillList(fakeUser.getLoginName(), 1, 10);
+        List<MembershipExperienceBillModel> membershipExperienceBillModelList = membershipExperienceBillService.findMembershipExperienceBillList(fakeUser.getLoginName(), null, null, 1, 10);
 
-        long membershipExperienceBillCount = membershipExperienceBillService.findMembershipExperienceBillCount(fakeUser.getLoginName());
+        long membershipExperienceBillCount = membershipExperienceBillService.findMembershipExperienceBillCount(fakeUser.getLoginName(), null, null);
 
         assertThat(membershipExperienceBillModelList.size(), is(3));
         assertThat(membershipExperienceBillCount, is(3L));
