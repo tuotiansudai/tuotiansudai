@@ -81,7 +81,7 @@ public class InvestModel implements Serializable {
     public InvestModel() {
     }
 
-    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel) {
+    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel, double investFeeRate) {
         this.id = id;
         this.transferInvestId = transferInvestId;
         this.loginName = loginName;
@@ -94,6 +94,7 @@ public class InvestModel implements Serializable {
         this.investTime = investTime;
         this.createdTime = new Date();
         this.transferStatus = TransferStatus.TRANSFERABLE;
+        this.investFeeRate = investFeeRate;
     }
 
     public long getId() {

@@ -8,6 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -89,6 +90,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private SystemBillService systemBillService;
 
     @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
@@ -118,7 +122,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel);
+        double rate = userMembershipMapper.findRateByLoginName(loginName);
+        InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
 
@@ -163,7 +168,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return dto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel);
+        double rate = userMembershipMapper.findRateByLoginName(transferee);
+        InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
 
@@ -493,7 +499,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
     }
 
-    private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) {
+    private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel, double rate) {
         InvestModel investModel =  new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
@@ -501,7 +507,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 loginName,
                 transferrerModel.getInvestTime(),
                 investDto.getSource(),
-                investDto.getChannel());
+                investDto.getChannel(),
+                rate);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         investModel.setInvestFeeRate(membershipModel.getFee());
         return investModel;

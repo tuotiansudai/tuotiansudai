@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -73,6 +76,9 @@ public class InvestTransferPurchaseServiceTest {
     @Autowired
     private SystemBillMapper systemBillMapper;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     @Before
     public void setUp() throws Exception {
         this.mockPayServer = new MockWebServer();
@@ -105,6 +111,11 @@ public class InvestTransferPurchaseServiceTest {
         investDto.setLoginName(transferee.getLoginName());
         investDto.setTransferInvestId(String.valueOf(fakeTransferApplication.getId()));
         investDto.setSource(Source.WEB);
+
+        UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
+
         investTransferPurchaseService.noPasswordPurchase(investDto);
 
         InvestModel investModel = investMapper.findByLoginName(transferee.getLoginName(), 0, 1).get(0);
@@ -428,7 +439,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         investMapper.create(fakeInvestModel);

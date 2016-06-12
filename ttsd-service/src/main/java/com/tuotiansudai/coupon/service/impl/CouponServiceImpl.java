@@ -67,7 +67,7 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
-    @Value(value = "pay.interest.fee")
+    @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";

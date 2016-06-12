@@ -93,4 +93,5 @@ public class InvestDto implements Serializable {
     public void setNoPassword(boolean noPassword) {
         this.noPassword = noPassword;
     }
+
 }

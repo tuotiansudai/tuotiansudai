@@ -137,7 +137,7 @@ public class InvestTransferServiceTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;

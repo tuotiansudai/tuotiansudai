@@ -516,7 +516,7 @@ public class RepayGeneratorServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, investTime, Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, investTime, Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         model.setInvestFeeRate(0.1);
         return model;

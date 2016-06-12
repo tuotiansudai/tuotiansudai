@@ -78,7 +78,7 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setInvestFeeRate(0.1);
         investMapper.create(invest);
@@ -135,13 +135,13 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         invest.setInvestFeeRate(0.1);
         investMapper.create(invest);
 
-        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null);
+        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investTransferee.setInvestFeeRate(0.1);
         investMapper.create(investTransferee);
