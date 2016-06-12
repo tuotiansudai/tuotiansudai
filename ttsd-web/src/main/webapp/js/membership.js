@@ -51,8 +51,8 @@ require(['jquery', 'underscore', 'moment', 'daterangepicker'], function($, _, mo
 			} else {
 				var time = moment();
 				renderTable({
-					startTime: time.format('YYYY-MM-DD'),
-					endTime: time.subtract(parseInt(type), 'days').format('YYYY-MM-DD')
+					endTime: time.format('YYYY-MM-DD'),
+					startTime: time.subtract(parseInt(type), 'days').format('YYYY-MM-DD')
 				}, function() {
 					$t.addClass('active').siblings().removeClass('active');
 				});
