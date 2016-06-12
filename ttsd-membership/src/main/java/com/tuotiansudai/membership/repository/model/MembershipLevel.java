@@ -22,8 +22,6 @@ public enum MembershipLevel {
 
     public String getLevelName() {return levelName;}
 
-    public String getNextLevelName(){return "sss";}
-
     public String getLevelValue() { return levelValue;}
 
     public int getLevel(){return level;}

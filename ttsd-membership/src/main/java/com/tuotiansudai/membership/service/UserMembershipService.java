@@ -10,10 +10,6 @@ public interface UserMembershipService {
 
     int getProgressBarPercent(String loginName);
 
-    List<String> getPrivilege(String loginName);
-
-    String[] showDisable(String loginName);
-
     int getExpireDayByLoginName(String loginName);
 
 }

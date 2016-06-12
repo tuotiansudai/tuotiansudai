@@ -49,16 +49,14 @@ public class MembershipController {
         String loginName = LoginUserInfo.getLoginName();
         if(loginName != null){
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-            MembershipModel NextLevelMembershipModel = userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
+            MembershipModel nextLevelMembershipModel = userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
 
-            modelAndView.addObject("membershipLevel", membershipModel != null?membershipModel.getLevel():"");
-            modelAndView.addObject("membershipNextLevel", NextLevelMembershipModel != null?NextLevelMembershipModel.getLevel():membershipModel.getLevel());
-            modelAndView.addObject("membershipNextLevelValue", NextLevelMembershipModel != null?(NextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()):"");
+            modelAndView.addObject("membershipLevel", membershipModel.getLevel());
+            modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel != null?nextLevelMembershipModel.getLevel():membershipModel.getLevel());
+            modelAndView.addObject("membershipNextLevelValue", nextLevelMembershipModel != null?(nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()):"");
             modelAndView.addObject("membershipPoint", accountModel != null?accountModel.getMembershipPoint():"");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
-            modelAndView.addObject("privilegeList", userMembershipService.getPrivilege(loginName));
-            modelAndView.addObject("privilegeShow", userMembershipService.showDisable(loginName));
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);
@@ -102,9 +100,7 @@ public class MembershipController {
         List<MembershipExperienceBillDto> records = Lists.transform(items, new Function<MembershipExperienceBillModel, MembershipExperienceBillDto>() {
             @Override
             public MembershipExperienceBillDto apply(MembershipExperienceBillModel input) {
-                MembershipExperienceBillDto membershipExperienceBillDto = new MembershipExperienceBillDto(input);
-
-                return membershipExperienceBillDto;
+                return new MembershipExperienceBillDto(input);
             }
         });
 
