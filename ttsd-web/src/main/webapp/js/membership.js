@@ -29,49 +29,6 @@ require(['jquery', 'underscore', 'moment', 'daterangepicker'], function($, _, mo
 				url: '/membership/structure-list-data',
 				data: sendData || ''
 			}).done(function(response) {
-				response = [{
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000000,
-					"totalExperience": 5025000,
-					"createdTime": "2016-06-01 23:22:22",
-					"description": "投资5000，增加5000成长值"
-				}, {
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000,
-					"totalExperience": 25000,
-					"createdTime": "2016-06-01 22:22:22",
-					"description": "投资5000，增加5000成长值"
-				}, {
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000,
-					"totalExperience": 20000,
-					"createdTime": "2016-06-01 21:22:22",
-					"description": "投资5000，增加5000成长值"
-				}, {
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000,
-					"totalExperience": 15000,
-					"createdTime": "2016-06-01 20:22:22",
-					"description": "投资5000，增加5000成长值"
-				}, {
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000,
-					"totalExperience": 10000,
-					"createdTime": "2016-06-01 19:22:22",
-					"description": "投资5000，增加5000成长值"
-				}, {
-					"id": 0,
-					"loginName": "gaoyinglong",
-					"experience": 5000,
-					"totalExperience": 5000,
-					"createdTime": "2016-06-01 18:22:22",
-					"description": "投资5000，增加5000成长值"
-				}];
 
 				$tbody.html(_.template(template)({
 					data: response
