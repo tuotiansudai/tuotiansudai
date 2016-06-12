@@ -22,4 +22,6 @@ public interface UserMembershipMapper {
     Double findRateByLoginName(String loginName);
 
     Integer findRealLevelByLoginName(String loginName);
+
+    UserMembershipModel findByMembershipId(long membershipId);
 }

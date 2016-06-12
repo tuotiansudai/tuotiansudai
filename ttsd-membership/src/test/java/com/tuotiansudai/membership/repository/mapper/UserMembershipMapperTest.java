@@ -2,7 +2,9 @@ package com.tuotiansudai.membership.repository.mapper;
 
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
@@ -29,6 +31,9 @@ public class UserMembershipMapperTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Test
     public void shouldCreateUserMembership() throws Exception {
@@ -103,6 +108,19 @@ public class UserMembershipMapperTest {
         assertThat(rate, is(0.09));
     }
 
+    public void shouldFindByMembershipId(){
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel);
+
+        UserMembershipModel userMembershipModel1 = userMembershipMapper.findByMembershipId(userMembershipModel.getMembershipId());
+
+        assertThat(userMembershipModel1.getLoginName(), is(fakeUser.getLoginName()));
+        assertThat(userMembershipModel1.getMembershipId(), is(2L));
+        assertThat(userMembershipModel1.getType(), is(UserMembershipType.GIVEN));
+    }
+
     private UserModel createFakeUser() {
         UserModel model = new UserModel();
         model.setLoginName("loginName");
@@ -115,4 +133,6 @@ public class UserMembershipMapperTest {
         userMapper.create(model);
         return model;
     }
+
+
 }

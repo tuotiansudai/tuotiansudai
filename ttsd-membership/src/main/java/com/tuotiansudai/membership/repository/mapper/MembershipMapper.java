@@ -10,4 +10,6 @@ public interface MembershipMapper {
     MembershipModel findById(long id);
 
     MembershipModel findByExperience(long experience);
+
+    MembershipModel findByLevel(int level);
 }

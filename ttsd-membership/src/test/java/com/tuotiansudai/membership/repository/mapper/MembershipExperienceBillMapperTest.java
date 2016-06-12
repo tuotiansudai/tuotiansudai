@@ -1,6 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -28,6 +29,9 @@ public class MembershipExperienceBillMapperTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Test
     public void shouldCreateMembershipExperienceBill() throws Exception {
@@ -85,9 +89,9 @@ public class MembershipExperienceBillMapperTest {
         membershipExperienceBillMapper.create(membershipExperienceBillModel2);
         membershipExperienceBillMapper.create(membershipExperienceBillModel3);
 
-        List<MembershipExperienceBillModel> membershipExperienceBillModelList = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(fakeUser.getLoginName(), 0, 10);
+        List<MembershipExperienceBillModel> membershipExperienceBillModelList = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(fakeUser.getLoginName(), null, null, 0, 10);
 
-        long membershipExperienceBillCount = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(fakeUser.getLoginName());
+        long membershipExperienceBillCount = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(fakeUser.getLoginName(), null, null);
 
         assertThat(membershipExperienceBillModelList.size(), is(3));
         assertThat(membershipExperienceBillCount, is(3L));
@@ -106,4 +110,6 @@ public class MembershipExperienceBillMapperTest {
         userMapper.create(model);
         return model;
     }
+
+
 }

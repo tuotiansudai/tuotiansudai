@@ -21,4 +21,7 @@
         select * from membership where experience &lt;= #{experience} order by experience desc limit 1;
     </select>
 
+    <select id="findByLevel" resultMap="membershipResultMap" parameterType="int">
+        select * from membership where level = #{level}
+    </select>
 </mapper>

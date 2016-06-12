@@ -43,8 +43,8 @@ public class MembershipController {
                                          @RequestParam(value = "loginName") String loginName) {
         ModelAndView modelAndView = new ModelAndView("/membership-detail");
 
-        long membershipExperienceCount = membershipExperienceBillService.findMembershipExperienceBillCount(loginName);
-        List<MembershipExperienceBillModel> membershipExperienceList = membershipExperienceBillService.findMembershipExperienceBillList(loginName, index, pageSize);
+        long membershipExperienceCount = membershipExperienceBillService.findMembershipExperienceBillCount(loginName, null, null);
+        List<MembershipExperienceBillModel> membershipExperienceList = membershipExperienceBillService.findMembershipExperienceBillList(loginName, null, null, index, pageSize);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
         modelAndView.addObject("membershipExperienceCount", membershipExperienceCount);
