@@ -83,7 +83,7 @@
     </select>
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
-      select * from (
+        select * from (
         select * from loan t
         where 1=1
         <if test="name !=null and name!=''">
@@ -498,7 +498,14 @@
         <if test="IsContainNewBie == 'true'">
             and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
         </if>
-        ORDER BY duration ,loan.verify_time DESC, loan.created_time DESC
+        ORDER BY
+        CASE loan.status WHEN 'RAISING' THEN duration END asc,
+        CASE loan.status WHEN 'RAISING' THEN verify_time END DESC,
+        CASE loan.status WHEN 'RAISING' THEN created_time END DESC,
+        CASE loan.status WHEN 'PREHEAT' THEN duration END,
+        CASE loan.status WHEN 'PREHEAT' THEN verify_time END DESC,
+        CASE loan.status WHEN 'PREHEAT' THEN created_time END DESC,
+        CASE loan.status WHEN 'COMPLETE' THEN recheck_time END DESC
     </select>
 
     <select id="findLoanAchievement" resultMap="loanAchievementView" parameterType="map">
