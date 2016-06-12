@@ -10,15 +10,18 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
         $referrerOpen=$('.referrer-open',registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
-        $registerSubmit=$('input[type="submit"]',registerUserForm),
-        passedNumber=0;
+        passedNumber= 0,
+        countTimer;
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
         fetchCaptchaElement.prop('disabled', true);
     });
 
-    $checkbox.on('click',function() {
+    $checkbox.on('click',function(event) {
+        if(event.target.tagName.toUpperCase()=='A') {
+            return;
+        }
         var $this=$(this),
             $agreeLast=$this.parents('.agree-last'),
             $cIcon=$agreeLast.find('i');
@@ -79,6 +82,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
             }
+
         },
         submitHandler: function (form) {
             var self = this;
@@ -93,11 +97,11 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     var data = response.data;
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
-                        var seconds = 60;
-                        var count = setInterval(function () {
+                        var seconds = 60
+                         countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
-                                clearInterval(count);
+                                clearInterval(countTimer);
                                 fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
                             }
                             seconds--;
@@ -142,6 +146,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
 
     registerUserForm.validate({
         focusInvalid: false,
+        //onkeyup:true,
+        ignore: "",
         rules: {
             loginName: {
                 required: true,
@@ -211,31 +217,53 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         },
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
-                mobile = $('input.mobile', registerUserForm);
+                mobile = $('input.mobile', registerUserForm),
+                referrer=$('.referrer',registerUserForm);
+
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
+                    mobile.attr('preValue',mobile.val());
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
+                    fetchCaptchaElement.prop('disabled', false);
+                }
+                else if(element.name === 'referrer' && !mobile.hasClass('error')) {
                     fetchCaptchaElement.prop('disabled', false);
                 }
             }
         }
     });
 
-    function checkValidNum() {
-        passedNumber=$('input.valid',registerUserForm).length;
-        if(passedNumber==4 && $agreement.prop('checked')) {
-            $registerSubmit.prop('disabled',false);
+    function checkValidNum(event) {
+        var $frontInput=registerUserForm.find('input:lt(4)'),
+            passedNumber= 0,
+            frontInputValid=true;
+        var mobile = $('input.mobile', registerUserForm);
+
+        $frontInput.each(function(key,option) {
+            if(!$(option).hasClass('valid')) {
+                frontInputValid=false;
+                return false;
+            }
+
+        });
+
+        if(event.target.name=='mobile' && countTimer && mobile.attr('preValue')!=mobile.val()) {
+            clearInterval(countTimer);
+            $('input.captcha', registerUserForm).removeClass('valid').val('')
+                .next('label')
+                .html('请输入验证码');
+            fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
+
         }
-        else {
-            $registerSubmit.prop('disabled',true);
-        }
+
+
     }
-    $agreement.on('click',function() {
-        checkValidNum();
+    $agreement.on('click',function(event) {
+        checkValidNum(event);
     });
-    $('input',registerUserForm).on('blur',function() {
-        checkValidNum();
+    $('input',registerUserForm).on('blur',function(event) {
+        checkValidNum(event);
     });
 });
