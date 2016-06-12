@@ -376,7 +376,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
         for (InvestRepayModel transferrerTransferredInvestRepayModel : transferrerTransferredInvestRepayModels) {
-            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue(),;
+            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(idGenerator.generate(),
                     investId,
                     transferrerTransferredInvestRepayModel.getPeriod(),
