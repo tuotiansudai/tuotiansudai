@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.anyObject;
@@ -88,31 +89,10 @@ public class JPushScheduleAlertServiceTest {
         ArgumentCaptor findId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentCaptorSchedulePayload = ArgumentCaptor.forClass(SchedulePayload.class);
         verify(scheduleClient).createSchedule((SchedulePayload) argumentCaptorSchedulePayload.capture());
+        String schedulePayloadString = argumentCaptorSchedulePayload.getAllValues().get(0).toString();
+
         verify(scheduleClient).getSchedule((String)findId.capture());
         verify(scheduleClient).updateSchedule((String)findId.capture(),(SchedulePayload) argumentCaptorSchedulePayload.capture());
-    }
-
-    @Test
-    public void shouldSendJPushPeriodicalScheduleAlertIsOk() throws APIConnectionException, APIRequestException {
-        PushPayload pushPayload = createCommonPushPayLoad();
-        Calendar now= Calendar.getInstance();
-        now.add(Calendar.MINUTE,10);
-        String startTime = sdf.format(now.getTimeInMillis());
-        now.add(Calendar.HOUR_OF_DAY,24);
-        String endTime = sdf.format(now.getTimeInMillis());
-        ScheduleResult scheduleResult = new ScheduleResult();
-
-        TriggerPayload triggerPayload = TriggerPayload.newBuilder().setPeriodTime(startTime,endTime,"10:11:00")
-                .setTimeFrequency(TimeUnit.DAY,1,null)
-                .buildPeriodical();
-        SchedulePayload.Builder schedulePayload = new SchedulePayload.Builder().setName("测试周期")
-                .setEnabled(true)
-                .setTrigger(triggerPayload).setPush(pushPayload);
-        when(scheduleClient.createSchedule(schedulePayload.build())).thenReturn(scheduleResult);
-        verify(scheduleClient).createSchedule(schedulePayload.build());
-
-        scheduleResult = jPushScheduleAlertService.sendJPushScheduleAlert(UUIDGenerator.generate(),pushPayload,triggerPayload);
-        assertNotNull(scheduleResult);
     }
 
     private PushPayload createCommonPushPayLoad(){
