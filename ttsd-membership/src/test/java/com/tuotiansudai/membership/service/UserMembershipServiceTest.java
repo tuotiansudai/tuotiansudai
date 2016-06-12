@@ -84,9 +84,9 @@ public class UserMembershipServiceTest {
     public void shouldGetMembershipByLevel(){
         MembershipModel membershipModel = userMembershipService.getMembershipByLevel(createMembership(1).getLevel());
 
-        assertThat(membershipModel.getLevel(), is(1));
+        assertThat(membershipModel.getLevel(), is(0));
         assertThat(membershipModel.getFee(), is(0.1));
-        assertThat(membershipModel.getExperience(), is(5000L));
+        assertThat(membershipModel.getExperience(), is(0L));
     }
 
     @Test
@@ -123,8 +123,8 @@ public class UserMembershipServiceTest {
         return fakeUser;
     }
 
-    private MembershipModel createMembership(int level){
-        MembershipModel membershipModel = membershipMapper.findById(level);
+    private MembershipModel createMembership(int id){
+        MembershipModel membershipModel = membershipMapper.findById(id);
         return membershipModel;
     }
 
