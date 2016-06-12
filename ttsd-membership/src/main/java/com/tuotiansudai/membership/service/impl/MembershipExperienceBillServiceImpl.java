@@ -6,6 +6,7 @@ import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,12 +16,15 @@ public class MembershipExperienceBillServiceImpl implements MembershipExperience
     private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
     @Override
-    public List<MembershipExperienceBillModel> findMembershipExperienceBillList(String loginName, int index, int pageSize) {
-        return membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
+    public List<MembershipExperienceBillModel> findMembershipExperienceBillList(String loginName, Date startTime, Date endTime, Integer index, Integer pageSize) {
+        if(index == null && pageSize == null){
+            return membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, startTime, endTime, null, null);
+        }
+        return membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, startTime, endTime, (index - 1) * pageSize, pageSize);
     }
 
     @Override
-    public long findMembershipExperienceBillCount(String loginName) {
-        return membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(loginName);
+    public long findMembershipExperienceBillCount(String loginName, Date startTime, Date endTime) {
+        return membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(loginName, startTime, endTime);
     }
 }

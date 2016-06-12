@@ -32,12 +32,28 @@
     <select id="findMembershipExperienceBillByLoginName" resultMap="MembershipExperienceBillResultMap" parameterType="map">
         select * from membership_experience_bill
         where login_name = #{loginName}
+        <if test="startTime != null">
+            <![CDATA[ and created_time >= #{startTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and created_time <= #{endTime} ]]>
+        </if>
         order by created_time desc
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+
     </select>
 
     <select id="findMembershipExperienceBillCountByLoginName" resultType="long" parameterType="String">
-        select count(id) from membership_experience_bill where login_name = #{loginName}
+        select count(id) from membership_experience_bill
+        where login_name = #{loginName}
+        <if test="startTime != null">
+            <![CDATA[ and created_time >= #{startTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and created_time <= #{endTime} ]]>
+        </if>
     </select>
 
 </mapper>
