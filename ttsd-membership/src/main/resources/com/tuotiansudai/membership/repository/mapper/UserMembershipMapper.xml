@@ -52,4 +52,8 @@
         select membership_point from account where login_name = #{loginName}
     </select>
 
+    <update id="updateMembershipPoint" parameterType="map">
+        update account set membership_point = #{membershipPoint} where login_name = #{loginName}
+    </update>
+
 </mapper>

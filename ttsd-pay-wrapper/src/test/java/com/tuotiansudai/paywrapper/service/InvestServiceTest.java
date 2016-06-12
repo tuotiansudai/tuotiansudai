@@ -526,8 +526,11 @@ public class InvestServiceTest {
         int level = userMembershipMapper.findRealLevelByLoginName("investor");
         assertEquals(level, 1);
 
-        long count = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName("investor");
-        assertEquals (count, 1);
+        long count = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName("investor", null, null);
+        assertEquals(count, 1);
+
+        long membershipPoint = userMembershipMapper.findMembershipPointByLoginName("investor");
+        assertEquals(membershipPoint, 5000);
     }
 
 }
