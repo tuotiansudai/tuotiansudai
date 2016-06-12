@@ -118,16 +118,16 @@
 		<div class="inner-block">
 			<div class="filter-bar">
 				<div class="clearfix">
-					<div class="fl buttons">
-						<span class="active">全部</span>
-						<span>六个月</span>
-						<span>一个月</span>
-						<span>本周</span>
-						<span>今天</span>
+					<div class="fl buttons" id="filter-btns">
+						<span data-type="all" class="active">全部</span>
+						<span data-type="180">六个月</span>
+						<span data-type="30">一个月</span>
+						<span data-type="7">本周</span>
+						<span data-type="1">今天</span>
 					</div>
 					<div class="fr">
 						<label>日期</label>
-						<input type="text" />
+						<input type="text" id="date-time-picker" />
 					</div>
 				</div>
 			</div>
@@ -140,43 +140,30 @@
 							<th>成长值</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
-						<tr>
-							<td>2016-06-23</td>
-							<td>投资车辆抵押借款项目7000元</td>
-							<td>+7000</td>
-						</tr>
+					<tbody id="tbody">
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/template" id="tpl">
+	<% if (data && data.length) { %>
+		<% _.each(data, function(value) { %>
+			<tr>
+				<td><%= value.createdTime %></td>
+				<td><%= value.description %></td>
+				<td>+<%= value.experience %></td>
+			</tr>
+		<% }); %>
+	<% } else { %>
+			<tr>
+				<td></td>
+				<td>暂无数据</td>
+				<td></td>
+			</tr>
+	<% } %>
+</script>
 
 
 </@global.main>
