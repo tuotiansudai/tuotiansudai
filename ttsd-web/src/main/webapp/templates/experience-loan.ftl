@@ -4,7 +4,7 @@
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w borderBox">
             <div class="news-share fl">
-                <h2 class="title hd">${loan.name}</h2>
+                <h2 class="title hd new">${loan.name}<span class="new-free"></span></h2>
                 <div class="chart-box">
                     <div class="box" title="已投${loan.progress?string("0.00")}%">
                         <div class="bg"></div>

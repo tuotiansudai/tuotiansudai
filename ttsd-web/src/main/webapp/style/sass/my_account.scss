@@ -4135,3 +4135,12 @@ body{
     *zoom: 1;
   }
 }
+
+.new-free{
+  position: absolute;
+  top: -3px;
+  left: -10px;
+  width: 56px;
+  height: 75px;
+  background: url("/images/icons/new-free.png") no-repeat center;
+}
