@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权" menuSwitch="membershipMenus">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权" site="membership">
 
 <div class="global-member-ship">
 	<div class="levels">

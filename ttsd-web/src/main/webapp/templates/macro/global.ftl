@@ -19,8 +19,8 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" menuSwitch='menus'>
-    <#local menus=[
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
+    <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
@@ -56,9 +56,6 @@
         {"title":"成长体系", "url":"/membership/structure","category":""},
         {"title":"会员特权", "url":"/membership/privilege","category":""}
     ]/>
-
-    <#local menusMap={'menus': menus, 'membershipMenus': membershipMenus}/>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,7 +107,15 @@
 
 <#if !isAppSource>
     <#include "../header.ftl"/>
-    <#include "../top-menus.ftl"/>
+
+    <#switch site>
+        <#case "membership">
+            <#include "../top-membership-menus.ftl"/>
+            <#break>
+        <#default>
+            <#include "../top-menus.ftl"/>
+    </#switch>
+
 </#if>
 
 <div class="main-frame full-screen clearfix">
@@ -222,7 +227,7 @@
     document.getElementById('getMore').onclick=function(){
         var obj = document. getElementById('getMore');  
         toggleClass(obj,"active"); 
-    }
+    };
 
     function hasClass(obj, cls) {  
         return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
