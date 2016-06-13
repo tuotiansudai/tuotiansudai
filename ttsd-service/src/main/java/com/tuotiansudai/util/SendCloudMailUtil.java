@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +57,7 @@ public class SendCloudMailUtil {
         return false;
     }
 
-    public boolean sendUserBalanceCheckingResult(String toAddress, Map<String, Object> map) {
+    public boolean sendUserBalanceCheckingResult(List<String> toAddressList, Map<String, Object> map) {
 
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("startTime", (String) map.get("startTime"));
@@ -69,7 +68,7 @@ public class SendCloudMailUtil {
 
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
 
-        StringBuffer bodySb = new StringBuffer();
+        StringBuilder bodySb = new StringBuilder();
         for (String userInfo : mismatchUserList) {
             String[] userInfoArr = userInfo.split("-");
             Map<String, String> bodyLineMap = new HashMap<>();
@@ -79,17 +78,28 @@ public class SendCloudMailUtil {
             bodySb.append(SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.generateContent(bodyLineMap));
         }
 
-        String contentTail = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_TAIL.getTemplate();
+        StringBuilder contentTail = new StringBuilder(SendCloudTemplate.USER_BALANCE_CHECK_RESULT_TAIL.getTemplate());
 
-        try {
-            String title = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.getTitle();
-            String content = contentHeader + bodySb.toString() + contentTail;
-            sendCloudClient.sendMailBySendCloud(toAddress, title, content, SendCloudType.CONTENT);
-            return true;
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        List<String> failList = (List<String>) map.get("failList");
+        if (failList != null && failList.size() > 0) {
+            contentTail.append("</br><div>连接失败的用户：");
+            for (String failUser : failList) {
+                contentTail.append(failUser + ", ");
+            }
+            contentTail.append("</div>");
         }
-        return false;
+
+        String title = "[" + environment.name() + "] " + SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.getTitle();
+        String content = contentHeader + bodySb.toString() + contentTail.toString();
+
+        for (String address : toAddressList) {
+            try {
+                sendCloudClient.sendMailBySendCloud(address, title, content, SendCloudType.CONTENT);
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+        return true;
     }
 
     public void setEnvironment(Environment environment) {

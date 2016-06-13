@@ -131,7 +131,7 @@
                     <li>
                         <p class="intro-title">信息保障</p>
                         <p class="intro-icon icon-three"></p>
-                        <p class="intro-text"><span>采用银行级别的数据传输加密技术，保障用户的信息安全。在同城和异地均建立灾备设备，避免因自然灾害导致用户信息的损失</span></p>
+                        <p class="intro-text"><span>采用银行级别的数据传输加密技术，保障用户的信息安全。在同城和异地均建立灾备设备，避免因自然灾害导致用户信息的损失。</span></p>
                     </li>
                 </ul>
             </div>
