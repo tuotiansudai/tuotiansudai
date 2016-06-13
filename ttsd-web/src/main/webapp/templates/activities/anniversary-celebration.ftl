@@ -2,7 +2,8 @@
 <@global.main pageCss="${css.anniversary_celebration}" pageJavascript="${js.anniversary_celebration}" activeNav="" activeLeftNav="" title="周年庆活动_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 <div class="anniversary-container">
     <div class="container clearfix">
-        <img src="${staticServer}/images/sign/actor/anniversary/anniversary-top.png" width="100%">
+        <img src="${staticServer}/images/sign/actor/anniversary/anniversary-top.png" width="100%" class="responsive-pc">
+        <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" width="100%" class="responsive-phone">
         <div class="wp actor-bg clearfix">
             <div class="model-list">
                 <div class="img-vip">
@@ -90,88 +91,75 @@
                     <i class="date-icon"></i>
                     <span class="date-text">2016-05-27</span>
                     <span class="rank-number">我的排名：登录后查看</span>
-                    <span class="get-rank">查看我的排名</span>
+                    <a href="#" target="_blank" class="get-rank">查看我的排名</a>
                 </div>
                 <ul class="rank-name">
                     <li>英雄榜</li>
                 </ul>
                 <div class="rank-content">
                     <div class="rank-model">
-                        <h3>今日推荐英雄榜<span>(实时)</span></h3>
-                        <dl class="data-list">
-                            <dt>
-                                <span class="title-text">名次</span>
-                                <span class="data-text">今日推荐投资额(元)</span>
-                                <span class="user-text">用户</span>
-                                <span class="reward-text">奖励</span>
-                            </dt>
-                            <dd>
-                                <span class="title-text">
-                                    <i>1</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>2</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>3</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
+                        <h3>今日投资英雄榜<span>(实时)</span></h3>
+                        <dl class="data-list" id="heroList">
                         </dl>
+                            <script type="text/html" id="heroListTpl">
+                                <dt>
+                                    <span class="title-text">名次</span>
+                                    <span class="data-text">今日投资额(元)</span>
+                                    <span class="user-text">用户</span>
+                                    <span class="reward-text">奖励</span>
+                                </dt>
+                                {{each records}}
+                                <dd>
+                                    <span class="title-text">
+                                        <i>{{$index+1}}</i>
+                                    </span>
+                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="user-text">{{$value.loginName}}</span>
+                                    {{if $index==0}}
+                                        <span class="reward-text">神秘大奖</span>
+                                    {{else if $index>0 && $index<5}}
+                                        <span class="reward-text">200元红包</span>
+                                    {{else}}
+                                    <span class="reward-text">100元红包</span>
+                                    {{/if}}
+                                </dd>
+                                {{/each}}
+                            </script>
                         <p class="tip-text">注：每日英雄榜排名前十名的上榜者可获得1%加息劵一张！</p>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name hide">当日推荐英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">当日投资英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
-                            <span class="pre-btn">上一天</span>
+                            <span class="pre-btn" id="heroPre">上一天</span>
                             <span class="date-info">2016-05-28</span>
                             <span>英雄榜</span>
-                            <span class="next-btn">下一天</span>
+                            <span class="next-btn" id="heroNext">下一天</span>
                         </h3>
-                        <dl class="data-list">
-                            <dt>
-                                <span class="title-text">名次</span>
-                                <span class="data-text">今日推荐投资额(元)</span>
-                                <span class="user-text">用户</span>
-                                <span class="reward-text">奖励</span>
-                            </dt>
-                            <dd>
-                                <span class="title-text">
-                                    <i>1</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>2</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>3</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                        </dl>
+                        <dl class="data-list" id="heroRecord"></dl>
+                            <script type="text/html" id="heroRecordTpl">
+                                <dt>
+                                    <span class="title-text">名次</span>
+                                    <span class="data-text">当日投资额(元)</span>
+                                    <span class="user-text">用户</span>
+                                    <span class="reward-text">奖励</span>
+                                </dt>
+                                {{each records}}
+                                <dd>
+                                    <span class="title-text">
+                                        <i>{{$index+1}}</i>
+                                    </span>
+                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="user-text">{{$value.loginName}}</span>
+                                    {{if $index==0}}
+                                        <span class="reward-text">神秘大奖</span>
+                                    {{else if $index>0 && $index<5}}
+                                        <span class="reward-text">200元红包</span>
+                                    {{else}}
+                                    <span class="reward-text">100元红包</span>
+                                    {{/if}}
+                                </dd>
+                                {{/each}}
+                            </script>
                         <p class="tip-text"><span class="show-btn">查看历史榜单</span><span class="back-btn">返回</span></p>
                     </div>
                 </div>
@@ -195,7 +183,7 @@
                     <i class="date-icon"></i>
                     <span class="date-text">2016-05-27</span>
                     <span class="rank-number">我的排名：登录后查看</span>
-                    <span class="get-rank">查看我的排名</span>
+                    <a href="#" target="_blank" class="get-rank">查看我的排名</a>
                 </div>
                 <ul class="rank-name">
                     <li>推荐榜</li>
@@ -203,79 +191,65 @@
                 <div class="rank-content">
                     <div class="rank-model">
                         <h3>今日推荐英雄榜<span>(实时)</span></h3>
-                        <dl class="data-list">
-                            <dt>
-                                <span class="title-text">名次</span>
-                                <span class="data-text">今日推荐投资额(元)</span>
-                                <span class="user-text">用户</span>
-                                <span class="reward-text">奖励</span>
-                            </dt>
-                            <dd>
-                                <span class="title-text">
-                                    <i>1</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>2</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>3</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                        </dl>
+                        <dl class="data-list" id="refeInvest"></dl>
+                            <script type="text/html" id="refeInvestTpl">
+                                <dt>
+                                    <span class="title-text">名次</span>
+                                    <span class="data-text">今日投资额(元)</span>
+                                    <span class="user-text">用户</span>
+                                    <span class="reward-text">奖励</span>
+                                </dt>
+                                {{each records}}
+                                <dd>
+                                    <span class="title-text">
+                                        <i>{{$index+1}}</i>
+                                    </span>
+                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="user-text">{{$value.loginName}}</span>
+                                    {{if $index==0}}
+                                        <span class="reward-text">神秘大奖</span>
+                                    {{else if $index>0 && $index<5}}
+                                        <span class="reward-text">200元红包</span>
+                                    {{else}}
+                                    <span class="reward-text">100元红包</span>
+                                    {{/if}}
+                                </dd>
+                                {{/each}}
+                            </script>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name hide">当日推荐英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">当日推荐英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
-                            <span class="pre-btn">上一天</span>
+                            <span class="pre-btn" id="refePre">上一天</span>
                             <span class="date-info">2016-05-28</span>
                             <span>英雄榜</span>
-                            <span class="next-btn">下一天</span>
+                            <span class="next-btn" id="refeNext">下一天</span>
                         </h3>
-                        <dl class="data-list">
-                            <dt>
-                                <span class="title-text">名次</span>
-                                <span class="data-text">今日推荐投资额(元)</span>
-                                <span class="user-text">用户</span>
-                                <span class="reward-text">奖励</span>
-                            </dt>
-                            <dd>
-                                <span class="title-text">
-                                    <i>1</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>2</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                            <dd>
-                                <span class="title-text">
-                                    <i>3</i>
-                                </span>
-                                <span class="data-text">10,000,000</span>
-                                <span class="user-text">che******</span>
-                                <span class="reward-text">100元红包</span>
-                            </dd>
-                        </dl>
+                        <dl class="data-list" id="refeRecord"></dl>
+                            <script type="text/html" id="refeRecordTpl">
+                                <dt>
+                                    <span class="title-text">名次</span>
+                                    <span class="data-text">当日投资额(元)</span>
+                                    <span class="user-text">用户</span>
+                                    <span class="reward-text">奖励</span>
+                                </dt>
+                                {{each records}}
+                                <dd>
+                                    <span class="title-text">
+                                        <i>{{$index+1}}</i>
+                                    </span>
+                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="user-text">{{$value.loginName}}</span>
+                                    {{if $index==0}}
+                                        <span class="reward-text">神秘大奖</span>
+                                    {{else if $index>0 && $index<5}}
+                                        <span class="reward-text">200元红包</span>
+                                    {{else}}
+                                    <span class="reward-text">100元红包</span>
+                                    {{/if}}
+                                </dd>
+                                {{/each}}
+                            </script>
                         <p class="tip-text"><span class="show-btn">查看历史榜单</span><span class="back-btn">返回</span></p>
                     </div>
                 </div>
