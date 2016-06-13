@@ -29,6 +29,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     private final static String articleCommentRedisKey = "console:article:comment";
     private final static String articleLikeCounterKey = "console:article:likeCounter";
     private final static String articleReadCounterKey = "console:article:readCounter";
+    private final static String articleCheckerKey = "console:article:checker";
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -195,14 +196,16 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> checkArticleOnStatus(long articleId) {
+    public BaseDto<BaseDataDto> checkArticleOnStatus(long articleId, String checkerLoginName) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        if (getArticleContent(articleId).getArticleStatus().equals(ArticleStatus.APPROVING)) {
+        String originChecker = redisWrapperClient.hget(articleCheckerKey, String.valueOf(articleId));
+        if (getArticleContent(articleId).getArticleStatus().equals(ArticleStatus.APPROVING) && !StringUtils.isEmpty(originChecker) && !originChecker.equals(checkerLoginName)) {
             BaseDataDto baseDataDto = new BaseDataDto();
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("文章正在审核中!");
             baseDto.setData(baseDataDto);
         } else {
+            redisWrapperClient.hset(articleCheckerKey, String.valueOf(articleId), checkerLoginName);
             changeArticleStatus(articleId, ArticleStatus.APPROVING);
             BaseDataDto baseDataDto = new BaseDataDto();
             baseDataDto.setStatus(true);
@@ -254,6 +257,8 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 this.licaiquanArticleMapper.createArticle(model);
             }
 
+            redisWrapperClient.hdel(articleCheckerKey, String.valueOf(articleId));
+
             List<LicaiquanArticleCommentModel> commentModelList = new ArrayList<>();
             Map<String, String> comment = getAllComments(model.getId());
             redisWrapperClient.hdel(articleCommentRedisKey, String.valueOf(model.getId()));
@@ -279,6 +284,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     @Override
     public void rejectArticle(long articleId, String comment) {
         changeArticleStatus(articleId, ArticleStatus.TO_APPROVE);
+        redisWrapperClient.hdel(articleCheckerKey, String.valueOf(articleId));
         storeComment(articleId, comment);
     }
 
@@ -301,5 +307,10 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             return new LiCaiQuanArticleDto(licaiquanArticleModel);
         }
         return new LiCaiQuanArticleDto();
+    }
+
+    @Override
+    public String getOriginChecker(long articleId) {
+        return redisWrapperClient.hget(articleCheckerKey, String.valueOf(articleId));
     }
 }

@@ -14,7 +14,7 @@ public interface LiCaiQuanArticleService {
 
     LiCaiQuanArticleDto getArticleContent(long articleId);
 
-    BaseDto<BaseDataDto> checkArticleOnStatus(long articleId);
+    BaseDto<BaseDataDto> checkArticleOnStatus(long articleId, String checkerLoginName);
 
     void rejectArticle(long articleId, String comment);
 
@@ -35,4 +35,6 @@ public interface LiCaiQuanArticleService {
     void deleteArticle(long articleId);
 
     LiCaiQuanArticleDto getArticleContentByDataBase(long articleId);
+
+    String getOriginChecker(long articleId);
 }

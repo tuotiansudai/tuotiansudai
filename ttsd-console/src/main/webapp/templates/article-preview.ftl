@@ -12,6 +12,16 @@
     </p>
              <p id="content">${articleContent.getContent()}</p>
     </div>
+
+    <div>
+        <p>展示图</p>
+        <img src="/${articleContent.getShowPicture()}" alt="展示图"/>
+    </div>
+
+    <div>
+        <p>缩略图</p>
+        <img src="/${articleContent.getThumbPicture()}" alt="缩略图"/>
+    </div>
 </div>
 
 <!-- content area end -->
