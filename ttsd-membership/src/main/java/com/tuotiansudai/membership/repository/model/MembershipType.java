@@ -23,4 +23,9 @@ public enum MembershipType {
     }
 
     public String getUrl() { return url; }
+
+    @Override
+    public String toString() {
+        return description + "," + url;
+    }
 }

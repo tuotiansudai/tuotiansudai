@@ -3,6 +3,7 @@ package com.tuotiansudai.membership.service;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.MembershipType;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -18,12 +19,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -139,4 +142,34 @@ public class UserMembershipServiceTest {
         accountMapper.create(accountModel);
         return accountModel;
     }
+
+    @Test
+    public void shouldReceiveMembershipIsEqualsNotToTheTime(){
+        UserModel fakeUser = getFakeUser("testReceive");
+        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(MembershipType.NOT_TO_THE_TIME,is(membershipType));
+    }
+
+    @Test
+    public void shouldReceiveMembershipIsEqualsNotToLogin(){
+        MembershipType membershipType = userMembershipService.receiveMembership("");
+        assertThat(MembershipType.NOT_TO_LOGIN,is(membershipType));
+    }
+
+    @Test
+    public void shouldReceiveMembershipIsEqualsNotToRegister(){
+        UserModel fakeUser = getFakeUser("testReceive");
+        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(MembershipType.NOT_TO_REGISTER,is(membershipType));
+    }
+
+    @Test
+    public void shouldReceiveMembershipIsEqualsAlreadyReceive(){
+        UserModel fakeUser = getFakeUser("testReceive");
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), createMembership(1).getId(), new DateTime().plusDays(130).toDate() , UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(MembershipType.ALREADY_RECEIVE,is(membershipType));
+    }
+
 }

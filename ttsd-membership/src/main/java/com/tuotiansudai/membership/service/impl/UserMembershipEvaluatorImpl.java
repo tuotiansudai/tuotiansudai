@@ -14,6 +14,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -32,12 +33,6 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Override
     public MembershipModel evaluate(String loginName) {
@@ -64,31 +59,4 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
         return membershipMapper.findById(max.getMembershipId());
     }
 
-    @Override
-    public MembershipType receiveMembership(String loanName) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date membershipOpenDate = sdf.parse("2016-07-01");
-        if(Calendar.getInstance().getTime().getTime() < membershipOpenDate.getTime()){
-            return MembershipType.NOT_TO_THE_TIME;
-        }
-
-        if(loanName == null || loanName.equals("")){
-            return MembershipType.NOT_TO_LOGIN;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(loanName);
-        if(accountModel == null || StringUtils.isEmpty(accountModel.getIdentityNumber())){
-            return MembershipType.NOT_TO_REGISTER;
-        }
-
-        List<UserMembershipModel> userMembershipModelList = userMembershipMapper.findByLoginName(loanName);
-        if(CollectionUtils.isNotEmpty(userMembershipModelList)){
-            return MembershipType.ALREADY_RECEIVE;
-        }
-
-        investMapper.sumSuccessInvestCountByLoginName(loanName);
-
-
-        return null;
-    }
 }

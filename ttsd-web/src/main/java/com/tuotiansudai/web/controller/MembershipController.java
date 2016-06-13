@@ -2,9 +2,11 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonParser;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.MembershipType;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -106,10 +109,8 @@ public class MembershipController {
 
     @ResponseBody
     @RequestMapping(value = "/receive", method = RequestMethod.GET)
-    public String receive(){
-        String receiveMsg = "";
-        LoginUserInfo.getLoginName();
-        return receiveMsg;
+    public String receive() throws ParseException {
+        return userMembershipService.receiveMembership(LoginUserInfo.getLoginName()).toString();
     }
 
 }

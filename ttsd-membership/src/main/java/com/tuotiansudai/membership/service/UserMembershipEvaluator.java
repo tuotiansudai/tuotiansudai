@@ -9,6 +9,4 @@ import java.util.Map;
 public interface UserMembershipEvaluator {
 
     MembershipModel evaluate(String loginName);
-
-    MembershipType receiveMembership(String loanName) throws ParseException;
 }
