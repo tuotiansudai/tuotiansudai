@@ -1,5 +1,6 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
+import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -36,6 +37,7 @@ public interface TransferApplicationMapper {
                                                                                       @Param(value = "pageSize") Integer pageSize);
 
     int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName") String loginName);
+
 
     List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
                                                                              @Param("startTime") Date startTime,
@@ -79,5 +81,7 @@ public interface TransferApplicationMapper {
     int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
+
+
 
 }

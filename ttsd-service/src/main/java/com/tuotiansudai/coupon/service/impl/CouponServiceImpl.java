@@ -20,6 +20,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
@@ -320,6 +321,10 @@ public class CouponServiceImpl implements CouponService {
     public long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount) {
         long totalInterest = 0;
 
+        if (CollectionUtils.isEmpty(couponIds)) {
+            return totalInterest;
+        }
+
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
@@ -354,5 +359,17 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
         return couponExchangeMapper.findByCouponId(couponId);
+    }
+
+    @Override
+    public long findExperienceInvestAmount(List<InvestModel> investModelList){
+        long amount = 0;
+        for(InvestModel investModel : investModelList){
+            List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+            for(UserCouponModel userCouponModel : userCouponModelList){
+                amount += couponMapper.findById(userCouponModel.getCouponId()).getAmount();
+            }
+        }
+        return amount;
     }
 }
