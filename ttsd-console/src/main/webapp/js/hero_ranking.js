@@ -13,6 +13,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             if (!$(this).hasClass('active')) {
                 $(this).addClass('active');
             }
+            $('.select-date').show();
             $('.referrer').removeClass('active');
             $('.upload').removeClass('active');
             $('.invest-ranking').show();
@@ -24,6 +25,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             if (!$(this).hasClass('active')) {
                 $(this).addClass('active');
             }
+            $('.select-date').show();
             $('.invest').removeClass('active');
             $('.upload').removeClass('active');
             $('.referrer-ranking').show();
@@ -38,6 +40,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             $('.invest').removeClass('active');
             $('.referrer').removeClass('active');
             $('.upload-image').show();
+            $('.select-date').hide();
             $('.referrer-ranking').hide();
             $('.invest-ranking').hide();
         });
@@ -129,8 +132,18 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             var $self = $(this);
             if (boolFlag) {
                 if (confirm("确认提交更新?")) {
-                    $self.attr('disabled', 'disabled');
-                    $prizeForm[0].submit();
+                    $.ajax({
+                        url: '/activity-manage/upload-image',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8',
+                        data: JSON.stringify({"prizeName":$('.prize-name').val(),"imageUrl":$('.image-url').val()})
+                    }).done(function (data) {
+                        $('.prize-name').val(data.prizeName);
+                        $('.image-url').val(data.imageUrl);
+                        $('.thumbImage').find("img").remove();
+                        $('.thumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                    })
                 }
 
             }

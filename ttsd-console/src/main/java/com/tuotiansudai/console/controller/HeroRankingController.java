@@ -7,10 +7,7 @@ import com.tuotiansudai.service.HeroRankingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -57,12 +54,11 @@ public class HeroRankingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/activity-manage/upload-image", method = RequestMethod.POST)
-    public ModelAndView uploadMysteriousPrize(@ModelAttribute MysteriousPrizeDto mysteriousPrizeDto){
-        ModelAndView mv = new ModelAndView("/hero-ranking");
-        mv.addObject("mysteriousPrizeDto",mysteriousPrizeDto);
+    @RequestMapping(value = "/activity-manage/upload-image", method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto){
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
-        return mv;
+        return mysteriousPrizeDto;
     }
 
 
