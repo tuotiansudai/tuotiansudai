@@ -131,7 +131,7 @@
                         <h3 class="title-name">当日投资英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="heroPre">上一天</span>
-                            <span class="date-info">2016-05-28</span>
+                            <span class="date-info">2016-07-01</span>
                             <span>英雄榜</span>
                             <span class="next-btn" id="heroNext">下一天</span>
                         </h3>
@@ -221,7 +221,7 @@
                         <h3 class="title-name">当日推荐英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="refePre">上一天</span>
-                            <span class="date-info">2016-05-28</span>
+                            <span class="date-info">2016-07-01</span>
                             <span>英雄榜</span>
                             <span class="next-btn" id="refeNext">下一天</span>
                         </h3>

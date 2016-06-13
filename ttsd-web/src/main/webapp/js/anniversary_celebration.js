@@ -95,60 +95,11 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		// heroRank('list', '2016-07-01');
-		// heroRank('history', '2016-07-01');
-		// refeInvest('list', '2016-07-01');
-		// refeInvest('history', '2016-07-01');
-		var data={
-          "status":true,
-          "message":"",
-          "records":[
-            {
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            },
-			{
-              "sumAmount":"100000",
-              "loginName":"zl***"
-            }
-          ]
-        };
-		$('#heroList').html(tpl('heroListTpl', data));
-		$('#heroRecord').html(tpl('heroRecordTpl', data));
-		$('#refeInvest').html(tpl('refeInvestTpl', data));
-		$('#refeRecord').html(tpl('refeRecordTpl', data));
+		heroRank('list', $('.date-info:eq(0)').text());
+		heroRank('history', $('.date-info:eq(0)').text());
+		refeInvest('list', $('.date-info:eq(1)').text());
+		refeInvest('history', $('.date-info:eq(1)').text());
+		
 		
 	});
 });
