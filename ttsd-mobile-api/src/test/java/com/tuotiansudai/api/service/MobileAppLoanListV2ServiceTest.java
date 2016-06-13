@@ -48,12 +48,8 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         List<LoanModel> loanModels = new ArrayList<>();
         loanModels.add(getFakeLoan("shenjiaojiao"));
         loanModels.add(getFakeLoan("jiaoshenshen"));
-        BaseParamDto baseParamDto = new BaseParamDto();
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("shenjiaojiao");
-        baseParamDto.setBaseParam(baseParam);
 
-        when(loanMapper.findHomeLoanByIsContainNewBie(anyBoolean(),anyString(),anyBoolean())).thenReturn(null);
+        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class),anyBoolean(),anyBoolean())).thenReturn(null);
 
         when(investMapper.countInvestSuccessExperience(anyString())).thenReturn(0l);
 
@@ -62,7 +58,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         List<LoanModel> loanModelsExperience = Lists.newArrayList();
         loanModelsExperience.add(getFakeExperienceLoan("test1234"));
         when(loanMapper.findByProductType(any(ProductType.class))).thenReturn(loanModelsExperience);
-        BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan(baseParamDto);
+        BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
 
         assertNotNull(baseResponseDto.getData());
         assertThat(baseResponseDto.getData().getLoanList().get(0).getProductNewType(),is(ProductType.EXPERIENCE.name()));

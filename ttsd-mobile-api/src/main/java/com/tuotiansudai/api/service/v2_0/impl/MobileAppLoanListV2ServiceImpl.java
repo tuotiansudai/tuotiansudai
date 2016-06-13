@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -30,51 +31,43 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private InvestMapper investMapper;
 
     @Value("${mobile.experience.loan.display}")
-    private boolean loanIsDisplayExperience;
+    private boolean isShowExperienceLoan;
 
     @Override
-    public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
-        List<LoanModel> loanModels = new ArrayList<>();
-        List<LoanModel> notContainNewBieList = loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),loanIsDisplayExperience);
-        if(investMapper.sumSuccessInvestCountByLoginName(baseParamDto.getBaseParam().getUserId()) == 0){
-            loanModels = loanMapper.findHomeLoanByIsContainNewBie(true,LoanStatus.RAISING.name(),loanIsDisplayExperience);
-            if(CollectionUtils.isEmpty(loanModels)){
-                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie(true,LoanStatus.COMPLETE.name(),loanIsDisplayExperience);
-                if(CollectionUtils.isNotEmpty(completeLoanModels)){
+    public BaseResponseDto generateIndexLoan(String loginName) {
+        List<LoanModel> loanModels = Lists.newArrayList();
+
+        if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
+            loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true, isShowExperienceLoan);
+            if (CollectionUtils.isEmpty(loanModels)) {
+                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true, isShowExperienceLoan);
+                if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                     loanModels.add(completeLoanModels.get(0));
                 }
             }
         }
 
-        if (StringUtils.isEmpty(baseParamDto.getBaseParam().getUserId()) || investMapper.countInvestSuccessExperience(baseParamDto.getBaseParam().getUserId()) == 0) {
+        if (StringUtils.isEmpty(loginName) || investMapper.countInvestSuccessExperience(loginName) == 0) {
             List<LoanModel> loanModelsExperience = loanMapper.findByProductType(ProductType.EXPERIENCE);
             if (CollectionUtils.isNotEmpty(loanModelsExperience)) {
                 loanModels.add(loanModelsExperience.get(0));
             }
         }
 
-        if (CollectionUtils.isNotEmpty(notContainNewBieList)) {
-            loanModels.addAll(notContainNewBieList);
-        }
+        List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, isShowExperienceLoan);
+        loanModels.addAll(notContainNewbieList);
 
-        if(CollectionUtils.isEmpty(loanModels)){
-            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.COMPLETE.name());
-            if(CollectionUtils.isNotEmpty(completeLoanModels)){
+        if (CollectionUtils.isEmpty(loanModels)) {
+            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false, isShowExperienceLoan);
+            if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                 loanModels.add(completeLoanModels.get(0));
             }
         }
 
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        List<LoanResponseDataDto> loanDtoList;
-        if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels);
-            loanListResponseDataDto.setLoanList(loanDtoList);
-            dto.setData(loanListResponseDataDto);
-        }else{
-            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
-            dto.setData(loanListResponseDataDto);
-        }
+        loanListResponseDataDto.setLoanList(convertLoanDto(loanModels));
+        dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
@@ -93,10 +86,10 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
             loanResponseDataDto.setLoanAmount(AmountConverter.convertCentToString(loan.getLoanAmount()));
             loanResponseDataDto.setInvestAmount(AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmount(loan.getId())));
-            if(com.tuotiansudai.repository.model.LoanStatus.PREHEAT.equals(loan.getStatus())){
+            if (com.tuotiansudai.repository.model.LoanStatus.PREHEAT.equals(loan.getStatus())) {
                 loanResponseDataDto.setLoanStatus(com.tuotiansudai.repository.model.LoanStatus.RAISING.name().toLowerCase());
                 loanResponseDataDto.setLoanStatusDesc(com.tuotiansudai.repository.model.LoanStatus.RAISING.getDescription());
-            }else{
+            } else {
                 loanResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
                 loanResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
             }
@@ -105,7 +98,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
             loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
-            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setInvestFeeRate(loan.getInvestFeeRate() + "");
             loanDtoList.add(loanResponseDataDto);
         }

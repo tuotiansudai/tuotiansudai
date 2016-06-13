@@ -9,12 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppHomeV2ControllerTest extends ControllerTestBase {
 
     @InjectMocks
     private MobileAppHomeV2Controller controller;
+
     @Mock
     private MobileAppLoanListV2Service service;
 
@@ -25,7 +27,7 @@ public class MobileAppHomeV2ControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldQueryLoanListIsOk() throws Exception {
-        when(service.generateIndexLoan(any(BaseParamDto.class))).thenReturn(null);
+        when(service.generateIndexLoan(anyString())).thenReturn(null);
         //LoanListRequestDto requestDto = new LoanListRequestDto();
         //doRequestWithServiceMockedTest("/get/index", requestDto);
     }

@@ -82,6 +82,7 @@
             <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
             <result column="duration" property="duration"></result>
+            <result column="product_type" property="productType"></result>
         </association>
     </resultMap>
 
@@ -203,7 +204,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type
+          t.type,
+          t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -215,7 +217,8 @@
               l.`periods`,
               l.`duration`,
               l.`id` as loan_id,
-              l.`type`
+              l.`type`,
+              l.product_type
             FROM
               invest i
               JOIN loan l
@@ -240,7 +243,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type
+          t.type,
+          t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -252,7 +256,8 @@
               l.`periods`,
               l.`duration`,
               l.`id` as `loan_id`,
-              l.type
+              l.type,
+              l.product_type
             FROM
               invest i
               JOIN loan l

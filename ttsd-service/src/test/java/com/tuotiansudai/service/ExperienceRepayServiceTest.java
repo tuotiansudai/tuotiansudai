@@ -154,5 +154,6 @@ public class ExperienceRepayServiceTest {
         assertEquals(RepayStatus.COMPLETE, investRepayModel.getStatus());
         assertEquals(investRepayModel.getExpectedFee(), investRepayModel.getActualFee());
         assertEquals(investRepayModel.getExpectedInterest(), investRepayModel.getActualInterest());
+        assertEquals(investRepayModel.getRepayAmount(), investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee());
     }
 }

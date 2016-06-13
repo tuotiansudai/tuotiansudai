@@ -375,7 +375,7 @@
                     </div>
                     <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
-                            <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
+                            <div class="pad-m" title="BLQ001" data-url="/loan/1">
                                 <h2 class="pr-title">新手体验项目</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">

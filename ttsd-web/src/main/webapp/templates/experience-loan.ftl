@@ -4,7 +4,7 @@
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w borderBox">
             <div class="news-share fl">
-                <h2 class="title hd">${loan.name}</h2>
+                <h2 class="title hd new">${loan.name}<span class="new-free"></span></h2>
                 <div class="chart-box">
                     <div class="box" title="已投${loan.progress?string("0.00")}%">
                         <div class="bg"></div>
@@ -13,7 +13,7 @@
                         <div class="rount2" style="display: none;"></div>
                         <div class="pr-square-in">
                             <em>
-                                <b>${loan.baseRate}</b>
+                                <b>${loan.baseRate}%</b>
                             </em>
                             <i>预期年化收益</i>
                         </div>
@@ -22,7 +22,7 @@
                 <div class="chart-info">
                     项目金额：${loan.loanAmount}元<br/>
                     项目期限：${loan.duration}天<br/>
-                    起息时间：即投即生息<br/>
+                    起息时间：即投即生息。<br/>
                     还款方式：到期付息,体验金收回。<br/>
                     投资要求：新手体验标仅能使用新手体验券进行投资。<br/>
                     项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。<br/>
@@ -104,7 +104,7 @@
                 <ul class="info-list">
                     <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目。</li>
                     <li>2、投资体验项目无需充值。</li>
-                    <li>3、新手体验券是由拓天速贷用平台活动方式，为新注册用于提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励</li>
+                    <li>3、新手体验券是由拓天速贷用平台活动方式，为新注册用于提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励。</li>
                     <li>4、新注册用户通过获得体验券后，在体验项目专区点击使用。</li>
                     <li>5、新手体验项目不可转让。</li>
                     <li>6、为防止不法分子恶意刷取平台奖励，红包奖励需投资真实项目后方可提现。</li>

@@ -81,12 +81,14 @@
         <ul>
             <#list loanItemList as loanItem>
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
-                    <#if loanItem.activityType == 'NEWBIE'>
+                    <#if loanItem.productType == 'EXPERIENCE'>
                         <span class="new-free"></span>
+                    <#elseif loanItem.activityType == 'NEWBIE'>
+                        <span class="new-user"></span>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
-                            <span class="l-title fl">${loanItem.name}<#if loanItem.activityType == 'NEWBIE'><i class="new-tip">仅限使用体验金投资</i></#if></span>
+                            <span class="l-title fl">${loanItem.name}<#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金投资</i></#if></span>
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">

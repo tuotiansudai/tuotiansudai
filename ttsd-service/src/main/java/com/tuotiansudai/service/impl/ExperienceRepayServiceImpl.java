@@ -72,6 +72,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                         try {
                             investRepayModel.setActualFee(investRepayModel.getExpectedFee());
                             investRepayModel.setActualInterest(investRepayModel.getExpectedInterest());
+                            investRepayModel.setRepayAmount(investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee());
                             investRepayModel.setActualRepayDate(repayDate);
                             investRepayModel.setStatus(RepayStatus.COMPLETE);
                             investRepayMapper.update(investRepayModel);
@@ -100,9 +101,9 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         for (InvestRepayModel successInvestRepayModel : successInvestRepayModels) {
             String mobile = userMapper.findByLoginName(investMapper.findById(successInvestRepayModel.getInvestId()).getLoginName()).getMobile();
             if (maps.containsKey(successInvestRepayModel.getActualInterest())) {
-                maps.get(successInvestRepayModel.getActualInterest()).add(mobile);
+                maps.get(successInvestRepayModel.getRepayAmount()).add(mobile);
             } else {
-                maps.put(successInvestRepayModel.getActualInterest(), Lists.newArrayList(mobile));
+                maps.put(successInvestRepayModel.getRepayAmount(), Lists.newArrayList(mobile));
             }
         }
 
