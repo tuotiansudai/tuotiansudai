@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+    // load all grunt tasks
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         // Metadata.
@@ -139,14 +142,32 @@ module.exports = function(grunt) {
                     baseDir: './src/main/webapp'
                 }
             }
+        },
+        filerev: {
+            options: {
+                algorithm: 'md5',
+                length: 8,
+                process: function(basename, name, extension) {
+                    if (/\.min/.test(basename)) {
+                        return basename.match(/(.*)\.min$/)[1] + '.' + name + '.min.' + extension;
+                    } else {
+                        return basename + '.' + name + '.' + extension;
+                    }
+                }
+            },
+            assets: {
+                files: [{
+                    src: [
+                        '<%= meta.baseJsMinPath %>/*.js',
+                        '<%= meta.baseCssMinPath %>/*.css'
+                    ]
+                }]
+            }
         }
     });
 
-    // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
-    grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
-
+    grunt.registerTask('common', ['clean', 'uglify', 'sass', 'cssmin:dist']);
+    grunt.registerTask('default', ['common', 'connect', 'watch']);
+    grunt.registerTask('dist', ['common', 'dataUri', 'cssmin:base64', 'clean:base64', 'filerev']);
 };
