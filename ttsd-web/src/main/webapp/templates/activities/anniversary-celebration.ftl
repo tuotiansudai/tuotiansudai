@@ -87,7 +87,10 @@
             </div>
             <div class="model-list">
                 <div class="title-model">
-                    
+                    <i class="date-icon"></i>
+                    <span class="date-text">2016-05-27</span>
+                    <span>我的排名：登录后查看</span>
+                    <span class="get-rank">查看我的排名</span>
                 </div>
             </div>
         </div>
