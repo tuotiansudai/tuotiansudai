@@ -167,7 +167,6 @@
         </div>
         <div class="product-wp clearfix">
             <ul>
-                <li><i class="fa fa-circle"></i>活动时间：2016年6月10日;</li>
                 <li><i class="fa fa-circle"></i>奖励可在“我的账户-我的宝藏”查看;</li>
                 <li><i class="fa fa-circle"></i>成功投资新手体验项目后可获得588元现金红包及3%加息券;</li>
                 <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
