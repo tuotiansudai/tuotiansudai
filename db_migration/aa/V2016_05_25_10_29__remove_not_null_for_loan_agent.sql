@@ -1,0 +1,1 @@
+ALTER TABLE aa.loan MODIFY COLUMN agent_login_name VARCHAR(25) NULL;

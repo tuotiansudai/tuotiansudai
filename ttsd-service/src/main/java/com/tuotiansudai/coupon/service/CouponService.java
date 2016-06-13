@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.model.InvestModel;
 
 import java.util.Date;
 import java.util.List;
@@ -50,4 +51,7 @@ public interface CouponService {
     int findCouponExchangeCount();
 
     CouponExchangeModel findCouponExchangeByCouponId(long couponId);
+
+    long findExperienceInvestAmount(List<InvestModel> investModelList);
+
 }
