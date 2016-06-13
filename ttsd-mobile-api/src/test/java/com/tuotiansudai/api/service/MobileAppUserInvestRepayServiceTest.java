@@ -82,7 +82,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("50.00", responseDto.getData().getInvestAmount());
         assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.10", responseDto.getData().getActualInterest());
-        assertEquals(3, responseDto.getData().getInvestRepayList().size());
+        assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("50.00", responseDto.getData().getInvestAmount());
         assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.20", responseDto.getData().getActualInterest());
-        assertEquals(3, responseDto.getData().getInvestRepayList().size());
+        assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
 
 
@@ -147,7 +147,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("50.00", responseDto.getData().getInvestAmount());
         assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.30", responseDto.getData().getActualInterest());
-        assertEquals(3, responseDto.getData().getInvestRepayList().size());
+        assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
 
     private LoanModel createLoanModel(){

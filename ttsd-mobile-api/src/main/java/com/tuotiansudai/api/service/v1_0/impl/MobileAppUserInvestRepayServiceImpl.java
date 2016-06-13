@@ -52,7 +52,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setActualRepayDate(investRepayModel.getActualRepayDate() == null ? "" : sdf.format(investRepayModel.getActualRepayDate()));
                 investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(investRepayModel.getRepayAmount()));
-                investRepayDataDto.setStatus(investRepayModel.getStatus().getDescription());
+                investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
                 if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
                     completeTotalActualInterest += investRepayModel.getRepayAmount();
@@ -66,7 +66,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             }
             userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
-            userInvestRepayResponseDataDto.setInvestRepayList(investRepayList);
+            userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
 
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
             responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

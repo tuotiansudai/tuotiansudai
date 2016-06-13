@@ -24,7 +24,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     private String investTime;
     private String recheckTime;
     private String lastRepayDate;
-    private List<InvestRepayDataDto> investRepayList;
+    private List<InvestRepayDataDto> investRepays;
 
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
@@ -157,11 +157,11 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.lastRepayDate = lastRepayDate;
     }
 
-    public List<InvestRepayDataDto> getInvestRepayList() {
-        return investRepayList;
+    public List<InvestRepayDataDto> getInvestRepays() {
+        return investRepays;
     }
 
-    public void setInvestRepayList(List<InvestRepayDataDto> investRepayList) {
-        this.investRepayList = investRepayList;
+    public void setInvestRepays(List<InvestRepayDataDto> investRepays) {
+        this.investRepays = investRepays;
     }
 }
