@@ -83,7 +83,7 @@
     </select>
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
-      select * from (
+        select * from (
         select * from loan t
         where 1=1
         <if test="name !=null and name!=''">
@@ -493,7 +493,7 @@
             and loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus == 'COMPLETE'">
-            and loan.status = 'COMPLETE'
+            and loan.status in ('COMPLETE','REPAYING')
         </if>
 
         <if test="isContainNewBie == false">
@@ -505,7 +505,20 @@
         <if test="loanIsDisplayExperience == false">
             and loan.product_type != 'EXPERIENCE'
         </if>
-        ORDER BY duration ,loan.verify_time DESC, loan.created_time DESC
+        ORDER BY CASE loan.status
+        WHEN 'RAISING' THEN '1'
+        WHEN 'PREHEAT' THEN '2'
+        WHEN 'REPAYING' THEN '3'
+        WHEN 'COMPLETE' THEN '4'
+        ELSE '5' END,
+        CASE loan.status WHEN 'RAISING' THEN duration END asc,
+        CASE loan.status WHEN 'RAISING' THEN verify_time END DESC,
+        CASE loan.status WHEN 'RAISING' THEN created_time END DESC,
+        CASE loan.status WHEN 'PREHEAT' THEN duration END,
+        CASE loan.status WHEN 'PREHEAT' THEN verify_time END DESC,
+        CASE loan.status WHEN 'PREHEAT' THEN created_time END DESC,
+        CASE loan.status WHEN 'REPAYING' THEN recheck_time END DESC,
+        CASE loan.status WHEN 'COMPLETE' THEN recheck_time END DESC
     </select>
 
     <select id="findLoanAchievement" resultMap="loanAchievementView" parameterType="map">

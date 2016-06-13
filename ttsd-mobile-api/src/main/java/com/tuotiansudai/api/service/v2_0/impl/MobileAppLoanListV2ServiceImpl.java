@@ -58,7 +58,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         }
 
         if(CollectionUtils.isEmpty(loanModels)){
-            List<LoanModel> completeLoanModels = loanMapper.findLoanListWeb(null, LoanStatus.COMPLETE, 0, 0, 0,0,0);
+            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.COMPLETE.name());
             if(CollectionUtils.isNotEmpty(completeLoanModels)){
                 loanModels.add(completeLoanModels.get(0));
             }
