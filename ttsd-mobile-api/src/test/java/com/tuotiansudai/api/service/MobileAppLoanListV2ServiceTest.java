@@ -41,13 +41,9 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         List<LoanModel> loanModels = new ArrayList<>();
         loanModels.add(getFakeLoan("shenjiaojiao"));
         loanModels.add(getFakeLoan("jiaoshenshen"));
-        BaseParamDto baseParamDto = new BaseParamDto();
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("shenjiaojiao");
-        baseParamDto.setBaseParam(baseParam);
 
-        when(loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),false)).thenReturn(loanModels);
-        BaseResponseDto baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan(baseParamDto);
+        when(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING,false, false)).thenReturn(loanModels);
+        BaseResponseDto baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
         assertNotNull(baseResponseDto.getData());
 
     }

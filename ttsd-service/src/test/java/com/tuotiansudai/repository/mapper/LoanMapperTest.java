@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import junit.framework.Assert;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -315,8 +314,8 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
 
-        List<LoanModel> loanModels = loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),true);
-        List<LoanModel> loanModels1 = loanMapper.findHomeLoanByIsContainNewBie(false,LoanStatus.RAISING.name(),false);
+        List<LoanModel> loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, true);
+        List<LoanModel> loanModels1 = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, false);
         assertTrue(loanModels.size() > loanModels1.size());
     }
 

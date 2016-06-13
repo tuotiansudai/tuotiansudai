@@ -483,7 +483,7 @@
             limit 0, 1)
     </select>
 
-    <select id="findHomeLoanByIsContainNewBie" resultMap="loanResultMap" parameterType="map">
+    <select id="findHomeLoanByIsContainNewbie" resultMap="loanResultMap" parameterType="map">
         SELECT
         *
         FROM
@@ -493,25 +493,31 @@
             loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus == 'COMPLETE'">
-            loan.status = 'COMPLETE'
+            loan.status in ('COMPLETE','REPAYING')
         </if>
 
-        <if test="isContainNewBie == false">
+        <if test="isShowNewbieLoan == false">
             and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
         </if>
-        <if test="isContainNewBie == true">
+        <if test="isShowNewbieLoan == true">
             and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
         </if>
-        <if test="loanIsDisplayExperience == false">
+        <if test="isShowExperienceLoan == false">
             and loan.product_type != 'EXPERIENCE'
         </if>
-        ORDER BY
+        ORDER BY CASE loan.status
+        WHEN 'RAISING' THEN '1'
+        WHEN 'PREHEAT' THEN '2'
+        WHEN 'REPAYING' THEN '3'
+        WHEN 'COMPLETE' THEN '4'
+        ELSE '5' END,
         CASE loan.status WHEN 'RAISING' THEN duration END asc,
         CASE loan.status WHEN 'RAISING' THEN verify_time END DESC,
         CASE loan.status WHEN 'RAISING' THEN created_time END DESC,
         CASE loan.status WHEN 'PREHEAT' THEN duration END,
         CASE loan.status WHEN 'PREHEAT' THEN verify_time END DESC,
         CASE loan.status WHEN 'PREHEAT' THEN created_time END DESC,
+        CASE loan.status WHEN 'REPAYING' THEN recheck_time END DESC,
         CASE loan.status WHEN 'COMPLETE' THEN recheck_time END DESC
     </select>
 
