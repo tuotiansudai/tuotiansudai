@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipType;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,6 +35,9 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Override
     public MembershipModel evaluate(String loginName) {
@@ -77,6 +81,12 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
             return MembershipType.NOT_TO_REGISTER;
         }
 
+        List<UserMembershipModel> userMembershipModelList = userMembershipMapper.findByLoginName(loanName);
+        if(CollectionUtils.isNotEmpty(userMembershipModelList)){
+            return MembershipType.ALREADY_RECEIVE;
+        }
+
+        investMapper.sumSuccessInvestCountByLoginName(loanName);
 
 
         return null;
