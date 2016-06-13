@@ -60,7 +60,7 @@ public class RegisterUserController {
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/register/account" : "redirect:/register/user");
+        return new ModelAndView(isRegisterSuccess ? "redirect:/" : "redirect:/register/user");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
