@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -313,10 +312,5 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             return new LiCaiQuanArticleDto(licaiquanArticleModel);
         }
         return new LiCaiQuanArticleDto();
-    }
-
-    @Override
-    public String getOriginChecker(long articleId) {
-        return redisWrapperClient.hget(articleCheckerKey, String.valueOf(articleId));
     }
 }

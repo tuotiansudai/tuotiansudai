@@ -35,6 +35,4 @@ public interface LiCaiQuanArticleService {
     void deleteArticle(long articleId);
 
     LiCaiQuanArticleDto getArticleContentByDataBase(long articleId);
-
-    String getOriginChecker(long articleId);
 }
