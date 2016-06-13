@@ -321,6 +321,12 @@
                 float:left;
                 width:100%;
                 line-height:40px;
+                &.empty-text{
+                  line-height:405px;
+                  text-align: center;
+                  font-size:16px;
+                  color:#333;
+                }
               }
               span{
                 float:left;

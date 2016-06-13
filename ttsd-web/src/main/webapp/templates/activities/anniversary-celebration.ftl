@@ -91,7 +91,7 @@
                     <i class="date-icon"></i>
                     <span class="date-text">2016-05-27</span>
                     <span class="rank-number">我的排名：登录后查看</span>
-                    <a href="#" target="_blank" class="get-rank">查看我的排名</a>
+                    <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
                 </div>
                 <ul class="rank-name">
                     <li>英雄榜</li>
@@ -108,6 +108,7 @@
                                     <span class="user-text">用户</span>
                                     <span class="reward-text">奖励</span>
                                 </dt>
+                                {{if records.length>0}}
                                 {{each records}}
                                 <dd>
                                     <span class="title-text">
@@ -124,6 +125,9 @@
                                     {{/if}}
                                 </dd>
                                 {{/each}}
+                                {{else}}
+                                <dd class="empty-text">暂无数据</dd>
+                                {{/if}}
                             </script>
                         <p class="tip-text">注：每日英雄榜排名前十名的上榜者可获得1%加息劵一张！</p>
                     </div>
@@ -143,6 +147,7 @@
                                     <span class="user-text">用户</span>
                                     <span class="reward-text">奖励</span>
                                 </dt>
+                                {{if records.length>0}}
                                 {{each records}}
                                 <dd>
                                     <span class="title-text">
@@ -159,6 +164,9 @@
                                     {{/if}}
                                 </dd>
                                 {{/each}}
+                                {{else}}
+                                <dd class="empty-text">暂无数据</dd>
+                                {{/if}}
                             </script>
                         <p class="tip-text"><span class="show-btn">查看历史榜单</span><span class="back-btn">返回</span></p>
                     </div>
@@ -171,7 +179,7 @@
                     <div class="gift-img">
                         <img src="${staticServer}/images/sign/actor/anniversary/gift-img.png" width="100%">
                     </div>
-                    <a href="javascript:void(0)" class="get-rank">我要上榜</a>
+                    <a href="/loan-list" class="get-rank" target="_blank">我要上榜</a>
                 </div>
             </div>
             <div class="model-list">
@@ -183,7 +191,7 @@
                     <i class="date-icon"></i>
                     <span class="date-text">2016-05-27</span>
                     <span class="rank-number">我的排名：登录后查看</span>
-                    <a href="#" target="_blank" class="get-rank">查看我的排名</a>
+                    <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
                 </div>
                 <ul class="rank-name">
                     <li>推荐榜</li>
@@ -199,6 +207,7 @@
                                     <span class="user-text">用户</span>
                                     <span class="reward-text">奖励</span>
                                 </dt>
+                                {{if records}}
                                 {{each records}}
                                 <dd>
                                     <span class="title-text">
@@ -215,6 +224,9 @@
                                     {{/if}}
                                 </dd>
                                 {{/each}}
+                                {{else}}
+                                <dd class="empty-text">暂无数据</dd>
+                                {{/if}}
                             </script>
                     </div>
                     <div class="rank-model">
@@ -233,6 +245,7 @@
                                     <span class="user-text">用户</span>
                                     <span class="reward-text">奖励</span>
                                 </dt>
+                                {{if records}}
                                 {{each records}}
                                 <dd>
                                     <span class="title-text">
@@ -249,6 +262,9 @@
                                     {{/if}}
                                 </dd>
                                 {{/each}}
+                                {{else}}
+                                <dd class="empty-text">暂无数据</dd>
+                                {{/if}}
                             </script>
                         <p class="tip-text"><span class="show-btn">查看历史榜单</span><span class="back-btn">返回</span></p>
                     </div>
