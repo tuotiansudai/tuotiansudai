@@ -10,9 +10,15 @@ public enum UserGroup {
     CHANNEL("来源渠道"),
     NEW_REGISTERED_USER("新注册用户"),
     IMPORT_USER("导入用户名单"),
-    EXCHANGER("兑换用户"),
+    EXCHANGER("财豆兑换用户"),
     WINNER("中奖用户"),
-    EXCHANGER_CODE("兑换码");
+    EXCHANGER_CODE("兑换码"),
+    MEMBERSHIP_V0("会员V0"),
+    MEMBERSHIP_V1("会员V1"),
+    MEMBERSHIP_V2("会员V2"),
+    MEMBERSHIP_V3("会员V3"),
+    MEMBERSHIP_V4("会员V4"),
+    MEMBERSHIP_V5("会员V5");
 
     private final String description;
 

@@ -98,14 +98,6 @@ public class CouponAspect {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         try {
             couponInvestService.investCallback(investModel.getId());
-            couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
-                    UserGroup.INVESTED_USER,
-                    UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER,
-                    UserGroup.AGENT,
-                    UserGroup.CHANNEL,
-                    UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE), null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }

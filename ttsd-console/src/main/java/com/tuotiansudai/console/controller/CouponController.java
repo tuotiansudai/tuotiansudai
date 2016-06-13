@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -80,6 +81,9 @@ public class CouponController {
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
 
+    @Autowired
+    private ExchangeCodeService exchangeCodeService;
+
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/coupon/{couponId}/exchange-code", method = RequestMethod.GET)
@@ -92,12 +96,9 @@ public class CouponController {
         }
         response.setContentType("application/csv");
         List<List<String>> data = Lists.newArrayList();
-        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
         CouponModel couponModel = couponService.findCouponById(couponId);
-        List<String> exchangeCodes = Lists.newArrayList();
-        for (String key : map.keySet()) {
-            exchangeCodes.add(key);
-        }
+        List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
+
         for (int i=0; i<exchangeCodes.size(); i++) {
             List<String> dataModel = Lists.newArrayList();
             if (i == 0) {

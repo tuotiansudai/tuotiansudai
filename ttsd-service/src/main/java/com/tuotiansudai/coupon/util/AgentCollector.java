@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AgentCollector implements UserCollector{
+public class AgentCollector implements UserCollector {
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;

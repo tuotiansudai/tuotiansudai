@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -42,6 +43,7 @@ public class CouponServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private CouponMapper couponMapper;
 
@@ -57,6 +59,9 @@ public class CouponServiceTest {
     @Autowired
     private CouponActivationService couponActivationService;
 
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+
     @Test
     public void shouldAssignUserCoupon() throws Exception{
         UserModel userModel = fakeUserModel();
@@ -69,7 +74,7 @@ public class CouponServiceTest {
 
         couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER));
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -89,7 +94,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.WINNER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(0L));
@@ -111,7 +116,7 @@ public class CouponServiceTest {
 
         couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.NEW_REGISTERED_USER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -136,7 +141,7 @@ public class CouponServiceTest {
 
         couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -161,7 +166,7 @@ public class CouponServiceTest {
 
         couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -186,7 +191,7 @@ public class CouponServiceTest {
 
         couponActivationService.active(userModel.getLoginName(), exchangeCouponDto.getId(), "");
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
+        couponAssignmentService.assignUserCoupon("couponTest", exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
