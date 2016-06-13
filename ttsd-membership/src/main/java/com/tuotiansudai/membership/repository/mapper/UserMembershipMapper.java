@@ -5,6 +5,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,4 +31,10 @@ public interface UserMembershipMapper {
 
     void updateMembershipPoint(@Param(value = "loginName") String loginName,
                                @Param(value = "membershipPoint") long membershipPoint);
+
+    String findAccountIdentityNumberByLoginName(String loginName);
+
+    long sumSuccessInvestAmountByLoginName(@Param(value = "loginName") String loginName);
+
+    Date findAccountRegisterTimeByLoginName(String loginName);
 }

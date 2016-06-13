@@ -31,7 +31,6 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -60,10 +59,10 @@ public class UserMembershipServiceTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
+    private InvestMapper investMapper;
 
     @Autowired
-    private InvestMapper investMapper;
+    private IdGenerator idGenerator;
 
     @Test
     public void shouldEvaluateWhenLoginNameIsNotExist() throws Exception {
@@ -197,7 +196,7 @@ public class UserMembershipServiceTest {
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100, fakeUser.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
@@ -211,7 +210,7 @@ public class UserMembershipServiceTest {
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, fakeUser.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));

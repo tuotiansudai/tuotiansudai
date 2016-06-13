@@ -56,4 +56,23 @@
         update account set membership_point = #{membershipPoint} where login_name = #{loginName}
     </update>
 
+    <select id="findAccountIdentityNumberByLoginName" parameterType="java.lang.String" resultType="String">
+        select IFNULL(identity_number, 0) from account where login_name = #{loginName}
+    </select>
+
+    <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
+        from invest
+        <where>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+        </where>
+        and status = 'SUCCESS'
+    </select>
+
+    <select id="findAccountRegisterTimeByLoginName" parameterType="java.lang.String" resultType="Date">
+        select register_time from account where login_name = #{loginName}
+    </select>
+
 </mapper>

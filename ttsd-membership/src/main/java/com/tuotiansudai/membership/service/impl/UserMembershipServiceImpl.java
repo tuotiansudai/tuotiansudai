@@ -2,22 +2,15 @@ package com.tuotiansudai.membership.service.impl;
 
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.MembershipType;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,12 +28,6 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -72,38 +59,40 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     }
 
     @Override
-    public MembershipType receiveMembership(String loanName){
+    public MembershipType receiveMembership(String loginName){
         setMembershipStartDate();
         if(Calendar.getInstance().getTime().getTime() < membershipStartDate.getTime()){
             return MembershipType.NOT_TO_THE_TIME;
         }
 
-        if(loanName == null || loanName.equals("")){
+        if(loginName == null || loginName.equals("")){
             return MembershipType.NOT_TO_LOGIN;
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(loanName);
-        if(accountModel == null || StringUtils.isEmpty(accountModel.getIdentityNumber())){
+        String identityNumber = userMembershipMapper.findAccountIdentityNumberByLoginName(loginName);
+        if(identityNumber == null || identityNumber.equals("0")){
             return MembershipType.NOT_TO_REGISTER;
         }
 
-        if(CollectionUtils.isNotEmpty(userMembershipMapper.findByLoginName(loanName))){
+        if(CollectionUtils.isNotEmpty(userMembershipMapper.findByLoginName(loginName))){
             return MembershipType.ALREADY_RECEIVE;
         }
 
-        long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loanName);
-        if(accountModel.getRegisterTime().getTime() < membershipStartDate.getTime() && investAmount < 1000){
+        long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(loginName);
+        Date registerTime = userMembershipMapper.findAccountRegisterTimeByLoginName(loginName);
+        if(registerTime != null && registerTime.getTime() < membershipStartDate.getTime() && investAmount < 1000){
             return MembershipType.ALREADY_REGISTER_NOT_INVEST_1000;
         }
 
-        if(accountModel.getRegisterTime().getTime() < membershipStartDate.getTime() && investAmount >= 1000){
+        if(registerTime != null && registerTime.getTime() < membershipStartDate.getTime() && investAmount >= 1000){
+            createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
             return MembershipType.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
 
-        if(accountModel.getRegisterTime().getTime() >= membershipStartDate.getTime()){
+        if(registerTime != null && registerTime.getTime() >= membershipStartDate.getTime()){
+            createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
             return MembershipType.AFTER_START_ACTIVITY_REGISTER;
         }
-
         return null;
     }
 
@@ -115,5 +104,17 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
+    }
+
+    private void createUserMembershipModel(String loginName,int level){
+        UserMembershipModel userMembershipModel = new UserMembershipModel();
+        userMembershipModel.setLoginName(loginName);
+        userMembershipModel.setCreatedTime(new Date());
+        Calendar lastDate = Calendar.getInstance();
+        lastDate.add(Calendar.MONTH, +1);
+        userMembershipModel.setExpiredTime(lastDate.getTime());
+        userMembershipModel.setType(UserMembershipType.GIVEN);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
+        userMembershipMapper.create(userMembershipModel);
     }
 }
