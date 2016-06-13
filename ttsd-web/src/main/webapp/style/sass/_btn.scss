@@ -72,7 +72,7 @@
   &:hover {
     background: rgba(255,117,42,0.8);
   }
-  &:disabled, &:disabled:hover {
+  &:disabled, &:disabled:hover,&.disabled {
     background: #ccc !important;
     border:1px solid #ccc!important;
     cursor: default;
