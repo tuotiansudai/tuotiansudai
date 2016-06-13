@@ -473,8 +473,14 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and loan.status = #{loanStatus}
-        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null
+        <if test="loanStatus.name() != 'RAISING' ">
+            and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'RAISING' ">
+            and loan.status in ('RAISING','RECHECK')
+        </if>
+
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
     </select>
@@ -484,8 +490,13 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and loan.status = #{loanStatus}
-        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null
+        <if test="loanStatus.name() != 'RAISING' ">
+            and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'RAISING' ">
+            and loan.status in ('RAISING','RECHECK')
+        </if>
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
     </select>
 
     <select id="countInvestSuccessExperience" parameterType="map" resultType="long">
