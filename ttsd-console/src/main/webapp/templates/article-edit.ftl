@@ -106,11 +106,9 @@
             </#if>
             <div class="form-group">
                 <label class="col-sm-1 control-label"></label>
-                <#if dto??>
                     <div class="col-sm-10">
                         <a href="#" class="btn btn-success preview" target="_blank">预览</a>
                     </div>
-                </#if>
 
             </div>
 

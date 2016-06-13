@@ -40,25 +40,8 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     private LicaiquanArticleCommentMapper licaiquanArticleCommentMapper;
 
     @Override
-    public BaseDto<PayDataDto> retrace(long articleId) {
-        PayDataDto payDataDto = new PayDataDto();
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        baseDto.setData(payDataDto);
-        if (!redisWrapperClient.hexistsSeri(articleRedisKey, String.valueOf(articleId))) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(MessageFormat.format("id:{0}不存在,请核实!", articleId));
-            return baseDto;
-        }
-        LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
-        if (liCaiQuanArticleDto != null && liCaiQuanArticleDto.getArticleStatus() == ArticleStatus.APPROVING) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(MessageFormat.format("id:{0}正在审核!", articleId));
-            return baseDto;
-        }
-        liCaiQuanArticleDto.setArticleStatus(ArticleStatus.RETRACED);
-        liCaiQuanArticleDto.setCreateTime(new Date());
-        redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
-        return baseDto;
+    public void retrace(long articleId) {
+        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(articleId));
     }
 
     @Override

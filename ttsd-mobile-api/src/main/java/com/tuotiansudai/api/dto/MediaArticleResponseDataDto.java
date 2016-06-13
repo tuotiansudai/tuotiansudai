@@ -1,8 +1,10 @@
 package com.tuotiansudai.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +17,7 @@ public class MediaArticleResponseDataDto extends BaseResponseDataDto implements 
     private String showPicture;
     private ArticleSectionType section;
     private String content;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
     private String source;
     private long likeCount;

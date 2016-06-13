@@ -59,7 +59,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
 
         //表单校验初始化参数
         $(".article-form").Validform({
-            btnSubmit: '.article-save',
+            btnSubmit: '.article-save,.preview',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
             ignoreHidden:true,
@@ -117,11 +117,14 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
         $previewBtn.on('click', function(event) {
             event.preventDefault();
             var $self = $(this);
-            $('.article-content').val(getContent());
-            $self.attr('disabled', 'disabled');
-            $articleForm[0].target='_blank';
-            $articleForm[0].action = "/announce-manage/article/preview";
-            $articleForm[0].submit();
+            if (boolFlag) {
+
+                $('.article-content').val(getContent());
+                $self.attr('disabled', 'disabled');
+                $articleForm[0].target='_blank';
+                $articleForm[0].action = "/announce-manage/article/preview";
+                $articleForm[0].submit();
+            }
 
         });
     });

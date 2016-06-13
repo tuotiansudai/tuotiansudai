@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -55,8 +56,9 @@ public class LiCaiQuanArticleController {
 
     @RequestMapping(value = "/article/{articleId}/retrace", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<PayDataDto> retraceArticle(@PathVariable long articleId) {
-        return liCaiQuanArticleService.retrace(articleId);
+    public ModelAndView retraceArticle(@PathVariable long articleId) {
+        liCaiQuanArticleService.retrace(articleId);
+        return new ModelAndView("redirect:/announce-manage/article/list");
     }
 
     @RequestMapping(value = "/article/list", method = RequestMethod.GET)
@@ -80,6 +82,9 @@ public class LiCaiQuanArticleController {
             return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-preview");
+            if(liCaiQuanArticleDto.getCreateTime() == null){
+                liCaiQuanArticleDto.setCreateTime(new Date());
+            }
             modelAndView.addObject("articleContent", liCaiQuanArticleDto);
             return modelAndView;
         }

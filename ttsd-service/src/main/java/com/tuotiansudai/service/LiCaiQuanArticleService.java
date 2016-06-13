@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.ArticleSectionType;
 import java.util.Map;
 
 public interface LiCaiQuanArticleService {
-    BaseDto<PayDataDto> retrace(long articleId);
+    void retrace(long articleId);
 
     void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
 
