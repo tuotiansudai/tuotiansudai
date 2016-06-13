@@ -45,6 +45,7 @@ public class LiCaiQuanArticleServiceTest {
     private final static String articleCommentRedisKey = "console:article:comment";
     private final static String articleLikeCounterKey = "console:article:likeCounter";
     private final static String articleReadCounterKey = "console:article:readCounter";
+    private final static String articleCheckerKey = "console:article:checker";
 
     @Test
     public void shouldRetraceIsSuccess() {
@@ -263,10 +264,13 @@ public class LiCaiQuanArticleServiceTest {
 
     @Test
     public void testCheckArticleOnStatus() {
+        final String checkerLoginName = "testChecker";
         prepareArticleData(0, ArticleStatus.TO_APPROVE);
-        assertTrue(liCaiQuanArticleService.checkArticleOnStatus(0).getData().getStatus());
+        redisWrapperClient.hset(articleCheckerKey, String.valueOf(0), checkerLoginName);
+        assertTrue(liCaiQuanArticleService.checkArticleOnStatus(0, checkerLoginName).getData().getStatus());
         assertEquals(ArticleStatus.APPROVING, liCaiQuanArticleService.getArticleContent(0).getArticleStatus());
-        assertFalse(liCaiQuanArticleService.checkArticleOnStatus(0).getData().getStatus());
+        assertTrue(liCaiQuanArticleService.checkArticleOnStatus(0, checkerLoginName).getData().getStatus());
+        assertFalse(liCaiQuanArticleService.checkArticleOnStatus(0, "otherLoginName").getData().getStatus());
     }
 
     @Test

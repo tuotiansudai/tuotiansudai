@@ -93,7 +93,8 @@ public class LiCaiQuanArticleController {
     @RequestMapping(value = "/article/{articleId}/check", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> checkArticle(@PathVariable long articleId) {
-        return liCaiQuanArticleService.checkArticleOnStatus(articleId);
+        String loginName = LoginUserInfo.getLoginName();
+        return liCaiQuanArticleService.checkArticleOnStatus(articleId, loginName);
     }
 
     @RequestMapping(value = "/article/{articleId}/check-view", method = RequestMethod.GET)
