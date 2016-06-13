@@ -387,8 +387,8 @@
         }
         .today-gift{
           float:left;
-          width:360px;
-          margin:0 380px;
+          width:250px;
+          margin:0 435px;
           text-align:center;
           .today-title{
             float:left;
@@ -401,7 +401,14 @@
           .gift-img{
             float:left;
             width:100%;
-            height:350px;
+            height:250px;
+          }
+          .gift-name{
+            float:left;
+            width:100%;
+            font-size:20px;
+            color:#000;
+            margin-bottom:20px;
           }
           .get-rank{
             display: inline-block;

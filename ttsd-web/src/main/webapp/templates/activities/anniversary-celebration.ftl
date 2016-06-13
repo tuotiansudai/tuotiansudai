@@ -177,8 +177,9 @@
                     <div class="today-title">
                     </div>
                     <div class="gift-img">
-                        <img src="${staticServer}/images/sign/actor/anniversary/gift-img.png" width="100%">
+                        <img src="http://usr.im/250x250?bg=f39800&text=250x250" alt="神秘大奖" width="100%">
                     </div>
+                    <div class="gift-name">华为R8</div>
                     <a href="/loan-list" class="get-rank" target="_blank">我要上榜</a>
                 </div>
             </div>
