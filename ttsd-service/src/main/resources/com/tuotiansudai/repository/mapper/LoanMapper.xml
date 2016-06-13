@@ -489,10 +489,10 @@
         FROM
         loan
         WHERE
-        <if test="loanStatus == 'RAISING'">
+        <if test="loanStatus.name() == 'RAISING'">
             loan.status in ('RAISING','PREHEAT')
         </if>
-        <if test="loanStatus == 'COMPLETE'">
+        <if test="loanStatus.name() == 'COMPLETE'">
             loan.status in ('COMPLETE','REPAYING')
         </if>
 
