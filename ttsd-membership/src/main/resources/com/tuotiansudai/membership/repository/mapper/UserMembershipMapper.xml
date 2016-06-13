@@ -32,8 +32,28 @@
         select * from user_membership where login_name = #{loginName}
     </select>
 
+    <select id="findActiveByLoginName" resultMap="UserMembershipResultMap" parameterType="string">
+        select * from user_membership where login_name = #{loginName} and expired_time > now() order by created_time desc limit 1
+    </select>
+
+    <select id="findRateByLoginName" resultType="double" parameterType="string">
+        select m.fee from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() order by um.created_time desc limit 1
+    </select>
+
+    <select id="findRealLevelByLoginName" resultType="Integer" parameterType="string">
+        select m.level from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() and um.type = 'UPGRADE' order by um.created_time desc limit 1
+    </select>
+
     <select id="findByMembershipId" resultMap="UserMembershipResultMap" parameterType="long">
         select * from user_membership where membership_id = #{membershipId}
     </select>
+
+    <select id="findMembershipPointByLoginName" resultType="long" parameterType="string">
+        select membership_point from account where login_name = #{loginName}
+    </select>
+
+    <update id="updateMembershipPoint" parameterType="map">
+        update account set membership_point = #{membershipPoint} where login_name = #{loginName}
+    </update>
 
 </mapper>

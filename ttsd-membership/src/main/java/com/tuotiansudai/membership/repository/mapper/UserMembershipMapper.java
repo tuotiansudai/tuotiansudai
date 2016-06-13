@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.repository.mapper;
 
 
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +18,16 @@ public interface UserMembershipMapper {
 
     List<UserMembershipModel> findByLoginName(String loginName);
 
+    UserMembershipModel findActiveByLoginName(String loginName);
+
+    Double findRateByLoginName(String loginName);
+
+    Integer findRealLevelByLoginName(String loginName);
+
     UserMembershipModel findByMembershipId(long membershipId);
+
+    Long findMembershipPointByLoginName(String loginName);
+
+    void updateMembershipPoint(@Param(value = "loginName") String loginName,
+                               @Param(value = "membershipPoint") long membershipPoint);
 }

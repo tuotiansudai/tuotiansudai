@@ -1,9 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.*;
@@ -12,6 +15,7 @@ import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -59,6 +61,12 @@ public class InvestServiceTest {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    MembershipExperienceBillMapper membershipExperienceBillMapper;
+
     private MockWebServer mockServer;
 
     @Autowired
@@ -73,7 +81,7 @@ public class InvestServiceTest {
     private AccountModel createAccountByUserId(String userId) {
         AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
         accountModel.setAutoInvest(true);
-        accountModel.setBalance(10000);
+        accountModel.setBalance(600000);
         accountModel.setFreeze(10000);
         return accountModel;
     }
@@ -216,7 +224,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -224,14 +232,22 @@ public class InvestServiceTest {
         createUserAutoInvestPlan("testInvest2", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
         createUserAutoInvestPlan("testInvest3", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
 
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest1", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testInvest2", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel("testInvest3", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+        userMembershipMapper.create(userMembershipModel3);
+
         this.investService.autoInvest(loanId);
 
         long amount = investMapper.sumSuccessInvestAmount(loanId);
 
         assert amount == 100;
     }
+
     @Test
-    public void shouldAutoInvestNewBieByNewInvestorIsSuccess(){
+    public void shouldAutoInvestNewBieByNewInvestorIsSuccess() {
         this.createUserByUserId("testLoan");
         this.createUserByUserId("testInvest");
         this.createUserByUserId("testNewInvest");
@@ -245,23 +261,27 @@ public class InvestServiceTest {
         LoanModel loanModel = createLoanModel();
         loanMapper.create(loanModel);
 
-        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null);
+        InvestModel modelOld = new InvestModel(idGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
         modelOld.setStatus(InvestStatus.SUCCESS);
         investMapper.create(modelOld);
         createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
         createUserAutoInvestPlan("testNewInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
 
-
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testNewInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
 
         this.investService.autoInvest(loanModel.getId());
 
-        List<InvestModel> investModels = investMapper.findByStatus(loanModel.getId(),0,10,InvestStatus.WAIT_PAY);
+        List<InvestModel> investModels = investMapper.findByStatus(loanModel.getId(), 0, 10, InvestStatus.WAIT_PAY);
 
-        assertEquals(1,investModels.size());
-        assertEquals("testNewInvest",investModels.get(0).getLoginName());
+        assertEquals(1, investModels.size());
+        assertEquals("testNewInvest", investModels.get(0).getLoginName());
 
     }
-    private LoanModel createLoanModel(){
+
+    private LoanModel createLoanModel() {
         long loanId = this.idGenerator.generate();
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
@@ -332,6 +352,9 @@ public class InvestServiceTest {
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
 
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+
         InvestDto investDto = new InvestDto();
         investDto.setLoginName("testInvest");
         investDto.setLoanId(String.valueOf(loanId));
@@ -347,7 +370,7 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void  shouldInvestWebRetUrlIsSuccess() {
+    public void shouldInvestWebRetUrlIsSuccess() {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
@@ -385,6 +408,9 @@ public class InvestServiceTest {
         accountModel.setBalance(10000);
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
+
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
 
         InvestDto investDto = new InvestDto();
         investDto.setLoginName("testInvest");
@@ -393,12 +419,12 @@ public class InvestServiceTest {
         investDto.setSource(Source.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals( MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
 
     }
 
     @Test
-    public void  shouldInvestRetAppUrlIsSuccess() {
+    public void shouldInvestRetAppUrlIsSuccess() {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("testLoan");
         LoanDto loanDto = new LoanDto();
@@ -437,6 +463,9 @@ public class InvestServiceTest {
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
 
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+
         InvestDto investDto = new InvestDto();
         investDto.setLoginName("testInvest");
         investDto.setLoanId(String.valueOf(loanId));
@@ -444,18 +473,18 @@ public class InvestServiceTest {
         investDto.setSource(Source.IOS);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         assertTrue(baseDto.getData().getStatus());
-        assertEquals(MessageFormat.format("{0}/callback/{1}",appRetUrl ,"project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
+        assertEquals(MessageFormat.format("{0}/callback/{1}", appRetUrl, "project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
     }
 
     @Test
-    public void shouldName() throws Exception {
+    public void shouldUpgradeMembershipLevel() throws Exception {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("loaner");
         this.createUserByUserId("investor");
 
         createAccountByUserId("loaner");
-        AccountModel investorAccountModel = createAccountByUserId("investor");
-        accountMapper.create(investorAccountModel);
+        AccountModel accountModel = createAccountByUserId("investor");
+        accountMapper.create(accountModel);
 
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("loaner");
@@ -485,10 +514,23 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("investor", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
+
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 500000L, "investor", new Date(), Source.WEB, null, 1.0);
         investMapper.create(investModel);
 
         investService.investSuccess(investModel);
+
+        int level = userMembershipMapper.findRealLevelByLoginName("investor");
+        assertEquals(level, 1);
+
+        long count = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName("investor", null, null);
+        assertEquals(count, 1);
+
+        long membershipPoint = userMembershipMapper.findMembershipPointByLoginName("investor");
+        assertEquals(membershipPoint, 5000);
     }
 
 }

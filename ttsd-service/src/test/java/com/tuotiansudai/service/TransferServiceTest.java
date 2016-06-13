@@ -125,13 +125,13 @@ public class TransferServiceTest {
     }
 
     private void createInvests(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
     }
 
     private void createInvestsTransferSuccess(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(model);
     }

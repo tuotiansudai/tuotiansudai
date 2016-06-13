@@ -10,21 +10,18 @@ import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
 
@@ -34,9 +31,6 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     private MembershipMapper membershipMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
@@ -44,6 +38,9 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -56,22 +53,22 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Override
     public int getProgressBarPercent(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        Long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(membershipModel.getLevel() >= 5?membershipModel.getLevel():(membershipModel.getLevel() + 1));
-        double changeable = ((accountModel.getMembershipPoint() - membershipModel.getExperience()) / (double) (NextLevelMembershipModel.getExperience() - membershipModel.getExperience())) * 0.2 * 100;
-        return (int) (membershipModel.getLevel() * 20 == 100?100:(membershipModel.getLevel() * 20 + changeable));
+        MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(membershipModel.getLevel() >= 5 ? membershipModel.getLevel() : (membershipModel.getLevel() + 1));
+        double changeable = ((membershipPoint - membershipModel.getExperience()) / (double) (NextLevelMembershipModel.getExperience() - membershipModel.getExperience())) * 0.2 * 100;
+        return (int) (membershipModel.getLevel() * 20 == 100 ? 100 : (membershipModel.getLevel() * 20 + changeable));
     }
 
     @Override
     public int getExpireDayByLoginName(String loginName) {
-        long leftDays = 0;
+        int leftDays = 0;
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        if(membershipModel != null){
-            UserMembershipModel  userMembershipModel = userMembershipMapper.findByMembershipId(membershipModel.getId());
-            leftDays = DateUtil.differenceDay(new Date(), userMembershipModel.getExpiredTime());
+        if (membershipModel != null) {
+            UserMembershipModel userMembershipModel = userMembershipMapper.findByMembershipId(membershipModel.getId());
+            leftDays = Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime())).getDays();
         }
-        return (int)leftDays;
+        return leftDays;
     }
 
     @Override
