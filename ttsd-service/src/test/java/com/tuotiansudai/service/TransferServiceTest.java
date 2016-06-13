@@ -267,7 +267,7 @@ public class TransferServiceTest {
         assertEquals(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() - investRepayModel.getExpectedFee()), dataDto.getNextRepayAmount());
         assertEquals(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(),new DateTime(dataDto.getNextRepayDate()).withTimeAtStartOfDay());
         assertEquals("28",dataDto.getSumRate());
-        assertEquals(TransferStatus.TRANSFERABLE.name(),dataDto.getTransferStatus());
+        assertEquals(TransferStatus.TRANSFERABLE.getDescription(),dataDto.getTransferStatus());
     }
 
     private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,

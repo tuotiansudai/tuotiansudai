@@ -109,10 +109,16 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             if (StringUtils.isNotEmpty(title) && liCaiQuanArticleDto.getTitle().indexOf(title) == -1) {
                 continue;
             }
-            if (articleSectionType != null && !liCaiQuanArticleDto.getSection().equals(articleSectionType)) {
+
+            if(articleSectionType == null){
+                articleDtoList.add(liCaiQuanArticleDto);
                 continue;
             }
-            articleDtoList.add(liCaiQuanArticleDto);
+
+            if(articleSectionType != null && liCaiQuanArticleDto.getSection() != null &&liCaiQuanArticleDto.getSection().equals(articleSectionType)){
+                articleDtoList.add(liCaiQuanArticleDto);
+                continue;
+            }
         }
         return articleDtoList;
     }

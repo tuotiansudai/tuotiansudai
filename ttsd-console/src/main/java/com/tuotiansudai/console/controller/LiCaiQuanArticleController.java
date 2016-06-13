@@ -53,7 +53,7 @@ public class LiCaiQuanArticleController {
         return  new ModelAndView("redirect:/announce-manage/article/list");
     }
 
-    @RequestMapping(value = "/article/{articleId}/retrace/", method = RequestMethod.POST)
+    @RequestMapping(value = "/article/{articleId}/retrace", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<PayDataDto> retraceArticle(@PathVariable long articleId) {
         return liCaiQuanArticleService.retrace(articleId);
@@ -70,6 +70,7 @@ public class LiCaiQuanArticleController {
         mv.addObject("title", title);
         mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
         mv.addObject("articleSectionTypeList", ArticleSectionType.values());
+        mv.addObject("userName",LoginUserInfo.getLoginName());
         return mv;
     }
 

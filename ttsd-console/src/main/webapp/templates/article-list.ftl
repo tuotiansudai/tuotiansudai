@@ -13,6 +13,7 @@
             <div class="form-group">
                 <label for="control-label">类型</label>
                 <select class="selectpicker" name="articleSectionType">
+                        <option value="">全部</option>
                     <#list articleSectionTypeList as sectionName>
                         <option value="${sectionName}"
                                 <#if (selected?has_content && selected == sectionName.articleSectionTypeName) >selected</#if>
@@ -46,7 +47,11 @@
                         <#if article.carousel>
                             <i class="lunbo-icon"></i>
                         </#if>
-                    ${article.section.articleSectionTypeName!}
+                        <#if article.section??>
+                            ${article.section.articleSectionTypeName!}
+                        <#else >
+                            全部
+                        </#if>
                     </td>
                     <td>
                         ${article.title!}
@@ -67,6 +72,13 @@
                                 <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
                             </@security.authorize>
                             <a href="/announce-manage/article/${article.articleId?c}/retrace"> 撤销</a>
+                        </#if>
+                        <#if article.articleStatus.description == '审核中'>
+                            <#if article.creator == userName>
+                                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                    <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>
+                                </@security.authorize>
+                            </#if>
                         </#if>
                         <#if article.articleStatus.description == '已发布'>
                             <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/

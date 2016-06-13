@@ -124,8 +124,8 @@ class MediaList extends React.Component {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			setTimeout(() => {
 				if (!this.myScroll) {
-					let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']) + 50;
-					this.refs.scrollWrap.style.height = (window.screen.height * document.documentElement.dataset.dpr - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
+					let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
+					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
 					this.myScroll = new IScroll(this.refs.scrollWrap);
 					this.myScroll.on('scrollEnd', () => {
 						if (this.myScroll.y <= this.myScroll.maxScrollY) {
@@ -140,7 +140,7 @@ class MediaList extends React.Component {
 						this.myScroll.scrollTo(0, 0);
 					}
 				}
-			}, 0);
+			}, 200);
 		});
 	}
 	componentWillUnmount() {
