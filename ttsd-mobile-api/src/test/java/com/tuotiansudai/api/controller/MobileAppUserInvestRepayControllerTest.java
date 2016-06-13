@@ -1,7 +1,9 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppLoanListController;
+import com.tuotiansudai.api.controller.v1_0.MobileAppUserInvestRepayController;
 import com.tuotiansudai.api.dto.v1_0.LoanListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.UserInvestRepayRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +18,7 @@ public class MobileAppUserInvestRepayControllerTest extends ControllerTestBase {
     @InjectMocks
     private MobileAppLoanListController controller;
     @Mock
-    private MobileAppLoanListService service;
+    private MobileAppUserInvestRepayController service;
 
 
     @Override
@@ -25,10 +27,9 @@ public class MobileAppUserInvestRepayControllerTest extends ControllerTestBase {
     }
 
     @Test
-    public void shouldQueryLoanListIsOk() throws Exception {
-        when(service.generateLoanList(any(LoanListRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/loans",
-                new LoanListRequestDto());
+    public void shouldUserInvestReapyIsOk() throws Exception {
+        when(service.userInvestRepay(any(UserInvestRepayRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/user-invest-repay", new UserInvestRepayRequestDto());
     }
 
 }

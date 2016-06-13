@@ -2,27 +2,21 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
-import com.tuotiansudai.api.service.v1_0.MobileAppInvestService;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserInvestRepayService;
-import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestRepayService {
@@ -34,56 +28,53 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private LoanService loanService;
 
     @Autowired
-    private MobileAppChannelService mobileAppChannelService;
-
-    @Value("${pay.callback.app.web.host}")
-    private String domainName;
-
-
-    @Override
-    public BaseResponseDto invest(InvestRequestDto investRequestDto) {
-        BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
-        InvestDto investDto = convertInvestDto(investRequestDto);
-        try {
-            BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
-            if (formDto.getData().getStatus()) {
-                PayFormDataDto formDataDto = formDto.getData();
-                String requestData = CommonUtils.mapToFormData(formDataDto.getFields(), true);
-
-                InvestResponseDataDto investResponseDataDto = new InvestResponseDataDto();
-                investResponseDataDto.setRequestData(requestData);
-                investResponseDataDto.setUrl(formDataDto.getUrl());
-                responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-                responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-                responseDto.setData(investResponseDataDto);
-            } else {
-                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
-            }
-        } catch (InvestException e) {
-            responseDto = convertExceptionToDto(e);
-        } catch (UnsupportedEncodingException e) {
-            responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
-            responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
-        }
-        return responseDto;
-    }
-
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
-
-        InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId()));
-
-        LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
-
-
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         BaseResponseDto<UserInvestRepayResponseDataDto> responseDto = new BaseResponseDto<>();
+        long totalExpectedInterest = 0;
+        long completeTotalActualInterest = 0;
+        int periodCount = 0;
 
-        UserInvestRepayResponseDataDto userInvestRepayResponseDataDto =
+        try {
+            InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId()));
+            LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+            UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            List<InvestRepayDataDto> investRepayList = new ArrayList<>();
 
+            for (InvestRepayModel investRepayModel : investRepayModels) {
+                InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto();
+                investRepayDataDto.setPeriod(investRepayModel.getPeriod());
+                investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
+                investRepayDataDto.setActualRepayDate(investRepayModel.getActualRepayDate() == null ? "" : sdf.format(investRepayModel.getActualRepayDate()));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
+                investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(investRepayModel.getRepayAmount()));
+                investRepayDataDto.setStatus(investRepayModel.getStatus().getDescription());
+                investRepayList.add(investRepayDataDto);
+                if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
+                    completeTotalActualInterest += investRepayModel.getRepayAmount();
+                }
+                totalExpectedInterest += (investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee());
+                periodCount++;
+                //用最后一次待还款日期做为到期还款日
+                if(periodCount == investRepayModels.size()){
+                    userInvestRepayResponseDataDto.setLastRepayDate(investRepayModel.getRepayDate() != null?sdf.format(investRepayModel.getRepayDate()):"");
+                }
+            }
+            userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+            userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
+            userInvestRepayResponseDataDto.setInvestRepayList(investRepayList);
 
-        return null;
+            responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+            responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            responseDto.setData(userInvestRepayResponseDataDto);
+        }catch(Exception e){
+            responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+            responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
+        return responseDto;
     }
 }

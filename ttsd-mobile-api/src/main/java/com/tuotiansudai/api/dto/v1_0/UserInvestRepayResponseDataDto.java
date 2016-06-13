@@ -1,7 +1,11 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.util.AmountConverter;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
@@ -23,16 +27,21 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     private List<InvestRepayDataDto> investRepayList;
 
 
-    public UserInvestRepayResponseDataDto(LoanModel loanModel){
+    public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.loanId = String.valueOf(loanModel.getId());
         this.loanName = loanModel.getName();
-        this.baseRate = String.valueOf(loanModel.getBaseRate());
-        this.activityRate = String.valueOf(loanModel.getActivityRate());
+        this.baseRate = String.valueOf(decimalFormat.format(loanModel.getBaseRate() * 100));
+        this.activityRate = String.valueOf(decimalFormat.format(loanModel.getActivityRate() * 100));
         this.duration = String.valueOf(loanModel.getDuration());
+        this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();
-
-
-
+        this.recheckTime = String.valueOf(sdf2.format(loanModel.getRecheckTime()));
+        this.investId = String.valueOf(investModel.getId());
+        this.investAmount = AmountConverter.convertCentToString(investModel.getAmount());
+        this.investTime = sdf.format(investModel.getInvestTime());
     }
 
 
