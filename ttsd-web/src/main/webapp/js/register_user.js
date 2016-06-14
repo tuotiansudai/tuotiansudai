@@ -12,6 +12,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $referrer=$('input.referrer', registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
+        referrerError=$('#referrerError'),
         passedNumber= 0,
         countTimer;
     var $frontInput=registerUserForm.find('input:lt(4)');
@@ -39,6 +40,12 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $this.next('li').toggleClass('hide');
         checkOption=$this.next('li').hasClass('hide');
         iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+        if($referrer.is(':hidden')) {
+            $referrer.val('');
+            $referrer.removeClass('error').addClass('valid');
+            referrerError.html('').show();
+            checkValidNum();
+        }
     });
 
     showAgreement.click(function () {
@@ -222,6 +229,13 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
                 }
+
+            }
+            if (element.name === 'captcha') {
+                $registerSubmit.prop('disabled',false);
+            }
+            else {
+                $registerSubmit.prop('disabled',true);
             }
         }
     });
@@ -271,7 +285,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
     $referrer.on('keyup',function(event) {
         var $target=$(event.target),
-            referrerError=$('#referrerError'),
         value=event.target.value;
         if(value) {
             var checkValid=false;
@@ -285,19 +298,19 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     checkValid=res.data.status?true:false;
                     if(checkValid) {
                         $target.removeClass('error').addClass('valid');
-                        referrerError.html('');
+                        referrerError.html('').show();
                     }
                     else {
                         $target.removeClass('valid').addClass('error');
-                        referrerError.html('推荐人不存在');
+                        referrerError.html('推荐人不存在').show();
                     }
                     checkValidNum();
                 });
 
         }
         else {
-            $target.removeClass('error').addClass('valid');
-            referrerError.html('');
+            $target.removeClass('error').addClass('valid').show();
+            referrerError.html('').show();
             checkValidNum();
         }
 
