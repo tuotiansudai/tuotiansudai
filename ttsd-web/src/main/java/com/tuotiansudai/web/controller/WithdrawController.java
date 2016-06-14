@@ -46,11 +46,11 @@ public class WithdrawController {
             return new ModelAndView("redirect:/bind-card");
         }
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
-        boolean hasAccess = !blacklistService.userIsInBlacklist(LoginUserInfo.getLoginName());
+//        boolean hasAccess = !blacklistService.userIsInBlacklist(LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
-        modelAndView.addObject("hasAccess", String.valueOf(hasAccess));
+        modelAndView.addObject("hasAccess", "1");
         return modelAndView;
     }
 
