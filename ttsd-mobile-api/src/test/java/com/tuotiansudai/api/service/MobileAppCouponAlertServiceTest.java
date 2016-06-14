@@ -40,7 +40,7 @@ public class MobileAppCouponAlertServiceTest extends ServiceTestBase {
         BaseResponseDto baseDto = mobileAppCouponAlertService.getCouponAlert(baseParamDto);
         CouponAlertResponseDataDto responseDataDto = (CouponAlertResponseDataDto) baseDto.getData();
 
-        assertEquals("新手体验券", responseDataDto.getName());
+        assertEquals(CouponType.NEWBIE_COUPON.getName(), responseDataDto.getName());
         assertEquals("10.00", responseDataDto.getAmount());
         assertEquals("2016-01-07", responseDataDto.getEndTime());
     }

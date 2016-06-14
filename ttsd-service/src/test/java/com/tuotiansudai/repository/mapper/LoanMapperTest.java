@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import junit.framework.Assert;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -306,12 +305,18 @@ public class LoanMapperTest {
 
         LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
         LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NORMAL);
+        fakeCanceledLoan2.setProductType(ProductType._180);
+        fakeCanceledLoan1.setProductType(ProductType.EXPERIENCE);
+        fakeCanceledLoan1.setStatus(LoanStatus.RAISING);
+        fakeCanceledLoan2.setStatus(LoanStatus.RAISING);
+        fakeCanceledLoan1.setActivityType(ActivityType.NORMAL);
+        fakeCanceledLoan2.setActivityType(ActivityType.NORMAL);
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
 
-        loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name());
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name()));
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name()));
+        List<LoanModel> loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, true);
+        List<LoanModel> loanModels1 = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, false);
+        assertTrue(loanModels.size() > loanModels1.size());
     }
 
     @Test
@@ -323,16 +328,19 @@ public class LoanMapperTest {
         fakeCanceledLoan1.setVerifyTime(new Date());
         fakeCanceledLoan1.setBaseRate(999999992);
         fakeCanceledLoan1.setActivityRate(1);
+        fakeCanceledLoan1.setProductType(ProductType._180);
         LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT,ActivityType.NORMAL);
         fakeCanceledLoan2.setDuration(ProductType._30.getDuration());
         fakeCanceledLoan2.setVerifyTime(new Date());
         fakeCanceledLoan2.setBaseRate(999999992);
         fakeCanceledLoan2.setActivityRate(1);
+        fakeCanceledLoan2.setProductType(ProductType._180);
         LoanModel fakeCanceledLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NORMAL);
         fakeCanceledLoan3.setDuration(ProductType._360.getDuration());
         fakeCanceledLoan3.setVerifyTime(new Date());
         fakeCanceledLoan3.setBaseRate(999999992);
         fakeCanceledLoan3.setActivityRate(1);
+        fakeCanceledLoan3.setProductType(ProductType._180);
         fakeCanceledLoan3.setRecheckTime( DateUtils.addDays(new Date(), -1));
         LoanModel fakeCanceledLoan4 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING,ActivityType.NORMAL);
         fakeCanceledLoan4.setDuration(ProductType._180.getDuration());
@@ -340,14 +348,19 @@ public class LoanMapperTest {
         fakeCanceledLoan4.setBaseRate(999999992);
         fakeCanceledLoan4.setActivityRate(1);
         fakeCanceledLoan4.setVerifyTime(new Date());
+        fakeCanceledLoan4.setProductType(ProductType.EXPERIENCE);
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,true,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);
         assertEquals(loanModels.get(2).getStatus(),LoanStatus.REPAYING);
         assertEquals(loanModels.get(3).getStatus(),LoanStatus.COMPLETE);
+        assertEquals(loanModels.get(2).getProductType(),ProductType.EXPERIENCE);
+
+        loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,false,0);
+        assertEquals(loanModels.size(),3);
     }
 }
