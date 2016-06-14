@@ -151,11 +151,11 @@
                         <span class="point fr">${experienceLoanDto.progress} %</span>
                     </div>
                     <div class="process-percent">
-                        <div class="percent" style="width:0%">
+                        <div class="percent" style="width:${experienceLoanDto.progress}%">
                         </div>
                     </div>
                     <div class="rest-amount">
-                        <span>可投额度：<i>${experienceLoanDto.investAmount} 元</i></span>
+                        <span>可投额度：<i>${experienceLoanDto.investAmount}</i>元(体验金)</span>
                         <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
                     </div>
                 </div>
