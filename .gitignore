@@ -19,5 +19,9 @@ spike.py
 **/node_modules/
 ttsd-web/src/main/webapp/style/*.css.map
 ttsd-web/src/main/webapp/style/*.css
+ttsd-web/src/main/webapp/style/dest/
+ttsd-web/src/main/webapp/js/dest/
+ttsd-web/src/main/webapp/js/debug/
 SignVerProp.properties
 cs/.env
+
