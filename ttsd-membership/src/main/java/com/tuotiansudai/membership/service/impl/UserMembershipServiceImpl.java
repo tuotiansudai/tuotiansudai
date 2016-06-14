@@ -89,11 +89,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
             return MembershipType.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
 
-        if(registerTime != null && registerTime.getTime() >= membershipStartDate.getTime()){
-            createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
-            return MembershipType.AFTER_START_ACTIVITY_REGISTER;
-        }
-        return null;
+        return MembershipType.AFTER_START_ACTIVITY_REGISTER;
     }
 
     private void setMembershipStartDate(){

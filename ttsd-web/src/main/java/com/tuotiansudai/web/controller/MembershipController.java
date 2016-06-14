@@ -108,7 +108,7 @@ public class MembershipController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/receive", method = RequestMethod.GET)
+    @RequestMapping(value = "/receive", method = RequestMethod.POST)
     public String receive() throws ParseException {
         return userMembershipService.receiveMembership(LoginUserInfo.getLoginName()).toString();
     }
