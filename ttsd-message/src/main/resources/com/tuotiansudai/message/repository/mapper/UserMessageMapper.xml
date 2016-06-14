@@ -41,4 +41,17 @@
             `created_time` = #{createdTime}
         where `id` = #{id}
     </update>
+
+    <select id="findMessagesByLoginName" parameterType="map" resultMap="userMessageResultMap">
+        select * from user_message
+        where login_name = #{loginName}
+        order by created_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countMessagesByLoginName" parameterType="string" resultType="long">
+        select count(1) from user_message where login_name = #{loginName}
+    </select>
 </mapper>

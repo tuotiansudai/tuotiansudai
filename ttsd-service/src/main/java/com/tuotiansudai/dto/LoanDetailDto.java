@@ -1,10 +1,14 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +20,6 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String loanerLoginName;
 
-    private String loanerUserName;
-
     private String agentLoginName;
 
     private LoanType type;
@@ -26,9 +28,9 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String descriptionHtml;
 
-    private long minInvestAmount;
+    private String minInvestAmount;
 
-    private long investIncreasingAmount;
+    private String investIncreasingAmount;
 
     private String maxInvestAmount;
 
@@ -74,111 +76,85 @@ public class LoanDetailDto extends BaseDataDto {
 
     private int duration;
 
-    public LoanDetailDto() {
+    private LoanInvestAchievementDto achievement;
+
+    public LoanDetailDto(LoanModel loanModel, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels) {
+        this.id = loanModel.getId();
+        this.name = loanModel.getName();
+        this.progress = new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
+        this.basicRate = new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.activityRate = new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.loanAmount = loanModel.getLoanAmount();
+        this.agentLoginName = loanModel.getAgentLoginName();
+        this.loanerLoginName = loanModel.getLoanerLoginName();
+        this.periods = loanModel.getPeriods();
+        this.type = loanModel.getType();
+        this.minInvestAmount = AmountConverter.convertCentToString(loanModel.getMinInvestAmount());
+        this.maxInvestAmount = AmountConverter.convertCentToString(loanModel.getMaxInvestAmount());
+        this.investIncreasingAmount = AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount());
+        this.productType = loanModel.getProductType();
+        this.activityType = loanModel.getActivityType();
+        this.loanStatus = loanModel.getStatus();
+        this.amountNeedRaised = loanModel.getLoanAmount() - investedAmount;
+
+        this.descriptionHtml = loanModel.getDescriptionHtml();
+        this.fundraisingStartTime = loanModel.getFundraisingStartTime();
+        this.raisingPeriod = Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(), new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1;
+        this.duration = loanModel.getDuration();
+        this.loanTitleDto = loanTitleModels;
+        this.loanTitles = loanTitleRelationModels;
+
+        if (loanModel.getStatus() == LoanStatus.PREHEAT) {
+            this.preheatSeconds = (loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000;
+        }
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLoanerLoginName() {
         return loanerLoginName;
     }
 
-    public void setLoanerLoginName(String loanerLoginName) {
-        this.loanerLoginName = loanerLoginName;
-    }
-
-    public String getLoanerUserName() {
-        return loanerUserName;
-    }
-
-    public void setLoanerUserName(String loanerUserName) {
-        this.loanerUserName = loanerUserName;
-    }
-
     public String getAgentLoginName() {
         return agentLoginName;
-    }
-
-    public void setAgentLoginName(String agentLoginName) {
-        this.agentLoginName = agentLoginName;
     }
 
     public LoanType getType() {
         return type;
     }
 
-    public void setType(LoanType type) {
-        this.type = type;
-    }
-
     public int getPeriods() {
         return periods;
-    }
-
-    public void setPeriods(int periods) {
-        this.periods = periods;
     }
 
     public String getDescriptionHtml() {
         return descriptionHtml;
     }
 
-    public void setDescriptionHtml(String descriptionHtml) {
-        this.descriptionHtml = descriptionHtml;
-    }
-
-    public long getMinInvestAmount() {
+    public String getMinInvestAmount() {
         return minInvestAmount;
     }
 
-    public void setMinInvestAmount(long minInvestAmount) {
-        this.minInvestAmount = minInvestAmount;
-    }
-
-    public long getInvestIncreasingAmount() {
+    public String getInvestIncreasingAmount() {
         return investIncreasingAmount;
-    }
-
-    public void setInvestIncreasingAmount(long investIncreasingAmount) {
-        this.investIncreasingAmount = investIncreasingAmount;
     }
 
     public String getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
-    public void setMaxInvestAmount(String maxInvestAmount) {
-        this.maxInvestAmount = maxInvestAmount;
-    }
-
     public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
     public ActivityType getActivityType() {
         return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
     }
 
     public double getNewbieInterestCouponRate() {
@@ -193,64 +169,32 @@ public class LoanDetailDto extends BaseDataDto {
         return basicRate;
     }
 
-    public void setBasicRate(double basicRate) {
-        this.basicRate = basicRate;
-    }
-
     public double getActivityRate() {
         return activityRate;
-    }
-
-    public void setActivityRate(double activityRate) {
-        this.activityRate = activityRate;
     }
 
     public Date getFundraisingStartTime() {
         return fundraisingStartTime;
     }
 
-    public void setFundraisingStartTime(Date fundraisingStartTime) {
-        this.fundraisingStartTime = fundraisingStartTime;
-    }
-
     public long getLoanAmount() {
         return loanAmount;
-    }
-
-    public void setLoanAmount(long loanAmount) {
-        this.loanAmount = loanAmount;
     }
 
     public Date getRecheckTime() {
         return recheckTime;
     }
 
-    public void setRecheckTime(Date recheckTime) {
-        this.recheckTime = recheckTime;
-    }
-
     public LoanStatus getLoanStatus() {
         return loanStatus;
-    }
-
-    public void setLoanStatus(LoanStatus loanStatus) {
-        this.loanStatus = loanStatus;
     }
 
     public List<LoanTitleModel> getLoanTitleDto() {
         return loanTitleDto;
     }
 
-    public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
-        this.loanTitleDto = loanTitleDto;
-    }
-
     public long getAmountNeedRaised() {
         return amountNeedRaised;
-    }
-
-    public void setAmountNeedRaised(long amountNeedRaised) {
-        this.amountNeedRaised = amountNeedRaised;
     }
 
     public String getMaxAvailableInvestAmount() {
@@ -265,16 +209,8 @@ public class LoanDetailDto extends BaseDataDto {
         return progress;
     }
 
-    public void setProgress(double progress) {
-        this.progress = progress;
-    }
-
     public long getPreheatSeconds() {
         return preheatSeconds;
-    }
-
-    public void setPreheatSeconds(long preheatSeconds) {
-        this.preheatSeconds = preheatSeconds;
     }
 
     public void setUserBalance(long userBalance) {
@@ -283,10 +219,6 @@ public class LoanDetailDto extends BaseDataDto {
 
     public long getUserBalance() {
         return userBalance;
-    }
-
-    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
-        this.loanTitles = loanTitles;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {
@@ -321,15 +253,15 @@ public class LoanDetailDto extends BaseDataDto {
         return raisingPeriod;
     }
 
-    public void setRaisingPeriod(long raisingPeriod) {
-        this.raisingPeriod = raisingPeriod;
+    public LoanInvestAchievementDto getAchievement() {
+        return achievement;
+    }
+
+    public void setAchievement(LoanInvestAchievementDto achievement) {
+        this.achievement = achievement;
     }
 
     public int getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 }

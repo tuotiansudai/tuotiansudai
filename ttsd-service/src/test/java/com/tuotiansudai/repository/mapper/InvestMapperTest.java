@@ -59,11 +59,13 @@ public class InvestMapperTest {
         investModel.setStatus(InvestStatus.WAIT_PAY);
         investMapper.create(investModel);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.update(investModel);
         InvestModel investModel1 = investMapper.findById(investModel.getId());
         assertEquals(investModel1.getStatus(), InvestStatus.SUCCESS);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+        investModel.setStatus(InvestStatus.FAIL);
+        investMapper.update(investModel);
         InvestModel investModel2 = investMapper.findById(investModel.getId());
         assertEquals(investModel2.getStatus(), InvestStatus.FAIL);
     }

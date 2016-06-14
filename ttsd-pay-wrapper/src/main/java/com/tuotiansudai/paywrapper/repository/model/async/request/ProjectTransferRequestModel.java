@@ -47,7 +47,9 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newInvestTransferRequest(String projectId, String orderId, String userId, String amount, Source source) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source);
-        model.retUrl = String.valueOf(CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        if (source != null && source.equals(Source.WEB)) {
+            model.retUrl = MessageFormat.format("{0}/invest-success", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        }
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_transfer_notify");
         model.servType = UmPayServType.TRANSFER_IN_TRANSFER.getCode();
         model.transAction = UmPayTransAction.IN.getCode();

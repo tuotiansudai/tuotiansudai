@@ -45,6 +45,8 @@ public class SmsControllerTest {
 
     private ObjectMapper objectMapper;
 
+    private String SUCCESS_RESPONSE_BODY = "{\"code\":200,\"msg\":\"sendid\",\"obj\":1}";
+
     @Before
     public void setUp() throws Exception {
         this.objectMapper = new ObjectMapper();
@@ -60,12 +62,9 @@ public class SmsControllerTest {
 
     @Test
     public void shouldGetResultCode() throws Exception {
-        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
-        String resultCode = "1234";
-
         MockResponse mockResponse = new MockResponse();
         mockResponse.setResponseCode(200);
-        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
         mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
 
         server.enqueue(mockResponse);
@@ -91,12 +90,9 @@ public class SmsControllerTest {
 
     @Test
     public void shouldReceiveMessage() throws Exception {
-        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
-        String resultCode = "1234";
-
         MockResponse mockResponse = new MockResponse();
         mockResponse.setResponseCode(200);
-        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
         mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
 
         server.enqueue(mockResponse);

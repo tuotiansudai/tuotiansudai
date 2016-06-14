@@ -249,6 +249,25 @@ public class InvestTransferServiceTest {
 
         assertFalse(result);
     }
+
+    @Test
+    public void shouldIsTransferableByYesterdayCancel() {
+        UserModel userModel = createUserByUserId("testuser");
+        long loanId = idGenerator.generate();
+        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        loanModel.setStatus(LoanStatus.REPAYING);
+        loanMapper.update(loanModel);
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR", loanModel.getPeriods(), investModel.getAmount(), 0l, new Date(), loanModel.getPeriods());
+        transferApplicationModel.setStatus(TransferStatus.CANCEL);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        boolean result = investTransferService.isTransferable(investModel.getId());
+
+        assertFalse(result);
+    }
+
     @Test
     public void shouldFindTransferApplicationPaginationListIsSuccess(){
         long loanId = idGenerator.generate();

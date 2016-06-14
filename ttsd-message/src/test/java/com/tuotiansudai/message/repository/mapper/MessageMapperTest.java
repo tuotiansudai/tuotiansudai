@@ -2,10 +2,7 @@ package com.tuotiansudai.message.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.message.repository.model.MessageChannel;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageType;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -41,7 +38,7 @@ public class MessageMapperTest {
 
         userMapper.create(creator);
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
 
@@ -63,19 +60,20 @@ public class MessageMapperTest {
     }
 
     @Test
-    public void shouldFindMessageList(){
+    public void shouldFindMessageList() {
 
         UserModel creator = getFakeUser("messageCreate");
         userMapper.create(creator);
 
+        userMapper.create(creator);
         MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
         messageMapper.create(messageModelManual);
 
-        MessageModel messageModelAuto= new MessageModel("title", "template", MessageType.EVENT,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+        MessageModel messageModelAuto = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModelAuto);
@@ -90,6 +88,28 @@ public class MessageMapperTest {
         assertEquals(1, manualMessageCount);
         assertEquals(1, autoMessageCount);
 
+    }
+    public void shouldFindAssignableManualMessages() throws Exception {
+        UserModel creator = getFakeUser("messageCreator");
+
+        userMapper.create(creator);
+        MessageModel messageModel1 = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+        messageMapper.create(messageModel1);
+
+        MessageModel messageModel2 = new MessageModel("title", "template", MessageType.EVENT,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageMapper.create(messageModel2);
+
+        List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
+
+        assertThat(messageModels.size(), is(1));
+
+        assertThat(messageModels.get(0).getId(), is(messageModel1.getId()));
     }
 
     private UserModel getFakeUser(String loginName) {

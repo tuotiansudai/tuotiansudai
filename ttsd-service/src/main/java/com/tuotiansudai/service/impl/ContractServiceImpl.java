@@ -197,7 +197,7 @@ public class ContractServiceImpl implements ContractService {
                     .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType))
                     .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))
                     .replace("#{4}", deadLine)
-                    .replace("#{5}", format.format(invest.getCreatedTime()));
+                    .replace("#{5}", format.format(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()));
 
             tbody.append(rowsString);
         }

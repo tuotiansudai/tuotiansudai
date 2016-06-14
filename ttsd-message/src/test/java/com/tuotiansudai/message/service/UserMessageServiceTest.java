@@ -46,10 +46,13 @@ public class UserMessageServiceTest {
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
 
+
+
         MessageModel messageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
-                Lists.newArrayList(UserGroup.ALL_USER, UserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
+
         messageModel.setReadCount(10);
 
         messageMapper.create(messageModel);

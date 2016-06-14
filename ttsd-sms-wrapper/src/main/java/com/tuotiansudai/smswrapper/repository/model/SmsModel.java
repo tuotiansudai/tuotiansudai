@@ -11,12 +11,6 @@ public class SmsModel {
 
     private String content;
 
-    private String ext;
-
-    private Date stime;
-
-    private String rrid;
-
     private Date sendTime = new Date();
 
     private String resultCode;
@@ -52,30 +46,6 @@ public class SmsModel {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getExt() {
-        return ext;
-    }
-
-    public void setExt(String ext) {
-        this.ext = ext;
-    }
-
-    public Date getStime() {
-        return stime;
-    }
-
-    public void setStime(Date stime) {
-        this.stime = stime;
-    }
-
-    public String getRrid() {
-        return rrid;
-    }
-
-    public void setRrid(String rrid) {
-        this.rrid = rrid;
     }
 
     public Date getSendTime() {

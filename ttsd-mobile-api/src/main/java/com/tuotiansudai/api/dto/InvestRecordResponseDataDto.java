@@ -35,12 +35,12 @@ public class InvestRecordResponseDataDto {
     }
 
     public InvestRecordResponseDataDto(){
-
     }
+
     public InvestRecordResponseDataDto(InvestModel input){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.setUserName(input.getLoginName());
         this.setInvestMoney(AmountConverter.convertCentToString(input.getAmount()));
-        this.setInvestTime(simpleDateFormat.format(input.getInvestTime()));
+        this.setInvestTime(simpleDateFormat.format(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime()));
     }
 }

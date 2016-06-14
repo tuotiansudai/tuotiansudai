@@ -26,11 +26,9 @@ public interface InvestService {
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
-    void notifyInvestorRepaySuccessfulByEmail(long loanId,int period);
-
     void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
-    void investSuccess(long orderId, InvestModel investModel, String loginName);
+    void investSuccess(InvestModel investModel);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
 }

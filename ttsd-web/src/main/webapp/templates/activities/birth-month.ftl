@@ -28,13 +28,56 @@
         <p class="text-font">不会赚怎么花？</br>超高的收益等你拿。</p>
         <p class="text-bg">Let's go！！！</p>
         <p class="text-pro">
-            <span class="product-left">
-                <img src="${staticServer}/images/sign/actor/birth/product-three-new.png">
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/90.png" width="100%">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
                 <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
+                </#if>
             </span>
-            <span class="product-right">
-                <img src="${staticServer}/images/sign/actor/birth/product-six-new.png">
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/180.png" width="100%">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
                 <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
+                </#if>
+            </span>
+            <span class="pro-list">
+                <img src="${staticServer}/images/sign/actor/birth/360.png" width="100%">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
+                <#else>
+                <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
+                </#if>
+            </span>
+            <span class="pro-wap-list">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=WYX" class="fl clearfix">
+                </#if>
+                    <img src="${staticServer}/images/sign/actor/birth/90-wap.png" width="100%">
+                </a>
+            </span>
+            <span class="pro-wap-list">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=JYF" class="fl clearfix">
+                </#if>
+                    <img src="${staticServer}/images/sign/actor/birth/180-wap.png" width="100%">
+                </a>
+            </span>
+            <span class="pro-wap-list">
+                <#if !isAppSource>
+                <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="fl clearfix">
+                <#else>
+                <a href="/loan-list?productType=JYF" class="fl clearfix">
+                </#if>
+                    <img src="${staticServer}/images/sign/actor/birth/360-wap.png" width="100%">
+                </a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>

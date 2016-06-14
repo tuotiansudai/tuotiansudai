@@ -1,7 +1,5 @@
 package com.tuotiansudai.message.repository.model;
 
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +9,7 @@ public class MessageModel implements Serializable {
     private String title;
     private String template;
     private MessageType type;
-    private List<UserGroup> userGroups;
+    private List<MessageUserGroup> userGroups;
     private List<MessageChannel> channels;
     private MessageStatus status;
     private long readCount;
@@ -26,7 +24,7 @@ public class MessageModel implements Serializable {
     public MessageModel() {
     }
 
-    public MessageModel(String title, String template, MessageType type, List<UserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, Date expiredTime, String createdBy) {
+    public MessageModel(String title, String template, MessageType type, List<MessageUserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, Date expiredTime, String createdBy) {
         this.title = title;
         this.template = template;
         this.type = type;
@@ -72,11 +70,11 @@ public class MessageModel implements Serializable {
         this.type = type;
     }
 
-    public List<UserGroup> getUserGroups() {
+    public List<MessageUserGroup> getUserGroups() {
         return userGroups;
     }
 
-    public void setUserGroups(List<UserGroup> userGroups) {
+    public void setUserGroups(List<MessageUserGroup> userGroups) {
         this.userGroups = userGroups;
     }
 

@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
@@ -8,6 +9,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
+import java.util.List;
 
 public class InvestRepayDataItemDto {
 
@@ -203,4 +205,5 @@ public class InvestRepayDataItemDto {
     public void setInvestId(long investId) {
         this.investId = investId;
     }
+
 }

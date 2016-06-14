@@ -36,6 +36,7 @@ import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
@@ -71,6 +72,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private RepayGeneratorService repayGeneratorService;
@@ -368,25 +372,32 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processNotifyForLoanOut(long loanId) {
-        List<InvestNotifyInfo> notifies = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
 
         logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
-        notifyInvestorsLoanOutSuccessfulBySMS(notifies);
+        notifyInvestorsLoanOutSuccessfulBySMS(investModels);
 
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByEmail(notifies);
+        notifyInvestorsLoanOutSuccessfulByEmail(investModels);
 
     }
 
-    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {
-        for (InvestNotifyInfo notifyInfo : notifyInfos) {
+    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestModel> investModels) {
+        for (InvestModel investModel : investModels) {
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
             InvestSmsNotifyDto dto = new InvestSmsNotifyDto(notifyInfo);
             smsWrapperClient.sendInvestNotify(dto);
         }
     }
 
-    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
-        for (InvestNotifyInfo notifyInfo : notifyInfos) {
+    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestModel> investModels) {
+        for (InvestModel investModel : investModels) {
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
+
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                     .put("loanName", notifyInfo.getLoanName())
                     .put("money", AmountConverter.convertCentToString(notifyInfo.getAmount()))
@@ -451,7 +462,8 @@ public class LoanServiceImpl implements LoanService {
         String loginName = investModel.getLoginName();
         if (callbackRequest.isSuccess()) {
             if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
-                investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
+                investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
+                investMapper.update(investModel);
                 try {
                     amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
                 } catch (AmountTransferException e) {
