@@ -33,7 +33,7 @@
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
                 <li class="hide">
                     <i class="sprite-register-ic-referrer"></i>
-                    <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer valid" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input type="text" name="referrer"  maxlength="25" class="referrer valid" value="${(referrer)!(originalFormData.referrer)!}"/>
                     <label id="referrerError" class="error"></label>
                 </li>
                 <li class="agree-last">

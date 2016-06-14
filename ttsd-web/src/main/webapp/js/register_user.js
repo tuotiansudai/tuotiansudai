@@ -251,7 +251,11 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         var referrerVal=$referrer.val(),
             referrerValid=$referrer.hasClass('valid'),
             defaultValue=$referrer[0].defaultValue,
-            referrer= _.isEmpty(referrerVal) || referrerValid || referrerVal==$referrer.attr('placeholder');
+            referrer;
+            if(referrerVal==$referrer.attr('placeholder')) {
+                referrerVal='';
+            }
+          referrer= _.isEmpty(referrerVal) || referrerValid ;
         // check button disabled, referrer can be empty, if not empty, it must be right
         if(frontInputValid && $agreement.prop('checked') && referrer) {
             $registerSubmit.prop('disabled',false);
