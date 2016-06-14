@@ -58,29 +58,35 @@ public class JPushAmountNotifyAspect {
     private WithdrawMapper withdrawMapper;
 
     @Pointcut("execution(* *..NormalRepayService.paybackInvest(..))")
-    public void normalRepayPaybackInvestPointcut() {}
+    public void normalRepayPaybackInvestPointcut() {
+    }
 
     @Pointcut("execution(* *..AdvanceRepayService.paybackInvest(..))")
-    public void advanceRepayPaybackInvestPointcut() {}
+    public void advanceRepayPaybackInvestPointcut() {
+    }
 
     @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
-    public void rechargeCallbackPointcut() {}
+    public void rechargeCallbackPointcut() {
+    }
 
     @Pointcut("execution(* *..WithdrawService.withdrawCallback(..))")
-    public void withdrawCallbackPointcut() {}
+    public void withdrawCallbackPointcut() {
+    }
 
     @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..))")
-    public void rewardReferrerPointcut() {}
+    public void rewardReferrerPointcut() {
+    }
 
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
-    public void transferCashPointcut() {}
+    public void transferCashPointcut() {
+    }
 
     @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
     public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            long LoanRepayId = (long)joinPoint.getArgs()[0];
-            if((boolean)returnValue){
+            long LoanRepayId = (long) joinPoint.getArgs()[0];
+            if ((boolean) returnValue) {
                 createAutoJPushRepayAlertJob(LoanRepayId, false);
             }
         } catch (Exception e) {
@@ -92,8 +98,8 @@ public class JPushAmountNotifyAspect {
     public void afterReturningAdvanceRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            long LoanRepayId = (long)joinPoint.getArgs()[0];
-            if((boolean)returnValue){
+            long LoanRepayId = (long) joinPoint.getArgs()[0];
+            if ((boolean) returnValue) {
                 createAutoJPushRepayAlertJob(LoanRepayId, true);
             }
         } catch (Exception e) {
@@ -107,8 +113,8 @@ public class JPushAmountNotifyAspect {
         try {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
-            RechargeModel  rechargeModel = rechargeMapper.findById(orderId);
-            if(rechargeModel != null && RechargeStatus.SUCCESS == rechargeModel.getStatus()){
+            RechargeModel rechargeModel = rechargeMapper.findById(orderId);
+            if (rechargeModel != null && RechargeStatus.SUCCESS == rechargeModel.getStatus()) {
                 createAutoJPushRechargeAlertJob(orderId);
             }
         } catch (Exception e) {
@@ -123,12 +129,9 @@ public class JPushAmountNotifyAspect {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-            if(WithdrawStatus.APPLY_SUCCESS == withdrawModel.getStatus())
-            {
+            if (WithdrawStatus.APPLY_SUCCESS == withdrawModel.getStatus()) {
                 createAutoJPushWithDrawApplyAlertJob(orderId);
-            }
-            else if(WithdrawStatus.SUCCESS == withdrawModel.getStatus())
-            {
+            } else if (WithdrawStatus.SUCCESS == withdrawModel.getStatus()) {
                 createAutoJPushWithDrawAlertJob(orderId);
             }
         } catch (Exception e) {
@@ -155,7 +158,7 @@ public class JPushAmountNotifyAspect {
 
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         try {
-            if(baseDto.isSuccess()){
+            if (baseDto.isSuccess()) {
                 jPushAlertService.autoJPushLotteryLotteryObtainCashAlert(transferCashDto);
             }
         } catch (Exception e) {
@@ -163,6 +166,16 @@ public class JPushAmountNotifyAspect {
         }
         logger.debug("after returning transferCash assign completed");
     }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
+        final long loanId = (long) joinPoint.getArgs()[0];
+        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            createAutoJPushRedEnvelopeJob(loanId);
+        }
+    }
+
 
     private void createAutoJPushRepayAlertJob(long LoanRepayId, boolean isAdvanceRepay) {
         try {
@@ -185,7 +198,7 @@ public class JPushAmountNotifyAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRechargeAlert, AutoJPushRechargeAlertJob.class)
                     .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushRechargeAlert.name(),  formatMessage(RECHARGE, orderId))
+                    .withIdentity(JobType.AutoJPushRechargeAlert.name(), formatMessage(RECHARGE, orderId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
@@ -239,7 +252,23 @@ public class JPushAmountNotifyAspect {
         }
     }
 
-    private String formatMessage(String message, Object object){
+    private void createAutoJPushRedEnvelopeJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushRedEnvelopeAlertJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.RedEnvelope, AutoJPushRedEnvelopeAlertJob.class)
+                    .addJobData(AutoJPushRedEnvelopeAlertJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.RedEnvelope.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    private String formatMessage(String message, Object object) {
         return MessageFormat.format(message, String.valueOf(object));
     }
 }

@@ -1,10 +1,8 @@
 package com.tuotiansudai.jpush.service;
 
 
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.dto.JpushReportDto;
@@ -19,11 +17,11 @@ public interface JPushAlertService {
     int findMaxSerialNumByType(PushType pushType);
 
     int findPushAlertCount(PushType pushType,
-                           PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
-                           Date startTime, Date endTime,boolean isAutomatic);
+                           PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
+                           Date startTime, Date endTime, boolean isAutomatic);
 
     List<JPushAlertModel> findPushAlerts(int index, int pageSize, PushType pushType,
-                                         PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                                         PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
                                          Date startTime, Date endTime, boolean isAutomatic);
 
     JPushAlertModel findJPushAlertModelById(long id);
@@ -64,6 +62,8 @@ public interface JPushAlertService {
 
     void delete(String loginName, long id);
 
-    void storeJPushId(String loginName,String platform,String jPushId);
+    void storeJPushId(String loginName, String platform, String jPushId);
+
+    void autoJPushReturningLoanOutAlert(long loanId);
 
 }

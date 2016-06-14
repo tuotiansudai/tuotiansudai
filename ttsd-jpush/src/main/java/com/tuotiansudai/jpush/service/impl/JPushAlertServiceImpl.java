@@ -713,4 +713,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         logger.debug(MessageFormat.format("jpushId:{0} end", value));
     }
 
+    @Override
+    public void autoJPushReturningLoanOutAlert(long loanId) {
+
+    }
+
 }

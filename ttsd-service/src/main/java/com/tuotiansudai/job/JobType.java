@@ -52,7 +52,9 @@ public enum JobType {
     CheckUserBalanceMonthly("用户余额对账"),
     AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励"),
     ExperienceRepay("新手体验标还款"),
-    SendCouponIncome("优惠券收益发放推送");
+    SendCouponIncome("优惠券收益发放推送"),
+    RedEnvelope("红包优惠发放推送")
+    ;
 
     private final String description;
 
