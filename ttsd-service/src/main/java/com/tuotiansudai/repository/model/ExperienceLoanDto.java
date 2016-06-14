@@ -47,7 +47,7 @@ public class ExperienceLoanDto implements Serializable {
         this.name = loanModel.getName();
         this.duration = loanModel.getDuration();
         this.baseRate = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
-        this.progress = experienceProgress;
+        this.progress = experienceProgress % 100;
         this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount);
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
     }
