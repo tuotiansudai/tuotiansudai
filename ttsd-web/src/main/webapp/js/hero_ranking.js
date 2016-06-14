@@ -5,7 +5,8 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			$heroPre=$('#heroPre'),
 			$heroNext=$('#heroNext'),
 			$refePre=$('#refePre'),
-			$refeNext=$('#refeNext');
+			$refeNext=$('#refeNext'),
+			$getVip=$('#getVip');
 
 		$getHistory.on('click', function(event) {
 			event.preventDefault();
@@ -56,6 +57,26 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
 			refeInvest('history', timeNum);
 			$dateTime.text(timeNum);
+		});
+
+		$getVip.on('click', function(event) {
+			event.preventDefault();
+			$.ajax({
+				url: '/path/to/file',
+				type: 'POST',
+				dataType: 'json',
+				data: {param1: 'value1'}
+			})
+			.done(function() {
+				layer.open({
+				  type: 1, 
+				  content: $('#id')
+				});
+			})
+			.fail(function() {
+				console.log("error");
+			});
+			
 		});
 
 		//英雄榜排名
