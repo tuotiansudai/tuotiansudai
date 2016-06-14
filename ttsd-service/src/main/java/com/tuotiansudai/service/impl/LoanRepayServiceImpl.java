@@ -191,7 +191,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 long amount = (Long) entry.getValue();
                 if (amount > 0) {
                     logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
-                    LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
+                    RepayNotifyDto dto = new RepayNotifyDto();
                     dto.setMobile(((String) entry.getKey()).trim());
                     dto.setRepayAmount(AmountConverter.convertCentToString(amount));
                     smsWrapperClient.sendLoanRepayNotify(dto);

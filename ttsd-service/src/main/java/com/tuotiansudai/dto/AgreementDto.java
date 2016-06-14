@@ -18,6 +18,10 @@ public class AgreementDto implements Serializable {
 
     private Source source = Source.WEB;
 
+    private String ip;
+
+    private String deviceId;
+
     public String getLoginName() {
         return loginName;
     }
@@ -66,4 +70,19 @@ public class AgreementDto implements Serializable {
         this.noPasswordInvest = noPasswordInvest;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }
