@@ -455,8 +455,8 @@
         select min(trading_time) from invest where status = 'SUCCESS' and loan_id = #{loanId}
     </select>
 
-    <select id="findInvestByTransferInvestId" parameterType="map" resultMap="investResultMap">
-        select * from invest where transfer_invest_id = #{transferInvestId} and status = 'SUCCESS'
+    <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
+        select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
     <select id="findHeroRankingByTradingTime" parameterType="map" resultMap="heroRankingView">
@@ -517,4 +517,9 @@
         LIMIT #{index}, #{pageSize}
     </select>
 
+    <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+    </select>
 </mapper>
