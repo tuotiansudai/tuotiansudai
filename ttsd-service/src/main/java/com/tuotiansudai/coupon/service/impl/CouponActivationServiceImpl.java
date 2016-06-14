@@ -55,6 +55,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "registeredNotInvestedUserCollector")
     private UserCollector registeredNotInvestedUserCollector;
 
+    @Resource(name = "notAccountNotInvestedUserCollector")
+    private UserCollector notAccountNotInvestedUserCollector;
+
     @Resource(name = "importUserCollector")
     private UserCollector importUserCollector;
 
@@ -78,6 +81,12 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
+
+    @Resource(name = "experienceInvestSuccessCollector")
+    private UserCollector experienceInvestSuccessCollector;
+
+    @Resource(name = "experienceRepaySuccessCollector")
+    private UserCollector experienceRepaySuccessCollector;
 
     @Autowired
     private UserMapper userMapper;
@@ -272,6 +281,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.NEW_REGISTERED_USER, this.newRegisteredUserCollector)
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
+                .put(UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER, this.notAccountNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .put(UserGroup.AGENT, this.agentCollector)
                 .put(UserGroup.CHANNEL, this.channelCollector)
@@ -280,6 +290,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
+                .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
+                .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .build()).get(userGroup);
     }
 
