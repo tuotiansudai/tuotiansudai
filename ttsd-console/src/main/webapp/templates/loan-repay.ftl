@@ -64,7 +64,8 @@
                 <th>应还本金(元)</th>
                 <th>应还利息(元)</th>
                 <th>应还总数(元)</th>
-                <th>还款状态(元)</th>
+                <th>实际还款总额(元)</th>
+                <th>还款状态</th>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +80,8 @@
                     <td>${loanRepay.corpus}</td>
                     <td>${loanRepay.expectedInterest}</td>
                     <td>${loanRepay.totalAmount}</td>
-                    <td>${loanRepay.loanRepayStatus.getDescription()}</td>
+                    <td>${loanRepay.actualRepayAmount!}</td>
+                    <td>${loanRepay.showRepayStatus!}</td>
                 </tr>
 
                 </#list>

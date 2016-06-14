@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.DateUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoanRepayDataItemDto {
@@ -35,14 +37,16 @@ public class LoanRepayDataItemDto {
 
     private RepayStatus loanRepayStatus;
 
+    private String showRepayStatus;
+
     private boolean isEnabled;
 
     private String agentLoginName;
 
     private String totalAmount;
 
-
     public LoanRepayDataItemDto(LoanRepayModel loanRepayModel) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.loanId = loanRepayModel.getLoanId();
         this.loanName = loanRepayModel.getLoan().getName();
         this.loanRepayId = loanRepayModel.getId();
@@ -54,10 +58,9 @@ public class LoanRepayDataItemDto {
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.actualInterest = AmountConverter.convertCentToString(loanRepayModel.getActualInterest());
-        if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
-            this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
-        }
+        this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         this.loanRepayStatus = loanRepayModel.getStatus();
+        this.showRepayStatus =(loanRepayModel.getActualRepayDate() != null && DateUtil.compareDate(sdf.format(loanRepayModel.getRepayDate()), sdf.format(loanRepayModel.getActualRepayDate())) == 1)? "提前还款":loanRepayModel.getStatus().getDescription();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
     }
@@ -184,5 +187,13 @@ public class LoanRepayDataItemDto {
 
     public String getActualRepayAmount() {
         return actualRepayAmount;
+    }
+
+    public String getShowRepayStatus() {
+        return showRepayStatus;
+    }
+
+    public void setShowRepayStatus(String showRepayStatus) {
+        this.showRepayStatus = showRepayStatus;
     }
 }
