@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'superslide','touchslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -7,7 +7,7 @@ require(['jquery', 'underscore', 'superslide','touchslide','jquery.ajax.extensio
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $bannerImg = $imgScroll.find('a'),
+            $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
@@ -18,8 +18,6 @@ require(['jquery', 'underscore', 'superslide','touchslide','jquery.ajax.extensio
         }).css({
             'font-size': '16px'
         });
-
-        
 
 
         $(".product-box .pad-m").click(function () {
@@ -35,19 +33,12 @@ require(['jquery', 'underscore', 'superslide','touchslide','jquery.ajax.extensio
             $imgScroll.find('img.pc-img').remove();
             screenWid = $(window).width(); //screen width
             picWid = $bannerImg.first().find('img').width();
-
             leftWid = (picWid - screenWid) / 2;
-
             $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
-            $imgScroll.find('img').css({
-                'margin-left': '-' + leftWid + 'px'
-            });
-
-
             $imgNum.click(function () {
                 var num_nav = $imgNum.index(this);
-                $(this).addClass("selected").siblings().removeClass("selected");
-                $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
+                $(this).addClass("on").siblings().removeClass("on");
+                $bannerImg.eq(num_nav).fadeIn(500).siblings().fadeOut(500);
             });
             $bannerBox.hover(function () {
                 clearInterval(adTimer);
@@ -57,6 +48,33 @@ require(['jquery', 'underscore', 'superslide','touchslide','jquery.ajax.extensio
                     $imgNum.eq(index).trigger('click');
                 }, 6000);
             }).trigger('mouseleave');
+            // 移动端滑动切换
+            (function() {
+                var startX, startY;
+                $bannerBox.on('touchstart', function(event) {
+                    startX = event.originalEvent.changedTouches[0].pageX;
+                    startY = event.originalEvent.changedTouches[0].pageY;
+                });
+                $bannerBox.on('touchmove', function(event) {
+                    event.preventDefault();
+                })
+                $bannerBox.on('touchend', function(event) {
+                    var endX, endY;
+                     endX = event.originalEvent.changedTouches[0].pageX;
+                     endY = event.originalEvent.changedTouches[0].pageY;
+                     var direction = GetSlideDirection(startX, startY, endX, endY);
+                     switch(direction) {
+                         case 3:
+                            var index = ++n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                         case 4:
+                            var index = --n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                     }
+                });
+            })();
         }
 
         var scrollTimer;
