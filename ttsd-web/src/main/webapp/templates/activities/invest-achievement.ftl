@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.invest_achievement}" activeNav="" activeLeftNav="" title="拓天排行榜_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.invest_achievement}" activeNav="" activeLeftNav="" title="投资称号_拓天称号_拓天速贷" keywords="拓荒先锋,拓天标王,一锤定音,投资称号,拓天称号" description="拓天速贷依据投资用户的投资金额,投资期限,给予相应的投资称号,投资称号可获得相应的称号奖励，">
 <div class="invest-achievement-container clearfix">
     <div class="container-model">
         <img src="${staticServer}/images/sign/actor/achievement/top-picture.png" width="100%">
