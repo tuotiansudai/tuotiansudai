@@ -100,7 +100,7 @@ INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, cre
          FROM `aa`.`membership`
          WHERE `membership`.level = 0)
       END),
-    '2035-12-31 23:59:59',
+    '9999-12-31 23:59:59',
     now(),
     'UPGRADE'
   FROM `aa`.`user`;
@@ -109,16 +109,14 @@ INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, cre
 -- insert detail info
 INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, created_time, description, total_experience)
   SELECT
-    `user`.login_name,
+    `invest`.login_name,
     floor(`invest`.amount / 100),
-    now(),
+    `invest`.trading_time,
     concat(`invest`.login_name, '于', `invest`.invest_time, '投资', `invest`.loan_id, '项目',
            round(`invest`.amount / 100, 2), '元，获得成长值', floor(`invest`.amount / 100), '点'),
-    -- (select ifnull(sum(temp.amount /100),0) from invest temp where temp.id < invest.id and invest.login_name= temp.login_name and temp.status='SUCCESS')
-    0
-  FROM `aa`.`user`
-    JOIN `aa`.`invest` ON `user`.login_name = `invest`.login_name
-  WHERE `invest`.transfer_invest_id IS NULL ORDER BY invest_time;
+    (select ifnull(sum(floor(`temp`.amount / 100)),0) from invest temp where temp.id <= invest.id and invest.login_name= temp.login_name and temp.status='SUCCESS' and temp.transfer_invest_id IS NULL)
+  FROM `aa`.`invest`
+  WHERE `invest`.transfer_invest_id IS NULL and `invest`.status = 'SUCCESS';
 
 -- invest invest_fee_rate
 UPDATE `aa`.`invest`
