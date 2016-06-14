@@ -56,7 +56,7 @@
           padding-top:140px;
         }
         .img-rank{
-          float:left;
+          float:right;
           width:565px;
         }
         .img-two{
@@ -473,6 +473,205 @@
             padding-top: 0;
             text-align: center;
             width: 100%;
+            .intro-text{
+              font-size:12px;
+              strong{
+                font-size:20px;
+              }
+            }
+          }
+          .img-rank{
+            float:left;
+            width:100%;
+            text-align:center;
+            img{
+              width:60%;
+            }
+          }
+          .img-two{
+            padding-top:0;
+            width:100%;
+            margin-left:0;
+            text-align: center;
+            .intro-text{
+              font-size:12px;
+              strong{
+                font-size:20px;
+              }
+            }
+          }
+          .img-bag{
+            width:100%;
+            text-align:center;
+            margin-left:0;
+            img{
+              width:80%;
+            }
+          }
+          .img-three{
+            width: 100%;
+            padding-top: 0;
+            text-align: center;
+            strong{
+              font-size:20px;
+            }
+          }
+          .text-info{
+            width:60%;
+            margin:20px 20%;
+          }
+          h3{
+            font-size:16px;
+          }
+          .content-text{
+            font-size:12px;
+            text-indent: -8em;
+            .vip-icon{
+              width:62px;
+              height:43px;
+              background-size:100%;
+            }
+          }
+          .feature-list{
+            width:60%;
+            padding:0 20%;
+            li{
+              width:50%;
+              margin:0;
+              i.icon-type{
+                width:55px;
+                height:62px;
+              }
+              p{
+                font-size:12px;
+              }
+            }
+          }
+          .get-vip{
+            font-size: 12px;
+            width: 85px;
+            line-height: 18px;
+            background-size: 100%;
+            padding: 0 30px;
+            height: 45px;
+            padding-top: 6px;
+          }
+          .title-line{
+            margin:25px 0;
+            span{
+              width: 105px;
+              height: 25px;
+              line-height: 25px;
+              font-size: 12px;
+            }
+            .left-line{
+              right: 105px;
+              height: 25px;
+              width: 130px;
+            }
+            .right-line{
+              left: 105px;
+              height: 25px;
+              width: 130px;
+            }
+          }
+          .title-model{
+            width:90%;
+            margin:0 5%;
+            height:40px;
+            margin-bottom:15px;
+            .date-icon{
+              background-size: 100%;
+              width: 22px;
+              height: 23px;
+              left: 10px;
+            }
+            .date-text{
+              line-height: 40px;
+              font-size: 12px;
+              left: 35px;
+            }
+            .rank-number{
+              line-height: 40px;
+              font-size: 12px;
+            }
+            .get-rank{
+              width: 80px;
+              font-size: 12px;
+              height: 25px;
+              line-height: 25px;
+              right:8px;
+              top: 8px;
+            }
+          }
+          .rank-name{
+            width:90%;
+            margin:0 5%;
+            li{
+              width:115px;
+              height:30px;
+              line-height:30px;
+              font-size:14px;
+            }
+          }
+          .rank-content{
+            width:90%;
+            margin:0 5%;
+            padding:10px 0;
+            margin-top: -1px;
+            .rank-model{
+              width: 90%;
+              margin: 0 5%;
+              h3{
+                font-size: 14px;
+                margin-bottom: 10px;
+                span{
+                  font-size:12px;
+                }
+              }
+              .data-list{
+                dt{
+                  line-height:25px;
+                }
+                dd{
+                  line-height:20px;
+                  &.empty-text{
+                    line-height:405px;
+                    text-align: center;
+                    font-size:16px;
+                    color:#333;
+                  }
+                }
+                span{
+                  float:left;
+                  font-size:18px;
+                  color:#b60000;
+                  text-align:center;
+                  &.title-text{
+                    width:60px;
+                  }
+                  &.data-text{
+                    width:190px;
+                  }
+                  &.user-text{
+                    width:80px;
+                  }
+                  &.reward-text{
+                    width:125px;
+                  }
+                  i{
+                    display:inline-block;
+                    width:25px;
+                    height:25px;
+                    line-height:25px;
+                    text-align:center;
+                    border-radius:25px;
+                    background:#e12354;
+                    color:#fff;
+                  }
+                }
+              }
+            }
           }
         }
       }

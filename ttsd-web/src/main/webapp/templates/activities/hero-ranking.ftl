@@ -15,12 +15,12 @@
                 </div>
             </div>
             <div class="model-list">
+                <div class="img-rank">
+                    <img src="${staticServer}/images/sign/actor/anniversary/list-img.png" width="100%">
+                </div>
                 <div class="img-two">
                     <p class="intro-text">历史借款项目全部全额兑付！</p>
                     <p class="intro-text"><strong>198488</strong>个投资人加入了我们</p>
-                </div>
-                <div class="img-rank">
-                    <img src="${staticServer}/images/sign/actor/anniversary/list-img.png" width="100%">
                 </div>
             </div>
             <div class="model-list">
@@ -34,7 +34,8 @@
             </div>
             <div class="model-list">
                 <div class="text-info">
-                    <img src="${staticServer}/images/sign/actor/anniversary/text-info.png" width="100%">
+                    <img src="${staticServer}/images/sign/actor/anniversary/text-info.png" width="100%" class="responsive-pc">
+                    <img src="${staticServer}/images/sign/actor/anniversary/text-info-phone.png" width="100%" class="responsive-phone">
                 </div>
             </div>
             <div class="model-list">
