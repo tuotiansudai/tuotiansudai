@@ -112,11 +112,14 @@ INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, created_t
     `invest`.login_name,
     floor(`invest`.amount / 100),
     `invest`.trading_time,
-    concat(`invest`.login_name, '于', `invest`.invest_time, '投资', `invest`.loan_id, '项目',
-           round(`invest`.amount / 100, 2), '元，获得成长值', floor(`invest`.amount / 100), '点'),
-    (select ifnull(sum(floor(`temp`.amount / 100)),0) from invest temp where temp.id <= invest.id and invest.login_name= temp.login_name and temp.status='SUCCESS' and temp.transfer_invest_id IS NULL)
+    concat('投资', `invest`.loan_id, '项目',
+           round(`invest`.amount / 100, 2), '元'),
+    (SELECT ifnull(sum(floor(`temp`.amount / 100)), 0)
+     FROM invest temp
+     WHERE temp.id <= invest.id AND invest.login_name = temp.login_name AND temp.status = 'SUCCESS' AND
+           temp.transfer_invest_id IS NULL)
   FROM `aa`.`invest`
-  WHERE `invest`.transfer_invest_id IS NULL and `invest`.status = 'SUCCESS';
+  WHERE `invest`.transfer_invest_id IS NULL AND `invest`.status = 'SUCCESS';
 
 -- invest invest_fee_rate
 UPDATE `aa`.`invest`
