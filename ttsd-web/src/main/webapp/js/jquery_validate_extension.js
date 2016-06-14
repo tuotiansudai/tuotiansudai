@@ -155,7 +155,7 @@ require(['jquery', 'jquery.validate','commonFun'], function ($) {
 
     $.validator.addMethod('identityCheckValid',function(value, element) {
         var checked=commonFun.IdentityCodeValid(value);
-        console.log(checked);
+
         return this.optional(element) || checked ;
 
     },'');

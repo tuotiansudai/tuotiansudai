@@ -12,7 +12,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $referrer=$('input.referrer', registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
-
         passedNumber= 0,
         countTimer;
     var $frontInput=registerUserForm.find('input:lt(4)');
@@ -149,8 +148,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     registerUserForm.validate({
-        focusInvalid: false,
-        //onkeyup:true,
+        ignore:'.referrer',
         rules: {
             loginName: {
                 required: true,
@@ -180,9 +178,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     }
                 }
             },
-            referrer: {
-                isNotExist: "/register/user/referrer/{0}/is-exist"
-            },
             agreement: {
                 required: true
             }
@@ -210,9 +205,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 maxlength: '验证码格式不正确',
                 minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
-            },
-            referrer: {
-                isNotExist: "推荐人不存在"
             },
             agreement: {
                 required: "请同意服务协议"
@@ -274,14 +266,40 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             else {
                 $('input.captcha', registerUserForm).removeClass('valid').val('');
             }
-
+        }
+        setTimeout(checkValidNum,100);
+    });
+    $referrer.on('keyup',function(event) {
+        var $target=$(event.target),
+            referrerError=$('#referrerError'),
+        value=event.target.value;
+        if(value) {
+            var checkValid=false;
+            $.ajax({
+                url:'/register/user/referrer/'+value+'/is-exist',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+            })
+                .done(function (res) {
+                    checkValid=res.data.status?true:false;
+                    if(checkValid) {
+                        $target.removeClass('error').addClass('valid');
+                        referrerError.html('');
+                    }
+                    else {
+                        $target.removeClass('valid').addClass('error');
+                        referrerError.html('推荐人不存在');
+                    }
+                    checkValidNum();
+                });
 
         }
-        setTimeout(checkValidNum,50);
+        else {
+            $target.removeClass('error').addClass('valid');
+            referrerError.html('');
+            checkValidNum();
+        }
 
     });
-    $referrer.on('blur',function() {
-        setTimeout(checkValidNum,50);
-    });
-
 });
