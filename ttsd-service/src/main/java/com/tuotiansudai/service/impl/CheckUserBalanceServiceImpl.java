@@ -41,6 +41,7 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
 
         Map<String, Object> resultMap = new HashMap<>();
         List<String> mismatchUserList = new ArrayList<>();
+        List<String> failUserList = new ArrayList<>();
 
         resultMap.put("startTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 
@@ -51,12 +52,9 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
             for (AccountModel account : accountModelList) {
                 Map<String, String> balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
                 if (balanceMap == null) {
-                    logger.debug("check user balance for user " + account.getLoginName() + " fail. retry one more time.");
-                    balanceMap = payWrapperClient.getUserBalance(account.getLoginName());
-                    if (balanceMap == null) {
-                        logger.debug("check user balance for user " + account.getLoginName() + " fail twice. skip it.");
-                        continue;
-                    }
+                    logger.debug("check user balance for user " + account.getLoginName() + " fail. skip it.");
+                    failUserList.add(account.getLoginName());
+                    continue;
                 }
                 long balance = Long.parseLong(balanceMap.get("balance"));
                 if(balance != account.getBalance()) {
@@ -65,11 +63,12 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
             }
             startIndex += BATCH_SIZE;
         }
+        resultMap.put("failList", failUserList);
         resultMap.put("userList", mismatchUserList);
         resultMap.put("endTime", new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
 
-        for (String address : notifyEmailAddressList) {
-            sendCloudMailUtil.sendUserBalanceCheckingResult(address, resultMap);
-        }
+        sendCloudMailUtil.sendUserBalanceCheckingResult(notifyEmailAddressList, resultMap);
+
+        logger.debug("end checkUserBalance.");
     }
 }
