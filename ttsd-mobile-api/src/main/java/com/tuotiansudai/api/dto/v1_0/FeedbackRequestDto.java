@@ -7,10 +7,8 @@ public class FeedbackRequestDto extends BaseParamDto {
     @NotEmpty(message = "0080")
     private String content;
 
-    @NotEmpty(message = "0080")
     private String type;
 
-    @NotEmpty(message = "0080")
     private String contact;
 
     public String getContent() {
