@@ -53,10 +53,7 @@ public class LiCaiQuanArticleServiceTest {
         liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
 
         liCaiQuanArticleService.retrace(liCaiQuanArticleDto.getArticleId());
-        LiCaiQuanArticleDto liCaiQuanArticleDtoNew = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
-        redisWrapperClient.hdelSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()));
-        assertEquals(ArticleStatus.RETRACED, liCaiQuanArticleDtoNew.getArticleStatus());
-        assertNotEquals(liCaiQuanArticleDto.getArticleStatus(), liCaiQuanArticleDtoNew.getArticleStatus());
+        assertFalse(redisWrapperClient.hexistsSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId())));
     }
 
     @Test

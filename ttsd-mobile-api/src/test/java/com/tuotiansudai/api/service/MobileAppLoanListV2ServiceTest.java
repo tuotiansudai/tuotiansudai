@@ -16,14 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,21 +42,20 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
 
     @Test
     public void shouldGenerateIndexLoanIsOk(){
-        List<LoanModel> loanModels = new ArrayList<>();
-        loanModels.add(getFakeLoan("shenjiaojiao"));
-        loanModels.add(getFakeLoan("jiaoshenshen"));
-
-        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class),anyBoolean(),anyBoolean())).thenReturn(null);
 
         when(investMapper.sumSuccessInvestCountByLoginName(anyString())).thenReturn(1);
 
-        List<LoanModel> loanModelsExperience = Lists.newArrayList();
-        loanModelsExperience.add(getFakeExperienceLoan("test1234"));
-        when(loanMapper.findByProductType(any(ProductType.class))).thenReturn(loanModelsExperience);
+        List<LoanModel> loanModels = Lists.newArrayList();
+        loanModels.add(getFakeExperienceLoan("test1"));
+        loanModels.add(getFakeLoan("test1"));
+
+        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean(),anyBoolean())).thenReturn(loanModels);
+
         BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
 
         assertNotNull(baseResponseDto.getData());
-        assertThat(baseResponseDto.getData().getLoanList().get(0).getProductNewType(),is(ProductType.EXPERIENCE.name()));
+        assertThat(baseResponseDto.getData().getLoanList().get(0).getProductNewType(), is(ProductType.EXPERIENCE.name()));
+        assertThat(baseResponseDto.getData().getLoanList().get(1).getProductNewType(),is(ProductType._30.name()));
 
     }
 
