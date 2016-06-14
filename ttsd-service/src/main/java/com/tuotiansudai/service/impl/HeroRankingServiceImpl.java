@@ -96,6 +96,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
                     @Override
                     public HeroRankingView apply(HeroRankingView input) {
                         input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6));
+                        input.setCentSumAmount(input.getCentSumAmount());
                         return input;
                     }
                 }));
@@ -115,7 +116,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             public boolean apply(HeroRankingView input) {
                 return loginName.equalsIgnoreCase(input.getLoginName());
             }
-        });
+        }) + 1;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.util.AmountConverter;
+
 import java.io.Serializable;
 
 public class HeroRankingView implements Serializable {
@@ -7,6 +9,8 @@ public class HeroRankingView implements Serializable {
     private long sumAmount;
     private String userName;
     private String mobile;
+    private String centSumAmount;
+
 
     public String getLoginName() {
         return loginName;
@@ -38,5 +42,13 @@ public class HeroRankingView implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getCentSumAmount() {
+        return AmountConverter.convertCentToString(this.sumAmount);
+    }
+
+    public void setCentSumAmount(String centSumAmount) {
+        this.centSumAmount = centSumAmount;
     }
 }

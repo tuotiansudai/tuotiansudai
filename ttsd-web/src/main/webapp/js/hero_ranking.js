@@ -82,7 +82,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		//英雄榜排名
 		function heroRank(type, date) {
 			$.ajax({
-				url: '/hero-ranking/invest/' + date,
+				url: '/activity/hero-ranking/invest/' + date,
 				type: 'GET',
 				dataType: 'json'
 			})
@@ -101,7 +101,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		//推荐榜排名
 		function refeInvest(type, date) {
 			$.ajax({
-				url: '/hero-ranking/referrer-invest/' + date,
+				url: '/activity/hero-ranking/referrer-invest/' + date,
 				type: 'GET',
 				dataType: 'json'
 			})

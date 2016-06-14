@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseListDataDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
@@ -24,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/hero-ranking")
+@RequestMapping(value = "/activity/hero-ranking")
 public class HeroRankingController {
 
     @Autowired
@@ -40,10 +39,12 @@ public class HeroRankingController {
     public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
         String loginName = appTokenParser.getLoginName(httpServletRequest);
 
-        ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking");
-
-        // TODO: add page logic here
-
+        ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
+        modelAndView.addObject("currentTime",new DateTime().withTimeAtStartOfDay().toDate());
+        Integer investRanking = heroRankingService.obtainHeroRankingByLoginName(new Date(), loginName);
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
+        modelAndView.addObject("investRanking",investRanking);
+        modelAndView.addObject("referRanking",referRanking);
         return modelAndView;
     }
 
@@ -64,22 +65,13 @@ public class HeroRankingController {
                 @Override
                 public HeroRankingView apply(HeroRankingView heroRankingView) {
                     heroRankingView.setLoginName(randomUtils.encryptLoginName(loginName, heroRankingView.getLoginName(), 6));
+                    heroRankingView.setCentSumAmount(heroRankingView.getCentSumAmount());
                     return heroRankingView;
                 }
             }));
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView obtainHeroRankingByLoginName() {
-        ModelAndView mv = new ModelAndView();
-        String loginName = LoginUserInfo.getLoginName();
-        Date tradingTime = new DateTime().toDate();
-        Integer ranking = heroRankingService.obtainHeroRankingByLoginName(tradingTime, loginName);
-        mv.addObject("ranking", ranking);
-        return mv;
     }
 
 }

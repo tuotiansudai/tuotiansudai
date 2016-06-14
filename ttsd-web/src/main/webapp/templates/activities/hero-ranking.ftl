@@ -90,9 +90,19 @@
             <div class="model-list">
                 <div class="title-model">
                     <i class="date-icon"></i>
-                    <span class="date-text">2016-05-27</span>
-                    <span class="rank-number">我的排名：登录后查看</span>
-                    <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
+                    <span class="date-text"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
+                    <@global.isAnonymous>
+                        <span class="rank-number">我的排名：登录后查看</span>
+                        <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <#if investRanking??&&investRanking gt 0>
+                            <span class="rank-number">我的排名:&nbsp;<#if investRanking gte 20>20+ <#else >${investRanking} </#if></span>
+                        <#else >
+                            <span class="rank-number">未参与排行</span>
+                        </#if>
+                    </@global.isNotAnonymous>
+
                 </div>
                 <ul class="rank-name">
                     <li>英雄榜</li>
@@ -115,7 +125,7 @@
                                     <span class="title-text">
                                         <i>{{$index+1}}</i>
                                     </span>
-                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
                                         <span class="reward-text">神秘大奖</span>
@@ -136,7 +146,7 @@
                         <h3 class="title-name">当日投资英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="heroPre">上一天</span>
-                            <span class="date-info">2016-07-01</span>
+                            <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                             <span>英雄榜</span>
                             <span class="next-btn" id="heroNext">下一天</span>
                         </h3>
@@ -154,7 +164,7 @@
                                     <span class="title-text">
                                         <i>{{$index+1}}</i>
                                     </span>
-                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
                                         <span class="reward-text">神秘大奖</span>
@@ -191,9 +201,18 @@
             <div class="model-list mt-40">
                 <div class="title-model">
                     <i class="date-icon"></i>
-                    <span class="date-text">2016-05-27</span>
-                    <span class="rank-number">我的排名：登录后查看</span>
-                    <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
+                    <span class="date-text"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
+                    <@global.isAnonymous>
+                        <span class="rank-number">我的排名：登录后查看</span>
+                        <a href="/login" target="_blank" class="get-rank">查看我的排名</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <#if referRanking??&&referRanking gt 0>
+                            <span class="rank-number">我的排名:&nbsp;<#if referRanking gte 20>20+ <#else >${referRanking} </#if></span>
+                        <#else >
+                            <span class="rank-number">未参与排行</span>
+                        </#if>
+                    </@global.isNotAnonymous>
                 </div>
                 <ul class="rank-name">
                     <li>推荐榜</li>
@@ -215,7 +234,7 @@
                                     <span class="title-text">
                                         <i>{{$index+1}}</i>
                                     </span>
-                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
                                         <span class="reward-text">神秘大奖</span>
@@ -235,7 +254,7 @@
                         <h3 class="title-name">当日推荐英雄榜<span>(实时)</span></h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="refePre">上一天</span>
-                            <span class="date-info">2016-07-01</span>
+                            <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                             <span>英雄榜</span>
                             <span class="next-btn" id="refeNext">下一天</span>
                         </h3>
@@ -253,7 +272,7 @@
                                     <span class="title-text">
                                         <i>{{$index+1}}</i>
                                     </span>
-                                    <span class="data-text">{{$value.sumAmount}}</span>
+                                    <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
                                         <span class="reward-text">神秘大奖</span>
