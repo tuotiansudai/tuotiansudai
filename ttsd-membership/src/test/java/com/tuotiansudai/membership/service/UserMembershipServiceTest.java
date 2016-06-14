@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -215,7 +216,9 @@ public class UserMembershipServiceTest {
         investMapper.create(model);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
         MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
         assertThat(MembershipType.ALREADY_REGISTER_ALREADY_INVEST_1000,is(membershipType));
+        assertNotNull(userMembershipModel);
     }
 
     @Test
@@ -226,7 +229,9 @@ public class UserMembershipServiceTest {
         createLoanByUserId(fakeUser.getLoginName(),loanId);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),+1)));
         MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
         assertThat(MembershipType.AFTER_START_ACTIVITY_REGISTER,is(membershipType));
+        assertNotNull(userMembershipModel);
     }
 
     private void createLoanByUserId(String userId, long loanId) {
