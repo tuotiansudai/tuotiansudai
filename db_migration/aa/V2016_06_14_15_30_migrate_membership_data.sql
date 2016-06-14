@@ -1,13 +1,16 @@
--- update table account 
+BEGIN;
+-- update table account
 UPDATE `aa`.`account`
 SET membership_point =
 CASE
 WHEN (SELECT sum(floor(amount / 100))
       FROM invest
-      WHERE account.login_name = invest.login_name) > 0
+      WHERE account.login_name = invest.login_name AND invest.status = 'SUCCESS' AND invest.transfer_invest_id IS NULL)
+     > 0
   THEN (SELECT sum(floor(amount / 100))
         FROM invest
-        WHERE account.login_name = invest.login_name)
+        WHERE
+          account.login_name = invest.login_name AND invest.status = 'SUCCESS' AND invest.transfer_invest_id IS NULL)
 ELSE
   0
 END;
@@ -117,90 +120,11 @@ INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, created_t
     JOIN `aa`.`invest` ON `user`.login_name = `invest`.login_name
   WHERE `invest`.transfer_invest_id IS NULL ORDER BY invest_time;
 
--- insert UPGRADE info
-INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, created_time, total_experience, description)
-  SELECT
-    `user`.login_name,
-    0,
-    now(),
-    0,
-    concat(
-        '根据', `user`.login_name, '历史投资记录，在会员上线时获得初始会员等级V',
-        CASE
-        WHEN (SELECT `account`.membership_point
-              FROM `aa`.`account`
-              WHERE `account`.login_name = `user`.`login_name`)
-             >= (SELECT `membership`.experience
-                 FROM `aa`.`membership`
-                 WHERE `membership`.level = 1)
-             AND (SELECT `account`.membership_point
-                  FROM `aa`.`account`
-                  WHERE `account`.login_name = `user`.`login_name`)
-                 < (SELECT `membership`.experience
-                    FROM `aa`.`membership`
-                    WHERE `membership`.level = 2)
-          THEN
-            (SELECT 1)
-        WHEN (SELECT `account`.membership_point
-              FROM `aa`.`account`
-              WHERE `account`.login_name = `user`.`login_name`)
-             >= (SELECT `membership`.experience
-                 FROM `aa`.`membership`
-                 WHERE `membership`.level = 2)
-             AND (SELECT `account`.membership_point
-                  FROM `aa`.`account`
-                  WHERE `account`.login_name = `user`.`login_name`)
-                 < (SELECT `membership`.experience
-                    FROM `aa`.`membership`
-                    WHERE `membership`.level = 3)
-          THEN
-            (SELECT 2)
-        WHEN (SELECT `account`.membership_point
-              FROM `aa`.`account`
-              WHERE `account`.login_name = `user`.`login_name`)
-             >= (SELECT `membership`.experience
-                 FROM `aa`.`membership`
-                 WHERE `membership`.level = 3)
-             AND (SELECT `account`.membership_point
-                  FROM `aa`.`account`
-                  WHERE `account`.login_name = `user`.`login_name`)
-                 < (SELECT `membership`.experience
-                    FROM `aa`.`membership`
-                    WHERE `membership`.level = 4)
-          THEN
-            (SELECT 3)
-        WHEN (SELECT `account`.membership_point
-              FROM `aa`.`account`
-              WHERE `account`.login_name = `user`.`login_name`)
-             >= (SELECT `membership`.experience
-                 FROM `aa`.`membership`
-                 WHERE `membership`.level = 4)
-             AND (SELECT `account`.membership_point
-                  FROM `aa`.`account`
-                  WHERE `account`.login_name = `user`.`login_name`)
-                 < (SELECT `membership`.experience
-                    FROM `aa`.`membership`
-                    WHERE `membership`.level = 5)
-          THEN
-            (SELECT 4)
-        WHEN (SELECT `account`.membership_point
-              FROM `aa`.`account`
-              WHERE `account`.login_name = `user`.`login_name`)
-             >= (SELECT `membership`.experience
-                 FROM `aa`.`membership`
-                 WHERE `membership`.level = 5)
-          THEN
-            (SELECT 5)
-        ELSE
-          (SELECT 0)
-        END
-    )
-  FROM `aa`.`user`
-    LEFT JOIN `aa`.`account` ON `user`.login_name = `account`.login_name;
-
 -- invest invest_fee_rate
 UPDATE `aa`.`invest`
-SET `invest`.invest_fee_rate = 0.1;
+SET `invest`.invest_fee_rate =
+(SELECT `loan`.invest_fee_rate
+ FROM `aa`.`loan`
+ WHERE `loan`.id = `invest`.loan_id);
 
--- remove loan invest_fee_rate
-ALTER TABLE `aa`.`loan` DROP COLUMN `invest_fee_rate` 
+COMMIT;
