@@ -47,13 +47,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             }
         }
 
-        if (StringUtils.isEmpty(loginName) || investMapper.countInvestSuccessExperience(loginName) == 0) {
-            List<LoanModel> loanModelsExperience = loanMapper.findByProductType(ProductType.EXPERIENCE);
-            if (CollectionUtils.isNotEmpty(loanModelsExperience)) {
-                loanModels.add(loanModelsExperience.get(0));
-            }
-        }
-
         List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, isShowExperienceLoan);
         loanModels.addAll(notContainNewbieList);
 

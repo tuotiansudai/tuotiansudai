@@ -1,8 +1,6 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
@@ -25,9 +23,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,8 +46,6 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoan("jiaoshenshen"));
 
         when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class),anyBoolean(),anyBoolean())).thenReturn(null);
-
-        when(investMapper.countInvestSuccessExperience(anyString())).thenReturn(0l);
 
         when(investMapper.sumSuccessInvestCountByLoginName(anyString())).thenReturn(1);
 
