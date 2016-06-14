@@ -234,9 +234,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if (element.name === 'captcha') {
                 $registerSubmit.prop('disabled',false);
             }
-            else {
-                $registerSubmit.prop('disabled',true);
-            }
         }
     });
 
@@ -267,9 +264,9 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     $agreement.on('click',function() {
         checkValidNum();
     });
-    $frontInput.on('blur',function(event) {
+    $frontInput.on('change',function(event) {
         var mobile = $('input.mobile', registerUserForm);
-        if(event.target.name=='mobile' && mobile.attr('preValue')!=mobile.val()) {
+        if(event.target.name=='mobile') {
             if(countTimer) {
                 clearInterval(countTimer);
                 $('input.captcha', registerUserForm).removeClass('valid').val('')
