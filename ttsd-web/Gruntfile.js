@@ -163,6 +163,16 @@ module.exports = function(grunt) {
                     ]
                 }]
             }
+        },
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: 'src/main/webapp/',
+                    mainConfigFile: 'src/main/webapp/js/config.js',
+                    include: ['js/membership.js'],
+                    out: './optimized.js'
+                }
+            }
         }
     });
 
