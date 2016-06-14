@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'], function ($, Mustache, pointBillListTemplate, moment, pagination, layer) {
+require(['jquery', 'mustache', 'text!tpl/point-bill-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'], function ($, Mustache, pointBillListTemplate, moment, pagination, layer) {
     var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
         month = moment().subtract(1, 'month').format('YYYY-MM-DD'),

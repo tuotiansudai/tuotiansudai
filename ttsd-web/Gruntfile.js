@@ -1,3 +1,19 @@
+var fs = require('fs');
+var path = require('path');
+
+var getJSModules = function() {
+    var arr = fs.readdirSync(path.join(__dirname, 'src/main/webapp/js'));
+    var modules = [];
+    arr.forEach(function(val) {
+        if (/\.js$/.test(val)) {
+            modules.push({
+                name: 'js/' + val.substring(0, val.length - 3)
+            });
+        }
+    });
+    return modules;
+};
+
 module.exports = function(grunt) {
     // load all grunt tasks
     require('load-grunt-tasks')(grunt);
@@ -28,7 +44,8 @@ module.exports = function(grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '<%= meta.baseJsMinPath %>/*'
+                        '<%= meta.baseJsMinPath %>/*',
+                        '<%= meta.baseJsPath %>/debug'
                     ]
                 }]
             },
@@ -49,7 +66,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseJsPath %>/*.js'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseJsPath %>/debug/js/*.js'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseJsMinPath %>/', // Destination path prefix.
                     ext: '.min.js', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -72,17 +89,6 @@ module.exports = function(grunt) {
             }
         },
         cssmin: {
-            dist: {
-                files: [{
-                    expand: true, // Enable dynamic expansion.
-                    cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseCssPath %>/*.css'], // Actual pattern(s) to match.
-                    dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
-                    ext: '.min.css', // Dest filepaths will have this extension.
-                    extDot: 'first', // Extensions in filenames begin after the first dot
-                    flatten: true
-                }]
-            },
             base64: {
                 files: [{
                     expand: true, // Enable dynamic expansion.
@@ -100,20 +106,20 @@ module.exports = function(grunt) {
                 files: [
                     '<%= meta.baseSassPath %>/*.scss'
                 ],
-                tasks: ['clean:css', 'sass']
+                tasks: ['sass']
             },
-            cssmin: {
-                files: [
-                    ['<%= meta.baseCssPath %>/*.css']
-                ],
-                tasks: ['cssmin:dist']
-            },
-            uglify: {
-                files: [
-                    ['<%= meta.baseJsPath %>/*.js']
-                ],
-                tasks: ['clean:js', 'uglify']
-            }
+            // cssmin: {
+            //     files: [
+            //         ['<%= meta.baseCssPath %>/*.css']
+            //     ],
+            //     tasks: ['cssmin:dist']
+            // },
+            // uglify: {
+            //     files: [
+            //         ['<%= meta.baseJsPath %>/*.js']
+            //     ],
+            //     tasks: ['clean:js', 'uglify']
+            // }
         },
         connect: {
             server: {
@@ -168,16 +174,17 @@ module.exports = function(grunt) {
             compile: {
                 options: {
                     baseUrl: 'src/main/webapp/',
-                    mainConfigFile: 'src/main/webapp/js/config.js',
-                    include: ['js/membership.js'],
-                    out: './optimized.js'
+                    mainConfigFile: '<%= meta.baseJsPath %>/config.js',
+                    optimize: 'none',
+                    stubModules: ['text'],
+                    modules: getJSModules(),
+                    dir: '<%= meta.baseJsPath %>/debug'
                 }
             }
         }
     });
 
     // 默认被执行的任务列表。
-    grunt.registerTask('common', ['clean', 'uglify', 'sass', 'cssmin:dist']);
-    grunt.registerTask('default', ['common', 'connect', 'watch']);
-    grunt.registerTask('dist', ['common', 'dataUri', 'cssmin:base64', 'clean:base64', 'filerev']);
+    grunt.registerTask('default', ['clean', 'sass', 'connect', 'watch']);
+    grunt.registerTask('dist', ['clean', 'sass', 'dataUri', 'cssmin:base64', 'clean:base64', 'requirejs', 'uglify', 'filerev']);
 };
