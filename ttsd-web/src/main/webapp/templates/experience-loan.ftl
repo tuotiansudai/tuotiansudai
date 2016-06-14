@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="chart-info">
-                    项目金额：${loan.loanAmount}元<br/>
+                    项目金额：${loan.loanAmount}元(体验金)<br/>
                     项目期限：${loan.duration}天<br/>
                     起息时间：即投即生息。<br/>
                     还款方式：到期付息,体验金收回。<br/>
@@ -37,7 +37,7 @@
                             <dd class="experience-info clearfix">
                                 <span class="fl">可投金额：</span>
                                 <em class="fr">
-                                    <i class="amountNeedRaised-i" data-amount-need-raised="${loan.investAmount}">${loan.investAmount}</i> 元
+                                    <i class="amountNeedRaised-i" data-amount-need-raised="${loan.investAmount}">${loan.investAmount}</i> 元(体验金)
                                 </em>
                             </dd>
 
@@ -66,9 +66,14 @@
                             </dd>
 
                             <dd class="mb-20">
-                                <button id="investSubmit" class="btn-pay btn-normal" type="button"
-                                        <#if coupon?? == false>disabled="disabled"</#if>>立即体验
-                                </button>
+                                <@global.isAnonymous>
+                                    <a class="btn-pay btn-normal" href="/register/user">立即体验</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="button"
+                                            <#if coupon?? == false>disabled="disabled"</#if>>立即体验
+                                    </button>
+                                </@global.isNotAnonymous>
                             </dd>
                         </dl>
                     </form>
@@ -89,7 +94,7 @@
         </div>
 
         <div class="chart-info-responsive bg-w">
-            项目金额：${loan.loanAmount}元<br/>
+            项目金额：${loan.loanAmount}元(体验金)<br/>
             项目期限：${loan.duration}天<br/>
             起息时间：即投即生息<br/>
                     还款方式：到期付息,体验金收回。<br/>
@@ -104,8 +109,8 @@
                 <ul class="info-list">
                     <li>1、新手体验项目是由拓天速贷专门提供给平台各类型新手客户体验平台流程的活动项目。</li>
                     <li>2、投资体验项目无需充值。</li>
-                    <li>3、新手体验券是由拓天速贷用平台活动方式，为新注册用于提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励。</li>
-                    <li>4、新注册用户通过获得体验券后，在体验项目专区点击使用。</li>
+                    <li>3、新手体验券(体验金)是由拓天速贷用平台活动方式，为新注册用于提供平台项目投资体验的活动金额，新手体验券只能投资体验项目，不可提现，使用后可产生红包奖励。</li>
+                    <li>4、新注册用户通过获得体验券(体验金)后，在体验项目专区点击使用。</li>
                     <li>5、新手体验项目不可转让。</li>
                     <li>6、为防止不法分子恶意刷取平台奖励，红包奖励需投资真实项目后方可提现。</li>
                     <li>本活动规则解释权归拓天速贷所有，如有疑问请联系在线客服或拨打400-169-1188</li>
