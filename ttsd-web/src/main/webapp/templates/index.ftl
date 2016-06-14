@@ -3,11 +3,11 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
-            <a href="/activity/anniversary-celebration" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
+            <a href="/activity/hero-ranking" target="_blank">
                 <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
             </a>
-            <a href="/activity/invest-achievement" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
+            <a href="/activity/invest-achievement" target="_blank">
                 <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
             </a>
