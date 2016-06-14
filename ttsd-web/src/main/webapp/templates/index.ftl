@@ -151,7 +151,7 @@
                         <span class="point fr">${experienceLoanDto.progress} %</span>
                     </div>
                     <div class="process-percent">
-                        <div class="percent" style="width:0%">
+                        <div class="percent" style="width:${experienceLoanDto.progress}%">
                         </div>
                     </div>
                     <div class="rest-amount">
