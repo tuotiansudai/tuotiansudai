@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
@@ -25,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -43,10 +39,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
+    private CouponService couponService;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -116,12 +109,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
         long investedAmount = 0l;
         if (loan.getProductType() == ProductType.EXPERIENCE) {
-            long successCountToday = investMapper.countInvestSuccessExperienceToday();
-            List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loan.getId(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
-            if (CollectionUtils.isNotEmpty(userCouponModels)) {
-                CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
-                investedAmount = new BigDecimal(successCountToday % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-            }
+            Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
+            Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
+            investedAmount = couponService.findExperienceInvestAmount(investModelList);
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
         }
