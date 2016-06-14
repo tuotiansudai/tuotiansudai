@@ -34,7 +34,7 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
 
         Source source = Source.valueOf(feedbackRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
 
-        feedbackService.create(getLoginName(), feedbackRequestDto.getBaseParam().getPhoneNum(), source, FeedbackType.opinion, feedbackRequestDto.getContent());
+        feedbackService.create(getLoginName(), feedbackRequestDto.getContact(), source, FeedbackType.valueOf(feedbackRequestDto.getType()), feedbackRequestDto.getContent());
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 }
