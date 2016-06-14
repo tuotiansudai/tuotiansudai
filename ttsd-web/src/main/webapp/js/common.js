@@ -166,15 +166,10 @@ commonFun={
 var MyChartsObject={
     ChartConfig: function (container, option) {
         this.Colors = ['#910000', '#1aadce', '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a', '#6f2fd8', '#531750', '#2f7ed8', '#0d233a', '#8bbc21', '#d7c332', '#9a7400', '#5ace1a', '#910044', '#ffb81c', '#e5e65b', '#d12270', '#6ad0f0', '#3337e2', '#770808', '#df6237', '#07799e', '#f5b688', '#004b91', '#c340e3', '#4b9cad', '#cc4800', '#ff91c2', '#00913d', '#145207', '#2f5bfc', '#e34063', '#b794f1', '#4900c2', '#f09797', '#66892a', '#5d68f8', '#c577e5']; //默认配色
-        // 路径配置
-        require.config({
-            paths:{
-                echarts: '/js/libs/echarts/dist'
-            }
-        });
+
         //配置主题
         var theme = 'defalut';
-        require(['echarts/theme/macarons'], function(curTheme){
+        require(['echartsDir/theme/macarons'], function(curTheme){
             theme = curTheme;
         });
         this.option = {
@@ -394,8 +389,8 @@ var MyChartsObject={
             require(
                 [
                     'echarts',
-                    'echarts/chart/pie',
-                    'echarts/chart/bar'
+                    'echartsDir/chart/pie',
+                    'echartsDir/chart/bar'
                 ],
                 function (ec) {
                     var echarts = ec;
