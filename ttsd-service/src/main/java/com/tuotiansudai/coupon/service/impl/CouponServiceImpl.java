@@ -21,6 +21,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -346,6 +348,7 @@ public class CouponServiceImpl implements CouponService {
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
@@ -353,7 +356,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             totalInterest += expectedInterest - expectedFee;
         }
 
@@ -380,5 +383,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
         return couponExchangeMapper.findByCouponId(couponId);
+    }
+
+    @Override
+    public long findExperienceInvestAmount(List<InvestModel> investModelList){
+        long amount = 0;
+        if (CollectionUtils.isNotEmpty(investModelList)) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
+            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+            amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        }
+        return amount;
     }
 }

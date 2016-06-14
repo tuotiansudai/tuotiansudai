@@ -41,15 +41,6 @@ public class ChannelCollector implements UserCollector{
     }
 
     @Override
-    public long count(long couponId) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
-        if (couponUserGroupModel == null) {
-            return 0;
-        }
-        return userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels", couponUserGroupModel.getUserGroupItems()).build())).size();
-    }
-
-    @Override
     public boolean contains(long couponId, final String loginName) {
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
         if (couponUserGroupModel == null) {

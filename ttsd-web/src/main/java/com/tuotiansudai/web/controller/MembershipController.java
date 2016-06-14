@@ -49,12 +49,12 @@ public class MembershipController {
         String loginName = LoginUserInfo.getLoginName();
         if(loginName != null){
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-            MembershipModel nextLevelMembershipModel = userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
+            MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5?membershipModel:userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
 
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
-            modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel != null?nextLevelMembershipModel.getLevel():membershipModel.getLevel());
-            modelAndView.addObject("membershipNextLevelValue", nextLevelMembershipModel != null?(nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()):"");
+            modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
+            modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
             modelAndView.addObject("membershipPoint", accountModel != null?accountModel.getMembershipPoint():"");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
