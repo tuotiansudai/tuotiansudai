@@ -18,8 +18,12 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
         }).css({
             'font-size': '16px'
         });
-
-
+        screenWid = $(window).width(); //screen width
+        picWid = $bannerImg.first().find('img').width();
+        leftWid = (picWid - screenWid) / 2;
+        $imgScroll.find('img').css({
+          'margin-left': '-' + leftWid + 'px'
+        });
         $(".product-box .pad-m").click(function () {
             window.location.href = $(this).data("url");
         });
@@ -28,12 +32,11 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
 
         if (viewport == 'pc') {
             $imgScroll.find('img.iphone-img').remove();
-            $("#bannerBox").slide({mainCell:".bd ul",effect:"left",autoPlay:true});
+            $("#bannerBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
-            screenWid = $(window).width(); //screen width
-            picWid = $bannerImg.first().find('img').width();
-            leftWid = (picWid - screenWid) / 2;
+
+
             $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
             $imgNum.click(function () {
                 var num_nav = $imgNum.index(this);
