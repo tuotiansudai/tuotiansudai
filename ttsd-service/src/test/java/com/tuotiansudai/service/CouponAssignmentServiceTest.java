@@ -125,8 +125,8 @@ public class CouponAssignmentServiceTest {
         UserModel couponCreator = getFakeUser("couponCreator");
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1);
-        couponModel.setTotalCount(0L);
-        couponModel.setStartTime(new Date());
+        couponModel.setTotalCount(1L);
+        couponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         couponModel.setEndTime(new DateTime().plusDays(1).toDate());
         couponModel.setDeadline(1);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30));

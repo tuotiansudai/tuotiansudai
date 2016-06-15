@@ -162,9 +162,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        //防止并发领券
-        userMapper.lockByLoginName(loginName);
-
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
