@@ -82,8 +82,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate) {
-        MysteriousPrizeDto mysteriousPrizeDto = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,prizeDate);
-        return mysteriousPrizeDto;
+        return (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,prizeDate);
     }
 
     @Override
