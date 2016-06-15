@@ -51,6 +51,8 @@ body {
       ul{
         float:left;
         @media (max-width: 1920px) {
+          margin-left: -moz-calc((1920px - 100%) / 2 * -1);
+          margin-left: -webkit-calc((1920px - 100%) / 2 * -1);
           margin-left: calc((1920px - 100%) / 2 * -1);
         }
         li{
