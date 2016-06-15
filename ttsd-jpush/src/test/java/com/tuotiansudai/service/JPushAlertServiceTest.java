@@ -150,7 +150,7 @@ public class JPushAlertServiceTest {
         return jPushAlertModel;
     }
 
-    private List<InvestModel> createInvestSuccessList(long loanId){
+    private List<InvestModel> createInvestSuccessList(long loanId) {
 
         List<InvestModel> investModelList = new ArrayList<InvestModel>();
         InvestModel investModel_1 = new InvestModel();
@@ -177,7 +177,7 @@ public class JPushAlertServiceTest {
         return investModelList;
     }
 
-    private List<InvestReferrerRewardModel> createInvestReferrerRewardModelList(long investId){
+    private List<InvestReferrerRewardModel> createInvestReferrerRewardModelList(long investId) {
         List<InvestReferrerRewardModel> investReferrerRewardModelList = new ArrayList<InvestReferrerRewardModel>();
         InvestReferrerRewardModel investReferrerRewardModel_1 = new InvestReferrerRewardModel();
         investReferrerRewardModel_1.setInvestId(investId);
@@ -278,7 +278,7 @@ public class JPushAlertServiceTest {
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
 
-        when(redisWrapperClient.hexists(anyString(),anyString())).thenReturn(true);
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(registrationIds);
     }
 
@@ -359,7 +359,7 @@ public class JPushAlertServiceTest {
     }
 
     @Test
-    public void shouldAutoJPushReferrerRewardAlert(){
+    public void shouldAutoJPushReferrerRewardAlert() {
 
         publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", null);
 
@@ -453,6 +453,80 @@ public class JPushAlertServiceTest {
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "65.21"), argumentAlert.getValue());
+    }
+
+    @Test
+    public void shouldAutoJPushRedEnvelopeAlert() {
+        LoanModel loanModel = fakeLoanModel("test123");
+        LoanRepayModel currentLoanRepayModel = new LoanRepayModel();
+        currentLoanRepayModel.setId(1000101);
+        currentLoanRepayModel.setLoanId(loanModel.getId());
+        currentLoanRepayModel.setPeriod(1);
+        currentLoanRepayModel.setStatus(RepayStatus.COMPLETE);
+        List<LoanRepayModel> loanRepayModels = new ArrayList<>();
+
+        for (int i = 1; i < 4; i++) {
+            LoanRepayModel repayModel = new LoanRepayModel();
+            repayModel.setLoanId(loanModel.getId());
+            repayModel.setId(Long.parseLong(10001 + "0" + i));
+            repayModel.setPeriod(i);
+            loanRepayModels.add(repayModel);
+        }
+        CouponModel couponModel = new CouponModel(fakeCouponDto());
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
+        List<UserCouponModel> userCouponModels = new ArrayList<>();
+        UserCouponModel userCouponModel = new UserCouponModel();
+        userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setInvestId(1001L);
+        userCouponModel.setActualInterest(10);
+        userCouponModel.setLoginName("test1");
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setLoanId(loanModel.getId());
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponModel.setActualInterest(100);
+        userCouponModels.add(userCouponModel);
+
+        UserCouponModel userCouponModel2 = new UserCouponModel();
+        userCouponModel2.setId(idGenerator.generate());
+        userCouponModel2.setInvestId(1001L);
+        userCouponModel2.setLoginName("test2");
+        userCouponModel2.setCouponId(couponModel.getId());
+        userCouponModel2.setLoanId(loanModel.getId());
+        userCouponModel2.setStatus(InvestStatus.SUCCESS);
+        userCouponModels.add(userCouponModel2);
+
+
+        when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
+        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
+
+        when(userCouponMapper.findByLoanId(anyLong(), anyList())).thenReturn(userCouponModels);
+
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
+
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
+
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
+        ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+
+        jPushAlertService.autoJPushRedEnvelopeAlert(currentLoanRepayModel.getId());
+
+        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(),
+                argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(),
+                (String) argumentextraValue.capture(), argumentPushSource.capture());
+
     }
 
 }

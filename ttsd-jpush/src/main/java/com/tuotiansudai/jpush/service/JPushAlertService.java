@@ -64,6 +64,6 @@ public interface JPushAlertService {
 
     void storeJPushId(String loginName, String platform, String jPushId);
 
-    void autoJPushReturningLoanOutAlert(long loanId);
+    void autoJPushRedEnvelopeAlert(long loanId);
 
 }

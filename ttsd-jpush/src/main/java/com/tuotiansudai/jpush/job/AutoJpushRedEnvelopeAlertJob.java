@@ -24,7 +24,7 @@ public class AutoJPushRedEnvelopeAlertJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert red envelope job, prepare do job");
         long loanId = (long) context.getJobDetail().getJobDataMap().get(JobType.RedEnvelope);
-        jPushAlertService.autoJPushReturningLoanOutAlert(loanId);
+        jPushAlertService.autoJPushRedEnvelopeAlert(loanId);
         logger.debug("trigger send jPush alert red envelope job, loanId : " + loanId);
     }
 }

@@ -58,28 +58,22 @@ public class JPushAmountNotifyAspect {
     private WithdrawMapper withdrawMapper;
 
     @Pointcut("execution(* *..NormalRepayService.paybackInvest(..))")
-    public void normalRepayPaybackInvestPointcut() {
-    }
+    public void normalRepayPaybackInvestPointcut() {}
 
     @Pointcut("execution(* *..AdvanceRepayService.paybackInvest(..))")
-    public void advanceRepayPaybackInvestPointcut() {
-    }
+    public void advanceRepayPaybackInvestPointcut() {}
 
     @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
-    public void rechargeCallbackPointcut() {
-    }
+    public void rechargeCallbackPointcut() {}
 
     @Pointcut("execution(* *..WithdrawService.withdrawCallback(..))")
-    public void withdrawCallbackPointcut() {
-    }
+    public void withdrawCallbackPointcut() {}
 
     @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..))")
-    public void rewardReferrerPointcut() {
-    }
+    public void rewardReferrerPointcut() {}
 
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
-    public void transferCashPointcut() {
-    }
+    public void transferCashPointcut() {}
 
     @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
     public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
@@ -167,7 +161,7 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* *..paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
     public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;

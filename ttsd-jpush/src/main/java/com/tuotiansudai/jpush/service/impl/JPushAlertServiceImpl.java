@@ -6,10 +6,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -34,15 +35,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -110,14 +108,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (StringUtils.isNotEmpty(jPushAlertDto.getId())) {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
-            if(jPushAlertModel.getJumpTo() != JumpTo.OTHER){
+            if (jPushAlertModel.getJumpTo() != JumpTo.OTHER) {
                 jPushAlertModel.setJumpToLink("");
             }
             jPushAlertMapper.update(jPushAlertModel);
         } else {
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
-            jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER?"":jPushAlertModel.getJumpToLink());
+            jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER ? "" : jPushAlertModel.getJumpToLink());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
             jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
@@ -347,11 +345,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         String[] jumpToOrLink = new String[]{"", ""};
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
-        if(jumpTo == JumpTo.OTHER){
+        if (jumpTo == JumpTo.OTHER) {
             jumpToOrLink[0] = "jumpToLink";
             jumpToOrLink[1] = jPushAlertDto.getJumpToLink();
-        }
-        else{
+        } else {
             jumpToOrLink[0] = "jumpTo";
             jumpToOrLink[1] = jumpTo.getIndex();
         }
@@ -610,8 +607,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
         for (InvestModel invest : successInvestList) {
             List<InvestReferrerRewardModel> investReferrerRewardModelList = investReferrerRewardMapper.findByInvestId(invest.getId());
-            for(InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList){
-                if(investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS){
+            for (InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList) {
+                if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
                     AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
                     JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
                     if (jPushAlertModel != null) {
@@ -706,7 +703,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void storeJPushId(String loginName, String platform,String jPushId) {
+    public void storeJPushId(String loginName, String platform, String jPushId) {
         String value = platform == null ? jPushId : platform.toLowerCase() + "-" + jPushId;
         logger.debug(MessageFormat.format("jpushId:{0} begin", value));
         redisWrapperClient.hset(JPUSH_ID_KEY, loginName, value);
@@ -714,8 +711,23 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushReturningLoanOutAlert(long loanId) {
-
+    public void autoJPushRedEnvelopeAlert(long loanId) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RED_ENVELOPE_ALERT);
+        if (jPushAlertModel == null) {
+            logger.error("RED_ENVELOPE_ALERT is disabled");
+            return;
+        }
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+            long transferAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            if (transferAmount > 0) {
+                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
+                loginNameMap.put(userCouponModel.getLoanName(), amountLists);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            }
+        }
     }
 
 }
