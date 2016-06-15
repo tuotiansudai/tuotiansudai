@@ -1,6 +1,8 @@
 package com.tuotiansudai.message.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class UserMessagePaginationItemDto {
 
     private boolean read;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdTime;
 
     public UserMessagePaginationItemDto(UserMessageModel model) {
@@ -42,5 +45,9 @@ public class UserMessagePaginationItemDto {
 
     public Date getCreatedTime() {
         return createdTime;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }

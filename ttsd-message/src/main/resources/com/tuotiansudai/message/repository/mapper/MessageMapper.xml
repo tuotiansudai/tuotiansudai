@@ -53,6 +53,14 @@
         where `id` = #{id}
     </update>
 
+    <select id="findById" parameterType="long" resultMap="messageResultMap">
+        select * from message where id = #{id};
+    </select>
+
+    <select id="lockById" parameterType="long" resultMap="messageResultMap">
+        select * from message where id = #{id} for update;
+    </select>
+
     <select id="findMessageCount"  parameterType="map" resultType="long">
         select count(id) from message
         <where>

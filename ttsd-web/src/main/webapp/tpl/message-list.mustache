@@ -1,4 +1,3 @@
-<p>未读1封，共113封</p>
 <table class="table-striped transfer-list">
     <thead>
         <tr>
@@ -8,26 +7,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="unread">
+        {{#records}}
+        <tr {{^read}}class="unread"{{/read}}>
             <td><span class="icon">【拓天速贷】</span></td>
-            <td>一切只为你，您的绑定邮箱修改成功。</td>
-            <td>2016-01-11</td>
+            <td>
+                {{#content}}
+                    <a href='/message/user-message/{{userMessageId}}?index={{index}}'>{{title}}</a>
+                {{/content}}
+                {{^content}}
+                    {{title}}
+                {{/content}}
+            </td>
+            <td>{{createdTime}}</td>
         </tr>
-        <tr>
-            <td><span class="icon">【拓天速贷】</span></td>
-            <td>一切只为你，您的绑定邮箱修改成功。</td>
-            <td>2016-01-11</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>一切只为你，您的绑定邮箱修改成功。</td>
-            <td>2016-01-11</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>一切只为你，您的绑定邮箱修改成功。</td>
-            <td>2016-01-11</td>
-        </tr>
+        {{/records}}
     </tbody>
 </table>
-<p class="page-count-bottom">未读1封，共113封<button>全部标记为已读</button></p>
+<p class="page-count-bottom"><button>全部标记为已读</button></p>

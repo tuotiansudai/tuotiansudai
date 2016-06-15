@@ -1,14 +1,19 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
+import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/message")
@@ -20,16 +25,44 @@ public class MessageController {
     @RequestMapping(value = "/user-messages", method = RequestMethod.GET)
     public ModelAndView getMessages(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return new ModelAndView("/user-message-list");
+        ModelAndView modelAndView = new ModelAndView("/user-message-list");
+
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        return modelAndView;
     }
 
+    @RequestMapping(value = "/user-message-list-data", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BasePaginationDataDto> getMessageListData(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-    @RequestMapping(value = "user-message/{id:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView messageDetail(@PathVariable long id) {
-        ModelAndView modelAndView = new ModelAndView("/user-message");
-//        String loginName = LoginUserInfo.getLoginName();
-//        modelAndView.addObject("loginName",loginName);
-//        modelAndView.addObject("messageDetail", userMessageService.findById(id));
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, pageSize);
+        dto.setData(dataDto);
+
+        for (UserMessagePaginationItemDto record : dataDto.getRecords()) {
+            if (Strings.isNullOrEmpty(record.getContent()) && !record.isRead()) {
+                userMessageService.readMessage(record.getUserMessageId());
+                record.setRead(true);
+            }
+        }
+
+        return dto;
+    }
+
+    @RequestMapping(value = "/user-message/{userMessageId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView messageDetail(@PathVariable long userMessageId,
+                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        UserMessageModel userMessageModel = userMessageService.readMessage(userMessageId);
+        if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
+            return new ModelAndView("/error/404");
+        }
+        ModelAndView modelAndView = new ModelAndView("/user-message-detail");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("title", userMessageModel.getTitle());
+        modelAndView.addObject("content", userMessageModel.getContent());
+        modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(userMessageModel.getCreatedTime()));
         return modelAndView;
     }
 }

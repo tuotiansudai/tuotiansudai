@@ -13,6 +13,8 @@ public interface MessageMapper {
 
     MessageModel findById(long id);
 
+    MessageModel lockById(long id);
+
     void create(MessageModel messageModel);
 
     void update(MessageModel messageModel);
