@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -20,6 +21,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,28 @@ public class UserCouponServiceImpl implements UserCouponService {
                 return dto.isUnused();
             }
         }));
+    }
+
+    @Override
+    public UserCouponDto getExperienceInvestUserCoupon(String loginName) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON));
+
+        Optional<UserCouponModel> userCouponModelOptional = Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                return couponModel.getProductTypes().contains(ProductType.EXPERIENCE)
+                        && userCouponModel.getStatus() != InvestStatus.SUCCESS
+                        && userCouponModel.getEndTime().after(new Date());
+            }
+        });
+
+        if (userCouponModelOptional.isPresent()) {
+            UserCouponModel userCouponModel = userCouponModelOptional.get();
+            return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+        }
+
+        return null;
     }
 
     /**

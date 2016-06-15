@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
@@ -330,6 +331,10 @@ public class CouponServiceImpl implements CouponService {
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        if (CollectionUtils.isEmpty(couponIds)) {
+            return totalInterest;
+        }
+
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
@@ -364,5 +369,17 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
         return couponExchangeMapper.findByCouponId(couponId);
+    }
+
+    @Override
+    public long findExperienceInvestAmount(List<InvestModel> investModelList){
+        long amount = 0;
+        for(InvestModel investModel : investModelList){
+            List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+            for(UserCouponModel userCouponModel : userCouponModelList){
+                amount += couponMapper.findById(userCouponModel.getCouponId()).getAmount();
+            }
+        }
+        return amount;
     }
 }
