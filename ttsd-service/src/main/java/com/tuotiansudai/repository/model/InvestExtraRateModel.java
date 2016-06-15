@@ -4,7 +4,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class InvestExtraRate implements Serializable {
+public class InvestExtraRateModel implements Serializable {
 
     private long id;
 
