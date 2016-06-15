@@ -95,7 +95,6 @@ public class ExperienceLoanDetailServiceTest {
         investModel1.setInvestTime(DateUtils.addDays(new Date(),-3));
         experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
         assertTrue(experienceLoanDto.getProgress() == 100);
-
     }
 
     public LoanModel getLoanModel(String fakeUserName){

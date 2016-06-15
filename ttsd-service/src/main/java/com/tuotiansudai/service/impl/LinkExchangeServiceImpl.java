@@ -1,11 +1,9 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LinkExchangeDto;
 import com.tuotiansudai.service.LinkExchangeService;
-import com.tuotiansudai.task.TaskConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,13 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             linkExchangeDto.setLinkUrl(linkExchangeDtaValues[2]);
             linkExchangeDto.setUpdateTime(new Date());
             linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
+            final int linkExchangeDtoStringOriginSize = 5;  //旧数据长度是5
+            //noFollow字段是后加入的，需要判断长度用来兼容旧数据
+            if (linkExchangeDtoStringOriginSize < linkExchangeDtaValues.length) {
+                linkExchangeDto.setNoFollow(Boolean.valueOf(linkExchangeDtaValues[5]));
+            } else {
+                linkExchangeDto.setNoFollow(false);
+            }
         }
         return linkExchangeDto;
     }
@@ -124,6 +129,13 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             linkExchangeDto.setTitle(values[1]);
             linkExchangeDto.setLinkUrl(values[2]);
             linkExchangeDto.setUpdateTime(strToDate(values[3]));
+            final int linkExchangeDtoStringOriginSize = 5;  //旧数据长度是5
+            //noFollow字段是后加入的，需要判断长度用来兼容旧数据
+            if (linkExchangeDtoStringOriginSize < values.length) {
+                linkExchangeDto.setNoFollow(Boolean.valueOf(values[5]));
+            } else {
+                linkExchangeDto.setNoFollow(false);
+            }
             linkExchangeDtoList.add(linkExchangeDto);
         }
         Collections.sort(linkExchangeDtoList, new Comparator<LinkExchangeDto>(){
