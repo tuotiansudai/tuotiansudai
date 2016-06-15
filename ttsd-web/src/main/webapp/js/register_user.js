@@ -299,7 +299,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     checkValid=res.data.status?true:false;
                     if(checkValid) {
                         $target.removeClass('error').addClass('valid');
-                        referrerError.html('').hide();
+                        referrerError.html('').hide().show();
                     }
                     else {
                         $target.removeClass('valid').addClass('error');
@@ -310,7 +310,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
 
         }
         else {
-            $target.removeClass('error').addClass('valid').show();
+            $target.removeClass('error').addClass('valid');
             referrerError.html('').hide();
             checkValidNum();
         }
