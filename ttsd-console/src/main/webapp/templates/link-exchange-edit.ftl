@@ -24,6 +24,15 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-1 control-label">noFollow: </label>
+
+                <div class="col-sm-4">
+                    <input type="checkbox" class="form-control jq-noFollow" name="noFollow"
+                           <#if ((linkExchange.noFollow)!true)>value="true" checked="checked"
+                           <#else>value="false"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-4 form-error">
                 </div>

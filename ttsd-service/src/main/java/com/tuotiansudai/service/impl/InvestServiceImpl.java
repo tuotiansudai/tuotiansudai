@@ -231,27 +231,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus,false);
-        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(), new Predicate<InvestPaginationItemDataDto>() {
-            @Override
-            public boolean apply(InvestPaginationItemDataDto input) {
-                return TransferStatus.TRANSFERABLE.getDescription().equals(input.getTransferStatus()) && investTransferService.isTransferable(input.getInvestId());
-            }
-        });
-        List<InvestPaginationItemDataDto>  items = Lists.newArrayList(filter);
-        int fromIndex = (index - 1) * pageSize;
-        int toIndex = fromIndex + pageSize;
-        if(fromIndex >= items.size()){
-            fromIndex = items.size();
-        }
-        if(toIndex >= items.size()){
-            toIndex = items.size();
-        }
-        return new InvestPaginationDataDto(index,pageSize,items.size(),items.subList(fromIndex, toIndex));
-    }
-
-    @Override
     public long findCountInvestPagination(Long loanId, String investorLoginName,
                                           String channel, Source source, String role,
                                           Date startTime, Date endTime,
@@ -271,7 +250,7 @@ public class InvestServiceImpl implements InvestService {
                                                        String channel, Source source, String role,
                                                        int index, int pageSize,
                                                        Date startTime, Date endTime,
-                                                       InvestStatus investStatus, LoanStatus loanStatus, boolean isPagination) {
+                                                       InvestStatus investStatus, LoanStatus loanStatus) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -293,7 +272,7 @@ public class InvestServiceImpl implements InvestService {
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
                 if(loanId != null){
                     LoanModel loanModel = loanMapper.findById(loanId);

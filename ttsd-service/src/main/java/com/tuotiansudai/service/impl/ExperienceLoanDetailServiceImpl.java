@@ -49,11 +49,11 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
                     experienceProgress = 100;
                     break;
                 default:
-                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
+                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size() % 100;
                     break;
             }
         }else{
-            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
+            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size() % 100;
         }
 
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime);
