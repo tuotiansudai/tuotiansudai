@@ -80,7 +80,7 @@
             <div class="form-group clearfix">
                 <label class="col-sm-1 control-label">名称: </label>
                 <div class="col-sm-4">
-                    <input type="text" name="prizeName"  class="form-control prize-name" value="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName!}</#if>" placeholder="" datatype="*" errormsg="名称不能为空">
+                    <input type="text" name="prizeName"  class="form-control prize-name"  placeholder="" datatype="*" errormsg="名称不能为空">
                 </div>
                 <div class="col-sm-7"></div>
             </div>
@@ -88,11 +88,9 @@
             <div class="form-group clearfix">
                 <label class="col-sm-1 control-label">图片: </label>
                 <div class="col-sm-4 ">
-                    <input type="text" name="imageUrl" value="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl!}</#if>" readonly class="form-control image-url" placeholder="" datatype="*" errormsg="图片不能为空">
+                    <input type="text" name="imageUrl"  readonly class="form-control image-url" placeholder="" datatype="*" errormsg="图片不能为空">
                     <div class="thumbImage">
-                        <#if mysteriousPrizeDto??>
-                            <img style="width:100%" src="/${mysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
-                        </#if>
+
                     </div>
                 </div>
                 <div class="col-sm-4 prize-image">
@@ -115,7 +113,28 @@
                 <label class="col-sm-1 control-label">操作: </label>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="col-sm-4">
-                    <button type="button" class="btn jq-btn-form btn-primary prize-save">更新</button>
+                    <button type="button" class="btn jq-btn-form btn-primary tomorrow-prize-save">更新第二天奖品</button>
+                    更新后当日24:00自动生效
+                    <div class="tomorrowThumbImage">
+                        <#if tomorrowMysteriousPrizeDto??>
+                            <img style="width:100%" src="/${tomorrowMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                        </#if>
+                    </div>
+
+                </div>
+                <div class="col-sm-7">
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-sm-1 control-label"></label>
+                <div class="col-sm-4">
+                    <button type="button" class="btn jq-btn-form btn-primary today-prize-save">修改今日奖品</button>
+                    修改后即时发布到页面,请慎用
+                    <div class="todayThumbImage">
+                        <#if todayMysteriousPrizeDto??>
+                            <img style="width:100%" src="/${todayMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                        </#if>
+                    </div>
                 </div>
                 <div class="col-sm-7">
                 </div>
