@@ -7,6 +7,7 @@ import {
 	Redirect,
 	IndexRoute
 } from 'react-router';
+import 'components/lib-flexible/lib-flexible';
 import changeTitle from 'utils/changeTitle';
 import './index.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
