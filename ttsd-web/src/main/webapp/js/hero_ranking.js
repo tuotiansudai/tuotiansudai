@@ -127,7 +127,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		});
 
 		$getVip.on('click', function() {
-			cnzzPush.trackClick('152周年庆', '领取会员', '我要上榜');
+			cnzzPush.trackClick('152周年庆', '领取会员', '领取会员');
 		});
 	});
 });
