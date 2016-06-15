@@ -488,12 +488,12 @@
         *
         FROM
         loan
-        WHERE
+        WHERE 1=1
         <if test="loanStatus.name() == 'RAISING'">
-            loan.status in ('RAISING','PREHEAT')
+            and loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus.name() == 'COMPLETE'">
-            loan.status in ('COMPLETE','REPAYING')
+            and loan.status in ('COMPLETE','REPAYING')
         </if>
 
         <if test="isShowNewbieLoan == false">
