@@ -16,10 +16,12 @@
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>
+                    <#if productType.name() != 'EXPERIENCE'>
                     <label><input type="checkbox" name="productTypes" class="productType"
                                   <#if coupon?? && coupon.productTypes?seq_contains(productType.name())>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
+                    </#if>
                 </#list>
             </div>
         </div>

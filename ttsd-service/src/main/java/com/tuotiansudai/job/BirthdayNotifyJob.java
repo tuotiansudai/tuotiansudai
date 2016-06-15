@@ -12,12 +12,12 @@ public class BirthdayNotifyJob implements Job {
     static Logger logger = Logger.getLogger(BirthdayNotifyJob.class);
 
     @Autowired
-    private CouponAlertService couponAlertServiceService;
+    private CouponAlertService couponAlertService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger BirthdayNotifyJob job");
-        couponAlertServiceService.BirthdayNotify();
+        couponAlertService.BirthdayNotify();
     }
 
 }

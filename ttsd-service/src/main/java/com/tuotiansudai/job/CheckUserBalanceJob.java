@@ -20,5 +20,6 @@ public class CheckUserBalanceJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger CheckUserBalanceJob job");
         checkUserBalanceService.checkUserBalance();
+        logger.info("complete CheckUserBalanceJob job");
     }
 }

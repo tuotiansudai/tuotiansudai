@@ -16,6 +16,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
+import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -77,6 +78,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setLoanId(idGenerator.generate());
         investModel1.setSource(Source.ANDROID);
         investModel1.setStatus(InvestStatus.SUCCESS);
+        investModel1.setAchievements(Lists.newArrayList(InvestAchievement.MAX_AMOUNT));
 
         InvestModel investModel2 = new InvestModel();
         investModel2.setAmount(1100000L);
@@ -88,6 +90,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setLoanId(idGenerator.generate());
         investModel2.setSource(Source.WEB);
         investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setAchievements(Lists.newArrayList(InvestAchievement.LAST_INVEST));
 
         InvestModel investModel3 = new InvestModel();
         investModel3.setAmount(1200000L);
@@ -99,6 +102,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setLoanId(idGenerator.generate());
         investModel3.setSource(Source.IOS);
         investModel3.setStatus(InvestStatus.SUCCESS);
+        investModel3.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
 
         List<InvestModel> investModels = Lists.newArrayList();
         investModels.add(investModel1);
@@ -124,10 +128,13 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         assertEquals("10000.00", baseResponseDto.getData().getInvestRecord().get(0).getInvestMoney());
         assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(0).getUserName());
+        assertThat(baseResponseDto.getData().getInvestRecord().get(0).getAchievements(), Is.<List<InvestAchievement>>is(Lists.newArrayList(InvestAchievement.MAX_AMOUNT)));
         assertEquals("11000.00", baseResponseDto.getData().getInvestRecord().get(1).getInvestMoney());
         assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(1).getUserName());
+        assertThat(baseResponseDto.getData().getInvestRecord().get(1).getAchievements(), Is.<List<InvestAchievement>>is(Lists.newArrayList(InvestAchievement.LAST_INVEST)));
         assertEquals("12000.00", baseResponseDto.getData().getInvestRecord().get(2).getInvestMoney());
         assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(2).getUserName());
+        assertThat(baseResponseDto.getData().getInvestRecord().get(2).getAchievements(), Is.<List<InvestAchievement>>is(Lists.newArrayList(InvestAchievement.FIRST_INVEST)));
     }
 
 
@@ -165,13 +172,14 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGenerateUserInvestList() {
-        when(investMapper.findByLoginNameExceptTransfer(anyString(), anyInt(), anyInt(),anyBoolean())).thenReturn(generateMockedInvestList());
+        when(investMapper.findByLoginNameExceptTransfer(anyString(), anyInt(), anyInt(), anyBoolean())).thenReturn(generateMockedInvestList());
         when(investMapper.findCountByLoginNameExceptTransfer(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
         when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
+
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());

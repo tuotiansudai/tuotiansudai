@@ -29,4 +29,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> birthdayNotify(SmsCouponNotifyDto notifyDto);
 
     BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, String ip) ;
+
+    BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount);
 }
