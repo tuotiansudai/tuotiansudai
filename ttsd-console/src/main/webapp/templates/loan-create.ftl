@@ -109,9 +109,11 @@
                 <select class="selectpicker b-width">
                     <option value="">请选择</option>
                     <#list productTypes as productType>
+                        <#if productType.name() != 'EXPERIENCE'>
                         <option value="${productType.getDuration()}" data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
                         ${productType.getDuration()}
                         </option>
+                        </#if>
                     </#list>
                 </select>
                 <input type="hidden" class="jq-duration" value=""/>

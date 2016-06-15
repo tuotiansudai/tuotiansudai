@@ -264,4 +264,12 @@ public class LoanDetailDto extends BaseDataDto {
     public int getDuration() {
         return duration;
     }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
+    }
 }

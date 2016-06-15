@@ -46,9 +46,9 @@ def mk_worker_zip():
 
 
 def mk_static_zip():
-    local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
-    local('cd ./ttsd-activity/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
-
+    local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
+    local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
+    local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
 
 def build():
     mk_war()
@@ -65,9 +65,13 @@ def compile():
 @roles('static')
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
+        sudo('unzip static_api.zip -d static')
+        sudo('unzip static_activity.zip -d static')
         sudo('service nginx restart')
 
 
@@ -128,6 +132,15 @@ def deploy_web():
     sudo('service tomcat start')
 
 
+@roles('activity')
+@parallel
+def deploy_activity():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sms)
@@ -136,6 +149,7 @@ def deploy_all():
     execute(deploy_worker)
     execute(deploy_api)
     execute(deploy_web)
+    execute(deploy_activity)
 
 
 def pre_deploy():
@@ -152,6 +166,11 @@ def all():
 def web():
     pre_deploy()
     execute(deploy_web)
+    execute(deploy_static)
+
+def activity():
+    pre_deploy()
+    execute(deploy_activity)
     execute(deploy_static)
 
 
@@ -200,6 +219,13 @@ def remove_web_logs():
     remove_nginx_logs()
 
 
+@roles('activity')
+@parallel
+def remove_activity_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
 @roles('pay')
 @parallel
 def remove_pay_logs():
@@ -233,13 +259,14 @@ def remove_old_logs():
     Remove logs which was generated 30 days ago
     """
     execute(remove_web_logs)
+    execute(remove_activity_logs)
     execute(remove_pay_logs)
     execute(remove_api_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
 
 
-@roles('portal', 'pay', 'worker', 'api', 'cms')
+@roles('portal', 'pay', 'worker', 'api', 'cms', 'activity')
 @parallel
 def restart_logstash_service():
     """

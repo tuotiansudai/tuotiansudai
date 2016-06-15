@@ -9,16 +9,23 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         imageCaptchaTextElement = $('.image-captcha-text', $imgCaptchaDialog),
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
         $referrerOpen=$('.referrer-open',registerUserForm),
+        $referrer=$('input.referrer', registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
-        passedNumber=0;
+        referrerError=$('#referrerError'),
+        passedNumber= 0,
+        countTimer;
+    var $frontInput=registerUserForm.find('input:lt(4)');
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
         fetchCaptchaElement.prop('disabled', true);
     });
 
-    $checkbox.on('click',function() {
+    $checkbox.on('click',function(event) {
+        if(event.target.tagName.toUpperCase()=='A') {
+            return;
+        }
         var $this=$(this),
             $agreeLast=$this.parents('.agree-last'),
             $cIcon=$agreeLast.find('i');
@@ -33,6 +40,12 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $this.next('li').toggleClass('hide');
         checkOption=$this.next('li').hasClass('hide');
         iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+        if($referrer.is(':hidden')) {
+            $referrer.val('');
+            $referrer.removeClass('error').addClass('valid');
+            referrerError.html('').hide();
+            checkValidNum();
+        }
     });
 
     showAgreement.click(function () {
@@ -79,6 +92,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
             }
+
         },
         submitHandler: function (form) {
             var self = this;
@@ -93,11 +107,11 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     var data = response.data;
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
-                        var seconds = 60;
-                        var count = setInterval(function () {
+                        var seconds = 60
+                         countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
-                                clearInterval(count);
+                                clearInterval(countTimer);
                                 fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
                             }
                             seconds--;
@@ -141,7 +155,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     registerUserForm.validate({
-        focusInvalid: false,
+        ignore:'.referrer',
         rules: {
             loginName: {
                 required: true,
@@ -171,9 +185,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     }
                 }
             },
-            referrer: {
-                isNotExist: "/register/user/referrer/{0}/is-exist"
-            },
             agreement: {
                 required: true
             }
@@ -202,9 +213,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
-            referrer: {
-                isNotExist: "推荐人不存在"
-            },
             agreement: {
                 required: "请同意服务协议"
             }
@@ -212,30 +220,100 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
                 mobile = $('input.mobile', registerUserForm);
+
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
+                    mobile.attr('preValue',mobile.val());
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
                 }
+
+            }
+            if (element.name === 'captcha') {
+                $registerSubmit.prop('disabled',false);
             }
         }
     });
 
-    function checkValidNum() {
-        passedNumber=$('input.valid',registerUserForm).length;
-        if(passedNumber==4 && $agreement.prop('checked')) {
+    function checkValidNum(event) {
+        var passedNumber= 0,
+            frontInputValid=true;
+
+        $frontInput.each(function(key,option) {
+            if(!$(option).hasClass('valid')) {
+                frontInputValid=false;
+                return;
+            }
+        });
+
+        var referrerVal=$referrer.val(),
+            referrerValid=$referrer.hasClass('valid'),
+            defaultValue=$referrer[0].defaultValue,
+            referrer;
+            if(referrerVal==$referrer.attr('placeholder')) {
+                referrerVal='';
+            }
+          referrer= _.isEmpty(referrerVal) || referrerValid ;
+        // check button disabled, referrer can be empty, if not empty, it must be right
+        if(frontInputValid && $agreement.prop('checked') && referrer) {
             $registerSubmit.prop('disabled',false);
         }
         else {
             $registerSubmit.prop('disabled',true);
         }
+
     }
     $agreement.on('click',function() {
         checkValidNum();
     });
-    $('input',registerUserForm).on('blur',function() {
-        checkValidNum();
+    $frontInput.on('change',function(event) {
+        var mobile = $('input.mobile', registerUserForm);
+        if(event.target.name=='mobile') {
+            if(countTimer) {
+                clearInterval(countTimer);
+                $('input.captcha', registerUserForm).removeClass('valid').val('')
+                    .next('label')
+                    .html('请输入验证码');
+                fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
+            }
+            else {
+                $('input.captcha', registerUserForm).removeClass('valid').val('');
+            }
+        }
+        setTimeout(checkValidNum,100);
+    });
+    $referrer.on('keyup',function(event) {
+        var $target=$(event.target),
+        value=event.target.value;
+        if(value) {
+            var checkValid=false;
+            $.ajax({
+                url:'/register/user/referrer/'+value+'/is-exist',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+            })
+                .done(function (res) {
+                    checkValid=res.data.status?true:false;
+                    if(checkValid) {
+                        $target.removeClass('error').addClass('valid');
+                        referrerError.html('').hide().show();
+                    }
+                    else {
+                        $target.removeClass('valid').addClass('error');
+                        referrerError.html('推荐人不存在').show();
+                    }
+                    checkValidNum();
+                });
+
+        }
+        else {
+            $target.removeClass('error').addClass('valid');
+            referrerError.html('').hide();
+            checkValidNum();
+        }
+
     });
 });
