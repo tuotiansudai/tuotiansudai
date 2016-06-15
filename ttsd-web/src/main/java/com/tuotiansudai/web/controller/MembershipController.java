@@ -2,16 +2,21 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.gson.JsonParser;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.GivenMembershipDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.MembershipType;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +47,9 @@ public class MembershipController {
 
     @Autowired
     private UserMembershipService userMembershipService;
+
+    @Autowired
+    private AppTokenParser appTokenParser;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -109,8 +118,19 @@ public class MembershipController {
 
     @ResponseBody
     @RequestMapping(value = "/receive", method = RequestMethod.POST)
-    public String receive() throws ParseException {
-        return userMembershipService.receiveMembership(LoginUserInfo.getLoginName()).toString();
+    public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
+        BaseDto<GivenMembershipDto> dto = new BaseDto<>();
+        try {
+            GivenMembership givenMembership = userMembershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl()));
+            dto.setSuccess(true);
+        } catch (Exception e) {
+            GivenMembershipDto givenMembershipDto = new GivenMembershipDto();
+            givenMembershipDto.setMessage(e.getMessage());
+            dto.setData(givenMembershipDto);
+            dto.setSuccess(false);
+        }
+        return dto;
     }
 
 }

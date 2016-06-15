@@ -1,10 +1,7 @@
 package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.MembershipType;
-
-import java.text.ParseException;
-import java.util.List;
+import com.tuotiansudai.membership.repository.model.GivenMembership;
 
 public interface UserMembershipService {
 
@@ -14,6 +11,6 @@ public interface UserMembershipService {
 
     int getExpireDayByLoginName(String loginName);
 
-    MembershipType receiveMembership(String loanName);
+    GivenMembership receiveMembership(String loanName);
 
 }

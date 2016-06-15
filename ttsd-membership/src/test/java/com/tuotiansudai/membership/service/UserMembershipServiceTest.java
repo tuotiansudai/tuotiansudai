@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.MembershipType;
+import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -158,42 +159,41 @@ public class UserMembershipServiceTest {
     }
 
     @Test
-    public void shouldReceiveMembershipIsEqualsNotToTheTime() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,sdf.parse("2016-07-01"));
+    public void shouldReceiveMembershipIsEqualsNoTime() throws ParseException {
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.parse("2016-07-01"));
         UserModel fakeUser = getFakeUser("testReceive");
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
-        assertThat(MembershipType.NOT_TO_THE_TIME,is(membershipType));
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_TIME,is(GivenMembership));
     }
 
     @Test
-    public void shouldReceiveMembershipIsEqualsNotToLogin(){
-        MembershipType membershipType = userMembershipService.receiveMembership("");
-        assertThat(MembershipType.NOT_TO_LOGIN,is(membershipType));
+    public void shouldReceiveMembershipIsEqualsNoLogin(){
+        GivenMembership GivenMembership = userMembershipService.receiveMembership("");
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_LOGIN,is(GivenMembership));
     }
 
     @Test
-    public void shouldReceiveMembershipIsEqualsNotToRegister() throws ParseException {
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,new Date());
+    public void shouldReceiveMembershipIsEqualsNoRegister() throws ParseException {
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
         UserModel fakeUser = getFakeUser("testReceive");
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
-        assertThat(MembershipType.NOT_TO_REGISTER,is(membershipType));
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_REGISTER,is(GivenMembership));
     }
 
     @Test
-    public void shouldReceiveMembershipIsEqualsAlreadyReceive(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,new Date());
+    public void shouldReceiveMembershipIsEqualsAlreadyReceived(){
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
         UserModel fakeUser = getFakeUser("testReceive");
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", new Date()));
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), createMembership(1).getId(), new DateTime().plusDays(130).toDate() , UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), createMembership(1).getId(), new DateTime().plusDays(130).toDate() , UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
-        assertThat(MembershipType.ALREADY_RECEIVE,is(membershipType));
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.ALREADY_RECEIVED,is(GivenMembership));
     }
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyRegisterNotInvest1000(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,new Date());
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
@@ -201,36 +201,36 @@ public class UserMembershipServiceTest {
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
-        assertThat(MembershipType.ALREADY_REGISTER_NOT_INVEST_1000,is(membershipType));
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000,is(GivenMembership));
     }
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyRegisterAlreadyInvest1000(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,new Date());
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
         UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
-        assertThat(MembershipType.ALREADY_REGISTER_ALREADY_INVEST_1000,is(membershipType));
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000,is(GivenMembership));
         assertNotNull(userMembershipModel);
     }
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyStartActivityRegister(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,new Date());
+        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),+1)));
-        MembershipType membershipType = userMembershipService.receiveMembership(fakeUser.getLoginName());
-        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
-        assertThat(MembershipType.AFTER_START_ACTIVITY_REGISTER,is(membershipType));
+        GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
+        List<UserMembershipModel> userMembershipModel = userMembershipMapper.findByLoginName(fakeUser.getLoginName());
+        assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.AFTER_START_ACTIVITY_REGISTER,is(GivenMembership));
         assertNotNull(userMembershipModel);
     }
 

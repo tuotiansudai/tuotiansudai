@@ -11,8 +11,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 @Service
@@ -29,9 +27,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-    private static Date membershipStartDate = null;
+    private static DateTime membershipStartDate = DateTime.parse("2016-07-01");
 
     @Override
     public MembershipModel getMembershipByLevel(int level) {
@@ -59,58 +55,44 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     }
 
     @Override
-    public MembershipType receiveMembership(String loginName){
-        setMembershipStartDate();
-        if(Calendar.getInstance().getTime().getTime() < membershipStartDate.getTime()){
-            return MembershipType.NOT_TO_THE_TIME;
+    public GivenMembership receiveMembership(String loginName){
+        if(Days.daysBetween(DateTime.now(),membershipStartDate).getDays() > 0){
+            return GivenMembership.NO_TIME;
         }
 
         if(loginName == null || loginName.equals("")){
-            return MembershipType.NOT_TO_LOGIN;
+            return GivenMembership.NO_LOGIN;
         }
 
-        String identityNumber = userMembershipMapper.findAccountIdentityNumberByLoginName(loginName);
-        if(identityNumber == null || identityNumber.equals("0")){
-            return MembershipType.NOT_TO_REGISTER;
+        if(userMembershipMapper.findAccountIdentityNumberByLoginName(loginName) == 0){
+            return GivenMembership.NO_REGISTER;
         }
 
-        if(CollectionUtils.isNotEmpty(userMembershipMapper.findByLoginName(loginName))){
-            return MembershipType.ALREADY_RECEIVE;
+        if(userMembershipMapper.findByLoginNameByType(loginName,UserMembershipType.GIVEN) != null){
+            return GivenMembership.ALREADY_RECEIVED;
         }
 
         long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(loginName);
         Date registerTime = userMembershipMapper.findAccountRegisterTimeByLoginName(loginName);
-        if(registerTime != null && registerTime.getTime() < membershipStartDate.getTime() && investAmount < 1000){
-            return MembershipType.ALREADY_REGISTER_NOT_INVEST_1000;
+        if(registerTime != null && registerTime.getTime() < membershipStartDate.getMillis() && investAmount < 100000){
+            return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }
 
-        if(registerTime != null && registerTime.getTime() < membershipStartDate.getTime() && investAmount >= 1000){
+        if(registerTime != null && registerTime.getTime() < membershipStartDate.getMillis() && investAmount >= 100000){
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
-            return MembershipType.ALREADY_REGISTER_ALREADY_INVEST_1000;
+            return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
 
-        return MembershipType.AFTER_START_ACTIVITY_REGISTER;
-    }
-
-    private void setMembershipStartDate(){
-        if(membershipStartDate == null){
-            try {
-                membershipStartDate = sdf.parse("2016-07-01");
-            } catch (ParseException e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
+        return GivenMembership.AFTER_START_ACTIVITY_REGISTER;
     }
 
     private void createUserMembershipModel(String loginName,int level){
-        UserMembershipModel userMembershipModel = new UserMembershipModel();
-        userMembershipModel.setLoginName(loginName);
-        userMembershipModel.setCreatedTime(new Date());
-        Calendar lastDate = Calendar.getInstance();
-        lastDate.add(Calendar.MONTH, +1);
-        userMembershipModel.setExpiredTime(lastDate.getTime());
-        userMembershipModel.setType(UserMembershipType.GIVEN);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
+                membershipMapper.findByLevel(level).getId(),
+                DateTime.now().plusMonths(1).toDate(),
+                new Date(),
+                UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
     }
+
 }

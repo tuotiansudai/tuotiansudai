@@ -56,8 +56,8 @@
         update account set membership_point = #{membershipPoint} where login_name = #{loginName}
     </update>
 
-    <select id="findAccountIdentityNumberByLoginName" parameterType="java.lang.String" resultType="String">
-        select IFNULL(identity_number, 0) from account where login_name = #{loginName}
+    <select id="findAccountIdentityNumberByLoginName" parameterType="java.lang.String" resultType="int">
+        select count(1) from account where login_name = #{loginName}
     </select>
 
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
@@ -73,6 +73,10 @@
 
     <select id="findAccountRegisterTimeByLoginName" parameterType="java.lang.String" resultType="Date">
         select register_time from account where login_name = #{loginName}
+    </select>
+
+    <select id="findByLoginNameByType" resultMap="UserMembershipResultMap" parameterType="map">
+        select * from user_membership where login_name = #{loginName} and type =  #{type}
     </select>
 
 </mapper>

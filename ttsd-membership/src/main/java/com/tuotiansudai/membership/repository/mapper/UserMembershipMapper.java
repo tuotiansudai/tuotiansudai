@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.repository.mapper;
 
 
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,9 +33,13 @@ public interface UserMembershipMapper {
     void updateMembershipPoint(@Param(value = "loginName") String loginName,
                                @Param(value = "membershipPoint") long membershipPoint);
 
-    String findAccountIdentityNumberByLoginName(String loginName);
+    int findAccountIdentityNumberByLoginName(String loginName);
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loginName") String loginName);
 
     Date findAccountRegisterTimeByLoginName(String loginName);
+
+    UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
+                                              @Param(value = "type") UserMembershipType type);
+
 }
