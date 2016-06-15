@@ -43,7 +43,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         if($referrer.is(':hidden')) {
             $referrer.val('');
             $referrer.removeClass('error').addClass('valid');
-            referrerError.html('').show();
+            referrerError.html('').hide();
             checkValidNum();
         }
     });
@@ -299,7 +299,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     checkValid=res.data.status?true:false;
                     if(checkValid) {
                         $target.removeClass('error').addClass('valid');
-                        referrerError.html('').show();
+                        referrerError.html('').hide().show();
                     }
                     else {
                         $target.removeClass('valid').addClass('error');
@@ -310,8 +310,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
 
         }
         else {
-            $target.removeClass('error').addClass('valid').show();
-            referrerError.html('').show();
+            $target.removeClass('error').addClass('valid');
+            referrerError.html('').hide();
             checkValidNum();
         }
 
