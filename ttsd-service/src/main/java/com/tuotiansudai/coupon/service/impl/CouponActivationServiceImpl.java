@@ -1,13 +1,10 @@
 package com.tuotiansudai.coupon.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
@@ -19,13 +16,10 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.UserBirthdayUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,9 +87,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
 
     @Autowired
     private JobManager jobManager;

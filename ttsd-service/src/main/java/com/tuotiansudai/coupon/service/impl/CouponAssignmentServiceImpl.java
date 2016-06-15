@@ -17,6 +17,7 @@ import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,13 +80,15 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "winnerCollector")
     private UserCollector winnerCollector;
 
+    @Resource(name = "membershipUserCollector")
+    private UserCollector membershipUserCollector;
+
     @Override
-    @Transactional
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         long couponId = exchangeCodeService.getValueBase31(exchangeCode);
-        CouponModel couponModel = couponMapper.lockById(couponId);
+        CouponModel couponModel = couponMapper.findById(couponId);
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) is not correct", exchangeCode));
@@ -102,24 +105,15 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
-
-        Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
-        Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
-        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId, startTime, endTime);
-        userCouponModel.setExchangeCode(exchangeCode);
-        userCouponMapper.create(userCouponModel);
-
+        UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, exchangeCode);
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
     }
 
     @Override
-    @Transactional
     public void assignUserCoupon(String loginNameOrMobile, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        CouponModel couponModel = couponMapper.lockById(couponId);
+        CouponModel couponModel = couponMapper.findById(couponId);
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is not exist", String.valueOf(couponId)));
@@ -158,19 +152,13 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
-            couponMapper.updateCoupon(couponModel);
-            Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
-            Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
-            userCouponMapper.create(userCouponModel);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, null);
+            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
-        logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
     }
 
     @Override
-    @Transactional
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
@@ -210,18 +198,29 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }));
 
         for (CouponModel couponModel : couponModels) {
-            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
-            couponMapper.updateCoupon(couponModel);
-            Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
-            Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
-            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-                DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
-                startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
-                endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
-            }
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
-            userCouponMapper.create(userCouponModel);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, null);
         }
+    }
+
+    @Transactional
+    @Override
+    public UserCouponModel assign(long couponId, String loginName, String exchangeCode) {
+        CouponModel couponModel = couponMapper.lockById(couponId);
+
+        couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
+        couponMapper.updateCoupon(couponModel);
+
+        Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
+        Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
+        if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+            startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
+            endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
+        }
+        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
+        userCouponModel.setExchangeCode(exchangeCode);
+        userCouponMapper.create(userCouponModel);
+        return userCouponModel;
     }
 
     private UserCollector getCollector(UserGroup userGroup) {
@@ -237,6 +236,12 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V3, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V4, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V5, this.membershipUserCollector)
                 .build()).get(userGroup);
     }
 }

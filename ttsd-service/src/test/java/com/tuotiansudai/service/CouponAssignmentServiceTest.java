@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -9,10 +10,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +49,7 @@ public class CouponAssignmentServiceTest {
     @Test
     public void shouldExchangeCode() throws Exception {
         UserModel fakeUser = getFakeUser("fakeUser");
-        CouponModel fakeCoupon = getFakeCoupon(UserGroup.EXCHANGER_CODE);
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.EXCHANGER_CODE, false);
         exchangeCodeService.generateExchangeCode(fakeCoupon.getId(), 1);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(fakeCoupon.getId());
 
@@ -64,10 +62,11 @@ public class CouponAssignmentServiceTest {
     }
 
     @Test
-    public void shouldAssignCouponId() throws Exception {
+    public void shouldAssignCoupon() throws Exception {
         UserModel fakeUser = getFakeUser("fakeUser");
-        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER);
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
         couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
@@ -75,7 +74,54 @@ public class CouponAssignmentServiceTest {
         assertThat(userCouponModels.size(), is(1));
     }
 
-    private CouponModel getFakeCoupon(UserGroup userGroup) {
+    @Test
+    public void shouldAssignMultipleCoupon() {
+        UserModel fakeUser = getFakeUser("fakeUser");
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
+
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
+        UserCouponModel userCouponModel = userCouponMapper.findByCouponId(fakeCoupon.getId()).get(0);
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponMapper.update(userCouponModel);
+
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
+        assertThat(userCouponModels.size(), is(2));
+    }
+
+    @Test
+    public void shouldAssignUserGroup() throws Exception {
+        UserModel fakeUser = getFakeUser("fakeUser");
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
+
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
+
+        assertThat(userCouponModels.size(), is(1));
+    }
+
+    @Test
+    public void shouldAssignMultipleUserGroup() throws Exception {
+        UserModel fakeUser = getFakeUser("fakeUser");
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
+
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
+
+        UserCouponModel userCouponModel = userCouponMapper.findByCouponId(fakeCoupon.getId()).get(0);
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponMapper.update(userCouponModel);
+
+        couponAssignmentService.assignUserCoupon(fakeUser.getLoginName(), fakeCoupon.getId());
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
+        assertThat(userCouponModels.size(), is(2));
+    }
+
+    private CouponModel getFakeCoupon(UserGroup userGroup, boolean isMultiple) {
         UserModel couponCreator = getFakeUser("couponCreator");
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1);
@@ -90,6 +136,7 @@ public class CouponAssignmentServiceTest {
         couponModel.setCreatedBy(couponCreator.getLoginName());
         couponModel.setCreatedTime(new Date());
         couponModel.setActive(true);
+        couponModel.setMultiple(isMultiple);
         couponMapper.create(couponModel);
         return couponModel;
     }
