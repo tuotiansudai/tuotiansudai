@@ -6,8 +6,13 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="" type="">
-
+    <resultMap id="extraLoanRateResultMap" type="ExtraLoanRateModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="rate" property="rate"></result>
+        <result column="created_time" property="createdTime"></result>
     </resultMap>
 
 </mapper>
