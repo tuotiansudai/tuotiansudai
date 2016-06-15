@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -364,11 +365,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public long findExperienceInvestAmount(List<InvestModel> investModelList){
         long amount = 0;
-        for(InvestModel investModel : investModelList){
-            List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
-            for(UserCouponModel userCouponModel : userCouponModelList){
-                amount += couponMapper.findById(userCouponModel.getCouponId()).getAmount();
-            }
+        if (CollectionUtils.isNotEmpty(investModelList)) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
+            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+            amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
         return amount;
     }
