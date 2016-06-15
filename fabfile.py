@@ -17,6 +17,7 @@ env.roledefs = {
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
+    'activity': ['sanya']
 }
 
 
@@ -31,6 +32,7 @@ def migrate():
 def mk_war():
     local('/usr/local/bin/paver jcversion')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
@@ -45,6 +47,7 @@ def mk_worker_zip():
 
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
+    local('cd ./ttsd-activity/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
 
 
 def build():
