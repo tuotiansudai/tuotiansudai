@@ -3,20 +3,17 @@ package com.tuotiansudai.api.filter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.security.BufferedRequestWrapper;
-import com.tuotiansudai.api.service.MobileAppClientStatistics;
+import com.tuotiansudai.api.service.v1_0.MobileAppClientStatistics;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 @Component("appClientStatisticsFilter")
 public class MobileAppClientStatisticsFilter implements Filter {

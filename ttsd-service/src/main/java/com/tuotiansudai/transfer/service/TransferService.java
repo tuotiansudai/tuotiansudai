@@ -4,6 +4,7 @@ package com.tuotiansudai.transfer.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 
 import java.util.List;
 
@@ -23,5 +24,9 @@ public interface TransferService {
     TransferApplicationDetailDto getTransferApplicationDetailDto(long TransferApplicationId, String loginName, int showLoginNameLength);
 
     TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
+
+    BasePaginationDataDto generateTransferableInvest(String loginName,Integer index,Integer pageSize);
+
+    List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId);
 
 }

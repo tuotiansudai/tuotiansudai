@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppWithdrawServiceImpl;
+import com.tuotiansudai.api.dto.BaseParamTest;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppWithdrawServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -10,6 +11,7 @@ import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -31,6 +33,8 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     private BankCardMapper bankCardMapper;
     @Mock
     private PayWrapperClient payWrapperClient;
+    @Mock
+    private BlacklistService blacklistService;
     @Autowired
     private IdGenerator idGenerator;
     @Mock
@@ -59,6 +63,8 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         when(bankCardMapper.findPassedBankCardByLoginName(anyString())).thenReturn(bankCardModel);
 
         when(payWrapperClient.withdraw(any(WithdrawDto.class))).thenReturn(formDto);
+
+        when(blacklistService.userIsInBlacklist(anyString())).thenReturn(false);
 
         BaseResponseDto<WithdrawOperateResponseDataDto> baseResponseDto = mobileAppWithdrawService.generateWithdrawRequest(withdrawOperateRequestDto);
 

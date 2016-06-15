@@ -218,6 +218,17 @@ def replace_min_files_in_config_js_file(path):
     replace_versioned_config_file(name2path, path)
 
 
+def versioning_mobile_api_files(path):
+    from paver.shell import sh
+
+    owd = os.getcwd()
+    try:
+        os.chdir(path)
+        sh('/usr/bin/npm install')
+        sh('/usr/bin/npm run dist')
+    finally:
+        os.chdir(owd)
+
 @task
 def jcversion():
     """
@@ -227,7 +238,7 @@ def jcversion():
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
-
+    versioning_mobile_api_files('ttsd-mobile-api/')
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
@@ -236,3 +247,5 @@ def get_current_dir():
 def get_base_dir():
     test_dir = get_current_dir()
     return os.path.join(test_dir, 'test', 'ump_service')
+
+

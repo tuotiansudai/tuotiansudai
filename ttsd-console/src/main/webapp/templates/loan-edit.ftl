@@ -61,17 +61,12 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <#if loanInfo.status!= "WAITING_VERIFY">
-                    <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空"
-                           value="${loanInfo.name}" disabled="disabled">
-                <#else>
-                    <select class="selectpicker jq-user">
-                        <option value="">请选择</option>
-                        <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
-                        <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                    </select>
-                </#if>
 
+                <select class="selectpicker jq-user">
+                    <option value="">请选择</option>
+                    <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
+                    <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
+                </select>
             </div>
         </div>
 
@@ -80,7 +75,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName}"
+                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName!('')}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
@@ -135,11 +130,13 @@
                 <select class="selectpicker b-width" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
                     <option value="">请选择</option>
                     <#list productTypes as productType>
+                        <#if productType.name() != 'EXPERIENCE'>
                         <option value="${productType.getDuration()}"
                                 <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
                                 data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
                         ${productType.getDuration()}
                         </option>
+                        </#if>
                     </#list>
                 </select>
                 <input type="hidden" class="jq-duration" value="${loanInfo.duration}"/>
@@ -197,7 +194,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写"
                        value="${(loanInfo.minInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK"&& loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
@@ -206,7 +203,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl" errormsg="投资递增金额需要正确填写"
                        value="${(loanInfo.investIncreasingAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
@@ -215,7 +212,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl"
                        errormsg="单笔最大投资金额需要正确填写" value="${(loanInfo.maxInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE">disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">

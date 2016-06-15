@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.service;
 
 
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.JpushRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.JpushRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppJpushService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ public class MobileAppJpushServiceTest {
         baseParam.setUserId(loginName);
         jPushRequestDto.setJpushId("1111");
         jPushRequestDto.setBaseParam(baseParam);
-        mobileAppJpushService.storeJPushId(jPushRequestDto);
+        mobileAppJpushService.storeJpushId(jPushRequestDto);
         String jpushId = redisWrapperClient.hget("api:jpushId:store",loginName);
         assertEquals("1111",jpushId);
         redisWrapperClient.del("api:jpushId:store");

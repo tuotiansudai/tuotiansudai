@@ -1,11 +1,11 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.UserBillDetailListRequestDto;
-import com.tuotiansudai.api.dto.UserBillDetailListResponseDataDto;
-import com.tuotiansudai.api.service.impl.MobileAppUserBillListServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.UserBillDetailListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.UserBillDetailListResponseDataDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppUserBillListServiceImpl;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;

@@ -1,7 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -54,7 +56,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
         noPasswordInvestTurnOffRequestDto.setBaseParam(baseParam);
         noPasswordInvestTurnOffRequestDto.setCaptcha("123456");
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto);
+        baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, "127.0.0.1");
 
         assertEquals("0000",baseResponseDto.getCode());
         assertEquals("",baseResponseDto.getMessage());
