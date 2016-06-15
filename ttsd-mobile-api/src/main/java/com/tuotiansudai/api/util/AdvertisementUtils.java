@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,32 +40,27 @@ public class AdvertisementUtils {
         if (!jsonName.equals("")) {
             advertisements = loadPictureListFromConfigFile(jsonName);
             int randomInt = (int)(0 + Math.random()*(advertisements.size() - 1 + 1));
-            if("iOS".equals(requestDto.getBaseParam().getPlatform())){
-                if("640".equals(requestDto.getBaseParam().getScreenW()) && "960".equals(requestDto.getBaseParam().getScreenH())){
-                    if (!Strings.isNullOrEmpty(advertisements.get(randomInt).getPicture640960())) {
-                        pictureUrl = advertisements.get(randomInt).getPicture640960().replaceFirst("\\{static\\}", staticDomainName);
-                    }
+            String getMethod = "";
+            AdvertisementPictureResponseDataDto advertisementPictureResponseDataDto = advertisements.get(randomInt);
+            try {
+                Class clazz = advertisementPictureResponseDataDto.getClass();
+                getMethod = "getPicture" + requestDto.getBaseParam().getScreenW().trim() + requestDto.getBaseParam().getScreenH().trim().trim();
+                Method method = clazz.getDeclaredMethod(getMethod);
+                if("iOS".equals(requestDto.getBaseParam().getPlatform())){
+                    pictureUrl = method.invoke(advertisementPictureResponseDataDto, new Object[]{}).toString();
                 }
-                else if("640".equals(requestDto.getBaseParam().getScreenW()) && "1136".equals(requestDto.getBaseParam().getScreenH())){
-                    if (!Strings.isNullOrEmpty(advertisements.get(randomInt).getPicture6401136())) {
-                        pictureUrl = advertisements.get(randomInt).getPicture6401136().replaceFirst("\\{static\\}", staticDomainName);
-                    }
-                }
-                else if("750".equals(requestDto.getBaseParam().getScreenW()) && "1334".equals(requestDto.getBaseParam().getScreenH())){
-                    if (!Strings.isNullOrEmpty(advertisements.get(randomInt).getPicture7501334())) {
-                        pictureUrl = advertisements.get(randomInt).getPicture7501334().replaceFirst("\\{static\\}", staticDomainName);
-                    }
-                }
-                else if("1242".equals(requestDto.getBaseParam().getScreenW()) && "2208".equals(requestDto.getBaseParam().getScreenH())){
-                    if (!Strings.isNullOrEmpty(advertisements.get(randomInt).getPicture12422208())) {
-                        pictureUrl = advertisements.get(randomInt).getPicture12422208().replaceFirst("\\{static\\}", staticDomainName);
-                    }
+                else if("android".equals(requestDto.getBaseParam().getPlatform())){
+                    pictureUrl = advertisementPictureResponseDataDto.getPicture7201280();
                 }
             }
-            else if("android".equals(requestDto.getBaseParam().getPlatform())){
-                if (!Strings.isNullOrEmpty(advertisements.get(randomInt).getPicture7201280())) {
-                    pictureUrl = advertisements.get(randomInt).getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);
-                }
+            catch (NoSuchMethodException e) {
+                logger.debug("AdvertisementUtils NoSuchMethod: " + getMethod);
+            }
+            catch (IllegalAccessException e1) {
+                logger.debug("AdvertisementUtils IllegalAccess: " + e1.getMessage());
+            }
+            catch (InvocationTargetException e2) {
+                logger.debug("AdvertisementUtils InvocationTarget: " + e2.getMessage());
             }
         }
         AdvertisementResponseDataDto dataDto = new AdvertisementResponseDataDto();
