@@ -83,7 +83,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
         List<AuditLogModel> data = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             data = auditLogMapper.getPaginationData(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime, (index - 1) * pageSize, pageSize);
         }

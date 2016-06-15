@@ -9,7 +9,7 @@ package com.tuotiansudai.job;
  *
  *
  *
- * 在此枚举中添加字段时，请同步添加到 ttsd-job-worker/src/main/resources/job-worker.properties.deploy/job-worker-all.properties 里
+ * 在此枚举中添加字段时，请同步添加到 ttsd-job-worker/src/main/resources/job-worker.properties.  deploy/job-worker-all.properties 里
  *
  * 请不要将 InvestCallBack, InvestTransferCallBack 添加到上述文件中
  *
@@ -49,7 +49,9 @@ public enum JobType {
     AutoJPushRechargeAlert("用户资金变动推送-充值"),
     AutoJPushWithDrawApplyAlert("用户资金变动推送-申请提现成功"),
     AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
+    CheckUserBalanceMonthly("用户余额对账"),
     AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励"),
+    ExperienceRepay("新手体验标还款"),
     SendCouponIncome("优惠券收益发放推送");
 
     private final String description;

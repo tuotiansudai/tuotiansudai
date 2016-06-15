@@ -1,11 +1,11 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.LoanListRequestDto;
-import com.tuotiansudai.api.dto.LoanListResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.impl.MobileAppLoanListServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoanListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.LoanListResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -39,7 +39,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoanModel("test2"));
         LoanModel loanModelNovice = getFakeLoanModel("test3");
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
-        when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
+        when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyBoolean(),anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();

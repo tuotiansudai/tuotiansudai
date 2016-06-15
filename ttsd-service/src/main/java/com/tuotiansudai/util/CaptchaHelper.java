@@ -27,6 +27,8 @@ public class CaptchaHelper {
 
     public final static String TURN_OFF_NO_PASSWORD_INVEST = "TURN_OFF_NO_PASSWORD_INVEST";
 
+    public final static String FEEDBACK_CAPTCHA = "FEEDBACK_CAPTCHA";
+
     public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY = "api:{deviceId}:{type}";
 
     @Autowired
