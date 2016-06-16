@@ -90,7 +90,7 @@ public class LoanServiceTest {
         accountMapper.create(fakeAccount);
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
-        assertTrue(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getStatus(),is(true));
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
     }
