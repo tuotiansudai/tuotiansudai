@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         // Metadata.
         meta: {
             basePath: '../',
-            baseSassPath: 'src/main/webapp/style/sass',
-            baseCssPath: 'src/main/webapp/style',
-            baseCssMinPath: 'src/main/webapp/style/dest',
-            baseJsPath: 'src/main/webapp/js',
-            baseJsMinPath: 'src/main/webapp/js/dest'
+            baseSassPath: 'src/main/webapp/activity/style/sass',
+            baseCssPath: 'src/main/webapp/activity/style',
+            baseCssMinPath: 'src/main/webapp/activity/style/dest',
+            baseJsPath: 'src/main/webapp/activity/js',
+            baseJsMinPath: 'src/main/webapp/activity/js/dest'
         },
         clean: {
             css: {

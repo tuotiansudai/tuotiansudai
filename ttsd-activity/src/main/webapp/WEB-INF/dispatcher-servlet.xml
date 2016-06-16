@@ -41,19 +41,16 @@
     <context:component-scan base-package="com.tuotiansudai.activity"/>
 
     <!--<mvc:resources mapping="/html/**" location="/html/"/>-->
-    <mvc:resources mapping="/style/**" location="/style/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/pdf/**" location="/pdf/"/>
-    <mvc:resources mapping="/tpl/**" location="/tpl/"/>
-    <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/activity/style/**" location="/activity/style/"/>
+    <mvc:resources mapping="/images/**" location="/activity/images/"/>
+    <mvc:resources mapping="/activity/js/**" location="/activity/js/"/>
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.activity.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${web.static.server}"/>
-        <property name="javascriptLocation" value="${web.js.path}"/>
-        <property name="cssLocation" value="${web.css.path}"/>
+        <property name="javascriptLocation" value="/activity${web.js.path}"/>
+        <property name="cssLocation" value="/activity${web.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="percentFraction">

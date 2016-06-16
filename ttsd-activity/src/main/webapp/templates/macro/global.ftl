@@ -245,7 +245,7 @@
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 
 <#if pageJavascript?? && pageJavascript?length gt 0>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
+<script src="${staticServer}/activity/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>

@@ -58,7 +58,7 @@
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/html/**" access="permitAll()"/>
         <intercept-url pattern="/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
+        <intercept-url pattern="/activity/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
         <intercept-url pattern="/upload/**" access="permitAll()"/>
