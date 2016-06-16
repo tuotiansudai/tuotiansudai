@@ -139,13 +139,13 @@ public class JPushAlertServiceTest {
     private JPushAlertModel createJPushAlert() {
         JPushAlertModel jPushAlertModel = new JPushAlertModel();
         jPushAlertModel.setId(1005);
-        jPushAlertModel.setName("用户资金变动推送-还款");
-        jPushAlertModel.setPushType(PushType.REPAY_ALERT);
-        jPushAlertModel.setPushSource(PushSource.ANDROID);
-        jPushAlertModel.setContent("亲爱的天宝，您刚刚收到一笔{0}元的项目还款，请点击查看");
+        jPushAlertModel.setName("用户资金变动推送-红包");
+        jPushAlertModel.setPushType(PushType.RED_ENVELOPE_ALERT);
+        jPushAlertModel.setPushSource(PushSource.ALL);
+        jPushAlertModel.setContent("【拓天速贷】亲爱的天宝，您刚刚收到{0}的红包收益{1}元，请点击查看");
         jPushAlertModel.setIsAutomatic(true);
         jPushAlertModel.setCreatedTime(new Date());
-        jPushAlertModel.setJumpTo(JumpTo.INVEST_RECEIVABLES);
+        jPushAlertModel.setJumpTo(JumpTo.MY_WEALTH);
         jPushAlertModel.setStatus(PushStatus.ENABLED);
         return jPushAlertModel;
     }
@@ -234,7 +234,7 @@ public class JPushAlertServiceTest {
         exchangeCouponDto.setEndTime(new Date());
         exchangeCouponDto.setStartTime(new Date());
         exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
+        exchangeCouponDto.setCouponType(CouponType.RED_ENVELOPE);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType._180);
         exchangeCouponDto.setProductTypes(productTypes);
@@ -479,11 +479,11 @@ public class JPushAlertServiceTest {
         userCouponModel.setId(idGenerator.generate());
         userCouponModel.setInvestId(1001L);
         userCouponModel.setActualInterest(10);
-        userCouponModel.setLoginName("test1");
+        userCouponModel.setLoginName("zhangyong");
         userCouponModel.setCouponId(couponModel.getId());
         userCouponModel.setLoanId(loanModel.getId());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
-        userCouponModel.setActualInterest(100);
+        userCouponModel.setActualInterest(1000);
         userCouponModels.add(userCouponModel);
 
         UserCouponModel userCouponModel2 = new UserCouponModel();
