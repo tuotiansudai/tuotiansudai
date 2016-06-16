@@ -47,6 +47,13 @@
         <result column="city" property="city"></result>
     </resultMap>
 
+    <resultMap id="heroRankingView" type="HeroRankingView">
+        <result column="login_name" property="loginName"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+
     <resultMap id="investDataView" type="InvestDataView">
         <result column="productName" property="productName"></result>
         <result column="totalInvestAmount" property="totalInvestAmount"></result>
@@ -466,6 +473,63 @@
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
+    <select id="findHeroRankingByTradingTime" parameterType="map" resultMap="heroRankingView">
+        SELECT
+            invest.login_name,
+            SUM(invest.amount) sumAmount,
+            account.user_name,
+            user.mobile
+        FROM
+            invest
+        INNER JOIN
+            account ON invest.login_name = account.login_name
+        INNER JOIN
+            user ON invest.login_name = user.login_name
+        WHERE
+            invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
+        AND invest.trading_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+        AND NOT EXISTS
+            (   SELECT
+                  1
+                FROM
+                  transfer_application ta
+                WHERE
+                  ta.login_name = invest.login_name
+                AND ta.application_time between #{activityBeginTime} and #{tradingTime}
+            )
+        GROUP BY login_name , account.user_name , user.mobile
+        ORDER BY sumAmount DESC , MIN(invest.trading_time)
+        LIMIT 0 , 20;
+    </select>
+
+    <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
+        SELECT
+          rr.`referrer_login_name` AS login_name,
+          SUM(t.`amount`) AS sumAmount,
+          a.`user_name`,
+          u.`mobile`
+        FROM
+          referrer_relation rr
+          JOIN invest t
+            ON rr.`login_name` = t.`login_name`
+            AND t.`status` = 'SUCCESS'
+            AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
+            AND t.`trading_time` BETWEEN #{activityBeginTime}
+            AND #{activityEndTime}
+          JOIN account a
+            ON rr.`referrer_login_name` = a.`login_name`
+          JOIN user u
+            ON rr.`referrer_login_name` = u.`login_name`
+        WHERE rr.`level` = 1
+        GROUP BY rr.`referrer_login_name`,
+          a.`user_name`,
+          u.`mobile`
+        ORDER BY SUM(t.`amount`) DESC,
+          MAX(t.`trading_time`)
+        LIMIT #{index}, #{pageSize}
+    </select>
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,14 +41,19 @@ public class InvestMapperTest {
 
     @Autowired
     private InvestMapper investMapper;
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
 
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
+    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
+    private List<String> heroRankingActivityPeriod;
 
     private String User_ID = "helloworld";
     private String User_ID2 = "testuser";
@@ -102,7 +108,11 @@ public class InvestMapperTest {
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
-
+    private InvestModel getFakeInvestModelByLoginName(String loginName){
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
+        model.setStatus(InvestStatus.SUCCESS);
+        return model;
+    }
     @Before
     public void createLoan() {
         createLoan(User_ID, Loan_ID, ActivityType.NORMAL);
@@ -154,7 +164,7 @@ public class InvestMapperTest {
         assertNotNull(userModel);
     }
 
-    private void createUserByUserId(String userId) {
+    private UserModel createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
         userModelTest.setPassword("123abc");
@@ -164,6 +174,7 @@ public class InvestMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
+        return userModelTest;
     }
 
     @Test
@@ -290,7 +301,7 @@ public class InvestMapperTest {
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
         List<TransferableInvestView> transferableInvestViews = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
-        assertEquals(0,transferableInvestViews.size());
+        assertEquals(0, transferableInvestViews.size());
     }
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameInvestTransferStatusCancelIsFail(){
@@ -304,7 +315,7 @@ public class InvestMapperTest {
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
         List<TransferableInvestView> transferableInvestViews = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
-        assertEquals(0,transferableInvestViews.size());
+        assertEquals(0, transferableInvestViews.size());
     }
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameTransferStatusCancelDiffDayIsSuccess(){
@@ -329,8 +340,8 @@ public class InvestMapperTest {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUser("investorModelRound4Test");
         UserModel loanerModel = createUser("loanerModelRound4Test");
-        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         investModel.setTransferStatus(TransferStatus.CANCEL);
         investMapper.update(investModel);
         TransferApplicationModel transferApplicationModel = getFakeTransferApplicationModel(investorModel.getLoginName(), TransferStatus.CANCEL, investModel.getId(), loanModel.getId());
@@ -509,7 +520,220 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldSumSuccessInvestAmountIsOk() {
+    public void shouldFindHeroRankingByTradingTimeIsSuccess(){
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
+        investModel1.setAmount(2000);
+        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel1);
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
+        assertEquals(3,heroRankingViews.size());
+        assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
+        assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
+        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+
+        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+
+        assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
+        assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
+        assertEquals(accountModel2.getUserName(),heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
+
+    }
+
+    @Test
+    public void shouldFindHeroRankingByTradingTimeTransferIsSuccess(){
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
+        investModel1.setAmount(2000);
+        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel1);
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+
+        TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,6,0,0,1).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
+        assertEquals(3,heroRankingViews.size());
+        assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
+        assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
+        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+
+        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+
+        assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
+        assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
+        assertEquals(accountModel2.getUserName(),heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
+
+    }
+
+    @Test
+    public void shouldFindHeroRankingByTradingTimeTransferIsFail(){
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
+        investModel1.setAmount(2000);
+        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel1);
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+
+        TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,5,0,0,1).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,5,23,59,59).toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
+        assertEquals(2,heroRankingViews.size());
+
+        assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
+        assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
+        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+
+        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+
+    }
+
+    @Test
+    public void shouldFindHeroRankingByTradingTimeTransferNextDayIsFail(){
+        UserModel investor1 = createUserByUserId("investor1");
+        UserModel investor2 = createUserByUserId("investor2");
+        UserModel investor3 = createUserByUserId("investor3");
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        accountMapper.create(accountModel1);
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        accountMapper.create(accountModel2);
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        accountMapper.create(accountModel3);
+
+
+        InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
+        investModel1.setAmount(2000);
+        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel1);
+        InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName());
+        investModel2.setAmount(1000);
+        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel2);
+        InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName());
+        investModel3.setAmount(3000);
+        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investMapper.create(investModel3);
+
+        InvestModel investModel11 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
+        investModel11.setAmount(2000);
+        investModel11.setTradingTime(new DateTime("2016-07-06").toDate());
+        investMapper.create(investModel11);
+        InvestModel investModel22 = this.getFakeInvestModelByLoginName(investor2.getLoginName());
+        investModel22.setAmount(1000);
+        investModel22.setTradingTime(new DateTime("2016-07-06").toDate());
+        investMapper.create(investModel22);
+        InvestModel investModel33 = this.getFakeInvestModelByLoginName(investor3.getLoginName());
+        investModel33.setAmount(3000);
+        investModel33.setTradingTime(new DateTime("2016-07-06").toDate());
+        investMapper.create(investModel33);
+
+        TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,5,0,0,1).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,6,23,59,59).toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
+        assertEquals(2,heroRankingViews.size());
+
+        assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
+        assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
+        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+
+        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+
+    }
+
+    private TransferApplicationModel fakeTransferApplicationModel(long transferInvestId , String loginName, Date applicationTime){
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(loginName);
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(Loan_ID);
+        transferApplicationModel.setTransferInvestId(transferInvestId);
+        transferApplicationModel.setInvestId(null);
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(applicationTime);
+
+        return transferApplicationModel;
+    }
+
+
+    @Test
+    public void shouldSumSuccessInvestAmountIsOk(){
         long newbieLoanId = idGenerator.generate();
         createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
 
