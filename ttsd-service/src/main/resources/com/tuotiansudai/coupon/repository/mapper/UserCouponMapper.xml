@@ -72,7 +72,7 @@
         select uc.* from user_coupon uc
         <if test="couponTypeList != null and couponTypeList.size != 0">
             JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
-            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
+            <foreach collection="couponTypes" item="couponType" open="(" separator="," close=")">
                 #{couponType}
             </foreach>
         </if>

@@ -49,7 +49,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.message.repository.model,com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.message.repository.model,com.tuotiansudai.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.message.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -59,7 +59,7 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.message.repository.mapper,com.tuotiansudai.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.message.repository.mapper,com.tuotiansudai.repository.mapper,com.tuotiansudai.transfer.repository.mapper"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">

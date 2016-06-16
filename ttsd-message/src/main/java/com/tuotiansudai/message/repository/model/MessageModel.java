@@ -9,6 +9,7 @@ public class MessageModel implements Serializable {
     private String title;
     private String template;
     private MessageType type;
+    private MessageEventType eventType;
     private List<MessageUserGroup> userGroups;
     private List<MessageChannel> channels;
     private MessageStatus status;
@@ -68,6 +69,14 @@ public class MessageModel implements Serializable {
 
     public void setType(MessageType type) {
         this.type = type;
+    }
+
+    public MessageEventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(MessageEventType eventType) {
+        this.eventType = eventType;
     }
 
     public List<MessageUserGroup> getUserGroups() {

@@ -11,6 +11,7 @@
         <result column="title" property="title"/>
         <result column="template" property="template"/>
         <result column="type" property="type"/>
+        <result column="event_type" property="eventType"/>
         <result column="user_groups" property="userGroups" typeHandler="com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler"/>
         <result column="channels" property="channels" typeHandler="com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler"/>
         <result column="status" property="status"/>
@@ -25,8 +26,8 @@
     </resultMap>
 
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into message (`title`, `template`, `type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
-        value(#{title}, #{template}, #{type}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
+        insert into message (`title`, `template`, `type`, `event_type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
+        value(#{title}, #{template}, #{type}, #{eventType}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="messageResultMap">
@@ -39,6 +40,7 @@
         set `title` = #{title},
             `template` = #{template},
             `type` = #{type},
+            `event_type` = #{event_type},
             `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
             `status` = #{status},
@@ -55,6 +57,10 @@
 
     <select id="findById" parameterType="long" resultMap="messageResultMap">
         select * from message where id = #{id};
+    </select>
+
+    <select id="findActiveByEventType" parameterType="map" resultMap="messageResultMap">
+        select * from message where event_type = #{eventType} and status = 'APPROVED' and expired_time > now();
     </select>
 
     <select id="lockById" parameterType="long" resultMap="messageResultMap">
