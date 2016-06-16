@@ -3,10 +3,14 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.model.*;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +60,20 @@ public class RepayBaseTest {
         AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
         fakeAccount.setBalance(1000000);
         return fakeAccount;
+    }
+
+    protected UserMembershipModel getFakeUserMembership(String loginName, long membershipId){
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
+        return userMembershipModel;
+    }
+
+    protected MembershipModel getFakeMembership(long id, long experience, int level, double fee){
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setId(id);
+        membershipModel.setExperience(experience);
+        membershipModel.setLevel(level);
+        membershipModel.setFee(fee);
+        return membershipModel;
     }
 
     protected LoanModel getFakeNormalLoan(long loanId, LoanType loanType, long amount, int periods, double baseRate, double activityRate, double investFeeRate, String loginName, Date recheckTime) {
