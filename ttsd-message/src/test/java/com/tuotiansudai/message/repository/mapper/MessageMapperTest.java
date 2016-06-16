@@ -1,7 +1,6 @@
 package com.tuotiansudai.message.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -122,5 +121,25 @@ public class MessageMapperTest {
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return fakeUser;
+    }
+
+    @Test
+    public void testFindById() throws Exception {
+        UserModel creator = getFakeUser("messageCreator");
+
+        userMapper.create(creator);
+        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+
+        MessageModel messageModel = messageMapper.findById(messageModelManual.getId());
+        assertEquals(messageModelManual.getTitle(), messageModel.getTitle());
+        assertEquals(messageModelManual.getTemplate(), messageModel.getTemplate());
+        assertEquals(messageModelManual.getType(), messageModel.getType());
+        assertEquals(messageModelManual.getUserGroups(), messageModel.getUserGroups());
+        assertEquals(messageModelManual.getChannels(), messageModel.getChannels());
+        assertEquals(messageModelManual.getStatus(), messageModel.getStatus());
+        assertEquals(messageModelManual.getCreatedTime(), messageModel.getCreatedBy());
     }
 }

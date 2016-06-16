@@ -5,8 +5,8 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.MessageDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
-import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageType;
 
 import java.io.IOException;
@@ -25,15 +25,13 @@ public interface MessageService {
 
     long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException;
 
-    MessageDto getMessageByMessageId(long messageId);
+    boolean messageExisted(long messageId);
 
-    BasePaginationDataDto<MessageDto> getManualMessageList(String title, MessageStatus messageStatus, String creator, int index, int pageSize);
+    MessageDto getMessageByMessageId(long messageId);
 
     BaseDto<BaseDataDto> rejectManualMessage(long messageId);
 
     BaseDto<BaseDataDto> approveManualMessage(long messageId);
 
     BaseDto<BaseDataDto> deleteManualMessage(long messageId);
-
-    long getMessageReceiverCount(long messageId);
 }

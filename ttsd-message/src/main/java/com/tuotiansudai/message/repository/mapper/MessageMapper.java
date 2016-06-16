@@ -11,11 +11,13 @@ import java.util.List;
 @Repository
 public interface MessageMapper {
 
-    MessageModel findById(long id);
+    MessageModel findById(long messageId);
 
     void create(MessageModel messageModel);
 
     void update(MessageModel messageModel);
+
+    void deleteById(long messageId);
 
     long findMessageCount(@Param(value = "title") String title,
                                @Param(value = "messageStatus") MessageStatus messageStatus,

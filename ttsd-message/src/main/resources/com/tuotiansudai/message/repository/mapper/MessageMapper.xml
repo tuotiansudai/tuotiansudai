@@ -94,4 +94,12 @@
         and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
     </select>
 
+    <select id="findById" parameterType="java.lang.Long" resultMap="messageResultMap">
+        SELECT * FROM `aa`.`message` WHERE id = #{messageId}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM `aa`.`message` WHERE id = #{messageId}
+    </delete>
+
 </mapper>

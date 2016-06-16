@@ -42,6 +42,7 @@ public class MessageModel implements Serializable {
 
     public MessageModel(MessageDto messageDto) {
         this.id = messageDto.getId();
+        this.title = messageDto.getTitle();
         this.template = messageDto.getTemplate();
         this.type = messageDto.getType();
         this.userGroups = messageDto.getUserGroups();
