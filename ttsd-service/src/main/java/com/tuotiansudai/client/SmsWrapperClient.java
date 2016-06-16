@@ -41,9 +41,12 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
+    private final static String EXPERIENCE_REPAY_NOTIFY_URL = "/sms/experience-repay-notify";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
+
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, NO_PASSWORD_INVEST_CAPTCHA_SMS_URI);
     }
@@ -64,8 +67,12 @@ public class SmsWrapperClient extends BaseClient {
         return send(notify, FATAL_NOTIFY_URL);
     }
 
-    public BaseDto<SmsDataDto> sendLoanRepayNotify(LoanRepayNotifyDto dto) {
+    public BaseDto<SmsDataDto> sendLoanRepayNotify(RepayNotifyDto dto) {
         return send(dto, LOAN_REPAY_NOTIFY_URL);
+    }
+
+    public BaseDto<SmsDataDto> sendExperienceRepayNotify(ExperienceRepayNotifyDto dto) {
+        return send(dto, EXPERIENCE_REPAY_NOTIFY_URL);
     }
 
     public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {

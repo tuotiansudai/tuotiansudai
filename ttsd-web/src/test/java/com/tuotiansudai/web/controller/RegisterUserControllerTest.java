@@ -108,7 +108,7 @@ public class RegisterUserControllerTest {
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))
-                .andExpect(redirectedUrl("/register/account"));
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test

@@ -133,7 +133,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             model.setUsedTime(new Date());
             model.setStatus(InvestStatus.SUCCESS);
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(investModel.getAmount(), loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investModel.getInvestFeeRate(), loanModel, couponModel, investModel.getAmount());
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, investModel.getAmount(), investModel.getInvestFeeRate());
             model.setExpectedInterest(expectedInterest);
             model.setExpectedFee(expectedFee);
             userCouponMapper.update(model);

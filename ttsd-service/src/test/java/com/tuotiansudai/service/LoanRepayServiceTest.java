@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanRepayNotifyDto;
+import com.tuotiansudai.dto.RepayNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -60,7 +60,7 @@ public class LoanRepayServiceTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
+        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
@@ -68,7 +68,7 @@ public class LoanRepayServiceTest {
 
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(4)).sendLoanRepayNotify(any(LoanRepayNotifyDto.class));
+        verify(smsWrapperClient, times(4)).sendLoanRepayNotify(any(RepayNotifyDto.class));
 
     }
 
@@ -81,14 +81,14 @@ public class LoanRepayServiceTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
+        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(3)).sendLoanRepayNotify(any(LoanRepayNotifyDto.class));
+        verify(smsWrapperClient, times(3)).sendLoanRepayNotify(any(RepayNotifyDto.class));
 
     }
 
@@ -99,14 +99,14 @@ public class LoanRepayServiceTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
+        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(LoanRepayNotifyDto.class));
+        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(RepayNotifyDto.class));
 
     }
 
