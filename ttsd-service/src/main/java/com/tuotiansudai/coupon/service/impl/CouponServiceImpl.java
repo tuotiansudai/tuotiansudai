@@ -370,7 +370,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long findExperienceInvestAmount(List<InvestModel> investModelList){
+    public long findExperienceInvestAmount(List<InvestModel> investModelList) {
         long amount = 0;
         if (CollectionUtils.isNotEmpty(investModelList)) {
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());

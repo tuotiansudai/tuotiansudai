@@ -116,7 +116,7 @@ public class UserMembershipMapperTest {
         assertThat(rate, is(0.09));
     }
 
-    public void shouldFindByMembershipId(){
+    public void shouldFindByMembershipId() {
 
         UserModel fakeUser = createFakeUser();
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.GIVEN);

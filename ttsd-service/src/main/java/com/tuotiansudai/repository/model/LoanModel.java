@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.InterestCalculator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

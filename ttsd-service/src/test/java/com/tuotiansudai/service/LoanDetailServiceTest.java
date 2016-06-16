@@ -1,20 +1,15 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;

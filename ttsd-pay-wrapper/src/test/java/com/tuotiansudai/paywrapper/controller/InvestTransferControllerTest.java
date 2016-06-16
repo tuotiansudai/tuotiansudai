@@ -263,7 +263,7 @@ public class InvestTransferControllerTest {
     }
 
     private void mockUserMembership(String loginName) {
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
     }

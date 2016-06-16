@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -233,7 +232,7 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldSumSuccessInvestAmountIsOk(){
+    public void shouldSumSuccessInvestAmountIsOk() {
         long newbieLoanId = idGenerator.generate();
         createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
 
@@ -254,6 +253,6 @@ public class InvestMapperTest {
         investMapper.create(investModel);
 
         long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
-        assertEquals(investAmount,investModel.getAmount());
+        assertEquals(investAmount, investModel.getAmount());
     }
 }

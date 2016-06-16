@@ -61,9 +61,10 @@ public class RepayBaseTest {
         fakeAccount.setMembershipPoint(50001);
         return fakeAccount;
     }
-    protected UserMembershipModel getFakeUserMemberShip(String loginName,UserMembershipType type,long membershipId){
+
+    protected UserMembershipModel getFakeUserMemberShip(String loginName, UserMembershipType type, long membershipId) {
         Date expiredTime = new DateTime().plusYears(1).toDate();
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,membershipId,expiredTime,type);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, expiredTime, type);
         return userMembershipModel;
     }
 

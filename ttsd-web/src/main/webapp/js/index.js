@@ -110,15 +110,15 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             event.preventDefault();
             window.location.href=$(this).attr('data-url');
         });
-        $('.new-user-free').on('click', function(event) {
+        $('.new-user-free').on('click', function (event) {
             event.preventDefault();
-            window.location.href=$(this).attr('data-url');
+            window.location.href = $(this).attr('data-url');
         });
-        $('.mask-btn').on('click', function(event) {
+        $('.mask-btn').on('click', function (event) {
             event.preventDefault();
             $('.new-user-free').removeClass('active');
         });
-        $('.guide-btn').on('click', function(event) {
+        $('.guide-btn').on('click', function (event) {
             event.preventDefault();
             $('.product-box-inner').removeClass('active');
         });

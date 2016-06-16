@@ -10,7 +10,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
         $referrerOpen=$('.referrer-open',registerUserForm),
         $checkbox=$('label.check-label',registerUserForm),
-        passedNumber= 0,
+        passedNumber = 0,
         countTimer;
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
@@ -18,8 +18,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         fetchCaptchaElement.prop('disabled', true);
     });
 
-    $checkbox.on('click',function(event) {
-        if(event.target.tagName.toUpperCase()=='A') {
+    $checkbox.on('click', function (event) {
+        if (event.target.tagName.toUpperCase() == 'A') {
             return;
         }
         var $this=$(this),
@@ -98,7 +98,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
                         var seconds = 60
-                         countTimer = setInterval(function () {
+                        countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(countTimer);
@@ -218,17 +218,17 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
                 mobile = $('input.mobile', registerUserForm),
-                referrer=$('.referrer',registerUserForm);
+                referrer = $('.referrer', registerUserForm);
 
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
-                    mobile.attr('preValue',mobile.val());
+                    mobile.attr('preValue', mobile.val());
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
                 }
-                else if(element.name === 'referrer' && !mobile.hasClass('error')) {
+                else if (element.name === 'referrer' && !mobile.hasClass('error')) {
                     fetchCaptchaElement.prop('disabled', false);
                 }
             }
@@ -236,34 +236,35 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     function checkValidNum(event) {
-        var $frontInput=registerUserForm.find('input:lt(4)'),
-            passedNumber= 0,
-            frontInputValid=true;
+        var $frontInput = registerUserForm.find('input:lt(4)'),
+            passedNumber = 0,
+            frontInputValid = true;
         var mobile = $('input.mobile', registerUserForm);
 
-        $frontInput.each(function(key,option) {
-            if(!$(option).hasClass('valid')) {
-                frontInputValid=false;
+        $frontInput.each(function (key, option) {
+            if (!$(option).hasClass('valid')) {
+                frontInputValid = false;
                 return false;
             }
 
         });
 
-        if(event.target.name=='mobile' && countTimer && mobile.attr('preValue')!=mobile.val()) {
+        if (event.target.name == 'mobile' && countTimer && mobile.attr('preValue') != mobile.val()) {
             clearInterval(countTimer);
             $('input.captcha', registerUserForm).removeClass('valid').val('')
                 .next('label')
                 .html('请输入验证码');
-            fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled',false);
+            fetchCaptchaElement.html('重新发送').removeClass('disabledButton').prop('disabled', false);
 
         }
 
 
     }
-    $agreement.on('click',function(event) {
+
+    $agreement.on('click', function (event) {
         checkValidNum(event);
     });
-    $('input',registerUserForm).on('blur',function(event) {
+    $('input', registerUserForm).on('blur', function (event) {
         checkValidNum(event);
     });
 });

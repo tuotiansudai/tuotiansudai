@@ -229,7 +229,7 @@ form label.error {
       }
     }
   }
-  h3{
+  h3 {
     text-align: center;
     font-size: 20px;
     color: #221815;
@@ -255,7 +255,7 @@ form label.error {
   }
   .content-one {
     width: 100%;
-    background:#e5f3ff;
+    background: #e5f3ff;
     .one-title {
       width: 950px;
       height: 120px;
@@ -323,26 +323,26 @@ form label.error {
     .product-wp {
       width: 800px;
       margin: 0 auto;
-      padding-bottom:60px;
-      ul{
-        float:left;
-        width:100%;
-        li{
+      padding-bottom: 60px;
+      ul {
+        float: left;
+        width: 100%;
+        li {
           float:left;
-          width:100%;
-          font-size:16px;
-          color:#4c4c4c;
-          i{
-            color:#ff7f00;
-            font-size:12px;
+          width: 100%;
+          font-size: 16px;
+          color: #4c4c4c;
+          i {
+            color: #ff7f00;
+            font-size: 12px;
             margin-right: 10px;
           }
         }
       }
       .registered {
-        float:left;
-        width:100%;
-        margin-top:50px;
+        float: left;
+        width: 100%;
+        margin-top: 50px;
         span {
           display: block;
           margin: 0 auto;
@@ -361,7 +361,7 @@ form label.error {
   }
   .content-three {
     width: 100%;
-    background:#e5f3ff;
+    background: #e5f3ff;
     .three-title {
       width: 950px;
       height: 120px;
@@ -372,18 +372,18 @@ form label.error {
     }
     .content-wp {
       width: 1080px;
-      padding-bottom:40px;
+      padding-bottom: 40px;
       margin: 0 auto;
-      img{
-        margin-top:30px;
+      img {
+        margin-top: 30px;
       }
-      p{
-        float:left;
-        width:100%;
-        text-align:center;
-        font-size:20px;
-        color:#4c4c4c;
-        margin-bottom:0;
+      p {
+        float: left;
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        color: #4c4c4c;
+        margin-bottom: 0;
       }
     }
   }
@@ -403,15 +403,15 @@ form label.error {
       width: 1080px;
       height: 360px;
       margin: 0 auto;
-      ul{
-        float:left;
-        width:100%;
-        li{
-          float:left;
-          width:50%;
-          text-align:center;
-          a{
-            display:inline-block;
+      ul {
+        float: left;
+        width: 100%;
+        li {
+          float: left;
+          width: 50%;
+          text-align: center;
+          a {
+            display: inline-block;
           }
         }
       }
@@ -419,8 +419,8 @@ form label.error {
   }
   .content-five {
     width: 100%;
-    background:#d9edff;
-    padding-bottom:80px;
+    background: #d9edff;
+    padding-bottom: 80px;
     .five-title {
       width: 950px;
       height: 120px;
@@ -490,7 +490,7 @@ form label.error {
         }
       }
     }
-    
+
   }
 }
 
@@ -498,7 +498,7 @@ form label.error {
   text-align: center;
   background: #fff;
   display: none;
-  h3{
+  h3 {
     text-align: center;
     font-size: 16px;
     color: #221815;
@@ -549,54 +549,54 @@ form label.error {
     width: 100%;
     background: #e5f3ff;
 
-    .wp{
-      float:left;
-      width:100%;
-      p{
-        float:left;
-        width:100%;
-        font-size:12px;
-        color:#4c4c4c;
+    .wp {
+      float: left;
+      width: 100%;
+      p {
+        float: left;
+        width: 100%;
+        font-size: 12px;
+        color: #4c4c4c;
       }
-      .slideBox{
-        float:left;
-        width:100%;
-        margin-bottom:25px;
+      .slideBox {
+        float: left;
+        width: 100%;
+        margin-bottom: 25px;
         position: relative;
-        .bd{
-          float:left;
-          width:100%;
-          height:210px;
+        .bd {
+          float: left;
+          width: 100%;
+          height: 210px;
           overflow: hidden;
-          ul{
-            float:left;
-            width:100%;
-            li{
-              float:left;
-              width:100%;
-              text-align:center;
+          ul {
+            float: left;
+            width: 100%;
+            li {
+              float: left;
+              width: 100%;
+              text-align: center;
             }
           }
         }
-        .prev{
-          width:24px;
-          height:84px;
+        .prev {
+          width: 24px;
+          height: 84px;
           position: absolute;
-          top:50%;
-          left:20px;
-          margin-top:-42px;
-          background:url("/images/sign/actor/landingpage/left-icon.png") no-repeat center;
-          background-size:100%;
+          top: 50%;
+          left: 20px;
+          margin-top: -42px;
+          background: url("/images/sign/actor/landingpage/left-icon.png") no-repeat center;
+          background-size: 100%;
         }
-        .next{
-          width:24px;
-          height:84px;
+        .next {
+          width: 24px;
+          height: 84px;
           position: absolute;
-          top:50%;
-          right:20px;
-          margin-top:-42px;
-          background:url("/images/sign/actor/landingpage/right-icon.png") no-repeat center;
-          background-size:100%;
+          top: 50%;
+          right: 20px;
+          margin-top: -42px;
+          background: url("/images/sign/actor/landingpage/right-icon.png") no-repeat center;
+          background-size: 100%;
         }
       }
     }
@@ -643,15 +643,15 @@ form label.error {
       width:96%;
       padding: 0 2%;
       padding-bottom: 25px;
-      ul{
-        float:left;
+      ul {
+        float: left;
         width:100%;
-        li{
-          float:left;
-          width:100%;
-          text-align:center;
+        li {
+          float: left;
+          width: 100%;
+          text-align: center;
           a{
-            display:inline-block;
+            display: inline-block;
           }
         }
       }
@@ -671,24 +671,24 @@ form label.error {
       margin-left: 20px;
       margin-right: 20px;
       font-size: $fontUltraSmall;
-      ul{
-        float:left;
-        width:100%;
-        li{
-          float:left;
-          width:100%;
-          font-size:12px;
-          color:#4c4c4c;
-          i{
-            float:left;
-            color:#ff7f00;
-            font-size:12px;
-            width:8%;
+      ul {
+        float: left;
+        width: 100%;
+        li {
+          float: left;
+          width: 100%;
+          font-size: 12px;
+          color: #4c4c4c;
+          i {
+            float: left;
+            color: #ff7f00;
+            font-size: 12px;
+            width: 8%;
             padding-top: 5px;
           }
-          span{
-            float:left;
-            width:92%;
+          span {
+            float: left;
+            width: 92%;
           }
         }
       } 

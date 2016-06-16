@@ -23,9 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -77,7 +75,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
-        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(userMembershipModel);
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
@@ -136,9 +134,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
-        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(investorUserMembershipModel);
-        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN,2);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
         userMembershipMapper.create(transfereeUserMembershipModel);
 
         MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
@@ -216,7 +214,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
-        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(userMembershipModel);
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
@@ -277,9 +275,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
-        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(investorUserMembershipModel);
-        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN,2);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
         userMembershipMapper.create(transfereeUserMembershipModel);
 
         MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
@@ -358,7 +356,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
-        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(userMembershipModel);
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
@@ -417,9 +415,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
-        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(investorUserMembershipModel);
-        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN,2);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
         userMembershipMapper.create(transfereeUserMembershipModel);
 
         MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
@@ -490,7 +488,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
-        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(userMembershipModel);
 
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
@@ -553,9 +551,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
-        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE,1);
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
         userMembershipMapper.create(investorUserMembershipModel);
-        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN,2);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
         userMembershipMapper.create(transfereeUserMembershipModel);
 
         MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());

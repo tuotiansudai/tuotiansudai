@@ -57,7 +57,16 @@ public class MembershipController {
             }
         }
 
-        BasePaginationDataDto<UserMembershipItemDto> basePaginationDataDto = userMembershipEvaluator.getUserMembershipItems(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, checkedLevels, index, pageSize);
+        List<UserMembershipItemDto> userMembershipItemDtos = userMembershipEvaluator.getUserMembershipItems(loginName,
+                mobile, registerStartTime, registerEndTime, userMembershipType, checkedLevels, index, pageSize);
+        List<UserMembershipItemDto> results = new ArrayList<>();
+        for (int startIndex = (index - 1) * pageSize,
+             endIndex = index * pageSize <= userMembershipItemDtos.size() ? index * pageSize : userMembershipItemDtos.size();
+             startIndex < endIndex; ++startIndex) {
+            results.add(userMembershipItemDtos.get(startIndex));
+        }
+        BasePaginationDataDto<UserMembershipItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, userMembershipItemDtos.size(), results);
+
         ModelAndView modelAndView = new ModelAndView("/membership-list");
         modelAndView.addObject("data", basePaginationDataDto);
 

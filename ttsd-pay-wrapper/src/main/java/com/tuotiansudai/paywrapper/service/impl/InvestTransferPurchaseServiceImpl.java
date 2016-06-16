@@ -500,7 +500,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     }
 
     private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel, double rate) {
-        InvestModel investModel =  new InvestModel(idGenerator.generate(),
+        InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
                 transferrerModel.getAmount(),
