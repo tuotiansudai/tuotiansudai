@@ -246,6 +246,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         loginNameValid=$loginName.hasClass('valid');
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
+
         if(loginNameValid && mobileValid && passwordValid && captchaValid && referrerValidBool && agreementValid) {
             $registerSubmit.prop('disabled',false);
         }
@@ -253,9 +254,12 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             $registerSubmit.prop('disabled',true);
         }
     }
-    //$agreement.on('click',function() {
-    //    checkInputValid();
-    //});
+    $captchaInput.on('change',function(event) {
+        if(!/^\d{6}$/.test(event.target.value)) {
+            captchaValid=false;
+            checkInputValid();
+        }
+    })
     $mobileInput.on('change',function(event) {
         if(countTimer) {
             clearInterval(countTimer);
