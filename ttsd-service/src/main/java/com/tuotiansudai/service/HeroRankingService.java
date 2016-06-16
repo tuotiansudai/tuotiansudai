@@ -20,4 +20,6 @@ public interface HeroRankingService {
 
     void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
 
+    MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
+
 }

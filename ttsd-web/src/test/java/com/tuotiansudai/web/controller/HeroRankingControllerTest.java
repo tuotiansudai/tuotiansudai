@@ -75,7 +75,7 @@ public class HeroRankingControllerTest {
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
         when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt())).thenReturn(heroRankingView.getLoginName());
 
-        this.mockMvc.perform(get("/hero-ranking/invest/2016-07-05"))
+        this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("records[0].loginName").value(heroRankingView.getLoginName()))
                 .andExpect(jsonPath("records[0].mobile").value(heroRankingView.getMobile()))

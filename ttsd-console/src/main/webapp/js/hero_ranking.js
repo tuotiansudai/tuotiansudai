@@ -47,7 +47,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
 
         var boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'), //错误提示节点
-            $submitBtn = $('.prize-save'), //提交按钮
             $prizeForm = $('.prize-form');
         var _URL = window.URL || window.webkitURL;
         $('.prize-image').on('change',function(){
@@ -99,7 +98,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
 
         //表单校验初始化参数
         $(".prize-form").Validform({
-            btnSubmit: '.prize-save',
+            btnSubmit: '.tomorrow-prize-save,.today-prize-save',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
             ignoreHidden:true,
@@ -121,15 +120,23 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
 
         //关闭警告提示
         $('body').on('click', '.form-error', function () {
-            $submitBtn.removeAttr('disabled');
+            $('.tomorrow-prize-save,.today-prize-save').removeAttr('disabled');
             if (!!currentErrorObj) {
                 currentErrorObj.focus();
             }
         });
         //提交表单
-        $submitBtn.on('click', function(event) {
+        $('.tomorrow-prize-save,.today-prize-save').on('click', function(event) {
             event.preventDefault();
-            var $self = $(this);
+            var $self = $(this),
+                prizeDate;
+            if($self.hasClass("tomorrow-prize-save")){
+                prizeDate = getDateStr(1);
+            }
+            if($self.hasClass("today-prize-save")){
+                prizeDate = getDateStr(0);
+            }
+            console.log("boolFlag======" + boolFlag);
             if (boolFlag) {
                 if (confirm("确认提交更新?")) {
                     $.ajax({
@@ -137,12 +144,22 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                         type: 'POST',
                         dataType: 'json',
                         contentType: 'application/json; charset=UTF-8',
-                        data: JSON.stringify({"prizeName":$('.prize-name').val(),"imageUrl":$('.image-url').val()})
+                        data: JSON.stringify({"prizeName":$('.prize-name').val(),"imageUrl":$('.image-url').val(),"prizeDate":prizeDate})
                     }).done(function (data) {
-                        $('.prize-name').val(data.prizeName);
-                        $('.image-url').val(data.imageUrl);
-                        $('.thumbImage').find("img").remove();
-                        $('.thumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                        boolFlag = false;
+                        $('.prize-name').val('');
+                        $('.image-url').val('');
+                        $('.thumbImage').html('');
+                        if($self.hasClass("tomorrow-prize-save")){
+
+                            $('.tomorrowThumbImage').html('');
+                            $('.tomorrowThumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                        }
+                        if($self.hasClass("today-prize-save")){
+                            $('.todayThumbImage').html('');
+                            $('.todayThumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                        }
+
                     })
                 }
 
@@ -163,6 +180,15 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             html += '<span class="txt">创建失败：' + msg + '</span>';
             html += '</div>';
             $errorDom.append(html);
+        }
+
+        function getDateStr(AddDayCount) {
+            var dd = new Date();
+            dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth()+1;//获取当前月份的日期
+            var d = dd.getDate();
+            return y+"-"+m+"-"+d;
         }
 
     });
