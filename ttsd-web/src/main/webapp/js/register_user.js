@@ -172,7 +172,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     });
 
     registerUserForm.validate({
-        ignore:'.referrer',
+        ignore:'.referrer,.agreement',
         rules: {
             loginName: {
                 required: true,
@@ -196,9 +196,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 maxlength: 6,
                 minlength: 6,
                 checkCaptcha:true
-            },
-            agreement: {
-                required: true
             }
         },
         messages: {
@@ -223,9 +220,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 maxlength: '验证码格式不正确',
                 minlength: '验证码格式不正确',
                 checkCaptcha:'验证码不正确'
-            },
-            agreement: {
-                required: "请同意服务协议"
             }
         },
         success: function (error, element) {
@@ -254,13 +248,25 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             $registerSubmit.prop('disabled',true);
         }
     }
-    $captchaInput.on('change',function(event) {
+    $captchaInput.on('keyup',function(event) {
         if(!/^\d{6}$/.test(event.target.value)) {
             captchaValid=false;
-            checkInputValid();
+            $registerSubmit.prop('disabled',true);
         }
-    })
-    $mobileInput.on('change',function(event) {
+    });
+    $loginName.on('keyup',function(event) {
+        if(!/(?!^\d+$)^\w{5,25}$/.test(event.target.value)) {
+            loginNameValid=false;
+            $registerSubmit.prop('disabled',true);
+        }
+    });
+    $passwordInput.on('keyup',function(event) {
+        if(!/^(?=.*[^\d])(.{6,20})$/.test(event.target.value)) {
+            passwordValid=false;
+            $registerSubmit.prop('disabled',true);
+        }
+    });
+    $mobileInput.on('keyup',function(event) {
         if(countTimer) {
             clearInterval(countTimer);
             $('input.captcha', registerUserForm).removeClass('valid').val('')
