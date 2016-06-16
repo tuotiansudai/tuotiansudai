@@ -230,7 +230,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group hidden extra-rate-rule">
             <label class="col-sm-2 control-label"></label>
 
             <div class="col-sm-4">

@@ -388,7 +388,14 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     contentType: 'application/json; charset=UTF-8'
                 })
                 .done(function(res) {
+                    if (res.data.status) {
+                        var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
+                        for (var i=0;i<extraLoanRateRuleModels.length;i++) {
 
+                        }
+                    } else {
+                        showErrorMessage('服务端校验失败');
+                    }
                 })
                 .fail(function() {
                     showErrorMessage('服务端操作失败');
