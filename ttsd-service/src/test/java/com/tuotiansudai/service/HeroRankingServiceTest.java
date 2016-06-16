@@ -240,7 +240,7 @@ public class HeroRankingServiceTest {
         String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         mysteriousPrizeDto.setImageUrl("imageUrl");
         mysteriousPrizeDto.setPrizeName("name");
-        mysteriousPrizeDto.setPrizeDate(now);
+        mysteriousPrizeDto.setPrizeDate(new DateTime().withTimeAtStartOfDay().toDate());
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         MysteriousPrizeDto mysteriousPrizeDtoReturn = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,now);
         assertEquals(mysteriousPrizeDto.getImageUrl(),mysteriousPrizeDtoReturn.getImageUrl());

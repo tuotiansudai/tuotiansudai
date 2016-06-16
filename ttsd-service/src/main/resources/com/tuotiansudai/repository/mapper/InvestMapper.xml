@@ -487,7 +487,7 @@
             invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
         AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
-        AND invest.trading_time BETWEEN '2016-07-01' AND '2016-07-31'
+        AND invest.trading_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
         AND NOT EXISTS
             (   SELECT
                   1
@@ -495,7 +495,7 @@
                   transfer_application ta
                 WHERE
                   ta.login_name = invest.login_name
-                AND ta.application_time between '2016-07-01' and #{tradingTime}
+                AND ta.application_time between #{activityBeginTime} and #{tradingTime}
             )
         GROUP BY login_name , account.user_name , user.mobile
         ORDER BY sumAmount DESC , MIN(invest.trading_time)
@@ -514,8 +514,8 @@
             ON rr.`login_name` = t.`login_name`
             AND t.`status` = 'SUCCESS'
             AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
-            AND t.`trading_time` BETWEEN '2016-07-01 00:00:00'
-            AND '2016-08-01 00:00:00'
+            AND t.`trading_time` BETWEEN #{activityBeginTime}
+            AND #{activityEndTime}
           JOIN account a
             ON rr.`referrer_login_name` = a.`login_name`
           JOIN user u
