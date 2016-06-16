@@ -74,6 +74,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
         }
+        if (JobType.ExperienceRepay.equals(schedulerName)) {
+            createNewbieExperienceRepayJos();
+        }
     }
 
     @Override
@@ -218,4 +221,5 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
 }

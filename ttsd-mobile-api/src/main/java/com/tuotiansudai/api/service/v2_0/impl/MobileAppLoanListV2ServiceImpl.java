@@ -57,7 +57,9 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         }
 
         List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, isShowExperienceLoan);
-        loanModels.addAll(notContainNewbieList);
+        if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
+            loanModels.addAll(notContainNewbieList);
+        }
 
         if (CollectionUtils.isEmpty(loanModels)) {
             List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false, isShowExperienceLoan);

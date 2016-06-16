@@ -87,6 +87,7 @@ public class SmsClient {
         if (redisWrapperClient.exists(redisKey)) {
             data.setStatus(false);
             data.setIsRestricted(true);
+            data.setMessage("this ip " + restrictedIP + " has sent in one second");
             return dto;
         }
 

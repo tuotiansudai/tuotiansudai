@@ -331,7 +331,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (feeResponseModel.isSuccess()) {
                 systemBillService.transferIn(transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
-                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
+                logger.debug(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
@@ -358,7 +358,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (paybackResponseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
                 amountTransfer.transferOutBalance(transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
+                logger.debug(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException | AmountTransferException e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is failed", String.valueOf(transferApplicationModel.getInvestId())), e);

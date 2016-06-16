@@ -48,44 +48,66 @@ body {
       width: 100%;
       height: 100%;
       position: relative;
-      a {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        img {
-          height: 350px;
-          @media (max-width: 1920px) {
-            margin-left: calc((1920px - 100%) / 2 * -1)
+      ul{
+        float:left;
+        @media (max-width: 1920px) {
+          margin-left: -moz-calc((1920px - 100%) / 2 * -1);
+          margin-left: -webkit-calc((1920px - 100%) / 2 * -1);
+          margin-left: calc((1920px - 100%) / 2 * -1);
+        }
+        li{
+          float:left;
+          a {
+            float:left;
+            width:100%;
+            img {
+              &.pc-img{
+                height:350px;
+              }
+              &.iphone-img{
+                display:none;
+                height:150px;
+              }
+            }
+          }
+          a:first-child {
+            z-index: 1;
           }
         }
       }
-      a:first-child {
-        z-index: 1;
-      }
     }
-    .scroll-num {
+    .hd{
+      width:100%;
       position: absolute;
-      left: 500px;
-      bottom: 10px;
+      left:0;
+      bottom:5px;
       z-index: 2;
-      visibility: hidden;
-      li {
-        float: left;
-        margin-right: 15px;
-        width: 10px;
-        height: 10px;
-        text-align: center;
-        border-radius: 5px;
-        background: #fff;
-        line-height: 20px;
-        color: #666;
-        cursor: pointer;
-        &.selected {
-          background: #ff7a2a;
-          color: #fff;
+      .scroll-num {
+        float:left;
+        width:100%;
+        text-align:center;
+        &:hover{
+          li{
+            width:15px;
+            height:15px;
+            border-radius: 15px;
+          }
+        }
+        li {
+          display:inline-block;
+          margin-right: 15px;
+          width: 10px;
+          height: 10px;
+          text-align: center;
+          border-radius: 10px;
+          background: #fff;
+          line-height: 20px;
+          color: #666;
+          cursor: pointer;
+          &.on {
+            background: #ff7a2a;
+            color: #fff;
+          }
         }
       }
     }
@@ -1777,11 +1799,23 @@ body {
     .banner-box {
       height: 150px;
       .banner-img-list {
-        a {
-          display: block;
-          img {
-            width: 100%;
-            height: 150px;
+        ul{
+          @media (max-width: 1920px) {
+            margin-left: 0;
+          }
+          li{
+            a {
+              display: block;
+              img {
+                width: 100%;
+                &.pc-img{
+                  display:none;
+                }
+                &.iphone-img{
+                  display:block!important;
+                }
+              }
+            }
           }
         }
       }

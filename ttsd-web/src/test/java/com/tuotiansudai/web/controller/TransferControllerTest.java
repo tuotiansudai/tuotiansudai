@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.service.TransferService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,9 @@ public class TransferControllerTest {
     @Mock
     private InvestService investService;
 
+    @Mock
+    private TransferService transferService;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -73,7 +77,7 @@ public class TransferControllerTest {
         investPaginationItemDataDto.setLeftPeriod(3);
         BasePaginationDataDto<InvestPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(1,10,5,Lists.newArrayList(investPaginationItemDataDto));
 
-        when(investService.getTransferApplicationTransferablePagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(LoanStatus.class))).thenReturn(basePaginationDataDto);
+        when(transferService.generateTransferableInvest(anyString(),anyInt(),anyInt())).thenReturn(basePaginationDataDto);
         mockLoginUser("investor", "13900000000");
         this.mockMvc.perform(get("/transferrer/transfer-application-list-data").param("index", "1").param("pageSize", "10").param("status", TransferStatus.TRANSFERABLE.name()).contentType("application/json;charset=UTF-8"))
                         .andExpect(status().isOk())
