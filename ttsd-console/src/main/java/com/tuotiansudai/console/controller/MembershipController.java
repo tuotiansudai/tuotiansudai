@@ -58,7 +58,7 @@ public class MembershipController {
         }
 
         List<UserMembershipItemDto> userMembershipItemDtos = userMembershipEvaluator.getUserMembershipItems(loginName,
-                mobile, registerStartTime, registerEndTime, userMembershipType, checkedLevels, index, pageSize);
+                mobile, registerStartTime, registerEndTime, userMembershipType, checkedLevels);
         List<UserMembershipItemDto> results = new ArrayList<>();
         for (int startIndex = (index - 1) * pageSize,
              endIndex = index * pageSize <= userMembershipItemDtos.size() ? index * pageSize : userMembershipItemDtos.size();
