@@ -259,6 +259,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         if(!/(?!^\d+$)^\w{5,25}$/.test(event.target.value)) {
             loginNameValid=false;
             $(event.target).addClass('error').removeClass('valid');
+            $(event.target).next().html('请输入用户名');
             $registerSubmit.prop('disabled',true);
         }
     });
@@ -266,6 +267,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         if(!/^(?=.*[^\d])(.{6,20})$/.test(event.target.value)) {
             passwordValid=false;
             $(event.target).addClass('error').removeClass('valid');
+            $(event.target).next().html('请输入密码');
             $registerSubmit.prop('disabled',true);
         }
     });
