@@ -234,11 +234,14 @@
             <label class="col-sm-2 control-label"></label>
 
             <div class="col-sm-4">
-                <table class="table">
+                <table class="table table-bordered table-hover">
+                    <thead>
                     <tr>
                         <th>投资金额范围（元）</th>
                         <th>加息比例（%）</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>1000元≤投资额＜10000元</td>
                         <td>0.1</td>
@@ -251,6 +254,7 @@
                         <td>50000元≤投资额</td>
                         <td>0.5</td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
