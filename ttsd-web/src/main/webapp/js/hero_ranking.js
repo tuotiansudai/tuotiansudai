@@ -73,7 +73,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 				layer.open({
 				  type: 1,
 				  move:false,
-				  area:['320px','200px'],
+				  area:['320px','auto'],
 				  title:'领取须知',
 				  content: $('#vipTipModel')
 				});
@@ -81,6 +81,11 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
 			});
+		});
+
+		$('body').on('click', '#closeTip', function(event) {
+			event.preventDefault();
+			layer.closeAll();
 		});
 
 		//英雄榜排名

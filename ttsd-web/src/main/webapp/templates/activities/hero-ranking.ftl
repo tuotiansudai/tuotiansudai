@@ -314,7 +314,11 @@
             </div>
             <script type="text/html" id="vipTipModelTpl">
                 <p class="des-text">{{data.description}}</p>
+                {{if data.url==''}}
+                <p class="btn-text"><a href="javascript:void(0)" class="btn" id="closeTip">返回</a></p>
+                {{else}}
                 <p class="btn-text"><a href="{{data.url}}" class="btn">{{data.btnName}}</a></p>
+                {{/if}}
             </script>
         </div>
     </div>
