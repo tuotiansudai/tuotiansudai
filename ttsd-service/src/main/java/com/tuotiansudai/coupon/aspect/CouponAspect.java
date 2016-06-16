@@ -30,6 +30,7 @@ public class CouponAspect {
             UserGroup.STAFF,
             UserGroup.STAFF_RECOMMEND_LEVEL_ONE,
             UserGroup.IMPORT_USER,
+            UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER,
             UserGroup.MEMBERSHIP_V0,
             UserGroup.MEMBERSHIP_V1,
             UserGroup.MEMBERSHIP_V2,
@@ -59,7 +60,7 @@ public class CouponAspect {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
                 couponAssignmentService.assignUserCoupon(registerUserDto.getLoginName(),
-                        Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER));
+                        Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
             }
         } catch (Exception e) {
             logger.error("after user register aspect fail ", e);

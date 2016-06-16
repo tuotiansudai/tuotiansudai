@@ -5,19 +5,19 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LatestInvestView;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.InvestRepayService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,10 +86,10 @@ public class InvestRepayServiceImpl implements InvestRepayService{
                 latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
 
-            if(latestInvestView.getProductType().equals(ProductType.EXPERIENCE)){
+            if (latestInvestView.getProductType().equals(ProductType.EXPERIENCE)) {
                 List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(latestInvestView.getInvestId());
-                for(UserCouponModel userCouponModel : userCouponModelList){
-                    if(userCouponModel.getStatus().equals(InvestStatus.SUCCESS)){
+                for (UserCouponModel userCouponModel : userCouponModelList) {
+                    if (userCouponModel.getStatus().equals(InvestStatus.SUCCESS)) {
                         latestInvestView.setInvestAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
                         break;
                     }

@@ -60,7 +60,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null,null,null,null,null,loanId,0,10);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, null, loanId, 0, 10);
 
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());

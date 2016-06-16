@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -17,9 +15,11 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +42,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoan("shenjiaojiao"));
         loanModels.add(getFakeLoan("jiaoshenshen"));
 
-        when(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING,false, false)).thenReturn(loanModels);
+        when(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false, false)).thenReturn(loanModels);
         BaseResponseDto baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
         assertNotNull(baseResponseDto.getData());
 

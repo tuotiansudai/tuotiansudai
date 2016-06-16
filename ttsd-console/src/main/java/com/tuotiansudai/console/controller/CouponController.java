@@ -299,7 +299,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
         int couponsCount = couponService.findInterestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -316,7 +316,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findRedEnvelopeCoupons(index, pageSize));
         int couponsCount = couponService.findRedEnvelopeCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -351,7 +351,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
         int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -381,7 +381,7 @@ public class CouponController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("userCouponsCount", userCouponsCount);
-        long totalPages = userCouponsCount / pageSize + (userCouponsCount % pageSize > 0 || userCouponsCount == 0? 1 : 0);
+        long totalPages = userCouponsCount / pageSize + (userCouponsCount % pageSize > 0 || userCouponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -550,7 +550,7 @@ public class CouponController {
         modelAndView.addObject("pageSize", pageSize);
         int exchangeCouponCount = couponService.findCouponExchangeCount();
         modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
-        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0? 1 : 0);
+        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
