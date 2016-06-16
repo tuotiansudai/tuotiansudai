@@ -720,11 +720,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            long transferAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
+            long redEnvelopeAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            if (transferAmount > 0) {
-                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
-                loginNameMap.put(userCouponModel.getLoanName(), amountLists);
+            if (redEnvelopeAmount > 0) {
+                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(redEnvelopeAmount));
+                loginNameMap.put(userCouponModel.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             }
         }
