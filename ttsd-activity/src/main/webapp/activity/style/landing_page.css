@@ -154,6 +154,7 @@ h5 {
     -webkit-background-size: 659px 631px;
     -moz-background-size: 659px 631px;
     background-size: 659px 631px; } }
+
 /* glue: 0.11.1 hash: dbc08c0c46 */
 .sprite-register-ic-account,
 .sprite-register-login-name,
@@ -240,6 +241,7 @@ h5 {
     -webkit-background-size: 131px 113px;
     -moz-background-size: 131px 113px;
     background-size: 131px 113px; } }
+
 form label.error:before {
   padding-right: 5px;
   content: "\f057";
@@ -1088,11 +1090,7 @@ form label.error {
 @media screen and (max-width: 700px) {
   .landing-container {
     display: none; }
-
   .landing-phone-container {
     display: block; }
-
   .footer-container {
     display: none; } }
-
-/*# sourceMappingURL=landing_page.css.map */

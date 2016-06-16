@@ -2409,21 +2409,17 @@
     margin-top: 0; }
   .red-envelope-container .line-date .date-info {
     background: #b00100; }
-
   .activity-ranking-container .res-no-app {
     display: none; }
-
   .actor-recruit-img {
     height: 150px;
     background: url("/images/ttimg/ph-a03.jpg") center top no-repeat !important;
     background-size: cover !important; }
-
   .res-comtainer {
     display: block !important;
     float: none; }
     .res-comtainer .responsive-picture img {
       width: 100%; }
-
   .activity-award-container .actor-award-img {
     height: 150px !important;
     background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
@@ -2468,7 +2464,6 @@
       .activity-award-container .wide-screen-out .wide-screen-inner .button-bar time {
         padding-top: 20px;
         padding-bottom: 20px; }
-
   .birth-month-container .time-list {
     width: 240px;
     height: 170px;
@@ -2524,29 +2519,19 @@
         font-size: 12px; }
         .birth-month-container .wp .rule-list li.intro-text {
           font-size: 12px !important; }
-
   .rank-list-container {
     display: none; }
-
   .rank-list-phone {
     display: block; }
-
   .download-container {
     display: none; }
-
   .download-container-phone {
     display: block; }
-
   .share-reward-container {
     display: none; }
-
   .share-reward-phone {
     display: block; }
-
   .invest-achievement-container {
     display: none; }
-
   .invest-achievement-phone {
     display: block; } }
-
-/*# sourceMappingURL=company_activity.css.map */
