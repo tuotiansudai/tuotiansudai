@@ -142,4 +142,22 @@ public class MessageMapperTest {
         assertEquals(messageModelManual.getStatus(), messageModel.getStatus());
         assertEquals(messageModelManual.getCreatedTime(), messageModel.getCreatedBy());
     }
+
+    @Test
+    public void testDeleteById() throws Exception {
+        UserModel creator = getFakeUser("messageCreator");
+
+        userMapper.create(creator);
+        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        MessageModel messageModel = messageMapper.findById(messageModelManual.getId());
+
+        assertTrue(null != messageMapper.findById(messageModel.getId()));
+
+        messageMapper.deleteById(messageModel.getId());
+
+        assertTrue(null == messageMapper.findById(messageModel.getId()));
+    }
 }
