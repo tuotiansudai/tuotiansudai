@@ -41,16 +41,15 @@ public class InvestMapperTest {
 
     @Autowired
     private InvestMapper investMapper;
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;

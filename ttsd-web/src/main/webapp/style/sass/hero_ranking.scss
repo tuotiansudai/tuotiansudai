@@ -1,4 +1,5 @@
 @import 'variables';
+
 .full-screen{
   width: 100%!important;
   margin: 0;
@@ -438,6 +439,20 @@
             span{
               color:#ff0000;
             }
+          }
+        }
+      }
+      .tip-vip-model{
+        .des-text{
+          padding:20px 0;
+          text-align:center;
+        }
+        .btn-text{
+          text-align:center;
+          a{
+            background:#ff752a;
+            border: 1px solid #f46916;
+            color:#fff;
           }
         }
       }

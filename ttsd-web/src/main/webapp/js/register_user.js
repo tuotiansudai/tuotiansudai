@@ -314,6 +314,5 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             referrerError.html('').hide();
             checkValidNum();
         }
-
     });
 });

@@ -64,7 +64,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
         }
         List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index-1)*pageSize, pageSize);
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(loginName, transferableInvestList));
+        dtoData.setInvestList(convertResponseData(transferableInvestList));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount((int)investMapper.findCountTransferableApplicationPaginationByLoginName(loginName));
@@ -78,7 +78,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
 
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(String loginName, List<InvestModel> investList) {
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
         if (investList != null) {
@@ -109,7 +109,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), loginName, invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(),invest.getLoginName(), invest.getAmount());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

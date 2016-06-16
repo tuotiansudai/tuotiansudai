@@ -57,7 +57,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     private InvestService investService;
 
     @Test
-    public void shouldGenerateTransferableInvestIsSuccess(){
+    public void shouldGenerateTransferableInvestIsSuccess() {
         TransferRuleModel transferRuleModel = new TransferRuleModel();
         transferRuleModel.setLevelOneFee(0.01);
         transferRuleModel.setLevelOneLower(1);
@@ -129,7 +129,6 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
-
 
 
 }

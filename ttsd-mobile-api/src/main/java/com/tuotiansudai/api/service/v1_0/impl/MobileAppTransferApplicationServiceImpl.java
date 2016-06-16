@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import com.google.common.collect.Maps;
@@ -234,10 +235,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        if (rateLower == null || rateLower == "") {
+        if (Strings.isNullOrEmpty(rateLower)) {
             rateLower = "0";
         }
-        if (rateUpper == null || rateUpper == "") {
+        if (Strings.isNullOrEmpty(rateUpper)) {
             rateUpper = "0";
         }
 

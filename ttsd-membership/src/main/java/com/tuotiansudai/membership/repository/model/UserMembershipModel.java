@@ -24,6 +24,14 @@ public class UserMembershipModel implements Serializable{
         this.type = type;
     }
 
+    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, Date createdTime, UserMembershipType type) {
+        this.loginName = loginName;
+        this.membershipId = membershipId;
+        this.expiredTime = expiredTime;
+        this.createdTime = createdTime;
+        this.type = type;
+    }
+
     public long getId() {
         return id;
     }
