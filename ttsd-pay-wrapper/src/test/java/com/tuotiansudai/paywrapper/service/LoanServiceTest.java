@@ -117,7 +117,6 @@ public class LoanServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(100000L);
         loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);

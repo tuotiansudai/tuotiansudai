@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.repository.mapper;
 
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,24 @@ public class MembershipMapperTest {
         assertThat(levels.get(3), is(3));
         assertThat(levels.get(4), is(4));
         assertThat(levels.get(5), is(5));
+    }
+
+    @Test
+    public void shouldMembershipByLevel(){
+        MembershipModel membershipModel = createMembership();
+        MembershipModel membershipModel1 = membershipMapper.findByLevel(membershipModel.getLevel());
+
+        assertThat(membershipModel1.getFee(), is(0.1));
+        assertThat(membershipModel1.getExperience(), is(5000L));
+        assertThat(membershipModel1.getLevel(), is(1));
+    }
+
+    private MembershipModel createMembership() {
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setId(100001);
+        membershipModel.setExperience(50000);
+        membershipModel.setFee(0.1);
+        membershipModel.setLevel(1);
+        return membershipModel;
     }
 }

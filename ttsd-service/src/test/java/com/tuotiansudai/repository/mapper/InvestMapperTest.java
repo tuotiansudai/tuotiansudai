@@ -87,7 +87,7 @@ public class InvestMapperTest {
     }
 
     private InvestModel getFakeInvestModel() {
-        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -122,7 +122,6 @@ public class InvestMapperTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -231,5 +230,30 @@ public class InvestMapperTest {
     public void shouldGetInvestDetail() throws Exception{
         List<InvestDataView> investDataViews = investMapper.getInvestDetail();
         assertTrue(investDataViews.size() >=0 );
+    }
+
+    @Test
+    public void shouldSumSuccessInvestAmountIsOk(){
+        long newbieLoanId = idGenerator.generate();
+        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(newbieLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
+        investModel.setStatus(InvestStatus.SUCCESS);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(newbieLoanId);
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
+        investModel2.setStatus(InvestStatus.SUCCESS);
+
+        investModel.setTransferInvestId(investModel2.getId());
+        investMapper.create(investModel2);
+        investMapper.create(investModel);
+
+        long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
+        assertEquals(investAmount,investModel.getAmount());
     }
 }

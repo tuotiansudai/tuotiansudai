@@ -85,7 +85,7 @@
                             <div class="right-coupon">
                                 <p class="mt-10">
                                     <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
-                                        <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
+                                        <span class="num-text"><@amount>${coupon.couponAmount?string.computer}</@amount></span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
                                         <span class="num-text">+${coupon.rate*100?float}%</span>
@@ -166,7 +166,7 @@
                             <div class="right-coupon">
                                 <p class="mt-10">
                                     <#if record.couponType == 'RED_ENVELOPE' || record.couponType == 'NEWBIE_COUPON' ||record.couponType == 'INVEST_COUPON'>
-                                        <span class="num-text">${(record.couponAmount/100)?string("0")}</span>
+                                        <span class="num-text"><@amount>${record.couponAmount?string.computer}</@amount></span>
                                         <span class="unit-text">元</span>
                                     <#elseif record.couponType == 'INTEREST_COUPON'>
                                         <span class="num-text">+${record.rate*100?float}%</span>
@@ -243,7 +243,7 @@
                                 <p class="mt-10">
                                     <#assign couponTypes = ["RED_ENVELOPE", "NEWBIE_COUPON", "INVEST_COUPON"]>
                                     <#if couponTypes?seq_contains(coupon.couponType)>
-                                        <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
+                                        <span class="num-text"><@amount>${coupon.couponAmount?string.computer}</@amount></span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
                                         <span class="num-text">+${coupon.rate*100?float}%</span>

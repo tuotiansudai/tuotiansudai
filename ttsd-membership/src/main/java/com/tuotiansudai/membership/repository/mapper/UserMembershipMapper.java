@@ -27,4 +27,17 @@ public interface UserMembershipMapper {
                                                                                                                @Param(value = "registerEndTime") Date registerEndTime,
                                                                                                                @Param(value = "type") UserMembershipType userMembershipType,
                                                                                                                @Param(value = "levels") List<Integer> levels);
+
+    UserMembershipModel findActiveByLoginName(String loginName);
+
+    Double findRateByLoginName(String loginName);
+
+    Integer findRealLevelByLoginName(String loginName);
+
+    UserMembershipModel findByMembershipId(long membershipId);
+
+    Long findMembershipPointByLoginName(String loginName);
+
+    void updateMembershipPoint(@Param(value = "loginName") String loginName,
+                               @Param(value = "membershipPoint") long membershipPoint);
 }

@@ -24,4 +24,8 @@
     <select id="findAllLevels" resultType="java.lang.Integer">
         SELECT `level` FROM `aa`.`membership`
     </select>
+    
+    <select id="findByExperience" resultMap="membershipResultMap" parameterType="long">
+        select * from membership where experience &lt;= #{experience} order by experience desc limit 1;
+    </select>
 </mapper>

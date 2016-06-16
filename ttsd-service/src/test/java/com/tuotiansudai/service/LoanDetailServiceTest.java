@@ -110,7 +110,6 @@ public class LoanDetailServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -157,7 +156,7 @@ public class LoanDetailServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null);
+        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
     }
 
     private void createMockUser(String loginName){

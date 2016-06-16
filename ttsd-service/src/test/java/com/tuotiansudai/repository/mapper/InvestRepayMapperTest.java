@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -243,8 +246,75 @@ public class InvestRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel();
         userMapper.create(fakeUserModel);
         loanMapper.create(fakeLoanModel);
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
+    }
+
+    @Test
+    public void shouldFindByLoginNameAndTimeSuccessInvestRepayListIsOk() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        LoanModel loanModel = getFakeLoanModel();
+        loanModel.setProductType(ProductType.EXPERIENCE);
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        loanMapper.create(loanModel);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setLoginName(fakeUserModel.getLoginName());
+        investModel.setLoanId(loanModel.getId());
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setInvestTime(sdf.parse("2016-05-20"));
+        investModel.setTransferStatus(TransferStatus.SUCCESS);
+        investModel.setSource(Source.IOS);
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date endTime = DateUtils.addMonths(startTime, 1);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setStatus(RepayStatus.COMPLETE);
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setRepayDate(new Date());
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(investRepayModel);
+        investMapper.create(investModel);
+        investRepayMapper.create(investRepayModels);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
+        assertNotNull(investRepayModelList);
+        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
+    }
+
+    @Test
+    public void shouldFindByLoginNameAndTimeNotSuccessInvestRepayListIsOk(){
+        LoanModel loanModel = getFakeLoanModel();
+        loanModel.setProductType(ProductType.EXPERIENCE);
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        loanMapper.create(loanModel);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setLoginName(fakeUserModel.getLoginName());
+        investModel.setLoanId(loanModel.getId());
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setInvestTime(new Date());
+        investModel.setTransferStatus(TransferStatus.SUCCESS);
+        investModel.setSource(Source.IOS);
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date endTime = DateUtils.addMonths(startTime, 1);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setStatus(RepayStatus.REPAYING);
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setRepayDate(new Date());
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(investRepayModel);
+        investMapper.create(investModel);
+        investRepayMapper.create(investRepayModels);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
+        assertNotNull(investRepayModelList);
+        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
     }
 }

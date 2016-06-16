@@ -86,6 +86,49 @@ public class UserMembershipMapperTest {
 
     }
 
+    @Test
+    public void shouldFindActiveByLoginName() throws Exception {
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 2, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        UserMembershipModel membershipModel1 = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
+
+        assertThat(membershipModel1.getLoginName(), is(fakeUser.getLoginName()));
+        assertThat(membershipModel1.getMembershipId(), is(2L));
+        assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
+    }
+
+    @Test
+    public void shouldFindRateByLoginName() throws Exception {
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        double rate = userMembershipMapper.findRateByLoginName(fakeUser.getLoginName());
+
+        assertThat(rate, is(0.09));
+    }
+
+    public void shouldFindByMembershipId(){
+
+        UserModel fakeUser = createFakeUser();
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel);
+
+        UserMembershipModel userMembershipModel1 = userMembershipMapper.findByMembershipId(userMembershipModel.getMembershipId());
+
+        assertThat(userMembershipModel1.getLoginName(), is(fakeUser.getLoginName()));
+        assertThat(userMembershipModel1.getMembershipId(), is(2L));
+        assertThat(userMembershipModel1.getType(), is(UserMembershipType.GIVEN));
+    }
+
     private UserModel createFakeUser() {
         UserModel model = new UserModel();
         model.setLoginName("loginName");
@@ -217,4 +260,6 @@ public class UserMembershipMapperTest {
         assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), originUserMembershipItemModels.get(0).getMobile(), null, null, originUserMembershipItemModels.get(0).getUserMembershipType(), Lists.newArrayList(3)).size());
         assertEquals(1, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5)).size());
     }
+
+
 }

@@ -168,7 +168,6 @@ public class MockReferrerRewardServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(100000L);
         loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -183,7 +182,7 @@ public class MockReferrerRewardServiceTest {
     }
 
     private InvestModel getFakeInvestModel(LoanModel loanModel,UserModel userModel) {
-        return new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000L, userModel.getLoginName(), new Date(), Source.WEB, null);
+        return new InvestModel(idGenerator.generate(), loanModel.getId(), null, 1000L, userModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
     }
 
     private UserModel createFakeUser(String loginName) {

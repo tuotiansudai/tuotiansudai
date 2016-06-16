@@ -5,7 +5,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.UnmodifiableIterator;
 import com.google.common.primitives.Ints;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -56,10 +55,10 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
     }
 
     @Override
-    public BasePaginationDataDto<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
+    public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
                                                                                Date registerStartTime, Date registerEndTime,
                                                                                UserMembershipType userMembershipType,
-                                                                               List<Integer> levels, int index, int pageSize) {
+                                                                               List<Integer> levels) {
         if (StringUtils.isEmpty(loginName)) {
             loginName = null;
         }
@@ -70,7 +69,7 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
             userMembershipType = null;
         }
         if (CollectionUtils.isEmpty(levels)) {
-            return new BasePaginationDataDto<>(index, pageSize, 0, new ArrayList<UserMembershipItemDto>());
+            return new ArrayList<UserMembershipItemDto>();
         }
         List<UserMembershipItemModel> userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
         Collections.sort(userMembershipItemModels, new Comparator<UserMembershipItemModel>() {
@@ -79,18 +78,16 @@ public class UserMembershipEvaluatorImpl implements UserMembershipEvaluator {
                 return o2.getRegisterTime().after(o1.getRegisterTime()) ? 1 : -1;
             }
         });
-
-        List<UserMembershipItemDto> results = new ArrayList<>();
-        for (int startIndex = (index - 1) * pageSize,
-             endIndex = index * pageSize <= userMembershipItemModels.size() ? index * pageSize : userMembershipItemModels.size();
-             startIndex < endIndex; ++startIndex) {
-            results.add(new UserMembershipItemDto(userMembershipItemModels.get(startIndex)));
+        List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
+        for(UserMembershipItemModel userMembershipItemModel : userMembershipItemModels) {
+            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemModel));
         }
-        return new BasePaginationDataDto<>(index, pageSize, userMembershipItemModels.size(), results);
+        return userMembershipItemDtos;
     }
 
     @Override
     public List<Integer> getAllLevels() {
         return membershipMapper.findAllLevels();
     }
+
 }
