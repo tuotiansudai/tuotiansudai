@@ -38,7 +38,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.duration = String.valueOf(loanModel.getDuration());
         this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();
-        this.recheckTime = String.valueOf(sdf2.format(loanModel.getRecheckTime()));
+        this.recheckTime = String.valueOf(loanModel.getRecheckTime()==null?"":sdf2.format(loanModel.getRecheckTime()));
         this.investId = String.valueOf(investModel.getId());
         this.investAmount = AmountConverter.convertCentToString(investModel.getAmount());
         this.investTime = sdf.format(investModel.getInvestTime());

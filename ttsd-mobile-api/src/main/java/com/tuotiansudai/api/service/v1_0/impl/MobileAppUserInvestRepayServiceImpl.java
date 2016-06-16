@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         try {
             InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+            //未放款时按照预计利息计算
+            if(loanModel.getRecheckTime() == null){
+                totalExpectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, investModel.getAmount());
+            }
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();

@@ -42,25 +42,22 @@ public class AdvertisementUtils {
             int randomInt = (int)(0 + Math.random()*(advertisements.size() - 1 + 1));
             String getMethod = "";
             AdvertisementPictureResponseDataDto advertisementPictureResponseDataDto = advertisements.get(randomInt);
-            try {
-                Class clazz = advertisementPictureResponseDataDto.getClass();
-                getMethod = "getPicture" + requestDto.getBaseParam().getScreenW().trim() + requestDto.getBaseParam().getScreenH().trim().trim();
-                Method method = clazz.getDeclaredMethod(getMethod);
-                if("iOS".equals(requestDto.getBaseParam().getPlatform())){
+            if("iOS".equals(requestDto.getBaseParam().getPlatform())) {
+                try {
+                    Class clazz = advertisementPictureResponseDataDto.getClass();
+                    getMethod = "getPicture" + requestDto.getBaseParam().getScreenW().trim() + requestDto.getBaseParam().getScreenH().trim().trim();
+                    Method method = clazz.getDeclaredMethod(getMethod);
                     pictureUrl = method.invoke(advertisementPictureResponseDataDto, new Object[]{}).toString().replaceFirst("\\{static\\}", staticDomainName);
+                } catch (NoSuchMethodException e) {
+                    logger.debug("AdvertisementUtils NoSuchMethod: " + getMethod);
+                } catch (IllegalAccessException e1) {
+                    logger.debug("AdvertisementUtils IllegalAccess: " + e1.getMessage());
+                } catch (InvocationTargetException e2) {
+                    logger.debug("AdvertisementUtils InvocationTarget: " + e2.getMessage());
                 }
-                else if("android".equals(requestDto.getBaseParam().getPlatform())){
-                    pictureUrl = advertisementPictureResponseDataDto.getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);;
-                }
             }
-            catch (NoSuchMethodException e) {
-                logger.debug("AdvertisementUtils NoSuchMethod: " + getMethod);
-            }
-            catch (IllegalAccessException e1) {
-                logger.debug("AdvertisementUtils IllegalAccess: " + e1.getMessage());
-            }
-            catch (InvocationTargetException e2) {
-                logger.debug("AdvertisementUtils InvocationTarget: " + e2.getMessage());
+            else if("android".equals(requestDto.getBaseParam().getPlatform())){
+                pictureUrl = advertisementPictureResponseDataDto.getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);;
             }
         }
         AdvertisementResponseDataDto dataDto = new AdvertisementResponseDataDto();
