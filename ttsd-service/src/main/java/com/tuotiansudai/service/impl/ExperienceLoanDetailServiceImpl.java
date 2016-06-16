@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailService{
+public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailService {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -29,17 +29,17 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
     private CouponService couponService;
 
     @Override
-    public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId,String loginName) {
+    public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId, String loginName) {
         LoanModel loanModel = loanMapper.findById(loanId);
         Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
         Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(),loginName);
+        List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(), loginName);
         long experienceProgress;
         LoanStatus loanStatus = LoanStatus.RAISING;
-        if(CollectionUtils.isNotEmpty(investModels)){
+        if (CollectionUtils.isNotEmpty(investModels)) {
             InvestModel investModel = investModels.get(0);
             long day = (new Date().getTime() - investModel.getInvestTime().getTime()) / (1000 * 60 * 60 * 24);
-            switch ((int)day){
+            switch ((int) day) {
                 case 2:
                     loanStatus = LoanStatus.REPAYING;
                     experienceProgress = 100;
@@ -49,15 +49,15 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
                     experienceProgress = 100;
                     break;
                 default:
-                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
+                    experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId, beginTime, endTime).size() % 100;
                     break;
             }
-        }else{
-            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime).size();
+        } else {
+            experienceProgress = investMapper.countSuccessInvestByInvestTime(loanId, beginTime, endTime).size() % 100;
         }
 
-        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanId,beginTime,endTime);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(loanId),experienceProgress,couponService.findExperienceInvestAmount(investModelList));
+        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanId, beginTime, endTime);
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(loanId), experienceProgress, couponService.findExperienceInvestAmount(investModelList));
         experienceLoanDto.setLoanStatus(loanStatus);
         return experienceLoanDto;
     }

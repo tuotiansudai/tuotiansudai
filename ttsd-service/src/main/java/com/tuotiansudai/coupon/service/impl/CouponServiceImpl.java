@@ -14,6 +14,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +69,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -288,6 +293,18 @@ public class CouponServiceImpl implements CouponService {
                 return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build())).size();
             case STAFF_RECOMMEND_LEVEL_ONE:
                 return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+            case MEMBERSHIP_V0:
+                return userMembershipMapper.countMembershipByLevel(0);
+            case MEMBERSHIP_V1:
+                return userMembershipMapper.countMembershipByLevel(1);
+            case MEMBERSHIP_V2:
+                return userMembershipMapper.countMembershipByLevel(2);
+            case MEMBERSHIP_V3:
+                return userMembershipMapper.countMembershipByLevel(3);
+            case MEMBERSHIP_V4:
+                return userMembershipMapper.countMembershipByLevel(4);
+            case MEMBERSHIP_V5:
+                return userMembershipMapper.countMembershipByLevel(5);
             default:
                 return 0;
         }
@@ -331,9 +348,6 @@ public class CouponServiceImpl implements CouponService {
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
-        if (CollectionUtils.isEmpty(couponIds)) {
-            return totalInterest;
-        }
 
         for (Long couponId : couponIds) {
             LoanModel loanModel = loanMapper.findById(loanId);
@@ -342,7 +356,7 @@ public class CouponServiceImpl implements CouponService {
                 continue;
             }
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             totalInterest += expectedInterest - expectedFee;
         }
 
@@ -372,13 +386,12 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long findExperienceInvestAmount(List<InvestModel> investModelList){
+    public long findExperienceInvestAmount(List<InvestModel> investModelList) {
         long amount = 0;
-        for(InvestModel investModel : investModelList){
-            List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
-            for(UserCouponModel userCouponModel : userCouponModelList){
-                amount += couponMapper.findById(userCouponModel.getCouponId()).getAmount();
-            }
+        if (CollectionUtils.isNotEmpty(investModelList)) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
+            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+            amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
         return amount;
     }

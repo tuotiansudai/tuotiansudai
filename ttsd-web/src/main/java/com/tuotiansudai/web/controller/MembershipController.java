@@ -4,8 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
@@ -14,7 +12,6 @@ import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -56,15 +53,15 @@ public class MembershipController {
         ModelAndView modelAndView = new ModelAndView("/membership-index");
 
         String loginName = LoginUserInfo.getLoginName();
-        if(loginName != null){
+        if (loginName != null) {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-            MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5?membershipModel:userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
+            MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
 
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
             modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
-            modelAndView.addObject("membershipPoint", accountModel != null?accountModel.getMembershipPoint():"");
+            modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
@@ -79,12 +76,12 @@ public class MembershipController {
         ModelAndView modelAndView = new ModelAndView("/membership-structure");
 
         String loginName = LoginUserInfo.getLoginName();
-        if(loginName != null){
+        if (loginName != null) {
             AccountModel accountModel = accountService.findByLoginName(loginName);
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 
-            modelAndView.addObject("membershipLevel", membershipModel != null?membershipModel.getLevel():"");
-            modelAndView.addObject("membershipPoint", accountModel != null?accountModel.getMembershipPoint():"");
+            modelAndView.addObject("membershipLevel", membershipModel != null ? membershipModel.getLevel() : "");
+            modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
         }
         modelAndView.addObject("loginName", loginName);
 
@@ -102,7 +99,7 @@ public class MembershipController {
     @ResponseBody
     @RequestMapping(value = "/structure-list-data", method = RequestMethod.GET)
     public List<MembershipExperienceBillDto> structureListData(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                          @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+                                                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
 
         String loginName = LoginUserInfo.getLoginName();
         List<MembershipExperienceBillModel> items = membershipExperienceBillService.findMembershipExperienceBillList(loginName, startTime, endTime, null, null);

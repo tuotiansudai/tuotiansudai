@@ -16,8 +16,12 @@ public interface HeroRankingService {
 
     List<HeroRankingView> obtainHeroRanking(Date tradingTime);
 
+    List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime);
+
     Integer obtainHeroRankingByLoginName(Date tradingTime, String loginName);
 
     void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
+
+    MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
 
 }

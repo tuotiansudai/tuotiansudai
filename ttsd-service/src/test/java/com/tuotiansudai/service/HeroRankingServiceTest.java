@@ -158,7 +158,7 @@ public class HeroRankingServiceTest {
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName,long loanId){
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -181,7 +181,6 @@ public class HeroRankingServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -237,10 +236,11 @@ public class HeroRankingServiceTest {
     @Test
     public void shouldSaveMysteriousPrizeIsSuccess(){
         MysteriousPrizeDto mysteriousPrizeDto = new MysteriousPrizeDto();
+        String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         mysteriousPrizeDto.setImageUrl("imageUrl");
         mysteriousPrizeDto.setPrizeName("name");
+        mysteriousPrizeDto.setPrizeDate(new DateTime().withTimeAtStartOfDay().toDate());
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
-        String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         MysteriousPrizeDto mysteriousPrizeDtoReturn = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,now);
         assertEquals(mysteriousPrizeDto.getImageUrl(),mysteriousPrizeDtoReturn.getImageUrl());
         assertEquals(mysteriousPrizeDto.getPrizeName(),mysteriousPrizeDtoReturn.getPrizeName());

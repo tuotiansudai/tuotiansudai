@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -7,7 +7,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $bannerImg = $imgScroll.find('a'),
+            $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
@@ -18,33 +18,12 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
         }).css({
             'font-size': '16px'
         });
-
         screenWid = $(window).width(); //screen width
         picWid = $bannerImg.first().find('img').width();
-
         leftWid = (picWid - screenWid) / 2;
-
-        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
         $imgScroll.find('img').css({
-            'margin-left': '-' + leftWid + 'px'
+          'margin-left': '-' + leftWid + 'px'
         });
-
-
-        $imgNum.click(function () {
-            var num_nav = $imgNum.index(this);
-            $(this).addClass("selected").siblings().removeClass("selected");
-            $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
-        });
-        $bannerBox.hover(function () {
-            clearInterval(adTimer);
-        }, function () {
-            adTimer = setInterval(function () {
-                var index = ++n % $bannerImg.length;
-                $imgNum.eq(index).trigger('click');
-            }, 6000);
-        }).trigger('mouseleave');
-
-
         $(".product-box .pad-m").click(function () {
             window.location.href = $(this).data("url");
         });
@@ -53,10 +32,25 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
 
         if (viewport == 'pc') {
             $imgScroll.find('img.iphone-img').remove();
+            $("#bannerBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
-            $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
 
+
+            $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
+            $imgNum.click(function () {
+                var num_nav = $imgNum.index(this);
+                $(this).addClass("on").siblings().removeClass("on");
+                $bannerImg.eq(num_nav).fadeIn(500).siblings().fadeOut(500);
+            });
+            $bannerBox.hover(function () {
+                clearInterval(adTimer);
+            }, function () {
+                adTimer = setInterval(function () {
+                    var index = ++n % $bannerImg.length;
+                    $imgNum.eq(index).trigger('click');
+                }, 6000);
+            }).trigger('mouseleave');
             // 移动端滑动切换
             (function() {
                 var startX, startY;
@@ -110,15 +104,15 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             event.preventDefault();
             window.location.href=$(this).attr('data-url');
         });
-        $('.new-user-free').on('click', function(event) {
+        $('.new-user-free').on('click', function (event) {
             event.preventDefault();
-            window.location.href=$(this).attr('data-url');
+            window.location.href = $(this).attr('data-url');
         });
-        $('.mask-btn').on('click', function(event) {
+        $('.mask-btn').on('click', function (event) {
             event.preventDefault();
             $('.new-user-free').removeClass('active');
         });
-        $('.guide-btn').on('click', function(event) {
+        $('.guide-btn').on('click', function (event) {
             event.preventDefault();
             $('.product-box-inner').removeClass('active');
         });

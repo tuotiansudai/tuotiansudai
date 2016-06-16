@@ -5,9 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
@@ -413,7 +411,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.CANCEL == status) {
             count = loanMapper.findCountCanceledByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCanceledPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -569,11 +567,11 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
                     loanItemDto.setProgress(100);
                 }
-                if(loanItemDto.getProductType().equals(ProductType.EXPERIENCE)){
+                if(loanItemDto.getProductType() == ProductType.EXPERIENCE){
                     Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                     Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-                    List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),beginTime,endTime);
-                    long investCount = investModelList.size();
+                    List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
+                    long investCount = investModelList.size() % 100;
                     long investAmount = couponService.findExperienceInvestAmount(investModelList);
                     loanItemDto.setAlert(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount));
                     loanItemDto.setProgress(investCount);

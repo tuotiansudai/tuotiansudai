@@ -1,17 +1,62 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="auto-app-push-list.js" headLab="membership-manage" sideLab="membershipQuery" title="会员等级查询">
+<@global.main pageCss="" pageJavascript="membership-list.js" headLab="membership-manage" sideLab="membershipQuery" title="会员等级查询">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <div class="tip-container">
-        <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <span class="txt"></span>
+    <form action="" class="form-inline query-build">
+        <div class="row">
+            <div class="form-group">
+                <label for="control-label">用户名</label>
+                <input type="text" class="form-control" id="loginName" value="${loginName!}"/>
+            </div>
+            <div class="form-group">
+                <label for="control-label">注册时间</label>
+
+                <div class='input-group date' id='datetimepickerStartTime'>
+                    <input type='text' class="form-control" id="startTime"
+                           value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"/>
+                        </span>
+                </div>
+                <span>-</span>
+
+                <div class='input-group date' id='datetimepickerEndTime'>
+                    <input type='text' class="form-control" id="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"/>
+                        </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="control-label">手机号</label>
+                <input type="text" class="form-group" id="mobile" value="${mobile!}">
+            </div>
+            <div class="form-group">
+                <label for="control-label">获取方式</label>
+                <select class="selectpicker" id="type">
+                    <#list userMembershipTypeList as typeDescription>
+                        <option value="${typeDescription}"
+                                <#if (selected?has_content && selected == typeDescription.description)>selected</#if>>
+                        ${typeDescription.description}
+                        </option>
+                    </#list>
+                </select>
+            </div>
+            <div class="form-group levelCheckbox">
+                <label for="control-label">会员等级</label>
+                <#list levels as level>
+                    <#assign checkedLevels = selectedLevels?split(',')>
+                    <label><input class="level-box" data-id="${level}" type="checkbox"
+                                  <#if checkedLevels?seq_contains(level?string)>checked=1</#if>>V${level}</label>
+                </#list>
+            </div>
         </div>
-    </div>
+    </form>
+    <button class="btn btn-sm btn-primary search">查询</button>
+    <a href="/membership-manage/membership-list" class="btn btn-sm btn-default">重置</a>
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -40,16 +85,50 @@
             </tr>
             </thead>
             <tbody>
+                <#list data.records as userMember>
                 <tr>
-                    <td>test</td>
-                    <td>张珊珊</td>
-                    <td>135292929</td>
-                    <td>500000</td>
-                    <td>V3</td>
-                    <td>sss</td>
-                    <td><a href="/membership-manage/membership-detail?loginName=gaoyinglong">查看明细</a></td>
+                    <td>${userMember.loginName!}</td>
+                    <td>${userMember.realName!}</td>
+                    <td>${userMember.mobile!}</td>
+                    <td>${userMember.membershipPoint!}</td>
+                    <td>V${userMember.membershipLevel!}</td>
+                    <td>${userMember.userMembershipType.description!}</td>
+                    <td><a href="/membership-manage/membership-detail?loginName=${userMember.loginName!}">查看明细</a></td>
                 </tr>
+                </#list>
             </tbody>
         </table>
+        <!-- pagination  -->
+        <nav class="pagination-control">
+            <div>
+                <span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>
+            </div>
+            <#if data.records?has_content>
+                <ul class="pagination pull-left">
+                    <li>
+                        <#if data.hasPreviousPage >
+                        <a href="/membership-manage/membership-list?index=${data.index - 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                           aria-label="Previous">
+                        <#else>
+                        <a href="#" aria-label="Previous">
+                        </#if>
+                        <span aria-hidden="true">&laquo; Prev</span>
+                    </a>
+                    </li>
+                    <li><a>${data.index}</a></li>
+                    <li>
+                        <#if data.hasNextPage>
+                        <a href="/membership-manage/membership-list?index=${data.index + 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                           aria-label="Next">
+                        <#else>
+                        <a href="#" aria-label="Next">
+                        </#if>
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+                    </li>
+                </ul>
+            </#if>
+        </nav>
+        <!-- pagination -->
     </div>
 </@global.main>

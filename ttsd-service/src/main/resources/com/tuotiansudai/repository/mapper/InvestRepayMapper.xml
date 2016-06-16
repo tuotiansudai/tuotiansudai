@@ -203,8 +203,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type,
-          t.product_type
+        t.type,
+        t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -216,15 +216,16 @@
               l.`periods`,
               l.`duration`,
               l.`id` as loan_id,
-              l.`type`,
-              l.product_type
+        l.`type`,
+        l.product_type
             FROM
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &gt; l.duration)
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
-           ) t
+        AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) -
+        TO_DAYS(invest_time) &gt; l.duration)
+        WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+        ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` = 'COMPLETE'
           AND ir.`actual_repay_date` BETWEEN #{startTime}
@@ -242,8 +243,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type,
-          t.product_type
+        t.type,
+        t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -255,15 +256,16 @@
               l.`periods`,
               l.`duration`,
               l.`id` as `loan_id`,
-              l.type,
-              l.product_type
+        l.type,
+        l.product_type
             FROM
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) - TO_DAYS(invest_time) &lt;= l.duration)
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
-           ) t
+        AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) -
+        TO_DAYS(invest_time) &lt;= l.duration)
+        WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+        ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` != 'COMPLETE'
           AND ir.`repay_date` BETWEEN #{startTime}
@@ -284,16 +286,16 @@
           temp2.`default_interest`,
           temp2.`expected_fee`,
           temp.`amount`,
-          temp2.`status`,
-          product_type
+        temp2.`status`,
+        product_type
         FROM
           (SELECT
             i.`id`,
             i.`created_time`,
             i.`amount`,
             l.`name`,
-            l.`id` AS loanId,
-            l.product_type
+        l.`id` AS loanId,
+        l.product_type
           FROM
             invest i
             JOIN loan l

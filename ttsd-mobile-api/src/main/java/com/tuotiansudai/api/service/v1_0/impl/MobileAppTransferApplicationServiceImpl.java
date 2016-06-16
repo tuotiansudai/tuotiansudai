@@ -2,19 +2,20 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
+import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
+
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -33,7 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppTransferApplicationServiceImpl implements MobileAppTransferApplicationService {
@@ -55,6 +58,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private AccountMapper accountMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private InvestService investService;
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
 
     @Override
     public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {
@@ -227,10 +235,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        if (rateLower == null || rateLower == "") {
+        if (Strings.isNullOrEmpty(rateLower)) {
             rateLower = "0";
         }
-        if (rateUpper == null || rateUpper == "") {
+        if (Strings.isNullOrEmpty(rateUpper)) {
             rateUpper = "0";
         }
 

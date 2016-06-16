@@ -6,7 +6,8 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			$heroNext=$('#heroNext'),
 			$refePre=$('#refePre'),
 			$refeNext=$('#refeNext'),
-			$getVip=$('#getVip');
+			$getVip=$('#getVip'),
+			$getRank=$('.get-rank');
 
 		$getHistory.on('click', function(event) {
 			event.preventDefault();
@@ -120,7 +121,14 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		heroRank('history', $('.date-info:eq(0)').text());
 		refeInvest('list', $('.date-info:eq(1)').text());
 		refeInvest('history', $('.date-info:eq(1)').text());
-		
+
+		$getRank.on('click', function() {
+			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');
+		});
+
+		$getVip.on('click', function() {
+			cnzzPush.trackClick('152周年庆', '领取会员', '英雄榜');
+		});
 		
 	});
 });

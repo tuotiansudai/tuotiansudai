@@ -31,7 +31,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -67,7 +66,7 @@ public class ExperienceLoanDetailServiceTest {
     }
 
     @Test
-    public void shouldFindExperienceLoanDtoDetailsIsOk(){
+    public void shouldFindExperienceLoanDtoDetailsIsOk() {
         String fakeUserName = "loginName";
         UserModel userModel = getFakeUser(fakeUserName);
         userMapper.create(userModel);
@@ -85,20 +84,19 @@ public class ExperienceLoanDetailServiceTest {
         long investAmount = 1000;
         when(couponService.findExperienceInvestAmount(investModels)).thenReturn(investAmount);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(investMapper.findByLoanIdAndLoginName(anyLong(),anyString())).thenReturn(investModels);
-        when(investMapper.countSuccessInvestByInvestTime(loanModel.getId(),new DateTime(new Date()).withTimeAtStartOfDay().toDate(),new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate())).thenReturn(investModels);
-        ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
+        when(investMapper.findByLoanIdAndLoginName(anyLong(), anyString())).thenReturn(investModels);
+        when(investMapper.countSuccessInvestByInvestTime(loanModel.getId(), new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate())).thenReturn(investModels);
+        ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(), fakeUserName);
         assertTrue(experienceLoanDto.getProgress() == 1);
-        investModel1.setInvestTime(DateUtils.addDays(new Date(),-2));
-        experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
+        investModel1.setInvestTime(DateUtils.addDays(new Date(), -2));
+        experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(), fakeUserName);
         assertTrue(experienceLoanDto.getProgress() == 100);
-        investModel1.setInvestTime(DateUtils.addDays(new Date(),-3));
-        experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(),fakeUserName);
+        investModel1.setInvestTime(DateUtils.addDays(new Date(), -3));
+        experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loanModel.getId(), fakeUserName);
         assertTrue(experienceLoanDto.getProgress() == 100);
-
     }
 
-    public LoanModel getLoanModel(String fakeUserName){
+    public LoanModel getLoanModel(String fakeUserName) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(16.00);
@@ -114,7 +112,6 @@ public class ExperienceLoanDetailServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -127,8 +124,6 @@ public class ExperienceLoanDetailServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         return loanModel;
     }
-
-
 
 
     public UserModel getFakeUser(String loginName) {
@@ -144,7 +139,7 @@ public class ExperienceLoanDetailServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null);
+        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.ReferrerManageView;
-import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -18,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)

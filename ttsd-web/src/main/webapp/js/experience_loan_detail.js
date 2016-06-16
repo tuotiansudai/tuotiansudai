@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float', 'jquery.form'], function ($) {
     var loanProgress = $('.loan-detail-content').data('loan-progress');
 
     if (loanProgress <= 50) {
@@ -19,11 +19,11 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float',
         type: 'get',
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8'
-    }).done(function(amount) {
+    }).done(function (amount) {
         $(".principal-income").text(amount);
     });
 
-    $('#investSubmit').on('click', function(event) {
+    $('#investSubmit').on('click', function (event) {
         var self = $(this);
         $("#investForm").ajaxSubmit({
             dataType: 'json',
@@ -42,7 +42,7 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float',
         return false;
     });
 
-    $('.close-free').on('click', function(event) {
+    $('.close-free').on('click', function (event) {
         event.preventDefault();
         $('#freeSuccess').hide();
         window.location.reload();
