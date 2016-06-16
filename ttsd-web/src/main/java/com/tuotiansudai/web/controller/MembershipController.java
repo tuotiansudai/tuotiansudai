@@ -119,7 +119,7 @@ public class MembershipController {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
             GivenMembership givenMembership = userMembershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
-            dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl()));
+            dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {
             GivenMembershipDto givenMembershipDto = new GivenMembershipDto();
