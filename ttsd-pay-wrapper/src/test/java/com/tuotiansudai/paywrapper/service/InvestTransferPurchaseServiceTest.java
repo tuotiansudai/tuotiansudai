@@ -112,7 +112,7 @@ public class InvestTransferPurchaseServiceTest {
         investDto.setTransferInvestId(String.valueOf(fakeTransferApplication.getId()));
         investDto.setSource(Source.WEB);
 
-        UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
 

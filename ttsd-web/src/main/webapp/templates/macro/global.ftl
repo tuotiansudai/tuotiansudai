@@ -225,8 +225,8 @@
     phoneLoadFun();
 
     document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');  
-        toggleClass(obj,"active"); 
+        var obj = document.getElementById('getMore');
+        toggleClass(obj, "active");
     };
 
     function hasClass(obj, cls) {  
