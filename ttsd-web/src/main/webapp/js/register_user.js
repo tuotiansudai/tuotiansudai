@@ -251,18 +251,21 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     $captchaInput.on('keyup',function(event) {
         if(!/^\d{6}$/.test(event.target.value)) {
             captchaValid=false;
+            $(event.target).addClass('error').removeClass('valid');
             $registerSubmit.prop('disabled',true);
         }
     });
     $loginName.on('keyup',function(event) {
         if(!/(?!^\d+$)^\w{5,25}$/.test(event.target.value)) {
             loginNameValid=false;
+            $(event.target).addClass('error').removeClass('valid');
             $registerSubmit.prop('disabled',true);
         }
     });
     $passwordInput.on('keyup',function(event) {
         if(!/^(?=.*[^\d])(.{6,20})$/.test(event.target.value)) {
             passwordValid=false;
+            $(event.target).addClass('error').removeClass('valid');
             $registerSubmit.prop('disabled',true);
         }
     });
