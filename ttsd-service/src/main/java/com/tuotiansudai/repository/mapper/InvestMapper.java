@@ -194,9 +194,13 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
-    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime);
+    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime,
+                                                       @Param(value = "activityBeginTime") String activityBeginTime,
+                                                       @Param(value = "activityEndTime") String activityEndTime);
 
     List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
+                                                    @Param(value = "activityBeginTime") String activityBeginTime,
+                                                    @Param(value = "activityEndTime") String activityEndTime,
                                                     @Param(value = "index") int index,
                                                     @Param(value = "pageSize") int pageSize);
     List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,

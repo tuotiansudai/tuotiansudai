@@ -1,8 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import org.joda.time.DateTime;
@@ -18,18 +16,13 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/activity-manage")
 public class HeroRankingController {
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Autowired
     private HeroRankingService heroRankingService;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @RequestMapping(value = "/activity-manage/hero-ranking", method = RequestMethod.GET)
+    @RequestMapping(value = "/hero-ranking", method = RequestMethod.GET)
     public ModelAndView heroRanking(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
 
         ModelAndView modelAndView = new ModelAndView("/hero-ranking");
@@ -38,7 +31,7 @@ public class HeroRankingController {
             tradingTime = new Date();
         }
 
-        List<HeroRankingView> heroRankingViewReferrerList = investMapper.findHeroRankingByReferrer(tradingTime, 1, 10);
+        List<HeroRankingView> heroRankingViewReferrerList = heroRankingService.obtainHeroRankingReferrer(tradingTime);
 
         List<HeroRankingView> heroRankingViewInvestList = heroRankingService.obtainHeroRanking(tradingTime);
 
@@ -61,11 +54,9 @@ public class HeroRankingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/activity-manage/upload-image", method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/upload-image", method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
     @ResponseBody
     public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto){
-        String prizeDate = new DateTime(mysteriousPrizeDto.getPrizeDate()).withTimeAtStartOfDay().toString("yyyy-MM-dd");
-        mysteriousPrizeDto.setPrizeDate(prizeDate);
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         return mysteriousPrizeDto;
     }
