@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import com.google.common.collect.Maps;
@@ -234,10 +235,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        if (rateLower == null || rateLower == "") {
+        if (Strings.isNullOrEmpty(rateLower)) {
             rateLower = "0";
         }
-        if (rateUpper == null || rateUpper == "") {
+        if (Strings.isNullOrEmpty(rateUpper)) {
             rateUpper = "0";
         }
 
@@ -274,49 +275,5 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);
         return dto;
-    }
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
-        List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
-        Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
-        if (investList != null) {
-            for (InvestModel invest : investList) {
-                TransferRuleModel transferRuleModel =  transferRuleMapper.find();
-                if(!transferRuleModel.isMultipleTransferEnabled()){
-                    TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(invest.getId());
-                    if( transfereeApplicationModel != null){
-                        logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ", invest.getId()));
-                        continue;
-                    }
-
-                }
-                long loanId = invest.getLoanId();
-                LoanModel loanModel;
-                if (loanMapCache.containsKey(loanId)) {
-                    loanModel = loanMapCache.get(loanId);
-                } else {
-                    loanModel = loanMapper.findById(loanId);
-                    loanMapCache.put(loanId, loanModel);
-                }
-                UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(invest, loanModel);
-
-                long amount = 0;
-                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(invest.getId());
-                for (InvestRepayModel investRepayModel : investRepayModels) {
-                    amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                }
-
-                if (org.apache.commons.collections4.CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(),invest.getLoginName(), invest.getAmount());
-                }
-
-                dto.setInvestInterest(AmountConverter.convertCentToString(amount));
-                dto.setTransferStatus(invest.getTransferStatus().name());
-                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
-                dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
-                list.add(dto);
-            }
-        }
-        return list;
-
     }
 }

@@ -19,6 +19,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -77,19 +78,16 @@ public class InvestServiceImpl implements InvestService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private InvestTransferService investTransferService;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
-    @Autowired
-    private MembershipMapper membershipMapper;
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -182,9 +180,8 @@ public class InvestServiceImpl implements InvestService {
         //根据loginName查询出会员的相关信息
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
 
-        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
-        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-        double investFeeRate = membershipModel.getFee();
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
@@ -199,9 +196,8 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+        int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
-
 
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
@@ -290,9 +286,9 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
-                if(loanId != null){
+                if (loanId != null) {
                     LoanModel loanModel = loanMapper.findById(loanId);
-                    if(loanModel != null){
+                    if (loanModel != null) {
                         investPaginationItemView.setLoanName(loanModel.getName());
                     }
                 }

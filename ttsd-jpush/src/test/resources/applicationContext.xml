@@ -61,7 +61,7 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper, com.tuotiansudai.point.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper " />
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper, com.tuotiansudai.point.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper" />
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />

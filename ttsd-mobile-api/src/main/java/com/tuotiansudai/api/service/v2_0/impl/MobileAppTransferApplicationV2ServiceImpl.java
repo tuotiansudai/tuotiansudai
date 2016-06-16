@@ -23,6 +23,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,7 +108,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                     amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 }
 
-                if (org.apache.commons.collections4.CollectionUtils.isEmpty(investRepayModels)) {
+                if (CollectionUtils.isEmpty(investRepayModels)) {
                     amount = investService.estimateInvestIncome(invest.getLoanId(),invest.getLoginName(), invest.getAmount());
                 }
 

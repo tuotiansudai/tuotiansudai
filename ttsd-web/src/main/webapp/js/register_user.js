@@ -13,7 +13,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
         referrerError=$('#referrerError'),
-        passedNumber= 0,
         countTimer;
     var $frontInput=registerUserForm.find('input:lt(4)');
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
@@ -233,22 +232,18 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             }
             if (element.name === 'captcha') {
                 $registerSubmit.prop('disabled',false);
-
             }
         }
     });
 
     function checkValidNum(event) {
-        var $frontInput = registerUserForm.find('input:lt(4)'),
-            passedNumber = 0,
-            frontInputValid = true;
-        var mobile = $('input.mobile', registerUserForm);
+        var passedNumber= 0,
+            frontInputValid=true;
 
-        $frontInput.each(function (key, option) {
-            if (!$(option).hasClass('valid')) {
-                frontInputValid = false;
-                return false;
-
+        $frontInput.each(function(key,option) {
+            if(!$(option).hasClass('valid')) {
+                frontInputValid=false;
+                return;
             }
         });
 
@@ -269,6 +264,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         }
 
     }
+
     $agreement.on('click',function() {
         checkValidNum();
     });
