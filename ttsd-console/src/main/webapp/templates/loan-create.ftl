@@ -221,6 +221,40 @@
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" id="baseRate" datatype="money_fl" errormsg="请选择产品线类型">
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">阶梯加息: </label>
+
+            <div class="col-sm-4 checkbox">
+                <label for="extra"><input type="checkbox" id="extra" class="">选中后此次标的采用阶梯式加息</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-4">
+                <table class="table">
+                    <tr>
+                        <th>投资金额范围（元）</th>
+                        <th>加息比例（%）</th>
+                    </tr>
+                    <tr>
+                        <td>1000元≤投资额＜10000元</td>
+                        <td>0.1</td>
+                    </tr>
+                    <tr>
+                        <td>10000元≤投资额＜50000元</td>
+                        <td>0.3</td>
+                    </tr>
+                    <tr>
+                        <td>50000元≤投资额</td>
+                        <td>0.5</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <div class="form-group input-append">
             <label class="col-sm-2 control-label">筹款启动时间: </label>
 

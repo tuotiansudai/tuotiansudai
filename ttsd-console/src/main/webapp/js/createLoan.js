@@ -369,5 +369,32 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     });
             }
         });
+
+        $('#extra').on('change', function() {
+            $('.form-error').html('');
+            var $loanName = $('.jq-user');
+            var $productType = $('.jq-product-line');
+            if($loanName.val() == '') {
+                showErrorMessage('项目名称未选择，不能操作此选项');
+                $(this).removeAttr('checked');
+            } else if ($productType.val() == '' || $productType.val() == '_30') {
+                showErrorMessage('借款期限未选择或选择为30天，不能操作此选项');
+                $(this).removeAttr('checked');
+            } else {
+                $.ajax({
+                    url: '/project-manage/loan/extra-rate-rule?loanName='+$loanName.val()+'&productType='+$productType.val(),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                .done(function(res) {
+
+                })
+                .fail(function() {
+                    showErrorMessage('服务端操作失败');
+                });
+            }
+        });
+
     });
 });

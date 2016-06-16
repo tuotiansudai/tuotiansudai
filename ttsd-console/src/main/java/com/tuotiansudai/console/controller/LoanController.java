@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
@@ -119,6 +118,12 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanDto loanDto) {
         return loanService.applyAuditLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType){
+        return null;
     }
 
 }
