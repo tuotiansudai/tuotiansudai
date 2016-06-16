@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointExchangeService;
@@ -34,13 +35,14 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
+
     @Autowired
     private PointBillService pointBillService;
 
     @Override
-    public List<ExchangeCouponDto> findExchangeableCouponList(){
-        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList(0,100);
+    public List<ExchangeCouponDto> findExchangeableCouponList() {
+        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList(0, 100);
         return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
@@ -53,7 +55,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Override
     @Transactional
-    public boolean exchangeableCoupon(long couponId, String loginName){
+    public boolean exchangeableCoupon(long couponId, String loginName) {
         long exchangePoint = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
         long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
         CouponModel couponModel = couponMapper.lockById(couponId);
@@ -62,10 +64,10 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Override
     @Transactional
-    public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
+    public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint) {
         try {
-            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), couponId, null);
-            pointBillService.createPointBill(loginName,couponId,PointBusinessType.EXCHANGE,(-exchangePoint));
+            couponAssignmentService.assignUserCoupon(loginName, couponId);
+            pointBillService.createPointBill(loginName, couponId, PointBusinessType.EXCHANGE, (-exchangePoint));
             return true;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);

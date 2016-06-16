@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -53,7 +54,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -73,7 +74,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
         InvestModel investModel = this.generateInvest(investDto, userCouponModel.getCouponId());
 
-        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
+        couponAssignmentService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
 
         userCouponModel.setLoanId(Long.parseLong(investDto.getLoanId()));
         userCouponModel.setInvestId(investModel.getId());

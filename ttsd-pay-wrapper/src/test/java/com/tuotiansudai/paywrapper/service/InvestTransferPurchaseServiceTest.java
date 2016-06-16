@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -25,6 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -77,7 +81,13 @@ public class InvestTransferPurchaseServiceTest {
     private SystemBillMapper systemBillMapper;
 
     @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Before
     public void setUp() throws Exception {
@@ -104,8 +114,8 @@ public class InvestTransferPurchaseServiceTest {
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
         TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
-        InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
-        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 1000, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 1000, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
 
         InvestDto investDto = new InvestDto();
         investDto.setLoginName(transferee.getLoginName());
@@ -115,6 +125,8 @@ public class InvestTransferPurchaseServiceTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel(investDto.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(transferee.getLoginName());
 
         investTransferPurchaseService.noPasswordPurchase(investDto);
 
@@ -159,13 +171,13 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(1));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
         assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay1.getExpectedInterest()));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay1.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(0).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
         assertFalse(actualTransfereeInvestRepays.get(1).isTransferred());
         assertThat(actualTransfereeInvestRepays.get(1).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
-        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(1).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
@@ -192,8 +204,14 @@ public class InvestTransferPurchaseServiceTest {
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
         TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
-        InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
-        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 1000, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 1000, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeInvest.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(transferee.getLoginName());
 
         investTransferPurchaseService.postPurchase(fakeInvest.getId());
 
@@ -233,13 +251,13 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(1));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
         assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay1.getExpectedInterest()));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay1.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(0).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
         assertFalse(actualTransfereeInvestRepays.get(1).isTransferred());
         assertThat(actualTransfereeInvestRepays.get(1).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
-        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(1).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
@@ -267,7 +285,13 @@ public class InvestTransferPurchaseServiceTest {
         TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 13479, 1347, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
-        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 9836, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 9836, 983, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeInvest.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(transferee.getLoginName());
 
         investTransferPurchaseService.postPurchase(fakeInvest.getId());
 
@@ -313,7 +337,7 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
         assertFalse(actualTransfereeInvestRepays.get(1).isTransferred());
         assertThat(actualTransfereeInvestRepays.get(1).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
-        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(new BigDecimal(actualTransfereeInvestRepays.get(1).getExpectedInterest()).multiply(new BigDecimal(membershipModel.getFee())).longValue()));
         assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
@@ -411,6 +435,9 @@ public class InvestTransferPurchaseServiceTest {
         accountModel.setBalance(balance);
         accountModel.setFreeze(freeze);
         accountMapper.create(accountModel);
+        MembershipModel membershipModel = membershipMapper.findByLevel(0);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUserModel.getLoginName(), membershipModel.getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
         return fakeUserModel;
     }
 
@@ -442,6 +469,8 @@ public class InvestTransferPurchaseServiceTest {
         InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        fakeInvestModel.setInvestFeeRate(membershipModel.getFee());
         investMapper.create(fakeInvestModel);
         return fakeInvestModel;
     }
