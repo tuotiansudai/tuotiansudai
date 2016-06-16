@@ -1,17 +1,5 @@
 @import 'variables';
 
-.layui-layer-btn {
-  text-align: center !important;
-  .layui-layer-btn0 {
-    padding: 3px 35px;
-    background: nth($CK1, 2) !important;
-    border-radius: 4px;
-    border: 1px solid nth($CK1, 2) !important;
-    border-color: nth($CK1, 2) !important;
-    letter-spacing: 3px;
-    color: #fff;
-  }
-}
 .full-screen{
   width: 100%!important;
   margin: 0;
@@ -451,6 +439,20 @@
             span{
               color:#ff0000;
             }
+          }
+        }
+      }
+      .tip-vip-model{
+        .des-text{
+          padding:20px 0;
+          text-align:center;
+        }
+        .btn-text{
+          text-align:center;
+          a{
+            background:#ff752a;
+            border: 1px solid #f46916;
+            color:#fff;
           }
         }
       }

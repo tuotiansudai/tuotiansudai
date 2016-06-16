@@ -15,10 +15,10 @@ public enum GivenMembership {
 
     private final String btnName;
 
-    GivenMembership(String btnName, String url, String description) {
-        this.btnName = btnName;
-        this.url = url;
+    GivenMembership(String description, String url, String btnName) {
         this.description = description;
+        this.url = url;
+        this.btnName = btnName;
     }
 
     public String getDescription() {

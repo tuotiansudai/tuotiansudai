@@ -64,19 +64,18 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			event.preventDefault();
 			$.ajax({
 				url: '/membership/receive',
-				type: 'POST',
+				type: 'GET',
 				dataType: 'json'
 			})
 			.done(function(data) {
 				console.log(data);
+				$('#vipTipModel').html(tpl('vipTipModelTpl', data));
 				layer.open({
 				  type: 1,
+				  move:false,
+				  area:['320px','200px'],
 				  title:'领取须知',
-				  btn:[data.data.btnName],
-				  content: data.data.message,
-				  btn1:function(){
-				  	location.href=data.data.url;
-				  }
+				  content: $('#vipTipModel')
 				});
 			})
 			.fail(function() {

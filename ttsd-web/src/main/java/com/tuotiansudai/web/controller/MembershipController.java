@@ -114,7 +114,7 @@ public class MembershipController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/receive", method = RequestMethod.POST)
+    @RequestMapping(value = "/receive", method = RequestMethod.GET)
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
