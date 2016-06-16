@@ -282,6 +282,10 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         else {
             $('input.captcha', registerUserForm).removeClass('valid').val('');
         }
+        if(_.isEmpty(event.target.value)) {
+            $(event.target).addClass('error').removeClass('valid');
+            $(event.target).next().html('请输入手机号');
+        }
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
     });
