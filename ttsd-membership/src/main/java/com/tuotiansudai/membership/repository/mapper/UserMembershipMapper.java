@@ -34,9 +34,9 @@ public interface UserMembershipMapper {
 
     Integer findRealLevelByLoginName(String loginName);
 
-    UserMembershipModel findByMembershipId(long membershipId);
-
     Long findMembershipPointByLoginName(String loginName);
+
+    long countMembershipByLevel(int level);
 
     void updateMembershipPoint(@Param(value = "loginName") String loginName,
                                @Param(value = "membershipPoint") long membershipPoint);

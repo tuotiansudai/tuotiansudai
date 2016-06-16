@@ -15,6 +15,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -35,7 +36,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
     @Autowired
     private CouponMapper couponMapper;
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
     @Autowired
@@ -63,7 +64,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         if (exchangeCodeService.checkExchangeCodeDailyCount(loginName)) {
             return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(),ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
         }
-        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
+        couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
         String isUsed = "1";
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, isUsed);
 
