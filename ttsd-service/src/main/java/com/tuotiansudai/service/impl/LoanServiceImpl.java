@@ -567,7 +567,7 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
                     loanItemDto.setProgress(100);
                 }
-                if (loanItemDto.getProductType().equals(ProductType.EXPERIENCE)) {
+                if(loanItemDto.getProductType() == ProductType.EXPERIENCE){
                     Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                     Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                     List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);

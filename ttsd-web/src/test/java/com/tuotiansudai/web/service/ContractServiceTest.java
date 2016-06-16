@@ -102,7 +102,6 @@ public class ContractServiceTest {
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "testUserModel", new Date(), Source.ANDROID, null, 0.1);
         investModel.setCreatedTime(new Date());
         return investModel;
-
     }
 
     private UserModel getUserModel() throws ParseException {

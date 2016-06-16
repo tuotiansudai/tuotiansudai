@@ -188,9 +188,9 @@
                     <div class="today-title">
                     </div>
                     <div class="gift-img">
-                        <img src="http://usr.im/250x250?bg=f39800&text=250x250" alt="神秘大奖" width="100%">
+                        <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" width="100%">
                     </div>
-                    <div class="gift-name">华为R8</div>
+                    <div class="gift-name"><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></div>
                     <a href="/loan-list" class="get-rank" target="_blank">我要上榜</a>
                 </div>
             </div>

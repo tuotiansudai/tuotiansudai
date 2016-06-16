@@ -25,13 +25,6 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
-    BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName,
-                                                                                                    int index,
-                                                                                                    int pageSize,
-                                                                                                    Date startTime,
-                                                                                                    Date endTime,
-                                                                                                    LoanStatus loanStatus);
-
     long findCountInvestPagination(Long loanId, String investorLoginName,
                                    String channel, Source source, String role,
                                    Date startTime, Date endTime,
@@ -46,7 +39,7 @@ public interface InvestService {
                                                 Date startTime,
                                                 Date endTime,
                                                 InvestStatus investStatus,
-                                                LoanStatus loanStatus, boolean isPagination);
+                                                LoanStatus loanStatus);
 
     void turnOnAutoInvest(AutoInvestPlanModel model);
 

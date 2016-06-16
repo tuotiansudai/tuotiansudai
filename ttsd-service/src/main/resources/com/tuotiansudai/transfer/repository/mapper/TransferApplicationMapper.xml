@@ -44,6 +44,18 @@
         <result column="application_time" property="applicationTime"></result>
     </resultMap>
 
+    <resultMap id="transferableInvestPaginationItemDataDtoMap" type="TransferableInvestPaginationItemDataDto">
+        <result column="loan_id" property="loanId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="amount" property="amount"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="create_time" property="createdTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+    </resultMap>
+
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
         value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
@@ -342,4 +354,5 @@
           SELECT count(1) FROM transfer_application  WHERE login_name = #{loginName}
                 AND application_time between '2016-07-01' and #{tradingTime}
     </select>
+
 </mapper>

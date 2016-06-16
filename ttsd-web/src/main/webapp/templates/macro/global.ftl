@@ -133,7 +133,7 @@
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
     document.getElementById("logout-link").onclick=function (event) {
-        event.preventDefault();
+//        event.preventDefault();
         document.getElementById("logout-form").submit();
     };
     </@security.authorize>

@@ -45,7 +45,7 @@
                         <div class="recharge-form pad-m">
                             <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
 
-                                银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
+                                银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="tc clear-blank-m">
                                     <input type="submit" class="btn-normal bind-card-submit" disabled="disabled" value="确认绑定"/>
