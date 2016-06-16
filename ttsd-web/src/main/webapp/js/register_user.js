@@ -287,6 +287,9 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             $(event.target).next().html('请输入手机号');
             fetchCaptchaElement.prop('disabled', true);
         }
+        else if(event.target.value.length<11) {
+            fetchCaptchaElement.prop('disabled', true);
+        }
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
     });
