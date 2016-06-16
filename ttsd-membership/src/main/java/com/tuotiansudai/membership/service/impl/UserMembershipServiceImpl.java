@@ -56,12 +56,12 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Override
     public GivenMembership receiveMembership(String loginName){
-        if(DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().before(DateTime.now().toDate())){
+        if(DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
             return GivenMembership.NO_TIME;
         }
 
-        if(DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
-
+        if(DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().before(DateTime.now().toDate())){
+            return GivenMembership.END_TIME;
         }
 
         if(loginName == null || loginName.equals("")){

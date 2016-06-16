@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -15,6 +16,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
+import org.jsoup.helper.DataUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,8 @@ public class UserMembershipServiceTest {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Test
     public void shouldEvaluateWhenLoginNameIsNotExist() throws Exception {
@@ -160,7 +164,10 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsNoTime() throws ParseException {
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.parse("2016-07-01"));
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(DateUtils.addDays(new Date(),1)));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
         assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_TIME,is(GivenMembership));
@@ -168,13 +175,20 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsNoLogin(){
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         GivenMembership GivenMembership = userMembershipService.receiveMembership("");
         assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_LOGIN,is(GivenMembership));
     }
 
     @Test
     public void shouldReceiveMembershipIsEqualsNoRegister() throws ParseException {
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         GivenMembership GivenMembership = userMembershipService.receiveMembership(fakeUser.getLoginName());
         assertThat(com.tuotiansudai.membership.repository.model.GivenMembership.NO_REGISTER,is(GivenMembership));
@@ -182,7 +196,10 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyReceived(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", new Date()));
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), createMembership(1).getId(), new DateTime().plusDays(130).toDate() , UserMembershipType.GIVEN);
@@ -193,7 +210,10 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyRegisterNotInvest1000(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
@@ -207,7 +227,10 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyRegisterAlreadyInvest1000(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
@@ -223,7 +246,10 @@ public class UserMembershipServiceTest {
 
     @Test
     public void shouldReceiveMembershipIsEqualsAlreadyStartActivityRegister(){
-        ReflectionTestUtils.setField(userMembershipService, "membershipStartDate" ,DateTime.now());
+        List<String> date = Lists.newArrayList();
+        date.add(sdf.format(new Date()));
+        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
+        ReflectionTestUtils.setField(userMembershipService, "heroRankingActivityPeriod" ,date);
         UserModel fakeUser = getFakeUser("testReceive");
         long loanId = idGenerator.generate();
         createLoanByUserId(fakeUser.getLoginName(),loanId);
