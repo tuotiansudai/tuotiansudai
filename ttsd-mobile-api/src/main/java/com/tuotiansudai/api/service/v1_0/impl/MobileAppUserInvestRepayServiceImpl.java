@@ -39,7 +39,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         int periodCount = 0;
 
         try {
-            InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId()));
+            InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());

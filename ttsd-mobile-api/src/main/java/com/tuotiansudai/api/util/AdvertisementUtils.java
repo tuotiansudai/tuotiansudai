@@ -47,10 +47,10 @@ public class AdvertisementUtils {
                 getMethod = "getPicture" + requestDto.getBaseParam().getScreenW().trim() + requestDto.getBaseParam().getScreenH().trim().trim();
                 Method method = clazz.getDeclaredMethod(getMethod);
                 if("iOS".equals(requestDto.getBaseParam().getPlatform())){
-                    pictureUrl = method.invoke(advertisementPictureResponseDataDto, new Object[]{}).toString();
+                    pictureUrl = method.invoke(advertisementPictureResponseDataDto, new Object[]{}).toString().replaceFirst("\\{static\\}", staticDomainName);
                 }
                 else if("android".equals(requestDto.getBaseParam().getPlatform())){
-                    pictureUrl = advertisementPictureResponseDataDto.getPicture7201280();
+                    pictureUrl = advertisementPictureResponseDataDto.getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);;
                 }
             }
             catch (NoSuchMethodException e) {
