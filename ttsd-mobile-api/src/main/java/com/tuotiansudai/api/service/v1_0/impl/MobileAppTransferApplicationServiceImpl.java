@@ -306,7 +306,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                 }
 
                 if (org.apache.commons.collections4.CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(),invest.getLoginName(), invest.getAmount());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
