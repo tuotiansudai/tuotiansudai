@@ -285,6 +285,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         if(_.isEmpty(event.target.value)) {
             $(event.target).addClass('error').removeClass('valid');
             $(event.target).next().html('请输入手机号');
+            fetchCaptchaElement.prop('disabled', true);
         }
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
