@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -11,10 +12,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -48,14 +55,14 @@ public class AccountServiceTest {
     private LoanMapper loanMapper;
 
     @Test
-    public void shouldTransferAblerAccountDetailCountIsOk(){
+    public void shouldTransferAblerAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("transferable");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.TRANSFERABLE);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,150000L,1000L,1000L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,150000L,1000L,1000L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.TRANSFERABLE);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -63,22 +70,22 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,2000L);
-        assertEquals(collectingPrincipal,150000L);
-        assertEquals(sumRepaying,1000L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 2000L);
+        assertEquals(collectingPrincipal, 150000L);
+        assertEquals(sumRepaying, 1000L);
+        assertEquals(freeze, 1000L);
     }
 
     @Test
-    public void shouldTransferRingAccountDetailCountIsOk(){
+    public void shouldTransferRingAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("transferring");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.TRANSFERRING);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,150000L,1000L,1000L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,150000L,1000L,1000L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.TRANSFERRING);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -86,23 +93,23 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,2000L);
-        assertEquals(collectingPrincipal,150000L);
-        assertEquals(sumRepaying,1000L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 2000L);
+        assertEquals(collectingPrincipal, 150000L);
+        assertEquals(sumRepaying, 1000L);
+        assertEquals(freeze, 1000L);
     }
 
 
     @Test
-    public void shouldSuccessAccountDetailCountIsOk(){
+    public void shouldSuccessAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("success");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.SUCCESS);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,350000L,2000L,500L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,350000L,2000L,500L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.SUCCESS);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 350000L, 2000L, 500L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 350000L, 2000L, 500L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -110,11 +117,11 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,1000L);
-        assertEquals(collectingPrincipal,350000L);
-        assertEquals(sumRepaying,1500L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 1000L);
+        assertEquals(collectingPrincipal, 350000L);
+        assertEquals(sumRepaying, 1500L);
+        assertEquals(freeze, 1000L);
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
@@ -139,7 +146,7 @@ public class AccountServiceTest {
     }
 
 
-    public InvestModel createInvest(String loginName,long loanId,TransferStatus transferStatus){
+    public InvestModel createInvest(String loginName, long loanId, TransferStatus transferStatus) {
         InvestModel investModel = new InvestModel();
         investModel.setId(idGenerator.generate());
         investModel.setAmount(1000);
@@ -154,7 +161,7 @@ public class AccountServiceTest {
     }
 
 
-    public InvestRepayModel createInvestRepay(long investId,RepayStatus tepayStatus,long corpus,long actualFee,long expectedFee){
+    public InvestRepayModel createInvestRepay(long investId, RepayStatus tepayStatus, long corpus, long actualFee, long expectedFee) {
         List<InvestRepayModel> list = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
@@ -177,7 +184,7 @@ public class AccountServiceTest {
 
     }
 
-    public AccountModel createAccountModel(String loginName,long balance){
+    public AccountModel createAccountModel(String loginName, long balance) {
         AccountModel accountModel = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(1000L);
@@ -185,7 +192,7 @@ public class AccountServiceTest {
         return accountModel;
     }
 
-    private UserBillModel createUserBillModel(String loginName){
+    private UserBillModel createUserBillModel(String loginName) {
         UserBillModel userBillModel = new UserBillModel();
         userBillModel.setId(idGenerator.generate());
         userBillModel.setAmount(1000L);
@@ -211,5 +218,64 @@ public class AccountServiceTest {
         userModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModel);
         return userModel;
+    }
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private  static int num=0;
+
+    public static int getNo(){
+        num=num+1;
+        System.out.println(num);
+        return num;
+    }
+    @Test
+    public void testRedisConnection() {
+
+        ExecutorService exec = Executors.newCachedThreadPool();
+        Map keywordMap = new HashMap();
+        keywordMap.put("test01", "38338");
+        keywordMap.put("test02", "38339");
+        keywordMap.put("test03", "38340");
+        keywordMap.put("test04", "38341");
+        keywordMap.put("test05", "38342");
+        int thread_num = 1500;
+        final Semaphore semp = new Semaphore(thread_num);
+        // 模拟2000个客户端访问
+        Set set = keywordMap.keySet();//
+
+        Iterator it= set.iterator();
+        while(it.hasNext()){
+            Runnable run = new Runnable() {
+                int NO = num;
+                @Override
+                public void run() {
+                    try {
+                        semp.acquire();
+                        System.out.println("Thread:" + NO);
+                        String host = "http://baidu.com";
+                        URL url = new URL(host);// 此处填写供测试的url
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setDoOutput(true);
+
+                        connection.setDoInput(true);
+
+                        PrintWriter out = new PrintWriter(connection.getOutputStream());
+
+                        out.flush();
+
+                        out.close();
+
+                        System.out.println("第：" + NO + " 个");
+                        semp.release();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+        }
+
+
     }
 }

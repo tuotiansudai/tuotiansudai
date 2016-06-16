@@ -9,10 +9,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
 
@@ -27,7 +31,8 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
-    private static DateTime membershipStartDate = DateTime.parse("2016-07-01");
+    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
+    private List<String> heroRankingActivityPeriod;
 
     @Override
     public MembershipModel getMembershipByLevel(int level) {
@@ -51,8 +56,12 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Override
     public GivenMembership receiveMembership(String loginName){
-        if(Days.daysBetween(DateTime.now(),membershipStartDate).getDays() > 0){
+        if(DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().before(DateTime.now().toDate())){
             return GivenMembership.NO_TIME;
+        }
+
+        if(DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
+
         }
 
         if(loginName == null || loginName.equals("")){
@@ -69,11 +78,11 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
         long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(loginName);
         Date registerTime = userMembershipMapper.findAccountRegisterTimeByLoginName(loginName);
-        if(registerTime != null && registerTime.getTime() < membershipStartDate.getMillis() && investAmount < 100000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000){
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }
 
-        if(registerTime != null && registerTime.getTime() < membershipStartDate.getMillis() && investAmount >= 100000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 100000){
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
             return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
