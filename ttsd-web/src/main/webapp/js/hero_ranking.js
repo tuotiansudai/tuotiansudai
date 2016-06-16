@@ -129,5 +129,6 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		$getVip.on('click', function() {
 			cnzzPush.trackClick('152周年庆', '领取会员', '英雄榜');
 		});
+		
 	});
 });
