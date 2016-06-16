@@ -123,11 +123,11 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		refeInvest('history', $('.date-info:eq(1)').text());
 
 		$getRank.on('click', function() {
-			cnzzPush.trackClick('153周年庆', '我要上榜', '我要上榜');
+			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');
 		});
 
 		$getVip.on('click', function() {
-			cnzzPush.trackClick('152周年庆', '领取会员', '领取会员');
+			cnzzPush.trackClick('152周年庆', '领取会员', '英雄榜');
 		});
 	});
 });
