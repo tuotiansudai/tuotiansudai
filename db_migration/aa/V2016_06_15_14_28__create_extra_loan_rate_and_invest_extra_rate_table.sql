@@ -7,7 +7,8 @@ CREATE TABLE `aa`.`extra_loan_rate` (
   `rate`                  DOUBLE  NOT NULL,
   `created_time`         DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_EXTRA_LOAN_RATE_LOAN_ID_REF_LOAN_ID FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`)
+  CONSTRAINT FK_EXTRA_LOAN_RATE_LOAN_ID_REF_LOAN_ID FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`),
+  CONSTRAINT FK_EXTRA_RATE_RULE_ID_REF_EXTRA_LOAN_RATE_RULE_ID FOREIGN KEY (`extra_rate_rule_id`) REFERENCES `aa`.`extra_loan_rate_rule` (`id`)
 )
   ENGINE = INNODB
   AUTO_INCREMENT = 100001
