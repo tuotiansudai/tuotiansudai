@@ -2,10 +2,11 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ExtraLoanRateRuleDto;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateRuleMapper;
 import com.tuotiansudai.repository.model.ExtraLoanRateRuleModel;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.service.ExtraLoanRateRuleService;
+import com.tuotiansudai.service.ExtraLoanRateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExtraLoanRateRuleServiceImpl implements ExtraLoanRateRuleService {
+public class ExtraLoanRateServiceImpl implements ExtraLoanRateService {
 
     @Autowired
     private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;

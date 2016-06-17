@@ -20,4 +20,8 @@
         select * from extra_loan_rate_rule where name = #{loanName} and product_type = #{productType} order by level
     </select>
 
+    <select id="findById" parameterType="map" resultMap="extraLoanRateRuleResultMap">
+        select * from extra_loan_rate_rule where id = #{id}
+    </select>
+
 </mapper>

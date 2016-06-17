@@ -1,10 +1,11 @@
 CREATE TABLE `aa`.`extra_loan_rate` (
   `id`                     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `loan_id`               BIGINT UNSIGNED NOT NULL,
-  `min_invest_amount`    BIGINT UNSIGNED NOT NULL,
-  `max_invest_amount`    BIGINT UNSIGNED NOT NULL,
+  `extra_rate_rule_id`  BIGINT UNSIGNED,
+  `min_invest_amount`   BIGINT UNSIGNED NOT NULL,
+  `max_invest_amount`   BIGINT UNSIGNED NOT NULL,
   `rate`                  DOUBLE  NOT NULL,
-  `created_time`          DATETIME NOT NULL,
+  `created_time`         DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_EXTRA_LOAN_RATE_LOAN_ID_REF_LOAN_ID FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`)
 )

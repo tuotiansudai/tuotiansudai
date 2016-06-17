@@ -12,4 +12,6 @@ public interface ExtraLoanRateRuleMapper {
 
     List<ExtraLoanRateRuleModel> findExtraLoanRateRuleByNameAndProductType(@Param(value = "loanName") String loanName, @Param(value = "productType") ProductType productType);
 
+    ExtraLoanRateRuleModel findById(@Param(value = "id") long id);
+
 }

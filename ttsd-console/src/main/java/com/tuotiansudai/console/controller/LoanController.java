@@ -3,12 +3,13 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.service.ExtraLoanRateRuleService;
+import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
@@ -35,7 +36,10 @@ public class LoanController {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
-    private ExtraLoanRateRuleService extraLoanRateRuleService;
+    private ExtraLoanRateService extraLoanRateService;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
@@ -78,6 +82,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
+        modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
@@ -124,7 +129,7 @@ public class LoanController {
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType){
-        return extraLoanRateRuleService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
+        return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
 
 }

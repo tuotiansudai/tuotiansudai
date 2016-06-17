@@ -10,6 +10,8 @@ public class ExtraLoanRateModel implements Serializable {
 
     private long loanId;
 
+    private long extraRateRuleId;
+
     private long minInvestAmount;
 
     private long maxInvestAmount;
@@ -66,4 +68,11 @@ public class ExtraLoanRateModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public long getExtraRateRuleId() {
+        return extraRateRuleId;
+    }
+
+    public void setExtraRateRuleId(long extraRateRuleId) {
+        this.extraRateRuleId = extraRateRuleId;
+    }
 }
