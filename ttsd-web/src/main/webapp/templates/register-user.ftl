@@ -21,7 +21,8 @@
             </li>
                 <li>
                     <i class="sprite-register-ic-mobile"></i>
-                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
+                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11"
+                           value="${(originalFormData.mobile)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
@@ -38,9 +39,8 @@
                 </li>
                 <li class="agree-last">
                     <label for="agreementInput" class="check-label" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                       <span> <input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
+                    <span><input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
                     <i class="sprite-register-yes-checked"></i>
-
                 </li>
         </ul>
 

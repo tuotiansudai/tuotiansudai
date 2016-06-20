@@ -350,4 +350,9 @@
         </where>
     </select>
 
+    <select id="findCountTransferApplicationByApplicationTime" resultType="long" parameterType="map">
+          SELECT count(1) FROM transfer_application  WHERE login_name = #{loginName}
+                AND application_time between '2016-07-01' and #{tradingTime}
+    </select>
+
 </mapper>

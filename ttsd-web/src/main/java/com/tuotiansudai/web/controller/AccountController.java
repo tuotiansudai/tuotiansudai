@@ -1,14 +1,12 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/account")
@@ -49,13 +46,19 @@ public class AccountController {
     @Autowired
     private UserCouponService userCouponService;
 
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
         Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+
         Date endTime = DateUtils.addMonths(startTime, 1);
         String loginName = LoginUserInfo.getLoginName();
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         modelAndView.addObject("loginName",loginName);
+        modelAndView.addObject("userMembershipLevel", membershipModel != null?membershipModel.getLevel():"");
         modelAndView.addObject("balance",accountService.getBalance(loginName));
         modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));
         modelAndView.addObject("collectingPrincipal",investRepayService.findSumRepayingCorpusByLoginName(loginName));

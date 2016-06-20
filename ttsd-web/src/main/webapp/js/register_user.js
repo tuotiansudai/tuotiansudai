@@ -13,7 +13,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $checkbox=$('label.check-label',registerUserForm),
         $registerSubmit=$('input[type="submit"]',registerUserForm),
         referrerError=$('#referrerError'),
-        passedNumber= 0,
         countTimer;
     var $frontInput=registerUserForm.find('input:lt(4)');
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
@@ -22,8 +21,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         fetchCaptchaElement.prop('disabled', true);
     });
 
-    $checkbox.on('click',function(event) {
-        if(event.target.tagName.toUpperCase()=='A') {
+    $checkbox.on('click', function (event) {
+        if (event.target.tagName.toUpperCase() == 'A') {
             return;
         }
         var $this=$(this),
@@ -108,7 +107,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
                         var seconds = 60
-                         countTimer = setInterval(function () {
+                        countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(countTimer);
@@ -224,7 +223,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
                 if (element.name === 'mobile' && loginName.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
-                    mobile.attr('preValue',mobile.val());
+                    mobile.attr('preValue', mobile.val());
                 }
                 if (element.name === 'loginName' && mobile.hasClass('valid')) {
                     fetchCaptchaElement.prop('disabled', false);
@@ -265,6 +264,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         }
 
     }
+
     $agreement.on('click',function() {
         checkValidNum();
     });
@@ -314,6 +314,5 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             referrerError.html('').hide();
             checkValidNum();
         }
-
     });
 });

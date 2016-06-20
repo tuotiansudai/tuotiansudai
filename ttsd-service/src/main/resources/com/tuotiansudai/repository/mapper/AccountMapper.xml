@@ -20,11 +20,12 @@
         <result column="auto_invest" property="autoInvest"></result>
         <result column="auto_repay" property="autoRepay"></result>
         <result column="no_password_invest" property="noPasswordInvest"></result>
+        <result column="membership_point" property="membershipPoint"></result>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze, register_time)
-        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime})
+        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze, register_time, membership_point)
+        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
@@ -54,7 +55,8 @@
           auto_invest = #{autoInvest},
           auto_repay = #{autoRepay},
           no_password_invest = #{noPasswordInvest},
-          point = #{point}
+          point = #{point},
+          membership_point = #{membershipPoint}
         where login_name = #{loginName}
     </update>
 

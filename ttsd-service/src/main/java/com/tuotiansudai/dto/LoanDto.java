@@ -72,13 +72,6 @@ public class LoanDto extends BaseDataDto implements Serializable {
     private String descriptionHtml;
 
     /***
-     * 投资手续费比例
-     ***/
-    @NotEmpty
-    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
-    private String investFeeRate;
-
-    /***
      * 最小投资金额
      ***/
     @NotEmpty
@@ -302,14 +295,6 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setDescriptionHtml(String descriptionHtml) {
         this.descriptionHtml = descriptionHtml;
-    }
-
-    public String getInvestFeeRate() {
-        return investFeeRate;
-    }
-
-    public void setInvestFeeRate(String investFeeRate) {
-        this.investFeeRate = investFeeRate;
     }
 
     public String getMinInvestAmount() {

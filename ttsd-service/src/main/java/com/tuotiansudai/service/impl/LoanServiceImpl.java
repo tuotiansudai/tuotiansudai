@@ -444,7 +444,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.CANCEL == status) {
             count = loanMapper.findCountCanceledByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCanceledPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -603,7 +603,7 @@ public class LoanServiceImpl implements LoanService {
                 if(loanItemDto.getProductType() == ProductType.EXPERIENCE){
                     Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                     Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-                    List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(),beginTime,endTime);
+                    List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
                     long investCount = investModelList.size() % 100;
                     long investAmount = couponService.findExperienceInvestAmount(investModelList);
                     loanItemDto.setAlert(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount));

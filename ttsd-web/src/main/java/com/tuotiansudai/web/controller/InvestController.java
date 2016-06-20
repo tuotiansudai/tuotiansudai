@@ -161,7 +161,8 @@ public class InvestController {
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
-        long expectedInterest = investService.estimateInvestIncome(loanId, amount);
+        String loginName = LoginUserInfo.getLoginName();
+        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
@@ -169,8 +170,9 @@ public class InvestController {
     @ResponseBody
     public String calculateCouponExpectedInterest(@PathVariable long loanId,
                                                   @PathVariable long amount,
-                                                  @RequestParam List<Long> couponIds) {
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponIds, amount);
+                                                  @RequestParam List<Long> couponIds,
+                                                  @RequestParam String loginName) {
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 

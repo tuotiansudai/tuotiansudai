@@ -1,52 +1,78 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 <div class="home-page-container">
-    <div class="banner-box">
-        <div class="banner-img-list">
-            <a href="/activity/invest-achievement" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
-            </a>
-            <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
-            </a>
-            <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
-            </a>
-            <a href="/activity/birth-month" onclick="cnzzPush.trackClick('23首页','Banner模块','生日月')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/birth/birth-month-new.jpg" alt="生日月投资收益翻倍" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/birth/birth-month-phonenew.jpg" alt="生日月投资收益翻倍" class="iphone-img">
-            </a>
-            <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
-            </a>
-            <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
-                <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
-            </a>
-            <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
-                <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
-            </a>
-            <a href="/activity/app-download" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/download/download-bg-new.png" alt="App下载" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-downloadnew.png" alt="App下载" class="iphone-img">
-            </a>
+    <div class="banner-box" id="bannerBox">
+        <div class="banner-img-list bd">
+            <ul>
+                <li>
+                <a href="/activity/hero-ranking" target="_blank">
+                    <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
+                    <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
+                </a>
+                </li>
+                <li>
+                <a href="/activity/invest-achievement" target="_blank">
+                    <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                    <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                </a>
+                </li>
+                <li>
+                    <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                    <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                    <a href="/activity/birth-month" onclick="cnzzPush.trackClick('23首页','Banner模块','生日月')" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/birth/birth-month-new.jpg" alt="生日月投资收益翻倍" class="pc-img">
+                        <img src="${staticServer}/images/sign/actor/birth/birth-month-phonenew.jpg" alt="生日月投资收益翻倍" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                    <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+                    <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                    <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
+                </a>
+                </li>
+                <li>
+                    <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
+                        <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
+                        <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                    <a href="/activity/app-download" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/download/download-bg-new.png" alt="App下载" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-downloadnew.png" alt="App下载" class="iphone-img">
+                    </a>
+                </li>
+            </ul>
         </div>
-        <ul class="scroll-num">
-            <li class="selected"></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-
+        <div class="hd">
+            <ul class="scroll-num">
+                <li class="on"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
         <div class="page-width">
             <@global.isAnonymous>
                 <div class="register-ad-box fr tc">
@@ -371,40 +397,43 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <div class="free-guide">
-                                
+
                     </div>
                     <div class="product-box tc product-type new-free-pro">
-                            <i class="new-free"></i>
-                            <div class="pad-m" title="BLQ001" data-url="/loan/1">
-                                <h2 class="pr-title">新手体验项目</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em><b>15</b>
-                                           %</em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
-                                    <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
-                                </dl>
-                                <div class="project-schedule clear-blank clearfix">
-                                    <div class="pro">
-                                        <div class="p-title">
-                                            <span class="fl">项目进度</span>
-                                            <span class="point fr">20%</span>
-                                        </div>
-                                        <div class="process-percent">
-                                            <div class="percent" style="width:20%"></div>
-                                        </div>
-                                    </div>
+                        <i class="new-free"></i>
+
+                        <div class="pad-m" title="BLQ001" data-url="/loan/1">
+                            <h2 class="pr-title">新手体验项目</h2>
+
+                            <div class="pr-square tc">
+                                <div class="pr-square-in">
+                                    <em><b>15</b>
+                                        %</em>
+                                    <i>预期年化收益</i>
                                 </div>
                             </div>
-                            <a href="/loan/" class="btn-normal">立即投资</a>
-                            <div class="guide-img">
-                                <span class="guide-btn"></span>
+                            <dl class="pr-info">
+                                <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
+                                <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
+                            </dl>
+                            <div class="project-schedule clear-blank clearfix">
+                                <div class="pro">
+                                    <div class="p-title">
+                                        <span class="fl">项目进度</span>
+                                        <span class="point fr">20%</span>
+                                    </div>
+                                    <div class="process-percent">
+                                        <div class="percent" style="width:20%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <a href="/loan/" class="btn-normal">立即投资</a>
+
+                        <div class="guide-img">
+                            <span class="guide-btn"></span>
+                        </div>
+                    </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
