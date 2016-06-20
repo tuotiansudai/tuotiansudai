@@ -4,6 +4,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -60,6 +61,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
+        MembershipModel membershipModel = this.getFakeMembership(1, 0, 0, 0.1);
 
         DateTime recheckTime = new DateTime().minusDays(5);
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), recheckTime.toDate());
@@ -72,6 +74,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
 
         InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);
+        invest.setInvestFeeRate(membershipModel.getFee());
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
