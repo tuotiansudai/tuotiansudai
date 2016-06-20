@@ -24,4 +24,4 @@ ttsd-web/src/main/webapp/js/dest/
 ttsd-web/src/main/webapp/js/debug/
 SignVerProp.properties
 cs/.env
-
+ttsd-mobile-api/src/main/webapp/api/js/

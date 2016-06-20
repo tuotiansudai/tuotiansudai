@@ -144,7 +144,7 @@ public class InterestCalculator {
         return expectedInterest;
     }
 
-    public static long estimateCouponExpectedFee(double investFeeRate, LoanModel loanModel, CouponModel couponModel, long amount) {
+    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
         long estimateCouponExpectedInterest = estimateCouponExpectedInterest(amount, loanModel, couponModel);
         long expectedFee = 0;
         if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {

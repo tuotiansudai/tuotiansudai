@@ -2,7 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "scripts": {
-    "start": "grunt",
+    "start": "grunt & nodemon src/main/webapp/feDev/server.js",
     "dist": "grunt dist",
     "rjs": "grunt requirejs"
   },
@@ -18,10 +18,17 @@
     "grunt-data-uri": "^0.3.0",
     "grunt-filerev": "^2.3.1",
     "grunt-sass": "^1.2.0",
-    "load-grunt-tasks": "^3.5.0"
+    "load-grunt-tasks": "^3.5.0",
+    "matchdep": "^1.0.1",
+    "nodemon": "^1.9.2"
   },
   "description": "\"grunt\": \"~0.4.5\",",
   "main": "Gruntfile.js",
   "author": "belen",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "freemarker.js": "^1.2.2",
+    "underscore": "^1.8.3"
+  }
 }

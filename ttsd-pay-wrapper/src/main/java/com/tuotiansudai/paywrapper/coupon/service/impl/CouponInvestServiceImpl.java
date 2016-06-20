@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -45,7 +46,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
@@ -133,16 +134,18 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             model.setUsedTime(new Date());
             model.setStatus(InvestStatus.SUCCESS);
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(investModel.getAmount(), loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investModel.getInvestFeeRate(), loanModel, couponModel, investModel.getAmount());
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, investModel.getAmount(), investModel.getInvestFeeRate());
             model.setExpectedInterest(expectedInterest);
             model.setExpectedFee(expectedFee);
             userCouponMapper.update(model);
         }
 
-        couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
+        couponAssignmentService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
-                UserGroup.REGISTERED_NOT_INVESTED_USER,
-                UserGroup.IMPORT_USER),
-                null, null);
+                UserGroup.IMPORT_USER,
+                UserGroup.AGENT,
+                UserGroup.CHANNEL,
+                UserGroup.STAFF,
+                UserGroup.STAFF_RECOMMEND_LEVEL_ONE));
     }
 }

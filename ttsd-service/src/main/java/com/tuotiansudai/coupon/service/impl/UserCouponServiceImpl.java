@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -20,6 +21,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +102,28 @@ public class UserCouponServiceImpl implements UserCouponService {
         }));
     }
 
+    @Override
+    public UserCouponDto getExperienceInvestUserCoupon(String loginName) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON));
+
+        Optional<UserCouponModel> userCouponModelOptional = Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                return couponModel.getProductTypes().contains(ProductType.EXPERIENCE)
+                        && userCouponModel.getStatus() != InvestStatus.SUCCESS
+                        && userCouponModel.getEndTime().after(new Date());
+            }
+        });
+
+        if (userCouponModelOptional.isPresent()) {
+            UserCouponModel userCouponModel = userCouponModelOptional.get();
+            return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+        }
+
+        return null;
+    }
+
     /**
      * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、投资体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
      */
@@ -132,7 +156,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(investFeeRate, loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
                 maxBenefitUserCoupons.add(usableUserCoupon);

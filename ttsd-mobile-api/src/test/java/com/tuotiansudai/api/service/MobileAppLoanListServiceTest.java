@@ -39,7 +39,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoanModel("test2"));
         LoanModel loanModelNovice = getFakeLoanModel("test3");
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
-        when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
+        when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyBoolean(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();

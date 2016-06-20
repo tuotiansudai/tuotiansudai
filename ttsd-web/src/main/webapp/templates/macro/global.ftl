@@ -133,7 +133,7 @@
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
     document.getElementById("logout-link").onclick=function (event) {
-        event.preventDefault();
+//        event.preventDefault();
         document.getElementById("logout-form").submit();
     };
     </@security.authorize>
@@ -225,8 +225,8 @@
     phoneLoadFun();
 
     document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');  
-        toggleClass(obj,"active"); 
+        var obj = document.getElementById('getMore');
+        toggleClass(obj, "active");
     };
 
     function hasClass(obj, cls) {  

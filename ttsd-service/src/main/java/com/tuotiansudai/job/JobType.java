@@ -38,7 +38,7 @@ public enum JobType {
     AdvanceRepay("提前还款"),
     AutoLoanOut("满标自动放款"),
     SendRedEnvelope("放款发红包"),
-    CouponNotify("优惠券通知"),
+    CouponNotify("优惠券短信通知"),
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
     BirthdayNotify("生日月用户短信提醒"),
@@ -51,6 +51,7 @@ public enum JobType {
     AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
     CheckUserBalanceMonthly("用户余额对账"),
     AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励"),
+    ExperienceRepay("新手体验标还款"),
     SendCouponIncome("优惠券收益发放推送");
 
     private final String description;
