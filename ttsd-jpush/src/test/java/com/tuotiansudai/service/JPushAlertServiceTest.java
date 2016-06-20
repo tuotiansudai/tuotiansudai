@@ -243,7 +243,7 @@ public class JPushAlertServiceTest {
         return exchangeCouponDto;
     }
 
-    private ExchangeCouponDto fakeCouponDto1() {
+    private ExchangeCouponDto fakeCouponDto(CouponType couponType, UserGroup userGroup) {
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
         exchangeCouponDto.setId(1001L);
         exchangeCouponDto.setAmount("1000.00");
@@ -251,12 +251,12 @@ public class JPushAlertServiceTest {
         exchangeCouponDto.setEndTime(new Date());
         exchangeCouponDto.setStartTime(new Date());
         exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setCouponType(CouponType.RED_ENVELOPE);
+        exchangeCouponDto.setCouponType(couponType);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType._180);
         exchangeCouponDto.setProductTypes(productTypes);
         exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
+        exchangeCouponDto.setUserGroup(userGroup);
         return exchangeCouponDto;
     }
 
@@ -414,7 +414,7 @@ public class JPushAlertServiceTest {
             loanRepayModels.add(loanRepayModel1);
         }
 
-        CouponModel couponModel = new CouponModel(fakeCouponDto());
+        CouponModel couponModel = new CouponModel(fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER));
 
         InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
 
@@ -489,7 +489,7 @@ public class JPushAlertServiceTest {
             repayModel.setPeriod(i);
             loanRepayModels.add(repayModel);
         }
-        CouponModel couponModel = new CouponModel(fakeCouponDto1());
+        CouponModel couponModel = new CouponModel(fakeCouponDto(CouponType.RED_ENVELOPE, UserGroup.ALL_USER));
         InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
         List<UserCouponModel> userCouponModels = new ArrayList<>();
         UserCouponModel userCouponModel = new UserCouponModel();
