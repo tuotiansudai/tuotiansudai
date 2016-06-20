@@ -1,5 +1,7 @@
 package com.tuotiansudai.util;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,23 +29,5 @@ public class DateUtil {
             e.printStackTrace();
         }
         return (int)(end.getTime() - begin.getTime()) / 1000;
-    }
-
-    public static int compareDate(String date1, String date2) {
-       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date dt1 = df.parse(date1);
-            Date dt2 = df.parse(date2);
-            if (dt1.getTime() > dt2.getTime()) {
-                return 1;
-            } else if (dt1.getTime() < dt2.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 }

@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,7 +61,7 @@ public class LoanRepayDataItemDto {
         this.actualInterest = AmountConverter.convertCentToString(loanRepayModel.getActualInterest());
         this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         this.loanRepayStatus = loanRepayModel.getStatus();
-        this.showRepayStatus =(loanRepayModel.getActualRepayDate() != null && DateUtil.compareDate(sdf.format(loanRepayModel.getRepayDate()), sdf.format(loanRepayModel.getActualRepayDate())) == 1)? "提前还款":loanRepayModel.getStatus().getDescription();
+        this.showRepayStatus =(loanRepayModel.getActualRepayDate() != null && new DateTime(loanRepayModel.getActualRepayDate()).withTimeAtStartOfDay().isBefore(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()))? "提前还款":loanRepayModel.getStatus().getDescription();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
     }
