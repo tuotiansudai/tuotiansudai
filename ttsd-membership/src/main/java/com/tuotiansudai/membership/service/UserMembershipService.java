@@ -1,8 +1,7 @@
 package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-
-import java.util.List;
+import com.tuotiansudai.membership.repository.model.GivenMembership;
 
 public interface UserMembershipService {
 
@@ -11,5 +10,7 @@ public interface UserMembershipService {
     int getProgressBarPercent(String loginName);
 
     int getExpireDayByLoginName(String loginName);
+
+    GivenMembership receiveMembership(String loanName);
 
 }

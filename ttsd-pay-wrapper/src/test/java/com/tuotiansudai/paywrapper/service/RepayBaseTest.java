@@ -59,12 +59,8 @@ public class RepayBaseTest {
     protected AccountModel getFakeAccount(UserModel userModel) {
         AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
         fakeAccount.setBalance(1000000);
+        fakeAccount.setMembershipPoint(50001);
         return fakeAccount;
-    }
-
-    protected UserMembershipModel getFakeUserMembership(String loginName, long membershipId){
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
-        return userMembershipModel;
     }
 
     protected MembershipModel getFakeMembership(long id, long experience, int level, double fee){
@@ -74,6 +70,12 @@ public class RepayBaseTest {
         membershipModel.setLevel(level);
         membershipModel.setFee(fee);
         return membershipModel;
+    }
+
+    protected UserMembershipModel getFakeUserMemberShip(String loginName, UserMembershipType type, long membershipId) {
+        Date expiredTime = new DateTime().plusYears(1).toDate();
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, expiredTime, type);
+        return userMembershipModel;
     }
 
     protected LoanModel getFakeNormalLoan(long loanId, LoanType loanType, long amount, int periods, double baseRate, double activityRate, double investFeeRate, String loginName, Date recheckTime) {

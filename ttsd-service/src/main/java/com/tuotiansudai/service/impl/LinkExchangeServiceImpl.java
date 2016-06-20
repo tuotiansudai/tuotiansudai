@@ -57,7 +57,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
             linkExchangeDto.setCreatedTime(strToDate(linkExchangeDtaValues[4]));
             final int linkExchangeDtoStringOriginSize = 5;  //旧数据长度是5
             //noFollow字段是后加入的，需要判断长度用来兼容旧数据
-            if (linkExchangeDtoStringOriginSize < values.length()) {
+            if (linkExchangeDtoStringOriginSize < linkExchangeDtaValues.length) {
                 linkExchangeDto.setNoFollow(Boolean.valueOf(linkExchangeDtaValues[5]));
             } else {
                 linkExchangeDto.setNoFollow(false);

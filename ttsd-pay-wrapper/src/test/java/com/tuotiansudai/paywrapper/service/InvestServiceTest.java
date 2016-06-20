@@ -232,9 +232,9 @@ public class InvestServiceTest {
         createUserAutoInvestPlan("testInvest2", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
         createUserAutoInvestPlan("testInvest3", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
 
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest1", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testInvest2", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel("testInvest3", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest1", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testInvest2", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel("testInvest3", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
         userMembershipMapper.create(userMembershipModel3);
@@ -267,8 +267,8 @@ public class InvestServiceTest {
         createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
         createUserAutoInvestPlan("testNewInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);
 
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testNewInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testInvest", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testNewInvest", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
 
@@ -352,7 +352,7 @@ public class InvestServiceTest {
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
 
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
         InvestDto investDto = new InvestDto();
@@ -409,7 +409,7 @@ public class InvestServiceTest {
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
 
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
         InvestDto investDto = new InvestDto();
@@ -463,7 +463,7 @@ public class InvestServiceTest {
         accountModel.setFreeze(0);
         accountMapper.create(accountModel);
 
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testInvest", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
         InvestDto investDto = new InvestDto();
@@ -514,7 +514,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        UserMembershipModel userMembershipModel = new UserMembershipModel("investor", 1, new DateTime(2200,1,1,1,1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("investor", 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
 
