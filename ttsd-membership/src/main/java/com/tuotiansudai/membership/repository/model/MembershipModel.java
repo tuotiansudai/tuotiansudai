@@ -13,6 +13,13 @@ public class MembershipModel implements Serializable {
 
     }
 
+    public MembershipModel(long id, int level, long experience, double fee) {
+        this.id = id;
+        this.level = level;
+        this.experience = experience;
+        this.fee = fee;
+    }
+
     public long getId() {
         return id;
     }

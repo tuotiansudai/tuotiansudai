@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -58,6 +59,9 @@ public class AdvanceRepayPaybackInvestMockTest {
     private AccountMapper accountMapper;
 
     @Mock
+    private MembershipModel membershipModel;
+
+    @Mock
     private AmountTransfer amountTransfer;
 
     @Mock
@@ -82,13 +86,14 @@ public class AdvanceRepayPaybackInvestMockTest {
         loanRepay1.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
         LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 0, 10, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
+        MembershipModel membershipModel = new MembershipModel(1, 0, 0, 0.1);
 
         when(loanRepayMapper.findById(loanRepay1.getId())).thenReturn(loanRepay1);
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, 0.1);
-        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
 
@@ -168,14 +173,15 @@ public class AdvanceRepayPaybackInvestMockTest {
         LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 30, 10, new DateTime().plusDays(5).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay2.setActualInterest(10);
         loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
+        MembershipModel membershipModel = new MembershipModel(1, 0, 0, 0.1);
 
         when(loanRepayMapper.findById(loanRepay2.getId())).thenReturn(loanRepay2);
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest1.setId(1);
-        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest2.setId(2);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
