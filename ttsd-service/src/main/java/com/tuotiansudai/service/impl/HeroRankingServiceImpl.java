@@ -70,7 +70,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return null;
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime);
+        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime,heroRankingActivityPeriod.get(0));
         if (count > 0) {
             return null;
         }
