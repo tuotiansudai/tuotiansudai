@@ -33,4 +33,11 @@ public class UserMessageServiceImpl  implements UserMessageService{
         messageMapper.update(messageModel);
         return userMessageModel;
     }
+
+    @Override
+    public int getUnreadMessageCount(String loginName) {
+
+        // TODO: add logic here
+        return 0;
+    }
 }
