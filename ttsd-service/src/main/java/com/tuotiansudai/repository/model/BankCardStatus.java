@@ -8,7 +8,9 @@ public enum BankCardStatus {
 
     REMOVED("移除"),
 
-    FAILED("失败");
+    FAILED("失败"),
+
+    APPLY("申请");
 
     private final String status;
 

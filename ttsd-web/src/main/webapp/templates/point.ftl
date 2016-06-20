@@ -19,26 +19,26 @@
                     <span class="beans-num">可用财豆：${myPoint?string.computer}</span>
                     <i class="icon-result icon-dou"></i>
                 </div>
+                <#if obtainedPoints?has_content>
                 <div class="beans-list mt-20">
                     <ul class="beans-recent">
-                        <if obtainedPoints??>
-							<#list obtainedPoints as obtainedPoint>
-								<#list obtainedPoint?keys as key>
-                                    <li class="<#if obtainedPoint_index == 0>one-day</#if><#if obtainedPoint_index == 1>two-day</#if><#if obtainedPoint_index == 2>three-day</#if>">
-                                        <p>
-                                            <i class="icon-circle"></i>
-                                            <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
-                                <span class="text-money">
-                                    <strong>${key}</strong>
-                                    <i class="icon-result icon-sm-dou"></i>
-                                </span>
-                                        </p>
-                                    </li>
-								</#list>
-							</#list>
-                        </if>
+                    <#list obtainedPoints as obtainedPoint>
+                        <#list obtainedPoint?keys as key>
+                            <li class="<#if obtainedPoint_index == 0>one-day</#if><#if obtainedPoint_index == 1>two-day</#if><#if obtainedPoint_index == 2>three-day</#if>">
+                                <p>
+                                    <i class="icon-circle"></i>
+                                    <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
+                                    <span class="text-money">
+                                        <strong>${key}</strong>
+                                        <i class="icon-result icon-sm-dou"></i>
+                                    </span>
+                                </p>
+                            </li>
+                        </#list>
+                    </#list>
                     </ul>
                 </div>
+                </#if>
 			</div>
             <div class="beans-operat">
                 <h3>赚取财豆</h3>
@@ -107,14 +107,19 @@
                                             <span class="num-text"><@amount>${(exchangeCouponDto.amount?number*100)?string('0')}</@amount></span>
                                             <span class="unit-text">元</span>
                                         </p>
-                                        <p>[单笔投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元可用]</p>
 									<#else>
                                         <p class="mt-10">
                                             <span class="num-text">${exchangeCouponDto.rate*100}%</span>
                                             <span class="unit-text">年化收益</span>
                                         </p>
-                                        <p>［投资即可使用］</p>
 									</#if>
+                                    <p>
+                                        <#if exchangeCouponDto.investLowerLimit == '0.00'>
+                                            [投资即可使用]
+                                        <#else>
+                                            [投资满<@amount>${(exchangeCouponDto.investLowerLimit?number*100)?string('0')}</@amount>元即可使用]
+                                        </#if>
+                                    </p>
 
                                     <p>
                                         <#if (exchangeCouponDto.productTypes?size)  == 4>
@@ -264,7 +269,7 @@
                             <#else >
                                 <#switch pointTaskDto.name>
                                     <#case "REGISTER">
-                                        <#assign taskLink="/register/user">
+                                        <#assign taskLink="/register/account">
                                         <#break>
                                     <#case "BIND_EMAIL">
                                         <#assign taskLink="/personal-info">

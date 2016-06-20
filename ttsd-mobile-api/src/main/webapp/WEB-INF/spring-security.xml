@@ -32,9 +32,10 @@
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
 
         <form-login login-processing-url="/deny-login"/>
-        <intercept-url pattern="/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
-        <intercept-url pattern="/js/**" access="permitAll()"/>
+        <intercept-url pattern="/api/style/**" access="permitAll()"/>
+        <intercept-url pattern="/api/images/**" access="permitAll()"/>
+        <intercept-url pattern="/api/js/**" access="permitAll()"/>
+        <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
 
         <intercept-url pattern="/login" access="permitAll()" />
@@ -52,15 +53,15 @@
         <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
+        <intercept-url pattern="/v2.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()" />
-
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/install-notify" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/get/banner" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/register" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/get/banner" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/register" access="permitAll()"/>
         <intercept-url pattern="/share-callback" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/image-captcha" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

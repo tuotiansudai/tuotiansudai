@@ -2,7 +2,9 @@ package com.tuotiansudai.api.service;
 
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppTransferServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferServiceImpl;
+import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;

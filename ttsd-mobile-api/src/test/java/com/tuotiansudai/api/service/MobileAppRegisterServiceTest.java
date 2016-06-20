@@ -1,12 +1,13 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppRegisterServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -16,7 +17,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.UUID;

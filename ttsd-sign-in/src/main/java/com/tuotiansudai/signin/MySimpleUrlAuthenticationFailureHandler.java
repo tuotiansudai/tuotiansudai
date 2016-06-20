@@ -44,6 +44,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int loginMaxTimes;
 
+    // 授权失败后处理
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String strSource = request.getParameter("source");
@@ -60,9 +61,19 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print(jsonBody);
-        out.close();
+
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(jsonBody);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+
     }
 
     private void updateUserStatus(String loginName) {
@@ -82,7 +93,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                 userMapper.updateUser(userModel);
             }
         } else {
-            redisWrapperClient.set(redisKey, String.valueOf(1));
+            redisWrapperClient.set(redisKey, "1");
         }
     }
 

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUserDetailsService;
 import com.tuotiansudai.util.IdGenerator;
@@ -60,6 +61,9 @@ public class LoanerControllerTest {
     private UserMapper userMapper;
 
     @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -86,6 +90,8 @@ public class LoanerControllerTest {
         String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
         fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
+                new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
 
         LoanModel fakeCompletedLoan1 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.COMPLETE);
         LoanModel fakeCompletedLoan2 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.COMPLETE);
@@ -166,6 +172,8 @@ public class LoanerControllerTest {
         String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
         fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
+                new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
 
         LoanModel fakeRepayingLoan1 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.REPAYING);
         LoanModel fakeRepayingLoan2 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.REPAYING);
@@ -227,6 +235,9 @@ public class LoanerControllerTest {
         String encodePassword = myShaPasswordEncoder.encodePassword(rawPassword, fakeUser.getSalt());
         fakeUser.setPassword(encodePassword);
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.USER),
+                new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
+
 
         LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.CANCEL);
         LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUser.getLoginName(), fakeUser.getLoginName(), LoanStatus.CANCEL);

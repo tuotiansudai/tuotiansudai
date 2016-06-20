@@ -1,7 +1,8 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppBankCardServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppBankCardServiceImpl;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;

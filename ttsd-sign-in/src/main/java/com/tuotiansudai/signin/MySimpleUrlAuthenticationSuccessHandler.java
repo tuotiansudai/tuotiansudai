@@ -59,9 +59,17 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        PrintWriter writer = response.getWriter();
-        writer.print(jsonBody);
-        writer.close();
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(jsonBody);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
         clearAuthenticationAttributes(request);
     }
 
