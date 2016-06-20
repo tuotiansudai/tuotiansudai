@@ -1,7 +1,10 @@
 package com.tuotiansudai.api.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.LoginRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.BaseDto;
