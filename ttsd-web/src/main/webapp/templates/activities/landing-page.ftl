@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大理财、投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
+<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
 
 <div class="landing-container">
     <div class="landing-header">
@@ -125,9 +125,9 @@
             </ul>
         </div>
     </div>
-    
-    
-    
+
+
+
     <div class="content-five">
         <div class="five-title">
             <h3><span><i class="left-icon"></i>主流媒体眼中的我们<i class="right-icon"></i></span></h3>
@@ -159,7 +159,7 @@
                 </p>
             </div>
         </div>
-        
+
     </div>
     <div class="content-two">
         <div class="two-title">
@@ -549,24 +549,24 @@
         <a href="/"><img src="${staticServer}/images/icons/logo.png" class="landing-phone-logo-image"></a>
     </div>
     <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" class="landing-phone-banner">
-    
+
     <div class="tuotian-newuser">
         <div class="landing-phone-section-header">
             <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
         </div>
         <div class="wp tc">
             <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
-            <div id="slideBox" class="slideBox"> 
-                <div class="bd"> 
-                    <ul> 
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/big-money.png" width="60%"/></li> 
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/small-money.png" width="60%"/></li> 
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li> 
-                    </ul> 
-                </div> 
-                <a class="prev" href="javascript:void(0)"></a> 
-                <a class="next" href="javascript:void(0)"></a> 
-            </div> 
+            <div id="slideBox" class="slideBox">
+                <div class="bd">
+                    <ul>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
+                    </ul>
+                </div>
+                <a class="prev" href="javascript:void(0)"></a>
+                <a class="next" href="javascript:void(0)"></a>
+            </div>
             <p>奖励请前往“我的账户--我的宝藏”查看</p>
         </div>
     </div>
@@ -577,12 +577,12 @@
         <div class="product-box-list fl">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list?productType=JYF">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/loan-list?productType=JYF">
                     <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>

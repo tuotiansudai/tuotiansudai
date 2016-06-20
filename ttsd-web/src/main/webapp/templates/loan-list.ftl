@@ -120,7 +120,7 @@
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
-                                <dd><em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元</dd>
+                                <dd><em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></dd>
                             </dl>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                                 <div class="percent" style="width:${loanItem.progress}%"></div>
                             </div>
                             <div class="rest-amount">
-                                <span>可投额度：<i>${loanItem.alert}</i></span>
+                                <span>可投额度：<i>${loanItem.alert}</i><#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></span>
                                 <i class="btn-invest btn-normal">马上投资</i>
                             </div>
                         </#if>
