@@ -234,6 +234,23 @@ public class JPushAlertServiceTest {
         exchangeCouponDto.setEndTime(new Date());
         exchangeCouponDto.setStartTime(new Date());
         exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType._180);
+        exchangeCouponDto.setProductTypes(productTypes);
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
+        return exchangeCouponDto;
+    }
+
+    private ExchangeCouponDto fakeCouponDto1() {
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+        exchangeCouponDto.setId(1001L);
+        exchangeCouponDto.setAmount("1000.00");
+        exchangeCouponDto.setTotalCount(1000L);
+        exchangeCouponDto.setEndTime(new Date());
+        exchangeCouponDto.setStartTime(new Date());
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
         exchangeCouponDto.setCouponType(CouponType.RED_ENVELOPE);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType._180);
@@ -449,7 +466,7 @@ public class JPushAlertServiceTest {
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
-        verify(mobileAppJPushClient, times(0)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "65.21"), argumentAlert.getValue());
@@ -472,7 +489,7 @@ public class JPushAlertServiceTest {
             repayModel.setPeriod(i);
             loanRepayModels.add(repayModel);
         }
-        CouponModel couponModel = new CouponModel(fakeCouponDto());
+        CouponModel couponModel = new CouponModel(fakeCouponDto1());
         InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
         List<UserCouponModel> userCouponModels = new ArrayList<>();
         UserCouponModel userCouponModel = new UserCouponModel();
