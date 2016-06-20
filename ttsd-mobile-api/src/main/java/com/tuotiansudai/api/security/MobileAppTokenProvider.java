@@ -11,12 +11,14 @@ import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+@Component
 public class MobileAppTokenProvider {
 
     private int tokenExpiredSeconds = 3600;
