@@ -5,4 +5,6 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 
 public interface UserMessageService {
     UserMessageModel findById(long id);
+
+    int getUnreadMessageCount(String loginName);
 }
