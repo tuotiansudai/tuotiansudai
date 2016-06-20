@@ -449,7 +449,7 @@ public class JPushAlertServiceTest {
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
-        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(0)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "65.21"), argumentAlert.getValue());
