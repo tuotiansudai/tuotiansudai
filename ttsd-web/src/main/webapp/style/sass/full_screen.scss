@@ -1851,7 +1851,7 @@ body {
               }
               .pr-square {
                 width: 54%;
-                height: 50px;
+                height: 60px;
                 border-radius: 0;
                 position: relative;
                 background: none;
@@ -1876,7 +1876,7 @@ body {
                     line-height: 1;
                     font-weight: bold;
                     padding-top: 10px;
-                    display: inline-block;
+                    display: block;
                     b {
                       font-size: 20px;
                       line-height: 0.5;
@@ -1885,7 +1885,7 @@ body {
                   i {
                     color: #999;
                     clear: none;
-                    display: inline-block;
+                    display: block;
                     margin-top: -6px;
                   }
                 }
@@ -1901,7 +1901,7 @@ body {
                   line-height: 1.2;
                   color: #666;
                   &.dl-month {
-                    padding-top: 10px;
+                    padding-top: 27px;
                     border-right-width: 0;
                     width: 60px;
                     text-align: left;
@@ -1918,7 +1918,7 @@ body {
                   &.dl-amount {
                     position: absolute;
                     left: 12px;
-                    top: 90px;
+                    top: 100px;
                     width: auto;
                     i {
                       font-size: 15px;
@@ -1981,7 +1981,7 @@ body {
   /* project schedule progress */
   .project-schedule {
     width: 35%;
-    top: 65px;
+    top: 70px;
     left: 160px;
     position: absolute;
     .p-title {

@@ -383,7 +383,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <div class="free-guide">
-                                
+
                     </div>
                     <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
@@ -391,9 +391,9 @@
                                 <h2 class="pr-title">新手体验项目</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b>15</b>
                                            %</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -427,12 +427,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -492,12 +492,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
                                                 </#if>%</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
