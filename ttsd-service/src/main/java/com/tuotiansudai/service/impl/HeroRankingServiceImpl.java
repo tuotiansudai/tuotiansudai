@@ -79,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
                 @Override
                 public boolean apply(HeroRankingView input) {
-                    return input.getLoginName().equals(loginName);
+                    return input.getLoginName().equalsIgnoreCase(loginName);
                 }
             }) + 1;
         }
@@ -132,7 +132,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
             @Override
             public boolean apply(HeroRankingView input) {
-                return loginName.equalsIgnoreCase(input.getLoginName());
+                return input.getLoginName().equalsIgnoreCase(loginName);
             }
         }) + 1;
     }
