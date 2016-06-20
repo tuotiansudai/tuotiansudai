@@ -237,10 +237,11 @@ public class HeroRankingServiceTest {
     @Test
     public void shouldSaveMysteriousPrizeIsSuccess(){
         MysteriousPrizeDto mysteriousPrizeDto = new MysteriousPrizeDto();
+        String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         mysteriousPrizeDto.setImageUrl("imageUrl");
         mysteriousPrizeDto.setPrizeName("name");
+        mysteriousPrizeDto.setPrizeDate(new DateTime().withTimeAtStartOfDay().toDate());
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
-        String now = new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd");
         MysteriousPrizeDto mysteriousPrizeDtoReturn = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,now);
         assertEquals(mysteriousPrizeDto.getImageUrl(),mysteriousPrizeDtoReturn.getImageUrl());
         assertEquals(mysteriousPrizeDto.getPrizeName(),mysteriousPrizeDtoReturn.getPrizeName());

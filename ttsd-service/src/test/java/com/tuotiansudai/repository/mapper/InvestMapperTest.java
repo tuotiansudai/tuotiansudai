@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -16,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -53,6 +51,9 @@ public class InvestMapperTest {
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
+    private List<String> heroRankingActivityPeriod;
 
     private String User_ID = "helloworld";
     private String User_ID2 = "testuser";
@@ -301,7 +302,7 @@ public class InvestMapperTest {
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
         List<TransferableInvestView> transferableInvestViews = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
-        assertEquals(0,transferableInvestViews.size());
+        assertEquals(0, transferableInvestViews.size());
     }
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameInvestTransferStatusCancelIsFail(){
@@ -315,7 +316,7 @@ public class InvestMapperTest {
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
         List<TransferableInvestView> transferableInvestViews = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
-        assertEquals(0,transferableInvestViews.size());
+        assertEquals(0, transferableInvestViews.size());
     }
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameTransferStatusCancelDiffDayIsSuccess(){
@@ -340,8 +341,8 @@ public class InvestMapperTest {
         long loanId = idGenerator.generate();
         UserModel investorModel = createUser("investorModelRound4Test");
         UserModel loanerModel = createUser("loanerModelRound4Test");
-        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         investModel.setTransferStatus(TransferStatus.CANCEL);
         investMapper.update(investModel);
         TransferApplicationModel transferApplicationModel = getFakeTransferApplicationModel(investorModel.getLoginName(), TransferStatus.CANCEL, investModel.getId(), loanModel.getId());
@@ -546,7 +547,7 @@ public class InvestMapperTest {
         investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel3);
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate());
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
         assertEquals(3,heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
@@ -594,7 +595,7 @@ public class InvestMapperTest {
         TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,6,0,0,1).toDate());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate());
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
         assertEquals(3,heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
@@ -642,7 +643,7 @@ public class InvestMapperTest {
         TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,5,0,0,1).toDate());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,5,23,59,59).toDate());
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,5,23,59,59).toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
         assertEquals(2,heroRankingViews.size());
 
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
@@ -699,7 +700,7 @@ public class InvestMapperTest {
         TransferApplicationModel transferApplicationModel = fakeTransferApplicationModel(investModel2.getId(),investModel2.getLoginName(),new DateTime(2016,7,5,0,0,1).toDate());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,6,23,59,59).toDate());
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime(2016,7,6,23,59,59).toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
         assertEquals(2,heroRankingViews.size());
 
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());

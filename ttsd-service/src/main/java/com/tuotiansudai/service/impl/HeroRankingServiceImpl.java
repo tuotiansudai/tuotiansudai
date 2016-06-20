@@ -15,7 +15,10 @@ import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -39,6 +42,9 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
+    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
+    private List<String> heroRankingActivityPeriod;
+
     @Override
     public List<HeroRankingView> obtainHeroRanking(Date tradingTime) {
         if (tradingTime == null) {
@@ -47,9 +53,14 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime);
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
 
         return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10?heroRankingViews.subList(0,10):heroRankingViews;
+    }
+
+    @Override
+    public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
+        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 1, 10);
     }
 
     @Override
@@ -59,11 +70,11 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return null;
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime);
+        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime,heroRankingActivityPeriod.get(0));
         if (count > 0) {
             return null;
         }
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime);
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
         if (heroRankingViews != null) {
             return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
                 @Override
@@ -77,24 +88,26 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public void saveMysteriousPrize(MysteriousPrizeDto mysteriousPrizeDto) {
-        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY,mysteriousPrizeDto.getPrizeDate(),mysteriousPrizeDto);
+        String prizeDate = new DateTime(mysteriousPrizeDto.getPrizeDate()).withTimeAtStartOfDay().toString("yyyy-MM-dd");
+        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY,prizeDate,mysteriousPrizeDto);
     }
 
     @Override
     public MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate) {
-        MysteriousPrizeDto mysteriousPrizeDto = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,prizeDate);
-        return mysteriousPrizeDto;
+        return (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,prizeDate);
     }
 
     @Override
     public BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName, int index, int pageSize) {
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
-        Date startDate = new DateTime("2016-07-01").withTimeAtStartOfDay().toDate();
-        Date endDate = new DateTime("2016-08-01").withTimeAtStartOfDay().toDate();
-        if (tradingTime.before(startDate) || tradingTime.after(endDate)) {
+        Date activityBeginTime = DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        Date activityEndTime = DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        if (tradingTime.before(activityBeginTime) || tradingTime.after(activityEndTime)) {
             baseListDataDto.setStatus(false);
         } else {
-            List<HeroRankingView> heroRankingViewList = investMapper.findHeroRankingByReferrer(tradingTime, (index - 1) * pageSize, pageSize);
+            List<HeroRankingView> heroRankingViewList = investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), (index - 1) * pageSize, pageSize);
             baseListDataDto.setStatus(true);
             if (CollectionUtils.isNotEmpty(heroRankingViewList)) {
                 baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
@@ -112,7 +125,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public Integer findHeroRankingByReferrerLoginName(final String loginName) {
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(), 0, 20);
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 0, 20);
         if (CollectionUtils.isEmpty(heroRankingViews)) {
             return null;
         }
@@ -123,5 +136,6 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             }
         }) + 1;
     }
+
 
 }

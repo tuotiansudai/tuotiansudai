@@ -1799,15 +1799,22 @@ body {
     .banner-box {
       height: 150px;
       .banner-img-list {
-        a {
-          display: block;
-          img {
-            width: 100%;
-            &.pc-img{
-              display:none;
-            }
-            &.iphone-img{
-              display:block!important;
+        ul{
+          @media (max-width: 1920px) {
+            margin-left: 0;
+          }
+          li{
+            a {
+              display: block;
+              img {
+                width: 100%;
+                &.pc-img{
+                  display:none;
+                }
+                &.iphone-img{
+                  display:block!important;
+                }
+              }
             }
           }
         }

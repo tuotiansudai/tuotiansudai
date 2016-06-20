@@ -143,7 +143,7 @@
                         <p class="tip-text">注：每日英雄榜排名前十名的上榜者可获得1%加息劵一张！</p>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name">当日投资英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">历史投资英雄榜</h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="heroPre">上一天</span>
                             <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
@@ -251,7 +251,7 @@
                             </script>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name">当日推荐英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">历史推荐英雄榜</h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="refePre">上一天</span>
                             <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
