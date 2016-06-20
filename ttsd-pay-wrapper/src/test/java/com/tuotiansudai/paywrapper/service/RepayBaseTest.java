@@ -63,15 +63,6 @@ public class RepayBaseTest {
         return fakeAccount;
     }
 
-    protected MembershipModel getFakeMembership(long id, long experience, int level, double fee){
-        MembershipModel membershipModel = new MembershipModel();
-        membershipModel.setId(id);
-        membershipModel.setExperience(experience);
-        membershipModel.setLevel(level);
-        membershipModel.setFee(fee);
-        return membershipModel;
-    }
-
     protected UserMembershipModel getFakeUserMemberShip(String loginName, UserMembershipType type, long membershipId) {
         Date expiredTime = new DateTime().plusYears(1).toDate();
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, expiredTime, type);

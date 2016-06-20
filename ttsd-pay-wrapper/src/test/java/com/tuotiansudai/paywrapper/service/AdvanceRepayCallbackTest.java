@@ -5,6 +5,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -53,6 +54,12 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
     private UserBillMapper userBillMapper;
 
     @Autowired
@@ -75,7 +82,11 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
-        MembershipModel membershipModel = this.getFakeMembership(1, 0, 0, 0.1);
+
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
 
         DateTime recheckTime = new DateTime().minusDays(5);
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), recheckTime.toDate());
@@ -128,7 +139,10 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
-        MembershipModel membershipModel = this.getFakeMembership(1, 0, 0, 0.1);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
 
         UserModel transferee = this.getFakeUser("transferee");
         AccountModel transfereeAccount = this.getFakeAccount(transferee);
