@@ -10,13 +10,11 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +55,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     public void normalRepay(long loanRepayId) {
@@ -119,11 +120,12 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     public void advanceRepay(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
+        LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
         for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
             InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(investModel.getLoginName());
-            long actualInterest = 0;
+            long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(membershipModel.getFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
         }
