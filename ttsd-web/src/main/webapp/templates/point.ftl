@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.point}" activeNav="我的账户" activeLeftNav="我的财豆" title="我的财豆">
-
 <div class="content-container my-choi-beans">
     <h4 class="column-title">
         <em class="tc title-navli active">我的财豆</em>
+        <em class="tc title-navli">任务中心</em>
         <em class="tc title-navli">财豆兑换</em>
         <em class="tc title-navli">财豆明细</em>
     </h4>
@@ -81,6 +81,157 @@
 				</dl>
 			</div>
 		</div>
+        <div class="choi-beans-list ">
+            <div class="title-task clearfix"><span class="active">新手任务</span></div>
+            <div class="notice-tip">任务提醒：快去完成实名认证任务，领取200财豆奖励吧！</div>
+
+            <div class="task-frame clearfix">
+                <div class="task-box">
+                    <span class="serial-number">01</span>
+                    <dl class="step-content">
+                        <dt>实名认证</dt>
+                        <dd>说明：完成实名认证开通个人账户。</dd>
+                        <dd class="reward">奖励：<span>200财豆</span></dd>
+                        <dd><button type="button" class="btn-normal" disabled>已完成</button> </dd>
+                    </dl>
+                </div>
+                <div class="task-box">
+                    <span class="serial-number">02</span>
+                    <dl class="step-content">
+                        <dt>绑定银行卡</dt>
+                        <dd>说明：绑定常用银行卡，赚钱快人一步。</dd>
+                        <dd class="reward">奖励：<span>200财豆</span></dd>
+                        <dd><button type="button" class="btn-normal">立即去完成</button> </dd>
+                    </dl>
+                </div>
+                <div class="task-box">
+                    <span class="serial-number">03</span>
+                    <dl class="step-content">
+                        <dt>首次充值</dt>
+                        <dd>说明：完成实名认证开通个人账户。</dd>
+                        <dd class="reward">奖励：<span>500财豆</span></dd>
+                        <dd><button type="button" class="btn-normal" >立即去完成</button> </dd>
+                    </dl>
+                </div>
+                <div class="task-box">
+                    <span class="serial-number">04</span>
+                    <dl class="step-content">
+                        <dt>首次投资</dt>
+                        <dd>说明：在拓天平台首次成功投资。</dd>
+                        <dd class="reward">奖励：<span>1000财豆</span></dd>
+                        <dd><button type="button" class="btn-normal">立即去完成</button> </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="title-task clearfix" id="taskStatusMenu">
+                <span class="active">进阶任务</span>
+                <span>已完成任务</span>
+            </div>
+
+            <div class="task-status active" >
+                <div class="border-box two-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                        <dd>已累计投资<span class="color-key">10050.00元</span>，再投<span class="color-key">4050.00元</span>即可获得奖励</dd>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box two-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                        <dd>已邀请10名好友注册，获得了<span class="color-key">10000财豆</span>的奖励 <a href="#">查看邀请详情</a> </dd>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>首次邀请好友投资奖励<span class="color-key">5000财豆</span></dt>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box two-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                        <dd>已累计投资<span class="color-key">10050.00元</span>，再投<span class="color-key">4050.00元</span>即可获得奖励</dd>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box two-col">
+                    <dl class="fl">
+                        <dt>累计投资满5000元奖励<span class="color-key"> 1000财豆</span></dt>
+                        <dd>已邀请10名好友注册，获得了<span class="color-key">10000财豆</span>的奖励 <a href="#">查看邀请详情</a> </dd>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>首次邀请好友投资奖励<span class="color-key">5000财豆</span></dt>
+                    </dl>
+                    <button class="fr btn-normal">去完成</button>
+                </div>
+
+                <div class="tc button-more">
+                    <a href="javascript:void(0);">点击查看更多任务 <i class="fa fa-chevron-circle-down"></i></a>
+                </div>
+            </div>
+            <div class="task-status" style="display: none;">
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+                <div class="border-box one-col">
+                    <dl class="fl">
+                        <dt>累计投资满15000元奖励2000财豆</dt>
+                    </dl>
+                    <button class="fr btn-normal" disabled>已完成</button>
+                </div>
+
+                <div class="tc button-more">
+                    <a href="javascript:void(0);">点击查看更多任务 <i class="fa fa-chevron-circle-down"></i></a>
+                </div>
+            </div>
+
+        </div>
     	<div class="choi-beans-list">
             <div class="beans-coupon">
                 <div class="beans-list">
