@@ -119,6 +119,7 @@
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
+                <beans:value>/activity/hero-ranking</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
