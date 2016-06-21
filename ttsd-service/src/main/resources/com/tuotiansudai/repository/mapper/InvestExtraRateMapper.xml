@@ -26,4 +26,10 @@
         select * from invest_extra_rate where loan_id = #{loanId}
     </select>
 
+    <update id="update" parameterType="InvestExtraRateModel">
+        update invest_extra_rate
+        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, actual_repay_date = #{actualRepayDate}
+        where id = #{id}
+    </update>
+
 </mapper>

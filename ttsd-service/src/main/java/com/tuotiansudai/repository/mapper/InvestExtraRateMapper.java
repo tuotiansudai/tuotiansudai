@@ -11,4 +11,6 @@ public interface InvestExtraRateMapper {
 
     List<InvestExtraRateModel> findByLoanId(@Param(value = "loanId") long loanId);
 
+    void update(InvestExtraRateModel investExtraRateModel);
+
 }
