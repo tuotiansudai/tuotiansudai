@@ -36,9 +36,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
-@Transactional
-public class InvestExtraRateTest {
+@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+public class LoanOutInvestCalculationServiceTest {
     @InjectMocks
     private JPushAlertServiceImpl jPushAlertService;
 
@@ -83,45 +82,49 @@ public class InvestExtraRateTest {
 
 
     @Test
-    public void shouldAutoJPushRedEnvelopeAlert() {
+    public void loanOutInvestCalculation() {
         LoanModel loanModel = fakeLoanModel("test123");
         LoanRepayModel currentLoanRepayModel = new LoanRepayModel();
+
         currentLoanRepayModel.setId(1000101);
         currentLoanRepayModel.setLoanId(loanModel.getId());
         currentLoanRepayModel.setPeriod(1);
         currentLoanRepayModel.setStatus(RepayStatus.COMPLETE);
-        List<LoanRepayModel> loanRepayModels = new ArrayList<>();
+
+        List<LoanRepayModel> loanRepayModels = new ArrayList<LoanRepayModel>();
 
         for (int i = 1; i < 4; i++) {
-            LoanRepayModel repayModel = new LoanRepayModel();
-            repayModel.setLoanId(loanModel.getId());
-            repayModel.setId(Long.parseLong(10001 + "0" + i));
-            repayModel.setPeriod(i);
-            loanRepayModels.add(repayModel);
+            LoanRepayModel loanRepayModel1 = new LoanRepayModel();
+            loanRepayModel1.setLoanId(loanModel.getId());
+            loanRepayModel1.setId(Long.parseLong(10001 + "0" + i));
+            loanRepayModel1.setPeriod(i);
+            loanRepayModels.add(loanRepayModel1);
         }
-        //CouponModel couponModel = new CouponModel(fakeCouponDto(CouponType.RED_ENVELOPE, UserGroup.ALL_USER));
-        //InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
-        List<UserCouponModel> userCouponModels = new ArrayList<>();
+
+        CouponModel couponModel = new CouponModel(fakeCouponDto());
+
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
+
+        List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
+
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setId(idGenerator.generate());
         userCouponModel.setInvestId(1001L);
         userCouponModel.setActualInterest(10);
-        userCouponModel.setLoginName("zhangyong");
-        //userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setLoginName("test1");
+        userCouponModel.setCouponId(couponModel.getId());
         userCouponModel.setLoanId(loanModel.getId());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
-        userCouponModel.setActualInterest(1000);
         userCouponModels.add(userCouponModel);
 
         UserCouponModel userCouponModel2 = new UserCouponModel();
         userCouponModel2.setId(idGenerator.generate());
         userCouponModel2.setInvestId(1001L);
         userCouponModel2.setLoginName("test2");
-        //userCouponModel2.setCouponId(couponModel.getId());
+        userCouponModel2.setCouponId(couponModel.getId());
         userCouponModel2.setLoanId(loanModel.getId());
         userCouponModel2.setStatus(InvestStatus.SUCCESS);
         userCouponModels.add(userCouponModel2);
-
 
         when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
 
@@ -133,13 +136,13 @@ public class InvestExtraRateTest {
 
         when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
 
-        //when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
 
         when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
 
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
 
-        //when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
@@ -148,10 +151,7 @@ public class InvestExtraRateTest {
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
-
-        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(),
-                argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(),
-                (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
     }
 
@@ -170,7 +170,6 @@ public class InvestExtraRateTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        //loanModel.setInvestFeeRate(0.15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -204,13 +203,13 @@ public class InvestExtraRateTest {
     private JPushAlertModel createJPushAlert() {
         JPushAlertModel jPushAlertModel = new JPushAlertModel();
         jPushAlertModel.setId(1005);
-        jPushAlertModel.setName("用户资金变动推送-红包");
-        //jPushAlertModel.setPushType(PushType.);
-        jPushAlertModel.setPushSource(PushSource.ALL);
-        jPushAlertModel.setContent("【拓天速贷】亲爱的天宝，您刚刚收到{0}的红包收益{1}元，请点击查看");
+        jPushAlertModel.setName("用户资金变动推送-还款");
+        jPushAlertModel.setPushType(PushType.REPAY_ALERT);
+        jPushAlertModel.setPushSource(PushSource.ANDROID);
+        jPushAlertModel.setContent("亲爱的天宝，您刚刚收到一笔{0}元的项目还款，请点击查看");
         jPushAlertModel.setIsAutomatic(true);
         jPushAlertModel.setCreatedTime(new Date());
-        jPushAlertModel.setJumpTo(JumpTo.MY_WEALTH);
+        jPushAlertModel.setJumpTo(JumpTo.INVEST_RECEIVABLES);
         jPushAlertModel.setStatus(PushStatus.ENABLED);
         return jPushAlertModel;
     }
