@@ -39,7 +39,7 @@
             <tr>
                 <td>${varInvest+1}</td>
                 <td>${heroRankingViewInvest.loginName!}</td>
-                <td>${heroRankingViewInvest.mobile?string('0')}</td>
+                <td>${heroRankingViewInvest.mobile!}</td>
                 <td>${heroRankingViewInvest.userName!}</td>
                 <td>${(heroRankingViewInvest.sumAmount/100)?string('0.00')}</td>
             </tr>
@@ -65,7 +65,7 @@
             <tr>
                 <td>${varReferrer+1}</td>
                 <td>${heroRankingViewReferrer.loginName!}</td>
-                <td>${heroRankingViewReferrer.mobile?string('0')}</td>
+                <td>${heroRankingViewReferrer.mobile!}</td>
                 <td>${heroRankingViewReferrer.userName!}</td>
                 <td>${(heroRankingViewReferrer.sumAmount/100)?string('0.00')}</td>
             </tr>
