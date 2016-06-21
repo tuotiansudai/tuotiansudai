@@ -108,7 +108,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         amountTransfer.transferInBalance(accountModel.getLoginName(), orderId, amount, UserBillBusinessType.EXTRA_RATE, null, null);
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
                 investModel.getLoginName(), String.valueOf(investModel.getId()));
-        systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
+        systemBillService.transferOut(orderId, amount, SystemBillBusinessType.EXTRA_RATE, detail);
         investExtraRateModel.setActualInterest(actualInterest);
         investExtraRateModel.setActualFee(actualFee);
         investExtraRateModel.setRepayAmount(amount);

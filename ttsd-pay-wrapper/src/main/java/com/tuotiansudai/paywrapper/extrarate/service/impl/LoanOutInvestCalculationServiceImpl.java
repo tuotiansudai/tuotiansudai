@@ -5,6 +5,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -31,6 +32,9 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     @Override
     public void rateIncreases(long loanId) {
@@ -66,7 +70,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                         Date repayDate = new DateTime(loanModel.getRecheckTime()).plus(loanModel.getDuration()).toDate();
                         investExtraRateModel.setRepayDate(repayDate);
                     }
-                    investMapper.create(investModel);
+                    investExtraRateMapper.create(investExtraRateModel);
                 }
             }
         }
