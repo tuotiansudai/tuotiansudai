@@ -109,6 +109,13 @@
                 ]
             },
             {
+                "name":"membership-manage",
+                "header":{"text":"会员管理"},
+                "sidebar":[
+                    {"name":"membershipQuery","text":"会员等级查询","link":"/membership-manage/membership-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                ]
+            },
+            {
                 "name":"app-push-manage",
                 "header":{"text":"APP推送管理"},
                 "sidebar":[

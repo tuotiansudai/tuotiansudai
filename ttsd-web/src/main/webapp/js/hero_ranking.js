@@ -63,21 +63,29 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		$getVip.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/path/to/file',
-				type: 'POST',
-				dataType: 'json',
-				data: {param1: 'value1'}
+				url: '/membership/receive',
+				type: 'GET',
+				dataType: 'json'
 			})
-			.done(function() {
+			.done(function(data) {
+				console.log(data);
+				$('#vipTipModel').html(tpl('vipTipModelTpl', data));
 				layer.open({
-				  type: 1, 
-				  content: $('#id')
+				  type: 1,
+				  move:false,
+				  area:['320px','auto'],
+				  title:'领取须知',
+				  content: $('#vipTipModel')
 				});
 			})
 			.fail(function() {
-				console.log("error");
+				layer.msg('请求失败，请重试！');
 			});
-			
+		});
+
+		$('body').on('click', '#closeTip', function(event) {
+			event.preventDefault();
+			layer.closeAll();
 		});
 
 		//英雄榜排名

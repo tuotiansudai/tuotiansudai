@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -47,6 +48,9 @@ public class HeroRankingServiceTest {
     private LoanMapper loanMapper;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
@@ -91,9 +95,9 @@ public class HeroRankingServiceTest {
         investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel3);
 
-        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor1.getLoginName(), 1, 10);
+        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
         assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
-        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(investor1.getLoginName()));
+        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(randomUtils.encryptLoginName(investor2.getLoginName(), investor1.getLoginName(), 6)));
     }
 
     @Test
@@ -158,7 +162,7 @@ public class HeroRankingServiceTest {
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName,long loanId){
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -181,7 +185,6 @@ public class HeroRankingServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);

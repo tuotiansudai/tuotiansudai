@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="membershipResultMap" type="MembershipModel">
+        <id column="id" property="id"/>
+        <result column="level" property="level"/>
+        <result column="experience" property="experience"/>
+        <result column="fee" property="fee"/>
+    </resultMap>
+
+    <select id="findById" resultMap="membershipResultMap" parameterType="long">
+        select * from membership where id = #{id}
+    </select>
+
+    <select id="findByLevel" resultMap="membershipResultMap" parameterType="long">
+        SELECT * FROM `aa`.`membership` WHERE level = #{level}
+    </select>
+
+    <select id="findAllLevels" resultType="java.lang.Integer">
+        SELECT `level` FROM `aa`.`membership`
+    </select>
+    
+    <select id="findByExperience" resultMap="membershipResultMap" parameterType="long">
+        select * from membership where experience &lt;= #{experience} order by experience desc limit 1;
+    </select>
+</mapper>

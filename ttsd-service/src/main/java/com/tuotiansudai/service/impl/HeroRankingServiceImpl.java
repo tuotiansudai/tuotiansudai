@@ -100,6 +100,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     @Override
     public BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName, int index, int pageSize) {
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
+
         Date activityBeginTime = DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
         Date activityEndTime = DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();

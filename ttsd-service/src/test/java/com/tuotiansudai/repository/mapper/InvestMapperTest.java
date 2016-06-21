@@ -41,16 +41,15 @@ public class InvestMapperTest {
 
     @Autowired
     private InvestMapper investMapper;
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
@@ -104,12 +103,12 @@ public class InvestMapperTest {
     }
 
     private InvestModel getFakeInvestModel() {
-        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
     private InvestModel getFakeInvestModelByLoginName(String loginName){
-        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null,0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -143,7 +142,6 @@ public class InvestMapperTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -454,7 +452,7 @@ public class InvestMapperTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId,InvestStatus investStatus,TransferStatus transferStatus) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(investStatus);
         model.setTransferStatus(transferStatus);
         investMapper.create(model);
@@ -491,7 +489,6 @@ public class InvestMapperTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -756,7 +753,7 @@ public class InvestMapperTest {
         investMapper.create(investModel);
 
         long investAmount = investMapper.sumSuccessInvestAmount(newbieLoanId);
-        assertEquals(investAmount,investModel.getAmount());
+        assertEquals(investAmount, investModel.getAmount());
     }
 
 }

@@ -109,7 +109,6 @@ public class ExperienceInvestServiceTest {
         fakeLoanModel.setProductType(ProductType.EXPERIENCE);
         fakeLoanModel.setBaseRate(0.15);
         fakeLoanModel.setActivityRate(0);
-        fakeLoanModel.setInvestFeeRate(0.1);
         fakeLoanModel.setDuration(3);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());

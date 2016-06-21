@@ -6,10 +6,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -36,15 +37,12 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -535,11 +533,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
+            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             if (actualInterest < 0) {
                 continue;
             }
-            long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
             long transferAmount = actualInterest - actualFee;
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             if (transferAmount > 0) {

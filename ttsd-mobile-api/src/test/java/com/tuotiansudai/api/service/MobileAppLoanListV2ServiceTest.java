@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -22,9 +24,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,6 +39,9 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     private IdGenerator idGenerator;
     @InjectMocks
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
+
 
     @Test
     public void shouldGenerateIndexLoanIsOk(){
@@ -48,8 +51,10 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         List<LoanModel> loanModels = Lists.newArrayList();
         loanModels.add(getFakeExperienceLoan("test1"));
         loanModels.add(getFakeLoan("test1"));
+        MembershipModel membershipModel = new MembershipModel(idGenerator.generate(),1,100l,0.1);
 
         when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean())).thenReturn(loanModels);
+        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
 
         BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
 

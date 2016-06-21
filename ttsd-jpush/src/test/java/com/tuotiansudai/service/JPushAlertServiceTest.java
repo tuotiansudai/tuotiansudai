@@ -1,18 +1,6 @@
 package com.tuotiansudai.service;
 
-import cn.jpush.api.push.model.Options;
-import cn.jpush.api.push.model.Platform;
-import cn.jpush.api.push.model.PushPayload;
-import cn.jpush.api.push.model.audience.Audience;
-import cn.jpush.api.push.model.audience.AudienceTarget;
-import cn.jpush.api.push.model.notification.AndroidNotification;
-import cn.jpush.api.push.model.notification.IosNotification;
-import cn.jpush.api.push.model.notification.Notification;
-import cn.jpush.api.schedule.ScheduleResult;
-import cn.jpush.api.schedule.model.SchedulePayload;
-import cn.jpush.api.schedule.model.TriggerPayload;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -29,7 +17,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -41,17 +28,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -230,7 +218,6 @@ public class JPushAlertServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(0.15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -418,7 +405,7 @@ public class JPushAlertServiceTest {
 
         CouponModel couponModel = new CouponModel(fakeCouponDto());
 
-        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
 
         List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
 

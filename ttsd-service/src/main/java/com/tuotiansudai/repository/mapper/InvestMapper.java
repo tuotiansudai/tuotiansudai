@@ -230,7 +230,7 @@ public interface InvestMapper {
     long countInvestSuccessExperienceToday();
 
     List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
-                                       @Param(value = "startTime") Date startTime,
-                                       @Param(value = "endTime") Date endTime);
+                                                     @Param(value = "startTime") Date startTime,
+                                                     @Param(value = "endTime") Date endTime);
 
 }
