@@ -1324,6 +1324,13 @@ body{
           background: url(/images/sign/icon_result.png) no-repeat center;
           background-position: 0px -151px;
         }
+        .extra-rate {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat center;
+          background-position: 2px -175px;
+        }
       }
       .loan-name-col {
         display: inline-block;
@@ -1423,11 +1430,17 @@ body{
             border: #f24712 10px solid;
             clip: rect(0, 90px, 180px, 0);
             -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
           }
           .rount2 {
             border: #f24712 10px solid;
             clip: rect(0, 180px, 180px, 90px);
             -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
             display: none
           }
           .pr-square-in {
@@ -1477,6 +1490,12 @@ body{
         font-size: 16px;
         color: #ff752a;
         line-height: 26px;
+        &.extra-rate {
+          width: auto;
+          padding: 0 .5em;
+          left: 53px;
+          bottom: 35px;
+        }
       }
     }
     .account-info {
