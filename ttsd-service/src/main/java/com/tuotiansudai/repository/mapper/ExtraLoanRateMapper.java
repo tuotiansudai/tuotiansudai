@@ -15,4 +15,8 @@ public interface ExtraLoanRateMapper {
 
     List<ExtraLoanRateModel> findByLoanId(@Param(value = "loanId") long loanId);
 
+    double findMaxRateByLoanId(@Param(value = "loanId") long loanId);
+
+    List<ExtraLoanRateModel> findByLoanIdOrderByRate(@Param(value = "loanId") long loanId);
+
 }
