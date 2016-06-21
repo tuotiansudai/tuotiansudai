@@ -182,9 +182,8 @@
                     </dl>
                     <button class="fr btn-normal">去完成</button>
                 </div>
-
                 <div class="tc button-more">
-                    <a href="javascript:void(0);">点击查看更多任务 <i class="fa fa-chevron-circle-down"></i></a>
+                    <a href="javascript:void(0);"><span>点击查看更多任务</span> <i class="fa fa-chevron-circle-down"></i></a>
                 </div>
             </div>
             <div class="task-status" style="display: none;">
@@ -227,7 +226,7 @@
                 </div>
 
                 <div class="tc button-more">
-                    <a href="javascript:void(0);">点击查看更多任务 <i class="fa fa-chevron-circle-down"></i></a>
+                    <a href="javascript:void(0);"><span>点击查看更多任务 </span><i class="fa fa-chevron-circle-down"></i></a>
                 </div>
             </div>
 

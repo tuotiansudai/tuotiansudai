@@ -46,13 +46,13 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $this.toggleClass('open');
                 if($this.hasClass('open')) {
                     $parentBox.find('.border-box').show();
-                    $this.text('收起');
+                    $this.find('span').text('收起');
                     $this.find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down');
                 }
                 else {
                     $parentBox.find('.border-box').hide();
                     $parentBox.find('.border-box:lt(4)').show();
-                    $this.text('点击查看更多任务')
+                    $this.find('span').text('点击查看更多任务')
                     $this.find('i').addClass('fa-chevron-circle-down').removeClass('fa-chevron-circle-up');
                 }
 
