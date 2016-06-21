@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,8 @@ public class TransferApplicationMapperTest {
     private IdGenerator idGenerator;
     @Autowired
     private InvestMapper investMapper;
+    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
+    private List<String> heroRankingActivityPeriod;
 
     @Test
     public void shouldFindTransferApplicationListIsSuccess(){
@@ -255,4 +258,34 @@ public class TransferApplicationMapperTest {
         return loanModel;
     }
 
+    @Test
+    public void shouldFindCountTransferApplicationByApplicationTimeIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel transferModel = createUserByUserId("transfer");
+        UserModel transfereeModel = createUserByUserId("transferee");
+        LoanModel loanModel = createLoanByUserId("transfer", loanId);
+        InvestModel transferInvestModel = createInvest("transfer", loanId);
+        InvestModel transfereeInvestModel = createInvest("transferee", loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setTransferInvestId(transferInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new DateTime(2016, 7, 5, 12, 0, 0).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        long count1 = transferApplicationMapper.findCountTransferApplicationByApplicationTime(transferModel.getLoginName(),new DateTime(2016,7,5,23,59,59).toDate(),heroRankingActivityPeriod.get(0));
+
+        assertEquals(1, count1);
+
+        long count2 = transferApplicationMapper.findCountTransferApplicationByApplicationTime(transferModel.getLoginName(),new DateTime(2016,7,4,23,59,59).toDate(),heroRankingActivityPeriod.get(0));
+
+        assertEquals(0, count2);
+    }
 }

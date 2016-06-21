@@ -6,14 +6,14 @@
     <script src="${staticServer}${jsPath}${js.app_download}" type="text/javascript" charset="utf-8"></script>
 </head>
 
-  <body onload="jump()">
-  <div id="wxPic" style="display:none">
+<body onload="jump()">
+<div id="wxPic" style="display:none">
 
     <p style="font-size: 40px;">请按照下面的图示操作，下载拓天速贷APP:</p>
-      <img style="width: 100%;" src="${staticServer}/images/sign/actor/wxDownload.png"/>
+    <img style="width: 100%;" src="${staticServer}/images/sign/actor/wxDownload.png"/>
 
-  </div>
+</div>
 
-  <#include "statistic.ftl" />
-  </body>
+<#include "statistic.ftl" />
+</body>
 </html>
