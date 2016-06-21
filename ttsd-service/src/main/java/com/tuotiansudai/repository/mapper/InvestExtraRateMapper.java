@@ -15,4 +15,6 @@ public interface InvestExtraRateMapper {
 
     void create(InvestExtraRateModel investExtraRateModel);
 
+    InvestExtraRateModel findByInvestId(@Param(value = "investId") long investId);
+
 }

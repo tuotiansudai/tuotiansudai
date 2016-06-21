@@ -10,6 +10,7 @@
         <id column="id" property="id"></id>
         <result column="loan_id" property="loanId"></result>
         <result column="invest_id" property="investId"></result>
+        <result column="is_transfer" property="isTransfer"></result>
         <result column="amount" property="amount"></result>
         <result column="extra_rate" property="extraRate"></result>
         <result column="expected_interest" property="expectedInterest"></result>
@@ -23,18 +24,18 @@
     </resultMap>
 
     <select id="findByLoanId" parameterType="long" resultMap="investExtraRateResultMap">
-        select * from invest_extra_rate where loan_id = #{loanId}
+        select * from invest_extra_rate where loan_id = #{loanId} and is_transfer is false
     </select>
 
     <update id="update" parameterType="InvestExtraRateModel">
         update invest_extra_rate
-        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, actual_repay_date = #{actualRepayDate}
+        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, actual_repay_date = #{actualRepayDate}, is_transfer=#{isTransfer}
         where id = #{id}
     </update>
 
     <insert id="create" parameterType="InvestExtraRateModel">
-        insert into invest_extra_rate(loan_id,invest_id,amount,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time)
-        values(#{loanId},#{investId},#{amount},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
+        insert into invest_extra_rate(loan_id,invest_id,is_transfer,amount,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time)
+        values(#{loanId},#{investId},false,#{amount},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
     </insert>
 
 </mapper>

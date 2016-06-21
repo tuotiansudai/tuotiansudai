@@ -4,6 +4,7 @@ import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class ExtraRateAspect {
 
     @Autowired
     private LoanOutInvestCalculationService investExtraRateService;
+
+    @After(value = "execution(* *..InvestTransferPurchaseService.postPurchase(*))")
+    public void afterReturningInvestTransferPurchase(JoinPoint joinPoint) {
+        long investId = (Long) joinPoint.getArgs()[0];
+        extraRateService.transferPurchase(investId);
+    }
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {

@@ -60,6 +60,15 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private LoanMapper loanMapper;
 
     @Override
+    public void transferPurchase(long investId) {
+        InvestModel investModel = investMapper.findById(investId);
+        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(transferInvestModel.getId());
+        investExtraRateModel.setTransfer(true);
+        investExtraRateMapper.update(investExtraRateModel);
+    }
+
+    @Override
     public void normalRepay(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();

@@ -7,4 +7,6 @@ public interface ExtraRateService {
 
     void advanceRepay(long loanRepayId);
 
+    void transferPurchase(long investId);
+
 }
