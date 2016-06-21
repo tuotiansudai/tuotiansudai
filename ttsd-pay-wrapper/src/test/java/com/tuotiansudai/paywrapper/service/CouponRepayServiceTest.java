@@ -112,8 +112,6 @@ public class CouponRepayServiceTest {
         verify(userCouponMapper,times(1)).update(userCouponModelArgumentCaptor.capture());
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45",String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
-
-
     }
     @Test
     public void shouldAdvanceRepayCouponRepayIsSuccess() throws PayException {

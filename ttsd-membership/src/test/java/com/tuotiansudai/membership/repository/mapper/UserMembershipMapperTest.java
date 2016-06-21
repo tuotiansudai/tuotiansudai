@@ -118,10 +118,14 @@ public class UserMembershipMapperTest {
 
     @Test
     public void shouldCountMembershipByLevel() throws Exception {
+        long existingLevelZeroCount = userMembershipMapper.countMembershipByLevel(0);
+        long existingLevelOneCount = userMembershipMapper.countMembershipByLevel(1);
+        long existingLevelTwoCount = userMembershipMapper.countMembershipByLevel(2);
+
         UserModel user1 = createFakeUser("user1");
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(0).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(0).getId(), new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
         userMembershipMapper.create(userMembershipModel3);
@@ -130,9 +134,9 @@ public class UserMembershipMapperTest {
         long levelOneCount = userMembershipMapper.countMembershipByLevel(1);
         long levelTwoCount = userMembershipMapper.countMembershipByLevel(2);
 
-        assertThat(levelZeroCount, is(0L));
-        assertThat(levelOneCount, is(0L));
-        assertThat(levelTwoCount, is(1L));
+        assertThat(levelZeroCount - existingLevelZeroCount, is(0L));
+        assertThat(levelOneCount - existingLevelOneCount, is(0L));
+        assertThat(levelTwoCount - existingLevelTwoCount, is(1L));
     }
 
     private UserModel createFakeUser(String loginName) {
