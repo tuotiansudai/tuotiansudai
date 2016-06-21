@@ -135,4 +135,8 @@
         select login_name, balance from account order by id ASC limit #{startLimit}, #{endLimit}
     </select>
 
+    <select id="findAccountRegisterTimeByLoginName" parameterType="java.lang.String" resultType="Date">
+        select register_time from account where login_name = #{loginName}
+    </select>
+
 </mapper>

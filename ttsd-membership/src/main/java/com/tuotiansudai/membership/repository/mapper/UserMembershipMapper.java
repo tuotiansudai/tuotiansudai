@@ -43,10 +43,6 @@ public interface UserMembershipMapper {
 
     int findAccountIdentityNumberByLoginName(String loginName);
 
-    long sumSuccessInvestAmountByLoginName(@Param(value = "loginName") String loginName);
-
-    Date findAccountRegisterTimeByLoginName(String loginName);
-
     UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
                                               @Param(value = "type") UserMembershipType type);
 
