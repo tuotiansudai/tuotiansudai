@@ -21,6 +21,9 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </li>
+            <li class="header-message">
+                <a href="#">消息<span class="message-badge">12</span></a>
+            </li>
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
