@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.paywrapper.extrarate.service.InvestExtraRateService;
+import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class InvestExtraRateServiceImpl implements InvestExtraRateService {
+public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalculationService {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -33,7 +33,7 @@ public class InvestExtraRateServiceImpl implements InvestExtraRateService {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Override
-    public void interestAtInvest(long loanId) {
+    public void rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
         if (CollectionUtils.isEmpty(extraLoanRateModels)) {
