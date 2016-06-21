@@ -3,12 +3,10 @@ package com.tuotiansudai.jpush.aspect;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.jpush.job.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.JobManager;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Component
