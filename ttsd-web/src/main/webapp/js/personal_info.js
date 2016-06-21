@@ -85,19 +85,22 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
 
         });
 
-        $changeEmailLayer.on('click', function () {
-            layer.open({
-                type: 1,
-                move: false,
-                offset: "200px",
-                title: '绑定邮箱',
-                area: ['490px', '220px'],
-                shadeClose: true,
-                content: $changeEmailDOM,
-                cancel: function () {
-                    $EmailForm.validate().resetForm();
-                }
-            });
+        $changeEmailLayer.on('click', function (event) {
+            if(!/realName/.test(event.target.className)) {
+                layer.open({
+                    type: 1,
+                    move: false,
+                    offset: "200px",
+                    title: '绑定邮箱',
+                    area: ['490px', '220px'],
+                    shadeClose: true,
+                    content: $changeEmailDOM,
+                    cancel: function () {
+                        $EmailForm.validate().resetForm();
+                    }
+                });
+            }
+
         });
         $turnOnNoPasswordInvestLayer.on('click', function () {
             $.ajax({
@@ -115,7 +118,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     shadeClose: false,
                     closeBtn:0,
                     content: $turnOnNoPasswordInvestDOM
-
                 });
             });
 
@@ -149,6 +151,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             });
 
         });
+
         var refreshTurnOffNoPasswordInvestLayer = function(){
             clearInterval(countTimer);
             $getCaptchaElement.html('获取验证码').prop('disabled',true);
@@ -158,9 +161,11 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             $codeNumber.addClass('code-number-hidden');
 
         };
+
         $getCaptchaElement.on('click',function(){
             $imageCaptchaForm.submit();
         });
+
         $noPasswordInvest.on('click', function () {
             cnzzPush.trackClick("个人资料页","开启免密投资","直接开启");
             var _this = $(this);
@@ -199,7 +204,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         });
 
         $imageCaptchaForm.validate({
-
             focusInvalid: false,
             onFocusOut: function (element) {
                 if (!this.checkable(element) && !this.optional(element)) {
@@ -262,7 +266,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 imageCaptcha: {
                     required: true,
                     regex: /^[a-zA-Z0-9]{5}$/
-
                 }
             },
             messages: {
@@ -289,7 +292,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         }
                     }
                 }
-
             },
             messages: {
                 captcha: {
@@ -551,9 +553,8 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         $imageCaptchaElement.click(function () {
             refreshCaptcha();
         });
+
         $('#readUmpayPass').on('click', function () {
             layer.closeAll();
         });
-
-
     });

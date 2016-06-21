@@ -1,4 +1,4 @@
-require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function(){
         if($(window).width()<700){
             $('#phoneCaptcha').find('.captcha').attr({
@@ -17,12 +17,13 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $phoneDom=$('#mobile'),
             $fetchCaptcha=$('.fetch-captcha'),
             $changecode=$('.img-change'),
-            $registerBtn=$(".registered"),
+            $registerBtn = $(".registered span"),
             $loginName = $('#login-name'),
             $password = $('#password'),
             $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
+        $('input[type="text"],input[type="password"]',$registerForm).placeholder();
         //form validate
         $registerForm.validate({
             focusInvalid: false,
@@ -190,7 +191,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         }, "请正确填写您的手机号码");
 
         //register button
-        $registerBtn.on('click', function(event) {
+        $registerBtn.on('click', function (event) {
             event.preventDefault();
             $('body,html').animate({scrollTop:0},'fast');
         });
@@ -355,6 +356,8 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 content: $('#agreementBoxPhone')
             });
         });
+
+        $("#slideBox").slide({mainCell: ".bd ul", effect: "left", trigger: "click"});
         
     })();
 });

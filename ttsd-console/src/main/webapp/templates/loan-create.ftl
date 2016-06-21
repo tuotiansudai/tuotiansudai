@@ -109,9 +109,11 @@
                 <select class="selectpicker b-width">
                     <option value="">请选择</option>
                     <#list productTypes as productType>
+                        <#if productType.name() != 'EXPERIENCE'>
                         <option value="${productType.getDuration()}" data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
                         ${productType.getDuration()}
                         </option>
+                        </#if>
                     </#list>
                 </select>
                 <input type="hidden" class="jq-duration" value=""/>
@@ -147,17 +149,6 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl"
                        errormsg="预计出借金额需要正确填写">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" value="10.00" datatype="money_fl"
-                       errormsg="投资手续费比例需要正确填写">
-            </div>
-            <div class="col-sm-6">
-                <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
             </div>
         </div>
         <div class="form-group">

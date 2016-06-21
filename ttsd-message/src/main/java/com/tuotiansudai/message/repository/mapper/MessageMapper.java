@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.repository.mapper;
 
+import com.tuotiansudai.message.repository.model.MessageEventType;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageType;
@@ -11,7 +12,11 @@ import java.util.List;
 @Repository
 public interface MessageMapper {
 
-    MessageModel findById(long messageId);
+    MessageModel findById(long id);
+
+    MessageModel lockById(long id);
+
+    MessageModel findActiveByEventType(@Param(value = "eventType") MessageEventType eventType);
 
     void create(MessageModel messageModel);
 
@@ -20,16 +25,16 @@ public interface MessageMapper {
     void deleteById(long messageId);
 
     long findMessageCount(@Param(value = "title") String title,
-                               @Param(value = "messageStatus") MessageStatus messageStatus,
-                               @Param(value = "createdBy") String createdBy,
-                               @Param(value = "messageType") MessageType messageType);
+                          @Param(value = "messageStatus") MessageStatus messageStatus,
+                          @Param(value = "createdBy") String createdBy,
+                          @Param(value = "messageType") MessageType messageType);
 
     List<MessageModel> findMessageList(@Param(value = "title") String title,
-                                             @Param(value = "messageStatus") MessageStatus messageStatus,
-                                             @Param(value = "createdBy") String createdBy,
-                                             @Param(value = "messageType") MessageType messageType,
-                                             @Param(value = "index") int index,
-                                             @Param(value = "pageSize") int pageSize);
+                                       @Param(value = "messageStatus") MessageStatus messageStatus,
+                                       @Param(value = "createdBy") String createdBy,
+                                       @Param(value = "messageType") MessageType messageType,
+                                       @Param(value = "index") int index,
+                                       @Param(value = "pageSize") int pageSize);
 
     List<MessageModel> findAssignableManualMessages(String loginName);
 

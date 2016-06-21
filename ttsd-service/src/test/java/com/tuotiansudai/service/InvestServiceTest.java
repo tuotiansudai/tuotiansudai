@@ -57,7 +57,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -87,7 +86,7 @@ public class InvestServiceTest {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -125,7 +124,7 @@ public class InvestServiceTest {
         assert dbModel.getLoginName().equals(loginName);
         assert dbModel.isEnabled();
 
-        investService.turnOffAutoInvest(loginName);
+        investService.turnOffAutoInvest(loginName, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;

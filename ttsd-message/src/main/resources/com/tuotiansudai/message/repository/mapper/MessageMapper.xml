@@ -11,6 +11,7 @@
         <result column="title" property="title"/>
         <result column="template" property="template"/>
         <result column="type" property="type"/>
+        <result column="event_type" property="eventType"/>
         <result column="user_groups" property="userGroups" typeHandler="com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler"/>
         <result column="channels" property="channels" typeHandler="com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler"/>
         <result column="status" property="status"/>
@@ -25,8 +26,8 @@
     </resultMap>
 
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into message (`title`, `template`, `type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`)
-        value(#{title}, #{template}, #{type}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
+        insert into message (`title`, `template`, `type`, `event_type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`, `deleted`)
+        value(#{title}, #{template}, #{type}, #{eventType}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime}, 0)
     </insert>
 
     <update id="update" parameterType="MessageModel">
@@ -34,6 +35,7 @@
         set `title` = #{title},
             `template` = #{template},
             `type` = #{type},
+            `event_type` = #{eventType},
             `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
             `status` = #{status},
@@ -48,9 +50,22 @@
         where `id` = #{id}
     </update>
 
+    <select id="findById" parameterType="long" resultMap="messageResultMap">
+        select * from message where id = #{id} and deleted = 0;
+    </select>
+
+    <select id="findActiveByEventType" parameterType="map" resultMap="messageResultMap">
+        select * from message where event_type = #{eventType} and status = 'APPROVED' and expired_time > now() and deleted = 0;
+    </select>
+
+    <select id="lockById" parameterType="long" resultMap="messageResultMap">
+        select * from message where id = #{id} and deleted = 0 for update;
+    </select>
+
     <select id="findMessageCount"  parameterType="map" resultType="long">
         select count(id) from message
         <where>
+            deleted = 0
             <if test="title != null and title !=''">
                 <![CDATA[and title like '%${title}%']]>
             </if>
@@ -69,6 +84,7 @@
     <select id="findMessageList"  parameterType="map" resultMap="messageResultMap">
         select * from message
         <where>
+            deleted = 0
             <if test="title != null and title !=''">
                 <![CDATA[and title like '%${title}%']]>
             </if>
@@ -88,18 +104,15 @@
 
     <select id="findAssignableManualMessages" parameterType="string" resultMap="messageResultMap">
         select * from message
-        where message.type = 'MANUAL'
+        where deleted = 0
+        and message.type = 'MANUAL'
         and message.status = 'APPROVED'
         and message.expired_time > NOW()
         and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
     </select>
 
-    <select id="findById" parameterType="java.lang.Long" resultMap="messageResultMap">
-        SELECT * FROM `aa`.`message` WHERE id = #{messageId}
-    </select>
-
     <delete id="deleteById" parameterType="java.lang.Long">
-        DELETE FROM `aa`.`message` WHERE id = #{messageId}
+        UPDATE `aa`.`message` SET deleted = 1 WHERE id = #{messageId}
     </delete>
 
 </mapper>

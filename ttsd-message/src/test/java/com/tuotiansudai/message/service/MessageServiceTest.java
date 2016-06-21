@@ -104,8 +104,6 @@ public class MessageServiceTest {
     public void testCreateAndEditManualMessage() throws Exception {
         MessageDto originMessageDto = prepareData();
 
-        when(idGenerator.generate()).thenReturn(1L);
-
         messageService.createAndEditManualMessage(originMessageDto, 0);
         MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
         assertEquals(originMessageDto.getId(), messageDto.getId());
@@ -118,10 +116,7 @@ public class MessageServiceTest {
         assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
         assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
         assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getExpiredTime(), messageDto.getExpiredTime());
         assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getUpdatedTime(), messageDto.getUpdatedTime());
-        assertEquals(originMessageDto.getCreatedTime(), messageDto.getCreatedTime());
         assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
 
         originMessageDto.setTitle("editTitle");
@@ -141,10 +136,7 @@ public class MessageServiceTest {
         assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
         assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
         assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getExpiredTime(), messageDto.getExpiredTime());
         assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getUpdatedTime(), messageDto.getUpdatedTime());
-        assertEquals(originMessageDto.getCreatedTime(), messageDto.getCreatedTime());
         assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
     }
 
@@ -172,10 +164,7 @@ public class MessageServiceTest {
         assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
         assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
         assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getExpiredTime(), messageDto.getExpiredTime());
         assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getUpdatedTime(), messageDto.getUpdatedTime());
-        assertEquals(originMessageDto.getCreatedTime(), messageDto.getCreatedTime());
         assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
     }
 

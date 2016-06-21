@@ -115,7 +115,7 @@ public class PointBillServiceImpl implements PointBillService {
 
         long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessType);
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessType);
         }

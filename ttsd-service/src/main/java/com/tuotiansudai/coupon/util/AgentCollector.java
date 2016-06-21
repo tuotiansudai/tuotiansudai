@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AgentCollector implements UserCollector{
+public class AgentCollector implements UserCollector {
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
@@ -17,12 +17,6 @@ public class AgentCollector implements UserCollector{
     public List<String> collect(long couponId) {
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
         return couponUserGroupModel != null ? couponUserGroupModel.getUserGroupItems() : null;
-    }
-
-    @Override
-    public long count(long couponId) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
-        return couponUserGroupModel != null ? couponUserGroupModel.getUserGroupItems().size() : 0;
     }
 
     @Override

@@ -9,16 +9,14 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +25,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +43,7 @@ public class CouponServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private CouponMapper couponMapper;
 
@@ -61,137 +59,9 @@ public class CouponServiceTest {
     @Autowired
     private CouponActivationService couponActivationService;
 
-    @Test
-    public void shouldAssignUserCoupon() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(1L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
-    }
-
-    @Test
-    public void shouldAssignUserCouponFailedUserGroup() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
-
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.WINNER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(0L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.size(), is(0));
-    }
-
-    @Test
-    public void shouldAssignUserCouponNewbieCouponUserGroup() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.NEWBIE_COUPON, UserGroup.NEW_REGISTERED_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
-
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.NEW_REGISTERED_USER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(1L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.size(), is(1));
-        assertThat(userCouponModels.get(0).getStartTime(), is(new DateTime().withTimeAtStartOfDay().toDate()));
-        assertThat(userCouponModels.get(0).getEndTime(), is(new DateTime().plusDays(2+1).withTimeAtStartOfDay().minusSeconds(1).toDate()));
-
-    }
-
-    @Test
-    public void shouldAssignUserCouponInvestCouponUserGroup() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
-
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(1L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.size(), is(1));
-        assertThat(userCouponModels.get(0).getStartTime(), is(new DateTime().withTimeAtStartOfDay().toDate()));
-        assertThat(userCouponModels.get(0).getEndTime(), is(new DateTime().plusDays(2+1).withTimeAtStartOfDay().minusSeconds(1).toDate()));
-
-    }
-
-    @Test
-    public void shouldAssignUserCouponRedEnvelopeUserGroup() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.RED_ENVELOPE, UserGroup.ALL_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
-
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(1L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.size(), is(1));
-        assertThat(userCouponModels.get(0).getStartTime(), is(new DateTime().withTimeAtStartOfDay().toDate()));
-        assertThat(userCouponModels.get(0).getEndTime(), is(new DateTime().plusDays(2+1).withTimeAtStartOfDay().minusSeconds(1).toDate()));
-
-    }
-
-    @Test
-    public void shouldAssignUserCouponInterestCouponUserGroup() throws Exception{
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = fakeCouponDto(CouponType.INTEREST_COUPON, UserGroup.ALL_USER);
-        DateTime dateTime = new DateTime().plusDays(1);
-        exchangeCouponDto.setStartTime(dateTime.toDate());
-        exchangeCouponDto.setEndTime(dateTime.toDate());
-        couponService.createCoupon("couponTest", exchangeCouponDto);
-
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
-
-        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
-        assertThat(couponModel.getIssuedCount(), is(1L));
-
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
-
-        assertThat(userCouponModels.size(), is(1));
-        assertThat(userCouponModels.get(0).getStartTime(), is(new DateTime().withTimeAtStartOfDay().toDate()));
-        assertThat(userCouponModels.get(0).getEndTime(), is(new DateTime().plusDays(2+1).withTimeAtStartOfDay().minusSeconds(1).toDate()));
-
-    }
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {

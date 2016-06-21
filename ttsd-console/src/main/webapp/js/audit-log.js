@@ -32,4 +32,16 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSel
             }
         }
     });
+
+    $('.pagination .previous').click(function () {
+        if ($(this).hasClass("disabled")) {
+            return false;
+        }
+    });
+
+    $('.pagination .next').click(function () {
+        if ($(this).hasClass("disabled")) {
+            return false;
+        }
+    });
 });

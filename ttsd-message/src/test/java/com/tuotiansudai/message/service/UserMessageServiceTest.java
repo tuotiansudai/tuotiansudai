@@ -1,7 +1,6 @@
 package com.tuotiansudai.message.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
@@ -15,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.Date;
 import java.util.UUID;
 
@@ -64,7 +62,7 @@ public class UserMessageServiceTest {
 
         userMessageMapper.create(userMessageModel);
 
-        UserMessageModel userMessageModel1 = userMessageService.findById(userMessageModel.getId());
+        UserMessageModel userMessageModel1 = userMessageService.readMessage(userMessageModel.getId());
 
         assertThat(true, is(userMessageModel1.isRead()));
         assertThat(11L, is(messageMapper.findById(userMessageModel1.getMessageId()).getReadCount()));

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private RandomUtils randomUtils;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -96,7 +98,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));

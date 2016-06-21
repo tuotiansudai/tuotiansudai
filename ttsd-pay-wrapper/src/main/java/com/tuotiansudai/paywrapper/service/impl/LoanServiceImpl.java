@@ -113,7 +113,7 @@ public class LoanServiceImpl implements LoanService {
                 loanerId,
                 String.valueOf(loanModel.getLoanAmount()),
                 String.valueOf(loanModel.getId()),
-                loanModel.getName()
+                String.valueOf(loanModel.getId())
         );
         try {
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
@@ -210,7 +210,6 @@ public class LoanServiceImpl implements LoanService {
                 payDataDto.setStatus(umPayReturn.isSuccess());
                 payDataDto.setCode(umPayReturn.getRetCode());
                 payDataDto.setMessage(umPayReturn.getRetMsg());
-
             } catch (PayException e) {
                 payDataDto.setStatus(false);
                 payDataDto.setMessage(e.getLocalizedMessage());

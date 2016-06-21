@@ -12,6 +12,7 @@
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
         <div class="profile-box">
             <span><em>您好：${loginName!}</em></span>
+            <span><em>会员等级：${userMembershipLevel!}</em></span>
             <ul class="proList">
                 <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
                 <#if signedIn?? && signedIn>
@@ -118,7 +119,11 @@
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(successSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${successSumInvestRepay.actualAmount!}</td>
+                        <td>${successSumInvestRepay.actualAmount!}
+                            <#if successSumInvestRepay.loan.productType == 'EXPERIENCE'>
+                                (现金红包)
+                            </#if>
+                        </td>
                         <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -155,6 +160,9 @@
                         <td>${(notSuccessSumInvestRepay.loan.duration?string('0'))!}天</td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
                         <td>${notSuccessSumInvestRepay.amount!}
+                            <#if notSuccessSumInvestRepay.loan.productType == 'EXPERIENCE'>
+                                (现金红包)
+                            </#if>
                         </td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>
@@ -186,14 +194,22 @@
                     <tr>
                         <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                         <td>
+                            <#if latestInvest.productType != 'EXPERIENCE'>
                             <i <#if latestInvest.birthdayCoupon>class="birth-icon" data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
+                            </#if>
+
                             <a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a>
                         </td>
                         <td>投资成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
                         ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>
-                        <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}</td>
+                        <td>
+                            ￥${((latestInvest.investAmount/100)?string('0.00'))!}
+                            <#if latestInvest.productType == 'EXPERIENCE'>
+                                (体验金)
+                            </#if>
+                        </td>
                     </tr>
                     </#list>
                 <#else>

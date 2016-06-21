@@ -1,20 +1,28 @@
-require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function($, Mustache, messageList, pagination, layer) {
-	$(function() {
-		var activeIndex = $('.filters-list li.active').index(),
-			$paginationElement = $('.pagination');
+require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, messageListTemplate, pagination, layer) {
+    $(function () {
+        var $paginationElement = $('.pagination');
 
-		function loadLoanData(currentPage) { //template data to page and generate pagenumber
-			var requestData = {
-				status: '',
-				index: currentPage || 1
-			};
-			$paginationElement.loadPagination(requestData, function(data) {
-
-			});
-			var html = Mustache.render(messageList);
-			$('.list-container .global-message-list.active').html(html);
-		};
-		loadLoanData();
-
-	});
+        var index = $paginationElement.data("page-index");
+        var hash = window.location.hash;
+        if (hash) {
+            index = hash.substr(1, hash.length);
+        }
+        $paginationElement.loadPagination({index: index}, function (data) {
+            window.location.hash = data.index;
+            var html = Mustache.render(messageListTemplate, data);
+            $('.list-container .global-message-list.active').html(html);
+            $('.read-all-messages').click(function () {
+                $.ajax({
+                    url: "/message/read-all",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (response) {
+                    if (response.data.status) {
+                        window.location.reload();
+                    }
+                })
+            });
+        });
+    });
 });

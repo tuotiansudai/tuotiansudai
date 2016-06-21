@@ -922,7 +922,7 @@ body{
     }
     .binding-set {
       display: inline-block;
-      width: 130px;
+      width: 140px;
       float: right;
 
       .ok {
@@ -1059,7 +1059,15 @@ body{
         left: 0;
         width: 56px;
         height: 75px;
-        background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat;
+        background: url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
+      }
+      .new-free {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 56px;
+        height: 75px;
+        background: url("/images/icons/new-free.png") no-repeat center;
       }
       .loan-info-frame {
         width: 690px;
@@ -1082,6 +1090,14 @@ body{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            .new-tip {
+              font-size: 12px;
+              color: #ff9c1b;
+              border: 1px solid #ff9c1b;
+              padding: 2px 5px;
+              border-radius: 20px;
+              margin-left: 10px;
+            }
           }
           .l-way {
             font-size: 12px;
@@ -1359,7 +1375,7 @@ body{
           left: -10px;
           width: 56px;
           height: 75px;
-          background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat;
+          background: url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
         }
         .hot {
           width: 55px;
@@ -1407,11 +1423,17 @@ body{
             border: #f24712 10px solid;
             clip: rect(0, 90px, 180px, 0);
             -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
           }
           .rount2 {
             border: #f24712 10px solid;
             clip: rect(0, 180px, 180px, 90px);
             -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
             display: none
           }
           .pr-square-in {
@@ -1477,11 +1499,19 @@ body{
       }
       .account-list {
         margin-left: 10px;
-
+        &.new-text {
+          font-size: 14px;
+        }
         dd {
           clear: both;
           margin-bottom: 5px;
-
+          &.experience-info {
+            margin-top: 30px;
+            margin-bottom: 20px;
+          }
+          &.mb-20 {
+            margin-bottom: 20px;
+          }
           .position-width {
             width: 230px;
             text-align: right;
@@ -1568,6 +1598,7 @@ body{
                   }
                   .input-use-ticket {
                     margin-bottom: 12px;
+                    width: 10px\9;
                   }
                   .sign {
                     width: 13px;
@@ -1867,6 +1898,156 @@ body{
       width: 18px;
       height: 20px;
       background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
+    }
+  }
+  .project-model {
+    float: left;
+    width: 100%;
+    &.mt-20 {
+      margin-top: 20px;
+    }
+    .model-nav {
+      float: left;
+      width: 100%;
+      border-bottom: 1px solid #e6e6e6;
+      h3 {
+        float: left;
+        margin-left: 20px;
+        font-size: 16px;
+        color: #ff7200;
+        line-height: 50px;
+        border-bottom: 4px solid #ff7200;
+      }
+    }
+    .model-content {
+      float: left;
+      width: 100%;
+      .info-list {
+        margin: 20px 30px;
+        li {
+          color: #999;
+          font-size: 14px;
+        }
+      }
+      .text-list {
+        float: left;
+        width: 100%;
+        li {
+          float: left;
+          width: 33.333333%;
+          p {
+            float: left;
+            width: 100%;
+            margin-bottom: 0;
+            &.intro-title {
+              margin-top: 40px;
+              font-size: 20px;
+              color: #1a1a1a;
+              text-align: center;
+            }
+            &.intro-icon {
+              height: 180px;
+              border-right: 1px solid #e6e6e6;
+              &.icon-one {
+                background: url("/images/sign/actor/icon-one.png") no-repeat center;
+              }
+              &.icon-two {
+                background: url("/images/sign/actor/icon-two.png") no-repeat center;
+              }
+              &.icon-three {
+                background: url("/images/sign/actor/icon-three.png") no-repeat center;
+              }
+            }
+            &.intro-text {
+              text-align: left;
+              font-size: 14px;
+              color: #999;
+              border-right: 1px solid #e6e6e6;
+              margin-bottom: 30px;
+              span {
+                float: left;
+                padding: 0 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .free-success {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .5);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000, endColorstr=#7F000000);
+    z-index: 9999;
+    display: none;
+    .free-content {
+      position: absolute;
+      width: 650px;
+      height: 434px;
+      top: 50%;
+      left: 50%;
+      margin-top: -217px;
+      margin-left: -325px;
+      background: #fff;
+      .free-top {
+        float: left;
+        width: 100%;
+        height: 70px;
+        line-height: 70px;
+        font-size: 26px;
+        background: #de1a1b;
+        text-align: center;
+        color: #fff;
+        position: relative;
+        .close-free {
+          position: absolute;
+          top: -50px;
+          right: -50px;
+          width: 40px;
+          height: 40px;
+          background: url("/images/sign/actor/close-free.png") no-repeat center;
+          background-size: 100%;
+          cursor: pointer;
+        }
+      }
+      .free-detail {
+        float: left;
+        width: 530px;
+        height: 324px;
+        padding: 20px 60px;
+        p {
+          &.text-info {
+            text-align: left;
+            color: #999;
+            font-size: 18px;
+          }
+          &.free-use {
+            text-align: center;
+            a {
+              background: #ff1a1a;
+              display: inline-block;
+              margin: 0 auto;
+              color: #fff;
+              font-size: 24px;
+              border-bottom: 2px solid #cc1414;
+            }
+          }
+          &.free-tip {
+            border-top: 1px solid #e6e6e6;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 0;
+            padding-top: 15px;
+            a {
+              color: #de1a1b;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -3691,7 +3872,6 @@ body{
           &.intro-text {
             font-size: 14px;
             color: #4d4d4d;
-
             span {
               color: #ff7200;
             }
@@ -3904,6 +4084,54 @@ body{
   .loan-detail{
     margin-top:0;
   }
+  .project-model {
+    .text-list {
+      li {
+        width: 100% !important;
+        .intro-title {
+          margin-top: 0 !important;
+        }
+        .intro-icon {
+          border-right: none !important;
+        }
+        .intro-text {
+          border-right: none !important;
+        }
+      }
+    }
+  }
+  .free-success {
+    .free-content {
+      width: 320px !important;
+      height: 330px !important;
+      margin-left: -160px !important;
+      margin-top: -115px !important;
+      .free-top {
+        height: 35px !important;
+        line-height: 35px !important;
+        font-size: 16px !important;
+        .close-free {
+          top: -15px !important;
+          right: -15px !important;
+          width: 30px !important;
+          height: 30px !important;
+        }
+      }
+      .free-detail {
+        width: 300px !important;
+        height: auto !important;
+        padding: 10px !important;
+        .text-info {
+          font-size: 16px !important;
+        }
+        .free-use {
+          a {
+            font-size: 16px !important;
+          }
+        }
+      }
+    }
+  }
 }
 @media screen \0 {
   //IE8-10
@@ -3913,4 +4141,13 @@ body{
     position: static;
     *zoom: 1;
   }
+}
+
+.new-free {
+  position: absolute;
+  top: -3px;
+  left: -10px;
+  width: 56px;
+  height: 75px;
+  background: url("/images/icons/new-free.png") no-repeat center;
 }

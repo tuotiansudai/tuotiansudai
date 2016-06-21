@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -7,7 +7,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $bannerImg = $imgScroll.find('a'),
+            $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
@@ -18,33 +18,12 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
         }).css({
             'font-size': '16px'
         });
-
         screenWid = $(window).width(); //screen width
         picWid = $bannerImg.first().find('img').width();
-
         leftWid = (picWid - screenWid) / 2;
-
-        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
         $imgScroll.find('img').css({
-            'margin-left': '-' + leftWid + 'px'
+          'margin-left': '-' + leftWid + 'px'
         });
-
-
-        $imgNum.click(function () {
-            var num_nav = $imgNum.index(this);
-            $(this).addClass("selected").siblings().removeClass("selected");
-            $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
-        });
-        $bannerBox.hover(function () {
-            clearInterval(adTimer);
-        }, function () {
-            adTimer = setInterval(function () {
-                var index = ++n % $bannerImg.length;
-                $imgNum.eq(index).trigger('click');
-            }, 6000);
-        }).trigger('mouseleave');
-
-
         $(".product-box .pad-m").click(function () {
             window.location.href = $(this).data("url");
         });
@@ -53,9 +32,52 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
 
         if (viewport == 'pc') {
             $imgScroll.find('img.iphone-img').remove();
+            $("#bannerBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
-            $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
+
+
+            $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
+            $imgNum.click(function () {
+                var num_nav = $imgNum.index(this);
+                $(this).addClass("on").siblings().removeClass("on");
+                $bannerImg.eq(num_nav).fadeIn(500).siblings().fadeOut(500);
+            });
+            $bannerBox.hover(function () {
+                clearInterval(adTimer);
+            }, function () {
+                adTimer = setInterval(function () {
+                    var index = ++n % $bannerImg.length;
+                    $imgNum.eq(index).trigger('click');
+                }, 6000);
+            }).trigger('mouseleave');
+            // 移动端滑动切换
+            (function() {
+                var startX, startY;
+                $bannerBox.on('touchstart', function(event) {
+                    startX = event.originalEvent.changedTouches[0].pageX;
+                    startY = event.originalEvent.changedTouches[0].pageY;
+                });
+                $bannerBox.on('touchmove', function(event) {
+                    event.preventDefault();
+                })
+                $bannerBox.on('touchend', function(event) {
+                    var endX, endY;
+                     endX = event.originalEvent.changedTouches[0].pageX;
+                     endY = event.originalEvent.changedTouches[0].pageY;
+                     var direction = GetSlideDirection(startX, startY, endX, endY);
+                     switch(direction) {
+                         case 3:
+                            var index = ++n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                         case 4:
+                            var index = --n % $bannerImg.length;
+                            $imgNum.eq(index).trigger('click');
+                             break;
+                     }
+                });
+            })();
         }
 
         var scrollTimer;
@@ -82,5 +104,44 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
             event.preventDefault();
             window.location.href=$(this).attr('data-url');
         });
+        $('.new-user-free').on('click', function (event) {
+            event.preventDefault();
+            window.location.href = $(this).attr('data-url');
+        });
+        $('.mask-btn').on('click', function (event) {
+            event.preventDefault();
+            $('.new-user-free').removeClass('active');
+        });
+        $('.guide-btn').on('click', function (event) {
+            event.preventDefault();
+            $('.product-box-inner').removeClass('active');
+        });
+        
     });
+
+
+    function GetSlideAngle(dx, dy) {
+        return Math.atan2(dy, dx) * 180 / Math.PI;
+    }
+    //根据起点和终点返回方向 1：向上，2：向下，3：向左，4：向右,0：未滑动
+    function GetSlideDirection(startX, startY, endX, endY) {
+         var dy = startY - endY;
+         var dx = endX - startX;
+         var result = 0;
+         if(Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+             return result;
+         }
+         var angle = GetSlideAngle(dx, dy);
+         if(angle >= -45 && angle < 45) {
+             result = 4;
+         }else if (angle >= 45 && angle < 135) {
+             result = 1;
+         }else if (angle >= -135 && angle < -45) {
+             result = 2;
+         }
+         else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+             result = 3;
+         }
+         return result;
+    }
 });

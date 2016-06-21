@@ -12,8 +12,10 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExchangeCodeServiceImpl implements ExchangeCodeService {
@@ -38,7 +41,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     public final static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
 
@@ -77,6 +80,14 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return true;
     }
 
+    @Override
+    public List<String> getExchangeCodes(long couponId) {
+        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
+        if (map == null) {
+            return Lists.newArrayList();
+        }
+        return Lists.newArrayList(map.keySet());
+    }
 
     private void genExchangeCode(long couponId, int count, int lifeSeconds) {
         logger.debug("generate exchange code, couponId:" + couponId + ", count:" + count + ", lifeSeconds:" + lifeSeconds);
@@ -134,26 +145,22 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         long couponId = getValueBase31(exchangeCode);
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
-            baseDataDto.setStatus(false);
             baseDataDto.setMessage("请输入正确的兑换码");
             return baseDataDto;
         }
         if (checkExchangeCodeExpire(couponModel)) {
-            baseDataDto.setStatus(false);
             baseDataDto.setMessage("该兑换码已过期");
             return baseDataDto;
         }
         if (checkExchangeCodeUsed(couponId, exchangeCode)) {
-            baseDataDto.setStatus(false);
             baseDataDto.setMessage("该兑换码已被使用");
             return baseDataDto;
         }
         if (checkExchangeCodeDailyCount(loginName)) {
-            baseDataDto.setStatus(false);
             baseDataDto.setMessage("当天兑换次数达到上限");
             return baseDataDto;
         }
-        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
+        couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
         baseDataDto.setStatus(true);
         baseDataDto.setMessage("恭喜您兑换成功");

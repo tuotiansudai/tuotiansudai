@@ -65,6 +65,9 @@ public class PointServiceImpl implements PointService {
     @Override
     public long getAvailablePoint(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (accountModel == null) {
+            return 0;
+        }
         return accountModel.getPoint();
     }
 }

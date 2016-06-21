@@ -9,7 +9,7 @@ CREATE TABLE `aa`.`user_message` (
   `created_time` DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_USER_MESSAGE_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
-  CONSTRAINT FK_message_ID_REF_MESSAGE_ID FOREIGN KEY (`message_id`) REFERENCES `aa`.`message` (`id`)
+  CONSTRAINT FK_USER_MESSAGE_MESSAGE_ID_REF_MESSAGE_ID FOREIGN KEY (`message_id`) REFERENCES `aa`.`message` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
