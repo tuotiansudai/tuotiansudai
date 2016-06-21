@@ -38,6 +38,8 @@ public class JPushAmountNotifyAspect {
     public final static String WITHDRAW = "WithDraw-{0}";
     public final static String REFERRER_REWARD = "ReferrerReward-{0}";
     public final static String LOTTERYOBTAINCASH = "LotteryObtainCash-{0}";
+    public final static String COUPON_INCOME = "CouponIncomeLoanRepayId-{0}";
+    public final static String COUPON_REDENVELOP = "CouponRedEnvelopeLoanId-{0}";
 
     @Autowired
     private JobManager jobManager;
@@ -75,13 +77,17 @@ public class JPushAmountNotifyAspect {
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
     public void transferCashPointcut() {}
 
+    @Pointcut("execution(* *..paywrapper.service.LoanService.loanOut(..))")
+    public void loanOutPointcut() {}
+
     @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
     public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            long LoanRepayId = (long) joinPoint.getArgs()[0];
+            long loanRepayId = (long) joinPoint.getArgs()[0];
             if ((boolean) returnValue) {
-                createAutoJPushRepayAlertJob(LoanRepayId, false);
+                createAutoJPushRepayAlertJob(loanRepayId, false);
+                createSendCouponIncomeJob(loanRepayId);
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
@@ -161,15 +167,15 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
-    @AfterReturning(value = "execution(* *..paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    @AfterReturning(value = "loanOutPointcut()", returning = "returnValue")
     public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             createAutoJPushRedEnvelopeJob(loanId);
+            createAutoJPushAlertLoanOutJob(loanId);
         }
     }
-
 
     private void createAutoJPushRepayAlertJob(long LoanRepayId, boolean isAdvanceRepay) {
         try {
@@ -252,7 +258,37 @@ public class JPushAmountNotifyAspect {
                     .toDate();
             jobManager.newJob(JobType.RedEnvelope, AutoJPushRedEnvelopeAlertJob.class)
                     .addJobData(AutoJPushRedEnvelopeAlertJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.RedEnvelope.name(), "Loan-" + loanId)
+                    .withIdentity(JobType.RedEnvelope.name(), formatMessage(COUPON_REDENVELOP, loanId))
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send AutoJPushRedEnvelope job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    private void createSendCouponIncomeJob(long loanRepayId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.SEND_COUPON_INCOME_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.SendCouponIncome, SendCouponIncomeJob.class)
+                    .addJobData(SendCouponIncomeJob.LOAN_REPAY_ID_KEY, loanRepayId)
+                    .withIdentity(JobType.SendCouponIncome.name(), formatMessage(COUPON_INCOME, loanRepayId))
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
+        }
+    }
+
+    private void createAutoJPushAlertLoanOutJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
+                    .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)

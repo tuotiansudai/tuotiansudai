@@ -5,7 +5,6 @@ public enum PushType {
     BIRTHDAY_ALERT_DAY("AUTO","生日提醒"),
     LOAN_ALERT("AUTO","放款提醒"),
     NO_INVEST_ALERT("AUTO","投资提醒"),
-    RED_ENVELOPE_ALERT("AUTO","红包提醒"),
 
     REPAY_ALERT("AUTO","还款提醒"),
     RECHARGE_ALERT("AUTO","充值提醒"),

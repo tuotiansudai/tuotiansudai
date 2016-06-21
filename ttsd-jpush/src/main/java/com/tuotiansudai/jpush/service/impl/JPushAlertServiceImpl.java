@@ -713,7 +713,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushRedEnvelopeAlert(long loanId) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RED_ENVELOPE_ALERT);
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.COUPON_INCOME_ALERT);
         if (jPushAlertModel == null) {
             logger.error("RED_ENVELOPE_ALERT is disabled");
             return;

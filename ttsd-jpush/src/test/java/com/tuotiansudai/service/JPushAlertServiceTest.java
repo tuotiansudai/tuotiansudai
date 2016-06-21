@@ -139,10 +139,10 @@ public class JPushAlertServiceTest {
     private JPushAlertModel createJPushAlert() {
         JPushAlertModel jPushAlertModel = new JPushAlertModel();
         jPushAlertModel.setId(1005);
-        jPushAlertModel.setName("用户资金变动推送-红包");
-        jPushAlertModel.setPushType(PushType.RED_ENVELOPE_ALERT);
+        jPushAlertModel.setName("用户资金变动推送");
+        jPushAlertModel.setPushType(PushType.COUPON_INCOME_ALERT);
         jPushAlertModel.setPushSource(PushSource.ALL);
-        jPushAlertModel.setContent("【拓天速贷】亲爱的天宝，您刚刚收到{0}的红包收益{1}元，请点击查看");
+        jPushAlertModel.setContent("【拓天速贷】亲爱的天宝，您刚刚收到{0}的收益{1}元，请点击查看");
         jPushAlertModel.setIsAutomatic(true);
         jPushAlertModel.setCreatedTime(new Date());
         jPushAlertModel.setJumpTo(JumpTo.MY_WEALTH);
