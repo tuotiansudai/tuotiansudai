@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.MembershipService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class MembershipController {
 
     @Autowired
     private UserMembershipService userMembershipService;
+
+    @Autowired
+    private MembershipService membershipService;
 
     @Autowired
     private AppTokenParser appTokenParser;
@@ -118,7 +122,7 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = userMembershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            GivenMembership givenMembership = membershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {

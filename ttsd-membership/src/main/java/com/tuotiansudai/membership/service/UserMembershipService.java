@@ -11,6 +11,4 @@ public interface UserMembershipService {
 
     int getExpireDayByLoginName(String loginName);
 
-    GivenMembership receiveMembership(String loanName);
-
 }
