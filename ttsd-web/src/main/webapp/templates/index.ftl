@@ -5,6 +5,12 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
+                    <a href="/activity/invest-achievement" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                    </a>
+                </li>
+                <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
                         <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
                         <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
