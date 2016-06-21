@@ -49,7 +49,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         loanModels.add(getFakeExperienceLoan("test1"));
         loanModels.add(getFakeLoan("test1"));
 
-        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean(),anyBoolean())).thenReturn(loanModels);
+        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean())).thenReturn(loanModels);
 
         BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
 
