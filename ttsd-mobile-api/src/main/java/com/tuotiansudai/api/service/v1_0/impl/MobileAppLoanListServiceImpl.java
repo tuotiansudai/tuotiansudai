@@ -45,7 +45,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
