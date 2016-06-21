@@ -361,7 +361,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 type: 'GET',
                 dataType: 'json',
                 async:false,
-                contentType: 'application/json; charset=UTF-8',
+                contentType: 'application/json; charset=UTF-8'
             })
                 .done(function (res) {
                    var  checkValid=res.data.status;
