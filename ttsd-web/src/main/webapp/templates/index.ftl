@@ -410,7 +410,7 @@
                                     <div class="pro">
                                         <div class="p-title">
                                             <span class="fl">项目进度</span>
-                                            <span class="point fr">${experienceLoanDto.baseRate}</span>
+                                            <span class="point fr">${experienceLoanDto.progress} %</span>
                                         </div>
                                         <div class="process-percent">
                                             <div class="percent" style="width:20%"></div>
