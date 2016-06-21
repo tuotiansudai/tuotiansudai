@@ -15,6 +15,7 @@
                         <div class="pr-square-in">
                             <em>
                                 <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
+                                <span data-extra-rate></span>
                                 <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                             </em>
                             <i>预期年化收益</i>
@@ -43,20 +44,37 @@
                     </#if>
                 </#if>
                  <div class="product-type-text extra-rate" id="extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                 <script>
+                     var __extraRate = [{
+                            minInvestAmount: 100,
+                            maxInvestAmount: 999,
+                            rate: 0.3
+                        }, {
+                            minInvestAmount: 1000,
+                            maxInvestAmount: 9999,
+                            rate: 0.5
+                        }, {
+                            minInvestAmount: 10000,
+                            maxInvestAmount: 0,
+                            rate: 0.7
+                        }];
+                 </script>
                  <script type="text/template" id="extra-rate-popup-tpl">
                     <div class="extra-rate-popup" id="extra-rate-popup">
                         <div class="header clearfix">
-                            <div class="td fl">1212</div>
-                            <div class="td fl">1212</div>
+                            <div class="td fl">投资金额</div>
+                            <div class="td fl">加息</div>
                         </div>
-                        <div class="clearfix">
-                            <div class="td fl">1212</div>
-                            <div class="td fl">1212</div>
-                        </div>
-                        <div class="clearfix">
-                            <div class="td fl">1212</div>
-                            <div class="td fl">1212</div>
-                        </div>
+                        <% _.each(__extraRate, function(value){ %>
+                            <div class="clearfix">
+                                <% if (value.maxInvestAmount === 0) { %>
+                                <div class="td fl"><%= value.minInvestAmount %>元以上</div>
+                                <% } else { %>
+                                <div class="td fl"><%= value.minInvestAmount %> ~ <%= value.maxInvestAmount %>元</div>
+                                <% } %>
+                                <div class="td fl"><%= value.rate %>%</div>
+                            </div>
+                        <% }) %>
                     </div>
                  </script>
             </div>
