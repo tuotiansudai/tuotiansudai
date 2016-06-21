@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -219,7 +220,7 @@ public class UserMessageEventGenerator {
                             title = MessageFormat.format(titleTemplate, AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName());
                             break;
                         case INTEREST_COUPON:
-                            title = MessageFormat.format(titleTemplate, new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString()  + "%" +  couponModel.getCouponType().getName());
+                            title = MessageFormat.format(titleTemplate, new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + couponModel.getCouponType().getName());
                             break;
                         default:
                             title = MessageFormat.format(titleTemplate, couponModel.getCouponType().getName());
@@ -230,6 +231,40 @@ public class UserMessageEventGenerator {
                 }
             }
         }
-
     }
+
+    @Transactional
+    public void generateAssignCouponSuccessEvent(UserCouponModel userCouponModel) {
+        MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ASSIGN_COUPON_SUCCESS);
+        //您获得了{0}，有效期{1}至{2}，<a href="/my-treasure">立即查看</a>。
+        String titleTemplate = messageModel.getTitle();
+        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        String startTime = new SimpleDateFormat("yyyy-MM-dd").format(userCouponModel.getStartTime());
+        String endTime = new SimpleDateFormat("yyyy-MM-dd").format(userCouponModel.getEndTime());
+        String title;
+        switch (couponModel.getCouponType()) {
+            case RED_ENVELOPE:
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                title = MessageFormat.format(titleTemplate,
+                        AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName(),
+                        startTime,
+                        endTime);
+                break;
+            case INTEREST_COUPON:
+                title = MessageFormat.format(titleTemplate,
+                        new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + couponModel.getCouponType().getName(),
+                        startTime,
+                        endTime);
+                break;
+            default:
+                title = MessageFormat.format(titleTemplate, couponModel.getCouponType().getName(),
+                        startTime,
+                        endTime);
+                break;
+        }
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userCouponModel.getLoginName(), title, null);
+        userMessageMapper.create(userMessageModel);
+    }
+
 }

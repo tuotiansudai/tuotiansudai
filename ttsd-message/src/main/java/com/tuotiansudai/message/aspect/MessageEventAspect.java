@@ -1,6 +1,7 @@
 package com.tuotiansudai.message.aspect;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -88,6 +89,12 @@ public class MessageEventAspect {
     @Pointcut("execution(* *..MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
     public void loginSuccessPointcut() {
     }
+
+    @Pointcut("execution(* *..CouponAssignmentService.assign(..))")
+    public void assignCouponPointcut() {
+    }
+
+
 
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
     public void afterReturningRegisterUser(JoinPoint joinPoint, boolean returnValue) {
@@ -221,12 +228,23 @@ public class MessageEventAspect {
         HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
         String username = Strings.isNullOrEmpty(request.getParameter("username")) ? request.getParameter("j_username") : request.getParameter("username");
         String loginName = userMapper.findByLoginNameOrMobile(username).getLoginName();
-        logger.debug(MessageFormat.format("[Message Event Aspect] after login success success({0}) pointcut start", loginName));
+        logger.debug(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut start", loginName));
         try {
             userMessageEventGenerator.generateCouponExpiredAlertEvent(loginName);
             logger.debug(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", loginName));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut is fail", loginName), e);
+        }
+    }
+
+    @AfterReturning(value = "assignCouponPointcut()", returning = "returnValue")
+    public void afterReturningAssignCoupon(JoinPoint joinPoint, UserCouponModel returnValue) {
+        logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut start", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+        try {
+            userMessageEventGenerator.generateAssignCouponSuccessEvent(returnValue);
+            logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut finished", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut is fail", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
         }
     }
 }
