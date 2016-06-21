@@ -119,9 +119,9 @@ public class UserMembershipMapperTest {
     @Test
     public void shouldCountMembershipByLevel() throws Exception {
         UserModel user1 = createFakeUser("user1");
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(0).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(0).getId(), new DateTime().minusDays(10).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(1).getId(), new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel(user1.getLoginName(), membershipMapper.findByLevel(2).getId(), new DateTime().plusDays(10).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel1);
         userMembershipMapper.create(userMembershipModel2);
         userMembershipMapper.create(userMembershipModel3);

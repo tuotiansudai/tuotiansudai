@@ -27,7 +27,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			var $self=$(this),
 				$dateTime=$self.siblings('.date-info'),
 				getTime=parseInt($dateTime.text().split('-')[2])>1?parseInt($dateTime.text().split('-')[2])-1:1,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
+				timeNum='2016-'+$dateTime.text().split('-')[1]+'-'+(getTime>9?getTime:'0'+getTime);
 			heroRank('history', timeNum);
 			$dateTime.text(timeNum);
 		});
@@ -36,7 +36,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			var $self=$(this),
 				$dateTime=$self.siblings('.date-info'),
 				getTime=parseInt($dateTime.text().split('-')[2])<31?parseInt($dateTime.text().split('-')[2])+1:31,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
+				timeNum='2016-'+$dateTime.text().split('-')[1]+'-'+(getTime>9?getTime:'0'+getTime);
 			heroRank('history', timeNum);
 			$dateTime.text(timeNum);
 		});
@@ -46,7 +46,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			var $self=$(this),
 				$dateTime=$self.siblings('.date-info'),
 				getTime=parseInt($dateTime.text().split('-')[2])>1?parseInt($dateTime.text().split('-')[2])-1:1,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
+				timeNum='2016-'+$dateTime.text().split('-')[1]+'-'+(getTime>9?getTime:'0'+getTime);
 			refeInvest('history', timeNum);
 			$dateTime.text(timeNum);
 		});
@@ -55,7 +55,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			var $self=$(this),
 				$dateTime=$self.siblings('.date-info'),
 				getTime=parseInt($dateTime.text().split('-')[2])<31?parseInt($dateTime.text().split('-')[2])+1:31,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
+				timeNum='2016-'+$dateTime.text().split('-')[1]+'-'+(getTime>9?getTime:'0'+getTime);
 			refeInvest('history', timeNum);
 			$dateTime.text(timeNum);
 		});
