@@ -6,6 +6,8 @@ import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.service.MembershipService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -31,6 +33,12 @@ public class MembershipServiceImpl implements MembershipService {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
     public GivenMembership receiveMembership(String loginName){
         if(DateTime.parse(heroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
@@ -53,8 +61,8 @@ public class MembershipServiceImpl implements MembershipService {
             return GivenMembership.ALREADY_RECEIVED;
         }
 
-        long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(loginName);
-        Date registerTime = userMembershipMapper.findAccountRegisterTimeByLoginName(loginName);
+        long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loginName);
+        Date registerTime = accountMapper.findAccountRegisterTimeByLoginName(loginName);
         if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000){
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }
@@ -64,6 +72,7 @@ public class MembershipServiceImpl implements MembershipService {
             return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
 
+        createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         return GivenMembership.AFTER_START_ACTIVITY_REGISTER;
     }
 
