@@ -36,8 +36,9 @@
             <tbody>
             <#assign varInvest = 0>
             <#list heroRankingViewInvestList as heroRankingViewInvest>
+                <#assign varInvest=varInvest+1 >
             <tr>
-                <td>${varInvest+1}</td>
+                <td>${varInvest}</td>
                 <td>${heroRankingViewInvest.loginName!}</td>
                 <td>${heroRankingViewInvest.mobile!}</td>
                 <td>${heroRankingViewInvest.userName!}</td>
@@ -62,8 +63,9 @@
             <tbody>
             <#assign varReferrer = 0>
             <#list heroRankingViewReferrerList as heroRankingViewReferrer>
+                <#assign varReferrer=varReferrer+1 >
             <tr>
-                <td>${varReferrer+1}</td>
+                <td>${varReferrer}</td>
                 <td>${heroRankingViewReferrer.loginName!}</td>
                 <td>${heroRankingViewReferrer.mobile!}</td>
                 <td>${heroRankingViewReferrer.userName!}</td>
