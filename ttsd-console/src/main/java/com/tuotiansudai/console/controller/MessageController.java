@@ -47,14 +47,14 @@ public class MessageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/auto-message-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/event-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "createdBy", required = false) String createdBy,
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
-        ModelAndView modelAndView = new ModelAndView("/auto-message-list");
+        ModelAndView modelAndView = new ModelAndView("/event-message-list");
 
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);

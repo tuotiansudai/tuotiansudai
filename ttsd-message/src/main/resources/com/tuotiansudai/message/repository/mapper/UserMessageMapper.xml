@@ -56,6 +56,6 @@
     </select>
 
     <select id="countUnreadMessagesByLoginName" parameterType="string" resultType="long">
-        select count(1) from user_message where login_name = #{loginName} and read is FALSE
+        select count(1) from user_message where login_name = #{loginName} and `read` = FALSE
     </select>
 </mapper>

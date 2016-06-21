@@ -23,19 +23,14 @@ public class MessageController {
     private UserMessageService userMessageService;
 
     @RequestMapping(value = "/user-messages", method = RequestMethod.GET)
-    public ModelAndView getMessages(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "pageSize", defaultValue = "1", required = false) int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/user-message-list");
-
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        return modelAndView;
+    public ModelAndView getMessages() {
+        return new ModelAndView("/user-message-list");
     }
 
     @RequestMapping(value = "/user-message-list-data", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> getMessageListData(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                             @RequestParam(value = "pageSize", defaultValue = "1", required = false) int pageSize) {
+                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, pageSize);
@@ -52,14 +47,12 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/user-message/{userMessageId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView messageDetail(@PathVariable long userMessageId,
-                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+    public ModelAndView messageDetail(@PathVariable long userMessageId) {
         UserMessageModel userMessageModel = userMessageService.readMessage(userMessageId);
         if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
             return new ModelAndView("/error/404");
         }
         ModelAndView modelAndView = new ModelAndView("/user-message-detail");
-        modelAndView.addObject("index", index);
         modelAndView.addObject("title", userMessageModel.getTitle());
         modelAndView.addObject("content", userMessageModel.getContent());
         modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(userMessageModel.getCreatedTime()));
