@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
@@ -23,7 +24,7 @@ public class MessageController {
 
     @RequestMapping(value = "/user-messages", method = RequestMethod.GET)
     public ModelAndView getMessages(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                    @RequestParam(value = "pageSize", defaultValue = "1", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/user-message-list");
 
         modelAndView.addObject("index", index);
@@ -34,7 +35,7 @@ public class MessageController {
     @RequestMapping(value = "/user-message-list-data", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> getMessageListData(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                             @RequestParam(value = "pageSize", defaultValue = "1", required = false) int pageSize) {
 
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, pageSize);
@@ -63,5 +64,15 @@ public class MessageController {
         modelAndView.addObject("content", userMessageModel.getContent());
         modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(userMessageModel.getCreatedTime()));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/read-all", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> readAll() {
+        BaseDto<BaseDataDto> dto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(userMessageService.readAll(LoginUserInfo.getLoginName()));
+        dto.setData(dataDto);
+        return dto;
     }
 }

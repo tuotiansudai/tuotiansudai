@@ -35,7 +35,7 @@
         set `title` = #{title},
             `template` = #{template},
             `type` = #{type},
-            `event_type` = #{event_type},
+            `event_type` = #{eventType},
             `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
             `status` = #{status},

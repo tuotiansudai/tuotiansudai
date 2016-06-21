@@ -6,16 +6,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,14 +67,30 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Transactional
     public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
-        userMessageModel.setRead(true);
-        userMessageModel.setReadTime(new Date());
-        userMessageMapper.update(userMessageModel);
+        if (userMessageModel != null && !userMessageModel.isRead()) {
+            userMessageModel.setRead(true);
+            userMessageModel.setReadTime(new Date());
+            userMessageMapper.update(userMessageModel);
 
-        MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
-        messageModel.setReadCount(messageModel.getReadCount() + 1);
-        messageMapper.update(messageModel);
+            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
+            if (messageModel.getType() == MessageType.MANUAL) {
+                messageModel.setReadCount(messageModel.getReadCount() + 1);
+                messageMapper.update(messageModel);
+            }
+        }
+
         return userMessageModel;
+    }
+
+    @Override
+    public boolean readAll(String loginName) {
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null);
+        for (UserMessageModel userMessageModel : userMessageModels) {
+            if (!userMessageModel.isRead()) {
+                ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
+            }
+        }
+        return true;
     }
 
     @Override

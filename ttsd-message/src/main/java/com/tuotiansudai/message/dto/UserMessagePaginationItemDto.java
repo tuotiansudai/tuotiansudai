@@ -20,7 +20,7 @@ public class UserMessagePaginationItemDto {
     private Date createdTime;
 
     public UserMessagePaginationItemDto(UserMessageModel model) {
-        this.userMessageId = model.getMessageId();
+        this.userMessageId = model.getId();
         this.title = model.getTitle();
         this.content = model.getContent();
         this.read = model.isRead();

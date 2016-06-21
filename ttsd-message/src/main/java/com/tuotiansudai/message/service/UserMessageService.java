@@ -12,4 +12,6 @@ public interface UserMessageService {
     BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize);
 
     UserMessageModel readMessage(long userMessageId);
+
+    boolean readAll(String loginName);
 }
