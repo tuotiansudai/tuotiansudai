@@ -13,4 +13,6 @@ public interface InvestExtraRateMapper {
 
     void update(InvestExtraRateModel investExtraRateModel);
 
+    void create(InvestExtraRateModel investExtraRateModel);
+
 }
