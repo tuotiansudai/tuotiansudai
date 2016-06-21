@@ -1490,6 +1490,12 @@ body{
         font-size: 16px;
         color: #ff752a;
         line-height: 26px;
+        &.extra-rate {
+          width: auto;
+          padding: 0 .5em;
+          left: 53px;
+          bottom: 35px;
+        }
       }
     }
     .account-info {

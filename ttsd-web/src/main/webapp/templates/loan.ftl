@@ -35,13 +35,14 @@
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
                     <#if loan.newbieInterestCouponRate gt 0>
-                        <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
+                        <!-- <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div> -->
                     </#if>
                 <#else>
                     <#if loan.productType??>
-                        <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div>
+                        <!-- <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div> -->
                     </#if>
                 </#if>
+                 <div class="product-type-text extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
             </div>
             <div class="account-info fl">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
