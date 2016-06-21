@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,24 +92,26 @@ public class MessageMapperTest {
     public void shouldFindAssignableManualMessages() throws Exception {
         UserModel creator = getFakeUser("messageCreator");
 
+        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableManualMessages(creator.getLoginName());
+
         userMapper.create(creator);
-        MessageModel messageModel1 = new MessageModel("title", "template", MessageType.MANUAL,
+        MessageModel messageModel1 = new MessageModel("title", "template",
+                MessageType.MANUAL,
                 Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel1);
 
-        MessageModel messageModel2 = new MessageModel("title", "template", MessageType.EVENT,
+        MessageModel messageModel2 = new MessageModel("title", "template",
+                MessageType.EVENT,
                 Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+                MessageStatus.TO_APPROVE, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel2);
 
         List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
 
-        assertThat(messageModels.size(), is(1));
-
-        assertThat(messageModels.get(0).getId(), is(messageModel1.getId()));
+        assertThat(messageModels.size() - existingAssignableManualMessages.size(), is(1));
     }
 
     private UserModel getFakeUser(String loginName) {
