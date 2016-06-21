@@ -37,18 +37,12 @@ public class JPushAmountNotifyAspect {
     public final static String WITHDRAW_APPLY = "WithDrawApply-{0}";
     public final static String WITHDRAW = "WithDraw-{0}";
     public final static String REFERRER_REWARD = "ReferrerReward-{0}";
-    public final static String LOTTERYOBTAINCASH = "LotteryObtainCash-{0}";
     public final static String COUPON_INCOME = "CouponIncomeLoanRepayId-{0}";
-    public final static String COUPON_REDENVELOP = "CouponRedEnvelopeLoanId-{0}";
+    public final static String COUPON_RED_ENVELOPE = "CouponRedEnvelopeLoanId-{0}";
+    public final static String LOAN_OUT = "loanOutLoanId-{0}";
 
     @Autowired
     private JobManager jobManager;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
     private RechargeMapper rechargeMapper;
@@ -258,7 +252,7 @@ public class JPushAmountNotifyAspect {
                     .toDate();
             jobManager.newJob(JobType.RedEnvelope, AutoJPushRedEnvelopeAlertJob.class)
                     .addJobData(AutoJPushRedEnvelopeAlertJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.RedEnvelope.name(), formatMessage(COUPON_REDENVELOP, loanId))
+                    .withIdentity(JobType.RedEnvelope.name(), formatMessage(COUPON_RED_ENVELOPE, loanId))
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
@@ -288,7 +282,7 @@ public class JPushAmountNotifyAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), formatMessage(LOAN_OUT, loanId))
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
