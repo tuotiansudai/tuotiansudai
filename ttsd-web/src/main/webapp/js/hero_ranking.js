@@ -107,22 +107,6 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 				dataType: 'json'
 			})
 			.done(function(data) {
-				data={          
-	"status": true,
-	          "message": "",
-	          "records": [
-				{
-					"centSumAmount": "100000",
-					"loginName": "zl***"            
-				}, {
-					"centSumAmount": "100000",
-					"loginName": "zl***"            
-				}, {
-					"centSumAmount": "100000",
-					"loginName": "zl***"            
-				}
-				]        
-};
 				if (type == 'list') {
 					$('#refeInvest').html(tpl('refeInvestTpl', data));
 				} else if (type == 'history') {
