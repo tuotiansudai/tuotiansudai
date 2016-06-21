@@ -500,7 +500,7 @@
                 AND ta.application_time between #{activityBeginTime} and #{tradingTime}
             )
         GROUP BY login_name , account.user_name , user.mobile
-        ORDER BY sumAmount DESC , MIN(invest.trading_time)
+        ORDER BY sumAmount DESC , MAX(invest.trading_time)
         LIMIT 0 , 20;
     </select>
 
