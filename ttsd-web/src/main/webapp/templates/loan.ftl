@@ -42,7 +42,23 @@
                         <!-- <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div> -->
                     </#if>
                 </#if>
-                 <div class="product-type-text extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                 <div class="product-type-text extra-rate" id="extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                 <script type="text/template" id="extra-rate-popup-tpl">
+                    <div class="extra-rate-popup" id="extra-rate-popup">
+                        <div class="header clearfix">
+                            <div class="td fl">1212</div>
+                            <div class="td fl">1212</div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="td fl">1212</div>
+                            <div class="td fl">1212</div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="td fl">1212</div>
+                            <div class="td fl">1212</div>
+                        </div>
+                    </div>
+                 </script>
             </div>
             <div class="account-info fl">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>

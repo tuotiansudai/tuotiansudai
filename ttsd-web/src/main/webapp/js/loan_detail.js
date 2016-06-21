@@ -596,4 +596,29 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investForm.submit();
     }
+
+    // 投资加息
+    (function() {
+        var $extraRate = $('#extra-rate');
+        if (!$extraRate.length) {
+            return false;
+        }
+
+        var tplFn = _.compose(_.template, function() {
+            return $('#extra-rate-popup-tpl').html();
+        })();
+        var showPopup = _.compose(function(tpl) {
+            $(tpl).appendTo('body');
+        }, tplFn);
+        var removeElement = _.partial(function(element) {
+            if (element.length) {
+                element.remove();
+            }
+        });
+        var removePopup = removeElement($('#extra-rate-popup'));
+
+        $extraRate.find('.fa').on('mouseover', function(event) {
+            showPopup({});
+        });
+    })();
 });
