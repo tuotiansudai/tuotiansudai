@@ -55,7 +55,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(investRepayModel.getActualRepayDate() == null ? "" : sdf.format(investRepayModel.getActualRepayDate()));
-                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(investRepayModel.getRepayAmount()));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
