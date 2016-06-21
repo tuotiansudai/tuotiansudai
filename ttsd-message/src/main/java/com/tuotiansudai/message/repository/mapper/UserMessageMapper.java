@@ -15,6 +15,8 @@ public interface UserMessageMapper {
 
     long countMessagesByLoginName(String loginName);
 
+    long countUnreadMessagesByLoginName(String loginName);
+
     void create(UserMessageModel model);
 
     void update(UserMessageModel model);

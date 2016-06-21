@@ -7,7 +7,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 
 public interface UserMessageService {
 
-    int getUnreadMessageCount(String loginName);
+    long getUnreadMessageCount(String loginName);
 
     BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize);
 

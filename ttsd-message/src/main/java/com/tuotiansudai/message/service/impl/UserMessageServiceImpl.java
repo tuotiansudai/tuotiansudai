@@ -77,15 +77,25 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public int getUnreadMessageCount(String loginName) {
-        // TODO: add logic here
-        return 0;
+    public long getUnreadMessageCount(String loginName) {
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
+        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName);
+        return unreadManualMessages.size() + unreadCount;
     }
 
     private void generateUserMessages(String loginName) {
         userMapper.lockByLoginName(loginName);
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
+        for (MessageModel message : unreadManualMessages) {
+            userMessageMapper.create(new UserMessageModel(message.getId(), loginName, message.getTitle(), message.getTemplate()));
+        }
+    }
+
+    private List<MessageModel> getUnreadManualMessages(String loginName) {
         List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null);
+
+        List<MessageModel> unreadManualMessages = Lists.newArrayList();
         for (final MessageModel message : messages) {
             Optional<UserMessageModel> userMessageModelOptional = Iterators.tryFind(userMessageModels.iterator(), new Predicate<UserMessageModel>() {
                 @Override
@@ -95,8 +105,10 @@ public class UserMessageServiceImpl implements UserMessageService {
             });
 
             if (!userMessageModelOptional.isPresent() && messageUserGroupDecisionManager.decide(loginName, message.getId())) {
-                userMessageMapper.create(new UserMessageModel(message.getId(), loginName, message.getTitle(), message.getTemplate()));
+                unreadManualMessages.add(message);
             }
         }
+
+        return unreadManualMessages;
     }
 }

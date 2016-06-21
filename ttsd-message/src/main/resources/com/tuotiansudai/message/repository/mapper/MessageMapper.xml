@@ -30,11 +30,6 @@
         value(#{title}, #{template}, #{type}, #{eventType}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime})
     </insert>
 
-    <select id="findById" parameterType="long" resultMap="messageResultMap">
-        select * from message
-        where id = #{id}
-    </select>
-
     <update id="update" parameterType="MessageModel">
         update message
         set `title` = #{title},

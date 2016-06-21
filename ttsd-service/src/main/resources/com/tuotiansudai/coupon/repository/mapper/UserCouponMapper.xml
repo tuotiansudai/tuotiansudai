@@ -70,7 +70,7 @@
 
     <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="map">
         select uc.* from user_coupon uc
-        <if test="couponTypeList != null and couponTypeList.size != 0">
+        <if test="couponTypes != null and couponTypes.size != 0">
             JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
             <foreach collection="couponTypes" item="couponType" open="(" separator="," close=")">
                 #{couponType}
