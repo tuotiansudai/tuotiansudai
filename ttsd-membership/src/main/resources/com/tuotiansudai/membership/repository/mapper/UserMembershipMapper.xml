@@ -134,4 +134,9 @@
         select * from user_membership where login_name = #{loginName} and type =  #{type}
     </select>
 
+    <select id="findByLoginNameByMembershipId" resultMap="UserMembershipResultMap" parameterType="map">
+        select * from user_membership where login_name = #{loginName} and membership_id =  #{membershipId}
+    </select>
+
+
 </mapper>

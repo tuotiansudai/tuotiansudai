@@ -50,4 +50,6 @@ public interface UserMembershipMapper {
     UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
                                               @Param(value = "type") UserMembershipType type);
 
+    UserMembershipModel findByLoginNameByMembershipId(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "membershipId") long membershipId);
 }
