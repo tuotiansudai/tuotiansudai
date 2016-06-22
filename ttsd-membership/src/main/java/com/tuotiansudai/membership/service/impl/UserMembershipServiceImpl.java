@@ -1,21 +1,24 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.*;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
@@ -59,4 +62,39 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         return userMembershipMapper.findByLoginNameByMembershipId(loginName, membershipId);
     }
 
+    @Override
+    public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
+                                                              Date registerStartTime, Date registerEndTime,
+                                                              UserMembershipType userMembershipType,
+                                                              List<Integer> levels) {
+        if (StringUtils.isEmpty(loginName)) {
+            loginName = null;
+        }
+        if (StringUtils.isEmpty(mobile)) {
+            mobile = null;
+        }
+        if (UserMembershipType.ALL == userMembershipType) {
+            userMembershipType = null;
+        }
+        if (CollectionUtils.isEmpty(levels)) {
+            return new ArrayList<UserMembershipItemDto>();
+        }
+        List<UserMembershipItemModel> userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
+        Collections.sort(userMembershipItemModels, new Comparator<UserMembershipItemModel>() {
+            @Override
+            public int compare(UserMembershipItemModel o1, UserMembershipItemModel o2) {
+                return o2.getRegisterTime().after(o1.getRegisterTime()) ? 1 : -1;
+            }
+        });
+        List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
+        for(UserMembershipItemModel userMembershipItemModel : userMembershipItemModels) {
+            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemModel));
+        }
+        return userMembershipItemDtos;
+    }
+
+    @Override
+    public List<Integer> getAllLevels() {
+        return membershipMapper.findAllLevels();
+    }
 }
