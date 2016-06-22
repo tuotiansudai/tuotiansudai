@@ -2278,6 +2278,34 @@ body{
     }
   }
 }
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  border: 1px solid #ffd4b2;
+  width: 200px;
+  text-align: center;
+  > div {
+    border-top: 1px solid #ffd4b2;
+    &:first-child {
+      border-top: none;
+      border-right: none;
+    }
+  }
+  .header {
+    color: #ff9d1a;
+  }
+  .td {
+    border-left: 1px solid #ffd4b2;
+    line-height: 28px;
+    text-align: center;
+    width: 49px;
+     &:first-child {
+      border-left: none;
+      width: 150px;
+    }
+  }
+}
 
 /* my treasure*/
 .my-treasure-content {

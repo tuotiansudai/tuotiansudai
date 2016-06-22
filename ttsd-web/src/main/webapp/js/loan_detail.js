@@ -596,4 +596,89 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investForm.submit();
     }
+
+    // 投资加息
+    (function() {
+        var $extraRate = $('#extra-rate');
+        if (!$extraRate.length) {
+            return false;
+        }
+
+        var utils = {
+            getSize: function(element, type) {
+                return element[type]();
+            },
+            getOffset: function(element) {
+                return element.offset();
+            },
+            removeElement: function(element) {
+                if (element.length) {
+                    element.remove();
+                }
+            },
+            getRelativeRate: function(arr, num) {
+                var result = null;
+                _.each(__extraRate, function(value) {
+                    if (value.maxInvestAmount === 0 && num > value.minInvestAmount) {
+                        result = value.rate;
+                    } else if (value.maxInvestAmount >= num && num > value.minInvestAmount) {
+                        result = value.rate;
+                    }
+                });
+                return result;
+            },
+            replace: function(str) {
+                return str.replace(/,/g, '');
+            }
+        };
+
+        var tplFn = _.compose(_.template, function() {
+            return $('#extra-rate-popup-tpl').html();
+        })();
+        var getOffset = _.partial(utils.getOffset, $extraRate);
+        var getSize = _.partial(utils.getSize, $extraRate);
+        var extraRateWidth = getSize('width');
+        var extraRateHeight = getSize('height');
+        var css = _.compose(_.partial(function(offset, extraRateHeight) {
+            return {
+                left: offset.left,
+                top: offset.top + extraRateHeight + 20
+            }
+        }, _, extraRateHeight), getOffset);
+        var createPopup = _.partial(function(tpl, css) {
+            return $(tpl).css(css).appendTo('body');
+        }, _, css());
+        var showPopup = _.compose(createPopup, tplFn);
+        var removePopup = _.partial(_.compose(utils.removeElement, $), '#extra-rate-popup');
+
+        $extraRate.find('.fa').on({
+            mouseover: function(event) {
+                showPopup({
+                    __extraRate: __extraRate
+                });
+            },
+            mouseout: function() {
+                removePopup();
+            }
+        });
+
+
+        var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
+        var changeHTML = function(rate) {
+            $('.chart-box').find('[data-extra-rate]').html(rate);
+        };
+        var textFn = function(rate) {
+            if (!rate) {
+                return ''
+            }
+            return '+' + rate;
+        }
+        $('#investForm').find('.text-input-amount').on('change', function() {
+            var _this = this;
+            _.compose(changeHTML, textFn, getRelativeRate, parseInt, utils.replace, function() {
+                return $(_this).val()
+            })();
+        });
+
+    })();
 });
