@@ -8,7 +8,6 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;

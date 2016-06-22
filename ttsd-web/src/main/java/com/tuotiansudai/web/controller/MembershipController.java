@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -12,7 +11,9 @@ import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class MembershipController {
     private UserMembershipService userMembershipService;
 
     @Autowired
-    private MembershipService membershipService;
+    private HeroRankingService heroRankingService;
 
     @Autowired
     private AppTokenParser appTokenParser;
@@ -122,7 +123,7 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = membershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            GivenMembership givenMembership = heroRankingService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {
