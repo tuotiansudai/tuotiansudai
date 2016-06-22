@@ -29,7 +29,7 @@
             <tbody>
                 <#list loanAchievementViews as loanAchievementView>
                     <tr>
-                        <td><a href="/loan/${loanAchievementView.loanId?string('0')}" target="_blank">${loanAchievementView.name!}</a></td>
+                        <td><a href="${webServer}/loan/${loanAchievementView.loanId?string('0')}" target="_blank">${loanAchievementView.name!}</a></td>
                         <td>${loanAchievementView.loanStatus.description!}</td>
                         <td>${loanAchievementView.periods}</td>
                         <td>${(loanAchievementView.loanAmount/100)?string('0.00')!}</td>
