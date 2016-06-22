@@ -142,7 +142,6 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createdBy??>&createdBy=${createBy!}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

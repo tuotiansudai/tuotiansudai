@@ -79,7 +79,7 @@ public class MessageController {
         modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
 
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
-        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
+        long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
         modelAndView.addObject("messageCount", messageCount);
         long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;

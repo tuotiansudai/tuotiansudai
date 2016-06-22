@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="autoMessageManage" title="自动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -12,7 +12,7 @@
             <span class="txt"></span>
         </div>
     </div>
-    <form action="/message-manage/manual-message-list" class="form-inline query-build">
+    <form action="/message-manage/event-message-list" class="form-inline query-build">
         <div class="form-group">
             <label>标题</label>
             <input type='text' class="form-control" id="title" name="title" value="${title!}"/>
@@ -142,7 +142,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createdBy??>&createdBy=${createBy!}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createdBy??>&createdBy=${createdBy!}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
