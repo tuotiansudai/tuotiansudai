@@ -13,7 +13,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
         });
 
         $('.down-load').click(function () {
-            location.href = "/statistic/financeReport/export?" + $('form').serialize();
+            location.href = "/finance-manage/financeReport/export?" + $('form').serialize();
         });
     });
 });

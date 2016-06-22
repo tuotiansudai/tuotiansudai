@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/statistic/financeReport" method="get" class="form-inline query-form">
+    <form action="/finance-manage/financeReport" method="get" class="form-inline query-form">
         <div class="form-group">
             <label>项目编号</label>
             <input type="text" class="form-control" name="loanId" placeholder="" value="${(loanId?c)!}">
@@ -115,7 +115,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/statistic/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${loanId!}&period=${period!}&investLoginName=${investLoginName!}&investStartTime=${investStartTime!}&investEndTime=${investEndTime!}"
+                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${loanId!}&period=${period!}&investLoginName=${investLoginName!}&investStartTime=${investStartTime!}&investEndTime=${investEndTime!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -126,7 +126,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/statistic/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${loanId!}&period=${period!}&investLoginName=${investLoginName!}&investStartTime=${investStartTime!}&investEndTime=${investEndTime!}"
+                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${loanId!}&period=${period!}&investLoginName=${investLoginName!}&investStartTime=${investStartTime!}&investEndTime=${investEndTime!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
