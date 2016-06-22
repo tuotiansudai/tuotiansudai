@@ -2,7 +2,7 @@ import React from 'react';
 import { hashHistory } from 'react-router';
 import changeTitle from 'utils/changeTitle';
 import { main, spinner } from './MediaList.scss';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll'; 
 import imagesLoaded from 'imagesloaded';
 import Praise from 'components/licaiCircle/Praise';
 import classNames from 'classnames';
