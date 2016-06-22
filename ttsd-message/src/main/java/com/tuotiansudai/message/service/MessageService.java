@@ -21,7 +21,7 @@ public interface MessageService {
 
     long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException;
 
-    boolean messageExisted(long messageId);
+    boolean isMessageExist(long messageId);
 
     MessageDto getMessageByMessageId(long messageId);
 

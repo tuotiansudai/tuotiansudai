@@ -26,24 +26,6 @@ public class MessageDto implements Serializable{
     public MessageDto() {
     }
 
-    public MessageDto(long id, String title, String template, MessageType type, List<MessageUserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, long readCount, String activatedBy, Date activatedTime, Date expiredTime, String updatedBy, Date updatedTime, String createdBy, Date createdTime) {
-        this.id = id;
-        this.title = title;
-        this.template = template;
-        this.type = type;
-        this.userGroups = userGroups;
-        this.channels = channels;
-        this.status = status;
-        this.readCount = readCount;
-        this.activatedBy = activatedBy;
-        this.activatedTime = activatedTime;
-        this.expiredTime = expiredTime;
-        this.updatedBy = updatedBy;
-        this.updatedTime = updatedTime;
-        this.createdBy = createdBy;
-        this.createdTime = createdTime;
-    }
-
     public MessageDto(MessageModel messageModel) {
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();

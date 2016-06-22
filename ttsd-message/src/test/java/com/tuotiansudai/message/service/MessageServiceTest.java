@@ -24,7 +24,6 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -144,8 +143,8 @@ public class MessageServiceTest {
     public void testMessageExisted() throws Exception {
         MessageDto messageDto = prepareData();
 
-        assertTrue(messageService.messageExisted(messageDto.getId()));
-        assertFalse(messageService.messageExisted(-1));
+        assertTrue(messageService.isMessageExist(messageDto.getId()));
+        assertFalse(messageService.isMessageExist(-1));
     }
 
     @Test

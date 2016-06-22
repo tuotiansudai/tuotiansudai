@@ -59,7 +59,7 @@
     </select>
 
     <select id="lockById" parameterType="long" resultMap="messageResultMap">
-        select * from message where id = #{id} and deleted = 0 for update;
+        select * from message where id = #{id} for update;
     </select>
 
     <select id="findMessageCount"  parameterType="map" resultType="long">

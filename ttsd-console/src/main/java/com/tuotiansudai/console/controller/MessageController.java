@@ -121,7 +121,7 @@ public class MessageController {
                                             @RequestParam(value = "importUsersId") long importUsersId) {
         messageDto.setUpdatedBy(LoginUserInfo.getLoginName());
         messageDto.setUpdatedTime(new Date());
-        if (!messageService.messageExisted(messageDto.getId())) {
+        if (!messageService.isMessageExist(messageDto.getId())) {
             messageDto.setCreatedBy(LoginUserInfo.getLoginName());
             messageDto.setCreatedTime(new Date());
         }
@@ -153,17 +153,17 @@ public class MessageController {
         return new BaseDto<>(new BaseDataDto(true, String.valueOf(newImportUsersId)));
     }
 
-    @RequestMapping(value = "manual-message/{messageId}/approve", method = RequestMethod.POST)
+    @RequestMapping(value = "/manual-message/{messageId}/approve", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageApprove(@PathVariable long messageId) {
         return messageService.approveManualMessage(messageId);
     }
 
-    @RequestMapping(value = "manual-message/{messageId}/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/manual-message/{messageId}/reject", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageReject(@PathVariable long messageId) {
         return messageService.rejectManualMessage(messageId);
     }
 
-    @RequestMapping(value = "manual-message/{messageId}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/manual-message/{messageId}/delete", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageDelete(@PathVariable long messageId) {
         return messageService.deleteManualMessage(messageId);
     }

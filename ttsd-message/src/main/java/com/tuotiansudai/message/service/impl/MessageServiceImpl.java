@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -16,13 +17,13 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,16 +36,16 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    private final static String redisMessageReceivers = "message:manual-message:receivers";
 
-    final private static String redisMessageReceivers = "message:manual-message:receivers";
-    final private int expiredPeriod = 30;
-
+    private final static int EXPIRED_PERIOD = 30;
 
     @Override
     public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType) {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
     }
 
+    @Override
     public List<MessageModel> findMessageList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
         return messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
     }
@@ -52,22 +53,93 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void createAndEditManualMessage(MessageDto messageDto, long importUsersId) {
         long messageId = messageDto.getId();
-        if (messageExisted(messageId)) {
+        if (isMessageExist(messageId)) {
             editManualMessage(messageDto, importUsersId);
         } else {
             createManualMessage(messageDto, importUsersId);
         }
     }
 
+    @Override
+    public long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException {
+        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(oldImportUsersId))) {
+            redisWrapperClient.hdel(redisMessageReceivers, String.valueOf(oldImportUsersId));
+        }
+
+        long importUsersId = new Date().getTime();
+
+        List<String> importUsers = Lists.newArrayList();
+
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
+        HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
+        for (int rowIndex = hssfSheet.getFirstRowNum(); rowIndex <= hssfSheet.getLastRowNum(); ++rowIndex) {
+            HSSFRow hssfRow = hssfSheet.getRow(rowIndex);
+            for (int cellIndex = hssfRow.getFirstCellNum(); cellIndex < hssfRow.getLastCellNum(); ++cellIndex) {
+                HSSFCell hssfCell = hssfRow.getCell(cellIndex);
+                String loginName = getStringFromCell(hssfCell);
+                if (!StringUtils.isEmpty(loginName)) {
+                    importUsers.add(loginName);
+                }
+            }
+        }
+
+        redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
+        return importUsersId;
+    }
+
+    @Override
+    public MessageDto getMessageByMessageId(long messageId) {
+        return new MessageDto(messageMapper.findById(messageId));
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> rejectManualMessage(long messageId) {
+        if (!isMessageExist(messageId)) {
+            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
+        }
+        MessageDto messageDto = getMessageByMessageId(messageId);
+        if (MessageStatus.TO_APPROVE == messageDto.getStatus()) {
+            messageDto.setStatus(MessageStatus.REJECTION);
+            messageMapper.update(new MessageModel(messageDto));
+            return new BaseDto<>(new BaseDataDto(true, null));
+        }
+        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> approveManualMessage(long messageId) {
+        if (!isMessageExist(messageId)) {
+            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
+        }
+        MessageDto messageDto = getMessageByMessageId(messageId);
+        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
+            messageDto.setStatus(MessageStatus.APPROVED);
+            messageMapper.update(new MessageModel(messageDto));
+            return new BaseDto<>(new BaseDataDto(true, null));
+        }
+        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> deleteManualMessage(long messageId) {
+        if (!isMessageExist(messageId)) {
+            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
+        }
+        messageMapper.deleteById(messageId);
+        redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
+        return new BaseDto<>(new BaseDataDto(true, null));
+    }
+
+    @Override
+    public boolean isMessageExist(long messageId) {
+        return null != messageMapper.findById(messageId);
+    }
+
     private void createManualMessage(MessageDto messageDto, long importUsersId) {
         messageDto.setType(MessageType.MANUAL);
         messageDto.setReadCount(0);
         messageDto.setStatus(MessageStatus.TO_APPROVE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_YEAR, expiredPeriod);
-        messageDto.setExpiredTime(calendar.getTime());
-
+        messageDto.setExpiredTime(new DateTime().plusDays(EXPIRED_PERIOD).withTimeAtStartOfDay().toDate());
         MessageModel messageModel = new MessageModel(messageDto);
         messageMapper.create(messageModel);
 
@@ -107,78 +179,5 @@ public class MessageServiceImpl implements MessageService {
             default:
                 return "";
         }
-    }
-
-    @Override
-    public long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException {
-        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(oldImportUsersId))) {
-            redisWrapperClient.hdel(redisMessageReceivers, String.valueOf(oldImportUsersId));
-        }
-
-        long importUsersId = new Date().getTime();
-
-        List<String> importUsers = new ArrayList<>();
-
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
-        HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
-        for (int rowIndex = hssfSheet.getFirstRowNum(); rowIndex <= hssfSheet.getLastRowNum(); ++rowIndex) {
-            HSSFRow hssfRow = hssfSheet.getRow(rowIndex);
-            for (int cellIndex = hssfRow.getFirstCellNum(); cellIndex < hssfRow.getLastCellNum(); ++cellIndex) {
-                HSSFCell hssfCell = hssfRow.getCell(cellIndex);
-                String loginName = getStringFromCell(hssfCell);
-                if (!StringUtils.isEmpty(loginName)) {
-                    importUsers.add(loginName);
-                }
-            }
-        }
-
-        redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
-
-        return importUsersId;
-    }
-
-    @Override
-    public MessageDto getMessageByMessageId(long messageId) {
-        return new MessageDto(messageMapper.findById(messageId));
-    }
-
-    public BaseDto<BaseDataDto> rejectManualMessage(long messageId) {
-        if (!messageExisted(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
-        }
-        MessageDto messageDto = getMessageByMessageId(messageId);
-        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
-            messageDto.setStatus(MessageStatus.REJECTION);
-            messageMapper.update(new MessageModel(messageDto));
-            return new BaseDto<>(new BaseDataDto(true));
-        }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
-    }
-
-    public BaseDto<BaseDataDto> approveManualMessage(long messageId) {
-        if (!messageExisted(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
-        }
-        MessageDto messageDto = getMessageByMessageId(messageId);
-        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
-            messageDto.setStatus(MessageStatus.APPROVED);
-            messageMapper.update(new MessageModel(messageDto));
-            return new BaseDto<>(new BaseDataDto(true));
-        }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
-    }
-
-    public BaseDto<BaseDataDto> deleteManualMessage(long messageId) {
-        if (!messageExisted(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
-        }
-        messageMapper.deleteById(messageId);
-        redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
-        return new BaseDto<>(new BaseDataDto(true));
-    }
-
-    @Override
-    public boolean messageExisted(long messageId) {
-        return null != messageMapper.findById(messageId);
     }
 }
