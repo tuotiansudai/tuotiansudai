@@ -190,7 +190,6 @@
                 </div>
                 <div class="mask-bg"></div>
             </div>
-        </div>
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
