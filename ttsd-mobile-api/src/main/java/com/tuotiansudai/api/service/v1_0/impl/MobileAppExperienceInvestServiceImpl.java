@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,7 +68,7 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
                 investExperienceResponseDataDto.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
                 investExperienceResponseDataDto.setName(couponModel.getCouponType().getName());
                 investExperienceResponseDataDto.setProductNewTypes(couponModel.getProductTypes());
-                investExperienceResponseDataDto.setRate(String.valueOf(couponModel.getRate()));
+                investExperienceResponseDataDto.setRate(new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).toString());
                 investExperienceResponseDataDto.setStartDate(new DateTime(userCouponModel.getStartTime()).toString("yyyy-MM-dd"));
                 investExperienceResponseDataDto.setUserCouponId(String.valueOf(userCouponModel.getId()));
                 investExperienceResponseDataDto.setType(couponModel.getCouponType().name());
