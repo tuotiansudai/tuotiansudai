@@ -5,6 +5,12 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
+                    <a href="/activity/loan-hike" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">
+                    </a>
+                </li>
+                <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
                         <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
                         <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
@@ -51,6 +57,7 @@
         <div class="hd">
             <ul class="scroll-num">
                 <li class="on"></li>
+                <li></li>
                 <li></li>
                 <li></li>
                 <li></li>
