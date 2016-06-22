@@ -36,9 +36,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
-    @Value("${mobile.experience.loan.display}")
-    private boolean isShowExperienceLoan;
-
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
