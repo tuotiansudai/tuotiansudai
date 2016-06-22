@@ -45,7 +45,8 @@
                 </#if>
                  <div class="product-type-text extra-rate" id="extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
                  <script>
-                     var __extraRate = [{
+                     var __extraRate = [
+                         {
                             minInvestAmount: 100,
                             maxInvestAmount: 999,
                             rate: 0.3
