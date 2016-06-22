@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -22,6 +23,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -44,6 +46,9 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto userInvestListRequestDto) {
@@ -69,6 +74,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
 
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if (CollectionUtils.isNotEmpty(investModels)) {
             for (InvestModel investModel : investModels) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
@@ -108,6 +114,8 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setUsedCoupon(CollectionUtils.isNotEmpty(couponTypes) && !couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setProductNewType(loanModel.getProductType().name());
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+                dto.setExtraRate(investExtraRateModel != null ? decimalFormat.format(investExtraRateModel.getExtraRate() * 100) : null);
                 list.add(dto);
             }
         }
