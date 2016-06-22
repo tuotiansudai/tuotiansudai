@@ -186,7 +186,7 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        long extraRateInterest = getExtraRate(amount,loanId);
+        long extraRateInterest = getExtraRate(loanId,amount,loanModel.getDuration());
         long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return (expectedInterest  - expectedFee) + (extraRateInterest - extraRateFee);
     }
@@ -402,20 +402,20 @@ public class InvestServiceImpl implements InvestService {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
     }
 
-    private long getExtraRate(long amount,long loanId){
+    private long getExtraRate(long loanId,long amount,int duration){
         double rate = 0;
         List<ExtraLoanRateModel> extraLoanRateModelList = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
         for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList){
-            if(extraLoanRateModel.getMinInvestAmount() < amount && extraLoanRateModel.getMaxInvestAmount() == 0){
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && extraLoanRateModel.getMaxInvestAmount() == 0){
                 rate = extraLoanRateModel.getRate();
                 break;
             }
-            if(extraLoanRateModel.getMinInvestAmount() < amount && amount < extraLoanRateModel.getMaxInvestAmount()){
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && amount < extraLoanRateModel.getMaxInvestAmount()){
                 rate = extraLoanRateModel.getRate();
                 break;
             }
         }
 
-        return rate == 0 ? 0 : new BigDecimal(amount).multiply(new BigDecimal(rate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 }
