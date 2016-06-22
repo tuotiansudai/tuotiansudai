@@ -21,7 +21,104 @@ const MenuData = {
     }]
 };
 
+
+class ButtonStatus extends React.Component {
+    
+    jumpToWhere(event) {
+        let value=event.target.value;
+        this.props.jumpToPage(value);
+    } 
+    render() { 
+        let stocked=this.props.stocked;
+        let button=null;
+        let value=this.props.value;
+        if(stocked) {
+            button=<span className="TaskItemBtn" value={value} onTouchTap={this.jumpToWhere.bind(this)}>去完成</span>;
+        }
+        else  {
+           button=<span className="TaskItemCompleteBtn" disabled>已完成</span>;
+        }
+        return button;
+    }  
+    };
+
+class NewbieTaskGroup extends React.Component {
+    render() {
+        let NewData=this.props.data;
+        let rows=[];
+        let jumto=this.props.jumpToEvent;
+        NewData.forEach(function(option,key) { 
+            rows.push(<div className="TaskItemNewbie" key={key}>
+                        <div className="SerialNum">{option.number}</div>
+                            <div className="TaskContent">
+                            <div className="TaskItemTitle">{option.category}</div>
+                            <div className="TaskItemDes">{option.description}</div>
+                            <div className="TaskItemLine"></div>
+                            <div className="TaskRewardGroup">
+                                <div className="TaskReward">{option.reward}</div>
+                                <img className="TaskBeanImg" src={taskBean} />
+                            </div>
+                        </div>
+                        <ButtonStatus stocked={option.stocked} value={option.number} jumpToPage={jumto} />
+                   </div>);
+        });
+
+        return (
+            <div className="NewbieTaskGroup">
+            <div className="HeaderGroup">
+                <img src={taskLineLeft} />
+                <span className="HeaderTitle">新手任务</span>
+                <img src={taskLineRight}/>
+            </div>
+            <div className="scroll-wrap" ref="scrollWrap">
+                {rows}
+                </div>
+            </div>
+            );
+             
+    }
+}
+class AdvanceTaskGroup extends React.Component {
+    render() {
+        let AdvanceData=this.props.data;
+        let rows=[];
+        let jumto=this.props.jumpToEvent;
+    
+        AdvanceData.forEach(function(option,key) { 
+
+            rows.push(<div className="TaskItemNewbie" key={key}>
+                    <div className="TaskAdvanceContent">
+                        <div className="TaskAdvanceRewardGroup">
+                            <div className="TaskAdvanceItemTitle">{option.category}</div>
+                            <div className="TaskAdvanceReward">{option.reward}</div>
+                            <img className="TaskAdvanceBeanImg" src={taskBean}/>
+                        </div>
+                        <div className="TaskAdvanceItemDes">{option.description}</div>
+                    </div>
+                    <ButtonStatus stocked={option.stocked} value={option.number} jumpToPage={jumto} />
+                </div>);
+        });
+
+        return (
+            <div className="AdvanceTaskGroup">
+            <div className="HeaderGroup">
+                <img src={taskLineLeft} />
+                <span className="HeaderTitle">进阶任务</span>
+                <img src={taskLineRight} />
+            </div>
+
+            <div className="scroll-wrap" ref="scrollOngoing">
+               {rows}
+            </div>
+            
+            </div>
+            );
+    };
+}
+
+
 class taskCenter extends React.Component {
+
         state = {
             active: MenuData.tabHeader[0].value,
             isShowLoading: false,
@@ -66,26 +163,31 @@ class taskCenter extends React.Component {
 
                 ],
                 ongoingData: [{
+                    number: '01',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
                         stocked: true
                     }, {
+                        number: '02',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
                         stocked: true
                     }, {
+                        number: '03',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
                         stocked: true
                     }, {
+                        number: '04',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
                         stocked: false
                     }, {
+                        number: '05',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
@@ -100,80 +202,11 @@ class taskCenter extends React.Component {
 
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
-        this.listIndex = 1;
-
-        if(value=='ONGOING') {
         this.setState({
-            active: value,
-            isShowLoading: false,
-            listData: {
-                newData: [{
-                        number: '01',
-                        category: '实名认证',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励200',
-                        stocked: true
-                    }, {
-                        number: '02',
-                        category: '绑定银行卡',
-                        description: '绑定常用银行卡，赚钱快人一步',
-                        reward: '奖励200',
-                        stocked: true
-                    }
-
-                ],
-                ongoingData: [{
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        stocked: true
-                    }, {
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        stocked: true
-                    }
-
-                ]
-            }
+          active: value
         });
-        }
-        else if(value=='FINISHED') {
-            this.setState({
-            active: value,
-            isShowLoading: false,
-            listData: {
-                newData: [{
-                        number: '01',
-                        category: '实名认证',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励200',
-                        stocked: false
-                    }, {
-                        number: '02',
-                        category: '绑定银行卡',
-                        description: '绑定常用银行卡，赚钱快人一步',
-                        reward: '奖励200',
-                        stocked: false
-                    }
 
-                ],
-                ongoingData: [{
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        stocked: false
-                    }, {
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        stocked: false
-                    }
-                ]
-            }
-        });
-        }
-
+        this.listIndex = 1;
 
         // this.fetchData(1, value, (response) => {
         //     this.setState((previousState) => {
@@ -209,27 +242,6 @@ class taskCenter extends React.Component {
         });
     }
 
-	 showTab(event) {
-	 		let num=event.target.num;
-            var tab0 = document.getElementById("MenuItem0");
-            var tab1 = document.getElementById("MenuItem1");
-            var ongoingBox = document.getElementById("OngoingBox");
-            var completeBox = document.getElementById("CompleteBox");
-
-            if (num == 1) {
-                ongoingBox.style.display = "block";
-                completeBox.style.display = "none";
-
-                tab0.className = "MenuBoxItemSelected";
-                tab1.className = "MenuBoxItemNormal";
-            } else {
-                ongoingBox.style.display = "none";
-                completeBox.style.display = "block";
-
-                tab0.className = "MenuBoxItemNormal";
-                tab1.className = "MenuBoxItemSelected";
-            }
-        }
 	 jumpTo(n) {
             switch (n) {
                 case 0://实名认证
@@ -267,11 +279,39 @@ class taskCenter extends React.Component {
         let listData = [];
 
 	}
+    componentDidUpdate() {
+        setTimeout(() => {
+                if (!this.myScroll) {
+                    let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
+                    this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
+                    this.myScroll = new IScroll(this.refs.scrollWrap);
+                    this.myScroll.on('scrollEnd', () => {
+                        if (this.myScroll.y <= this.myScroll.maxScrollY) {
+                            if (this.state.isShowLoading) {
+                                this.pagination.call(this);
+                            }
+                        }
+                    });
+                } else {
+                    this.myScroll.refresh();
+                    if (this.listIndex === 1) {
+                        this.myScroll.scrollTo(0, 0);
+                    }
+                }
+            }, 200);
+    }
+
 	componentWillUnmount() {
 		this.destroyIscroll.call(this);
 	}
 	render() { 
-		return (
+        // let btn = null;
+        // if (this.state.aaa) {
+        //     btn = <span className={classNames("TaskItemBtn":true, show: option.stocked)} disabled data-value={option.number} onTouchTap={this.jumpTo.bind(this)} >去完成</span>;
+        // } else {
+        //     btn = <span className={classNames("TaskItemBtn":true, show: option.stocked)} disabled data-value={option.number} onTouchTap={this.jumpTo.bind(this)} >yi完成</span>;
+        // }
+  		return (
 			<div className={main} >
 			    <div className="MenuBox">
 			        <ul>
@@ -283,59 +323,10 @@ class taskCenter extends React.Component {
 		
 			<div className="ContentBox">
 			<div id="OngoingBox" className="OngoingBox">
-			<div className="NewbieTaskGroup">
-			<div className="HeaderGroup">
-                <img src={taskLineLeft} />
-                <span className="HeaderTitle">新手任务</span>
-                <img src={taskLineRight}/>
-            </div>
-            <div className="scroll-wrap" ref="scrollWrap">
-            {this.state.listData.newData.map((option, index) => {
-                return (
-                    <div className="TaskItemNewbie" key={index}>
-                        <div className="SerialNum">{option.number}</div>
 
-                        <div className="TaskContent">
-                            <div className="TaskItemTitle">{option.category}</div>
-                            <div className="TaskItemDes">{option.description}</div>
-                            <div className="TaskItemLine"></div>
-                            <div className="TaskRewardGroup">
-                                <div className="TaskReward">{option.reward}</div>
-                                <img className="TaskBeanImg" src={taskBean} />
-                            </div>
-                        </div>
-                        <span className="TaskItemBtn" data-value={option.number} onTouchTap={this.jumpTo.bind(this)} >去完成</span>
-                   </div>
-                    );
-            })}
-            </div>
-			</div>
-			<div className="AdvanceTaskGroup">
-			<div className="HeaderGroup">
-                <img src={taskLineLeft} />
-                <span className="HeaderTitle">进阶任务</span>
-                <img src={taskLineRight} />
-            </div>
+			<NewbieTaskGroup data={this.state.listData.newData} jumpToEvent={this.jumpTo} />
 
-            <div className="scroll-wrap" ref="scrollOngoing">
-                {this.state.listData.ongoingData.map((option, index) => {
-                return (
-                    <div className="TaskItemNewbie" key={index}>
-                    <div className="TaskAdvanceContent">
-                        <div className="TaskAdvanceRewardGroup">
-                            <div className="TaskAdvanceItemTitle">{option.category}</div>
-                            <div className="TaskAdvanceReward">{option.reward}</div>
-                            <img className="TaskAdvanceBeanImg" src={taskBean}/>
-                        </div>
-                        <div className="TaskAdvanceItemDes">{option.description}</div>
-                    </div>
-                    <span className="TaskItemBtn" data-value={index} onTouchTap={this.jumpTo.bind(this)}>去完成</span>
-                </div>
-                    );
-            })}
-            </div>
-            
-			</div>
+			<AdvanceTaskGroup data={this.state.listData.ongoingData} jumpToEvent={this.jumpTo} />
 			</div>
 			</div>
 			</div>	    
