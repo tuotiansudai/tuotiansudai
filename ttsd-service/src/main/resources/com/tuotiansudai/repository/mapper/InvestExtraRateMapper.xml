@@ -33,7 +33,7 @@
         where id = #{id}
     </update>
 
-    <insert id="create" parameterType="InvestExtraRateModel">
+    <insert id="create" parameterType="InvestExtraRateModel" useGeneratedKeys="true" keyProperty="id">
         insert into invest_extra_rate(loan_id,invest_id,is_transfer,amount,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time)
         values(#{loanId},#{investId},false,#{amount},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
     </insert>
