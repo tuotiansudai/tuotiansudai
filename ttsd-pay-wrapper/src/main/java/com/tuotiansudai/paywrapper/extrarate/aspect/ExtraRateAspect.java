@@ -59,7 +59,7 @@ public class ExtraRateAspect {
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
-    @AfterReturning(value = "execution(* *..LoanService.loanOut(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* *..LoanService.postLoanOut(*))", returning = "returnValue")
     public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         investExtraRateService.rateIncreases(loanId);
