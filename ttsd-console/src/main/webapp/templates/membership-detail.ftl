@@ -20,7 +20,7 @@
         <label>成长值: ${membershipPoint}</label>
     </div>
     <div class="form-group">
-        <label>会员等级: ${membershipLevel}</label>
+        <label>会员等级: V${membershipLevel}</label>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
