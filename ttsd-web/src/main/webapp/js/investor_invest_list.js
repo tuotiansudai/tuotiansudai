@@ -53,6 +53,7 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
             contentType: 'application/json; charset=UTF-8'
         }).success(function (response) {
             var data = response.data;
+            console.log(data);
             data.isLoanCompleted = status == 'COMPLETE';
             data.csrfToken = $("meta[name='_csrf']").attr("content");
             if (data.status) {
@@ -70,8 +71,9 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
                             break;
                     }
                 });
+                console.log(data);
                 var html = Mustache.render(investRepayTemplate, data);
-                
+
                 layer.open({
                     type: 1,
                     title: false,
@@ -177,6 +179,17 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     .on('mouseenter','.last-icon',function() {//last icon event
         layer.closeAll('tips');
         layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.extra-rate', function() {//extra-rate icon event
+        var num = $(this).data('benefit');
+        layer.closeAll('tips');
+        layer.tips('活动加息' + num + '%', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,

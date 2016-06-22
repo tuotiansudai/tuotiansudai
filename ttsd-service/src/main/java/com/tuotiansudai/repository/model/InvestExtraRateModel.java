@@ -32,6 +32,8 @@ public class InvestExtraRateModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    private boolean isTransfer;
+
     public long getId() {
         return id;
     }
@@ -136,4 +138,11 @@ public class InvestExtraRateModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public boolean isTransfer() {
+        return isTransfer;
+    }
+
+    public void setTransfer(boolean isTransfer) {
+        this.isTransfer = isTransfer;
+    }
 }

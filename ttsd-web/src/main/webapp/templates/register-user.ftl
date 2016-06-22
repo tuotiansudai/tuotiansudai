@@ -38,8 +38,8 @@
                     <label id="referrerError" class="error" style="display: none"></label>
                 </li>
                 <li class="agree-last">
-                    <label for="agreementInput" class="check-label" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                    <span><input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
+                    <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                       <span> <input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
                     <i class="sprite-register-yes-checked"></i>
                 </li>
         </ul>
