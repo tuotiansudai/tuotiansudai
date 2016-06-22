@@ -41,8 +41,6 @@ public interface UserMembershipMapper {
     void updateMembershipPoint(@Param(value = "loginName") String loginName,
                                @Param(value = "membershipPoint") long membershipPoint);
 
-    int findAccountIdentityNumberByLoginName(String loginName);
-
     UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
                                               @Param(value = "type") UserMembershipType type);
 
