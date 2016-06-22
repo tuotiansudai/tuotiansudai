@@ -1,5 +1,8 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -59,7 +62,20 @@ public class UserMembershipServiceImpl implements UserMembershipService {
 
     @Override
     public UserMembershipModel findByLoginNameByMembershipId(String loginName, long membershipId){
-        return userMembershipMapper.findByLoginNameByMembershipId(loginName, membershipId);
+        UserMembershipModel returnUserMembershipModel = new UserMembershipModel();
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginNameByMembershipId(loginName, membershipId);
+
+        if (CollectionUtils.isEmpty(userMembershipModels)) {
+            return null;
+        }
+
+        for(UserMembershipModel userMembershipModel : userMembershipModels){
+            if(userMembershipModel.getType().name() == "GIVEN"){
+                returnUserMembershipModel = userMembershipModel;
+            }
+        }
+
+        return userMembershipModels.size() == 1 ? userMembershipModels.get(0) : returnUserMembershipModel;
     }
 
     @Override
