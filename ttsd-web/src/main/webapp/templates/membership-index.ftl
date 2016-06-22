@@ -14,24 +14,24 @@
                         <#if membershipType == 'GIVEN'>
                             <span class="font14">会员有效期还有：<strong class="font22">${leftDays?string('0')}</strong>天</span>
                         </#if>
-
                     </p>
-
                     <p class="font14">我的成长值：<strong class="font22">${membershipPoint!}</strong></p>
                 </div>
             </div>
             <div class="progress">
                 <div class="progress-bar">
                     <div class="progress-bar-fill" style="width: ${progressBarPercent!}%"></div>
-                    <div class="vip-bg vip-0"></div>
-                    <div class="vip-bg vip-1"></div>
-                    <div class="vip-bg vip-2"></div>
-                    <div class="vip-bg vip-3"></div>
-                    <div class="vip-bg vip-4"></div>
-                    <div class="vip-bg vip-5"></div>
-                    <#if membershipNextLevel < 5>
-                        <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i
-                                class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
+                    <div class="vip-bg vip-0 <#if membershipLevel == 0>active</#if>"></div>
+                    <div class="vip-bg vip-1 <#if membershipLevel == 1>active</#if>"></div>
+                    <div class="vip-bg vip-2 <#if membershipLevel == 2>active</#if>"></div>
+                    <div class="vip-bg vip-3 <#if membershipLevel == 3>active</#if>"></div>
+                    <div class="vip-bg vip-4 <#if membershipLevel == 4>active</#if>"></div>
+                    <div class="vip-bg vip-5 <#if membershipLevel == 5>active</#if>"></div>
+                    <#if membershipType == 'UPGRADE'>
+                        <#if membershipNextLevel <= 5>
+                            <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i
+                                    class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
+                        </#if>
                     </#if>
                 </div>
             </div>
