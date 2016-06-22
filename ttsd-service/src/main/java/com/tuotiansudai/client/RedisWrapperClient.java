@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class RedisWrapperClient extends AbstractRedisWrapperClient {
@@ -28,7 +31,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
+            jedis = getJedis();
             if (StringUtils.isNotEmpty(getRedisPassword())) {
                 jedis.auth(getRedisPassword());
             }
@@ -46,7 +49,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
+            jedis = getJedis();
             if (StringUtils.isNotEmpty(getRedisPassword())) {
                 jedis.auth(getRedisPassword());
             }
@@ -64,7 +67,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
+            jedis = getJedis();
             if (StringUtils.isNotEmpty(getRedisPassword())) {
                 jedis.auth(getRedisPassword());
             }
@@ -466,5 +469,26 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.hincrBy(key, field, increasement);
             }
         });
+    }
+
+    private Jedis getJedis() throws JedisException{
+        int timeoutCount = 0;
+        while(true){
+            try{
+                return getJedisPool().getResource();
+            }catch (Exception e){
+                if (e instanceof JedisConnectionException || e instanceof SocketTimeoutException){
+                    timeoutCount++;
+                    logger.error("getJedis timeoutCount=" + timeoutCount, e);
+                    if (timeoutCount > 3)
+                    {
+                        throw e;
+                    }
+                }else{
+                    logger.error("getJedis error", e);
+                    throw e;
+                }
+            }
+        }
     }
 }
