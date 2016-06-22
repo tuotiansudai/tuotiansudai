@@ -4,7 +4,7 @@ import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipItemModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -79,16 +79,16 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         if (CollectionUtils.isEmpty(levels)) {
             return new ArrayList<UserMembershipItemDto>();
         }
-        List<UserMembershipItemModel> userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
-        Collections.sort(userMembershipItemModels, new Comparator<UserMembershipItemModel>() {
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
+        Collections.sort(userMembershipItemViews, new Comparator<UserMembershipItemView>() {
             @Override
-            public int compare(UserMembershipItemModel o1, UserMembershipItemModel o2) {
+            public int compare(UserMembershipItemView o1, UserMembershipItemView o2) {
                 return o2.getRegisterTime().after(o1.getRegisterTime()) ? 1 : -1;
             }
         });
         List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
-        for(UserMembershipItemModel userMembershipItemModel : userMembershipItemModels) {
-            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemModel));
+        for(UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
+            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemView));
         }
         return userMembershipItemDtos;
     }
