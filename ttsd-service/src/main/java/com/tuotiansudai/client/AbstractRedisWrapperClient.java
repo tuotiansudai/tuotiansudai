@@ -32,7 +32,7 @@ public abstract class AbstractRedisWrapperClient {
 
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
-            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
+            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort,100000);
         }
         return jedisPool;
     }
