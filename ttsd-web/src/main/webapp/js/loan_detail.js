@@ -642,7 +642,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         var css = _.compose(_.partial(function(offset, extraRateHeight) {
             return {
                 left: offset.left,
-                top: offset.top + extraRateHeight + 20
+                top: offset.top + extraRateHeight + 10
             }
         }, _, extraRateHeight), getOffset);
         var createPopup = _.partial(function(tpl, css) {
