@@ -1,26 +1,19 @@
 package com.tuotiansudai.paywrapper.service;
 
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.jpush.client.MobileAppJPushClient;
-import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
-import com.tuotiansudai.jpush.repository.model.*;
-import com.tuotiansudai.jpush.service.impl.JPushAlertServiceImpl;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,189 +21,135 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class LoanOutInvestCalculationServiceTest {
-    @InjectMocks
-    private JPushAlertServiceImpl jPushAlertService;
 
-    @Mock
+    @Autowired
     private InvestMapper investMapper;
 
-    @Mock
-    private InvestRepayMapper investRepayMapper;
-
-    @Mock
+    @Autowired
     private LoanMapper loanMapper;
 
-    @Mock
-    private JPushAlertMapper jPushAlertMapper;
-
-    @Mock
-    private LoanRepayMapper loanRepayMapper;
-
-    @Mock
-    private AccountMapper accountMapper;
-
-    @Mock
-    private InvestReferrerRewardMapper investReferrerRewardMapper;
-
-    @Mock
+    @Autowired
     private UserMapper userMapper;
 
-    @Mock
-    private UserCouponMapper userCouponMapper;
-
-    @Mock
-    private CouponMapper couponMapper;
-
-    @Mock
+    @Autowired
     private IdGenerator idGenerator;
 
-    @Mock
-    private MobileAppJPushClient mobileAppJPushClient;
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
-    @Mock
-    private RedisWrapperClient redisWrapperClient;
+    @Autowired
+    private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;
 
+    @Autowired
+    private LoanOutInvestCalculationService loanOutInvestCalculationService;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Test
+    @Transactional
     public void loanOutInvestCalculation() {
-        LoanModel loanModel = fakeLoanModel("test123");
-        LoanRepayModel currentLoanRepayModel = new LoanRepayModel();
+        UserModel userModel = createFakeUser("buildbox","13666666666");
+        LoanModel loanModel = fakeLoanModel(userModel);
+        loanMapper.create(loanModel);
+        extraLoanRateMapper.create(fakeExtraLoanRate(loanModel));
 
-        currentLoanRepayModel.setId(1000101);
-        currentLoanRepayModel.setLoanId(loanModel.getId());
-        currentLoanRepayModel.setPeriod(1);
-        currentLoanRepayModel.setStatus(RepayStatus.COMPLETE);
+        UserModel test1Model = createFakeUser("test0001","13333333333");
+        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25, test1Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 1);
+        test1InvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(test1InvestModel);
 
-        List<LoanRepayModel> loanRepayModels = new ArrayList<LoanRepayModel>();
 
-        for (int i = 1; i < 4; i++) {
-            LoanRepayModel loanRepayModel1 = new LoanRepayModel();
-            loanRepayModel1.setLoanId(loanModel.getId());
-            loanRepayModel1.setId(Long.parseLong(10001 + "0" + i));
-            loanRepayModel1.setPeriod(i);
-            loanRepayModels.add(loanRepayModel1);
-        }
+        UserModel test2Model = createFakeUser("test0002","18999999999");
+        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31, test2Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 1);
+        test2InvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(test2InvestModel);
 
-        CouponModel couponModel = new CouponModel(fakeCouponDto());
-
-        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
-
-        List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
-
-        UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setId(idGenerator.generate());
-        userCouponModel.setInvestId(1001L);
-        userCouponModel.setActualInterest(10);
-        userCouponModel.setLoginName("test1");
-        userCouponModel.setCouponId(couponModel.getId());
-        userCouponModel.setLoanId(loanModel.getId());
-        userCouponModel.setStatus(InvestStatus.SUCCESS);
-        userCouponModels.add(userCouponModel);
-
-        UserCouponModel userCouponModel2 = new UserCouponModel();
-        userCouponModel2.setId(idGenerator.generate());
-        userCouponModel2.setInvestId(1001L);
-        userCouponModel2.setLoginName("test2");
-        userCouponModel2.setCouponId(couponModel.getId());
-        userCouponModel2.setLoanId(loanModel.getId());
-        userCouponModel2.setStatus(InvestStatus.SUCCESS);
-        userCouponModels.add(userCouponModel2);
-
-        when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
-
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-
-        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
-
-        when(userCouponMapper.findByLoanId(anyLong(), anyList())).thenReturn(userCouponModels);
-
-        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
-
-        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-
-        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
-
-        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
-
-        when(investMapper.findById(anyLong())).thenReturn(investModel);
-
-        ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
-        ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
-
-        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
-
+        loanOutInvestCalculationService.rateIncreases(loanModel.getId());
     }
 
-    private LoanModel fakeLoanModel(String loginName) {
+    private UserModel createFakeUser(String loginName,String mobile) {
+        UserModel model = new UserModel();
+        model.setLoginName(loginName);
+        model.setPassword("password");
+        model.setEmail("loginName@abc.com");
+        model.setMobile(mobile);
+        model.setRegisterTime(new Date());
+        model.setStatus(UserStatus.ACTIVE);
+        model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(model);
+        MembershipModel membershipModel = membershipMapper.findByLevel(0);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+        return model;
+    }
+
+    private LoanModel fakeLoanModel(UserModel userModel) {
         LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName(loginName);
+        loanModel.setAgentLoginName(userModel.getLoginName());
         loanModel.setBaseRate(16.00);
-        loanModel.setId(10);
-        loanModel.setName("店铺资金周转");
+        long id = idGenerator.generate();
+        loanModel.setId(id);
+        loanModel.setProductType(ProductType._90);
+        loanModel.setName("房产抵押借款");
         loanModel.setActivityRate(12);
         loanModel.setShowOnHome(true);
         loanModel.setPeriods(3);
-        loanModel.setActivityType(ActivityType.EXCLUSIVE);
+        loanModel.setActivityType(ActivityType.NORMAL);
         loanModel.setContractId(123);
         loanModel.setDescriptionHtml("asdfasdf");
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
         loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanModel.setLoanAmount(100000L);
+        loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
         loanModel.setMaxInvestAmount(100000000000L);
-        loanModel.setMinInvestAmount(0);
+        loanModel.setMinInvestAmount(1);
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.RAISING);
-        loanModel.setLoanerLoginName(loginName);
+        loanModel.setLoanerLoginName(userModel.getLoginName());
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
         return loanModel;
     }
 
-    private ExchangeCouponDto fakeCouponDto() {
-        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
-        exchangeCouponDto.setId(1001L);
-        exchangeCouponDto.setAmount("1000.00");
-        exchangeCouponDto.setTotalCount(1000L);
-        exchangeCouponDto.setEndTime(new Date());
-        exchangeCouponDto.setStartTime(new Date());
-        exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
-        List<ProductType> productTypes = Lists.newArrayList();
-        productTypes.add(ProductType._180);
-        exchangeCouponDto.setProductTypes(productTypes);
-        exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
-        return exchangeCouponDto;
-    }
+    private List<ExtraLoanRateModel> fakeExtraLoanRate(LoanModel loanModel) {
+        List<ExtraLoanRateRuleModel> extraLoanRateRuleModels = extraLoanRateRuleMapper.findExtraLoanRateRuleByNameAndProductType(loanModel.getName(), loanModel.getProductType());
+        List<ExtraLoanRateModel> extraLoanRateModels = new ArrayList<>();
+        ExtraLoanRateModel level1 = new ExtraLoanRateModel();
+        level1.setLoanId(loanModel.getId());
+        level1.setExtraRateRuleId(extraLoanRateRuleModels.get(0).getId());
+        level1.setRate(extraLoanRateRuleModels.get(0).getRate());
+        level1.setMinInvestAmount(10);
+        level1.setMaxInvestAmount(20);
+        extraLoanRateModels.add(level1);
 
-    private JPushAlertModel createJPushAlert() {
-        JPushAlertModel jPushAlertModel = new JPushAlertModel();
-        jPushAlertModel.setId(1005);
-        jPushAlertModel.setName("用户资金变动推送-还款");
-        jPushAlertModel.setPushType(PushType.REPAY_ALERT);
-        jPushAlertModel.setPushSource(PushSource.ANDROID);
-        jPushAlertModel.setContent("亲爱的天宝，您刚刚收到一笔{0}元的项目还款，请点击查看");
-        jPushAlertModel.setIsAutomatic(true);
-        jPushAlertModel.setCreatedTime(new Date());
-        jPushAlertModel.setJumpTo(JumpTo.INVEST_RECEIVABLES);
-        jPushAlertModel.setStatus(PushStatus.ENABLED);
-        return jPushAlertModel;
+        ExtraLoanRateModel level2 = new ExtraLoanRateModel();
+        level2.setLoanId(loanModel.getId());
+        level2.setRate(extraLoanRateRuleModels.get(1).getRate());
+        level2.setExtraRateRuleId(extraLoanRateRuleModels.get(1).getId());
+        level2.setMinInvestAmount(20);
+        level2.setMaxInvestAmount(30);
+        extraLoanRateModels.add(level2);
+
+        ExtraLoanRateModel level3 = new ExtraLoanRateModel();
+        level3.setLoanId(loanModel.getId());
+        level3.setRate(extraLoanRateRuleModels.get(2).getRate());
+        level3.setExtraRateRuleId(extraLoanRateRuleModels.get(2).getId());
+        level3.setMinInvestAmount(30);
+        level3.setMaxInvestAmount(0);
+        extraLoanRateModels.add(level3);
+        return extraLoanRateModels;
     }
 }
