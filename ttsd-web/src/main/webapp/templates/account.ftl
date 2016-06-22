@@ -12,9 +12,9 @@
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
         <div class="profile-box">
             <span><em>您好：${loginName!}</em></span>
-            <span><em>会员等级：V${userMembershipLevel!}</em></span>
+            <span class="vip vip${userMembershipLevel!}"></span>
+            <a href="/personal-info" class="user-info"></a>
             <ul class="proList">
-                <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
                 <#if signedIn?? && signedIn>
                     <li class="fl sign-top no-click"><span class="btn-sign finish-sign">已签到</span></li>
                 <#else >
