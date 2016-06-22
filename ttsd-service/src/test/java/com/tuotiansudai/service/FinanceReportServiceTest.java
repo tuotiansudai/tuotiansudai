@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -104,7 +107,7 @@ public class FinanceReportServiceTest {
     }
 
     private InvestRepayModel createInvestRepayModel(long investId, int period, RepayStatus repayStatus) {
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2015-03-12T01:20").toDate(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 900L, 9999L, 99L, DateTime.parse("2016-12-12T01:20").toDate(), repayStatus);
         if (RepayStatus.COMPLETE == repayStatus) {
             investRepayModel.setActualFee(2000L);
             investRepayModel.setActualInterest(8000L);
@@ -126,34 +129,34 @@ public class FinanceReportServiceTest {
         return investReferrerRewardModel;
     }
 
-    private FinanceReportView combineFinanceReportModel(LoanModel loanModel, InvestModel investModel, AccountModel investAccount, InvestRepayModel investRepayModel) {
-        FinanceReportView financeReportView = new FinanceReportView();
-        financeReportView.setLoanId(loanModel.getId());
-        financeReportView.setLoanName(loanModel.getName());
-        financeReportView.setLoanType(loanModel.getType());
-        financeReportView.setLoanerUserName(loanModel.getLoanerUserName());
-        financeReportView.setAgentLoginName(loanModel.getAgentLoginName());
-        financeReportView.setBaseRate(loanModel.getBaseRate());
-        financeReportView.setActivityRate(loanModel.getActivityRate());
-        financeReportView.setDuration(loanModel.getDuration());
-        financeReportView.setLoanAmount(loanModel.getLoanAmount());
-        financeReportView.setVerifyTime(loanModel.getVerifyTime());
-        financeReportView.setRecheckTime(loanModel.getRecheckTime());
-        financeReportView.setInvestTime(investModel.getInvestTime());
-        financeReportView.setInvestLoginName(investModel.getLoginName());
-        financeReportView.setInvestRealName(investAccount.getUserName());
-        financeReportView.setReferrer("referrer");
-        financeReportView.setInvestAmount(investModel.getAmount());
-        financeReportView.setRepayTime(investRepayModel.getRepayDate());
-        financeReportView.setPeriod(investRepayModel.getPeriod());
-        financeReportView.setActualInterest(investRepayModel.getActualInterest());
-        financeReportView.setActualInterest(investRepayModel.getActualFee());
-        financeReportView.setActualRepayAmount(investRepayModel.getRepayAmount());
+    private FinanceReportItemView combineFinanceReportModel(LoanModel loanModel, InvestModel investModel, AccountModel investAccount, InvestRepayModel investRepayModel) {
+        FinanceReportItemView financeReportItemView = new FinanceReportItemView();
+        financeReportItemView.setLoanId(loanModel.getId());
+        financeReportItemView.setLoanName(loanModel.getName());
+        financeReportItemView.setLoanType(loanModel.getType());
+        financeReportItemView.setLoanerUserName(loanModel.getLoanerUserName());
+        financeReportItemView.setAgentLoginName(loanModel.getAgentLoginName());
+        financeReportItemView.setBaseRate(loanModel.getBaseRate());
+        financeReportItemView.setActivityRate(loanModel.getActivityRate());
+        financeReportItemView.setDuration(loanModel.getDuration());
+        financeReportItemView.setLoanAmount(loanModel.getLoanAmount());
+        financeReportItemView.setVerifyTime(loanModel.getVerifyTime());
+        financeReportItemView.setRecheckTime(loanModel.getRecheckTime());
+        financeReportItemView.setInvestTime(investModel.getInvestTime());
+        financeReportItemView.setInvestLoginName(investModel.getLoginName());
+        financeReportItemView.setInvestRealName(investAccount.getUserName());
+        financeReportItemView.setReferrer("referrer");
+        financeReportItemView.setInvestAmount(investModel.getAmount());
+        financeReportItemView.setRepayTime(investRepayModel.getRepayDate());
+        financeReportItemView.setPeriod(investRepayModel.getPeriod());
+        financeReportItemView.setActualInterest(investRepayModel.getActualInterest());
+        financeReportItemView.setFee(investRepayModel.getActualFee());
+        financeReportItemView.setActualRepayAmount(investRepayModel.getRepayAmount());
 
-        return financeReportView;
+        return financeReportItemView;
     }
 
-    private List<FinanceReportView> prepareData() {
+    private List<FinanceReportItemView> prepareData() {
         UserModel referrerUserModel = createUserModel("referrer", null);
         AccountModel referrerAccountModel = createAccountModel(referrerUserModel, "推荐员");
 
@@ -169,47 +172,94 @@ public class FinanceReportServiceTest {
         UserModel investorWithoutReferrerUserModel = createUserModel("investorWithoutReferrer", null);
         AccountModel investorWithoutReferrerAccountModel = createAccountModel(investorWithoutReferrerUserModel, "无推荐投资人");
 
-        List<FinanceReportView> financeReportViews = new ArrayList<>();
+        List<FinanceReportItemView> financeReportItemViews = new ArrayList<>();
 
         LoanModel loanModel = createLoanModel(1, "房产", agentUserModel, loanerAccountModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         InvestModel investModel = createInvestModel(1, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         InvestRepayModel investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
         InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.STAFF);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 3, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investModel = createInvestModel(2, loanModel.getId(), investorWithoutReferrerAccountModel, DateTime.parse("2016-11-12T01:20").toDate());
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
 
         loanModel = createLoanModel(2, "车辆", agentUserModel, loanerAccountModel, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         investModel = createInvestModel(3, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         investReferrerRewardModel = createInvestReferrerRewardModel(3, "referrer", Role.USER);
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 3, RepayStatus.REPAYING);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
         investModel = createInvestModel(4, loanModel.getId(), investorWithoutReferrerAccountModel, DateTime.parse("2016-11-12T01:20").toDate());
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
 
-        return financeReportViews;
+        return financeReportItemViews;
     }
 
     @Test
     public void testFinanceReportModel() throws Exception {
-        BasePaginationDataDto<FinanceReportDto> financeReportDtos = financeReportService.getFinanceReportDtos(null, null, null, null, null, 1, 10);
-        System.out.println("");
+        List<FinanceReportItemView> originalFinanceReportItemViewList = prepareData();
+
+        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(null, null, null, null, null, 2, 3);
+        assertEquals(true, basePaginationDataDto.isHasNextPage());
+        assertEquals(true, basePaginationDataDto.isHasPreviousPage());
+        assertEquals(8, basePaginationDataDto.getCount());
+        assertEquals(2, basePaginationDataDto.getIndex());
+        assertEquals(3, basePaginationDataDto.getRecords().size());
+
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1L, 1, "investorWithReferrer", null, null, 1, 100);
+        assertEquals(1, basePaginationDataDto.getRecords().size());
+        FinanceReportItemView financeReportItemView = originalFinanceReportItemViewList.get(0);
+        FinanceReportDto financeReportDto = basePaginationDataDto.getRecords().get(0);
+        assertEquals(financeReportItemView.getLoanId(), financeReportDto.getLoanId());
+        assertEquals(financeReportItemView.getLoanName(), financeReportDto.getLoanName());
+        assertEquals(financeReportItemView.getLoanType().getInterestType(), financeReportDto.getLoanType());
+        assertEquals(financeReportItemView.getLoanerUserName(), financeReportDto.getLoanerUserName());
+        assertEquals(financeReportItemView.getAgentLoginName(), financeReportDto.getAgentLoginName());
+        assertEquals(financeReportItemView.getBaseRate() + "%+" + financeReportItemView.getActivityRate() + "%", financeReportDto.getBenefitRate());
+        assertEquals(financeReportItemView.getDuration(), financeReportDto.getDuration());
+        assertEquals(AmountConverter.convertCentToString(financeReportItemView.getLoanAmount()), financeReportDto.getLoanAmount());
+        assertEquals(financeReportItemView.getVerifyTime(), financeReportDto.getVerifyTime());
+        assertEquals(financeReportItemView.getInvestTime(), financeReportDto.getInvestTime());
+        assertEquals(financeReportItemView.getRecheckTime(), financeReportDto.getRecheckTime());
+        assertEquals(financeReportItemView.getInvestLoginName(), financeReportDto.getInvestLoginName());
+        assertEquals(financeReportItemView.getInvestRealName(), financeReportDto.getInvestRealName());
+        assertEquals(financeReportItemView.getReferrer() + "(业务员)", financeReportDto.getReferrer());
+        assertEquals(AmountConverter.convertCentToString(financeReportItemView.getInvestAmount()), financeReportDto.getInvestAmount());
+        assertEquals(62, financeReportDto.getBenefitDays());
+        assertEquals(financeReportItemView.getRepayTime(), financeReportDto.getRepayTime());
+        assertEquals(financeReportItemView.getPeriod(), financeReportDto.getPeriod());
+        assertEquals(AmountConverter.convertCentToString(financeReportItemView.getActualInterest()), financeReportDto.getActualInterest());
+        assertEquals(AmountConverter.convertCentToString(financeReportItemView.getFee()), financeReportDto.getFee());
+        assertEquals(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()), financeReportDto.getActualRepayAmount());
+        assertEquals("30.00", financeReportDto.getRecommendAmount());
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, 1, 100);
+        assertEquals(1, basePaginationDataDto.getRecords().size());
+        financeReportDto = basePaginationDataDto.getRecords().get(0);
+        assertEquals(184, financeReportDto.getBenefitDays());
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1L, 2, "investorWithReferrer", null, null, 1, 100);
+        assertEquals(1, basePaginationDataDto.getRecords().size());
+        financeReportDto = basePaginationDataDto.getRecords().get(0);
+        assertEquals(0, financeReportDto.getBenefitDays());
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, 1, 100);
+        assertEquals(1, basePaginationDataDto.getRecords().size());
+        financeReportDto = basePaginationDataDto.getRecords().get(0);
+        assertEquals("referrer", financeReportDto.getReferrer());
     }
 
     @Test
     public void testGetFinanceReportCsvData() throws Exception {
-        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null);
-        System.out.println("");
-    }
+        prepareData();
 
+        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null);
+        assertEquals(8, csvData.size());
+        assertEquals(22, csvData.get(0).size());
+    }
 }

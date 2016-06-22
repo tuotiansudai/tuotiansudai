@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class FinanceReportView implements Serializable {
+public class FinanceReportItemView implements Serializable {
     private long loanId;    //项目编号 LoanModel.id
     private String loanName;  //项目名称 LoanModel.name
     private LoanType loanType;  //计息模式  LoanModel.LoanType

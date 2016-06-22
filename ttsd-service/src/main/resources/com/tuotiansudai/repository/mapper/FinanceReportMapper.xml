@@ -4,9 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.FinanceReportMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
-
-    <resultMap id="FinanceReportMap" type="FinanceReportView">
+    <resultMap id="FinanceReportMap" type="FinanceReportItemView">
         <result column="id" property="loanId"/>
         <result column="name" property="loanName"/>
         <result column="type" property="loanType"/>

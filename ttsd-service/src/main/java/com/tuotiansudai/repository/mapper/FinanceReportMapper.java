@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.FinanceReportView;
+import com.tuotiansudai.repository.model.FinanceReportItemView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface FinanceReportMapper {
-    List<FinanceReportView> findFinanceReportViews(@Param(value = "loanId") Long loanId,
+    List<FinanceReportItemView> findFinanceReportViews(@Param(value = "loanId") Long loanId,
                                                    @Param(value = "period") Integer period,
                                                    @Param(value = "investLoginName") String investLoginName,
                                                    @Param(value = "investStartTime") Date investStartTime,

@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.FinanceReportView;
+import com.tuotiansudai.repository.model.FinanceReportItemView;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
@@ -33,27 +33,27 @@ public class FinanceReportDto {
     public FinanceReportDto() {
     }
 
-    public FinanceReportDto(FinanceReportView financeReportView) {
-        this.setLoanId(financeReportView.getLoanId());
-        this.setLoanName(financeReportView.getLoanName());
-        this.setLoanType(financeReportView.getLoanType().getInterestType());
-        this.setLoanerUserName(financeReportView.getLoanerUserName());
-        this.setAgentLoginName(financeReportView.getAgentLoginName());
-        this.setBenefitRate(financeReportView.getBaseRate(), financeReportView.getActivityRate());
-        this.setDuration(financeReportView.getDuration());
-        this.setLoanAmount(AmountConverter.convertCentToString(financeReportView.getLoanAmount()));
-        this.setVerifyTime(financeReportView.getVerifyTime());
-        this.setInvestTime(financeReportView.getInvestTime());
-        this.setRecheckTime(financeReportView.getRecheckTime());
-        this.setInvestLoginName(financeReportView.getInvestLoginName());
-        this.setInvestRealName(financeReportView.getInvestRealName());
-        this.setReferrer(financeReportView.getReferrer());
-        this.setInvestAmount(AmountConverter.convertCentToString(financeReportView.getInvestAmount()));
-        this.setRepayTime(financeReportView.getRepayTime());
-        this.setPeriod(financeReportView.getPeriod());
-        this.setActualInterest(AmountConverter.convertCentToString(financeReportView.getActualInterest()));
-        this.setFee(AmountConverter.convertCentToString(financeReportView.getFee()));
-        this.setActualRepayAmount(AmountConverter.convertCentToString(financeReportView.getActualRepayAmount()));
+    public FinanceReportDto(FinanceReportItemView financeReportItemView) {
+        this.setLoanId(financeReportItemView.getLoanId());
+        this.setLoanName(financeReportItemView.getLoanName());
+        this.setLoanType(financeReportItemView.getLoanType().getInterestType());
+        this.setLoanerUserName(financeReportItemView.getLoanerUserName());
+        this.setAgentLoginName(financeReportItemView.getAgentLoginName());
+        this.setBenefitRate(financeReportItemView.getBaseRate(), financeReportItemView.getActivityRate());
+        this.setDuration(financeReportItemView.getDuration());
+        this.setLoanAmount(AmountConverter.convertCentToString(financeReportItemView.getLoanAmount()));
+        this.setVerifyTime(financeReportItemView.getVerifyTime());
+        this.setInvestTime(financeReportItemView.getInvestTime());
+        this.setRecheckTime(financeReportItemView.getRecheckTime());
+        this.setInvestLoginName(financeReportItemView.getInvestLoginName());
+        this.setInvestRealName(financeReportItemView.getInvestRealName());
+        this.setReferrer(financeReportItemView.getReferrer());
+        this.setInvestAmount(AmountConverter.convertCentToString(financeReportItemView.getInvestAmount()));
+        this.setRepayTime(financeReportItemView.getRepayTime());
+        this.setPeriod(financeReportItemView.getPeriod());
+        this.setActualInterest(AmountConverter.convertCentToString(financeReportItemView.getActualInterest()));
+        this.setFee(AmountConverter.convertCentToString(financeReportItemView.getFee()));
+        this.setActualRepayAmount(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()));
     }
 
     public long getLoanId() {
