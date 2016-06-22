@@ -15,7 +15,7 @@
         <result column="type" property="type"/>
     </resultMap>
 
-    <resultMap id="UserMembershipItemResultMap" type="UserMembershipItemModel">
+    <resultMap id="UserMembershipItemResultMap" type="UserMembershipItemView">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="user_name" property="realName"/>
@@ -43,7 +43,7 @@
         select * from user_membership where login_name = #{loginName}
     </select>
 
-    <select id="findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel"
+    <select id="findUserMembershipItemViews"
             resultMap="UserMembershipItemResultMap">
         SELECT user_membership.id, user_membership.login_name, account.user_name, user.mobile, account.membership_point,
         membership.level, user_membership.type, user.register_time
