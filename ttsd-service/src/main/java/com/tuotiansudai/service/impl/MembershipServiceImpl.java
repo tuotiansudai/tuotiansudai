@@ -63,11 +63,11 @@ public class MembershipServiceImpl implements MembershipService {
 
         long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loginName);
         Date registerTime = accountMapper.findAccountRegisterTimeByLoginName(loginName);
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 1000){
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }
 
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 100000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 1000){
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
             return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
