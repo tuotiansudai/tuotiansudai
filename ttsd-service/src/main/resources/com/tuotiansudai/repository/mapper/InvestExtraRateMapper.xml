@@ -38,4 +38,8 @@
         values(#{loanId},#{investId},false,#{amount},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
     </insert>
 
+    <select id="findByInvestId" parameterType="map" resultMap="investExtraRateResultMap">
+        select * from invest_extra_rate where invest_id = #{investId}
+    </select>
+
 </mapper>
