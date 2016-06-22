@@ -107,7 +107,7 @@ public class MobileAppExperienceInvestServiceTest extends ServiceTestBase {
         assertThat(baseResponseDto.getData().getCoupons().get(0).getInvestLowerLimit(), is(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit())));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getName(), is(couponModel.getCouponType().getName()));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getProductNewTypes(), is(couponModel.getProductTypes()));
-        assertThat(baseResponseDto.getData().getCoupons().get(0).getRate(), is(String.valueOf(couponModel.getRate())));
+        assertThat(baseResponseDto.getData().getCoupons().get(0).getRate(), is("14"));
         assertThat(baseResponseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(userCouponModel.getId())));
     }
 

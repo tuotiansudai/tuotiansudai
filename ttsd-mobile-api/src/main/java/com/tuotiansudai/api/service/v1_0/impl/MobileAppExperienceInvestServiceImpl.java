@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,6 +57,7 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
     }
 
     private List<InvestExperienceResponseDataDto> convertInvestExperienceResponseDataDto (String loginName) {
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         List<InvestExperienceResponseDataDto> investExperienceResponseDataDtos = Lists.newArrayList();
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -68,7 +69,7 @@ public class MobileAppExperienceInvestServiceImpl implements MobileAppExperience
                 investExperienceResponseDataDto.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
                 investExperienceResponseDataDto.setName(couponModel.getCouponType().getName());
                 investExperienceResponseDataDto.setProductNewTypes(couponModel.getProductTypes());
-                investExperienceResponseDataDto.setRate(new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).toString());
+                investExperienceResponseDataDto.setRate(decimalFormat.format(couponModel.getRate() * 100));
                 investExperienceResponseDataDto.setStartDate(new DateTime(userCouponModel.getStartTime()).toString("yyyy-MM-dd"));
                 investExperienceResponseDataDto.setUserCouponId(String.valueOf(userCouponModel.getId()));
                 investExperienceResponseDataDto.setType(couponModel.getCouponType().name());
