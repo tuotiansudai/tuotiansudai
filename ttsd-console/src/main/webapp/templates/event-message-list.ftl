@@ -32,7 +32,7 @@
             <input type='text' class="form-control" id="createdBy" name="createdBy" value="${createdBy!}"/>
         </div>
         <button class="btn btn-sm btn-primary query">查询</button>
-        <a href="/message-manage/manual-message-list" class="btn btn-sm btn-default">重置</a>
+        <a href="/message-manage/event-message-list" class="btn btn-sm btn-default">重置</a>
     </form>
 
     <div class="table-responsive">
@@ -142,7 +142,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title?string('0')}</#if> <#if createdBy??>&createdBy=${createdBy!}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if> <#if title??>&title=${title!}</#if> <#if createdBy??>&createdBy=${createdBy!}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

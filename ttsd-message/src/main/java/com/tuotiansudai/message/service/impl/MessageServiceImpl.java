@@ -82,7 +82,6 @@ public class MessageServiceImpl implements MessageService {
                 }
             }
         }
-
         redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
         return importUsersId;
     }
