@@ -89,6 +89,12 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "experienceRepaySuccessCollector")
     private UserCollector experienceRepaySuccessCollector;
 
+    @Resource(name = "notAccountNotInvestedUserCollector")
+    private UserCollector notAccountNotInvestedUserCollector;
+
+    @Resource(name = "exchangeCodeCollector")
+    private UserCollector exchangeCodeCollector;
+
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
@@ -232,12 +238,14 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.NEW_REGISTERED_USER, this.newRegisteredUserCollector)
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
+                .put(UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER, this.notAccountNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .put(UserGroup.AGENT, this.agentCollector)
                 .put(UserGroup.CHANNEL, this.channelCollector)
                 .put(UserGroup.STAFF, this.staffCollector)
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
+                .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
                 .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
                 .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)

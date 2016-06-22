@@ -239,12 +239,12 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "assignCouponPointcut()", returning = "returnValue")
     public void afterReturningAssignCoupon(JoinPoint joinPoint, UserCouponModel returnValue) {
-        logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut start", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+        logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut start", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
         try {
             userMessageEventGenerator.generateAssignCouponSuccessEvent(returnValue);
-            logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut finished", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+            logger.debug(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut finished", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after user({0}) assign coupon({1}) pointcut is fail", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+            logger.error(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut is fail", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
         }
     }
 }
