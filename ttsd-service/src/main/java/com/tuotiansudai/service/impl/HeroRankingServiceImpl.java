@@ -15,6 +15,8 @@ import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return null;
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime);
+        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime,heroRankingActivityPeriod.get(0));
         if (count > 0) {
             return null;
         }
@@ -77,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
                 @Override
                 public boolean apply(HeroRankingView input) {
-                    return input.getLoginName().equals(loginName);
+                    return input.getLoginName().equalsIgnoreCase(loginName);
                 }
             }) + 1;
         }
@@ -98,8 +100,11 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     @Override
     public BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, final String loginName, int index, int pageSize) {
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
-        Date activityBeginTime = new Date();
-        Date activityEndTime = new Date();
+
+        Date activityBeginTime = DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        Date activityEndTime = DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
         if (tradingTime.before(activityBeginTime) || tradingTime.after(activityEndTime)) {
             baseListDataDto.setStatus(false);
         } else {
@@ -128,9 +133,10 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
             @Override
             public boolean apply(HeroRankingView input) {
-                return loginName.equalsIgnoreCase(input.getLoginName());
+                return input.getLoginName().equalsIgnoreCase(loginName);
             }
         }) + 1;
     }
+
 
 }

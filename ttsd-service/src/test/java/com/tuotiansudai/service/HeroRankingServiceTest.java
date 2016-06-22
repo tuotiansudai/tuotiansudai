@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -47,6 +48,9 @@ public class HeroRankingServiceTest {
     private LoanMapper loanMapper;
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
@@ -91,9 +95,9 @@ public class HeroRankingServiceTest {
         investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel3);
 
-        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor1.getLoginName(), 1, 10);
+        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
         assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
-        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(investor1.getLoginName()));
+        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(randomUtils.encryptLoginName(investor2.getLoginName(), investor1.getLoginName(), 6)));
     }
 
     @Test

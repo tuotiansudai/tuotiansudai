@@ -67,6 +67,7 @@ public class MembershipController {
             modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
             modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
+            modelAndView.addObject("membershipType", userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId()).getType());
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);

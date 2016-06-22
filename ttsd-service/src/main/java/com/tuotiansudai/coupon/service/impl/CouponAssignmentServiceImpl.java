@@ -89,11 +89,11 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "experienceRepaySuccessCollector")
     private UserCollector experienceRepaySuccessCollector;
 
-    @Resource(name = "notAccountNotInvestedUserCollector")
-    private UserCollector notAccountNotInvestedUserCollector;
-
     @Resource(name = "exchangeCodeCollector")
     private UserCollector exchangeCodeCollector;
+
+    @Resource(name = "notAccountNotInvestedUserCollector")
+    private UserCollector notAccountNotInvestedUserCollector;
 
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
@@ -118,6 +118,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
+
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
     }
 
@@ -247,6 +248,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
                 .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
