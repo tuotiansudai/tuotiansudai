@@ -89,6 +89,9 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         checkInvestAmount(investDto);
@@ -183,7 +186,9 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        return expectedInterest - expectedFee;
+        long extraRateInterest = getExtraRate(amount,loanId);
+        long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return (expectedInterest  - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -395,5 +400,22 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void markNoPasswordRemind(String loginName) {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
+    }
+
+    private long getExtraRate(long amount,long loanId){
+        double rate = 0;
+        List<ExtraLoanRateModel> extraLoanRateModelList = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList){
+            if(extraLoanRateModel.getMinInvestAmount() < amount && extraLoanRateModel.getMaxInvestAmount() == 0){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+            if(extraLoanRateModel.getMinInvestAmount() < amount && amount < extraLoanRateModel.getMaxInvestAmount()){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+        }
+
+        return rate == 0 ? 0 : new BigDecimal(amount).multiply(new BigDecimal(rate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
     }
 }
