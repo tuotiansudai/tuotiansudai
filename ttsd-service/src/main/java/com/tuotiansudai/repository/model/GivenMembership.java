@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 public enum GivenMembership {
-    NO_TIME("7月1日00：00开放领取哦亲!","/register/user","去注册"),
-    END_TIME("活动已经结束了哦!","",""),
+    NO_TIME("7月1日00：00开放领取哦亲!","","返回"),
+    END_TIME("活动已经结束了哦!","","返回"),
     NO_LOGIN("完成注册并实名认证即可免费领取会员V5超级特权哦!","/register/user","去注册"),
     NO_REGISTER("完成实名认证即可免费领取会员V5超级特权哦!","/register/account","去认证"),
     ALREADY_RECEIVED("您已经领取过超级特权了哦!","",""),
