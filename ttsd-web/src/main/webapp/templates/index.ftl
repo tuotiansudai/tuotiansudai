@@ -5,6 +5,12 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
+                    <a href="/activity/invest-achievement" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                    </a>
+                </li>
+                <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
                         <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
                         <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt="" class="iphone-img">
@@ -51,6 +57,7 @@
         <div class="hd">
             <ul class="scroll-num">
                 <li class="on"></li>
+                <li></li>
                 <li></li>
                 <li></li>
                 <li></li>
@@ -391,23 +398,23 @@
                                 <h2 class="pr-title">新手体验项目</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
-                                        <em><b>15</b>
+                                        <em><b>${experienceLoanDto.baseRate}</b>
                                            %</em>
                                         <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${experienceLoanDto.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">
                                     <div class="pro">
                                         <div class="p-title">
                                             <span class="fl">项目进度</span>
-                                            <span class="point fr">20%</span>
+                                            <span class="point fr">${experienceLoanDto.progress} %</span>
                                         </div>
                                         <div class="process-percent">
-                                            <div class="percent" style="width:20%"></div>
+                                            <div class="percent" style="width:${experienceLoanDto.progress}%"></div>
                                         </div>
                                     </div>
                                 </div>
