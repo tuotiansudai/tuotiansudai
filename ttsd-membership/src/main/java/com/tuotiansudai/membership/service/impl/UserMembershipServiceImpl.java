@@ -97,4 +97,11 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     public List<Integer> getAllLevels() {
         return membershipMapper.findAllLevels();
     }
+
+    @Override
+    public void createUserMemberByLevel(long level,String loginName) {
+        MembershipModel membershipModel = membershipMapper.findByLevel(level);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
+    }
 }
