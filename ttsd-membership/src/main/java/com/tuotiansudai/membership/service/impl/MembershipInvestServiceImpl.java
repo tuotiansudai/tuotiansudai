@@ -37,7 +37,7 @@ public class MembershipInvestServiceImpl implements MembershipInvestService {
             long totalPoint = membershipPoint + investAmount / 100;
             userMembershipMapper.updateMembershipPoint(loginName, totalPoint);
 
-            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount, totalPoint, new Date(), "UPGRADE");
+            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount/100, totalPoint, new Date(), "UPGRADE");
             membershipExperienceBillMapper.create(billModel);
 
             Integer level = userMembershipMapper.findRealLevelByLoginName(loginName);

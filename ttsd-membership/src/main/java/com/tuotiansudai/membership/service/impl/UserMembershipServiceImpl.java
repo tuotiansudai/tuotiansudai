@@ -1,21 +1,24 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.*;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
@@ -51,52 +54,47 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     @Override
     public int getExpireDayByLoginName(String loginName) {
         UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
-        return Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime())).getDays();
+        return Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime()).plusDays(1)).getDays();
     }
 
     @Override
-    public GivenMembership receiveMembership(String loginName){
-        if(DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
-            return GivenMembership.NO_TIME;
-        }
-
-        if(DateTime.parse(heroRankingActivityPeriod.get(1),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().before(DateTime.now().toDate())){
-            return GivenMembership.END_TIME;
-        }
-
-        if(loginName == null || loginName.equals("")){
-            return GivenMembership.NO_LOGIN;
-        }
-
-        if(userMembershipMapper.findAccountIdentityNumberByLoginName(loginName) == 0){
-            return GivenMembership.NO_REGISTER;
-        }
-
-        if(userMembershipMapper.findByLoginNameByType(loginName,UserMembershipType.GIVEN) != null){
-            return GivenMembership.ALREADY_RECEIVED;
-        }
-
-        long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(loginName);
-        Date registerTime = userMembershipMapper.findAccountRegisterTimeByLoginName(loginName);
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000){
-            return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
-        }
-
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 100000){
-            createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
-            return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
-        }
-
-        return GivenMembership.AFTER_START_ACTIVITY_REGISTER;
+    public UserMembershipModel findByLoginNameByMembershipId(String loginName, long membershipId){
+        return userMembershipMapper.findByLoginNameByMembershipId(loginName, membershipId);
     }
 
-    private void createUserMembershipModel(String loginName,int level){
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
-                membershipMapper.findByLevel(level).getId(),
-                DateTime.now().plusMonths(1).toDate(),
-                new Date(),
-                UserMembershipType.GIVEN);
-        userMembershipMapper.create(userMembershipModel);
+    @Override
+    public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
+                                                              Date registerStartTime, Date registerEndTime,
+                                                              UserMembershipType userMembershipType,
+                                                              List<Integer> levels) {
+        if (StringUtils.isEmpty(loginName)) {
+            loginName = null;
+        }
+        if (StringUtils.isEmpty(mobile)) {
+            mobile = null;
+        }
+        if (UserMembershipType.ALL == userMembershipType) {
+            userMembershipType = null;
+        }
+        if (CollectionUtils.isEmpty(levels)) {
+            return new ArrayList<UserMembershipItemDto>();
+        }
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
+        Collections.sort(userMembershipItemViews, new Comparator<UserMembershipItemView>() {
+            @Override
+            public int compare(UserMembershipItemView o1, UserMembershipItemView o2) {
+                return o2.getRegisterTime().after(o1.getRegisterTime()) ? 1 : -1;
+            }
+        });
+        List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
+        for(UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
+            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemView));
+        }
+        return userMembershipItemDtos;
     }
 
+    @Override
+    public List<Integer> getAllLevels() {
+        return membershipMapper.findAllLevels();
+    }
 }

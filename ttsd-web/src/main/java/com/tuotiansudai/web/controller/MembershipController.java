@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.MembershipService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class MembershipController {
     private UserMembershipService userMembershipService;
 
     @Autowired
+    private MembershipService membershipService;
+
+    @Autowired
     private AppTokenParser appTokenParser;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -63,6 +67,7 @@ public class MembershipController {
             modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
             modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
+            modelAndView.addObject("membershipType", userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId()).getType());
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);
@@ -118,7 +123,7 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = userMembershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            GivenMembership givenMembership = membershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {

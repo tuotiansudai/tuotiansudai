@@ -2,7 +2,7 @@ package com.tuotiansudai.membership.repository.model;
 
 import java.util.Date;
 
-public class UserMembershipItemModel {
+public class UserMembershipItemView {
     private long id;
     private String loginName;
     private String realName;
@@ -12,7 +12,7 @@ public class UserMembershipItemModel {
     private UserMembershipType userMembershipType;
     private Date registerTime;
 
-    public UserMembershipItemModel() {
+    public UserMembershipItemView() {
     }
 
     public long getId() {

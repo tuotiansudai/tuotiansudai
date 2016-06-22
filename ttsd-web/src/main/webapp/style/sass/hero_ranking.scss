@@ -73,7 +73,7 @@
         }
         .img-three{
           float:left;
-          width:300px;
+          width:320px;
           padding-top:120px;
         }
         .text-info{
@@ -312,6 +312,12 @@
               width:100%;
               height:450px;
               background:#ffedb6;
+              &.other-type{
+                height:170px;
+                .empty-text{
+                  line-height:125px;
+                }
+              }
               dt{
                 float:left;
                 width:100%;
