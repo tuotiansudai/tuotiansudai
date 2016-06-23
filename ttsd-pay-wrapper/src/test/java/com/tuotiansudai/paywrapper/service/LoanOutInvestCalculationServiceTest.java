@@ -23,6 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class LoanOutInvestCalculationServiceTest {
@@ -54,28 +58,45 @@ public class LoanOutInvestCalculationServiceTest {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
+
+
     @Test
     @Transactional
     public void loanOutInvestCalculation() {
         UserModel userModel = createFakeUser("buildbox","13666666666");
         LoanModel loanModel = fakeLoanModel(userModel);
         loanMapper.create(loanModel);
-        extraLoanRateMapper.create(fakeExtraLoanRate(loanModel));
+        List<ExtraLoanRateModel> extraLoanRateModels = fakeExtraLoanRate(loanModel);
+        extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001","13333333333");
-        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25, test1Model.getLoginName(),
+        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 250, test1Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 1);
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
-
         UserModel test2Model = createFakeUser("test0002","18999999999");
-        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31, test2Model.getLoginName(),
+        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 310, test2Model.getLoginName(),
                 new Date(), Source.WEB, "tuotiansudai", 1);
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);
 
         loanOutInvestCalculationService.rateIncreases(loanModel.getId());
+
+        InvestExtraRateModel test1investExtraRateModel = investExtraRateMapper.findByInvestId(test1InvestModel.getId());
+
+        assertTrue(new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toString("yyyy-MM-dd")
+                .equals(new DateTime(test1investExtraRateModel.getRepayDate()).toString("yyyy-MM-dd")));
+        assertThat(test1investExtraRateModel.getExpectedInterest(),is(24l));
+        assertThat(test1investExtraRateModel.getExpectedFee(),is(2l));
+
+        InvestExtraRateModel test2investExtraRateModel = investExtraRateMapper.findByInvestId(test2InvestModel.getId());
+        assertThat(test2investExtraRateModel.getExpectedInterest(),is(61l));
+        assertThat(test2investExtraRateModel.getExpectedFee(),is(6l));
+
+
     }
 
     private UserModel createFakeUser(String loginName,String mobile) {
@@ -121,6 +142,8 @@ public class LoanOutInvestCalculationServiceTest {
         loanModel.setLoanerLoginName(userModel.getLoginName());
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
+        loanModel.setRecheckTime(new Date());
+        loanModel.setDuration(90);
         return loanModel;
     }
 
@@ -131,23 +154,23 @@ public class LoanOutInvestCalculationServiceTest {
         level1.setLoanId(loanModel.getId());
         level1.setExtraRateRuleId(extraLoanRateRuleModels.get(0).getId());
         level1.setRate(extraLoanRateRuleModels.get(0).getRate());
-        level1.setMinInvestAmount(10);
-        level1.setMaxInvestAmount(20);
+        level1.setMinInvestAmount(100);
+        level1.setMaxInvestAmount(200);
         extraLoanRateModels.add(level1);
 
         ExtraLoanRateModel level2 = new ExtraLoanRateModel();
         level2.setLoanId(loanModel.getId());
         level2.setRate(extraLoanRateRuleModels.get(1).getRate());
         level2.setExtraRateRuleId(extraLoanRateRuleModels.get(1).getId());
-        level2.setMinInvestAmount(20);
-        level2.setMaxInvestAmount(30);
+        level2.setMinInvestAmount(200);
+        level2.setMaxInvestAmount(300);
         extraLoanRateModels.add(level2);
 
         ExtraLoanRateModel level3 = new ExtraLoanRateModel();
         level3.setLoanId(loanModel.getId());
         level3.setRate(extraLoanRateRuleModels.get(2).getRate());
         level3.setExtraRateRuleId(extraLoanRateRuleModels.get(2).getId());
-        level3.setMinInvestAmount(30);
+        level3.setMinInvestAmount(300);
         level3.setMaxInvestAmount(0);
         extraLoanRateModels.add(level3);
         return extraLoanRateModels;
