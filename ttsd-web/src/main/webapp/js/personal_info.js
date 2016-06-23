@@ -266,7 +266,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 imageCaptcha: {
                     required: true,
                     regex: /^[a-zA-Z0-9]{5}$/
-
                 }
             },
             messages: {
@@ -293,7 +292,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         }
                     }
                 }
-
             },
             messages: {
                 captcha: {

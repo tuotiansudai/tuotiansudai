@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import junit.framework.Assert;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -19,9 +18,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -300,21 +297,6 @@ public class LoanMapperTest {
     }
 
     @Test
-    public void shouldFindHomeLoanByIsContainNewBieIsOk(){
-        UserModel fakeUserModel = this.getFakeUserModel();
-        userMapper.create(fakeUserModel);
-
-        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
-        LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NORMAL);
-        loanMapper.create(fakeCanceledLoan1);
-        loanMapper.create(fakeCanceledLoan2);
-
-        loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name());
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("false",LoanStatus.RAISING.name()));
-        assertNotNull(loanMapper.findHomeLoanByIsContainNewBie("true",LoanStatus.RAISING.name()));
-    }
-
-    @Test
     public void shouldFindLoanListMobileAppIsOk(){
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
@@ -323,16 +305,19 @@ public class LoanMapperTest {
         fakeCanceledLoan1.setVerifyTime(new Date());
         fakeCanceledLoan1.setBaseRate(999999992);
         fakeCanceledLoan1.setActivityRate(1);
+        fakeCanceledLoan1.setProductType(ProductType._180);
         LoanModel fakeCanceledLoan2 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.PREHEAT,ActivityType.NORMAL);
         fakeCanceledLoan2.setDuration(ProductType._30.getDuration());
         fakeCanceledLoan2.setVerifyTime(new Date());
         fakeCanceledLoan2.setBaseRate(999999992);
         fakeCanceledLoan2.setActivityRate(1);
+        fakeCanceledLoan2.setProductType(ProductType._180);
         LoanModel fakeCanceledLoan3 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.COMPLETE,ActivityType.NORMAL);
         fakeCanceledLoan3.setDuration(ProductType._360.getDuration());
         fakeCanceledLoan3.setVerifyTime(new Date());
         fakeCanceledLoan3.setBaseRate(999999992);
         fakeCanceledLoan3.setActivityRate(1);
+        fakeCanceledLoan3.setProductType(ProductType._180);
         fakeCanceledLoan3.setRecheckTime( DateUtils.addDays(new Date(), -1));
         LoanModel fakeCanceledLoan4 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.REPAYING,ActivityType.NORMAL);
         fakeCanceledLoan4.setDuration(ProductType._180.getDuration());
@@ -340,14 +325,17 @@ public class LoanMapperTest {
         fakeCanceledLoan4.setBaseRate(999999992);
         fakeCanceledLoan4.setActivityRate(1);
         fakeCanceledLoan4.setVerifyTime(new Date());
+        fakeCanceledLoan4.setProductType(ProductType.EXPERIENCE);
         loanMapper.create(fakeCanceledLoan1);
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
+
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);
         assertEquals(loanModels.get(2).getStatus(),LoanStatus.REPAYING);
         assertEquals(loanModels.get(3).getStatus(),LoanStatus.COMPLETE);
+        assertEquals(loanModels.get(2).getProductType(),ProductType.EXPERIENCE);
     }
 }

@@ -1,20 +1,19 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.collections4.CollectionUtils;
+import com.tuotiansudai.util.RandomUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -38,6 +37,13 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private InvestMapper investMapper;
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
+
+    @Autowired
+    private CouponService couponService;
+
+    @Autowired
+    private RandomUtils randomUtils;
+
     @Value("${web.server}")
     private String domainName;
 
@@ -56,14 +62,14 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             return new BaseResponseDto(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
 
-        LoanDetailResponseDataDto loanDetailResponseDataDto = this.convertLoanDetailFromLoan(loan);
+        LoanDetailResponseDataDto loanDetailResponseDataDto = this.convertLoanDetailFromLoan(loan, loanDetailRequestDto.getBaseParam().getUserId());
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(loanDetailResponseDataDto);
         return dto;
     }
 
-    private LoanDetailResponseDataDto convertLoanDetailFromLoan(LoanModel loan) {
+    private LoanDetailResponseDataDto convertLoanDetailFromLoan(LoanModel loan, String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
@@ -92,40 +98,53 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
         loanDetailResponseDataDto.setInvestedCount(investMapper.countSuccessInvest(loan.getId()));
-        if (loan.getVerifyTime() != null) {
-            loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
-        }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
             loanDetailResponseDataDto.setInvestBeginTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            loanDetailResponseDataDto.setVerifyTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         if(loan.getFundraisingEndTime() != null){
             loanDetailResponseDataDto.setFundRaisingEndTime(new DateTime(loan.getFundraisingEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
-        long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+        long investedAmount = 0l;
+        if (loan.getProductType() == ProductType.EXPERIENCE) {
+            Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
+            Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
+            investedAmount = couponService.findExperienceInvestAmount(investModelList);
+        } else {
+            investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+        }
         loanDetailResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         loanDetailResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
         loanDetailResponseDataDto.setLoanDetail(loan.getDescriptionHtml());
         loanDetailResponseDataDto.setEvidence(getEvidenceByLoanId(loan.getId()));
-        List<InvestModel> investAll = investMapper.findSuccessInvestsByLoanId(loan.getId());
-        loanDetailResponseDataDto.setInvestCount(investAll != null ? investAll.size() : 0);
-        if (CollectionUtils.isNotEmpty(investAll)) {
-            List<InvestModel> invests = null;
-            if (investAll.size() > 5) {
-                invests = investAll.subList(0, 5);
-            } else {
-                invests = investAll.subList(0, investAll.size());
-            }
-            List<InvestRecordResponseDataDto> investRecordResponseDataDtos = Lists.transform(invests, new Function<InvestModel, InvestRecordResponseDataDto>() {
-                @Override
-                public InvestRecordResponseDataDto apply(InvestModel input) {
-                    return new InvestRecordResponseDataDto(input);
+
+        List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loan.getId());
+        StringBuffer marqueeTitle = new StringBuffer();
+        if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loan.getStatus())) {
+            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+        } else {
+            for (InvestModel investModel : investAchievements) {
+                String investorLoginName = randomUtils.encryptLoginName(loginName, investModel.getLoginName(), 3, investModel.getId());
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() == LoanStatus.RAISING) {
+                    marqueeTitle.append(investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loan.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
-            });
-            loanDetailResponseDataDto.setInvestRecord(investRecordResponseDataDtos);
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() != LoanStatus.RAISING) {
+                    marqueeTitle.append("恭喜" + investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
+                    marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)){
+                    marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
+                }
+            }
         }
+        loanDetailResponseDataDto.setMarqueeTitle(marqueeTitle.toString());
 
         loanDetailResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
         loanDetailResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
@@ -133,7 +152,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if(loan.getRaisingCompleteTime() != null) {
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
-        loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
         loanDetailResponseDataDto.setDuration("" + loan.getDuration());
         loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
                 new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));

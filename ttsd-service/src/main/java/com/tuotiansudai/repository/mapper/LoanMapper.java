@@ -1,6 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanAchievementView;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,15 +33,15 @@ public interface LoanMapper {
                              @Param(value = "durationEnd") int durationEnd);
 
     List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
-                                    @Param(value = "status") LoanStatus status,
-                                    @Param(value = "rateStart") double rateStart,
-                                    @Param(value = "rateEnd") double rateEnd,
-                                    @Param(value = "index") int index);
+                                          @Param(value = "status") LoanStatus status,
+                                          @Param(value = "rateStart") double rateStart,
+                                          @Param(value = "rateEnd") double rateEnd,
+                                          @Param(value = "index") int index);
 
     int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
-                             @Param(value = "status") LoanStatus status,
-                             @Param(value = "rateStart") double rateStart,
-                             @Param(value = "rateEnd") double rateEnd);
+                                   @Param(value = "status") LoanStatus status,
+                                   @Param(value = "rateStart") double rateStart,
+                                   @Param(value = "rateEnd") double rateEnd);
 
     void update(LoanModel loanModel);
 
@@ -87,11 +90,13 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "IsContainNewBie") String IsContainNewBie,
-                                                  @Param(value = "loanStatus") String loanStatus);
+    List<LoanModel> findHomeLoanByIsContainNewbie(@Param(value = "loanStatus") LoanStatus loanStatus,
+                                                  @Param(value = "isShowNewbieLoan") boolean isShowNewbieLoan);
 
     List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
 
     long findLoanAchievementCount(@Param(value = "loginName") String loginName);
+
+    List<LoanModel> findByProductType(@Param(value = "productType") ProductType productType);
 
 }

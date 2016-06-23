@@ -49,8 +49,9 @@
             <label class="col-sm-2 control-label">发放对象:</label>
             <div class="col-sm-2">
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS'] />
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'EXCHANGER' && userGroup.name() != 'WINNER'>
+                        <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
                         </#if>
                     </#list>
@@ -88,10 +89,12 @@
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>
+                    <#if productType.name() != 'EXPERIENCE'>
                     <label><input type="checkbox" name="productTypes" class="productType"
                                   <#if productType_index == 0>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
+                    </#if>
                 </#list>
             </div>
         </div>

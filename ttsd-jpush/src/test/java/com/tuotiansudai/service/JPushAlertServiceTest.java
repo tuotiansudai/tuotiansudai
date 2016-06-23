@@ -218,7 +218,6 @@ public class JPushAlertServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(0.15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -406,7 +405,7 @@ public class JPushAlertServiceTest {
 
         CouponModel couponModel = new CouponModel(fakeCouponDto());
 
-        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
 
         List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
 

@@ -62,6 +62,10 @@
         }
       }
   }
+  .header-membership {
+    padding-right: 19px;
+    background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%;
+  }
 }
 
 .footer-container {
@@ -219,7 +223,7 @@
     position: relative;
     margin: 0 auto;
     .logo {
-      background: url("/images/icons/logo-new.png") left center no-repeat;
+      background: url("/images/icons/logo-index.png") left center no-repeat;
       width: 420px;
       height: 50px;
       display: block;

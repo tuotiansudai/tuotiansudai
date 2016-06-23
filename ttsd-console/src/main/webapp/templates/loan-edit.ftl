@@ -75,7 +75,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName}"
+                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName!('')}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
@@ -130,11 +130,13 @@
                 <select class="selectpicker b-width" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
                     <option value="">请选择</option>
                     <#list productTypes as productType>
+                        <#if productType.name() != 'EXPERIENCE'>
                         <option value="${productType.getDuration()}"
                                 <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
                                 data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
                         ${productType.getDuration()}
                         </option>
+                        </#if>
                     </#list>
                 </select>
                 <input type="hidden" class="jq-duration" value="${loanInfo.duration}"/>
@@ -172,18 +174,6 @@
                 <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl"
                        errormsg="预计出借金额需要正确填写" value="${(loanInfo.loanAmount/100)?string('0.00')}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl"
-                       errormsg="投资手续费比例需要正确填写" value="${(loanInfo.investFeeRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
             </div>
         </div>
         <div class="form-group">

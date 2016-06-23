@@ -11,11 +11,15 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -33,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,13 +78,16 @@ public class InvestServiceImpl implements InvestService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private InvestTransferService investTransferService;
-
-    @Autowired
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -168,10 +174,15 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long estimateInvestIncome(long loanId, long amount) {
+    public long estimateInvestIncome(long loanId, String loginName, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
+
+        //根据loginName查询出会员的相关信息
         long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
 
@@ -185,9 +196,8 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+        int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
-
 
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
@@ -210,7 +220,18 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
-            items.add(new InvestorInvestPaginationItemDataDto(loanMapper.findById(investModel.getLoanId()).getName(), investModel,
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            if (loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
+                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+                for (UserCouponModel userCouponModel : userCouponModelList) {
+                    if (userCouponModel.getStatus().equals(InvestStatus.SUCCESS)) {
+                        investModel.setAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
+                        break;
+                    }
+                }
+            }
+
+            items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
         }
@@ -219,27 +240,6 @@ public class InvestServiceImpl implements InvestService {
         dto.setStatus(true);
 
         return dto;
-    }
-
-    @Override
-    public BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus,false);
-        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(), new Predicate<InvestPaginationItemDataDto>() {
-            @Override
-            public boolean apply(InvestPaginationItemDataDto input) {
-                return TransferStatus.TRANSFERABLE.getDescription().equals(input.getTransferStatus()) && investTransferService.isTransferable(input.getInvestId());
-            }
-        });
-        List<InvestPaginationItemDataDto>  items = Lists.newArrayList(filter);
-        int fromIndex = (index - 1) * pageSize;
-        int toIndex = fromIndex + pageSize;
-        if(fromIndex >= items.size()){
-            fromIndex = items.size();
-        }
-        if(toIndex >= items.size()){
-            toIndex = items.size();
-        }
-        return new InvestPaginationDataDto(index,pageSize,items.size(),items.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -262,7 +262,7 @@ public class InvestServiceImpl implements InvestService {
                                                        String channel, Source source, String role,
                                                        int index, int pageSize,
                                                        Date startTime, Date endTime,
-                                                       InvestStatus investStatus, LoanStatus loanStatus, boolean isPagination) {
+                                                       InvestStatus investStatus, LoanStatus loanStatus) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -282,13 +282,13 @@ public class InvestServiceImpl implements InvestService {
         long investAmountSum = 0;
 
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
-                if(loanId != null){
+                if (loanId != null) {
                     LoanModel loanModel = loanMapper.findById(loanId);
-                    if(loanModel != null){
+                    if (loanModel != null) {
                         investPaginationItemView.setLoanName(loanModel.getName());
                     }
                 }

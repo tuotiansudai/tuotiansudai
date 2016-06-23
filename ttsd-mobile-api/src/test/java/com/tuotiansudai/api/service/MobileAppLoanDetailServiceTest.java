@@ -1,13 +1,12 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.LoanDetailRequestDto;
-import com.tuotiansudai.api.dto.v1_0.LoanDetailResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanDetailServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +61,6 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -125,13 +123,15 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         LoanDetailRequestDto loanDetailRequestDto = new LoanDetailRequestDto();
         loanDetailRequestDto.setLoanId("300140750356480");
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("");
+        loanDetailRequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailResponseDataDto> baseResponseDto = mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
 
 
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(6L, baseResponseDto.getData().getInvestedCount().longValue());
         assertEquals("100.00",baseResponseDto.getData().getInvestedMoney());
-        assertEquals(5,baseResponseDto.getData().getInvestRecord().size());
         assertEquals(idCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(0).getTitle());
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());

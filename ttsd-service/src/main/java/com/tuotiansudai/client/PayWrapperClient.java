@@ -177,7 +177,11 @@ public class PayWrapperClient extends BaseClient {
     public Map<String, String> getUserBalance(String loginName) {
         String json = this.execute(MessageFormat.format("/real-time/user-balance/{0}", loginName), null, "GET");
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+            if (json == null)
+                return null;
+            else
+                return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+                });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

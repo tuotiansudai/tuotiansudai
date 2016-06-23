@@ -11,7 +11,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
             var dataForm = JSON.stringify({
                 "id":$('.jq-id').val(),
                 "title":$('.jq-title').val(),
-                "linkUrl":$('.jq-linkurl').val()
+                "linkUrl": $('.jq-linkurl').val(),
+                "noFollow": $('.jq-noFollow').val()
             });
             if($('.jq-title').val() == ''
                 || $('.jq-linkurl').val().trim() == ''){
@@ -78,6 +79,14 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
             }
         }
 
+        //控制noFollow的checkbox
+        $('.jq-noFollow').click(function () {
+            if ($('.jq-noFollow').val() == "true") {
+                $('.jq-noFollow').val("false");
+            } else {
+                $('.jq-noFollow').val("true");
+            }
+        });
         //关闭警告提示
         $('body').on('click','.form-error',function(){
             $('.jq-btn-form').removeAttr('disabled');
