@@ -48,6 +48,9 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     @Override
     public int getProgressBarPercent(String loginName) {
         Long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
+        if(membershipPoint == null){
+            membershipPoint = 0l;
+        }
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(membershipModel.getLevel() >= 5 ? membershipModel.getLevel() : (membershipModel.getLevel() + 1));
         double changeable = ((membershipPoint - membershipModel.getExperience()) / (double) (NextLevelMembershipModel.getExperience() - membershipModel.getExperience())) * 0.2 * 100;
