@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -14,5 +15,8 @@ public interface ActivityMapper {
 
     ActivityModel findById(long id);
 
-    List<ActivityModel> findActivities(Date ActivatedStartTime, Date ActivatedEndTime, ActivityStatus activityStatus, Source source);
+    List<ActivityModel> findActivities(@Param(value = "activatedStartTime") Date activatedStartTime,
+                                       @Param(value = "activatedEndTime") Date activatedEndTime,
+                                       @Param(value = "activityStatus") ActivityStatus activityStatus,
+                                       @Param(value = "source") Source source);
 }
