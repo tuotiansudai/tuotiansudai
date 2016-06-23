@@ -406,7 +406,7 @@
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
                                         <i>预期年化收益</i>
-                                        <em><b>15</b>
+                                        <em><b>${experienceLoanDto.baseRate}</b>
                                            %</em>
                                     </div>
                                 </div>
