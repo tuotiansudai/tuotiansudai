@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 
 
@@ -120,10 +119,8 @@ public class MessageController {
     public ModelAndView createManualMessage(@Valid @ModelAttribute MessageDto messageDto,
                                             @RequestParam(value = "importUsersId") long importUsersId) {
         messageDto.setUpdatedBy(LoginUserInfo.getLoginName());
-        messageDto.setUpdatedTime(new Date());
         if (!messageService.isMessageExist(messageDto.getId())) {
             messageDto.setCreatedBy(LoginUserInfo.getLoginName());
-            messageDto.setCreatedTime(new Date());
         }
         messageService.createAndEditManualMessage(messageDto, importUsersId);
         return new ModelAndView("redirect: /manual-message-list");
@@ -155,16 +152,16 @@ public class MessageController {
 
     @RequestMapping(value = "/manual-message/{messageId}/approve", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageApprove(@PathVariable long messageId) {
-        return messageService.approveManualMessage(messageId);
+        return messageService.approveManualMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/reject", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageReject(@PathVariable long messageId) {
-        return messageService.rejectManualMessage(messageId);
+        return messageService.rejectManualMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/delete", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> messageDelete(@PathVariable long messageId) {
-        return messageService.deleteManualMessage(messageId);
+        return messageService.deleteManualMessage(messageId, LoginUserInfo.getLoginName());
     }
 }

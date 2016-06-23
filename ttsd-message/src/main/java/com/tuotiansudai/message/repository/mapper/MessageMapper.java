@@ -7,6 +7,7 @@ import com.tuotiansudai.message.repository.model.MessageType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -22,7 +23,9 @@ public interface MessageMapper {
 
     void update(MessageModel messageModel);
 
-    void deleteById(long messageId);
+    void deleteById(@Param(value = "messageId") long messageId,
+                    @Param(value = "updatedBy") String updatedBy,
+                    @Param(value = "updatedTime") Date updatedTime);
 
     long findMessageCount(@Param(value = "title") String title,
                           @Param(value = "messageStatus") MessageStatus messageStatus,

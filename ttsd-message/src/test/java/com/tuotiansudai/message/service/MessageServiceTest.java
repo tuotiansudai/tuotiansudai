@@ -80,7 +80,7 @@ public class MessageServiceTest {
         fakeUser.setLoginName(loginName);
         fakeUser.setPassword("password");
         fakeUser.setEmail("email@tuotiansudai.com");
-        fakeUser.setMobile("11900000000");
+        fakeUser.setMobile(String.valueOf(UUID.randomUUID()).substring(0, 13));
         fakeUser.setRegisterTime(new Date());
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -89,7 +89,9 @@ public class MessageServiceTest {
 
     private MessageDto prepareData() {
         UserModel userModel = getFakeUser("testUser");
+        UserModel testUserModel = getFakeUser("updateUser");
         userMapper.create(userModel);
+        userMapper.create(testUserModel);
 
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
                 Lists.newArrayList(MessageUserGroup.NORMAL_USER, MessageUserGroup.STAFF),
@@ -169,27 +171,29 @@ public class MessageServiceTest {
 
     public void testRejectManualMessage() throws Exception {
         MessageDto originMessageDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.rejectManualMessage(originMessageDto.getId());
+        BaseDto<BaseDataDto> baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
         MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
         assertEquals(MessageStatus.REJECTION, messageDto.getStatus());
-        baseDto = messageService.rejectManualMessage(originMessageDto.getId());
+        assertEquals("updateUser", messageDto.getUpdatedBy());
+        baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testApproveManualMessage() throws Exception {
         MessageDto originMessageDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.approveManualMessage(originMessageDto.getId());
+        BaseDto<BaseDataDto> baseDto = messageService.approveManualMessage(originMessageDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
         MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
         assertEquals(MessageStatus.APPROVED, messageDto.getStatus());
-        baseDto = messageService.rejectManualMessage(originMessageDto.getId());
+        assertEquals("updateUser", messageDto.getUpdatedBy());
+        baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testDeleteManualMessage() throws Exception {
         MessageDto messageDto = prepareData();
-        messageService.deleteManualMessage(messageDto.getId());
+        messageService.deleteManualMessage(messageDto.getId(), "");
         assertTrue(null == messageService.getMessageByMessageId(messageDto.getId()));
     }
 }

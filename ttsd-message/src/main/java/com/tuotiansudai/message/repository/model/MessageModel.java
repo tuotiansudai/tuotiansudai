@@ -45,18 +45,10 @@ public class MessageModel implements Serializable {
         this.id = messageDto.getId();
         this.title = messageDto.getTitle();
         this.template = messageDto.getTemplate();
-        this.type = messageDto.getType();
         this.userGroups = messageDto.getUserGroups();
         this.channels = messageDto.getChannels();
-        this.status = messageDto.getStatus();
-        this.readCount = messageDto.getReadCount();
-        this.activatedBy = messageDto.getActivatedBy();
-        this.activatedTime = messageDto.getActivatedTime();
-        this.expiredTime = messageDto.getExpiredTime();
         this.updatedBy = messageDto.getUpdatedBy();
-        this.updatedTime = messageDto.getUpdatedTime();
         this.createdBy = messageDto.getCreatedBy();
-        this.createdTime = messageDto.getCreatedTime();
     }
 
     public long getId() {

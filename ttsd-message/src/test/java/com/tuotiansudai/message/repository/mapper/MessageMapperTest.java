@@ -162,7 +162,7 @@ public class MessageMapperTest {
 
         assertTrue(null != messageMapper.findById(messageModel.getId()));
 
-        messageMapper.deleteById(messageModel.getId());
+        messageMapper.deleteById(messageModel.getId(), "messageCreator", new Date());
 
         assertTrue(null == messageMapper.findById(messageModel.getId()));
     }

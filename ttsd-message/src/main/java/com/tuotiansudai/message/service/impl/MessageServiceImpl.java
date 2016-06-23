@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,39 +91,43 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> rejectManualMessage(long messageId) {
+    public BaseDto<BaseDataDto> rejectManualMessage(long messageId, String checkerName) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
-        MessageDto messageDto = getMessageByMessageId(messageId);
-        if (MessageStatus.TO_APPROVE == messageDto.getStatus()) {
-            messageDto.setStatus(MessageStatus.REJECTION);
-            messageMapper.update(new MessageModel(messageDto));
+        MessageModel messageModel = messageMapper.findById(messageId);
+        if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
+            messageModel.setStatus(MessageStatus.REJECTION);
+            messageModel.setUpdatedTime(new Date());
+            messageModel.setUpdatedBy(checkerName);
+            messageMapper.update(messageModel);
             return new BaseDto<>(new BaseDataDto(true, null));
         }
         return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
     }
 
     @Override
-    public BaseDto<BaseDataDto> approveManualMessage(long messageId) {
+    public BaseDto<BaseDataDto> approveManualMessage(long messageId, String checkerName) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
-        MessageDto messageDto = getMessageByMessageId(messageId);
-        if (MessageStatus.TO_APPROVE.equals(messageDto.getStatus())) {
-            messageDto.setStatus(MessageStatus.APPROVED);
-            messageMapper.update(new MessageModel(messageDto));
+        MessageModel messageModel = messageMapper.findById(messageId);
+        if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
+            messageModel.setStatus(MessageStatus.APPROVED);
+            messageModel.setUpdatedTime(new Date());
+            messageModel.setUpdatedBy(checkerName);
+            messageMapper.update(messageModel);
             return new BaseDto<>(new BaseDataDto(true, null));
         }
         return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
     }
 
     @Override
-    public BaseDto<BaseDataDto> deleteManualMessage(long messageId) {
+    public BaseDto<BaseDataDto> deleteManualMessage(long messageId, String updatedBy) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
-        messageMapper.deleteById(messageId);
+        messageMapper.deleteById(messageId, updatedBy, new Date());
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
         return new BaseDto<>(new BaseDataDto(true, null));
     }
@@ -135,11 +138,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private void createManualMessage(MessageDto messageDto, long importUsersId) {
-        messageDto.setType(MessageType.MANUAL);
-        messageDto.setReadCount(0);
-        messageDto.setStatus(MessageStatus.TO_APPROVE);
-        messageDto.setExpiredTime(new DateTime().plusDays(EXPIRED_PERIOD).withTimeAtStartOfDay().toDate());
         MessageModel messageModel = new MessageModel(messageDto);
+
+        messageModel.setType(MessageType.MANUAL);
+        messageModel.setStatus(MessageStatus.TO_APPROVE);
+        messageModel.setReadCount(0);
+        messageModel.setExpiredTime(new DateTime().plusDays(EXPIRED_PERIOD).withTimeAtStartOfDay().toDate());
+        messageModel.setCreatedTime(new Date());
+        messageModel.setUpdatedTime(messageModel.getCreatedTime());
+
         messageMapper.create(messageModel);
 
         if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
@@ -154,16 +161,24 @@ public class MessageServiceImpl implements MessageService {
         String importUsers = redisWrapperClient.hget(redisMessageReceivers, String.valueOf(importUsersId));
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
 
-        MessageDto originMessageDto = getMessageByMessageId(messageDto.getId());
-        originMessageDto.setTitle(messageDto.getTitle());
-        originMessageDto.setTemplate(messageDto.getTemplate());
-        originMessageDto.setUserGroups(messageDto.getUserGroups());
-        originMessageDto.setChannels(messageDto.getChannels());
+        MessageModel originMessageModel = messageMapper.findById(messageDto.getId());
+        MessageModel messageModel = new MessageModel(messageDto);
 
-        messageMapper.update(new MessageModel(originMessageDto));
+        messageModel.setType(originMessageModel.getType());
+        messageModel.setEventType(originMessageModel.getEventType());
+        messageModel.setStatus(originMessageModel.getStatus());
+        messageModel.setReadCount(originMessageModel.getReadCount());
+        messageModel.setActivatedBy(originMessageModel.getActivatedBy());
+        messageModel.setActivatedTime(originMessageModel.getActivatedTime());
+        messageModel.setExpiredTime(originMessageModel.getExpiredTime());
+        messageModel.setUpdatedTime(new Date());
+        messageModel.setCreatedBy(originMessageModel.getCreatedBy());
+        messageModel.setCreatedTime(originMessageModel.getCreatedTime());
+
+        messageMapper.update(messageModel);
 
         if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            String messageId = String.valueOf(originMessageDto.getId());
+            String messageId = String.valueOf(messageDto.getId());
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
     }
