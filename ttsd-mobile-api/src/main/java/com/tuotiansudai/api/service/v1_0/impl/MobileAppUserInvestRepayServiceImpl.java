@@ -49,10 +49,11 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
 
-            int maxPeriods = investRepayModels != null?investRepayModels.size():0;
+            int maxPeriods = investRepayModels == null?0:investRepayModels.size();
 
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
-            userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel != null?sdf.format(lastedInvestRepayModel.getRepayDate()):"");
+            System.out.println("lastedInvestRepayModel =======" + lastedInvestRepayModel);
+            userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null?"":sdf.format(lastedInvestRepayModel.getRepayDate()));
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto();
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
