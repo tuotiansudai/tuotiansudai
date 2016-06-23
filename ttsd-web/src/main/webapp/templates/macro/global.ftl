@@ -257,8 +257,9 @@
 
 
 </script>
-
+<#if !isProduction>
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
+</#if>
 
 <#if pageJavascript?? && pageJavascript?length gt 0>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
