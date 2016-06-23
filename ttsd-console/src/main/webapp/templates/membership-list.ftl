@@ -15,7 +15,7 @@
 
                 <div class='input-group date' id='datetimepickerStartTime'>
                     <input type='text' class="form-control" name="startTime"
-                           value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                           value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"/>
                         </span>
@@ -23,7 +23,7 @@
                 <span>-</span>
 
                 <div class='input-group date' id='datetimepickerEndTime'>
-                    <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                    <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"/>
                         </span>
@@ -107,7 +107,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if data.hasPreviousPage >
-                        <a href="/membership-manage/membership-list?index=${data.index - 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                        <a href="/membership-manage/membership-list?index=${data.index - 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&mobile=${mobile!}&type=${selectedType!}&levels=${selectedLevels!}"
                            aria-label="Previous">
                         <#else>
                         <a href="#" aria-label="Previous">
@@ -118,7 +118,7 @@
                     <li><a>${data.index}</a></li>
                     <li>
                         <#if data.hasNextPage>
-                        <a href="/membership-manage/membership-list?index=${data.index + 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                        <a href="/membership-manage/membership-list?index=${data.index + 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&mobile=${mobile!}&type=${selectedType!}&levels=${selectedLevels!}"
                            aria-label="Next">
                         <#else>
                         <a href="#" aria-label="Next">

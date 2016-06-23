@@ -1,8 +1,5 @@
 package com.tuotiansudai.membership.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -70,12 +67,42 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         }
 
         for(UserMembershipModel userMembershipModel : userMembershipModels){
-            if(userMembershipModel.getType().name() == "GIVEN"){
+            if (userMembershipModel.getType().equals(UserMembershipType.GIVEN)) {
                 returnUserMembershipModel = userMembershipModel;
             }
         }
 
         return userMembershipModels.size() == 1 ? userMembershipModels.get(0) : returnUserMembershipModel;
+    }
+
+    private List<UserMembershipItemView> filterUserMembershipItems(List<UserMembershipItemView> userMembershipItemViews) {
+        class Data {
+            public int index;
+            public Date createdTime;
+
+            public Data(int index, Date createdTime) {
+                this.index = index;
+                this.createdTime = createdTime;
+            }
+        }
+        HashMap<String, Data> membershipFilterInfo = new HashMap<>();
+        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
+            Data data = membershipFilterInfo.get(userMembershipItemView.getLoginName());
+            if (null != data) {
+                if (data.createdTime.before(userMembershipItemView.getCreatedTime())) {
+                    data.index = userMembershipItemViews.indexOf(userMembershipItemView);
+                    data.createdTime = userMembershipItemView.getCreatedTime();
+                }
+            } else {
+                membershipFilterInfo.put(userMembershipItemView.getLoginName(),
+                        new Data(userMembershipItemViews.indexOf(userMembershipItemView), userMembershipItemView.getCreatedTime()));
+            }
+        }
+        List<UserMembershipItemView> filteredUserMembershipItems = new ArrayList<>();
+        for (Data data : membershipFilterInfo.values()) {
+            filteredUserMembershipItems.add(userMembershipItemViews.get(data.index));
+        }
+        return filteredUserMembershipItems;
     }
 
     @Override
@@ -93,17 +120,18 @@ public class UserMembershipServiceImpl implements UserMembershipService {
             userMembershipType = null;
         }
         if (CollectionUtils.isEmpty(levels)) {
-            return new ArrayList<UserMembershipItemDto>();
+            return new ArrayList<>();
         }
         List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
-        Collections.sort(userMembershipItemViews, new Comparator<UserMembershipItemView>() {
+        List<UserMembershipItemView> filteredUserMembershipItemViews = filterUserMembershipItems(userMembershipItemViews);
+        Collections.sort(filteredUserMembershipItemViews, new Comparator<UserMembershipItemView>() {
             @Override
             public int compare(UserMembershipItemView o1, UserMembershipItemView o2) {
                 return o2.getRegisterTime().after(o1.getRegisterTime()) ? 1 : -1;
             }
         });
         List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
-        for(UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
+        for (UserMembershipItemView userMembershipItemView : filteredUserMembershipItemViews) {
             userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemView));
         }
         return userMembershipItemDtos;
