@@ -59,7 +59,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                     investExtraRateModel.setInvestId(investModel.getId());
                     investExtraRateModel.setAmount(investModel.getAmount());
                     investExtraRateModel.setExtraRate(extraLoanRateModel.getRate());
-                    Date repayDate = new DateTime(loanModel.getRecheckTime()).plus(loanModel.getDuration()).toDate();
+                    Date repayDate = new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toDate();
                     investExtraRateModel.setRepayDate(repayDate);
 
                     long expectedInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, extraLoanRateModel.getRate(), investModel, repayDate);
