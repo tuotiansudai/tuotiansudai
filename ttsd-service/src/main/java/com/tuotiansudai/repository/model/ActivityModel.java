@@ -1,8 +1,9 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ActivityModel {
+public class ActivityModel implements Serializable {
     private long id;
     private String title;
     private String webActivityUrl;
@@ -13,7 +14,7 @@ public class ActivityModel {
     private Date activatedTime;
     private Date expiredTime;
     private Source source;
-    private ActivityStatus activityStatus;
+    private ActivityStatus status;
     private String createdBy;
     private Date createdTime;
     private String updatedBy;
@@ -100,12 +101,12 @@ public class ActivityModel {
         this.source = source;
     }
 
-    public ActivityStatus getActivityStatus() {
-        return activityStatus;
+    public ActivityStatus getStatus() {
+        return status;
     }
 
-    public void setActivityStatus(ActivityStatus activityStatus) {
-        this.activityStatus = activityStatus;
+    public void setStatus(ActivityStatus status) {
+        this.status = status;
     }
 
     public String getCreatedBy() {
