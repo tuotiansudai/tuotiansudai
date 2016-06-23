@@ -25,15 +25,16 @@ const MenuData = {
 class ButtonStatus extends React.Component {
     
     jumpToWhere(event) {
-        let value=event.target.value;
-        this.props.jumpToPage(value);
+        let dataset=event.target.dataset;
+        window.location.href = dataset.url;
     } 
     render() { 
         let stocked=this.props.stocked;
         let button=null;
         let value=this.props.value;
+        let url=this.props.location;
         if(stocked) {
-            button=<span className="TaskItemBtn" value={value} onTouchTap={this.jumpToWhere.bind(this)}>去完成</span>;
+            button=<span className="TaskItemBtn" data-value={value} data-url={url} onTouchTap={this.jumpToWhere.bind(this)}>去完成</span>;
         }
         else  {
            button=<span className="TaskItemCompleteBtn" disabled>已完成</span>;
@@ -59,7 +60,7 @@ class NewbieTaskGroup extends React.Component {
                                 <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
-                        <ButtonStatus stocked={option.stocked} value={option.number} jumpToPage={jumto} />
+                        <ButtonStatus stocked={option.stocked} value={option.number} location={option.location} />
                    </div>);
         });
 
@@ -82,7 +83,6 @@ class AdvanceTaskGroup extends React.Component {
     render() {
         let AdvanceData=this.props.data;
         let rows=[];
-        let jumto=this.props.jumpToEvent;
     
         AdvanceData.forEach(function(option,key) { 
 
@@ -95,7 +95,7 @@ class AdvanceTaskGroup extends React.Component {
                         </div>
                         <div className="TaskAdvanceItemDes">{option.description}</div>
                     </div>
-                    <ButtonStatus stocked={option.stocked} value={option.number} jumpToPage={jumto} />
+                    <ButtonStatus stocked={option.stocked} value={option.number} location={option.location} />
                 </div>);
         });
 
@@ -128,36 +128,42 @@ class taskCenter extends React.Component {
                         category: '实名认证',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '02',
                         category: '绑定银行卡',
                         description: '绑定常用银行卡，赚钱快人一步',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '03',
                         category: '首次充值',
                         description: '在拓天平台首次成功充值',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '04',
                         category: '首次投资',
                         description: '在拓天平台首次成功投资',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '05',
                         category: '首次投资',
                         description: '在拓天平台首次成功投资',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: false
                     }, {
                         number: '06',
                         category: '首次投资',
                         description: '在拓天平台首次成功投资',
                         reward: '奖励200',
+                        location:'nopwdpay',
                         stocked: false
                     }
 
@@ -167,30 +173,35 @@ class taskCenter extends React.Component {
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '02',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '03',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
+                        location:'nopwdpay',
                         stocked: true
                     }, {
                         number: '04',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
+                        location:'nopwdpay',
                         stocked: false
                     }, {
                         number: '05',
                         category: '累计投资满5000元',
                         description: '完成实名认证，开通个人账户',
                         reward: '奖励1000',
+                        location:'nopwdpay',
                         stocked: false
                     }
 
@@ -283,7 +294,7 @@ class taskCenter extends React.Component {
         setTimeout(() => {
                 if (!this.myScroll) {
                     let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-                    this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
+                    this.refs.tabBody.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
                     this.myScroll = new IScroll(this.refs.scrollWrap);
                     this.myScroll.on('scrollEnd', () => {
                         if (this.myScroll.y <= this.myScroll.maxScrollY) {
@@ -305,12 +316,6 @@ class taskCenter extends React.Component {
 		this.destroyIscroll.call(this);
 	}
 	render() { 
-        // let btn = null;
-        // if (this.state.aaa) {
-        //     btn = <span className={classNames("TaskItemBtn":true, show: option.stocked)} disabled data-value={option.number} onTouchTap={this.jumpTo.bind(this)} >去完成</span>;
-        // } else {
-        //     btn = <span className={classNames("TaskItemBtn":true, show: option.stocked)} disabled data-value={option.number} onTouchTap={this.jumpTo.bind(this)} >yi完成</span>;
-        // }
   		return (
 			<div className={main} >
 			    <div className="MenuBox">
@@ -322,7 +327,7 @@ class taskCenter extends React.Component {
 			    </div>
 		
 			<div className="ContentBox">
-			<div id="OngoingBox" className="OngoingBox">
+			<div id="OngoingBox" className="OngoingBox" ref="tabBody">
 
 			<NewbieTaskGroup data={this.state.listData.newData} jumpToEvent={this.jumpTo} />
 
