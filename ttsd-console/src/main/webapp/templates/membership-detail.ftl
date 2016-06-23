@@ -17,7 +17,7 @@
         <label>用户名: ${loginName}</label>
     </div>
     <div class="form-group">
-        <label>成长值: ${membershipPoint}</label>
+        <label>成长值: ${membershipPoint?string('0')}</label>
     </div>
     <div class="form-group">
         <label>会员等级: V${membershipLevel}</label>
@@ -52,9 +52,9 @@
                             <td>${membershipExperience.totalExperience?string('0')}</td>
                             <td>
                                 <#assign x = membershipExperience.totalExperience>
-                                <#if (membershipExperience.totalExperience == 0)>
+                                <#if (membershipExperience.totalExperience > 0 && membershipExperience.totalExperience < V0Experience)>
                                     V0
-                                <#elseif (membershipExperience.totalExperience >= 1 && membershipExperience.totalExperience < 5000)>
+                                <#elseif (membershipExperience.totalExperience >= V0Experience && membershipExperience.totalExperience < V1Experience)>
                                     V1
                                 <#elseif (membershipExperience.totalExperience >= 5000 && membershipExperience.totalExperience < 50000)>
                                     V2
