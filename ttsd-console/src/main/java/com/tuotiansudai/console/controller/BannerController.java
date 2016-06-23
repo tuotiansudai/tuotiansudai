@@ -7,11 +7,10 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/banner-manage")
@@ -37,4 +36,23 @@ public class BannerController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/list")
+    public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        ModelAndView modelAndView = new ModelAndView("/banner-list");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+
+        List<BannerDto> bannerDtoList = bannerService.findBannerList(index, pageSize);
+        modelAndView.addObject("bannerList", bannerDtoList);
+        int count = bannerService.findBannerCount();
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("count", count);
+        return modelAndView;
+    }
 }

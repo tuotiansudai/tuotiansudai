@@ -31,4 +31,14 @@
         values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{content},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
     </insert>
 
+    <select id="findBannerList" parameterType="map" resultMap="bannerResultMap">
+        select * from banner
+        order by active desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findBannerCount" parameterType="map" resultType="int">
+        select count(1) from banner
+    </select>
+
 </mapper>

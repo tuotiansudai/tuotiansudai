@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BannerServiceImpl implements BannerService{
@@ -24,6 +25,16 @@ public class BannerServiceImpl implements BannerService{
         bannerModel.setCreatedBy(loginName);
         bannerModel.setDeleted(false);
         bannerMapper.create(bannerModel);
+    }
+
+    @Override
+    public List<BannerDto> findBannerList(int index, int pageSize){
+        return bannerMapper.findBannerList((index - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public int findBannerCount(){
+        return bannerMapper.findBannerCount();
     }
 
 }
