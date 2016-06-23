@@ -6,7 +6,7 @@ CREATE TABLE `aa`.`banner` (
   `url`                 VARCHAR(100) NOT NULL,
   `content`             VARCHAR(500) NOT NULL,
   `source`              VARCHAR(100) NOT NULL,
-  `is_authenticated`     TINYINT(1) NOT NULL,
+  `authenticated`     TINYINT(1) NOT NULL,
   `order`                BIGINT UNSIGNED NOT NULL,
   `active`              TINYINT(1) NOT NULL,
   `created_by`        VARCHAR(25) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `aa`.`banner` (
   `activated_time`    DATETIME,
   `deactivated_by`    VARCHAR(25),
   `deactivated_time`  DATETIME,
-  `is_deleted`         TINYINT(1) NOT NULL DEFAULT '0',
+  `deleted`         TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

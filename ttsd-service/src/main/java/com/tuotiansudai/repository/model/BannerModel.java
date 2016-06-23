@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 
+import com.tuotiansudai.dto.BannerDto;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ public class BannerModel implements Serializable{
 
     private List<Source> source;
 
-    private boolean isAuthenticated;
+    private boolean authenticated;
 
     private int order;
 
@@ -39,7 +41,7 @@ public class BannerModel implements Serializable{
 
     private Date deactivatedTime;
 
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
     public long getId() {
         return id;
@@ -95,14 +97,6 @@ public class BannerModel implements Serializable{
 
     public void setSource(List<Source> source) {
         this.source = source;
-    }
-
-    public boolean isAuthenticated() {
-        return isAuthenticated;
-    }
-
-    public void setAuthenticated(boolean isAuthenticated) {
-        this.isAuthenticated = isAuthenticated;
     }
 
     public int getOrder() {
@@ -169,12 +163,36 @@ public class BannerModel implements Serializable{
         this.deactivatedTime = deactivatedTime;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
+    public boolean isAuthenticated() {
+        return authenticated;
     }
 
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public BannerModel() {
+
+    }
+
+    public BannerModel(BannerDto bannerDto) {
+        this.id = bannerDto.getId();
+        this.name = bannerDto.getName();
+        this.webImageUrl = bannerDto.getWebImageUrl();
+        this.appImageUrl = bannerDto.getAppImageUrl();
+        this.url = bannerDto.getUrl();
+        this.content = bannerDto.getContent();
+        this.source = bannerDto.getSource();
+        this.authenticated = bannerDto.isAuthenticated();
+        this.order = bannerDto.getOrder();
     }
 
 }

@@ -14,7 +14,7 @@
         <result column="url" property="url"></result>
         <result column="content" property="content"></result>
         <result column="source" property="source" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"></result>
-        <result column="is_authenticated" property="isAuthenticated"></result>
+        <result column="authenticated" property="authenticated"></result>
         <result column="order" property="order"></result>
         <result column="active" property="active"></result>
         <result column="created_by" property="createdBy"></result>
@@ -23,7 +23,12 @@
         <result column="activated_time" property="activatedTime"></result>
         <result column="deactivated_by" property="deactivatedBy"></result>
         <result column="deactivated_time" property="deactivatedTime"></result>
-        <result column="is_deleted" property="isDeleted"></result>
+        <result column="deleted" property="deleted"></result>
     </resultMap>
+
+    <insert id="create" parameterType="BannerModel" useGeneratedKeys="true" keyProperty="id">
+        insert into banner (`name`,`web_image_url`,`app_image_url`,`url`,`content`,`source`,`authenticated`,`order`,`active`,`created_by`,`created_time`,`activated_by`,`activated_time`,`deactivated_by`,`deactivated_time`,`deleted`)
+        values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{content},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
+    </insert>
 
 </mapper>
