@@ -17,11 +17,13 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
@@ -45,13 +47,13 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
 
     @Test
     public void shouldGenerateIndexLoanIsOk(){
-
+        ReflectionTestUtils.setField(mobileAppLoanListV2Service, "defaultFee", 0.1);
         when(investMapper.sumSuccessInvestCountByLoginName(anyString())).thenReturn(1);
 
         List<LoanModel> loanModels = Lists.newArrayList();
         loanModels.add(getFakeExperienceLoan("test1"));
         loanModels.add(getFakeLoan("test1"));
-        MembershipModel membershipModel = new MembershipModel(idGenerator.generate(),1,100l,0.1);
+        MembershipModel membershipModel = new MembershipModel(idGenerator.generate(),1,100l,0.09);
 
         when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean())).thenReturn(loanModels);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
@@ -60,7 +62,9 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
 
         assertNotNull(baseResponseDto.getData());
         assertThat(baseResponseDto.getData().getLoanList().get(0).getProductNewType(), is(ProductType.EXPERIENCE.name()));
-        assertThat(baseResponseDto.getData().getLoanList().get(1).getProductNewType(),is(ProductType._30.name()));
+        assertEquals("0.1", baseResponseDto.getData().getLoanList().get(0).getInvestFeeRate());
+        assertThat(baseResponseDto.getData().getLoanList().get(1).getProductNewType(), is(ProductType._30.name()));
+        assertEquals(String.valueOf(membershipModel.getFee()), baseResponseDto.getData().getLoanList().get(1).getInvestFeeRate());
 
     }
 
