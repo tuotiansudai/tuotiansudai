@@ -83,7 +83,7 @@
     </select>
 
     <select id="findRateByLoginName" resultType="double" parameterType="string">
-        select m.fee from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() order by um.created_time desc limit 1
+        select m.fee from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() order by m.level desc limit 1
     </select>
 
     <select id="findRealLevelByLoginName" resultType="Integer" parameterType="string">
