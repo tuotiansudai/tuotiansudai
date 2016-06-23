@@ -4,16 +4,17 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.MembershipService;
+import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class MembershipController {
     private UserMembershipService userMembershipService;
 
     @Autowired
-    private MembershipService membershipService;
+    private HeroRankingService heroRankingService;
 
     @Autowired
     private AppTokenParser appTokenParser;
@@ -61,13 +62,15 @@ public class MembershipController {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
+            long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
+            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
 
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
-            modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
-            modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
+            modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - membershipPoint));
+            modelAndView.addObject("membershipPoint", membershipPoint);
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
-            modelAndView.addObject("membershipType", userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId()).getType());
+            modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);
@@ -123,7 +126,7 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = membershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            GivenMembership givenMembership = heroRankingService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {

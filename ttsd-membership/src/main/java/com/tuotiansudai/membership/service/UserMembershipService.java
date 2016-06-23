@@ -24,4 +24,6 @@ public interface UserMembershipService {
                                                        List<Integer> levels);
 
     List<Integer> getAllLevels();
+
+    void createUserMemberByLevel(long level,String loginName);
 }

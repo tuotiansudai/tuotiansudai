@@ -58,7 +58,7 @@ public class AccountController {
         String loginName = LoginUserInfo.getLoginName();
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         modelAndView.addObject("loginName",loginName);
-        modelAndView.addObject("userMembershipLevel", membershipModel != null?membershipModel.getLevel():"");
+        modelAndView.addObject("userMembershipLevel", membershipModel != null?membershipModel.getLevel():0);
         modelAndView.addObject("balance",accountService.getBalance(loginName));
         modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));
         modelAndView.addObject("collectingPrincipal",investRepayService.findSumRepayingCorpusByLoginName(loginName));
