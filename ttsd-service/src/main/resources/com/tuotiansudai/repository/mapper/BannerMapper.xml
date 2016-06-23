@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BannerMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="bannerResultMap" type="BannerModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="web_image_url" property="webImageUrl"></result>
+        <result column="app_image_url" property="appImageUrl"></result>
+        <result column="url" property="url"></result>
+        <result column="content" property="content"></result>
+        <result column="source" property="source" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"></result>
+        <result column="is_authenticated" property="isAuthenticated"></result>
+        <result column="order" property="order"></result>
+        <result column="active" property="active"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="activated_by" property="activatedBy"></result>
+        <result column="activated_time" property="activatedTime"></result>
+        <result column="deactivated_by" property="deactivatedBy"></result>
+        <result column="deactivated_time" property="deactivatedTime"></result>
+        <result column="is_deleted" property="isDeleted"></result>
+    </resultMap>
+
+</mapper>
