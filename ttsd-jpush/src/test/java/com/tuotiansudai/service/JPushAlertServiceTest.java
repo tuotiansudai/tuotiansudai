@@ -473,6 +473,9 @@ public class JPushAlertServiceTest {
         loanModel.setStatus(LoanStatus.COMPLETE);
         loanModel.setId(loanId);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        JPushAlertModel jPushAlertModel = createJPushAlert();
+        jPushAlertModel.setJumpTo(JumpTo.INVEST_REPAY);
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(jPushAlertModel);
 
         jPushAlertService.autoJPushRepayAlert(loanRepayId2, false);
 
