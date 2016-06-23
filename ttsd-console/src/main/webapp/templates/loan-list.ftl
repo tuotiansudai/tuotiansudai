@@ -41,7 +41,7 @@
             <button type="button" class="btn btn-sm btn-primary search">查询</button>
         </form>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover ">
+            <table class="table table-bordered table-hover " id="tabFormData">
                 <thead>
             <tr>
                 <th>编号</th>
@@ -51,6 +51,7 @@
                 <th>代理人</th>
                 <th>借款金额(元)</th>
                 <th>年化/活动(利率)</th>
+                <th>阶梯加息</th>
                 <th>项目状态</th>
                 <th>发起时间</th>
                 <th>投资/还款记录</th>
@@ -61,7 +62,7 @@
                 <#list loanListDtos as loanListDto>
                 <tr>
                     <td>${loanListDto.id?string('0')}</td>
-                    <td class="projectName">
+                    <td>
                         <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${loanListDto.name}">
                             <a href="${webServer}/loan/${loanListDto.id?string('0')}" target="_blank">${loanListDto.name}</a>
                         </span>
@@ -71,6 +72,31 @@
                     <td>${loanListDto.agentLoginName!}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
+
+                    <td class="ladder-table">
+                    <#if (loanListDto.extraLoanRateModels?size>0)>
+                        <table class="table table-bordered tip-table">
+                            <thead>
+                            <tr>
+                                <th>投资金额范围(元)</th>
+                                <th>加息比例(%)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <#list loanListDto.extraLoanRateModels as extraLoanRateModel>
+                                <tr>
+                                    <td>${extraLoanRateModel.minInvestAmount} ≤ 投资额 < ${extraLoanRateModel.maxInvestAmount}</td>
+                                    <td>${extraLoanRateModel.rate}</td>
+                                </tr>
+                                </#list>
+                            </tbody>
+                        </table>
+                        <span class="ladderInvest" style="display: block;">是</span>
+                    <#else>
+                        -
+                    </#if>
+                        <#--${(!loanListDto.extraLoanRateModels??)?string('是','-')}-->
+                    </td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td><a class="invest_repay" href="/finance-manage/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
@@ -113,6 +139,8 @@
         </#if>
         </nav>
         <!-- pagination -->
+
+        <div class="tipDom">dfdfdf</div>
     </div>
     <!-- content area end -->
 </@global.main>

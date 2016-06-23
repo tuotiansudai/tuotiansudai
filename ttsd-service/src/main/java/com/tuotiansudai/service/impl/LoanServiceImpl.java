@@ -93,6 +93,7 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;
 
+
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -541,6 +542,7 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDto.setProductType(loanModel.getProductType());
+            loanListDto.setExtraLoanRateModels(extraLoanRateMapper.findByLoanId(loanModel.getId()));
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;

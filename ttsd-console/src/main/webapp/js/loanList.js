@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
+require(['jquery', 'layer','bootstrap','bootstrapDatetimepicker'], function ($,layer) {
     $('#datepickerBegin,#datepickerEnd').datetimepicker({
         format: 'YYYY-MM-DD'
     });
@@ -24,6 +24,15 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
         window.location.href = "/project-manage/loan-list?"+allData;
 
     });
+
+    $('#tabFormData ').on('click','.ladderInvest',function(event) {
+
+        var $this=$(this);
+        layer.tips('Hi，我是tips', '.tipDom');
+    });
+
+
+
 
 });
 
