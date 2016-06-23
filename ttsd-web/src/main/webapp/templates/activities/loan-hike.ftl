@@ -79,6 +79,9 @@
 					</table>
 				</div>
 			</div>
+			<div class="example-model">
+				<a href="javascript:void(0)" class="example-show">如何投资1元赚取266元收益？点击查看例子</a>
+			</div>
 			<div class="example-text">
 				<span class="name-text">举个栗子：</span>李先生选择了一个“车辆抵押借款”项目（360天）投资49999元，按照活动规则可以享受0.6%的加息，预期总收益为6036.04元，李先生再次投资50000元，那么加息后预期总收益将达到6302.46元，仅仅多投<span class="call-out">1元钱</span>就可以拿到额外<span class="call-out">266.42元</span>收益哦！
 			</div>
@@ -88,7 +91,7 @@
 					<img src="${staticServer}/images/sign/actor/loanhike/stress-intro.png">
 				</div>
 				<div class="notice-right">
-					这次加息活动，在活动期间及范围内，不仅可以<span>无限次</span>使用，并且可以与平台其他优惠<span>一起使用</span>!<br />包括: <span>生日月收益翻倍</span>、<span>现金红包</span>、<span>加息券</span>！
+					这次加息活动，在活动期间及范围内，不仅可以<span>无限次</span>使用，并且可以与平台其他优惠<span>一起使用</span>!包括: <span>生日月收益翻倍</span>、<span>现金红包</span>、<span>加息券</span>！
 				</div>
 			</div>
 			<div class="arrow-icon"></div>
@@ -102,7 +105,7 @@
 						<dl>
 							<dt><span class="name-text">车辆抵押借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span></dt>
 							<dd><span class="title-text">预期年化收益</span><span class="number-text active"><strong>12～12.8</strong>％</span></dd>
-							<dd><span class="title-text">投资期限</span><span class="number-text"><strong>180</strong>天</span></dd>
+							<dd class="date-loan"><span class="title-text">投资期限</span><span class="number-text"><strong>180</strong>天</span></dd>
 							<dd><span class="title-text">募集金额</span><span class="number-text"><strong>50</strong>万元</span></dd>
 						</dl>
 					</div>
@@ -116,7 +119,7 @@
 						<dl>
 							<dt><span class="name-text">房产抵押借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span></dt>
 							<dd><span class="title-text">预期年化收益</span><span class="number-text active"><strong>13～14.2</strong>％</span></dd>
-							<dd><span class="title-text">投资期限</span><span class="number-text"><strong>360</strong>天</span></dd>
+							<dd class="date-loan"><span class="title-text">投资期限</span><span class="number-text"><strong>360</strong>天</span></dd>
 							<dd><span class="title-text">募集金额</span><span class="number-text"><strong>21</strong>万元</span></dd>
 						</dl>
 					</div>

@@ -89,6 +89,18 @@ body{
         }
       }
     }
+    .example-model{
+      float:left;
+      width:100%;
+      margin-top:25px;
+      text-align:center;
+      display:none;
+      .example-show{
+        color:#fd5533;
+        font-size:14px;
+        text-decoration:underline;
+      }
+    }
     .example-text{
       float:left;
       padding:25px 10px;
@@ -125,8 +137,8 @@ body{
       }
       .notice-right{
         float:right;
-        width:800px;
-        padding:25px 0;
+        width:740px;
+        padding:25px 30px;
         border:1px solid #d3b443;
         border-radius:10px;
         text-align:center;
@@ -325,256 +337,179 @@ body{
       }
       .model-list{
         float:left;
-        width:100%;
+        width:90%;
+        margin:0 5%;
         .list-template{
-          width:480px;
-          &.list-left{
-            float:left;
-          }
-          &.list-right{
-            float:right;
-          }
+          width:100%;
           h3{
-            font-size:24px;
-            color:#593c00;
-            line-height:90px;
-            height:90px;
-            text-align:center;
+            font-size:16px;
+            line-height:60px;
+            height:60px;
             .title-icon{
-              display:inline-block;
-              width:120px;
-              position: relative;
-              top:-5px;
+              width:60px;
             }
           }
           table{
-            border:1px solid #ccc;
             thead{
-              border:1px solid #9b895c;
               th{
-                border:1px solid #9b895c;
-                font-size:16px;
-                color:#593c00;
-                background:#fffbcc;
+                font-size:14px;
               }
             }
             tbody{
-              border:1px solid #d3b443;
               td{
-                border:1px solid #d3b443;
-                font-size:14px;
-                color:#593c00;
+                font-size:12px;
               }
             }
           }
         }
       }
+      .example-model{
+        display:block;
+      }
       .example-text{
-        float:left;
-        padding:25px 10px;
-        border:1px solid #d3b443;
-        border-radius:10px;
-        text-align:left;
-        font-size:16px;
-        color:#593c00;
-        margin-top:50px;
-        line-height:30px;
+        display:none;
+        width:86%;
+        margin:0 5%;
+        padding:10px 2%;
+        margin-top:25px;
+        font-size: 12px;
+        &.active{
+          display:block;
+        }
         span{
-          &.name-text{
-            color:#fd5533;
-          }
           &.call-out{
-            font-size:24px;
-            color:#fd5533;
+            font-size:14px;
           }
         }
       }
       .notice-container{
         float:left;
-        width:100%;
+        width:90%;
+        margin:0 5%;
         .notice-left{
-          float:left;
-          width:170px;
-          height: 115px;
+          width:30%;
+          height: 90px;
           position: relative;
           img{
-            position: absolute;
-            top:0;
-            left:0;
+            top:25px;
+            width:100%;
           }
         }
         .notice-right{
-          float:right;
-          width:800px;
-          padding:25px 0;
-          border:1px solid #d3b443;
-          border-radius:10px;
-          text-align:center;
-          font-size:16px;
-          color:#593c00;
+          width:64%;
+          padding:10px 2%;
+          font-size:12px;
+          text-align:left;
+          box-sizing: border-box;
           span{
-            font-size:24px;
+            font-size:14px;
             color:#fd5533;
           }
         }
       }
       .reward-intro{
-        float:left;
-        width:100%;
-        margin:30px 0;
-        text-align:center;
+        width:96%;
+        margin:15px 2%;
         span{
-          display:inline-block;
-          width:800px;
-          height:50px;
-          line-height:50px;
-          border:1px solid #e5d184;
+          width: 90%;
+          padding: 0 5%;
+          height:auto;
+          line-height:25px;
           border-radius:50px;
-          font-size:16px;
-          color:#593c00;
-          text-align:center;
-          background:#ffee33;
+          font-size:12px;
+          text-align:left;
         }
       }
       .product-list{
-        float:left;
-        width:100%;
+        width:90%;
+        margin:0 5%;
         h3{
-          float:left;
-          width:100%;
-          font-size:16px;
-          color:#593c00;
+          font-size:12px;
           span{
-            font-size:24px;
-            color:#fd5836;
+            font-size:14px;
           }
         }
         .product-container{
-          float:left;
-          width:100%;
-          padding:20px 0;
-          background:#fff;
-          border:1px solid #e6e6e6;
-          margin:30px 0 40px 0;
-          position: relative;
+          padding:10px 0;
+          margin:15px 0 30px 0;
           .product-left{
             float:left;
-            width:689px;
-            border-right:1px solid #e6e6e6;
+            width:70%;
+            border-right:none;
             dl{
-              float:left;
-              margin-left:70px;
+              margin-left:10px;
               dt{
-                float:left;
-                width:100%;
                 .name-text{
-                  float:left;
-                  font-size:22px;
-                  color:#4e4e4e;
+                  font-size:14px;
                 }
                 .tip-text{
-                  float:right;
-                  margin-right:30px;
-                  font-size:12px;
-                  color:#666;
-                  border:1px solid #666;
-                  border-radius:20px;
-                  padding:2px 10px;
+                  display:none;
                 }
               }
               dd{
-                float:left;
-                width:33.333333%;
+                width:50%;
+                &.date-loan{
+                  display:none;
+                }
                 .title-text{
-                  float:left;
-                  width:100%;
-                  font-size:20px;
-                  color:#808080;
+                  font-size:12px;
                 }
                 .number-text{
-                  float:left;
-                  width:100%;
-                  font-size:20px;
-                  color:#999;
-                  &.active{
-                    color:#ee7b2f;
-                  }
+                  font-size:12px;
                   strong{
-                    font-size:32px;
+                    font-size:14px;
                   }
                 }
               }
             }
           }
           .product-right{
-            float:left;
-            width:300px;
-            text-align:center;
+            width:30%;
             a{
-              display:inline-block;
-              width:240px;
-              height:38px;
-              font-size:18px;
-              color:#fff;
-              text-align:center;
-              background:#ee7d3f;
-              border-radius:5px;
-              margin:54px 0;
+              width:70px;
+              height:30px;
+              font-size:14px;
+              color:#ff752a;
+              border:1px solid #ff752a;
+              background:#fff;
+              border-radius:0;
+              margin: 40px 0 0 0;
             }
           }
           .info-text{
-            width:100%;
-            text-align:center;
-            font-size:16px;
-            color:#fd5533;
-            position: absolute;
-            left:0;
-            bottom:-50px;
-            background:url("/images/sign/actor/loanhike/arrow-line.png") no-repeat;
-            background-position:175px 12px;
+            font-size: 12px;
+            bottom: -35px;
+            background-position: 10px 10px;
+            background-size: 50%;
+            text-align:right;
             span{
-              font-size:24px;
+              font-size:16px;
             }
           }
         }
       }
       .rule-container{
-        float:left;
-        width:100%;
-        margin:70px 0 175px 0;
+        margin:35px 0 60px 0;
         .rule-left{
-          float:left;
-          width:170px;
-          height: 115px;
-          position: relative;
+          width:100%;
           img{
-            position: absolute;
-            top:0;
-            left:0;
+            left: 50%;
+            margin-left: -15%;
+            width: 30%;
           }
         }
         .rule-right{
           float:right;
-          width:740px;
-          padding:25px 30px;
-          border:1px solid #d3b443;
-          border-radius:10px;
+          width:86%;
+          margin:0 5%;
+          padding:10px 2%;
           font-size:16px;
-          color:#593c00;
           .rule-list{
-            float:left;
-            width:100%;
             li{
-              float:left;
-              width:100%;
-              font-size:16px;
-              color:#593c00;
+              font-size:12px;
               i{
-                color: #fd5533;
-                font-size: 14px;
-                position: relative;
-                top: -2px;
-                margin-right:5px;
+                font-size: 12px;
+                top:0;
               }
             }
           }
