@@ -426,7 +426,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <a href="/loan/" class="btn-normal">立即投资</a>
 
                         <div class="guide-img">
