@@ -512,7 +512,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             for (InvestModel investModel : investModelList) {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
                 long amount = investRepayModel.getRepayAmount();
-                LoanModel loanModel = loanMapper.findById(investModel.getId());
+                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 extras.putAll(chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel,String.valueOf(investModel.getId()),String.valueOf(investModel.getLoanId()),String.valueOf(loanModel.getStatus().equals(LoanStatus.COMPLETE) ? 1 : 0))));
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
                 loginNameMap.put(investModel.getLoginName(), amountLists);
