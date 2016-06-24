@@ -19,7 +19,11 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     private String url;
 
+    private String title;
+
     private String content;
+
+    private String sharedUrl;
 
     private List<Source> source;
 
@@ -137,5 +141,21 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSharedUrl() {
+        return sharedUrl;
+    }
+
+    public void setSharedUrl(String sharedUrl) {
+        this.sharedUrl = sharedUrl;
     }
 }
