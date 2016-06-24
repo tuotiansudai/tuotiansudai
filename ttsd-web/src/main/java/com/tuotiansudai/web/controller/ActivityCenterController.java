@@ -22,7 +22,7 @@ public class ActivityCenterController {
     @RequestMapping(path = "")
     @ResponseBody
     public ModelAndView getAllOperatingActivities() {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("/activity-center");
 
         String loginName = LoginUserInfo.getLoginName();
         List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName);
