@@ -30,14 +30,14 @@ public class MembershipInvestServiceImpl implements MembershipInvestService {
     MembershipMapper membershipMapper;
 
     @Override
-    public void afterInvestSuccess(String loginName, long investAmount) {
+    public void afterInvestSuccess(String loginName, long investAmount, long investId) {
 
         try {
             long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
             long totalPoint = membershipPoint + investAmount / 100;
             userMembershipMapper.updateMembershipPoint(loginName, totalPoint);
 
-            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount/100, totalPoint, new Date(), "UPGRADE");
+            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount/100, totalPoint, new Date(), "您投资了"+investId+"项目" + String.format("%.2f", investAmount / 100D) + "元");
             membershipExperienceBillMapper.create(billModel);
 
             Integer level = userMembershipMapper.findRealLevelByLoginName(loginName);

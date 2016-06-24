@@ -17,6 +17,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -108,8 +109,11 @@ public class MembershipController {
     @RequestMapping(value = "/structure-list-data", method = RequestMethod.GET)
     public List<MembershipExperienceBillDto> structureListData(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                                @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-
         String loginName = LoginUserInfo.getLoginName();
+        if(startTime != null && endTime != null){
+            startTime  = new DateTime(startTime).plusHours(23).plusMinutes(59).plusSeconds(59).toDate();
+            endTime = new DateTime(endTime).plusHours(23).plusMinutes(59).plusSeconds(59).toDate();
+        }
         List<MembershipExperienceBillModel> items = membershipExperienceBillService.findMembershipExperienceBillList(loginName, startTime, endTime, null, null);
         List<MembershipExperienceBillDto> records = Lists.transform(items, new Function<MembershipExperienceBillModel, MembershipExperienceBillDto>() {
             @Override
