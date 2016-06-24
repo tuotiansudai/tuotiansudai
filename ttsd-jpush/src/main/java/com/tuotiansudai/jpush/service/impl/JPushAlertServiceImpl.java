@@ -353,7 +353,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     extras.put("jumpTo",jumpTo.getIndex());
                     break;
                 case "jumpToLink":
-                    extras.put("jumpToLink",jumpTo.getIndex());
+                    extras.put("jumpToLink",jPushAlertDto.getJumpToLink());
                     break;
                 case "investId":
                     extras.put("investId",jPushAlertDto.getInvestId());
