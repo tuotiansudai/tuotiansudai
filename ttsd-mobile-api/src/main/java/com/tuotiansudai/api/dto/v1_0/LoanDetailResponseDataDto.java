@@ -42,7 +42,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String raisingPeriod;
     private String marqueeTitle;
     private String productNewType;
-    private List<ExtraLoanRateDto> experienceLoanDtos;
+    private List<ExtraLoanRateDto> extraRates;
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -334,14 +334,14 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.productNewType = productNewType;
     }
 
-    public List<ExtraLoanRateDto> getExperienceLoanDtos() {
-        if (CollectionUtils.isEmpty(experienceLoanDtos)) {
-           return new ArrayList<>();
+    public List<ExtraLoanRateDto> getExtraRates() {
+        if (CollectionUtils.isEmpty(extraRates)){
+            return new ArrayList<>();
         }
-        return experienceLoanDtos;
+        return extraRates;
     }
 
-    public void setExperienceLoanDtos(List<ExtraLoanRateDto> experienceLoanDtos) {
-        this.experienceLoanDtos = experienceLoanDtos;
+    public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }

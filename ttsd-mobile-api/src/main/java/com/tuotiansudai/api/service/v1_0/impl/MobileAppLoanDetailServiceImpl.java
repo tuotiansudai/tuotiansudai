@@ -164,7 +164,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
         if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
-            loanDetailResponseDataDto.setExperienceLoanDtos(fillExtraLoanRateDto(extraLoanRateModels));
+            loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
         }
 
         return loanDetailResponseDataDto;
