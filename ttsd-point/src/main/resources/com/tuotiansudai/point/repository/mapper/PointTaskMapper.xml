@@ -7,18 +7,20 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="pointTaskResultMap" type="PointTaskModel">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="point" property="point"></result>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="point" property="point"/>
+        <result property="active" column="active"/>
+        <result property="multiple" column="multiple"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
     <select id="findPointTaskPagination" resultMap="pointTaskResultMap" parameterType="map">
-        select * from point_task ORDER by created_time DESC limit #{index},#{pageSize}
+        select * from point_task where active = TRUE order by created_time desc limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountPointTaskPagination" resultType="int">
-        select count(*)  from point_task
+    <select id="findCountPointTaskPagination" resultType="long">
+        select count(*) from point_task where active = TRUE
     </select>
 
     <select id="findById" resultMap="pointTaskResultMap">
@@ -28,5 +30,4 @@
     <select id="findByName" resultMap="pointTaskResultMap">
         select * from point_task where name = #{pointTask}
     </select>
-
 </mapper>

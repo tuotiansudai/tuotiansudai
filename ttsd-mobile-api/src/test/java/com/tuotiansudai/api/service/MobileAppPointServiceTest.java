@@ -12,7 +12,6 @@ import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -98,7 +97,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         userPointTaskModel.setCreatedTime(new Date());
         userPointTaskModel.setPointTask(pointTaskModel);
 
-        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1);
+        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1L);
         when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
         when(userPointTaskMapper.findByLoginNameAndId(anyLong(),anyString())).thenReturn(userPointTaskModel);
         PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
@@ -113,7 +112,6 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(PointTask.BIND_BANK_CARD, baseResponseDto.getData().getPointTasks().get(0).getPointTaskType());
         assertEquals(60, Long.parseLong(baseResponseDto.getData().getPointTasks().get(0).getPoint()));
-
     }
 
     @Test
@@ -154,6 +152,4 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(),0);
         assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(),10);
     }
-
-
 }
