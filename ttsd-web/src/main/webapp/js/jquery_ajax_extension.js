@@ -7,11 +7,11 @@ define(['jquery'], function ($) {
 
     $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
         if (jqXHR.status == 403) {
-            var directURL = "/login";
             if (jqXHR.responseText) {
-                directURL += "?redirect=" + jqXHR.responseText;
+                var responseJson = JSON.parse(jqXHR.responseText);
+                var data = responseJson.data;
+                window.location.href = data.directUrl + (data.refererUrl ? "?redirect=" + data.refererUrl : '');
             }
-            window.location.href = directURL;
         }
     });
 });

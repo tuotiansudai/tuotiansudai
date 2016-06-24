@@ -2,14 +2,12 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.service.LoanDetailService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +56,6 @@ public class LoanDetailController {
         }
         return "";
     }
-
-
 
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
     @ResponseBody

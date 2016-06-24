@@ -2,53 +2,56 @@
 <@global.main pageCss="${css.register}" pageJavascript="${js.register_user}" activeLeftNav="" title="拓天速贷注册_用户注册_拓天速贷" keywords="拓天速贷,拓天速贷会员,拓天速贷注册，用户注册" description="拓天速贷会员注册为您提供规范、专业、安全有保障的互联网金融信息服务." >
 
 <div class="register-container page-width">
-    <ul class="step-register-tab">
-        <li class="first on"><s></s>1 注册<g></g></li>
-        <li><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 开始投资<g></g></li>
-    </ul>
+    <div class="step-register-head">
+        欢迎注册拓天速贷  <span class="text-m">已有账号？<a href="/login"> 立即登录</a></span>
+    </div>
     <div class="clear-blank"></div>
     <nav></nav>
     <div class="register-box">
+        <div id="summary"></div>
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
-                    <label for="" class="reg-title">用户名:</label>
+                    <i class="sprite-register-login-name"></i>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
+            <li>
+                <i class="sprite-register-ic-password"></i>
+                <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
+            </li>
                 <li>
-                    <label for="" class="reg-title">手机号:</label>
-                    <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
+                    <i class="sprite-register-ic-mobile"></i>
+                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
                 <li>
-                    <label for="" class="reg-title">验证码:</label>
+                    <i class="sprite-register-ic-captcha"></i>
                     <span class="captcha-tag">
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
+                        <button type="button" class="fetch-captcha" disabled="disabled">获取验证码</button>
                     </span>
-
                 </li>
-                <li>
-                    <label for="" class="reg-title">密码:</label>
-                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-                </li>
-                <li>
-                    <label for="" class="reg-title">推荐人:</label>
-                    <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
+                <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
+                <li class="hide">
+                    <i class="sprite-register-ic-referrer"></i>
+                    <input type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <label id="referrerError" class="error" style="display: none"></label>
                 </li>
                 <li class="agree-last">
-                    <label for="agreement" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                        <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
+                    <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                       <span> <input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
+                    <i class="sprite-register-yes-checked"></i>
 
                 </li>
+        </ul>
+
+            <div class="button-layer">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-
-                <input type="submit" class="register-user" value="下一步"/>
-        </ul>
+                <input type="submit" class="register-user btn-success" disabled value="立即注册" />
+            </div>
 
         </form>
     </div>
@@ -131,16 +134,16 @@
     <p>12.3本协议不涉及您与本网站其他用户之间因网上交易而产生的法律关系及法律纠纷，但您须在此同意将全面接受和履行与本网站其他用户通过本网站签订的任何电子法律文本，并承诺按该法律文本享有和/或放弃相应的权利、承担和/或豁免相应的义务。</p>
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
-
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <div class="image-captcha-inner">
+                <i class="sprite-register-ic-img-code"></i>
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-            <div class="tc">
-                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
             </div>
-            </div>
+        <div class="tc">
+            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
+        </div>
         </form>
 </div>
 </@global.main>

@@ -1,7 +1,8 @@
 package com.tuotiansudai.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -31,8 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegisterUserControllerTest {
 
     private MockMvc mockMvc;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
     private RegisterUserController registerUserController;
@@ -109,7 +108,7 @@ public class RegisterUserControllerTest {
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))
-                .andExpect(redirectedUrl("/register/account"));
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test

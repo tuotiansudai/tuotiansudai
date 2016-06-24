@@ -1,9 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.CertificationRequestDto;
-import com.tuotiansudai.api.dto.RechargeListRequestDto;
-import com.tuotiansudai.api.service.MobileAppCertificationService;
-import com.tuotiansudai.api.service.MobileAppRechargeListService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppRechargeListController;
+import com.tuotiansudai.api.dto.v1_0.RechargeListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppRechargeListService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

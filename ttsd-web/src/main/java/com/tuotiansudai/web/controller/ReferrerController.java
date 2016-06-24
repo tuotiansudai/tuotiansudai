@@ -43,10 +43,8 @@ public class ReferrerController {
                                                         @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                         @RequestParam(name = "loginName", required = false) String loginName) {
         String referrerLoginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<ReferrerRelationView> dataDto = referrerService.findReferrerRelationList(referrerLoginName, loginName, startTime, endTime, index, pageSize);
-        dataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
-        dto.setData(dataDto);
+        dto.setData(referrerService.findReferrerRelationList(referrerLoginName, loginName, startTime, endTime, index, pageSize));
         return dto;
     }
 
@@ -59,10 +57,8 @@ public class ReferrerController {
                                                       @RequestParam(name = "loginName", required = false) String loginName) {
 
         String referrerLoginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<ReferrerManageView> dataDto = referrerService.findReferInvestList(referrerLoginName, loginName, startTime, endTime, index, pageSize);
-        dataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
-        dto.setData(dataDto);
+        dto.setData(referrerService.findReferInvestList(referrerLoginName, loginName, startTime, endTime, index, pageSize));
         return dto;
     }
 
@@ -73,7 +69,6 @@ public class ReferrerController {
                            @RequestParam(name = "loginName", required = false) String loginName) {
 
         String referrerLoginName = LoginUserInfo.getLoginName();
-        String totalRewardAmount = referrerService.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime);
-        return totalRewardAmount;
+        return referrerService.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime);
     }
 }

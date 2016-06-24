@@ -1,10 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.BaseParamDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.NoPasswordInvestResponseDataDto;
-import com.tuotiansudai.api.service.impl.MobileAppNoPasswordInvestTurnOnServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOnServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class MobileAppNoPasswordInvestServiceTurnOnTest extends ServiceTestBase{
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(baseParamDto);
+        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(baseParamDto, "127.0.0.1");
 
         assertEquals("0000",baseResponseDto.getCode());
         assertEquals("",baseResponseDto.getMessage());
