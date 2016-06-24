@@ -5,12 +5,14 @@ import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Controller
 @RequestMapping(path = "/activity-center")
 public class ActivityCenterController {
 
@@ -19,8 +21,7 @@ public class ActivityCenterController {
     @Autowired
     ActivityService activityService;
 
-    @RequestMapping(path = "")
-    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView getAllOperatingActivities() {
         ModelAndView modelAndView = new ModelAndView("/activity-center");
 
