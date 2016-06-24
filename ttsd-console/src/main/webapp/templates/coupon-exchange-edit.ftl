@@ -36,7 +36,7 @@
         </#if>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label ">有效期限: </label>
+            <label  class="col-sm-2 control-label ">活动期限: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control coupon-start" name="startTime" <#if exchangeCouponDto??>value="${(exchangeCouponDto.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
@@ -57,6 +57,12 @@
         </div>
 
         <div class="form-group">
+            <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
+            <div class="col-sm-8">
+                <div class="item-invest">优惠券发放后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if exchangeCouponDto??>value="${exchangeCouponDto.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">所需财豆</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
@@ -74,11 +80,13 @@
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>
+                    <#if productType.name() != 'EXPERIENCE'>
                     <label>
                         <input type="checkbox" name="productTypes" class="productType"
                                <#if exchangeCouponDto?? && exchangeCouponDto.productTypes?seq_contains(productType.name())>checked="checked"</#if>
                                value="${productType.name()}">${productType.getName()}
                     </label>
+                    </#if>
                 </#list>
             </div>
         </div>

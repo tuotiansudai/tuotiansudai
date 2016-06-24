@@ -410,25 +410,32 @@
 
       &.text-pro {
         overflow: hidden;
-        margin: 40px 0 70px 0;
+        margin: 40px -20px 70px;
 
         span {
-          position: relative;
-
-          .click-btn {
-            position: absolute;
-            left: 25px;
-            bottom: 20px;
-            width: 300px;
-            height: 58px;
+          &.pro-list{
+            position: relative;
+            float:left;
+            margin:0 10px;
+            width:325px;
+            height:420px;
+            .click-btn {
+              position: absolute;
+              left: 20px;
+              bottom: 23px;
+              width: 285px;
+              height: 52px;
+              background:url(about:blank);
+            }
           }
-          &.product-left {
-            float: left;
-            margin-left: 100px;
-          }
-          &.product-right {
-            float: right;
-            margin-right: 100px;
+          &.pro-wap-list{
+            float:left;
+            width:100%;
+            display:none;
+            a{
+              padding:0 5%;
+              margin:10px 0;
+            }
           }
         }
       }
@@ -705,7 +712,7 @@
           height:60px;
           line-height:60px;
           text-align:center;
-          font-size:22px; 
+          font-size:22px;
           color:#ffdd35;
           border:1px solid #ffb74c;
           border-bottom:none;
@@ -856,6 +863,7 @@
             }
           }
           .share-icon{
+            float:left;
             width:40px;
             height:40px;
             margin:0 5px;
@@ -2356,7 +2364,7 @@
   .wp{
     width:1000px;
     margin:0 auto;
-    
+
     position:relative;
     .left-bg{
       width:200px;
@@ -2388,7 +2396,7 @@
         text-align: center;
         font-size: 20px;
         color: #ffd633;
-        
+
       }
       p{
         width:360px;
@@ -2410,7 +2418,7 @@
         padding-top:100px;
         margin-bottom: 30px;
         height:43px;
-        
+
         span{
           float:left;
           height:43px;
@@ -2445,7 +2453,7 @@
       .example-case-detail{
         height:425px;
         background:url("/images/sign/actor/sharereward/example-case-detail.png") no-repeat center;
-        
+
       }
     }
     .share-recommend{
@@ -2493,7 +2501,7 @@
             background-position:0 10px;
             padding-left:20px;
           }
-              
+
       }
       p.rules-sign{
             width:100%;
@@ -2520,14 +2528,14 @@
   .wp{
     padding:0 2%;
     .reward-info-title{
-      height:185px;   
+      height:185px;
       background:url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-5px;
     }
     .share-example{
       height:500px;
-      background:url("/images/sign/actor/sharereward/share-phone-example.png") no-repeat center;
+      background:url("/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
     }
@@ -3055,27 +3063,11 @@
           margin: 20px 0;
 
           span {
-            width: 46%;
-            margin: 0 2%;
-
-            .click-btn {
-              left: 0;
-              bottom: 0;
-              width: 100%;
+            &.pro-list{
+              display:none;
             }
-            &.product-left {
-              margin-left: 2%;
-
-              img {
-                width: 100%;
-              }
-            }
-            &.product-right {
-              margin-right: 2%;
-
-              img {
-                width: 100%;
-              }
+            &.pro-wap-list{
+              display:block;
             }
           }
         }

@@ -12,6 +12,8 @@ public class LinkExchangeDto implements Serializable{
 
     private String linkUrl;
 
+    private boolean noFollow;
+
     private Date createdTime = new Date();
 
     private Date updateTime = new Date();
@@ -68,7 +70,23 @@ public class LinkExchangeDto implements Serializable{
         this.updateTime = updateTime;
     }
 
+    public boolean isNoFollow() {
+        return noFollow;
+    }
+
+    public void setNoFollow(boolean noFollow) {
+        this.noFollow = noFollow;
+    }
+
+    public SimpleDateFormat getDfs() {
+        return dfs;
+    }
+
+    public void setDfs(SimpleDateFormat dfs) {
+        this.dfs = dfs;
+    }
+
     public String convertToString() {
-        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime);
+        return id + "|" + title.trim() + "|" + linkUrl.trim() + "|" + dfs.format(updateTime) + "|" + dfs.format(createdTime) + "|" + noFollow;
     }
 }

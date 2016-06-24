@@ -64,7 +64,13 @@ public class SmsController {
 
     @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> loanRepayNotify(@Valid @RequestBody LoanRepayNotifyDto notifyDto) {
+    public BaseDto<SmsDataDto> loanRepayNotify(@Valid @RequestBody RepayNotifyDto notifyDto) {
         return smsService.loanRepayNotify(notifyDto.getMobile(), notifyDto.getRepayAmount());
+    }
+
+    @RequestMapping(value = "/experience-repay-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> experienceRepayNotify(@Valid @RequestBody ExperienceRepayNotifyDto notifyDto) {
+        return smsService.experienceRepayNotify(notifyDto.getMobiles(), notifyDto.getRepayAmount());
     }
 }
