@@ -39,7 +39,7 @@ public class MembershipAspect {
 
         logger.debug("into MembershipAspect afterReturningInvestSuccess, loginName: " + investModel.getLoginName());
 
-        membershipInvestService.afterInvestSuccess(investModel.getLoginName(), investModel.getAmount());
+        membershipInvestService.afterInvestSuccess(investModel.getLoginName(), investModel.getAmount(), investModel.getId());
 
         logger.debug("left MembershipAspect afterReturningInvestSuccess, loginName: " + investModel.getLoginName());
     }

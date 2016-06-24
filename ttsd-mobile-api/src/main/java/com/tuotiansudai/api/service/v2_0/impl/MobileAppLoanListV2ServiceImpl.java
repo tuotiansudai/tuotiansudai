@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,11 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-            loanResponseDataDto.setInvestFeeRate(String.valueOf(membershipModel == null ? defaultFee : membershipModel.getFee()));
+            double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+            if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+                investFeeRate = this.defaultFee;
+            }
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;
