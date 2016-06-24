@@ -19,11 +19,11 @@ public enum JumpTo {
     INVEST_REPAY("12","回款计划",Lists.newArrayList("jumpTo","investId","loanId","isCompleted")),
     OTHER("0","其他",Lists.newArrayList("jumpToLink"));
 
-    private final String index;
+    private String index;
 
-    private final String description;
+    private String description;
 
-    private final List<String> params;
+    private List<String> params;
 
     JumpTo(String index,String description, List<String> params){
         this.index = index;
