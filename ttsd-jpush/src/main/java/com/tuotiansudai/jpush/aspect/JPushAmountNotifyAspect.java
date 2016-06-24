@@ -68,8 +68,8 @@ public class JPushAmountNotifyAspect {
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
     public void transferCashPointcut() {}
 
-    @Pointcut("execution(* *..paywrapper.service.LoanService.loanOut(..))")
-    public void loanOutPointcut() {}
+    @Pointcut("execution(* *..paywrapper.service.LoanService.postLoanOut(..))")
+    public void postLoanOutPointcut() {}
 
     @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
     public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
@@ -158,8 +158,8 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
-    @AfterReturning(value = "loanOutPointcut()", returning = "returnValue")
-    public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "postLoanOutPointcut()", returning = "returnValue")
+    public void afterReturningPostLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {

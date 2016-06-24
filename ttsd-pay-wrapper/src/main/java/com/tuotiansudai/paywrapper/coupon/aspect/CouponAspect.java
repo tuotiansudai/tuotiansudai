@@ -111,7 +111,7 @@ public class CouponAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
     public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
