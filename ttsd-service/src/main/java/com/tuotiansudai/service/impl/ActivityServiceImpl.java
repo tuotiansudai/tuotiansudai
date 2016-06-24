@@ -37,9 +37,9 @@ public class ActivityServiceImpl implements ActivityService {
                 if (o1.getActivatedTime().equals(o2.getActivatedTime())) {
                     return 0;
                 } else if (o1.getActivatedTime().after(o2.getActivatedTime())) {
-                    return -1;
-                } else {
                     return 1;
+                } else {
+                    return -1;
                 }
             }
         });
