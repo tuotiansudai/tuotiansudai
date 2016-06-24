@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,8 +21,13 @@ public class ActivityCenterController {
 
     @RequestMapping(path = "")
     @ResponseBody
-    public List<ActivityDto> getAllOperatingActivities() {
-        String LoginName = LoginUserInfo.getLoginName();
-        return activityService.getAllOperatingActivities(LoginName);
+    public ModelAndView getAllOperatingActivities() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        String loginName = LoginUserInfo.getLoginName();
+        List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName);
+        modelAndView.addObject("data", activityDtos);
+
+        return modelAndView;
     }
 }
