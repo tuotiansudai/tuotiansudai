@@ -1,9 +1,11 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BannerDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,9 @@ public class BannerController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView bannerCreate() {
-        return new ModelAndView("/banner");
+        ModelAndView modelAndView = new ModelAndView("/banner");
+        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
