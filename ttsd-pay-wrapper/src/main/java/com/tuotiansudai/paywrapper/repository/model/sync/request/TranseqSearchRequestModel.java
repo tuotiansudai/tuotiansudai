@@ -19,14 +19,14 @@ public class TranseqSearchRequestModel extends BaseSyncRequestModel {
     public TranseqSearchRequestModel() {
     }
 
-    public TranseqSearchRequestModel(String accountId, Date startDate, Date endDate) {
+    public TranseqSearchRequestModel(String accountId, int pageNum, Date startDate, Date endDate) {
         super();
         this.service = "transeq_search";
         this.accountId = accountId;
         this.accountType = "01";
         this.startDate = new SimpleDateFormat("yyyyMMdd").format(startDate);
         this.endDate = new SimpleDateFormat("yyyyMMdd").format(endDate);
-        this.pageNum = "1";
+        this.pageNum = String.valueOf(pageNum);
     }
 
     @Override

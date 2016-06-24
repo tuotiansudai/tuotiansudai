@@ -20,7 +20,9 @@ import java.util.List;
 @Service
 public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
 
-    static Logger logger = Logger.getLogger(UMPayTransferBillServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(UMPayTransferBillServiceImpl.class);
+
+    private final static int PAGE_SIZE = 10;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -31,12 +33,24 @@ public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
     @Override
     public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
         try {
-            TranseqSearchResponseModel responseModel = paySyncClient.send(TranseqSearchMapper.class,
-                    new TranseqSearchRequestModel("02000157970975", startDate, endDate), TranseqSearchResponseModel.class);
-            if (responseModel.isSuccess()) {
-                return responseModel.generateHumanReadableData();
-            }
+            List<List<String>> data = Lists.newArrayList();
+
+            int pageNum = 1;
+            int totalNum = 0;
+            do {
+                TranseqSearchResponseModel responseModel = paySyncClient.send(TranseqSearchMapper.class, new TranseqSearchRequestModel(accountModel.getPayAccountId(), pageNum, startDate, endDate), TranseqSearchResponseModel.class);
+                if (responseModel.isSuccess()) {
+                    totalNum = Integer.parseInt(responseModel.getTotalNum());
+                    List<List<String>> humanReadableData = responseModel.generateHumanReadableData();
+                    data.addAll(humanReadableData);
+                    pageNum += 1;
+                }
+            } while ((totalNum % PAGE_SIZE == 0 ? totalNum / PAGE_SIZE : totalNum / PAGE_SIZE + 1) >= pageNum);
+
+            return data;
+
         } catch (PayException | ParseException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
