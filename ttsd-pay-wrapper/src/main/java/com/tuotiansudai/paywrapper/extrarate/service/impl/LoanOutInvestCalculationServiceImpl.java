@@ -8,12 +8,16 @@ import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ExtraLoanRateModel;
+import com.tuotiansudai.repository.model.InvestExtraRateModel;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,6 +42,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Override
+    @Transactional
     public void rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -54,14 +59,18 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                     investExtraRateModel.setInvestId(investModel.getId());
                     investExtraRateModel.setAmount(investModel.getAmount());
                     investExtraRateModel.setExtraRate(extraLoanRateModel.getRate());
-                    Date repayDate = new DateTime(loanModel.getRecheckTime()).plus(loanModel.getDuration()).toDate();
+                    Date repayDate = new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toDate();
                     investExtraRateModel.setRepayDate(repayDate);
 
                     long expectedInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, extraLoanRateModel.getRate(), investModel, repayDate);
                     investExtraRateModel.setExpectedInterest(expectedInterest);
 
                     MembershipModel membershipModel = userMembershipEvaluator.evaluate(investModel.getLoginName());
-                    long expectedFee = new BigDecimal(membershipModel.getFee()).multiply(new BigDecimal(expectedInterest)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+                    long expectedFee = new BigDecimal(membershipModel.getFee())
+                            .multiply(new BigDecimal(expectedInterest))
+                            .setScale(0, BigDecimal.ROUND_DOWN)
+                            .longValue();
 
                     investExtraRateModel.setExpectedFee(expectedFee);
                     investExtraRateMapper.create(investExtraRateModel);
