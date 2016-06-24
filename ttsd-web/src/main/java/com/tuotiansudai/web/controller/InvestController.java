@@ -170,8 +170,8 @@ public class InvestController {
     @ResponseBody
     public String calculateCouponExpectedInterest(@PathVariable long loanId,
                                                   @PathVariable long amount,
-                                                  @RequestParam List<Long> couponIds,
-                                                  @RequestParam String loginName) {
+                                                  @RequestParam List<Long> couponIds) {
+        String loginName = LoginUserInfo.getLoginName();
         long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
