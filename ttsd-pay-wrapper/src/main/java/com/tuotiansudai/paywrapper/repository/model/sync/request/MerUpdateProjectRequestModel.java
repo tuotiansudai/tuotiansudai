@@ -31,7 +31,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         payRequestData.put("project_state", this.projectState);
         // 从筹款到还款的状态变化时，以下字段不能添加，否则会失败
         if (Lists.newArrayList(LoanStatus.PREHEAT.getCode(), LoanStatus.RAISING.getCode()).contains(this.projectState)) {
-            payRequestData.put("project_name", this.projectName);
+            payRequestData.put("project_name", this.projectId);
             payRequestData.put("project_amount", String.valueOf(this.projectAmount));
         }
         return payRequestData;

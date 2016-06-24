@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -25,7 +26,8 @@ public class TransferController {
 
     @Autowired
     private InvestTransferService investTransferService;
-
+    @Autowired
+    private TransferService transferService;
     @Autowired
     private InvestService investService;
 
@@ -51,7 +53,7 @@ public class TransferController {
         String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto dataDto;
         if(CollectionUtils.isNotEmpty(statusList) && statusList.contains(TransferStatus.TRANSFERABLE)){
-            dataDto = investService.getTransferApplicationTransferablePagination(loginName, index, pageSize, null, null, LoanStatus.REPAYING);
+            dataDto = transferService.generateTransferableInvest(loginName, index, pageSize);
         }else{
             dataDto = investTransferService.findWebTransferApplicationPaginationList(loginName,statusList,index,pageSize);
         }

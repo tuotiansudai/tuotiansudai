@@ -30,7 +30,10 @@
             总投资金额(元)
         </th>
         <th>
-            有效期限
+            活动期限
+        </th>
+        <th>
+            有效天数
         </th>
         <th>
             发放对象
@@ -81,6 +84,9 @@
         </td>
         <td>
             ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
+        </td>
+        <td>
+            ${coupon.deadline?string('0')}天
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>

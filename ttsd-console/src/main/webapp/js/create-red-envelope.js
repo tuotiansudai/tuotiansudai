@@ -76,6 +76,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     showErrorMessage('红包金额最小为1', $('.coupon-number', curform));
                     return false;
                 }
+                var deadline = parseInt($('.coupon-deadline', curform).val());
+                if (deadline <= 0) {
+                    showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
+                    return false;
+                }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('发放数量最小为1', $('.give-number', curform));

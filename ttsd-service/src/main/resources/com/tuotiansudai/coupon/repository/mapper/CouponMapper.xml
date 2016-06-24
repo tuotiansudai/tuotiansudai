@@ -31,11 +31,12 @@
         <result column="deleted" property="deleted"/>
         <result column="user_group" property="userGroup"/>
         <result column="sms_alert" property="smsAlert"/>
+        <result column="deadline" property="deadline"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, coupon_type, product_types, deleted, user_group, sms_alert)
-        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{userGroup}, #{smsAlert})
+        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, coupon_type, product_types, deleted, user_group, sms_alert, deadline)
+        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{userGroup}, #{smsAlert}, #{deadline})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -192,6 +193,7 @@
         shared = #{shared},
         invest_lower_limit = #{investLowerLimit},
         deleted = #{deleted},
+        deadline = #{deadline},
         product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}
     </update>
@@ -226,6 +228,7 @@
         AND c.`total_count` > c.`issued_count`
         AND c.`active` is TRUE
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+        AND c.`end_time` >= now()
         ORDER BY c.created_time desc
         LIMIT #{index},#{pageSize}
     </select>
@@ -239,6 +242,7 @@
         ON c.`id` = e.`coupon_id`
         AND c.`total_count` > c.`issued_count`
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+        AND c.`end_time` >= now()
     </select>
 
     <update id="updateCouponIssuedCountById" parameterType="java.lang.String">
