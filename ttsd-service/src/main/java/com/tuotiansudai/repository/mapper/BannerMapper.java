@@ -17,4 +17,8 @@ public interface BannerMapper {
 
     int findBannerCount();
 
+    boolean updateBanner(BannerModel bannerModel);
+
+    BannerModel findById(long id);
+
 }

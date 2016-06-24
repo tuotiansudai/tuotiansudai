@@ -4,12 +4,14 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BannerDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,6 +36,32 @@ public class BannerController {
         bannerService.create(bannerDto, loginName);
         dataDto.setStatus(true);
         return baseDto;
+    }
+
+    @RequestMapping(value = "/banner/del/{id}", method = RequestMethod.GET)
+    public String delBanner(@PathVariable Long id) {
+        BannerModel bannerModel = this.bannerService.findById(id);
+        bannerModel.setDeleted(false);
+        bannerService.updateBanner(bannerModel);
+        return "redirect:/banner-manage/list";
+    }
+
+    @RequestMapping(value = "/banner/deactivated/{id}", method = RequestMethod.GET)
+    public String deactivatedBanner(@PathVariable Long id) {
+        BannerModel bannerModel = this.bannerService.findById(id);
+        bannerModel.setDeactivatedTime(new Date());
+        bannerModel.setActive(false);
+        bannerModel.setDeactivatedBy(LoginUserInfo.getLoginName());
+        bannerService.updateBanner(bannerModel);
+        return "redirect:/banner-manage/list";
+    }
+
+    @RequestMapping(value = "/banner/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView editBanner(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("/banner-edit");
+        BannerModel bannerModel = this.bannerService.findById(id);
+        modelAndView.addObject("banner",bannerModel);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/list")

@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="banner-list.js" headLab="announce-manage" sideLab="bannerMan" title="banner管理">
 
@@ -44,11 +45,13 @@
                             </td>
                             <td>${banner.active?then('是','否')}</td>
                             <td>
-                                <#if banner.active>
-                                    <a href="">编辑</a> <a href="">下线</a>
-                                <#else>
-                                    <a href="">复用</a> <a href="">删除</a>
-                                </#if>
+                                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                    <#if banner.active>
+                                        <a href="/banner-manage/banner/edit/${banner.id?c}">编辑</a> <a href="/banner-manage/banner/deactivated/${banner.id?c}" onclick="return confirm('确定下线吗?')">下线</a>
+                                    <#else>
+                                        <a href="/banner-manage/banner/reuse/${banner.id?c}">复用</a> <a href="/banner-manage/banner/del/${banner.id?c}" onclick="return confirm('确定删除吗?')">删除</a>
+                                    </#if>
+                                </@security.authorize>
                             </td>
                         </tr>
                     </#list>

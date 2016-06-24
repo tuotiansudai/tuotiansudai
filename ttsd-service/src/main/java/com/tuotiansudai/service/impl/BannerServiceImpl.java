@@ -37,4 +37,13 @@ public class BannerServiceImpl implements BannerService{
         return bannerMapper.findBannerCount();
     }
 
+    @Override
+    public boolean updateBanner(BannerModel bannerModel){
+        return bannerMapper.updateBanner(bannerModel);
+    }
+
+    @Override
+    public BannerModel findById(long id){
+        return bannerMapper.findById(id);
+    }
 }
