@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.net.SocketTimeoutException;
@@ -28,57 +29,30 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
     private int mybatisDb;
 
     private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedis();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
-            return jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+        Jedis jedis = getJedis();
+        if (StringUtils.isNotEmpty(getRedisPassword())) {
+            jedis.auth(getRedisPassword());
         }
+        jedis.select(redisDb);
+        return jedisAction.action(jedis);
     }
 
     private void execute(JedisActionNoResult jedisAction) throws JedisException {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedis();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
-            jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+        Jedis jedis = getJedis();
+        if (StringUtils.isNotEmpty(getRedisPassword())) {
+            jedis.auth(getRedisPassword());
         }
+        jedis.select(redisDb);
+        jedisAction.action(jedis);
     }
 
     public String clearMybatisCache() {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedis();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(mybatisDb);
-            return jedis.flushDB();
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+        Jedis jedis = getJedis();
+        if (StringUtils.isNotEmpty(getRedisPassword())) {
+            jedis.auth(getRedisPassword());
         }
+        jedis.select(mybatisDb);
+        return jedis.flushDB();
     }
 
     public String get(final String key) {
@@ -471,24 +445,45 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    private Jedis getJedis() throws JedisException{
+    private Jedis getJedis(){
         int timeoutCount = 0;
+        boolean broken = false;
+        Jedis jedis = null;
         while(true){
             try{
-                return getJedisPool().getResource();
+                jedis = getJedisPool().getResource();
+                break;
             }catch (Exception e){
                 if (e instanceof JedisConnectionException || e instanceof SocketTimeoutException){
                     timeoutCount++;
                     logger.error("getJedis timeoutCount=" + timeoutCount, e);
                     if (timeoutCount > 3)
                     {
-                        throw e;
+                        break;
                     }
                 }else{
-                    logger.error("getJedis error", e);
-                    throw e;
+                    broken = handleException(e);
+                    break;
                 }
+            }finally {
+                closeResource(jedis, broken);
             }
         }
+        return jedis;
+    }
+    
+    protected boolean handleException(Exception exception) {
+        if (exception instanceof JedisConnectionException) {
+            logger.error(exception.getLocalizedMessage(), exception);
+        } else if (exception instanceof JedisDataException) {
+            if ((exception.getMessage() != null) && (exception.getMessage().contains("READONLY"))) {
+                logger.error(exception.getLocalizedMessage(), exception);
+            } else {
+                return false;
+            }
+        } else {
+            logger.error(exception.getLocalizedMessage(), exception);
+        }
+        return true;
     }
 }
