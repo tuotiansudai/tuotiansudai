@@ -38,8 +38,6 @@ public class LoanRepayDataItemDto {
 
     private RepayStatus loanRepayStatus;
 
-    private String showRepayStatus;
-
     private boolean isEnabled;
 
     private String agentLoginName;
@@ -61,7 +59,6 @@ public class LoanRepayDataItemDto {
         this.actualInterest = AmountConverter.convertCentToString(loanRepayModel.getActualInterest());
         this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         this.loanRepayStatus = loanRepayModel.getStatus();
-        this.showRepayStatus =(loanRepayModel.getActualRepayDate() != null && new DateTime(loanRepayModel.getActualRepayDate()).withTimeAtStartOfDay().isBefore(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()))? "提前还款":loanRepayModel.getStatus().getDescription();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
     }
@@ -189,12 +186,5 @@ public class LoanRepayDataItemDto {
     public String getActualRepayAmount() {
         return actualRepayAmount;
     }
-
-    public String getShowRepayStatus() {
-        return showRepayStatus;
-    }
-
-    public void setShowRepayStatus(String showRepayStatus) {
-        this.showRepayStatus = showRepayStatus;
-    }
+    
 }

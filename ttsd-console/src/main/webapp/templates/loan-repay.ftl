@@ -81,7 +81,19 @@
                     <td>${loanRepay.expectedInterest}</td>
                     <td>${loanRepay.totalAmount}</td>
                     <td>${loanRepay.actualRepayAmount!}</td>
-                    <td>${loanRepay.showRepayStatus!}</td>
+                    <td>
+                        <#if loanRepay.actualRepayDate??>
+                            <#assign actualRepayDate = loanRepay.actualRepayDate?string('yyyy-MM-dd')>
+                            <#assign repayDate = loanRepay.repayDate?string('yyyy-MM-dd')>
+                            <#if actualRepayDate?date('yyyy-MM-dd') lt repayDate?date('yyyy-MM-dd')>
+                                提前还款
+                            <#else>
+                                ${loanRepay.loanRepayStatus.getDescription()!}
+                            </#if>
+                        <#else>
+                            ${loanRepay.loanRepayStatus.getDescription()!}
+                        </#if>
+                   </td>
                 </tr>
 
                 </#list>
