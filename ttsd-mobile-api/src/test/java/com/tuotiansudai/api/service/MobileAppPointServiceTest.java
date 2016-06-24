@@ -89,7 +89,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         userPointTaskModel.setCreatedTime(new Date());
         userPointTaskModel.setPointTask(pointTaskModel);
 
-        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1);
+        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1L);
         when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
         when(userPointTaskMapper.findByLoginNameAndId(anyLong(),anyString())).thenReturn(userPointTaskModel);
         PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
@@ -104,8 +104,5 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(PointTask.BIND_BANK_CARD, baseResponseDto.getData().getPointTasks().get(0).getPointTaskType());
         assertEquals(60, Long.parseLong(baseResponseDto.getData().getPointTasks().get(0).getPoint()));
-
     }
-
-
 }
