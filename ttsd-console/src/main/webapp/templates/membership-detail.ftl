@@ -52,18 +52,20 @@
                             <td>${membershipExperience.totalExperience?string('0')}</td>
                             <td>
                                 <#assign x = membershipExperience.totalExperience>
-                                <#if (membershipExperience.totalExperience > 0 && membershipExperience.totalExperience < V0Experience)>
+                                <#if (membershipExperience.totalExperience > 0 && membershipExperience.totalExperience < V1Experience)>
                                     V0
-                                <#elseif (membershipExperience.totalExperience >= V0Experience && membershipExperience.totalExperience < V1Experience)>
-                                    V1
                                 <#elseif (membershipExperience.totalExperience >= V1Experience && membershipExperience.totalExperience < V2Experience)>
-                                    V2
+                                    V1
                                 <#elseif (membershipExperience.totalExperience >= V2Experience && membershipExperience.totalExperience < V3Experience)>
-                                    V3
+                                    V2
                                 <#elseif (membershipExperience.totalExperience >= V3Experience && membershipExperience.totalExperience < V4Experience)>
+                                    V3
+                                <#elseif (membershipExperience.totalExperience >= V4Experience && membershipExperience.totalExperience < V5Experience)>
                                     V4
-                                <#else>
+                                <#elseif (membershipExperience.totalExperience >= V5Experience)>
                                     V5
+                                <#else>
+                                    V0
                                 </#if>
                             </td>
                             <td>${membershipExperience.description!}</td>
