@@ -69,13 +69,10 @@ public class JobInitPlugin implements SchedulerPlugin {
             createImitateLotteryJob();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            createNewbieExperienceRepayJos();
+            createNewbieExperienceRepayJob();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
-        }
-        if (JobType.ExperienceRepay.equals(schedulerName)) {
-            createNewbieExperienceRepayJos();
         }
     }
 
@@ -202,10 +199,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createNewbieExperienceRepayJos() {
+    private void createNewbieExperienceRepayJob() {
         try {
             jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.ExperienceRepay.name(), JobType.ExperienceRepay.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
