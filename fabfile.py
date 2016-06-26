@@ -239,9 +239,27 @@ def remove_old_logs():
     execute(remove_static_logs)
 
 
-@roles('pay', 'worker', 'cms')
+@roles('pay')
 @parallel
-def restart_logstash_service_for_others():
+def restart_logstash_service_for_pay():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('worker')
+@parallel
+def restart_logstash_service_for_worker():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('cms')
+@parallel
+def restart_logstash_service_for_cms():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
@@ -264,6 +282,20 @@ def restart_logstash_service_for_api():
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
     run("service logstash restart")
+
+
+def restart_logstash(service):
+    """
+    Usage: fab restart_logstash:web
+    """
+    def get_password():
+        with open('/workspace/ci/def', 'rb') as f:
+            return f.readline().strip()
+    env.password = get_password()
+    func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
+           'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
+           'cms': restart_logstash_service_for_cms}.get(service)
+    execute(func)
 
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
