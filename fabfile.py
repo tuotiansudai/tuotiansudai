@@ -239,9 +239,27 @@ def remove_old_logs():
     execute(remove_static_logs)
 
 
-@roles('portal', 'pay', 'worker', 'api', 'cms')
+@roles('pay', 'worker', 'cms')
 @parallel
-def restart_logstash_service():
+def restart_logstash_service_for_others():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('portal')
+@parallel
+def restart_logstash_service_for_portal():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('api')
+@parallel
+def restart_logstash_service_for_api():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
