@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ExtraLoanRateModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -36,7 +35,7 @@ public class LoanListDto{
 
     private ProductType productType;
 
-    List<ExtraLoanRateModel> extraLoanRateModels;
+    List<ExtraLoanRateDto> extraLoanRateModels;
 
     public long getId() {
         return id;
@@ -134,14 +133,14 @@ public class LoanListDto{
         this.productType = productType;
     }
 
-    public List<ExtraLoanRateModel> getExtraLoanRateModels() {
-        if (CollectionUtils.isEmpty(extraLoanRateModels)) {
+    public List<ExtraLoanRateDto> getExtraLoanRateModels() {
+        if (CollectionUtils.isEmpty(extraLoanRateModels)){
             return new ArrayList<>();
         }
         return extraLoanRateModels;
     }
 
-    public void setExtraLoanRateModels(List<ExtraLoanRateModel> extraLoanRateModels) {
+    public void setExtraLoanRateModels(List<ExtraLoanRateDto> extraLoanRateModels) {
         this.extraLoanRateModels = extraLoanRateModels;
     }
 }

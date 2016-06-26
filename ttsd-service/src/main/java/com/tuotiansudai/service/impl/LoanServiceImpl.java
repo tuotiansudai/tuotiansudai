@@ -542,7 +542,10 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDto.setProductType(loanModel.getProductType());
-            loanListDto.setExtraLoanRateModels(extraLoanRateMapper.findByLoanId(loanModel.getId()));
+            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
+            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+                loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
+            }
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -647,6 +650,15 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setMessage(MessageFormat.format("放款失败: {0}", "标的投资金额与募集金额不符"));
         }
         return dto;
+    }
+
+    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
     }
 
     @Override
