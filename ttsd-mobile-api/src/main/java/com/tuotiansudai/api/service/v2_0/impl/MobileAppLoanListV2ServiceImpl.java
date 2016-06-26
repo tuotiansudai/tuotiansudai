@@ -9,14 +9,13 @@ import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -37,25 +36,23 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
 
-        if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
-            loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true);
-            if (CollectionUtils.isEmpty(loanModels)) {
-                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true);
-                if (CollectionUtils.isNotEmpty(completeLoanModels)) {
-                    loanModels.add(completeLoanModels.get(0));
-                }
-            }
-        }else{
-            investMapper.findCountInvestByActivityTypeSuccessByLoginName(loginName, ActivityType.NEWBIE);
+        if ((loginName == null || loginName.equals("")) &&
+                (investMapper.findCountNormalAndNewBieSuccessByInvestTime(loginName, DateTime.parse("2016-06-14").toDate()) == 0
+                        && investMapper.findCountInvestProductTypeSuccessByLoginName(loginName,ProductType.EXPERIENCE) == 0)) {
+            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true,ProductType.EXPERIENCE));
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false);
+        if(investMapper.findCountNormalAndNewBieSuccessByInvestTime(loginName,null) == 0){
+            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true,null));
+        }
+
+        List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false,null);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }
 
         if (CollectionUtils.isEmpty(loanModels)) {
-            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false);
+            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false,null);
             if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                 loanModels.add(completeLoanModels.get(0));
             }

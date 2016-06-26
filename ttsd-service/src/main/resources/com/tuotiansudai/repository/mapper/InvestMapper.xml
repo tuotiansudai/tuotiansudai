@@ -729,10 +729,19 @@
                 )
     </select>
 
-    <select id="findCountInvestByActivityTypeSuccessByLoginName" parameterType="map" resultType="int">
+    <select id="findCountInvestProductTypeSuccessByLoginName" parameterType="map" resultType="int">
         select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
-        and l.activity_type = #{activityType}
-        and invest.status = 'SUCCESS'
+        and l.product_type = #{productType}
+        and i.status = 'SUCCESS'
+    </select>
+
+    <select id="findCountNormalAndNewBieSuccessByInvestTime" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
+        and l.product_type != 'EXPERIENCE'
+        <if test="investTime != null">
+            and <![CDATA[ i.invest_time < #{investTime} ]]>
+        </if>
+        and i.status = 'SUCCESS'
     </select>
 
 </mapper>
