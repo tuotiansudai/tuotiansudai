@@ -32,4 +32,11 @@
         select * from extra_loan_rate where loan_id = #{loanId} order by extra_rate_rule_id
     </select>
 
+    <select id="findMaxRateByLoanId" parameterType="map" resultType="double">
+        select IFNULL(max(rate),0) from extra_loan_rate where loan_id = #{loanId}
+    </select>
+
+    <select id="findByLoanIdOrderByRate" parameterType="map" resultMap="extraLoanRateResultMap">
+        select * from extra_loan_rate where loan_id = #{loanId} order by rate
+    </select>
 </mapper>

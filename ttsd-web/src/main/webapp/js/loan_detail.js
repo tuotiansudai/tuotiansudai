@@ -617,15 +617,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
             },
             getRelativeRate: function(arr, num) {
-                var result = null;
-                _.each(__extraRate, function(value) {
-                    if (value.maxInvestAmount === 0 && num > value.minInvestAmount) {
-                        result = value.rate;
-                    } else if (value.maxInvestAmount >= num && num > value.minInvestAmount) {
-                        result = value.rate;
+                var index =  _.findLastIndex(__extraRate, function(value) {
+                    if (num > value.minInvestAmount && (value.maxInvestAmount >= num || value.maxInvestAmount === 0)) {
+                        return true;
                     }
                 });
-                return result;
+                return index !== -1 ? arr[index].rate : '';
             },
             replace: function(str) {
                 return str.replace(/,/g, '');
@@ -652,33 +649,25 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         var removePopup = _.partial(_.compose(utils.removeElement, $), '#extra-rate-popup');
 
         $extraRate.find('.fa').on({
-            mouseover: function(event) {
-                showPopup({
-                    __extraRate: __extraRate
-                });
-            },
+            mouseover: _.partial(showPopup, {__extraRate: __extraRate}),
             mouseout: function() {
                 removePopup();
             }
         });
 
-
         var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
         var changeHTML = function(rate) {
             $('.chart-box').find('[data-extra-rate]').html(rate);
         };
-        var textFn = function(rate) {
+        var addSign = function(rate) {
             if (!rate) {
                 return ''
             }
             return '+' + rate;
-        }
-        $('#investForm').find('.text-input-amount').on('change', function() {
-            var _this = this;
-            _.compose(changeHTML, textFn, getRelativeRate, parseInt, utils.replace, function() {
-                return $(_this).val()
-            })();
-        });
+        };
 
+        $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function() {
+                return $(this).val()
+            }));
     })();
 });

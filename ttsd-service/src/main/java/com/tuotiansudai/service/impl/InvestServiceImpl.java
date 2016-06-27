@@ -87,6 +87,9 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         checkInvestAmount(investDto);
@@ -181,7 +184,9 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        return expectedInterest - expectedFee;
+        long extraRateInterest = getExtraRate(loanId,amount,loanModel.getDuration());
+        long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return (expectedInterest  - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -394,5 +399,22 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void markNoPasswordRemind(String loginName) {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
+    }
+
+    private long getExtraRate(long loanId,long amount,int duration){
+        double rate = 0;
+        List<ExtraLoanRateModel> extraLoanRateModelList = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList){
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && extraLoanRateModel.getMaxInvestAmount() == 0){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && amount < extraLoanRateModel.getMaxInvestAmount()){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+        }
+
+        return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 }
