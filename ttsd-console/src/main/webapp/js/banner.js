@@ -132,7 +132,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                             operate = 'edit';
                         }
                         else{
-                            operate = 'create';
+                            operate = 'reuse';
                         }
 
                     } else {

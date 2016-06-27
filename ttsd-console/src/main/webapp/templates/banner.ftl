@@ -7,8 +7,10 @@
     <form action="" method="post" class="form-horizontal form-list banner-form">
         <div class="form-group">
             <label class="col-sm-2 control-label">名称:</label>
-            <input type="hidden" class="jq-id" name="id" value="${(banner.id?string('0'))!}">
-            <input type="hidden" class="jq_operator" value="${operator!}">
+            <#if banner??>
+                <input type="hidden" class="jq-id" name="id" value="${(banner.id?string('0'))!}">
+                <input type="hidden" class="jq_operator" value="${operator!}">
+            </#if>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="name" placeholder="" value="<#if banner??>${banner.name!}</#if>" datatype="*" errormsg="名称不能为空">
             </div>
