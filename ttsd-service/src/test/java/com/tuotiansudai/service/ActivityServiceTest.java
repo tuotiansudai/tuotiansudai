@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
@@ -127,7 +128,7 @@ public class ActivityServiceTest {
         activityModel.setAppPictureUrl("testAppPictureUrl");
         activityModel.setActivatedTime(activatedTime);
         activityModel.setExpiredTime(DateTime.parse("2016-07-30T01:20").toDate());
-        activityModel.setSource(Source.WEB);
+        activityModel.setSource(Lists.newArrayList(Source.WEB));
         activityModel.setStatus(ActivityStatus.OPERATING);
         activityModel.setCreatedBy(userModel.getLoginName());
         activityModel.setCreatedTime(DateTime.parse("2016-04-30T01:20").toDate());

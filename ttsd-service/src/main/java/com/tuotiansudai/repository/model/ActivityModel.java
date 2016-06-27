@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ActivityModel implements Serializable {
     private long id;
@@ -13,7 +14,7 @@ public class ActivityModel implements Serializable {
     private String appPictureUrl;
     private Date activatedTime;
     private Date expiredTime;
-    private Source source;
+    private List<Source> source;
     private ActivityStatus status;
     private String createdBy;
     private Date createdTime;
@@ -93,11 +94,11 @@ public class ActivityModel implements Serializable {
         this.expiredTime = expiredTime;
     }
 
-    public Source getSource() {
+    public List<Source> getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(List<Source> source) {
         this.source = source;
     }
 
