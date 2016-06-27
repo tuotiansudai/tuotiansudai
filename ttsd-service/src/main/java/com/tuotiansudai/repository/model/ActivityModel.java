@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.ActivityDto;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,20 @@ public class ActivityModel implements Serializable {
     private String updatedBy;
     private Date updatedTime;
     private String activatedBy;
+    public ActivityModel(){
+
+    }
+    public ActivityModel(ActivityDto activityDto){
+        this.id = activityDto.getId();
+        this.title = activityDto.getTitle();
+        this.webActivityUrl = activityDto.getWebActivityUrl();
+        this.appActivityUrl = activityDto.getAppActivityUrl();
+        this.description = activityDto.getDescription();
+        this.webPictureUrl = activityDto.getWebPictureUrl();
+        this.appPictureUrl = activityDto.getAppPictureUrl();
+        this.expiredTime = activityDto.getExpiredTime();
+        this.source = activityDto.getSource();
+    }
 
     public long getId() {
         return id;

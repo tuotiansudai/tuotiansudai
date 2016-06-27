@@ -3,6 +3,7 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class ActivityDto {
     private String webPictureUrl;
     private String appPictureUrl;
     private Date activatedTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date expiredTime;
     private List<Source> source;
     private ActivityStatus status;

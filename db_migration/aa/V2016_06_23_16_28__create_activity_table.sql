@@ -18,7 +18,7 @@ CREATE TABLE `activity` (
   COMMENT '活动发布时间',
   `expired_time`     DATETIME        NOT NULL
   COMMENT '活动结束时间',
-  `source`           VARCHAR(10)     NOT NULL
+  `source`           VARCHAR(50)     NOT NULL
   COMMENT '活动来源渠道',
   `status`           VARCHAR(20)     NOT NULL
   COMMENT '活动状态',
