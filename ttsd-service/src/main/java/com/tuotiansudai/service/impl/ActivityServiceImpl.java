@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,16 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     InvestMapper investMapper;
 
-    public List<ActivityDto> getAllOperatingActivities(String loginName) {
+    public List<ActivityDto> getAllOperatingActivities(String loginName, Source source) {
         final List<ActivityDto> activityDtos = new ArrayList<>();
-        List<ActivityModel> activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, null);
+
+        List<ActivityModel> activityModels;
+        if (Source.MOBILE == source) {
+            activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.IOS);
+            activityModels.addAll(activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.ANDROID));
+        } else {
+            activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, source);
+        }
 
         Collections.sort(activityModels, new Comparator<ActivityModel>() {
             @Override

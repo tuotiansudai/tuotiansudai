@@ -168,7 +168,7 @@ public class ActivityServiceTest {
     public void testGetAllOperatingActivities() throws Exception {
         prepareData();
 
-        List<ActivityDto> activityDtoList = activityService.getAllOperatingActivities("testUser");
+        List<ActivityDto> activityDtoList = activityService.getAllOperatingActivities("testUser", Source.WEB);
         assertEquals(7, activityDtoList.size());
         assertEquals("normal1", activityDtoList.get(0).getTitle());
         assertEquals("新手1", activityDtoList.get(1).getTitle());
@@ -178,7 +178,7 @@ public class ActivityServiceTest {
         assertEquals("新手3", activityDtoList.get(5).getTitle());
         assertEquals("normal4", activityDtoList.get(6).getTitle());
 
-        activityDtoList = activityService.getAllOperatingActivities(null);
+        activityDtoList = activityService.getAllOperatingActivities(null, Source.WEB);
         assertEquals(7, activityDtoList.size());
         assertEquals("新手1", activityDtoList.get(0).getTitle());
         assertEquals("新手2", activityDtoList.get(1).getTitle());

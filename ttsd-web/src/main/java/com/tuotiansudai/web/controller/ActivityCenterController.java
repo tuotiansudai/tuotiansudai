@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -22,6 +23,6 @@ public class ActivityCenterController {
     @ResponseBody
     public List<ActivityDto> getAllOperatingActivities() {
         String LoginName = LoginUserInfo.getLoginName();
-        return activityService.getAllOperatingActivities(LoginName);
+        return activityService.getAllOperatingActivities(LoginName, Source.WEB);
     }
 }
