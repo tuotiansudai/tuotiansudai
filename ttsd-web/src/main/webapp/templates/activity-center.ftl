@@ -10,14 +10,13 @@
         <div class="activity-box">
             <div class="activity-img">
                 <div class="img-inner">
-                <#--<img src="${staticServer}/images/sign/activityCenter/banner-zhou.jpg" alt="拓天速贷平台上线一周年">-->
-                     <img src="${activityItem.webActivityUrl}" alt="${activityItem.description}">
+                     <img src="${activityItem.webPictureUrl}" alt="${activityItem.description}">
                 </div>
             </div>
             <i class="icon-going"><span class="hide">进行中</span></i>
             <span class="activity-title">${activityItem.description}</span>
             <span class="button-pos">
-                <button class="btn">查看详情</button>
+                <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                 <i class="fa fa-angle-right hide"></i>
             </span>
         </div>
