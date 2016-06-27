@@ -10,7 +10,7 @@
         <div class="activity-box">
             <div class="activity-img">
                 <div class="img-inner">
-                     <img src="${activityItem.webActivityUrl}" alt="${activityItem.description}">
+                     <img src="${activityItem.webPictureUrl}" alt="${activityItem.description}">
                 </div>
             </div>
             <i class="icon-going"><span class="hide">进行中</span></i>
