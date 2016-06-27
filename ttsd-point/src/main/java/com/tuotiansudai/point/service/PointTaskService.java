@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface PointTaskService {
 
-    void completeTask(PointTask pointTask, String loginName);
+    void completeNewbieTask(PointTask pointTask, String loginName);
+
+    void completeAdvancedTask(PointTask pointTask, String loginName);
 
     List<PointTaskDto> displayPointTask(int index,int pageSize,String loginName);
-
-    void completeNewTask(PointTask pointTask, InvestModel investModel);
 
 }

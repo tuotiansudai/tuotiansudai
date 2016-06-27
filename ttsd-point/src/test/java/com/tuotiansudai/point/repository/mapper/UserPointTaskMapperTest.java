@@ -58,14 +58,4 @@ public class UserPointTaskMapperTest {
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
-
-    @Test
-    public void shouldFindByLoginNameAndIdAndTaskLevelIsOk(){
-        UserModel fakeUserModel = createFakeUserModel();
-        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination(0, 10);
-        new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModels.get(0).getId(),1000,0);
-        userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModels.get(0).getId(),1000,0));
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(fakeUserModel.getLoginName(),pointTaskModels.get(0).getId(),0);
-        assertTrue(count == 1);
-    }
 }

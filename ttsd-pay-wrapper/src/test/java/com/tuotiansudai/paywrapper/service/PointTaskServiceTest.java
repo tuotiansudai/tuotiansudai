@@ -1,15 +1,17 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
+import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,22 +33,22 @@ import static org.junit.Assert.assertTrue;
 public class PointTaskServiceTest {
 
     @Autowired
-    private PointTaskService pointTaskService;
-
-    @Autowired
     private IdGenerator idGenerator;
-
-    @Autowired
-    private UserPointTaskMapper userPointTaskMapper;
-
-    @Autowired
-    private PointTaskMapper pointTaskMapper;
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private InvestService investService;
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private PointTaskService pointTaskService;
+
+    @Autowired
+    private UserPointTaskMapper userPointTaskMapper;
+
+    @Autowired
+    private PointBillMapper pointBillMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -51,293 +56,235 @@ public class PointTaskServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf0IsOk(){
-        long loanId = this.idGenerator.generate();
+    public void shouldCompletedEachSumInvestTask() {
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
-        assertTrue(count == 0);
+        this.createFakeUser(loginName, null);
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
+        this.createFakeInvest(loginName, fakeLoan.getId(), 100000000);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
+
+        long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
+        assertThat(maxTaskLevel, is(6L));
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        assertThat(accountModel.getPoint(), is(168000L));
+
+        List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
+        assertThat(pointBillModels.size(), is(6));
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
+
+        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(1).getPoint(), is(2000L));
+
+        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(2).getPoint(), is(5000L));
+
+        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(3).getPoint(), is(10000L));
+
+        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(4).getPoint(), is(50000L));
+
+        assertThat(pointBillModels.get(5).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(5).getPoint(), is(100000L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf1IsOk(){
-        long loanId = this.idGenerator.generate();
+    public void shouldCompletedEachSingleInvestTask() {
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,500000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 1);
+        this.createFakeUser(loginName, null);
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
+        this.createFakeInvest(loginName, fakeLoan.getId(), 50000000L);
+
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, loginName);
+
+        this.createFakeInvest(loginName, fakeLoan.getId(), 50000000L);
+
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, loginName);
+
+        long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_SINGLE_INVEST);
+        assertThat(maxTaskLevel, is(5L));
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        assertThat(accountModel.getPoint(), is(87000L));
+
+        List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
+        assertThat(pointBillModels.size(), is(5));
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(2000L));
+
+        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(1).getPoint(), is(5000L));
+
+        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(2).getPoint(), is(10000L));
+
+        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(3).getPoint(), is(20000L));
+
+        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(4).getPoint(), is(50000L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf2IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 2);
+    public void shouldCompletedEachRecommendTask() throws Exception {
+        UserModel referrer = this.createFakeUser("referrer", null);
+        UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(200L));
+
+        UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie2.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(2L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(400L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf3IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,5000000);
-        investService.investSuccess(investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 3);
+    public void shouldCompletedFirstReferrerInvestTask() throws Exception {
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
+        UserModel referrer = this.createFakeUser("referrer", null);
+        UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
+        this.createFakeInvest(newbie1.getLoginName(), fakeLoan.getId(), 1L);
+
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, newbie1.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.FIRST_REFERRER_INVEST), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(5000L));
+
+        UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
+        this.createFakeInvest(newbie2.getLoginName(), fakeLoan.getId(), 2L);
+
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, newbie2.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.FIRST_REFERRER_INVEST), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(5000L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf4IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,10000000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 4);
+    public void shouldCompletedEachReferrerInvestTask() throws Exception {
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
+        UserModel referrer = this.createFakeUser("referrer", null);
+        UserModel newbie1 = this.createFakeUser("newbie1", referrer.getLoginName());
+        this.createFakeInvest(newbie1.getLoginName(), fakeLoan.getId(), 100000L);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie1.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(1000L));
+
+        UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
+        this.createFakeInvest(newbie2.getLoginName(), fakeLoan.getId(), 200000L);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie2.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
+
+        UserModel newbie3 = this.createFakeUser("newbie3", referrer.getLoginName());
+        this.createFakeInvest(newbie3.getLoginName(), fakeLoan.getId(), 99999L);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, newbie3.getLoginName());
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_REFERRER_INVEST), is(2L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(2000L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf5IsOk(){
-        long loanId = this.idGenerator.generate();
+    public void shouldCompletedFirstInvest180InvestTask() {
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,50000000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 5);
+        this.createFakeUser(loginName, null);
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._180);
+        this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
+
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, loginName);
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_180), is(1L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+
+        this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
+
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_180), is(1L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+
+        List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
+        assertThat(pointBillModels.size(), is(1));
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
     }
 
     @Test
-    public void shouldGetEachSumInvestTaskLevelOf6IsOk(){
-        long loanId = this.idGenerator.generate();
+    public void shouldCompletedFirstInvest3600InvestTask() {
         String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100000000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 6);
-    }
+        this.createFakeUser(loginName, null);
+        LoanModel fakeLoan = this.createFakeLoan(ProductType._360);
+        this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
 
-    @Test
-    public void shouldGetEachSumInvestTaskLevelOf7IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,250000000);
-        pointTaskService.completeNewTask(PointTask.EACH_SUM_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_SUM_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 7);
-    }
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, loginName);
 
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf0IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,10000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 0);
-    }
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_360), is(1L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
 
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf1IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,1000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 1);
-    }
+        this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
 
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf2IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,5000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 2);
-    }
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_360), is(1L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
 
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf3IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,10000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 3);
-    }
-
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf4IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,20000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 4);
-    }
-
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf5IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,50000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 5);
-    }
-
-    @Test
-    public void shouldGetFirstSingleInvestTaskLevelOf6IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,100000000);
-        pointTaskService.completeNewTask(PointTask.FIRST_SINGLE_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_SINGLE_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName,pointTaskModel.getId());
-        assertTrue(count == 6);
-    }
-
-    @Test
-    public void shouldEachReferrerInvestIsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        String referrerName = "referrer";
-        this.createUserByUserId(referrerName);
-        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setLevel(1);
-        referrerRelationModel.setReferrerLoginName(referrerName);
-        InvestModel investModel = createData(loginName,loanId,250000);
-        referrerRelationModel.setLoginName(investModel.getLoginName());
-        referrerRelationMapper.create(referrerRelationModel);
-        pointTaskService.completeNewTask(PointTask.EACH_REFERRER_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.EACH_REFERRER_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(referrerName,pointTaskModel.getId());
-        assertTrue(count == 2);
-    }
-
-    @Test
-    public void shouldFirstReferrerInvestIsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        String referrerName = "referrer";
-        this.createUserByUserId(referrerName);
-        this.createUserByUserId(loginName);
-        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setLevel(1);
-        referrerRelationModel.setReferrerLoginName(referrerName);
-        AccountModel investorAccountModel = createAccountByUserId(loginName);
-        accountMapper.create(investorAccountModel);
-        InvestModel investModel = new InvestModel();
-        investModel.setId(idGenerator.generate());
-        investModel.setLoanId(loanId);
-        investModel.setLoginName(loginName);
-        investModel.setAmount(11);
-        investModel.setStatus(InvestStatus.SUCCESS);
-        investModel.setTransferStatus(TransferStatus.SUCCESS);
-        investModel.setSource(Source.IOS);
-        referrerRelationModel.setLoginName(investModel.getLoginName());
-        referrerRelationMapper.create(referrerRelationModel);
-        pointTaskService.completeNewTask(PointTask.FIRST_REFERRER_INVEST,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_REFERRER_INVEST);
-        long count = userPointTaskMapper.findMaxTaskLevelByLoginName(referrerName,pointTaskModel.getId());
-        assertTrue(count == 1);
-    }
-
-    @Test
-    public void shouldFirstInvest180IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,250000);
-        pointTaskService.completeNewTask(PointTask.FIRST_INVEST_180,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_INVEST_180);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
-        assertTrue(count == 1);
-    }
-
-    @Test
-    public void shouldFirstInvest360IsOk(){
-        long loanId = this.idGenerator.generate();
-        String loginName = "investor";
-        InvestModel investModel = createData(loginName,loanId,250000);
-        pointTaskService.completeNewTask(PointTask.FIRST_INVEST_360,investModel);
-        PointTaskModel pointTaskModel = pointTaskMapper.findByName(PointTask.FIRST_INVEST_360);
-        long count = userPointTaskMapper.findByLoginNameAndIdAndTaskLevel(loginName,pointTaskModel.getId(),0);
-        assertTrue(count == 1);
+        List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
+        assertThat(pointBillModels.size(), is(1));
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
     }
 
 
-    public InvestModel createData(String loginName,long loanId,long amount){
-        this.createUserByUserId(loginName);
-        AccountModel investorAccountModel = createAccountByUserId(loginName);
-        accountMapper.create(investorAccountModel);
-        LoanModel loanModel = new LoanModel(getLoanDto(loanId));
-        loanModel.setAgentLoginName(loginName);
-        loanMapper.create(loanModel);
+    private InvestModel createFakeInvest(String loginName, long loanId, long amount) {
         InvestModel investModel = new InvestModel();
         investModel.setId(idGenerator.generate());
         investModel.setLoanId(loanId);
         investModel.setLoginName(loginName);
         investModel.setAmount(amount);
         investModel.setStatus(InvestStatus.SUCCESS);
-        investModel.setTransferStatus(TransferStatus.SUCCESS);
-        investModel.setSource(Source.IOS);
+        investModel.setTransferStatus(TransferStatus.TRANSFERABLE);
+        investModel.setSource(Source.WEB);
         investMapper.create(investModel);
         return investModel;
     }
 
-    private void createUserByUserId(String userId) {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName(userId);
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
+    private UserModel createFakeUser(String loginName, String referrer) {
+        UserModel fakeUser = new UserModel();
+        fakeUser.setLoginName(loginName);
+        fakeUser.setPassword("123abc");
+        fakeUser.setEmail("12345@abc.com");
+        fakeUser.setMobile(RandomStringUtils.randomNumeric(11));
+        fakeUser.setRegisterTime(new Date());
+        if (!Strings.isNullOrEmpty(referrer)) {
+            fakeUser.setReferrer(referrer);
+        }
+        fakeUser.setStatus(UserStatus.ACTIVE);
+        fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(fakeUser);
+        AccountModel accountModel = new AccountModel(fakeUser.getLoginName(), fakeUser.getLoginName(), "120101198810012010", "", "", new Date());
+        accountMapper.create(accountModel);
+        return fakeUser;
     }
 
-    private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
-        accountModel.setAutoInvest(true);
-        accountModel.setBalance(10000);
-        accountModel.setFreeze(10000);
-        return accountModel;
-    }
-
-    public LoanDto getLoanDto(long loanId){
+    private LoanModel createFakeLoan(ProductType productType) {
+        UserModel loaner = this.createFakeUser("loaner", null);
         LoanDto loanDto = new LoanDto();
+        loanDto.setId(idGenerator.generate());
         loanDto.setLoanerLoginName("loaner");
         loanDto.setLoanerUserName("借款人");
         loanDto.setLoanerIdentityNumber("id");
         loanDto.setAgentLoginName("loaner");
         loanDto.setBasicRate("16.00");
-        loanDto.setId(loanId);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
@@ -356,8 +303,11 @@ public class PointTaskServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
-        loanDto.setProductType(ProductType._30);
-        return loanDto;
+        loanDto.setProductType(productType);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setAgentLoginName(loaner.getLoginName());
+        loanMapper.create(loanModel);
+        return loanModel;
     }
 
 }

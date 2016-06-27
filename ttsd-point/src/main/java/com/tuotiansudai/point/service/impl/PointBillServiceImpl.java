@@ -46,9 +46,6 @@ public class PointBillServiceImpl implements PointBillService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired

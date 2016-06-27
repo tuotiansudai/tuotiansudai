@@ -49,11 +49,13 @@
     </select>
 
     <select id="findMaxTaskLevelByLoginName" resultType="long" parameterType="map">
-        select IFNULL(max(task_level),0) as task_level from user_point_task where login_name = #{loginName} and point_task_id = #{pointTaskId}
+        select IFNULL(max(task_level),0) as task_level
+        from user_point_task
+        join point_task on user_point_task.point_task_id = point_task.id
+        where login_name = #{loginName}
+        and point_task.name = #{pointTask}
     </select>
 
-    <select id="findByLoginNameAndIdAndTaskLevel" resultType="long" parameterType="map">
-        select count(1) from user_point_task where point_task_id = #{pointTaskId} and login_name = #{loginName} and task_level = #{taskLevel}
-    </select>
+
 
 </mapper>
