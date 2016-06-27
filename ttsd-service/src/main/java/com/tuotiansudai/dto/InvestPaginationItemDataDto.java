@@ -363,13 +363,13 @@ public class InvestPaginationItemDataDto implements Serializable {
         if (expectedFee!=null){
             return AmountConverter.convertCentToString(expectedFee);
         }
-        return "0.00";
+        return "-";
     }
 
     public String getActualFee() {
         if (actualFee!=null){
            return AmountConverter.convertCentToString(actualFee);
         }
-        return "0.00";
+        return "-";
     }
 }
