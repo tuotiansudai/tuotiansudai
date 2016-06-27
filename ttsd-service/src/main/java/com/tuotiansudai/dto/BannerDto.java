@@ -33,6 +33,8 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     private boolean active;
 
+    private String activatedBy;
+
     private Date activatedTime;
 
     private Date deactivatedTime;
@@ -117,6 +119,14 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getActivatedBy() {
+        return activatedBy;
+    }
+
+    public void setActivatedBy(String activatedBy) {
+        this.activatedBy = activatedBy;
     }
 
     public Date getActivatedTime() {

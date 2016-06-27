@@ -44,8 +44,6 @@
         `authenticated` = #{authenticated},
         `order` = #{order},
         `active` = #{active},
-        `created_by` = #{createdBy},
-        `created_time` = #{createdTime},
         `activated_by` = #{activatedBy},
         `activated_time` = #{activatedTime},
         `deactivated_by` = #{deactivatedBy},

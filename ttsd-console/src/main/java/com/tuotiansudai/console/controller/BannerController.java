@@ -38,7 +38,7 @@ public class BannerController {
     @RequestMapping(value = "/banner/del/{id}", method = RequestMethod.GET)
     public String delBanner(@PathVariable Long id) {
         BannerModel bannerModel = this.bannerService.findById(id);
-        bannerModel.setDeleted(false);
+        bannerModel.setDeleted(true);
         bannerService.updateBanner(bannerModel);
         return "redirect:/banner-manage/list";
     }
@@ -53,12 +53,32 @@ public class BannerController {
         return "redirect:/banner-manage/list";
     }
 
-    @RequestMapping(value = "/banner/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView editBanner(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("/banner-edit");
+    @RequestMapping(value = "/banner/{operator}/{id}", method = RequestMethod.GET)
+    public ModelAndView editBanner(@PathVariable Long id, @PathVariable String operator) {
+        ModelAndView modelAndView = new ModelAndView("/banner");
         BannerModel bannerModel = this.bannerService.findById(id);
-        modelAndView.addObject("banner",bannerModel);
+        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
+        modelAndView.addObject("banner", bannerModel);
+        modelAndView.addObject("operator", operator);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String bannerEdit(@ModelAttribute BannerDto bannerDto) {
+        BannerModel bannerModel = new BannerModel(bannerDto);
+        bannerModel.setActive(true);
+        bannerModel.setActivatedBy(LoginUserInfo.getLoginName());
+        bannerModel.setActivatedTime(new Date());
+        bannerModel.setDeleted(false);
+        bannerService.updateBanner(bannerModel);
+        return "redirect:/banner-manage/list";
+    }
+
+    @RequestMapping(value = "/reuse", method = RequestMethod.POST)
+    public String bannerReuse(@ModelAttribute BannerDto bannerDto) {
+        String loginName = LoginUserInfo.getLoginName();
+        bannerService.create(bannerDto, loginName);
+        return "redirect:/banner-manage/list";
     }
 
     @RequestMapping(value = "/list")

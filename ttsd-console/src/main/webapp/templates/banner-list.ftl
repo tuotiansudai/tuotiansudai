@@ -6,6 +6,7 @@
 <div class="col-md-10">
 
     <div class="table-responsive">
+       <a href="/banner-manage/create"> 添加banner</a>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
@@ -28,8 +29,8 @@
                         <tr>
                             <td>${banner.order!}</td>
                             <td>${banner.name!}</td>
-                            <td><img src="${banner.webImageUrl!}"/></td>
-                            <td><img src="${banner.appImageUrl!}"/></td>
+                            <td><img src="http://localhost:9080/${banner.webImageUrl!}" width="100" height="30"/></td>
+                            <td><img src="http://localhost:9080/${banner.appImageUrl!}" width="100" height="30"/></td>
                             <td><a href="${banner.url!}" target="_blank">${banner.url!}</td>
                             <td>${banner.authenticated?then('登录后可见','非登录可见')}</td>
                             <td>

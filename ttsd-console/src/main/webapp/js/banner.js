@@ -126,8 +126,20 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     $self.attr('disabled', 'disabled');
+                    var operate;
+                    if($('.jq-id').val() != null && $('.jq-id').val() != '') {
+                        if($('.jq_operator').val() == 'edit'){
+                            operate = 'edit';
+                        }
+                        else{
+                            operate = 'create';
+                        }
+
+                    } else {
+                        operate = 'create';
+                    }
                     $bannerForm[0].target='';
-                    $bannerForm[0].action = "/banner-manage/create";
+                    $bannerForm[0].action = "/banner-manage/"+operate;
                     $bannerForm[0].submit();
                 }
 
