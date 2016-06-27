@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -43,7 +44,7 @@ public class ActivityMapperTest {
         return userModel;
     }
 
-    private ActivityModel createActivityModel(long id, UserModel userModel, Date activatedTime, Source source, ActivityStatus activityStatus) {
+    private ActivityModel createActivityModel(long id, UserModel userModel, Date activatedTime, List<Source> source, ActivityStatus activityStatus) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setId(id);
         activityModel.setTitle("testTitle");
@@ -71,11 +72,11 @@ public class ActivityMapperTest {
         UserModel userModel = createUserModel("testUser");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(1L, userModel, DateTime.parse("2016-06-01T01:20").toDate(), Source.WEB, ActivityStatus.TO_APPROVE);
+        ActivityModel activityModel = createActivityModel(1L, userModel, DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(2L, userModel, DateTime.parse("2016-06-02T01:20").toDate(), Source.WEB, ActivityStatus.TO_APPROVE);
+        activityModel = createActivityModel(2L, userModel, DateTime.parse("2016-06-02T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(3L, userModel, DateTime.parse("2016-06-03T01:20").toDate(), Source.ANDROID, ActivityStatus.OPERATING);
+        activityModel = createActivityModel(3L, userModel, DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
         activityModels.add(activityModel);
 
         return activityModels;
@@ -120,7 +121,7 @@ public class ActivityMapperTest {
         updatedActivityModel.setAppPictureUrl("AppPictureUrl");
         updatedActivityModel.setActivatedTime(DateTime.parse("2015-07-30T01:20").toDate());
         updatedActivityModel.setExpiredTime(DateTime.parse("2015-07-30T01:20").toDate());
-        updatedActivityModel.setSource(Source.IOS);
+        updatedActivityModel.setSource(Lists.newArrayList(Source.IOS));
         updatedActivityModel.setStatus(ActivityStatus.REJECTION);
         updatedActivityModel.setCreatedBy("updatedUser");
         updatedActivityModel.setCreatedTime(DateTime.parse("2015-04-30T01:20").toDate());

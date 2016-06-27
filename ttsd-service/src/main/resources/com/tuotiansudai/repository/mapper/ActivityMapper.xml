@@ -16,7 +16,8 @@
         <result column="app_picture_url" property="appPictureUrl"/>
         <result column="activated_time" property="activatedTime"/>
         <result column="expired_time" property="expiredTime"/>
-        <result column="source" property="source"/>
+        <result column="source" property="source"
+                typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
         <result column="activity_status" property="activityStatus"/>
         <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
@@ -31,7 +32,7 @@
         expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by)
         VALUES
         (#{id}, #{title}, #{webActivityUrl}, #{appActivityUrl}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
-        #{expiredTime}, #{source}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{activatedBy})
+        #{expiredTime}, #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{activatedBy})
     </insert>
 
     <update id="update" parameterType="ActivityModel">
@@ -45,7 +46,7 @@
         app_picture_url = #{appPictureUrl},
         activated_time = #{activatedTime},
         expired_time = #{expiredTime},
-        source = #{source},
+        source = #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},
         status = #{status},
         created_by = #{createdBy},
         created_time = #{createdTime},
@@ -73,7 +74,7 @@
                 AND status = #{activityStatus}
             </if>
             <if test="source != null">
-                AND source = #{source}
+                and source like CONCAT(CONCAT('%', #{source}), '%')
             </if>
         </where>
     </select>

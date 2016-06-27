@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
+import java.util.List;
 
 public class ActivityDto {
     private long id;
@@ -16,7 +17,7 @@ public class ActivityDto {
     private String appPictureUrl;
     private Date activatedTime;
     private Date expiredTime;
-    private Source source;
+    private List<Source> source;
     private ActivityStatus status;
     private String createdBy;
     private Date createdTime;
@@ -118,11 +119,11 @@ public class ActivityDto {
         this.expiredTime = expiredTime;
     }
 
-    public Source getSource() {
+    public List<Source> getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(List<Source> source) {
         this.source = source;
     }
 
