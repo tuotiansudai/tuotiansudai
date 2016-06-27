@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -64,5 +61,45 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return activityDtos;
+    }
+
+    @Override
+    public boolean createEditRecheckActivity(ActivityDto ActivityDto, ActivityStatus activityStatus, String loginName) {
+        ActivityModel activityModel = new ActivityModel(ActivityDto);
+        long activityId = activityModel.getId();
+        switch(activityStatus){
+            case TO_APPROVE:
+                activityModel.setCreatedBy(loginName);
+                activityModel.setCreatedTime(new Date());
+                activityModel.setUpdatedBy(loginName);
+                activityModel.setUpdatedTime(new Date());
+                activityModel.setStatus(ActivityStatus.TO_APPROVE);
+                activityMapper.create(activityModel);
+                return true;
+            case REJECTION:
+                ActivityModel activityModelRejection = activityMapper.findById(activityId);
+                if(activityModelRejection != null){
+                    activityModelRejection.setStatus(ActivityStatus.REJECTION);
+                    activityModelRejection.setUpdatedTime(new Date());
+                    activityModelRejection.setUpdatedBy(loginName);
+                    activityMapper.update(activityModelRejection);
+                }
+                return true;
+            case TO_APPROVED:
+                ActivityModel activityModelApproved = activityMapper.findById(activityId);
+                if(activityModelApproved != null){
+                    if(activityModelApproved.getActivatedTime() == null){
+                        activityModelApproved.setActivatedTime(new Date());
+                        activityModelApproved.setActivatedBy(loginName);
+                    }
+                    activityModelApproved.setUpdatedTime(new Date());
+                    activityModelApproved.setUpdatedBy(loginName);
+                    activityModelApproved.setStatus(ActivityStatus.TO_APPROVED);
+                    activityMapper.update(activityModelApproved);
+                }
+                return true;
+
+        }
+        return false;
     }
 }
