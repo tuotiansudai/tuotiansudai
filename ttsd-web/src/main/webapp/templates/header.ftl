@@ -11,6 +11,7 @@
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
             <li class="login-pop-app" id="iphone-app-pop">
+            <a href="/activity-center">活动中心</a>
                 <a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
                 <div id="iphone-app-img" class="img-app-pc-top"></div>
             </li>
