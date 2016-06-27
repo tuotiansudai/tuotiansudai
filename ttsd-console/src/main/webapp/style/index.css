@@ -593,3 +593,19 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.ladder-table{
+    width:180px;
+    position: relative;
+}
+.ladder-table .tip-table{
+    position: absolute;
+    top:0;
+    left:180px;
+    z-index:99;
+    display:none;
+    background:#fff;
+    margin-bottom:0;
+}
+.ladder-table:hover .tip-table{
+    display:block;
+}

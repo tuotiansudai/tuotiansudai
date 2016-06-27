@@ -11,7 +11,6 @@ import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,6 +90,9 @@ public class InvestController {
                 dataModel.add(itemDataDto.isAutoInvest() ? "是" : "否");
                 dataModel.add(itemDataDto.getAmount());
                 dataModel.add(itemDataDto.getStatus());
+                dataModel.add(itemDataDto.getRate());
+                dataModel.add(itemDataDto.getExpectedFee());
+                dataModel.add(itemDataDto.getActualFee());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());

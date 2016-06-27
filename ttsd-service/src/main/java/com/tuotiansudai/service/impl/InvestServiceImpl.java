@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -15,15 +14,11 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -85,6 +80,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -309,7 +307,8 @@ public class InvestServiceImpl implements InvestService {
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
+                InvestExtraRateModel extraRateModel = investExtraRateMapper.findByInvestId(view.getId());
+                InvestPaginationItemDataDto investPaginationItemDataDto =(extraRateModel == null)?new InvestPaginationItemDataDto(view):new InvestPaginationItemDataDto(view,extraRateModel);
                 investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
