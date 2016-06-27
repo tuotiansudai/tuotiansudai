@@ -13,6 +13,21 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     private String content;
     private boolean isAuthorized;
 
+    public BannerPictureResponseDataDto() {
+    }
+
+    public BannerPictureResponseDataDto(String pictureId, String title, String url, String sharedUrl, Integer seqNum, String picture, String noticeId, String content, boolean isAuthorized) {
+        this.pictureId = pictureId;
+        this.title = title;
+        this.url = url;
+        this.sharedUrl = sharedUrl;
+        this.seqNum = seqNum;
+        this.picture = picture;
+        this.noticeId = noticeId;
+        this.content = content;
+        this.isAuthorized = isAuthorized;
+    }
+
     public String getPictureId() {
         return pictureId;
     }

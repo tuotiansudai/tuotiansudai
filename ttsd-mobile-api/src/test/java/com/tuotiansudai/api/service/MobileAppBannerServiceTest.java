@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.v1_0.BannerResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -24,7 +26,7 @@ public class MobileAppBannerServiceTest {
 
     @Test
     public void shouldGetBanner() {
-        BaseResponseDto<BannerResponseDataDto> responseDto = mobileAppBannerService.generateBannerList();
+        BaseResponseDto<BannerResponseDataDto> responseDto = mobileAppBannerService.generateBannerList(any(BaseParam.class));
         BannerResponseDataDto data = responseDto.getData();
         assertTrue(CollectionUtils.isNotEmpty(data.getPictures()));
     }

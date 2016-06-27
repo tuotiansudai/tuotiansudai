@@ -33,4 +33,17 @@
         values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{title},#{content},#{sharedUrl},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
     </insert>
 
+    <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
+        select * from banner
+        <where>
+            <if test="authenticated == true">
+                and authenticated = #{authenticated}
+            </if>
+            <if test="source != null and source != ''">
+                and source = #{source}
+            </if>
+        </where>
+        order by banner.order
+    </select>
+
 </mapper>
