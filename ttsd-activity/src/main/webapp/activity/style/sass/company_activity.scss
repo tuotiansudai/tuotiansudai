@@ -226,14 +226,14 @@
       position: absolute;
       left: -1px;
       top: 0;
-      background: url("/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
+      background: url("/activity/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
       height: 520px;
       display: none;
     }
     .wide-screen-right {
       right: 0;
       left: auto;
-      background: url("/images/sign/actor/awards/award-right.jpg") left 0 no-repeat;
+      background: url("/activity/images/sign/actor/awards/award-right.jpg") left 0 no-repeat;
     }
     .wide-screen-inner {
       width: 1000px;
@@ -258,7 +258,7 @@
       .award-product-box {
         height: 380px;
         margin-top: 50px;
-        background: url("/images/sign/actor/awards/award-product.png") center top no-repeat;
+        background: url("/activity/images/sign/actor/awards/award-product.png") center top no-repeat;
       }
       .trophy-box {
         text-align: center;
@@ -314,7 +314,7 @@
   }
   .actor-award-img {
     height: 477px;
-    background: url("/images/sign/actor/awards/img-award.jpg") center top no-repeat;
+    background: url("/activity/images/sign/actor/awards/img-award.jpg") center top no-repeat;
     clear: both;
   }
 }
@@ -367,7 +367,7 @@
     top: 0;
     left: 0;
     display: none;
-    background: url("/images/sign/actor/birth/tip-bg.png") repeat;
+    background: url("/activity/images/sign/actor/birth/tip-bg.png") repeat;
     z-index: 88;
 
     .time-list {
@@ -441,7 +441,7 @@
       &.text-bg {
         font-size: 40px;
         color: #fff;
-        background: url('/images/sign/actor/birth/text-bg.png') center no-repeat;
+        background: url('/activity/images/sign/actor/birth/text-bg.png') center no-repeat;
       }
       &.text-font {
         font-size: 20px;
@@ -524,7 +524,7 @@
 
 /*rank-list pc page*/
 .rank-list-container {
-  background: url("/images/sign/actor/ranklist/container-bg.png") repeat center;
+  background: url("/activity/images/sign/actor/ranklist/container-bg.png") repeat center;
   min-height: 500px;
   .rank-phone-model {
     float:left;
@@ -541,7 +541,7 @@
       float:left;
       width:100%;
       height:1px;
-      background:url("/images/sign/actor/ranklist/line-border.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/line-border.png") no-repeat center;
     }
     .actor-info-text{
       float:left;
@@ -559,7 +559,7 @@
         color:#ffd633;
         line-height:50px;
         text-align:center;
-        background:url("/images/sign/actor/ranklist/intro-title.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/intro-title.png") no-repeat center;
       }
       p{
         float:left;
@@ -660,7 +660,7 @@
               margin-left:40px;
               position: relative;
               overflow: hidden;
-              background:url("/images/sign/actor/ranklist/btn-bg.png") no-repeat center;
+              background:url("/activity/images/sign/actor/ranklist/btn-bg.png") no-repeat center;
               &:hover::before {
                 -webkit-transition: left 1s;
                 -moz-transition: left 1s;
@@ -727,7 +727,7 @@
         width: 142px;
         height: 46px;
         position: relative;
-        background: url("/images/sign/actor/ranklist/cal-bg.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/cal-bg.png") no-repeat center;
         .cal-title{
           float:left;
           width:90px;
@@ -767,7 +767,7 @@
               top:15px;
               right:10px;
               cursor:pointer;
-              background:url("/images/sign/actor/ranklist/close-cal.png") no-repeat center;
+              background:url("/activity/images/sign/actor/ranklist/close-cal.png") no-repeat center;
             }
           }
           .td-content{
@@ -868,7 +868,7 @@
             margin:0 5px;
             cursor:pointer;
             padding-left:0;
-            background:url("/images/sign/actor/ranklist/share-icon.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/share-icon.png") no-repeat center;
             &.icon-weibo{
               background-position:0 0;
             }
@@ -1118,7 +1118,7 @@
             height: 550px;
             margin:0 0 40px 40px;
             position: relative;
-            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background: url("/activity/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
             .pointer-img{
               width: 130px;
               height: 190px;
@@ -1237,7 +1237,7 @@
       position:absolute;
       top:0;
       left:-200px;
-      background:url("/images/sign/actor/ranklist/bg-left.png") repeat center;
+      background:url("/activity/images/sign/actor/ranklist/bg-left.png") repeat center;
       background-size:100%;
     }
     .right-bg{
@@ -1246,7 +1246,7 @@
       position:absolute;
       top:0;
       right:-200px;
-      background:url("/images/sign/actor/ranklist/bg-right.png") repeat center;
+      background:url("/activity/images/sign/actor/ranklist/bg-right.png") repeat center;
       background-size:100%;
     }
   }
@@ -1256,7 +1256,7 @@
     left:0;
     width:100%;
     height:100%;
-    background:url("/images/sign/actor/ranklist/tip-bg.png") repeat;
+    background:url("/activity/images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index:88;
     display:none;
     .td-tip-big{
@@ -1267,7 +1267,7 @@
       left:50%;
       margin-top:-191px;
       margin-left:-202px;
-      background:url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1277,7 +1277,7 @@
         right:60px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1307,7 +1307,7 @@
           color:#fff;
           font-size:12px;
           text-align:center;
-          background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left:50%;
@@ -1323,7 +1323,7 @@
       left:50%;
       margin-top:-108px;
       margin-left:-150px;
-      background:url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1333,7 +1333,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1364,7 +1364,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1377,7 +1377,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             &.first-btn{
               margin:0 10px 0 60px;
@@ -1394,7 +1394,7 @@
       left:50%;
       margin-top:-82px;
       margin-left:-150px;
-      background:url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1404,7 +1404,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1435,7 +1435,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/big-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1449,7 +1449,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1533,7 +1533,7 @@
             font-size:14px;
             color:#b60000;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/btn-phone-bg.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/btn-phone-bg.png") no-repeat center;
             background-size:100%;
           }
         }
@@ -1745,7 +1745,7 @@
       float:left;
       width:100%;
       height:1px;
-      background:url("/images/sign/actor/ranklist/change-line.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/change-line.png") no-repeat center;
       background-size:100%;
       position: relative;
       span{
@@ -1831,7 +1831,7 @@
             width:270px;
             height:270px;
             position: relative;
-            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background: url("/activity/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
             background-size: 100%;
             left:50%;
             margin-left:-135px;
@@ -1979,7 +1979,7 @@
         margin:0 5px;
         cursor:pointer;
         padding-left:0;
-        background:url("/images/sign/actor/ranklist/share-icon.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/share-icon.png") no-repeat center;
         &.icon-weibo{
           background-position:0 0;
         }
@@ -1998,7 +1998,7 @@
     left:0;
     width:100%;
     height:100%;
-    background:url("/images/sign/actor/ranklist/tip-bg.png") repeat;
+    background:url("/activity/images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index:88;
     display:none;
     .td-tip-big{
@@ -2009,7 +2009,7 @@
       left:50%;
       margin-top:-191px;
       margin-left:-202px;
-      background:url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -2019,7 +2019,7 @@
         right:60px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -2049,7 +2049,7 @@
           color:#fff;
           font-size:12px;
           text-align:center;
-          background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left:50%;
@@ -2065,7 +2065,7 @@
       left:50%;
       margin-top:-108px;
       margin-left:-150px;
-      background:url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -2075,7 +2075,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -2106,7 +2106,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -2119,7 +2119,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             &.first-btn{
               margin:0 10px 0 60px;
@@ -2136,7 +2136,7 @@
       left:50%;
       margin-top:-82px;
       margin-left:-150px;
-      background:url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background:url("/activity/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -2146,7 +2146,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -2177,7 +2177,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/big-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -2191,7 +2191,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -2217,14 +2217,14 @@
       display:block;
     }
     .ios{
-      background: url("/images/sign/actor/download/download-ios.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-ios.png") no-repeat center;
       left:48%;
       top:53%;
       background-size:74%;
     }
 
     .android{
-      background: url("/images/sign/actor/download/download-android.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-android.png") no-repeat center;
       left:48%;
       top:68%;
       background-size:74%;
@@ -2232,7 +2232,7 @@
   }
   .download-one{
     height:410px;
-    background: url("/images/sign/actor/download/download-one.png") no-repeat ;
+    background: url("/activity/images/sign/actor/download/download-one.png") no-repeat ;
     background-position:70% 70%;
     .step-one{
       padding-top:112px;
@@ -2242,7 +2242,7 @@
   .download-two{
     height:568px;
     margin-top:-148px;
-    background: url("/images/sign/actor/download/download-two.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-two.png") no-repeat center;
     background-size:100%;
     .step-two{
       padding-top:192px;
@@ -2252,7 +2252,7 @@
   .download-three{
     height:400px;
     margin-top:-50px;
-    background: url("/images/sign/actor/download/download-three.png") no-repeat ;
+    background: url("/activity/images/sign/actor/download/download-three.png") no-repeat ;
     background-position:70% 70%;
     .step-three{
       padding-top:110px;
@@ -2262,7 +2262,7 @@
   .download-four{
     height:614px;
     margin-top:-60px;
-    background: url("/images/sign/actor/download/download-four.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-four.png") no-repeat center;
     background-size:100%;
     .step-four{
       padding-top:220px;
@@ -2272,7 +2272,7 @@
   .download-five{
     height:420px;
     margin-top:-50px;
-    background: url("/images/sign/actor/download/download-five.png") no-repeat ;
+    background: url("/activity/images/sign/actor/download/download-five.png") no-repeat ;
     background-position:70% 70%;
     .step-five{
       padding-top:100px;
@@ -2282,7 +2282,7 @@
   .download-six{
     height:484px;
     margin-bottom:-60px;
-    background: url("/images/sign/actor/download/download-six.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-six.png") no-repeat center;
     background-size:100%;
     .step-six{
       padding-top:94px;
@@ -2318,14 +2318,14 @@
       display:block;
     }
     .ios{
-      background: url("/images/sign/actor/download/download-phone-ios.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-phone-ios.png") no-repeat center;
       left:20%;
       top:47%;
       background-size:100%;
     }
 
     .android{
-      background: url("/images/sign/actor/download/download-phone-android.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-phone-android.png") no-repeat center;
       left:20%;
       top:64%;
       background-size:100%;
@@ -2371,7 +2371,7 @@
       position:absolute;
       top:0;
       left:-200px;
-      background:url("/images/sign/actor/sharereward/bg-left.png") repeat center;
+      background:url("/activity/images/sign/actor/sharereward/bg-left.png") repeat center;
       background-size:100%;
     }
     .right-bg{
@@ -2380,13 +2380,13 @@
       position:absolute;
       top:0;
       right:-200px;
-      background:url("/images/sign/actor/sharereward/bg-right.png") repeat center;
+      background:url("/activity/images/sign/actor/sharereward/bg-right.png") repeat center;
       background-size:100%;
     }
     .reward-info-title{
       height:306px;
       width:100%;
-      background:url("/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
       background-size:100%;
       margin-top:-18px;
       .title-text{
@@ -2408,7 +2408,7 @@
     .share-example{
       height:862px;
       width:100%;
-      background:url("/images/sign/actor/sharereward/share-example.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-example.png") no-repeat center;
       background-size:100%;
       margin-top: -50px;
 
@@ -2425,12 +2425,12 @@
         .title-mole{
           width:40px;
           margin-right: 10px;
-          background:url("/images/sign/actor/sharereward/share-example-mole.png") no-repeat center;
+          background:url("/activity/images/sign/actor/sharereward/share-example-mole.png") no-repeat center;
         }
         .title-text{
           width:200px;
           padding-top:20px;
-          background:url("/images/sign/actor/sharereward/share-example-title.png") no-repeat center;
+          background:url("/activity/images/sign/actor/sharereward/share-example-title.png") no-repeat center;
         }
       }
       p{
@@ -2451,14 +2451,14 @@
       }
       .example-case-detail{
         height:425px;
-        background:url("/images/sign/actor/sharereward/example-case-detail.png") no-repeat center;
+        background:url("/activity/images/sign/actor/sharereward/example-case-detail.png") no-repeat center;
         
       }
     }
     .share-recommend{
       height:300px;
       width:100%;
-      background:url("/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
       background-size:100%;
       margin-top: -54px;
       text-align: center;
@@ -2480,7 +2480,7 @@
     .share-rules{
       height:440px;
       width:100%;
-      background:url("/images/sign/actor/sharereward/share-rules.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-rules.png") no-repeat center;
       background-size:100%;
       margin-top: -40px;
       margin-bottom: 56px;
@@ -2496,7 +2496,7 @@
             height:30px;
             font-size: 14px;
             color:#fff;
-            background:url("/images/sign/actor/sharereward/share-rulues-round.png") no-repeat ;
+            background:url("/activity/images/sign/actor/sharereward/share-rulues-round.png") no-repeat ;
             background-position:0 10px;
             padding-left:20px;
           }
@@ -2528,19 +2528,19 @@
     padding:0 2%;
     .reward-info-title{
       height:185px;   
-      background:url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-5px;
     }
     .share-example{
       height:500px;
-      background:url("/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
     }
     .share-recommend{
       height:150px;
-      background:url("/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
       text-align: center;
@@ -2560,7 +2560,7 @@
     }
     .share-rules{
       height:260px;
-      background:url("/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
+      background:url("/activity/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
     }
@@ -2595,7 +2595,7 @@
         left:-200px;
         width:200px;
         height:100%;
-        background:url("/images/sign/actor/achievement/left-line.png") repeat center;
+        background:url("/activity/images/sign/actor/achievement/left-line.png") repeat center;
       }
       .right-line{
         position: absolute;
@@ -2603,14 +2603,14 @@
         right:-200px;
         width:200px;
         height:100%;
-        background:url("/images/sign/actor/achievement/right-line.png") repeat center;
+        background:url("/activity/images/sign/actor/achievement/right-line.png") repeat center;
       }
       .actor-intro{
         float:left;
         width:800px;
         padding:25px 100px 0 100px;
         height:245px;
-        background:url("/images/sign/actor/achievement/info-bg.png") no-repeat center bottom;
+        background:url("/activity/images/sign/actor/achievement/info-bg.png") no-repeat center bottom;
         p{
           font-size:18px;
           margin-bottom:0;
@@ -2641,11 +2641,11 @@
               top:0;
               &.left-icon{
                 left:-85px;
-                background:url("/images/sign/actor/achievement/circle-left.png") no-repeat center;
+                background:url("/activity/images/sign/actor/achievement/circle-left.png") no-repeat center;
               }
               &.right-icon{
                 right:-85px;
-                background:url("/images/sign/actor/achievement/circle-right.png") no-repeat center;
+                background:url("/activity/images/sign/actor/achievement/circle-right.png") no-repeat center;
               }
             }
           }
@@ -2683,7 +2683,7 @@
                 display:inline-block;
                 position: relative;
                 top: 5px;
-                background:url("/images/sign/actor/achievement/icon-result.png") no-repeat;
+                background:url("/activity/images/sign/actor/achievement/icon-result.png") no-repeat;
                 &.first-card{
                   background-position:5px 4px;
                 }
@@ -2715,7 +2715,7 @@
             font-size:22px;
             display: inline-block;
             text-align:center;
-            background:url("/images/sign/actor/achievement/btn-bg.png") no-repeat center;
+            background:url("/activity/images/sign/actor/achievement/btn-bg.png") no-repeat center;
           }
         }
         .explanation-text{
@@ -2767,7 +2767,7 @@
       width:100%;
       height:100px;
       padding-top:15px;
-      background:url("/images/sign/actor/achievement/info-bg-phone.png") no-repeat center bottom;
+      background:url("/activity/images/sign/actor/achievement/info-bg-phone.png") no-repeat center bottom;
       background-size: 100%;
       p{
         font-size:12px;
@@ -2796,12 +2796,12 @@
             top:0;
             &.left-icon{
               left:-45px;
-              background:url("/images/sign/actor/achievement/circle-left.png") no-repeat center;
+              background:url("/activity/images/sign/actor/achievement/circle-left.png") no-repeat center;
               background-size: 100%;
             }
             &.right-icon{
               right:-45px;
-              background:url("/images/sign/actor/achievement/circle-right.png") no-repeat center;
+              background:url("/activity/images/sign/actor/achievement/circle-right.png") no-repeat center;
               background-size: 100%;
             }
           }
@@ -2832,7 +2832,7 @@
               display:inline-block;
               position: relative;
               top: 5px;
-              background:url("/images/sign/actor/achievement/icon-result.png") no-repeat;
+              background:url("/activity/images/sign/actor/achievement/icon-result.png") no-repeat;
               &.first-card{
                 background-position:5px 4px;
               }
@@ -2864,7 +2864,7 @@
           font-size:16px;
           display: inline-block;
           text-align:center;
-          background:url("/images/sign/actor/achievement/btn-bg.png") no-repeat center;
+          background:url("/activity/images/sign/actor/achievement/btn-bg.png") no-repeat center;
           background-size:100%;
         }
       }
@@ -2928,7 +2928,7 @@
   }
   .actor-recruit-img {
     height: 150px;
-    background: url("/images/ttimg/ph-a03.jpg") center top no-repeat !important;
+    background: url("/activity/images/ttimg/ph-a03.jpg") center top no-repeat !important;
     background-size: cover !important;
   }
   .res-comtainer {
@@ -2943,7 +2943,7 @@
   .activity-award-container {
     .actor-award-img {
       height: 150px !important;
-      background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
+      background: url("/activity/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
       clear: both;
       background-size: contain !important;
     }
@@ -2971,7 +2971,7 @@
         .award-product-box {
           height: 425px;
           margin-top: 20px;
-          background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
+          background: url("/activity/images/sign/actor/awards/app-product.jpg") center top no-repeat;
           background-size: contain;
         }
         .trophy-box {

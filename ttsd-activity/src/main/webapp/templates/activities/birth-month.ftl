@@ -2,34 +2,34 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="生日月特权_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 <style type="text/css">
     body {
-        background: url('${staticServer}/images/sign/actor/birth/bg-web.png') center top repeat-y;
+        background: url('${staticServer}/activity/images/sign/actor/birth/bg-web.png') center top repeat-y;
     }
 </style>
 
 <div class="birth-month-container">
     <div class="wp-img">
-        <img src="${staticServer}/images/sign/actor/birth/top-picture.png" alt="生日月banner" width="100%">
+        <img src="${staticServer}/activity/images/sign/actor/birth/top-picture.png" alt="生日月banner" width="100%">
     </div>
     <div class="wp-img-phone">
-        <img src="${staticServer}/images/sign/actor/birth/app-top.png" alt="生日月banner" width="100%">
+        <img src="${staticServer}/activity/images/sign/actor/birth/app-top.png" alt="生日月banner" width="100%">
     </div>
     <div class="wp">
         <p>生日想要什么礼物？</p>
         <p class="text-gift">
-            <img src="${staticServer}/images/sign/actor/birth/party.png" alt="生日月banner" width="100%" class="party-img">
-            <img src="${staticServer}/images/sign/actor/birth/app-party.png" alt="生日月banner" width="100%" class="party-img-phone">
+            <img src="${staticServer}/activity/images/sign/actor/birth/party.png" alt="生日月banner" width="100%" class="party-img">
+            <img src="${staticServer}/activity/images/sign/actor/birth/app-party.png" alt="生日月banner" width="100%" class="party-img-phone">
         </p>
         <p class="text-bg">通通都需要!!!</p>
         <p>
-            <span><img src="${staticServer}/images/sign/actor/birth/monkey.png" alt="" class="monkey-phone"></span>
+            <span><img src="${staticServer}/activity/images/sign/actor/birth/monkey.png" alt="" class="monkey-phone"></span>
             <span>拓天速贷为你准备了</span>
         </p>
-        <p class="img-position"><img src="${staticServer}/images/sign/actor/birth/huihuo.png"></p>
+        <p class="img-position"><img src="${staticServer}/activity/images/sign/actor/birth/huihuo.png"></p>
         <p class="text-font">不会赚怎么花？</br>超高的收益等你拿。</p>
         <p class="text-bg">Let's go！！！</p>
         <p class="text-pro">
             <span class="pro-list">
-                <img src="${staticServer}/images/sign/actor/birth/90.png" width="100%">
+                <img src="${staticServer}/activity/images/sign/actor/birth/90.png" width="100%">
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=31&durationEnd=90&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
                 <#else>
@@ -37,7 +37,7 @@
                 </#if>
             </span>
             <span class="pro-list">
-                <img src="${staticServer}/images/sign/actor/birth/180.png" width="100%">
+                <img src="${staticServer}/activity/images/sign/actor/birth/180.png" width="100%">
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=91&durationEnd=180&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
                 <#else>
@@ -45,7 +45,7 @@
                 </#if>
             </span>
             <span class="pro-list">
-                <img src="${staticServer}/images/sign/actor/birth/360.png" width="100%">
+                <img src="${staticServer}/activity/images/sign/actor/birth/360.png" width="100%">
                 <#if !isAppSource>
                 <a href="/loan-list?durationStart=181&durationEnd=366&name=&status=&rateStart=0&rateEnd=0" class="click-btn time-btn"></a>
                 <#else>
@@ -58,7 +58,7 @@
                 <#else>
                 <a href="/loan-list?productType=WYX" class="fl clearfix">
                 </#if>
-                    <img src="${staticServer}/images/sign/actor/birth/90-wap.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/birth/90-wap.png" width="100%">
                 </a>
             </span>
             <span class="pro-wap-list">
@@ -67,7 +67,7 @@
                 <#else>
                 <a href="/loan-list?productType=JYF" class="fl clearfix">
                 </#if>
-                    <img src="${staticServer}/images/sign/actor/birth/180-wap.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/birth/180-wap.png" width="100%">
                 </a>
             </span>
             <span class="pro-wap-list">
@@ -76,7 +76,7 @@
                 <#else>
                 <a href="/loan-list?productType=JYF" class="fl clearfix">
                 </#if>
-                    <img src="${staticServer}/images/sign/actor/birth/360-wap.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/birth/360-wap.png" width="100%">
                 </a>
             </span>
         </p>

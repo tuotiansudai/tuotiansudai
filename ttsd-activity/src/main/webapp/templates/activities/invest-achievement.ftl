@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="${js.invest_achievement}" activeNav="" activeLeftNav="" title="投资称号_拓天称号_拓天速贷" keywords="拓荒先锋,拓天标王,一锤定音,投资称号,拓天称号" description="拓天速贷依据投资用户的投资金额,投资期限,给予相应的投资称号,投资称号可获得相应的称号奖励，">
 <div class="invest-achievement-container clearfix">
     <div class="container-model">
-        <img src="${staticServer}/images/sign/actor/achievement/top-picture.png" width="100%">
+        <img src="${staticServer}/activity/images/sign/actor/achievement/top-picture.png" width="100%">
     </div>
     <div class="content-list">
         <div class="wp clearfix">
@@ -26,13 +26,13 @@
             <div class="actor-model mt-50">
                 <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
                 <div class="actor-content mt-30">
-                    <img src="${staticServer}/images/sign/actor/achievement/achievement-list.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list.png" width="100%">
                 </div>
             </div>
             <div class="actor-model mt-50">
                 <h3><span><i class="left-icon"></i>进入<strong>标的详情</strong>可查看当前战况<i class="right-icon"></i></span></h3>
                 <div class="actor-content mt-30">
-                    <img src="${staticServer}/images/sign/actor/achievement/product-images.jpg" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/achievement/product-images.jpg" width="100%">
                 </div>
             </div>
             <div class="actor-model">
@@ -59,7 +59,7 @@
 </div>
 <div class="invest-achievement-phone clearfix">
     <div class="phone-model">
-        <img src="${staticServer}/images/sign/actor/achievement/top-picture-phone.png" width="100%">
+        <img src="${staticServer}/activity/images/sign/actor/achievement/top-picture-phone.png" width="100%">
     </div>
     <div class="phone-model">
         <div class="actor-intro">
@@ -84,7 +84,7 @@
         <div class="actor-model mt-25">
             <h3><span><i class="left-icon"></i>奖励<i class="right-icon"></i></span></h3>
             <div class="actor-content mt-30 tc">
-                <img src="${staticServer}/images/sign/actor/achievement/achievement-list-phone.png" width="60%">
+                <img src="${staticServer}/activity/images/sign/actor/achievement/achievement-list-phone.png" width="60%">
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@
         <div class="actor-model mt-25">
             <h3><span><i class="left-icon"></i>进入<strong>标的详情</strong>可查看当前战况<i class="right-icon"></i></span></h3>
             <div class="actor-content mt-15 tc">
-                <img src="${staticServer}/images/sign/actor/achievement/product-images-phone.jpg" width="90%">
+                <img src="${staticServer}/activity/images/sign/actor/achievement/product-images-phone.jpg" width="90%">
             </div>
         </div>
     </div>

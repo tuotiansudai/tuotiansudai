@@ -1,46 +1,65 @@
+import commands
 from paver.shell import sh
 
 
-class QADeployment(object):
-    def deploy(self):
-        self.clean()
-        self.compile()
-        self.migrate()
-        self.jcversion()
-        self.mkwar()
-        self.mk_static_package()
+class Deployment(object):
+
+    _, _gradle=commands.getstatusoutput("which gradle")
+    _, _dockerCompose=commands.getstatusoutput("which docker-compose")
+    _, _paver=commands.getstatusoutput("which paver")
+
+    _env='QA'
+
+    def deploy(self, env):
+        self._env=env
+        # self.clean()
+        # self.compile()
+        # self.migrate()
+        # self.jcversion()
+        # self.mkwar()
+        # self.mk_static_package()
+        # self.set_nginx_host()
         self.init_docker()
 
     def clean(self):
         print "Cleaning..."
-        sh('/opt/gradle/latest/bin/gradle clean')
+        print self._gradle
+        sh('{0} clean'.format(self._gradle))
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
     def compile(self):
         print "Compiling..."
-        sh('/opt/gradle/latest/bin/gradle compileJava')
+        sh('{0} compileJava'.format(self._gradle))
 
     def migrate(self):
         print "Migrating..."
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-service:flywayRepair')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-service:flywayMigrate')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-service:flywayRepair')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-service:flywayMigrate')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-service:flywayRepair')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-service:flywayMigrate')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-service:flywayRepair')
-        sh('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-service:flywayMigrate')
+        sh('{0} -Pdatabase=aa ttsd-service:flywayRepair'.format(self._gradle))
+        sh('{0} -Pdatabase=aa ttsd-service:flywayMigrate'.format(self._gradle))
+        sh('{0} -Pdatabase=ump_operations ttsd-service:flywayRepair'.format(self._gradle))
+        sh('{0} -Pdatabase=ump_operations ttsd-service:flywayMigrate'.format(self._gradle))
+        sh('{0} -Pdatabase=sms_operations ttsd-service:flywayRepair'.format(self._gradle))
+        sh('{0} -Pdatabase=sms_operations ttsd-service:flywayMigrate'.format(self._gradle))
+        sh('{0} -Pdatabase=job_worker ttsd-service:flywayRepair'.format(self._gradle))
+        sh('{0} -Pdatabase=job_worker ttsd-service:flywayMigrate'.format(self._gradle))
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=invest distZip')
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
+        sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def mkwar(self):
         print "Making war..."
-        sh('/opt/gradle/latest/bin/gradle war')
+        if self._env == 'QA' :
+            sh('{0} war'.format(self._gradle))
+        else :
+            sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
         self.build_and_unzip_worker()
 
     def mk_static_package(self):
@@ -57,6 +76,9 @@ class QADeployment(object):
         sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
 
+    def set_nginx_host(self):
+        _, _host_ = commands.getstatusoutput("ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}'")
+        sh("sed 's/_host_name_/{0}/g' ./scripts/docker/ttsd-test-nginx-rewrite.conf.temp > ./scripts/docker/ttsd-test-nginx-rewrite.conf".format(_host_))
 
     def init_docker(self):
         print "Initialing docker..."
@@ -67,12 +89,12 @@ class QADeployment(object):
         self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
-        sh('{0} /usr/local/bin/docker-compose -f dev.yml stop'.format(suoder))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && /usr/local/bin/docker-compose -f dev.yml rm -f"'.format(suoder))
+        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
+        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} /usr/local/bin/docker-compose -f dev.yml up -d'.format(sudoer))
+        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
 
     def jcversion(self):
         print "Starting jcmin..."
-        sh('/usr/bin/paver jcversion')
+        sh('{0} jcversion'.format(self._paver))

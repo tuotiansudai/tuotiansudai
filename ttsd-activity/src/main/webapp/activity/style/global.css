@@ -2124,7 +2124,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/activity/images/compress/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2232,7 +2232,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/activity/images/compress/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -2454,7 +2454,7 @@ form input.error + label.error:before {
   box-sizing: border-box; }
 
 .loading {
-  background: #fff url("/images/icons/loading.gif") no-repeat center center !important;
+  background: #fff url("/activity/images/icons/loading.gif") no-repeat center center !important;
   cursor: default !important;
   border: 0 !important;
   text-indent: -9999px; }
@@ -2615,9 +2615,9 @@ label.radio {
   margin: 5px;
   padding-left: 20px;
   line-height: 17px;
-  background: url("/images/icons/spr.png") no-repeat 0 -209px; }
+  background: url("/activity/images/icons/spr.png") no-repeat 0 -209px; }
   label.radio.checked {
-    background: url("/images/icons/spr.png") no-repeat 0 -233px; }
+    background: url("/activity/images/icons/spr.png") no-repeat 0 -233px; }
 
 label.checkbox {
   display: inline-block;
@@ -2625,9 +2625,9 @@ label.checkbox {
   margin: 5px 0;
   padding-left: 20px;
   line-height: 17px;
-  background: url("/images/icons/spr.png") no-repeat 0 -258px; }
+  background: url("/activity/images/icons/spr.png") no-repeat 0 -258px; }
   label.checkbox.checked {
-    background: url("/images/icons/spr.png") no-repeat 0 -284px; }
+    background: url("/activity/images/icons/spr.png") no-repeat 0 -284px; }
 
 h1 {
   font-size: 2em;
@@ -2748,7 +2748,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/activity/images/compress/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2856,7 +2856,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/activity/images/compress/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -3033,7 +3033,7 @@ h5 {
     position: relative;
     margin: 0 auto; }
     .nav-container .nav .logo {
-      background: url("/images/icons/logo-new.png") left center no-repeat;
+      background: url("/activity/images/icons/logo-new.png") left center no-repeat;
       width: 420px;
       height: 50px;
       display: block;
@@ -3461,7 +3461,7 @@ h5 {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/activity/images/compress/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -3565,7 +3565,7 @@ h5 {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/activity/images/compress/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;

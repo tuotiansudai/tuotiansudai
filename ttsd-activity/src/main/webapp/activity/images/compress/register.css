@@ -10,7 +10,7 @@
 .sprite-register-arrow-bottom,
 .sprite-register-yes-checked,
 .sprite-register-no-checked {
-            background-image: url('/images/compress/register_20160525.png');
+            background-image: url('/activity/images/compress/register_20160525.png');
             background-repeat: no-repeat;
         }
         
@@ -92,7 +92,7 @@
     .sprite-register-arrow-bottom,
     .sprite-register-yes-checked,
     .sprite-register-no-checked {
-                background-image: url('/images/compress/register_20160525.png');
+                background-image: url('/activity/images/compress/register_20160525.png');
                 -webkit-background-size: 131px 113px;
                 -moz-background-size: 131px 113px;
                 background-size: 131px 113px;

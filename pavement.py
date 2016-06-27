@@ -1,5 +1,6 @@
 import os
 import sys
+import commands
 
 sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 from paver.tasks import task, needs, cmdopts
@@ -74,11 +75,18 @@ def qa():
     """
     Deploy Staging/QA environment
     """
-    from scripts.deployment import QADeployment
+    from scripts.deployment import Deployment
 
-    qa_env = QADeployment()
-    qa_env.deploy()
+    deployment = Deployment()
+    deployment.deploy('QA')
 
+
+@task
+def dev_docker():
+    from scripts.deployment import Deployment
+
+    deployment = Deployment()
+    deployment.deploy('DEV')
 
 @task
 @cmdopts([
@@ -223,9 +231,10 @@ def versioning_mobile_api_files(path):
 
     owd = os.getcwd()
     try:
+        _, cmd=commands.getstatusoutput("which npm")
         os.chdir(path)
-        sh('/usr/bin/npm install')
-        sh('/usr/bin/npm run dist')
+        sh('{0} install'.format(cmd))
+        sh('{0} run dist'.format(cmd))
     finally:
         os.chdir(owd)
 

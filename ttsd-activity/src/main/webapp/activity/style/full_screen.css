@@ -214,7 +214,7 @@ html, body {
     left: 50%;
     margin-top: -273px;
     margin-left: -295px;
-    background: url("/images/sign/activities/coupon-bag-info.png") no-repeat center; }
+    background: url("/activity/images/sign/activities/coupon-bag-info.png") no-repeat center; }
     .coupon-alert .coupon-model-list .coupon-close {
       width: 28px;
       height: 28px;
@@ -222,7 +222,7 @@ html, body {
       position: absolute;
       top: 87px;
       left: 464px;
-      background: url("/images/sign/activities/coupon-close.png") no-repeat center; }
+      background: url("/activity/images/sign/activities/coupon-close.png") no-repeat center; }
     .coupon-alert .coupon-model-list .coupon-text {
       width: 204px;
       height: 48px;
@@ -263,7 +263,7 @@ html, body {
       position: absolute;
       top: 340px;
       left: 208px;
-      background: url("/images/sign/activities/see-link-btn.png") no-repeat center; }
+      background: url("/activity/images/sign/activities/see-link-btn.png") no-repeat center; }
 
 /* glue: 0.11.1 hash: bc813170b9 */
 .sprite-index-bg-media, .home-page-container .home-content .media-coverage-box .media-logo-list,
@@ -292,7 +292,7 @@ html, body {
 .sprite-index-img-syl,
 .sprite-index-img-jyf,
 .sprite-index-hot-n {
-  background-image: url("/images/compress/index_20160411.png");
+  background-image: url("/activity/images/compress/index_20160411.png");
   background-repeat: no-repeat; }
 
 .sprite-index-bg-media, .home-page-container .home-content .media-coverage-box .media-logo-list {
@@ -412,7 +412,7 @@ html, body {
   .sprite-index-img-syl,
   .sprite-index-img-jyf,
   .sprite-index-hot-n {
-    background-image: url("/images/compress/index_20160411.png");
+    background-image: url("/activity/images/compress/index_20160411.png");
     -webkit-background-size: 659px 631px;
     -moz-background-size: 659px 631px;
     background-size: 659px 631px; } }
@@ -643,17 +643,17 @@ body {
       .home-page-container .home-content .page-width .label-title span.product-icon {
         width: 722px;
         padding-left: 38px;
-        background: url("/images/sign/home-title-new.png") -10px -10px no-repeat; }
+        background: url("/activity/images/sign/home-title-new.png") -10px -10px no-repeat; }
       .home-page-container .home-content .page-width .label-title span.hot-product {
         width: 722px;
         padding-left: 38px;
-        background: url("/images/sign/home-title-new.png") -10px -53px no-repeat; }
+        background: url("/activity/images/sign/home-title-new.png") -10px -53px no-repeat; }
       .home-page-container .home-content .page-width .label-title span.media-coverage-icon {
         width: 722px;
-        background: url("/images/sign/home-title-new.png") -10px -110px no-repeat; }
+        background: url("/activity/images/sign/home-title-new.png") -10px -110px no-repeat; }
       .home-page-container .home-content .page-width .label-title span.partner-icon {
         width: 722px;
-        background: url("/images/sign/home-title-new.png") -10px -153px no-repeat; }
+        background: url("/activity/images/sign/home-title-new.png") -10px -153px no-repeat; }
     .home-page-container .home-content .page-width .label-title .hot-more {
       float: right;
       font-size: 14px;
@@ -690,7 +690,7 @@ body {
           left: 0;
           width: 56px;
           height: 75px;
-          background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat; }
+          background: url("/activity/images/sign/index_sprites_20160505.png") 0px -170px no-repeat; }
         .home-page-container .home-content .page-width .product-list ul li .loan-info-frame {
           width: 424px;
           padding-bottom: 10px;
@@ -791,7 +791,7 @@ body {
     border: 1px solid #e6e6e6;
     background-color: #fff;
     overflow: hidden;
-    background: url("/images/sign/index_sprites_20160505.png") 0 0 no-repeat; }
+    background: url("/activity/images/sign/index_sprites_20160505.png") 0 0 no-repeat; }
     .home-page-container .home-content .page-width .company-up a {
       float: left;
       width: 218px;
@@ -829,28 +829,28 @@ body {
         .home-page-container .home-content .page-width .loan-list-index .loan-box-inner li .hot {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/hot-n.png") no-repeat;
+          background: url("/activity/images/icons/hot-n.png") no-repeat;
           position: absolute;
           left: -5px;
           top: -6px; }
         .home-page-container .home-content .page-width .loan-list-index .loan-box-inner li .syl {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-syl.png") no-repeat;
+          background: url("/activity/images/icons/img-syl.png") no-repeat;
           position: absolute;
           left: -5px;
           top: -6px; }
         .home-page-container .home-content .page-width .loan-list-index .loan-box-inner li .wyx {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-wyx.png") no-repeat;
+          background: url("/activity/images/icons/img-wyx.png") no-repeat;
           position: absolute;
           left: -5px;
           top: -6px; }
         .home-page-container .home-content .page-width .loan-list-index .loan-box-inner li .jyf {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-jyf.png") no-repeat;
+          background: url("/activity/images/icons/img-jyf.png") no-repeat;
           position: absolute;
           left: -5px;
           top: -6px; }
@@ -979,12 +979,12 @@ body {
           width: 40px;
           height: 50px;
           top: -4px;
-          background: url("/images/icons/new-user.png") no-repeat;
+          background: url("/activity/images/icons/new-user.png") no-repeat;
           background-size: 80%; }
         .home-page-container .home-content .page-width .product-box-list .product-box-inner .product-box .hot {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/hot-n.png") no-repeat;
+          background: url("/activity/images/icons/hot-n.png") no-repeat;
           position: absolute;
           left: -4px;
           top: -4px;
@@ -992,7 +992,7 @@ body {
         .home-page-container .home-content .page-width .product-box-list .product-box-inner .product-box .syl {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-syl.png") no-repeat;
+          background: url("/activity/images/icons/img-syl.png") no-repeat;
           position: absolute;
           left: -4px;
           top: -4px;
@@ -1000,7 +1000,7 @@ body {
         .home-page-container .home-content .page-width .product-box-list .product-box-inner .product-box .wyx {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-wyx.png") no-repeat;
+          background: url("/activity/images/icons/img-wyx.png") no-repeat;
           position: absolute;
           left: -4px;
           top: -4px;
@@ -1008,7 +1008,7 @@ body {
         .home-page-container .home-content .page-width .product-box-list .product-box-inner .product-box .jyf {
           width: 71px;
           height: 71px;
-          background: url("/images/icons/img-jyf.png") no-repeat;
+          background: url("/activity/images/icons/img-jyf.png") no-repeat;
           position: absolute;
           left: -4px;
           top: -4px;
@@ -1296,7 +1296,7 @@ body {
   100% {
     opacity: 1; } }
   .new-guide-container .intro-text {
-    background: url("/images/sign/guide-bg.png") no-repeat center fixed; }
+    background: url("/activity/images/sign/guide-bg.png") no-repeat center fixed; }
     .new-guide-container .intro-text .flex-model {
       width: 100%;
       position: absolute;
@@ -1358,7 +1358,7 @@ body {
       .new-guide-container .mode-operation p.responsive-img {
         display: none; }
   .new-guide-container .intro-text {
-    background: url("/images/sign/guide-bg.png") no-repeat center fixed; }
+    background: url("/activity/images/sign/guide-bg.png") no-repeat center fixed; }
 
 /* refer reward page */
 .refer-reward-instruction {
@@ -1799,7 +1799,7 @@ body {
     .new-guide-container .page-width .down b {
       display: none; }
   .new-guide-container .intro-text {
-    background: url("/images/sign/wap-bg.png") no-repeat center !important; }
+    background: url("/activity/images/sign/wap-bg.png") no-repeat center !important; }
     .new-guide-container .intro-text .flex-model {
       float: left;
       width: 100%;
@@ -1854,7 +1854,7 @@ body {
       .new-guide-container .mode-operation p.responsive-img {
         display: block; }
   .new-guide-container .intro-text {
-    background: url("/images/sign/guide-bg.png") no-repeat center fixed; }
+    background: url("/activity/images/sign/guide-bg.png") no-repeat center fixed; }
   .refer-reward-instruction .refer-reward-bg {
     background: #fff; }
     .refer-reward-instruction .refer-reward-bg .refer-reward-inner {

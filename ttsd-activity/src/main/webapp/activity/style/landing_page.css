@@ -38,7 +38,7 @@ h5 {
 .sprite-index-img-syl,
 .sprite-index-img-jyf,
 .sprite-index-hot-n {
-  background-image: url("/images/compress/index_20160411.png");
+  background-image: url("/activity/images/compress/index_20160411.png");
   background-repeat: no-repeat; }
 
 .sprite-index-bg-media {
@@ -150,7 +150,7 @@ h5 {
   .sprite-index-img-syl,
   .sprite-index-img-jyf,
   .sprite-index-hot-n {
-    background-image: url("/images/compress/index_20160411.png");
+    background-image: url("/activity/images/compress/index_20160411.png");
     -webkit-background-size: 659px 631px;
     -moz-background-size: 659px 631px;
     background-size: 659px 631px; } }
@@ -167,7 +167,7 @@ h5 {
 .sprite-register-arrow-bottom,
 .sprite-register-yes-checked,
 .sprite-register-no-checked {
-  background-image: url("/images/compress/register_20160525.png");
+  background-image: url("/activity/images/compress/register_20160525.png");
   background-repeat: no-repeat; }
 
 .sprite-register-ic-account {
@@ -237,7 +237,7 @@ h5 {
   .sprite-register-arrow-bottom,
   .sprite-register-yes-checked,
   .sprite-register-no-checked {
-    background-image: url("/images/compress/register_20160525.png");
+    background-image: url("/activity/images/compress/register_20160525.png");
     -webkit-background-size: 131px 113px;
     -moz-background-size: 131px 113px;
     background-size: 131px 113px; } }
@@ -279,7 +279,7 @@ form label.error {
     height: 90px;
     text-align: center;
     margin: 0 auto;
-    background: url("/images/icons/logo-new.png") left center no-repeat; }
+    background: url("/activity/images/icons/logo-new.png") left center no-repeat; }
     .landing-container .landing-header a {
       display: inline-block;
       float: right;
@@ -294,7 +294,7 @@ form label.error {
   .landing-container .landing-top {
     position: relative;
     height: 500px;
-    background: url("/images/sign/actor/landingpage/landing-top.png") center top no-repeat; }
+    background: url("/activity/images/sign/actor/landingpage/landing-top.png") center top no-repeat; }
     .landing-container .landing-top .landing-inner {
       width: 1200px;
       height: 30px;
@@ -393,7 +393,7 @@ form label.error {
         .landing-container .landing-top .register-box ul.reg-list .register-account {
           display: block; }
           .landing-container .landing-top .register-box ul.reg-list .register-account.loading {
-            background: url("/images/icons/loading.gif") no-repeat center center;
+            background: url("/activity/images/icons/loading.gif") no-repeat center center;
             cursor: default;
             text-indent: -9999px; }
         .landing-container .landing-top .register-box ul.reg-list .register-user, .landing-container .landing-top .register-box ul.reg-list .register-account {
@@ -417,7 +417,7 @@ form label.error {
       font-size: 26px;
       margin: 0 auto;
       text-align: center;
-      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
     .landing-container .content-one .content-wp {
       width: 1200px;
       height: 320px;
@@ -434,17 +434,17 @@ form label.error {
             height: 180px;
             width: 128px;
             margin: 0 auto;
-            background: url("/images/sign/actor/landingpage/icon-one.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/landingpage/icon-one.png") no-repeat center; }
           .landing-container .content-one .content-wp ul li .icon-two {
             height: 180px;
             width: 128px;
             margin: 0 auto;
-            background: url("/images/sign/actor/landingpage/icon-two.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/landingpage/icon-two.png") no-repeat center; }
           .landing-container .content-one .content-wp ul li .icon-three {
             height: 180px;
             width: 128px;
             margin: 0 auto;
-            background: url("/images/sign/actor/landingpage/icon-three.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/landingpage/icon-three.png") no-repeat center; }
           .landing-container .content-one .content-wp ul li span {
             font-size: 18px; }
             .landing-container .content-one .content-wp ul li span b {
@@ -460,7 +460,7 @@ form label.error {
       font-size: 26px;
       margin: 0 auto;
       text-align: center;
-      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
     .landing-container .content-two .product-wp {
       width: 1200px;
       height: 610px;
@@ -484,7 +484,7 @@ form label.error {
             left: 0;
             width: 56px;
             height: 75px;
-            background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat; }
+            background: url("/activity/images/sign/index_sprites_20160505.png") 0px -170px no-repeat; }
           .landing-container .content-two .product-wp ul li .product-left {
             float: left;
             width: 350px;
@@ -552,14 +552,14 @@ form label.error {
       font-size: 26px;
       margin: 0 auto;
       text-align: center;
-      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
       .landing-container .content-three .three-title span {
         color: red; }
     .landing-container .content-three .content-wp {
       width: 1200px;
       height: 400px;
       margin: 0 auto;
-      background: url("/images/sign/actor/landingpage/content-threebg.png") no-repeat;
+      background: url("/activity/images/sign/actor/landingpage/content-threebg.png") no-repeat;
       background-position: right center; }
       .landing-container .content-three .content-wp img {
         display: block;
@@ -604,7 +604,7 @@ form label.error {
       font-size: 26px;
       margin: 0 auto;
       text-align: center;
-      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
       .landing-container .content-four .four-title span {
         color: red; }
     .landing-container .content-four .text {
@@ -624,7 +624,7 @@ form label.error {
       text-align: center;
       margin: 45px auto; }
       .landing-container .content-four table.imagetable .slash {
-        background: url("/images/sign/actor/landingpage/slash.png") no-repeat center;
+        background: url("/activity/images/sign/actor/landingpage/slash.png") no-repeat center;
         background-size: 100% 100%; }
       .landing-container .content-four table.imagetable th {
         background: #ccc;
@@ -647,7 +647,7 @@ form label.error {
   .landing-container .content-five {
     width: 100%;
     height: 700px;
-    background: url("/images/sign/actor/landingpage/content-fivebg.png") no-repeat center; }
+    background: url("/activity/images/sign/actor/landingpage/content-fivebg.png") no-repeat center; }
     .landing-container .content-five .five-title {
       width: 950px;
       height: 120px;
@@ -656,7 +656,7 @@ form label.error {
       font-size: 26px;
       margin: 0 auto;
       text-align: center;
-      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
     .landing-container .content-five .content-wp {
       width: 1080px;
       height: 300px;
@@ -671,7 +671,7 @@ form label.error {
           display: block;
           width: 526px;
           height: 302px;
-          background: url("/images/sign/actor/landingpage/five-media.png") no-repeat center; }
+          background: url("/activity/images/sign/actor/landingpage/five-media.png") no-repeat center; }
       .landing-container .content-five .content-wp .right {
         float: right;
         width: 520px;
@@ -735,14 +735,14 @@ form label.error {
     width: 30%;
     height: 25px;
     margin-top: 15px;
-    background: url("/images/sign/actor/landingphone/landing-phone-decorate-left.png") center no-repeat;
+    background: url("/activity/images/sign/actor/landingphone/landing-phone-decorate-left.png") center no-repeat;
     background-size: 100% auto; }
   .landing-phone-container .landing-phone-section-header-right {
     float: left;
     width: 30%;
     height: 25px;
     margin-top: 15px;
-    background: url("/images/sign/actor/landingphone/landing-phone-decorate-right.png") center no-repeat;
+    background: url("/activity/images/sign/actor/landingphone/landing-phone-decorate-right.png") center no-repeat;
     background-size: 100% auto; }
   .landing-phone-container .landing-phone-logo {
     width: 100%;
@@ -809,7 +809,7 @@ form label.error {
             height: 50px;
             top: -4px;
             left: 0;
-            background: url("/images/icons/new-user.png") no-repeat;
+            background: url("/activity/images/icons/new-user.png") no-repeat;
             background-size: 80%; }
           .landing-phone-container .tuotian-products .product-box-list .product-box-inner .product-box .pr-title {
             text-overflow: ellipsis;
@@ -965,7 +965,7 @@ form label.error {
   .landing-phone-container .tuotian-aboutus {
     float: left;
     width: 100%;
-    background: url("/images/sign/actor/landingphone/landing-phone-aboutus-bg.png") center no-repeat; }
+    background: url("/activity/images/sign/actor/landingphone/landing-phone-aboutus-bg.png") center no-repeat; }
     .landing-phone-container .tuotian-aboutus .aboutus-content-container {
       float: left;
       background: white;

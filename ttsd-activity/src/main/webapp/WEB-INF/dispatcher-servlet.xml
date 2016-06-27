@@ -42,7 +42,7 @@
 
     <!--<mvc:resources mapping="/html/**" location="/html/"/>-->
     <mvc:resources mapping="/activity/style/**" location="/activity/style/"/>
-    <mvc:resources mapping="/images/**" location="/activity/images/"/>
+    <mvc:resources mapping="/activity/images/**" location="/activity/images/"/>
     <mvc:resources mapping="/activity/js/**" location="/activity/js/"/>
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 

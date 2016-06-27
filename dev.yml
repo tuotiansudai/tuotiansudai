@@ -100,3 +100,9 @@ static-server:
     - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20020:80"
+nginx-server:
+  image: "nginx"
+  volumes:
+      - ./scripts/docker/ttsd-test-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "20008:80"

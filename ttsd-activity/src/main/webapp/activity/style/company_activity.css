@@ -204,13 +204,13 @@
       position: absolute;
       left: -1px;
       top: 0;
-      background: url("/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
+      background: url("/activity/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
       height: 520px;
       display: none; }
     .activity-award-container .wide-screen-out .wide-screen-right {
       right: 0;
       left: auto;
-      background: url("/images/sign/actor/awards/award-right.jpg") left 0 no-repeat; }
+      background: url("/activity/images/sign/actor/awards/award-right.jpg") left 0 no-repeat; }
     .activity-award-container .wide-screen-out .wide-screen-inner {
       width: 1000px;
       margin: 0px auto;
@@ -229,7 +229,7 @@
       .activity-award-container .wide-screen-out .wide-screen-inner .award-product-box {
         height: 380px;
         margin-top: 50px;
-        background: url("/images/sign/actor/awards/award-product.png") center top no-repeat; }
+        background: url("/activity/images/sign/actor/awards/award-product.png") center top no-repeat; }
       .activity-award-container .wide-screen-out .wide-screen-inner .trophy-box {
         text-align: center;
         margin-top: 30px; }
@@ -269,7 +269,7 @@
         padding-bottom: 60px; }
   .activity-award-container .actor-award-img {
     height: 477px;
-    background: url("/images/sign/actor/awards/img-award.jpg") center top no-repeat;
+    background: url("/activity/images/sign/actor/awards/img-award.jpg") center top no-repeat;
     clear: both; }
 
 .red-envelope-container {
@@ -307,7 +307,7 @@
     top: 0;
     left: 0;
     display: none;
-    background: url("/images/sign/actor/birth/tip-bg.png") repeat;
+    background: url("/activity/images/sign/actor/birth/tip-bg.png") repeat;
     z-index: 88; }
     .birth-month-container .birth-time .time-list {
       position: absolute;
@@ -364,7 +364,7 @@
       .birth-month-container .wp p.text-bg {
         font-size: 40px;
         color: #fff;
-        background: url("/images/sign/actor/birth/text-bg.png") center no-repeat; }
+        background: url("/activity/images/sign/actor/birth/text-bg.png") center no-repeat; }
       .birth-month-container .wp p.text-font {
         font-size: 20px;
         margin-bottom: 50px; }
@@ -424,7 +424,7 @@
 
 /*rank-list pc page*/
 .rank-list-container {
-  background: url("/images/sign/actor/ranklist/container-bg.png") repeat center;
+  background: url("/activity/images/sign/actor/ranklist/container-bg.png") repeat center;
   min-height: 500px; }
   .rank-list-container .rank-phone-model {
     float: left;
@@ -439,7 +439,7 @@
       float: left;
       width: 100%;
       height: 1px;
-      background: url("/images/sign/actor/ranklist/line-border.png") no-repeat center; }
+      background: url("/activity/images/sign/actor/ranklist/line-border.png") no-repeat center; }
     .rank-list-container .wp .actor-info-text {
       float: left;
       width: 100%;
@@ -456,7 +456,7 @@
         color: #ffd633;
         line-height: 50px;
         text-align: center;
-        background: url("/images/sign/actor/ranklist/intro-title.png") no-repeat center; }
+        background: url("/activity/images/sign/actor/ranklist/intro-title.png") no-repeat center; }
       .rank-list-container .wp .actor-info-text p {
         float: left;
         width: 100%;
@@ -543,7 +543,7 @@
               margin-left: 40px;
               position: relative;
               overflow: hidden;
-              background: url("/images/sign/actor/ranklist/btn-bg.png") no-repeat center; }
+              background: url("/activity/images/sign/actor/ranklist/btn-bg.png") no-repeat center; }
               .rank-list-container .wp .user-info ul li p .project-operate:hover::before {
                 -webkit-transition: left 1s;
                 -moz-transition: left 1s;
@@ -601,7 +601,7 @@
         width: 142px;
         height: 46px;
         position: relative;
-        background: url("/images/sign/actor/ranklist/cal-bg.png") no-repeat center; }
+        background: url("/activity/images/sign/actor/ranklist/cal-bg.png") no-repeat center; }
         .rank-list-container .wp .leader-btn .bean-btn .cal-title {
           float: left;
           width: 90px;
@@ -639,7 +639,7 @@
               top: 15px;
               right: 10px;
               cursor: pointer;
-              background: url("/images/sign/actor/ranklist/close-cal.png") no-repeat center; }
+              background: url("/activity/images/sign/actor/ranklist/close-cal.png") no-repeat center; }
           .rank-list-container .wp .leader-btn .bean-btn .td-calculator .td-content {
             float: left;
             width: 280px;
@@ -724,7 +724,7 @@
             margin: 0 5px;
             cursor: pointer;
             padding-left: 0;
-            background: url("/images/sign/actor/ranklist/share-icon.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/ranklist/share-icon.png") no-repeat center; }
             .rank-list-container .wp .leader-btn .share-list p .share-icon.icon-weibo {
               background-position: 0 0; }
             .rank-list-container .wp .leader-btn .share-list p .share-icon.icon-weixin {
@@ -925,7 +925,7 @@
             height: 550px;
             margin: 0 0 40px 40px;
             position: relative;
-            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/ranklist/turntable-bg.png") no-repeat center; }
             .rank-list-container .wp .leader-container .leader-list .lottery-circle .circle-shade .pointer-img {
               width: 130px;
               height: 190px;
@@ -1023,7 +1023,7 @@
       position: absolute;
       top: 0;
       left: -200px;
-      background: url("/images/sign/actor/ranklist/bg-left.png") repeat center;
+      background: url("/activity/images/sign/actor/ranklist/bg-left.png") repeat center;
       background-size: 100%; }
     .rank-list-container .wp .right-bg {
       width: 200px;
@@ -1031,7 +1031,7 @@
       position: absolute;
       top: 0;
       right: -200px;
-      background: url("/images/sign/actor/ranklist/bg-right.png") repeat center;
+      background: url("/activity/images/sign/actor/ranklist/bg-right.png") repeat center;
       background-size: 100%; }
   .rank-list-container .tip-list {
     position: fixed;
@@ -1039,7 +1039,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("/images/sign/actor/ranklist/tip-bg.png") repeat;
+    background: url("/activity/images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index: 88;
     display: none; }
     .rank-list-container .tip-list .td-tip-big {
@@ -1050,7 +1050,7 @@
       left: 50%;
       margin-top: -191px;
       margin-left: -202px;
-      background: url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1060,7 +1060,7 @@
         right: 60px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-container .tip-list .td-tip-big .text-tip {
@@ -1087,7 +1087,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1100,7 +1100,7 @@
       left: 50%;
       margin-top: -108px;
       margin-left: -150px;
-      background: url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1110,7 +1110,7 @@
         right: 10px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-container .tip-list .td-tip-small .text-tip {
@@ -1137,7 +1137,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1149,7 +1149,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%; }
           .rank-list-container .tip-list .td-tip-small .btn-list a.double-btn.first-btn {
             margin: 0 10px 0 60px; }
@@ -1161,7 +1161,7 @@
       left: 50%;
       margin-top: -82px;
       margin-left: -150px;
-      background: url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1171,7 +1171,7 @@
         right: 10px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-container .tip-list .td-tip-thank .text-tip {
@@ -1198,7 +1198,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/big-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1211,7 +1211,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1280,7 +1280,7 @@
           font-size: 14px;
           color: #b60000;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/btn-phone-bg.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/btn-phone-bg.png") no-repeat center;
           background-size: 100%; }
   .rank-list-phone .bean-rank-list {
     float: left;
@@ -1451,7 +1451,7 @@
       float: left;
       width: 100%;
       height: 1px;
-      background: url("/images/sign/actor/ranklist/change-line.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/change-line.png") no-repeat center;
       background-size: 100%;
       position: relative; }
       .rank-list-phone .change-rank-list .change-btn-list span {
@@ -1527,7 +1527,7 @@
             width: 270px;
             height: 270px;
             position: relative;
-            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background: url("/activity/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
             background-size: 100%;
             left: 50%;
             margin-left: -135px; }
@@ -1644,7 +1644,7 @@
         margin: 0 5px;
         cursor: pointer;
         padding-left: 0;
-        background: url("/images/sign/actor/ranklist/share-icon.png") no-repeat center; }
+        background: url("/activity/images/sign/actor/ranklist/share-icon.png") no-repeat center; }
         .rank-list-phone .share-list p .share-icon.icon-weibo {
           background-position: 0 0; }
         .rank-list-phone .share-list p .share-icon.icon-weixin {
@@ -1657,7 +1657,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("/images/sign/actor/ranklist/tip-bg.png") repeat;
+    background: url("/activity/images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index: 88;
     display: none; }
     .rank-list-phone .tip-list .td-tip-big {
@@ -1668,7 +1668,7 @@
       left: 50%;
       margin-top: -191px;
       margin-left: -202px;
-      background: url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1678,7 +1678,7 @@
         right: 60px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-phone .tip-list .td-tip-big .text-tip {
@@ -1705,7 +1705,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1718,7 +1718,7 @@
       left: 50%;
       margin-top: -108px;
       margin-left: -150px;
-      background: url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1728,7 +1728,7 @@
         right: 10px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-phone .tip-list .td-tip-small .text-tip {
@@ -1755,7 +1755,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1767,7 +1767,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%; }
           .rank-list-phone .tip-list .td-tip-small .btn-list a.double-btn.first-btn {
             margin: 0 10px 0 60px; }
@@ -1779,7 +1779,7 @@
       left: 50%;
       margin-top: -82px;
       margin-left: -150px;
-      background: url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background: url("/activity/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size: 100%;
       z-index: 999;
       display: none; }
@@ -1789,7 +1789,7 @@
         right: 10px;
         width: 18px;
         height: 18px;
-        background: url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background: url("/activity/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size: 100%;
         cursor: pointer; }
       .rank-list-phone .tip-list .td-tip-thank .text-tip {
@@ -1816,7 +1816,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/big-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1829,7 +1829,7 @@
           color: #fff;
           font-size: 12px;
           text-align: center;
-          background: url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background: url("/activity/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left: 50%;
@@ -1848,18 +1848,18 @@
       position: absolute;
       display: block; }
     .download-container .wp-img .ios {
-      background: url("/images/sign/actor/download/download-ios.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-ios.png") no-repeat center;
       left: 48%;
       top: 53%;
       background-size: 74%; }
     .download-container .wp-img .android {
-      background: url("/images/sign/actor/download/download-android.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-android.png") no-repeat center;
       left: 48%;
       top: 68%;
       background-size: 74%; }
   .download-container .download-one {
     height: 410px;
-    background: url("/images/sign/actor/download/download-one.png") no-repeat;
+    background: url("/activity/images/sign/actor/download/download-one.png") no-repeat;
     background-position: 70% 70%; }
     .download-container .download-one .step-one {
       padding-top: 112px;
@@ -1867,7 +1867,7 @@
   .download-container .download-two {
     height: 568px;
     margin-top: -148px;
-    background: url("/images/sign/actor/download/download-two.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-two.png") no-repeat center;
     background-size: 100%; }
     .download-container .download-two .step-two {
       padding-top: 192px;
@@ -1875,7 +1875,7 @@
   .download-container .download-three {
     height: 400px;
     margin-top: -50px;
-    background: url("/images/sign/actor/download/download-three.png") no-repeat;
+    background: url("/activity/images/sign/actor/download/download-three.png") no-repeat;
     background-position: 70% 70%; }
     .download-container .download-three .step-three {
       padding-top: 110px;
@@ -1883,7 +1883,7 @@
   .download-container .download-four {
     height: 614px;
     margin-top: -60px;
-    background: url("/images/sign/actor/download/download-four.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-four.png") no-repeat center;
     background-size: 100%; }
     .download-container .download-four .step-four {
       padding-top: 220px;
@@ -1891,7 +1891,7 @@
   .download-container .download-five {
     height: 420px;
     margin-top: -50px;
-    background: url("/images/sign/actor/download/download-five.png") no-repeat;
+    background: url("/activity/images/sign/actor/download/download-five.png") no-repeat;
     background-position: 70% 70%; }
     .download-container .download-five .step-five {
       padding-top: 100px;
@@ -1899,7 +1899,7 @@
   .download-container .download-six {
     height: 484px;
     margin-bottom: -60px;
-    background: url("/images/sign/actor/download/download-six.png") no-repeat center;
+    background: url("/activity/images/sign/actor/download/download-six.png") no-repeat center;
     background-size: 100%; }
     .download-container .download-six .step-six {
       padding-top: 94px;
@@ -1930,12 +1930,12 @@
       position: absolute;
       display: block; }
     .download-container-phone .wp-img .ios {
-      background: url("/images/sign/actor/download/download-phone-ios.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-phone-ios.png") no-repeat center;
       left: 20%;
       top: 47%;
       background-size: 100%; }
     .download-container-phone .wp-img .android {
-      background: url("/images/sign/actor/download/download-phone-android.png") no-repeat center;
+      background: url("/activity/images/sign/actor/download/download-phone-android.png") no-repeat center;
       left: 20%;
       top: 64%;
       background-size: 100%; }
@@ -1972,7 +1972,7 @@
       position: absolute;
       top: 0;
       left: -200px;
-      background: url("/images/sign/actor/sharereward/bg-left.png") repeat center;
+      background: url("/activity/images/sign/actor/sharereward/bg-left.png") repeat center;
       background-size: 100%; }
     .share-reward-container .wp .right-bg {
       width: 200px;
@@ -1980,12 +1980,12 @@
       position: absolute;
       top: 0;
       right: -200px;
-      background: url("/images/sign/actor/sharereward/bg-right.png") repeat center;
+      background: url("/activity/images/sign/actor/sharereward/bg-right.png") repeat center;
       background-size: 100%; }
     .share-reward-container .wp .reward-info-title {
       height: 306px;
       width: 100%;
-      background: url("/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
       background-size: 100%;
       margin-top: -18px; }
       .share-reward-container .wp .reward-info-title .title-text {
@@ -2003,7 +2003,7 @@
     .share-reward-container .wp .share-example {
       height: 862px;
       width: 100%;
-      background: url("/images/sign/actor/sharereward/share-example.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-example.png") no-repeat center;
       background-size: 100%;
       margin-top: -50px; }
       .share-reward-container .wp .share-example .example-title {
@@ -2017,11 +2017,11 @@
         .share-reward-container .wp .share-example .example-title .title-mole {
           width: 40px;
           margin-right: 10px;
-          background: url("/images/sign/actor/sharereward/share-example-mole.png") no-repeat center; }
+          background: url("/activity/images/sign/actor/sharereward/share-example-mole.png") no-repeat center; }
         .share-reward-container .wp .share-example .example-title .title-text {
           width: 200px;
           padding-top: 20px;
-          background: url("/images/sign/actor/sharereward/share-example-title.png") no-repeat center; }
+          background: url("/activity/images/sign/actor/sharereward/share-example-title.png") no-repeat center; }
       .share-reward-container .wp .share-example p {
         font-size: 16px;
         color: #fff;
@@ -2037,11 +2037,11 @@
         height: 70px; }
       .share-reward-container .wp .share-example .example-case-detail {
         height: 425px;
-        background: url("/images/sign/actor/sharereward/example-case-detail.png") no-repeat center; }
+        background: url("/activity/images/sign/actor/sharereward/example-case-detail.png") no-repeat center; }
     .share-reward-container .wp .share-recommend {
       height: 300px;
       width: 100%;
-      background: url("/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
       background-size: 100%;
       margin-top: -54px;
       text-align: center; }
@@ -2061,7 +2061,7 @@
     .share-reward-container .wp .share-rules {
       height: 440px;
       width: 100%;
-      background: url("/images/sign/actor/sharereward/share-rules.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-rules.png") no-repeat center;
       background-size: 100%;
       margin-top: -40px;
       margin-bottom: 56px; }
@@ -2076,7 +2076,7 @@
           height: 30px;
           font-size: 14px;
           color: #fff;
-          background: url("/images/sign/actor/sharereward/share-rulues-round.png") no-repeat;
+          background: url("/activity/images/sign/actor/sharereward/share-rulues-round.png") no-repeat;
           background-position: 0 10px;
           padding-left: 20px; }
       .share-reward-container .wp .share-rules p.rules-sign {
@@ -2099,17 +2099,17 @@
     padding: 0 2%; }
     .share-reward-phone .wp .reward-info-title {
       height: 185px;
-      background: url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
       background-size: 100% 100%;
       margin-top: -5px; }
     .share-reward-phone .wp .share-example {
       height: 500px;
-      background: url("/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-phone-example-new.png") no-repeat center;
       background-size: 100% 100%;
       margin-top: -16px; }
     .share-reward-phone .wp .share-recommend {
       height: 150px;
-      background: url("/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
       background-size: 100% 100%;
       margin-top: -16px;
       text-align: center; }
@@ -2127,7 +2127,7 @@
         margin-top: 72px; }
     .share-reward-phone .wp .share-rules {
       height: 260px;
-      background: url("/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
+      background: url("/activity/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
       background-size: 100% 100%;
       margin-top: -16px; }
     .share-reward-phone .wp .clearfix {
@@ -2156,20 +2156,20 @@
         left: -200px;
         width: 200px;
         height: 100%;
-        background: url("/images/sign/actor/achievement/left-line.png") repeat center; }
+        background: url("/activity/images/sign/actor/achievement/left-line.png") repeat center; }
       .invest-achievement-container .content-list .wp .right-line {
         position: absolute;
         top: 0;
         right: -200px;
         width: 200px;
         height: 100%;
-        background: url("/images/sign/actor/achievement/right-line.png") repeat center; }
+        background: url("/activity/images/sign/actor/achievement/right-line.png") repeat center; }
       .invest-achievement-container .content-list .wp .actor-intro {
         float: left;
         width: 800px;
         padding: 25px 100px 0 100px;
         height: 245px;
-        background: url("/images/sign/actor/achievement/info-bg.png") no-repeat center bottom; }
+        background: url("/activity/images/sign/actor/achievement/info-bg.png") no-repeat center bottom; }
         .invest-achievement-container .content-list .wp .actor-intro p {
           font-size: 18px;
           margin-bottom: 0; }
@@ -2195,10 +2195,10 @@
               top: 0; }
               .invest-achievement-container .content-list .wp .actor-model h3 span i.left-icon {
                 left: -85px;
-                background: url("/images/sign/actor/achievement/circle-left.png") no-repeat center; }
+                background: url("/activity/images/sign/actor/achievement/circle-left.png") no-repeat center; }
               .invest-achievement-container .content-list .wp .actor-model h3 span i.right-icon {
                 right: -85px;
-                background: url("/images/sign/actor/achievement/circle-right.png") no-repeat center; }
+                background: url("/activity/images/sign/actor/achievement/circle-right.png") no-repeat center; }
         .invest-achievement-container .content-list .wp .actor-model .actor-content {
           float: left;
           width: 100%;
@@ -2229,7 +2229,7 @@
                 display: inline-block;
                 position: relative;
                 top: 5px;
-                background: url("/images/sign/actor/achievement/icon-result.png") no-repeat; }
+                background: url("/activity/images/sign/actor/achievement/icon-result.png") no-repeat; }
                 .invest-achievement-container .content-list .wp .actor-model .actor-content .intro-text dd i.first-card {
                   background-position: 5px 4px; }
                 .invest-achievement-container .content-list .wp .actor-model .actor-content .intro-text dd i.max-card {
@@ -2254,7 +2254,7 @@
             font-size: 22px;
             display: inline-block;
             text-align: center;
-            background: url("/images/sign/actor/achievement/btn-bg.png") no-repeat center; }
+            background: url("/activity/images/sign/actor/achievement/btn-bg.png") no-repeat center; }
         .invest-achievement-container .content-list .wp .actor-model .explanation-text {
           float: left;
           width: 100%;
@@ -2294,7 +2294,7 @@
       width: 100%;
       height: 100px;
       padding-top: 15px;
-      background: url("/images/sign/actor/achievement/info-bg-phone.png") no-repeat center bottom;
+      background: url("/activity/images/sign/actor/achievement/info-bg-phone.png") no-repeat center bottom;
       background-size: 100%; }
       .invest-achievement-phone .phone-model .actor-intro p {
         font-size: 12px;
@@ -2319,11 +2319,11 @@
             top: 0; }
             .invest-achievement-phone .phone-model .actor-model h3 span i.left-icon {
               left: -45px;
-              background: url("/images/sign/actor/achievement/circle-left.png") no-repeat center;
+              background: url("/activity/images/sign/actor/achievement/circle-left.png") no-repeat center;
               background-size: 100%; }
             .invest-achievement-phone .phone-model .actor-model h3 span i.right-icon {
               right: -45px;
-              background: url("/images/sign/actor/achievement/circle-right.png") no-repeat center;
+              background: url("/activity/images/sign/actor/achievement/circle-right.png") no-repeat center;
               background-size: 100%; }
       .invest-achievement-phone .phone-model .actor-model .actor-content {
         float: left;
@@ -2347,7 +2347,7 @@
               display: inline-block;
               position: relative;
               top: 5px;
-              background: url("/images/sign/actor/achievement/icon-result.png") no-repeat; }
+              background: url("/activity/images/sign/actor/achievement/icon-result.png") no-repeat; }
               .invest-achievement-phone .phone-model .actor-model .actor-content .intro-text dd i.first-card {
                 background-position: 5px 4px; }
               .invest-achievement-phone .phone-model .actor-model .actor-content .intro-text dd i.max-card {
@@ -2372,7 +2372,7 @@
           font-size: 16px;
           display: inline-block;
           text-align: center;
-          background: url("/images/sign/actor/achievement/btn-bg.png") no-repeat center;
+          background: url("/activity/images/sign/actor/achievement/btn-bg.png") no-repeat center;
           background-size: 100%; }
       .invest-achievement-phone .phone-model .actor-model .explanation-text {
         float: left;
@@ -2413,7 +2413,7 @@
     display: none; }
   .actor-recruit-img {
     height: 150px;
-    background: url("/images/ttimg/ph-a03.jpg") center top no-repeat !important;
+    background: url("/activity/images/ttimg/ph-a03.jpg") center top no-repeat !important;
     background-size: cover !important; }
   .res-comtainer {
     display: block !important;
@@ -2422,7 +2422,7 @@
       width: 100%; }
   .activity-award-container .actor-award-img {
     height: 150px !important;
-    background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
+    background: url("/activity/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
     clear: both;
     background-size: contain !important; }
   .activity-award-container .wide-screen-out .wide-screen-inner {
@@ -2442,7 +2442,7 @@
     .activity-award-container .wide-screen-out .wide-screen-inner .award-product-box {
       height: 425px;
       margin-top: 20px;
-      background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
+      background: url("/activity/images/sign/actor/awards/app-product.jpg") center top no-repeat;
       background-size: contain; }
     .activity-award-container .wide-screen-out .wide-screen-inner .trophy-box .trophy-big {
       width: 70px; }

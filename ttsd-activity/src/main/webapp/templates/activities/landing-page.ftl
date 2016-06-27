@@ -170,7 +170,7 @@
             <span>投资</span>即有壕礼相送
         </div>
         <div class="content-wp">
-            <img src="${staticServer}/images/sign/actor/landingpage/three-title.png"/>
+            <img src="${staticServer}/activity/images/sign/actor/landingpage/three-title.png"/>
 
             <div class="table">
                 <div class="title">
@@ -228,13 +228,13 @@
             <div class="right">
                 <ul>
                     <a href="http://economy.gmw.cn/2016-03/31/content_19527114.htm" target="_blank">
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-one.png"></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-one.png"></li>
                     </a>
                     <a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank">
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-two.png"></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-two.png"></li>
                     </a>
                     <a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-three.png"></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-three.png"></li>
                     </a>
                 </ul>
                 <div class="title"><span>今日头条</span>拓天速贷以卓越风控打造高效资产平台</div>
@@ -620,9 +620,9 @@
         <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
     </div>
     <div class="landing-phone-logo">
-        <a href="/"><img src="${staticServer}/images/icons/logo.png" class="landing-phone-logo-image"></a>
+        <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
     </div>
-    <img src="${staticServer}/images/sign/actor/landingphone/landingpagebanner_app.png" class="landing-phone-banner">
+    <img src="${staticServer}/activity/images/sign/actor/landingphone/landingpagebanner_app.png" class="landing-phone-banner">
 
     <div class="tuotian-advantage">
         <div class="landing-phone-section-header-left">
@@ -634,19 +634,19 @@
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-interest.png"
+                    src="${staticServer}/activity/images/sign/actor/landingphone/landing-phone-interest.png"
                     class="img-icon"></span>
             <span class="landing-phone-span-right">稳健收益<br/><span>预期年化收益13%</span></span>
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-guaranty.png"
+                    src="${staticServer}/activity/images/sign/actor/landingphone/landing-phone-guaranty.png"
                     class="img-icon"></span>
             <span class="landing-phone-span-right">抵押模式<br/><span>公认的安全抵押债权</span></span>
         </div>
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
-                    src="${staticServer}/images/sign/actor/landingphone/landing-phone-fund.png" class="img-icon"></span>
+                    src="${staticServer}/activity/images/sign/actor/landingphone/landing-phone-fund.png" class="img-icon"></span>
             <span class="landing-phone-span-right">资金透明<br/><span>第三方资金托管</span></span>
         </div>
     </div>
@@ -720,7 +720,7 @@
         <div class="landing-phone-section-header-right">
         </div>
         <img class="landing-phone-gift-header"
-             src="/images/sign/actor/landingphone/landing-phone-gift-header.png"></img>
+             src="/activity/images/sign/actor/landingphone/landing-phone-gift-header.png"></img>
 
         <div class="gifts-content-container">
             <div class="gifts-content-title">
@@ -735,7 +735,7 @@
             </p>
         </div>
         <img class="landing-phone-gift-footer"
-             src="/images/sign/actor/landingphone/landing-phone-gift-footer.png"></img>>
+             src="/activity/images/sign/actor/landingphone/landing-phone-gift-footer.png"></img>>
     </div>
     <div class="tuotian-rewards">
         <div class="landing-phone-section-header-left">
@@ -823,7 +823,7 @@
         </div>
         <div class="aboutus-content-container">
             <img class="landing-phone-aboutus-header"
-                 src="/images/sign/actor/landingphone/landing-phone-aboutus-header.png"></img>
+                 src="/activity/images/sign/actor/landingphone/landing-phone-aboutus-header.png"></img>
 
             <div>
                 <span>今日头条</span>
