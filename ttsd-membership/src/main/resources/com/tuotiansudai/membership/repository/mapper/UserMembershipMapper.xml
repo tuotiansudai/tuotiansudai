@@ -80,7 +80,7 @@
     </select>
 
     <select id="findActiveByLoginName" resultMap="UserMembershipResultMap" parameterType="string">
-        select * from user_membership where login_name = #{loginName} and expired_time > now() order by created_time desc limit 1
+        select * from user_membership where login_name = #{loginName} and expired_time > now() and type = 'GIVEN' order by membership_id desc, created_time desc limit 1
     </select>
 
     <select id="findRateByLoginName" resultType="double" parameterType="string">

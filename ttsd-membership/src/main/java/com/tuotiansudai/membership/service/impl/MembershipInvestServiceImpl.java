@@ -43,7 +43,7 @@ public class MembershipInvestServiceImpl implements MembershipInvestService {
             Integer level = userMembershipMapper.findRealLevelByLoginName(loginName);
             MembershipModel newMembership = membershipMapper.findByExperience(totalPoint);
             if (newMembership.getLevel() > level) {
-                UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, newMembership.getId(), new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+                UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, newMembership.getId(), new DateTime(9999, 12, 31, 23, 59,59).toDate(), UserMembershipType.UPGRADE);
                 userMembershipMapper.create(userMembershipModel);
             }
         } catch (Exception e) {
