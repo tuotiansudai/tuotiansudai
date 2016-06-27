@@ -19,6 +19,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             $errorDom.append(html);
         }
 
+        var _URL = window.URL || window.webkitURL;
+
         var checkImage = function(file,width,height){
             var defer = $.Deferred(),
                 img = new Image();
@@ -124,9 +126,21 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     $self.attr('disabled', 'disabled');
-                    $bannerForm.target='';
-                    $bannerForm.action = "/banner-manage/create";
-                    $bannerForm.submit();
+                    var operate;
+                    if($('.jq-id').val() != null && $('.jq-id').val() != '') {
+                        if($('.jq_operator').val() == 'edit'){
+                            operate = 'edit';
+                        }
+                        else{
+                            operate = 'reuse';
+                        }
+
+                    } else {
+                        operate = 'create';
+                    }
+                    $bannerForm[0].target='';
+                    $bannerForm[0].action = "/banner-manage/"+operate;
+                    $bannerForm[0].submit();
                 }
 
             }
