@@ -499,18 +499,6 @@
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
     </select>
 
-    <select id="countInvestSuccessExperienceToday" resultType="long">
-        SELECT
-          COUNT(*)
-        FROM
-          invest t
-          JOIN loan l
-            ON t.loan_id = l.id
-            AND l.product_type = 'EXPERIENCE'
-        WHERE t.status = 'SUCCESS'
-          AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
-    </select>
-
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
         select *
         from invest
