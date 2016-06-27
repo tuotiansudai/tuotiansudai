@@ -36,28 +36,21 @@ public class PointController {
 
     @Autowired
     private SignInService signInService;
+
     @Autowired
     private PointService pointService;
+
     @Autowired
     private PointBillMapper pointBillMapper;
+
     @Autowired
     private PointTaskService pointTaskService;
+
     @Autowired
     private PointExchangeService pointExchangeService;
+
     @Autowired
     private CouponService couponService;
-
-    @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> signIn() {
-        String loginName = LoginUserInfo.getLoginName();
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = signInService.signIn(loginName);
-        baseDataDto.setStatus(true);
-        baseDto.setData(baseDataDto);
-        baseDto.setSuccess(true);
-        return baseDto;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView myPoint(){
@@ -83,11 +76,16 @@ public class PointController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/exchange_coupon_list", method = RequestMethod.GET)
-    public ModelAndView exchangeCouponList(){
-        ModelAndView modelAndView = new ModelAndView("/point_exchange_list");
-        return modelAndView;
-
+    @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> signIn() {
+        String loginName = LoginUserInfo.getLoginName();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = signInService.signIn(loginName);
+        baseDataDto.setStatus(true);
+        baseDto.setData(baseDataDto);
+        baseDto.setSuccess(true);
+        return baseDto;
     }
 
     @RequestMapping(value = "/{couponId}/exchange", method = RequestMethod.POST)
