@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppBannerController;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,6 @@ public class MobileAppBannerControllerTest extends ControllerTestBase {
     @Test
     public void getBannerTest() throws Exception {
         when(service.generateBannerList(any(BaseParam.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/banner");
+        doRequestWithServiceMockedTest("/get/banner", new BaseParamDto());
     }
 }
