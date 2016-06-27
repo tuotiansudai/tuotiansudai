@@ -1,11 +1,14 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -40,6 +43,9 @@ public class HomeController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private BannerMapper bannerMapper;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
@@ -52,6 +58,7 @@ public class HomeController {
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),investModelList.size() % 100 ,couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
+        modelAndView.addObject("bannerList",bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? true : false, Source.WEB.name()));
         return modelAndView;
     }
 }

@@ -116,6 +116,36 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
             event.preventDefault();
             $('.product-box-inner').removeClass('active');
         });
+
+        function cnzzCount(){
+            var url = $(this).data('name');
+            switch (url){
+                case '/activity/landing-page':
+                    cnzzPush.trackClick('83首页','Banner模块','landingpage');
+                    break;
+                case '/activity/rank-list':
+                    cnzzPush.trackClick('27首页','Banner模块','排行榜');
+                    break;
+                case '/activity/birth-month':
+                    cnzzPush.trackClick('23首页','Banner模块','生日月');
+                    break;
+                case '/activity/share-reward':
+                    cnzzPush.trackClick('74首页','Banner模块','推荐奖励');
+                    break;
+                case 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1':
+                    cnzzPush.trackClick('25首页','Banner模块','上市');
+                    break;
+                case '/activity/recruit':
+                    cnzzPush.trackClick('26首页','Banner模块','代理');
+                    break;
+                case '/activity/app-download':
+                    cnzzPush.trackClick('83首页','Banner模块','app');
+                    break;
+
+            }
+        }
+
+        $('.banner-img-list a').on('click', cnzzCount);
         
     });
 
