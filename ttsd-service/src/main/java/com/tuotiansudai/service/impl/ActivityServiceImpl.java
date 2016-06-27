@@ -31,13 +31,7 @@ public class ActivityServiceImpl implements ActivityService {
     public List<ActivityDto> getAllOperatingActivities(String loginName, Source source) {
         final List<ActivityDto> activityDtos = new ArrayList<>();
 
-        List<ActivityModel> activityModels;
-        if (Source.MOBILE == source) {
-            activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.IOS);
-            activityModels.addAll(activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.ANDROID));
-        } else {
-            activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, source);
-        }
+        List<ActivityModel> activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, source);
 
         Collections.sort(activityModels, new Comparator<ActivityModel>() {
             @Override
