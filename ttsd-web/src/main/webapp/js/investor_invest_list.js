@@ -123,7 +123,7 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.money-icon',function() {//money icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        var num =$(this).data('benefit');
         layer.tips('您使用了' + num + '元红包', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
