@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大理财、投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
+<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
 
 <div class="landing-container">
     <div class="landing-header">
@@ -97,124 +97,6 @@
             </ul>
         </div>
     </div>
-    <div class="content-two">
-        <div class="two-title">
-            为您精选理财产品
-        </div>
-        <div class="product-wp">
-            <ul class="clearfix">
-                <#list loans as loan>
-                    <#if loan.periods == 1>
-                        <li class="new-product">
-                            <i class="new-user"></i>
-                            <div class="product-left">
-                                <h3>${loan.name}</h3>
-                                <div class="loan-info-dl clearfix">
-                                    <dl>
-                                        <dt>预期年化收益</dt>
-                                        <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
-                                            <i>
-                                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
-                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                                </#if>%
-                                            </i>
-                                            <span>新手加息券</span>
-                                        </dd>
-                                    </dl>
-
-                                    <dl>
-                                        <dt>项目期限</dt>
-                                        <dd>${loan.duration} 天</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                            <div class="product-right">
-                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
-                            </div>
-                        </li>
-                    <#else>
-                        <li>
-                            <div class="product-left">
-                                <h3>${loan.name}</h3>
-                                <div class="loan-info-dl clearfix">
-                                    <dl>
-                                        <dt>预期年化收益</dt>
-                                        <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
-                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                </#if>%
-                                            </i>
-                                        </dd>
-                                    </dl>
-
-                                    <dl>
-                                        <dt>项目期限</dt>
-                                        <dd>${loan.duration} 天</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                            <div class="product-right">
-                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
-                            </div>
-                        </li>
-                    </#if>
-
-                </#list>
-            </ul>
-        </div>
-    </div>
-    <div class="content-three">
-        <div class="three-title">
-            <span>投资</span>即有壕礼相送
-        </div>
-        <div class="content-wp">
-            <img src="${staticServer}/activity/images/sign/actor/landingpage/three-title.png"/>
-
-            <div class="table">
-                <div class="title">
-                    投资攒天豆，<span>冲击排行榜</span>，大奖等您拿
-                </div>
-                <ul>
-                    <li class="border">天豆获取方式：霸道总裁活动期间，投资即可获得</li>
-                    <li>财豆获取方式：投资、签到、完成新手任务即可获得</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="content-four">
-        <div class="four-title">
-            呼朋唤友<span>赚佣金</span>
-        </div>
-        <div class="text">
-            <p>拓天速贷推荐制度是为了广大用户可以在投资的时候，邀请朋友共同赚取奖励的贴心活动。</p>
-
-            <p>当您在平台完成一系列操作之后，即可将自己的<span>用户名发送给身边的朋友</span>，当您的推荐人</p>
-
-            <p>成功投资后，您即可<span>获得奖励</span></p>
-        </div>
-        <table class="imagetable">
-            <tr>
-                <th></th>
-                <th>投资人</th>
-                <th>一级推荐人</th>
-                <th>二级推荐人</th>
-            </tr>
-            <tr>
-                <td>奖励机制</td>
-                <td class="slash"></td>
-                <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
-                <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
-            </tr>
-            <tr>
-                <td>投资实例</td>
-                <td>投资半年期标的10万元</td>
-                <td><span>奖励</span>约500元</td>
-                <td><span>奖励</span>约500元</td>
-            </tr>
-        </table>
-    </div>
     <div class="content-five">
         <div class="five-title">
             主流媒体眼中的我们
@@ -246,7 +128,20 @@
                 </p>
             </div>
         </div>
-        <div class="registered"><span>立即注册</span></div>
+    </div>
+    <div class="content-two">
+        <div class="two-title">
+            <h3><span><i class="left-icon"></i>活动说明<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="product-wp clearfix">
+            <ul>
+                <li><i class="fa fa-circle"></i>奖励可在“我的账户-我的宝藏”查看;</li>
+                <li><i class="fa fa-circle"></i>成功投资新手体验项目后可获得588元现金红包及3%加息券;</li>
+                <li><i class="fa fa-circle"></i>新手体验项目所得红包奖励需投资后方可提现，不可与其他红包及加息券共用；</li>
+                <li><i class="fa fa-circle"></i>每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑。</li>
+            </ul>
+            <div class="registered"><span>注册领取5888体验金</span></div>
+        </div>
     </div>
 
 
@@ -622,10 +517,26 @@
     <div class="landing-phone-logo">
         <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
     </div>
-    <img src="${staticServer}/activity/images/sign/actor/landingphone/landingpagebanner_app.png" class="landing-phone-banner">
+    <img src="${staticServer}/activity/images/app-banner/app-banner-landingpage.jpg" class="landing-phone-banner">
 
-    <div class="tuotian-advantage">
-        <div class="landing-phone-section-header-left">
+    <div class="tuotian-newuser">
+        <div class="landing-phone-section-header">
+            <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="wp tc">
+            <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
+            <div id="slideBox" class="slideBox">
+                <div class="bd">
+                    <ul>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
+                    </ul>
+                </div>
+                <a class="prev" href="javascript:void(0)"></a>
+                <a class="next" href="javascript:void(0)"></a>
+            </div>
+            <p>奖励请前往“我的账户--我的宝藏”查看</p>
         </div>
         <div class="landing-phone-section-header">
             拓天速贷的优势
