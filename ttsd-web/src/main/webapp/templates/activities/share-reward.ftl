@@ -22,8 +22,8 @@
    				<span class="title-mole"></span>
    				<span class="title-text"></span>
    			</div>
-   			<p>A邀请B注册，B买入<span>10</span>万元6月期产品，A获得<span>500</span>元现金奖励；</p>
-   			<p>B邀请C注册，C买入<span>1</span>万元3月期产品，B获得<span>25</span>元现金奖励，A也获得<span>25</span>元现金奖励；</p>
+   			<p>A邀请B注册，B买入<span>10</span>万元180天产品，A获得<span>493.15</span>元现金奖励；</p>
+   			<p>B邀请C注册，C买入<span>1</span>万元90天产品，B获得<span>24.65</span>元现金奖励，A也获得<span>24.65</span>元现金奖励；</p>
    			<div class="example-case">如果每人可以邀请3个朋友投资：</div>
    			<div class="example-case-detail"></div>
    		</div>

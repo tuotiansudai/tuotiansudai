@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BlacklistMapper">
+
+    <resultMap id="blacklistResultMap" type="BlacklistModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <select id="userIsInBlacklist" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM `aa`.`blacklist` WHERE login_name = #{loginName} AND deleted = 0;
+    </select>
+
+    <update id="updateBlacklist" parameterType="com.tuotiansudai.repository.model.BlacklistModel">
+        UPDATE `aa`.`blacklist` SET
+        created_time = #{createdTime},
+        updated_time = #{updatedTime},
+        deleted = #{deleted}
+        WHERE
+        login_name = #{loginName}
+    </update>
+
+    <insert id="massInsertBlacklist" parameterType="java.util.List">
+        INSERT INTO `aa`.`blacklist`
+        (login_name, created_time, updated_time, deleted)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.loginName}, #{item.createdTime}, #{item.updatedTime}, #{item.deleted})
+        </foreach>
+    </insert>
+
+    <select id="findBlacklistModelByLoginName" resultMap="blacklistResultMap">
+        SELECT
+        id, login_name, created_time, updated_time, deleted
+        FROM
+        `aa`.`blacklist`
+        WHERE
+        login_name = #{loginName}
+    </select>
+
+</mapper>

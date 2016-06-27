@@ -57,8 +57,8 @@
     </sql>
 
     <insert id="create" parameterType="WithdrawModel">
-        insert into withdraw (id, bank_card_id, login_name, amount, fee, status, source, created_time)
-        value(#{id}, #{bankCardId}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime})
+        insert into withdraw (id, bank_card_id, login_name, amount, fee, status, source, created_time, updated_time)
+        value(#{id}, #{bankCardId}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime}, now())
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
@@ -68,6 +68,7 @@
     <update id="update" parameterType="WithdrawModel">
         update withdraw
         <set>
+            updated_time = now(),
             <if test="status != null">status = #{status},</if>
             <if test="applyNotifyTime != null">apply_notify_time = #{applyNotifyTime},</if>
             <if test="applyNotifyMessage != null">apply_notify_message = #{applyNotifyMessage},</if>

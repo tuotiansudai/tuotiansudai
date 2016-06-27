@@ -25,13 +25,6 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
-    BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName,
-                                                                                                    int index,
-                                                                                                    int pageSize,
-                                                                                                    Date startTime,
-                                                                                                    Date endTime,
-                                                                                                    LoanStatus loanStatus);
-
     long findCountInvestPagination(Long loanId, String investorLoginName,
                                    String channel, Source source, String role,
                                    Date startTime, Date endTime,
@@ -46,11 +39,11 @@ public interface InvestService {
                                                 Date startTime,
                                                 Date endTime,
                                                 InvestStatus investStatus,
-                                                LoanStatus loanStatus, boolean isPagination);
+                                                LoanStatus loanStatus);
 
-    void turnOnAutoInvest(AutoInvestPlanModel model);
+    boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
 
-    void turnOffAutoInvest(String loginName);
+    boolean turnOffAutoInvest(String loginName, String ip);
 
     AutoInvestPlanModel findAutoInvestPlan(String loginName);
 
@@ -64,7 +57,7 @@ public interface InvestService {
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
 
-    boolean switchNoPasswordInvest(String loginName, boolean isTurnOn);
+    boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip);
 
     void markNoPasswordRemind(String loginName);
 }

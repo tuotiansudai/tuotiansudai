@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +31,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+
         super.additionalAuthenticationChecks(userDetails, authentication);
 
         String loginName = userDetails.getUsername();
@@ -39,6 +41,11 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
             String errorMessage = MessageFormat.format("Login Error: {0} is locked!", loginName);
             throw new DisabledException(errorMessage);
         }
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication)
+            throws AuthenticationException {
 
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
@@ -49,6 +56,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
                 throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
             }
         }
+        return super.authenticate(authentication);
     }
 
     public void setCaptchaHelper(CaptchaHelper captchaHelper) {

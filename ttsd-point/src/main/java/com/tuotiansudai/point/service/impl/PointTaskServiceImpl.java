@@ -58,7 +58,7 @@ public class PointTaskServiceImpl implements PointTaskService {
     public void completeTask(PointTask pointTask, String loginName) {
         if (isCompletedTaskConditions(pointTask, loginName)) {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
-            userPointTaskMapper.create(new UserPointTaskModel(loginName,  pointTaskModel.getId()));
+            userPointTaskMapper.create(new UserPointTaskModel(loginName,  pointTaskModel.getId(), pointTaskModel.getPoint(), 1));
             pointBillService.createPointBill(loginName,pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
         }
 

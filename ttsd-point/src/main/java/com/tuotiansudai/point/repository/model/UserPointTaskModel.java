@@ -9,29 +9,23 @@ public class UserPointTaskModel implements Serializable {
 
     private long pointTaskId;
 
-    private Date createdTime;
-
     private PointTaskModel pointTask;
 
     private long point;
 
     private long taskLevel;
 
+    private Date createdTime;
+
     public UserPointTaskModel() {
     }
 
-    public UserPointTaskModel(String loginName, long pointTaskId) {
+    public UserPointTaskModel(String loginName, long pointTaskId, long point, long taskLevel) {
         this.loginName = loginName;
         this.pointTaskId = pointTaskId;
-        this.createdTime = new Date();
-    }
-
-    public UserPointTaskModel(String loginName, long pointTaskId,long point,long taskLevel) {
-        this.loginName = loginName;
-        this.pointTaskId = pointTaskId;
-        this.createdTime = new Date();
         this.point = point;
         this.taskLevel = taskLevel;
+        this.createdTime = new Date();
     }
 
     public String getLoginName() {
@@ -48,14 +42,6 @@ public class UserPointTaskModel implements Serializable {
 
     public void setPointTaskId(long pointTaskId) {
         this.pointTaskId = pointTaskId;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
     }
 
     public PointTaskModel getPointTask() {
@@ -80,5 +66,13 @@ public class UserPointTaskModel implements Serializable {
 
     public void setTaskLevel(long taskLevel) {
         this.taskLevel = taskLevel;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }

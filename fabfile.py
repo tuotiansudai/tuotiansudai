@@ -16,6 +16,7 @@ env.roledefs = {
     'sms': ['shenzhen'],
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
+    'cms': ['wuhan'],
 }
 
 
@@ -43,7 +44,8 @@ def mk_worker_zip():
 
 
 def mk_static_zip():
-    local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
+    local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
+    local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
 
 
 def build():
@@ -61,9 +63,11 @@ def compile():
 @roles('static')
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
+        sudo('unzip static_api.zip -d static')
         sudo('service nginx restart')
 
 
@@ -235,7 +239,7 @@ def remove_old_logs():
     execute(remove_static_logs)
 
 
-@roles('portal', 'pay', 'worker', 'api')
+@roles('portal', 'pay', 'worker', 'api', 'cms')
 @parallel
 def restart_logstash_service():
     """

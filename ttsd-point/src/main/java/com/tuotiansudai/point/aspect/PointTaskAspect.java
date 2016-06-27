@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.aspect;
 
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -8,6 +9,7 @@ import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -58,20 +60,13 @@ public class PointTaskAspect {
 
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
-        pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
         pointService.obtainPointInvest(investModel);
 
+        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, investModel.getLoginName());
+
+        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, investModel.getLoginName());
+
         logger.debug("after returning invest, point task aspect completed");
-    }
-
-    @AfterReturning(value = "execution(* *..BindEmailService.verifyEmail(..))")
-    public void afterReturningVerifyEmail(JoinPoint joinPoint) {
-        logger.debug("after returning bind email, point task aspect starting...");
-
-        String loginName = (String) joinPoint.getArgs()[0];
-        pointTaskService.completeTask(PointTask.BIND_EMAIL, loginName);
-
-        logger.debug("after returning bind email, point task aspect completed");
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -101,10 +96,52 @@ public class PointTaskAspect {
     @AfterReturning(value = "execution(* *..UserService.registerUser(..))", returning = "returnValue")
     public void afterReturningRegisterUser(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after returning registerUser success, point task aspect starting...");
-        RegisterUserDto registerUserDto =  (RegisterUserDto) joinPoint.getArgs()[0];
-        if((boolean)returnValue && StringUtils.isNotEmpty(registerUserDto.getReferrer())){
+        RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
+        if ((boolean) returnValue && StringUtils.isNotEmpty(registerUserDto.getReferrer())) {
             pointTaskService.completeTask(PointTask.EACH_RECOMMEND, registerUserDto.getReferrer());
         }
         logger.debug("after returning registerUser success, point task aspect completed");
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..AgreementService.postAgreementCallback(..))")
+    public void afterReturningNoPasswordInvestAgreementCallback(JoinPoint joinPoint) {
+        logger.debug("after returning agreement, point task aspect starting...");
+
+        String loginName = (String) joinPoint.getArgs()[0];
+        AgreementBusinessType agreementBusinessType = (AgreementBusinessType) joinPoint.getArgs()[1];
+
+        if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
+            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+        }
+
+        logger.debug("after returning agreement, point task aspect completed");
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..InvestService.switchNoPasswordInvest(..))")
+    public void afterReturningTurnOnNoPasswordInvestCallback(JoinPoint joinPoint) {
+        logger.debug("after returning turn on no password invest, point task aspect starting...");
+
+        String loginName = (String) joinPoint.getArgs()[0];
+        boolean isTurn = (boolean) joinPoint.getArgs()[1];
+
+        if (isTurn) {
+            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+        }
+
+        logger.debug("after returning turn on no password invest, point task aspect completed");
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..InvestService.turnOnAutoInvest(..))")
+    public void afterReturningTurnOnAutoInvestCallback(JoinPoint joinPoint) {
+        logger.debug("after returning turn on auto invest, point task aspect starting...");
+
+        String loginName = (String) joinPoint.getArgs()[0];
+
+        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
+
+        logger.debug("after returning turn on auto invest, point task aspect completed");
     }
 }
