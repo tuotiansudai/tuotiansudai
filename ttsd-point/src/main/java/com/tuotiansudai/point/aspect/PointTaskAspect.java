@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
@@ -13,6 +14,7 @@ import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.RechargeModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -89,6 +91,16 @@ public class PointTaskAspect {
         pointTaskService.completeTask(PointTask.BIND_BANK_CARD, bankCardModel.getLoginName());
 
         logger.debug("after returning bind card, point task aspect completed");
+    }
+
+    @AfterReturning(value = "execution(* *..UserService.registerUser(..))", returning = "returnValue")
+    public void afterReturningRegisterUser(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after returning registerUser success, point task aspect starting...");
+        RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
+        if ((boolean) returnValue && StringUtils.isNotEmpty(registerUserDto.getReferrer())) {
+            pointTaskService.completeTask(PointTask.EACH_RECOMMEND, registerUserDto.getReferrer());
+        }
+        logger.debug("after returning registerUser success, point task aspect completed");
     }
 
     @SuppressWarnings(value = "unchecked")
