@@ -315,6 +315,9 @@
                                         <dt>预期年化收益</dt>
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <#if (loan.extraRate > 0)>
+                                                    ~ <@percentInteger>${loan.baseRate + loan.extraRate}</@percentInteger><@percentFraction>${loan.extraRate}</@percentFraction>
+                                                </#if>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
                                                 </#if>%
@@ -410,23 +413,22 @@
                                            %</em>
                                     </div>
                                 </div>
-                            </div>
-                            <dl class="pr-info">
-                                <dd class="dl-month"><i>3</i>天 <span>项目期限</span></dd>
-                                <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
-                            </dl>
-                            <div class="project-schedule clear-blank clearfix">
-                                <div class="pro">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">20%</span>
-                                    </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:20%"></div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${experienceLoanDto.duration}</i>天 <span>项目期限</span></dd>
+                                    <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
+                                </dl>
+                                <div class="project-schedule clear-blank clearfix">
+                                    <div class="pro">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${experienceLoanDto.progress} %</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${experienceLoanDto.progress}%"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <a href="/loan/" class="btn-normal">立即投资</a>
 
                         <div class="guide-img">

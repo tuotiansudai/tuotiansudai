@@ -19,6 +19,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             $('.invest-ranking').show();
             $('.referrer-ranking').hide();
             $('.upload-image').hide();
+            $('.avg-invest').show();
         });
 
         $('.referrer').on('click', function(){
@@ -31,6 +32,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             $('.referrer-ranking').show();
             $('.invest-ranking').hide();
             $('.upload-image').hide();
+            $('.avg-invest').hide();
         });
 
         $('.upload').on('click', function(){

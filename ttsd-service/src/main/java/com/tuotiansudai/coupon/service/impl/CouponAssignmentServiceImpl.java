@@ -89,6 +89,12 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "experienceRepaySuccessCollector")
     private UserCollector experienceRepaySuccessCollector;
 
+    @Resource(name = "exchangeCodeCollector")
+    private UserCollector exchangeCodeCollector;
+
+    @Resource(name = "notAccountNotInvestedUserCollector")
+    private UserCollector notAccountNotInvestedUserCollector;
+
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
@@ -111,7 +117,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, exchangeCode);
+        ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, exchangeCode);
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
     }
 
@@ -232,6 +238,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.NEW_REGISTERED_USER, this.newRegisteredUserCollector)
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
+                .put(UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER, this.notAccountNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .put(UserGroup.AGENT, this.agentCollector)
                 .put(UserGroup.CHANNEL, this.channelCollector)
@@ -239,6 +246,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
                 .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
                 .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)

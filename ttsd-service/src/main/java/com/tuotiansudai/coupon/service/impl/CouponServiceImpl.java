@@ -20,10 +20,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -348,9 +345,12 @@ public class CouponServiceImpl implements CouponService {
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if(loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()){
+            investFeeRate = this.defaultFee;
+        }
 
         for (Long couponId : couponIds) {
-            LoanModel loanModel = loanMapper.findById(loanId);
             CouponModel couponModel = couponMapper.findById(couponId);
             if (loanModel == null || couponModel == null) {
                 continue;

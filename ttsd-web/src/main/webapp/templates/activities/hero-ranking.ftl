@@ -143,7 +143,7 @@
                         <p class="tip-text">注：每日英雄榜排名前十名的上榜者可获得1%加息劵一张！</p>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name">当日投资英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">历史投资英雄榜</h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="heroPre">上一天</span>
                             <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
@@ -220,7 +220,7 @@
                 <div class="rank-content">
                     <div class="rank-model">
                         <h3>今日推荐英雄榜<span>(实时)</span></h3>
-                        <dl class="data-list" id="refeInvest"></dl>
+                        <dl class="data-list other-type" id="refeInvest"></dl>
                             <script type="text/html" id="refeInvestTpl">
                                 <dt>
                                     <span class="title-text">名次</span>
@@ -237,11 +237,12 @@
                                     <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
-                                        <span class="reward-text">神秘大奖</span>
-                                    {{else if $index>0 && $index<5}}
-                                        <span class="reward-text">200元红包</span>
+                                        <span class="reward-text">100元红包</span>
+                                    {{else if $index==1}}
+                                        <span class="reward-text">50元红包</span>
+                                    {{else if $index==2}}
+                                    <span class="reward-text">30元红包</span>
                                     {{else}}
-                                    <span class="reward-text">100元红包</span>
                                     {{/if}}
                                 </dd>
                                 {{/each}}
@@ -251,14 +252,14 @@
                             </script>
                     </div>
                     <div class="rank-model">
-                        <h3 class="title-name">当日推荐英雄榜<span>(实时)</span></h3>
+                        <h3 class="title-name">历史推荐英雄榜</h3>
                         <h3 class="list-title">
                             <span class="pre-btn" id="refePre">上一天</span>
                             <span class="date-info"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                             <span>英雄榜</span>
                             <span class="next-btn" id="refeNext">下一天</span>
                         </h3>
-                        <dl class="data-list" id="refeRecord"></dl>
+                        <dl class="data-list other-type" id="refeRecord"></dl>
                             <script type="text/html" id="refeRecordTpl">
                                 <dt>
                                     <span class="title-text">名次</span>
@@ -275,11 +276,12 @@
                                     <span class="data-text">{{$value.centSumAmount}}</span>
                                     <span class="user-text">{{$value.loginName}}</span>
                                     {{if $index==0}}
-                                        <span class="reward-text">神秘大奖</span>
-                                    {{else if $index>0 && $index<5}}
-                                        <span class="reward-text">200元红包</span>
+                                        <span class="reward-text">100元红包</span>
+                                    {{else if $index==1}}
+                                        <span class="reward-text">50元红包</span>
+                                    {{else if $index==2}}
+                                    <span class="reward-text">30元红包</span>
                                     {{else}}
-                                    <span class="reward-text">100元红包</span>
                                     {{/if}}
                                 </dd>
                                 {{/each}}
@@ -303,11 +305,11 @@
             <div class="model-list">
                 <ul class="rule-list">
                     <li>1. 每天24点将计算当日新增投资及新增直接推荐投资的排名，投资者在当日24点之前进行的多次投资，金额可累计计算；投资英雄榜仅限于直投项目，其余投资不计入今日投资金额中；</li>
-                    <li>2. 投资英雄榜中奖人数最多十名,推荐英雄榜最多三名，如遇金额一致则并列获奖，下一奖项名额顺延缩减；</li>
+                    <li>2. 投资英雄榜中奖人数最多十名,推荐英雄榜最多三名，如遇金额一致则按时间先后确认排名，下一奖项名额顺延缩减；</li>
                     <li>3. 每日英雄榜排名将在活动页面实时更新。中奖结果将于次日由客服联系确认，红包和加息券在中奖次日发放，实物奖品将于月底活动结束后七个工作日内统一安排发放；</li>
                     <li>4. <span>特别提示</span>：活动期间一旦提交债权转让申请，则不可在活动期间继续参与投资英雄榜。即使发起债权转让申请的当天，累计投资额已入围当日前10名，也不可参与当日投资英雄榜排名及获取奖励；</li>
                     <li>5. 拓天速贷会根据活动的情况，以等值，增值为基础调整奖品类型；</li>
-                    <li class="tip-info">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有***</li>
+                    <li class="tip-info">***活动遵循法律声明，最终解释权归拓天速贷平台所有***</li>
                 </ul>
             </div>
             <div class="tip-vip-model" id="vipTipModel">

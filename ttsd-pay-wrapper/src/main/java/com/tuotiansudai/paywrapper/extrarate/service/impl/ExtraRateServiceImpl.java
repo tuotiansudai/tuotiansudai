@@ -64,8 +64,10 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         InvestModel investModel = investMapper.findById(investId);
         InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(transferInvestModel.getId());
-        investExtraRateModel.setTransfer(true);
-        investExtraRateMapper.update(investExtraRateModel);
+        if (investExtraRateModel != null) {
+            investExtraRateModel.setTransfer(true);
+            investExtraRateMapper.update(investExtraRateModel);
+        }
     }
 
     @Override

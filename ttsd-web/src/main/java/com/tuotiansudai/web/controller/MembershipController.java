@@ -4,17 +4,20 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.membership.repository.model.GivenMembership;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -46,6 +49,9 @@ public class MembershipController {
     private UserMembershipService userMembershipService;
 
     @Autowired
+    private HeroRankingService heroRankingService;
+
+    @Autowired
     private AppTokenParser appTokenParser;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -57,12 +63,15 @@ public class MembershipController {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
+            long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
+            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
 
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
-            modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - accountModel.getMembershipPoint()));
-            modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
+            modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - membershipPoint));
+            modelAndView.addObject("membershipPoint", membershipPoint);
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
+            modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
         modelAndView.addObject("loginName", loginName);
@@ -100,8 +109,11 @@ public class MembershipController {
     @RequestMapping(value = "/structure-list-data", method = RequestMethod.GET)
     public List<MembershipExperienceBillDto> structureListData(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                                @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-
         String loginName = LoginUserInfo.getLoginName();
+        if(startTime != null && endTime != null){
+            startTime  = new DateTime(startTime).plusHours(23).plusMinutes(59).plusSeconds(59).toDate();
+            endTime = new DateTime(endTime).plusHours(23).plusMinutes(59).plusSeconds(59).toDate();
+        }
         List<MembershipExperienceBillModel> items = membershipExperienceBillService.findMembershipExperienceBillList(loginName, startTime, endTime, null, null);
         List<MembershipExperienceBillDto> records = Lists.transform(items, new Function<MembershipExperienceBillModel, MembershipExperienceBillDto>() {
             @Override
@@ -118,7 +130,7 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = userMembershipService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            GivenMembership givenMembership = heroRankingService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {

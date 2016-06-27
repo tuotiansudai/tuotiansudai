@@ -1,6 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -48,6 +54,12 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
     private UserBillMapper userBillMapper;
 
     @Autowired
@@ -55,6 +67,9 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
 
     @Autowired
     private AdvanceRepayService advanceRepayService;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Test
     public void shouldCallbackFirstPeriodWhenLoanIsRepaying() throws Exception {
@@ -68,6 +83,11 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+
         DateTime recheckTime = new DateTime().minusDays(5);
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
@@ -79,9 +99,9 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
-        invest.setInvestFeeRate(0.1);
+
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
@@ -119,6 +139,10 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
 
         UserModel transferee = this.getFakeUser("transferee");
         AccountModel transfereeAccount = this.getFakeAccount(transferee);
@@ -136,10 +160,9 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
-        invest.setInvestFeeRate(0.1);
         investMapper.create(invest);
 
         InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);

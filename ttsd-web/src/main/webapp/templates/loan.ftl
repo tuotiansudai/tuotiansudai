@@ -43,22 +43,20 @@
                         <!-- <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div> -->
                     </#if>
                 </#if>
-                 <div class="product-type-text extra-rate" id="extra-rate">投资加息+0.4%~0.5%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
-                 <script>
-                     var __extraRate = [{
-                            minInvestAmount: 100,
-                            maxInvestAmount: 999,
-                            rate: 0.3
-                        }, {
-                            minInvestAmount: 1000,
-                            maxInvestAmount: 9999,
-                            rate: 0.5
-                        }, {
-                            minInvestAmount: 10000,
-                            maxInvestAmount: 0,
-                            rate: 0.7
-                        }];
-                 </script>
+                <#if extraLoanRateModels ??>
+                     <div class="product-type-text extra-rate" id="extra-rate">投资加息+${minRate}%~${maxRate}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                     <script>
+                         var __extraRate = [
+                            <#list extraLoanRateModels as extraLoanRate>
+                                {
+                                    minInvestAmount: ${extraLoanRate.minInvestAmount},
+                                    maxInvestAmount: ${extraLoanRate.maxInvestAmount},
+                                    rate: ${extraLoanRate.rate}
+                                },
+                            </#list>
+                            ];
+                     </script>
+                </#if>
                  <script type="text/template" id="extra-rate-popup-tpl">
                     <div class="extra-rate-popup" id="extra-rate-popup">
                         <div class="header clearfix">

@@ -2,6 +2,8 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Doubles;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -92,6 +95,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;
+
 
     /**
      * @param loanTitleDto
@@ -541,6 +545,10 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDto.setProductType(loanModel.getProductType());
+            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
+            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+                loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
+            }
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -610,7 +618,10 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setProgress(investCount);
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
-
+                double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
+                if(rate > 0){
+                    loanItemDto.setExtraRate(extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId()));
+                }
                 return loanItemDto;
             }
         });
@@ -647,6 +658,15 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
+    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
+    }
+
     @Override
     public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -656,4 +676,5 @@ public class LoanServiceImpl implements LoanService {
         payDataDto.setStatus(true);
         return baseDto;
     }
+
 }
