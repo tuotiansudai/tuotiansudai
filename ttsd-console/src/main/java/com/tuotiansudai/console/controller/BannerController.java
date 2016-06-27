@@ -5,12 +5,17 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BannerDto;
 import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.BannerService;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +26,11 @@ public class BannerController {
     @Autowired
     private BannerService bannerService;
 
+    @Autowired
+    private AuditLogService auditLogService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView bannerCreate() {
         ModelAndView modelAndView = new ModelAndView("/banner");
@@ -29,27 +39,38 @@ public class BannerController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String bannerCreate(@ModelAttribute BannerDto bannerDto) {
+    public String bannerCreate(@ModelAttribute BannerDto bannerDto, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         bannerService.create(bannerDto, loginName);
+        String ip = RequestIPParser.parse(request);
+        String description = loginName + "在 " + sdf.format(new Date()) +"创建了" +"名称为:" + bannerDto.getName() + "的banner." ;
+        auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerDto.getName(), description, ip);
         return "redirect:/banner-manage/list";
     }
 
     @RequestMapping(value = "/banner/del/{id}", method = RequestMethod.GET)
-    public String delBanner(@PathVariable Long id) {
+    public String delBanner(@PathVariable Long id, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
         BannerModel bannerModel = this.bannerService.findById(id);
         bannerModel.setDeleted(true);
         bannerService.updateBanner(bannerModel);
+        String ip = RequestIPParser.parse(request);
+        String description = loginName + "在 " + sdf.format(new Date()) +"删除了" +"名称为:" + bannerModel.getName() + "的banner." ;
+        auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerModel.getName(), description, ip);
         return "redirect:/banner-manage/list";
     }
 
     @RequestMapping(value = "/banner/deactivated/{id}", method = RequestMethod.GET)
-    public String deactivatedBanner(@PathVariable Long id) {
+    public String deactivatedBanner(@PathVariable Long id, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
         BannerModel bannerModel = this.bannerService.findById(id);
         bannerModel.setDeactivatedTime(new Date());
         bannerModel.setActive(false);
         bannerModel.setDeactivatedBy(LoginUserInfo.getLoginName());
         bannerService.updateBanner(bannerModel);
+        String ip = RequestIPParser.parse(request);
+        String description = loginName + "在 " + sdf.format(new Date()) +"下线了" +"名称为:" + bannerModel.getName() + "的banner." ;
+        auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerModel.getName(), description, ip);
         return "redirect:/banner-manage/list";
     }
 
@@ -64,20 +85,27 @@ public class BannerController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String bannerEdit(@ModelAttribute BannerDto bannerDto) {
+    public String bannerEdit(@ModelAttribute BannerDto bannerDto, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
         BannerModel bannerModel = new BannerModel(bannerDto);
         bannerModel.setActive(true);
         bannerModel.setActivatedBy(LoginUserInfo.getLoginName());
         bannerModel.setActivatedTime(new Date());
         bannerModel.setDeleted(false);
         bannerService.updateBanner(bannerModel);
+        String ip = RequestIPParser.parse(request);
+        String description = loginName + "在 " + sdf.format(new Date()) +"编辑了" +"名称为:" + bannerModel.getName() + "的banner." ;
+        auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerModel.getName(), description, ip);
         return "redirect:/banner-manage/list";
     }
 
     @RequestMapping(value = "/reuse", method = RequestMethod.POST)
-    public String bannerReuse(@ModelAttribute BannerDto bannerDto) {
+    public String bannerReuse(@ModelAttribute BannerDto bannerDto, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         bannerService.create(bannerDto, loginName);
+        String ip = RequestIPParser.parse(request);
+        String description = loginName + "在 "+ sdf.format(new Date()) +"复用了" +"名称为:" + bannerDto.getName() + "的banner." ;
+        auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerDto.getName(), description, ip);
         return "redirect:/banner-manage/list";
     }
 
