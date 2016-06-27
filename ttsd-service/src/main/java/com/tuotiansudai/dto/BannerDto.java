@@ -4,6 +4,7 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class BannerDto extends BaseDataDto implements Serializable {
@@ -29,6 +30,16 @@ public class BannerDto extends BaseDataDto implements Serializable {
     private boolean authenticated;
 
     private int order;
+
+    private boolean active;
+
+    private String activatedBy;
+
+    private Date activatedTime;
+
+    private Date deactivatedTime;
+
+    private boolean deleted;
 
     public long getId() {
         return id;
@@ -100,6 +111,46 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getActivatedBy() {
+        return activatedBy;
+    }
+
+    public void setActivatedBy(String activatedBy) {
+        this.activatedBy = activatedBy;
+    }
+
+    public Date getActivatedTime() {
+        return activatedTime;
+    }
+
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
+    }
+
+    public Date getDeactivatedTime() {
+        return deactivatedTime;
+    }
+
+    public void setDeactivatedTime(Date deactivatedTime) {
+        this.deactivatedTime = deactivatedTime;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getTitle() {
