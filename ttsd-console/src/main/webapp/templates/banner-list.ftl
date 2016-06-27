@@ -30,8 +30,8 @@
                         <tr>
                             <td>${banner.order!}</td>
                             <td>${banner.name!}</td>
-                            <td><img src="${banner.webImageUrl!}" width="100" height="30"/></td>
-                            <td><img src="${banner.appImageUrl!}" width="100" height="30"/></td>
+                            <td><span class="webImg"><img id="webUrl" src="${banner.webImageUrl!}" width="100" height="30"/></span></td>
+                            <td><span class="appImg"><img id="appUrl" src="${banner.appImageUrl!}" width="100" height="30"/></td>
                             <td><a href="${banner.url!}" target="_blank">${banner.url!}</td>
                             <td>${banner.authenticated?then('登录后可见','非登录可见')}</td>
                             <td>
