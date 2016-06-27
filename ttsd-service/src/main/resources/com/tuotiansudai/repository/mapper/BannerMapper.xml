@@ -35,9 +35,9 @@
 
     <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
         select * from banner
-        where active = '1'
-            <if test="authenticated == true">
-                and authenticated = #{authenticated}
+        where active = '1' and deleted = '0'
+            <if test="isLogin == true">
+                and authenticated = '0'
             </if>
             <if test="source != null and source != ''">
                 and source = #{source}
