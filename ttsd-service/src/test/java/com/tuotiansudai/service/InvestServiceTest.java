@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -108,17 +109,14 @@ public class InvestServiceTest {
         AutoInvestPlanModel model = investService.findAutoInvestPlan(loginName);
         assert model == null;
 
-        AutoInvestPlanModel newModel = new AutoInvestPlanModel();
-        newModel.setLoginName(loginName);
-        newModel.setId(idGenerator.generate());
-        newModel.setMaxInvestAmount(1000000);
-        newModel.setMinInvestAmount(10000);
-        newModel.setRetentionAmount(1000000);
-        newModel.setCreatedTime(new Date());
-        newModel.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
-        newModel.setEnabled(true);
+        AutoInvestPlanDto dto = new AutoInvestPlanDto();
+        dto.setMaxInvestAmount("10000.00");
+        dto.setMinInvestAmount("100.00");
+        dto.setRetentionAmount("10000.00");
+        dto.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
+        dto.setEnabled(true);
 
-        investService.turnOnAutoInvest(newModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         AutoInvestPlanModel dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
@@ -132,7 +130,7 @@ public class InvestServiceTest {
         assert dbModel.getLoginName().equals(loginName);
         assert !dbModel.isEnabled();
 
-        investService.turnOnAutoInvest(dbModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;

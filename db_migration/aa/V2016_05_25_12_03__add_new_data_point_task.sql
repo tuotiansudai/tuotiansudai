@@ -5,9 +5,9 @@ INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, 
 INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (10, 'EACH_REFERRER_INVEST', 1000, now(), 1, 1);
 INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (11, 'FIRST_REFERRER_INVEST', 5000, now(), 1, 0);
 INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (12, 'FIRST_INVEST_180', 1000, now(), 1, 0);
-INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (13, 'FIRST_TURN_ON_NO_PASSWORD_INVEST', 1000, now(), 1, 0);
-INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (14, 'FIRST_TURN_ON_AUTO_INVEST', 1000, now(), 1, 0);
-INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (15, 'FIRST_INVEST_360', 1000, now(), 1, 0);
+INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (13, 'FIRST_INVEST_360', 1000, now(), 1, 0);
+INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (14, 'FIRST_TURN_ON_NO_PASSWORD_INVEST', 1000, now(), 1, 0);
+INSERT INTO `aa`.`point_task` (`id`, `name`, `point`, `created_time`, `active`, `multiple`) VALUES (15, 'FIRST_TURN_ON_AUTO_INVEST', 1000, now(), 1, 0);
 
 UPDATE `aa`.`point_task`
 SET active = FALSE

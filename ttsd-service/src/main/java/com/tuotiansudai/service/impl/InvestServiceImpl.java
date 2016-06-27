@@ -3,9 +3,9 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -18,10 +18,10 @@ import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -71,9 +71,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private InvestTransferService investTransferService;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -313,22 +310,34 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public void turnOnAutoInvest(AutoInvestPlanModel model) {
-        if (StringUtils.isBlank(model.getLoginName())) {
-            throw new NullPointerException("Not Login");
+    @Transactional
+    public boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto dto, String ip) {
+        if (Strings.isNullOrEmpty(loginName)) {
+            return false;
         }
 
-        AutoInvestPlanModel planModel = autoInvestPlanMapper.findByLoginName(model.getLoginName());
-        model.setCreatedTime(new Date());
-        model.setEnabled(true);
-
-        if (planModel != null) {
-            model.setId(planModel.getId());
+        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
+        if (model != null) {
+            model.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
+            model.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
+            model.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
+            model.setAutoInvestPeriods(dto.getAutoInvestPeriods());
+            model.setCreatedTime(new Date());
+            model.setEnabled(true);
             autoInvestPlanMapper.update(model);
         } else {
-            model.setId(idGenerator.generate());
-            autoInvestPlanMapper.create(model);
+            AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
+            autoInvestPlanModel.setId(idGenerator.generate());
+            autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
+            autoInvestPlanModel.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
+            autoInvestPlanModel.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
+            autoInvestPlanModel.setAutoInvestPeriods(dto.getAutoInvestPeriods());
+            autoInvestPlanModel.setCreatedTime(new Date());
+            autoInvestPlanModel.setEnabled(true);
+            autoInvestPlanMapper.create(autoInvestPlanModel);
         }
+
+        return true;
     }
 
     @Override

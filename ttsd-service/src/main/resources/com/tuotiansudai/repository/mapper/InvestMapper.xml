@@ -717,19 +717,4 @@
                 )
     </select>
 
-    <select id="findSuccessInvestByLoginNameWithAutoInvestOrNoPasswordInvest" parameterType="map" resultType="int">
-        select count(id) from invest
-        <where>
-            <if test="loginName != null">
-                and invest.loginName = #{loginName}
-            </if>
-            <if test="autoInvest == true">
-                and invest.is_auto_invest = 1
-            </if>
-            <if test="noPasswordInvest == true">
-                and invest.is_no_password_invest = 1
-            </if>
-        </where>
-         and status = 'SUCCESS'
-    </select>
 </mapper>

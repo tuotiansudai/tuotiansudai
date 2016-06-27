@@ -1,97 +1,102 @@
 BEGIN;
 
-INSERT INTO user_point_task
-  SELECT rr.`referrer_login_name`,
-  9,
-  u.`register_time`,
-  200,
-  0
-  FROM
-  USER u JOIN referrer_relation rr ON u.`referrer` = rr.`referrer_login_name`;
-
-
-INSERT INTO user_point_task
-  SELECT rr.referrer_login_name,
-  10,
-  now(),
-  CASE floor(i.`amount`/100000)
-  WHEN 0 THEN 1000
-  ELSE floor(i.`amount`/100000)*1000 END,
-  0
-  FROM referrer_relation rr JOIN invest i ON rr.`login_name` = i.`login_name`
-  WHERE i.`status` = 'SUCCESS'
-  AND i.`amount` >= 100000;
-
-
-INSERT INTO user_point_task
-  SELECT rr.`referrer_login_name`,
-  11,
-  now(),
-  5000,
-  rr.`level`
-  FROM referrer_relation rr WHERE rr.`login_name` IN(
-  SELECT login_name FROM invest i
-  WHERE i.`status` = 'SUCCESS'
-  GROUP BY i.`login_name`);
-
-
-INSERT INTO user_point_task
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
   SELECT
-    i.`login_name`,
+    `referrer`,
+    9,
+    `register_time`,
+    200,
+    1
+  FROM
+    aa.`user`
+  WHERE `user`.`referrer` IS NOT NULL;
+
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
+  SELECT
+    `user`.`referrer`,
+    10,
+    `invest`.`created_time`,
+    1000,
+    1
+  FROM `aa`.`user`
+    JOIN `aa`.`invest` ON `user`.`login_name` = `invest`.`login_name`
+  WHERE `user`.`referrer` IS NOT NULL
+        AND `invest`.`status` = 'SUCCESS'
+        AND `invest`.`loan_id` != 1
+        AND `invest`.`transfer_invest_id` IS NULL
+        AND `invest`.`amount` >= 100000;
+
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
+  SELECT
+    referrer.`login_name`,
+    11,
+    now(),
+    5000,
+    1
+  FROM `aa`.`user` referrer
+  WHERE EXISTS(SELECT 1
+               FROM `aa`.`user`
+                 JOIN `aa`.`invest` ON `user`.login_name = `invest`.`login_name`
+               WHERE `user`.`referrer` = referrer.`login_name`
+                     AND `invest`.`status` = 'SUCCESS'
+                     AND `invest`.`loan_id` != 1
+                     AND `invest`.`transfer_invest_id` IS NULL);
+
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
+  SELECT
+    `user`.`login_name`,
     12,
-    MIN(i.`created_time`),
+    now(),
     1000,
-    0
-  FROM
-    invest i, loan l
-  WHERE i.loan_id = l.id
-  AND i.`status` = 'SUCCESS'
-  AND l.`duration` = 180
-  GROUP BY i.`login_name`;
+    1
+  FROM `aa`.`user`
+  WHERE EXISTS(SELECT 1
+               FROM `aa`.`invest`
+                 JOIN `aa`.`loan` ON `invest`.`loan_id` = `loan`.`id`
+               WHERE `invest`.`login_name` = `user`.`login_name`
+                     AND `invest`.`status` = 'SUCCESS'
+                     AND `loan`.`product_type` = '_180');
 
-INSERT INTO user_point_task
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
   SELECT
-    i.`login_name`,
+    `user`.`login_name`,
     13,
-    MIN(i.`created_time`),
+    now(),
     1000,
-    0
-  FROM
-    invest i, loan l, account a
-  WHERE i.loan_id = l.id
-  AND i.`login_name` = a.`login_name`
-  AND i.`status` = 'SUCCESS'
-  AND a.`no_password_invest` IS TRUE
-  GROUP BY i.`login_name`;
+    1
+  FROM `aa`.`user`
+  WHERE EXISTS(SELECT 1
+               FROM `aa`.`invest`
+                 JOIN `aa`.`loan` ON `invest`.`loan_id` = `loan`.`id`
+               WHERE `invest`.`login_name` = `user`.`login_name`
+                     AND `invest`.`status` = 'SUCCESS'
+                     AND `loan`.`product_type` = '_360');
 
-INSERT INTO user_point_task
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
   SELECT
-    i.`login_name`,
+    `login_name`,
     14,
-    MIN(i.`created_time`),
+    now(),
     1000,
-    0
-  FROM
-    invest i, loan l, account a
-  WHERE i.loan_id = l.id
-  AND i.`login_name` = a.`login_name`
-  AND i.`status` = 'SUCCESS'
-  AND a.`auto_invest` IS TRUE
-  GROUP BY i.`login_name`;
+    1
+  FROM `user`.`account`
+  WHERE `no_password_invest` IS TRUE;
 
-INSERT INTO user_point_task
+
+INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `point`, `task_level`)
   SELECT
-    i.`login_name`,
+    `login_name`,
     15,
-    MIN(i.`created_time`),
+    now(),
     1000,
-    0
+    1
   FROM
-    invest i, loan l
-  WHERE i.loan_id = l.id
-  AND i.`status` = 'SUCCESS'
-  AND l.`duration` = 360
-  GROUP BY i.`login_name`;
-
+    `aa`.`auto_invest_plan`
+  WHERE `enabled` IS TRUE;
 
 COMMIT;
