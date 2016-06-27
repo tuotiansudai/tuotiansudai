@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.service.ActivityService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -38,10 +41,11 @@ public class ActivityCenterController {
     }
 
     @RequestMapping(value = "/activity-center/{activityStatus}",method = RequestMethod.POST)
-    public ModelAndView activityCenter(@ModelAttribute ActivityDto activityDto, @PathVariable ActivityStatus activityStatus){
+    public ModelAndView activityCenter(@ModelAttribute ActivityDto activityDto, @PathVariable ActivityStatus activityStatus, HttpServletRequest request){
 
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        activityService.createEditRecheckActivity(activityDto,activityStatus,loginName);
+        activityService.createEditRecheckActivity(activityDto,activityStatus,loginName,ip);
 
         return new ModelAndView("redirect:/activity-manage/activity-center");
     }
