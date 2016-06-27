@@ -11,8 +11,8 @@
                                 rel="nofollow"
                             </#if>
                         >
-                            <img src="${staticServer}/${banner.webImageUrl}" alt="${banner.content}" class="pc-img">
-                            <img src="${staticServer}/${banner.appImageUrl}" alt="${banner.content}" class="iphone-img">
+                            <img src="http://192.168.60.201:8081/${banner.webImageUrl}" alt="${banner.content}" class="pc-img">
+                            <img src="http://192.168.60.201:8081/${banner.appImageUrl}" alt="${banner.content}" class="iphone-img">
                         </a>
                     </li>
                 </#list>

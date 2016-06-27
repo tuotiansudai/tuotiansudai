@@ -31,7 +31,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);
         for(BannerModel bannerModel : bannerModelList){
-            pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),staticDomainName + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),bannerModel.isAuthenticated()));
+                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),staticDomainName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),bannerModel.isAuthenticated()));
         }
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
         baseDto.setData(bannerResponseDataDto);
