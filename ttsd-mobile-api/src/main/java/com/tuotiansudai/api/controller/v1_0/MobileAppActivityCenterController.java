@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,12 @@ public class MobileAppActivityCenterController extends MobileAppBaseController {
     @RequestMapping(value = "/get/activities", method = RequestMethod.POST)
     public BaseResponseDto getAllOperatingActivities(@Valid @RequestBody ActivityCenterRequestDto activityCenterRequestDto) {
         String loginName = activityCenterRequestDto.getBaseParam().getUserId();
+        String platform = activityCenterRequestDto.getBaseParam().getPlatform().toUpperCase();
+        Source source = Source.valueOf(platform);
         Integer index = activityCenterRequestDto.getIndex();
         Integer pageSize = activityCenterRequestDto.getPageSize();
 
-        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(loginName, index, pageSize);
+        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(loginName, source, index, pageSize);
 
         BaseResponseDto<ActivityCenterResponseDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setData(activityCenterResponseDto);

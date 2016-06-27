@@ -20,9 +20,8 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
     ActivityMapper activityMapper;
 
     @Override
-    public ActivityCenterResponseDto getAppActivityCenterResponseData(String loginName, Integer index, Integer pageSize) {
-        List<ActivityModel> activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.ANDROID);
-        activityModels.addAll(activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.IOS));
+    public ActivityCenterResponseDto getAppActivityCenterResponseData(String loginName, Source source, Integer index, Integer pageSize) {
+        List<ActivityModel> activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, source);
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {

@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.repository.model.ActivityModel;
 
 public class ActivityCenterDataDto {
-    private String title;
+    private String descTitle;
     private String imageUrl;
     private String activityUrl;
 
@@ -11,17 +11,17 @@ public class ActivityCenterDataDto {
     }
 
     public ActivityCenterDataDto(ActivityModel activityModel) {
-        this.title = activityModel.getTitle();
+        this.descTitle = activityModel.getDescription();
         this.imageUrl = activityModel.getAppPictureUrl();
         this.activityUrl = activityModel.getAppActivityUrl();
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescTitle() {
+        return descTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescTitle(String descTitle) {
+        this.descTitle = descTitle;
     }
 
     public String getImageUrl() {
