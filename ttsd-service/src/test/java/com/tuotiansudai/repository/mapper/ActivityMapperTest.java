@@ -200,7 +200,7 @@ public class ActivityMapperTest {
         activityModels = activityMapper.findActivities(null, null, null, Source.ANDROID);
         assertEquals(1, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
-            assertEquals(Source.ANDROID, activityModel.getSource());
+            assertEquals(Source.ANDROID, activityModel.getSource().get(0));
         }
 
         activityModels = activityMapper.findActivities(DateTime.parse("2016-06-01T00:20").toDate(), DateTime.parse("2016-06-01T02:20").toDate(), null, null);

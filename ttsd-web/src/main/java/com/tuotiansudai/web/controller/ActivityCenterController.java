@@ -1,9 +1,9 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +16,6 @@ import java.util.List;
 @RequestMapping(path = "/activity-center")
 public class ActivityCenterController {
 
-    static Logger logger = Logger.getLogger(ActivityCenterController.class);
-
     @Autowired
     ActivityService activityService;
 
@@ -26,7 +24,7 @@ public class ActivityCenterController {
         ModelAndView modelAndView = new ModelAndView("/activity-center");
 
         String loginName = LoginUserInfo.getLoginName();
-        List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName);
+        List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);
 
         return modelAndView;
