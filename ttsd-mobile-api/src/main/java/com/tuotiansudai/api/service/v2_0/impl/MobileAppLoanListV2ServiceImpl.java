@@ -11,10 +11,10 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -35,8 +35,12 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
 
+        if (investMapper.sumSuccessExperienceInvestCountByLoginName(loginName) == 0) {
+            loanModels.addAll(loanMapper.findByProductType(ProductType.EXPERIENCE));
+        }
+
         if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
-            loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true);
+            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true));
             if (CollectionUtils.isEmpty(loanModels)) {
                 List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true);
                 if (CollectionUtils.isNotEmpty(completeLoanModels)) {
