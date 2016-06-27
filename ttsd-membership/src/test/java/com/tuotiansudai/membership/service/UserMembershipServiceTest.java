@@ -133,7 +133,7 @@ public class UserMembershipServiceTest {
     }
 
     private UserMembershipModel createUserMembership(long membershipId) {
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testuser", membershipId, new DateTime().plusDays(130).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testuser", membershipId, new DateTime().plusDays(9000).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
         return userMembershipModel;
     }
