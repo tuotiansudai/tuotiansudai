@@ -12,7 +12,7 @@ public interface BannerMapper {
 
     void create(BannerModel bannerModel);
 
-    List<BannerModel> findBannerIsAuthenticatedOrderByOrder(@Param(value = "isLogin") boolean isLogin,
+    List<BannerModel> findBannerIsAuthenticatedOrderByOrder(@Param(value = "isNotLogin") boolean isNotLogin,
                                                             @Param(value = "source") String source);
 
     List<BannerDto> findBannerList(@Param(value = "index") int index,

@@ -11,8 +11,8 @@
                                 rel="nofollow"
                             </#if>
                         >
-                            <img src="http://192.168.60.201:8081/${banner.webImageUrl}" alt="${banner.content}" class="pc-img">
-                            <img src="http://192.168.60.201:8081/${banner.appImageUrl}" alt="${banner.content}" class="iphone-img">
+                            <img src="${staticServer}/${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
+                            <img src="${staticServer}/${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
                         </a>
                     </li>
                 </#list>
@@ -350,7 +350,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <div class="free-guide">
-                                
+
                     </div>
                     <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
