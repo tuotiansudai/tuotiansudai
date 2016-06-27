@@ -18,7 +18,7 @@
         <result column="expired_time" property="expiredTime"/>
         <result column="source" property="source"
                 typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
-        <result column="activity_status" property="activityStatus"/>
+        <result column="activity_status" property="status"/>
         <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_by" property="updatedBy"/>

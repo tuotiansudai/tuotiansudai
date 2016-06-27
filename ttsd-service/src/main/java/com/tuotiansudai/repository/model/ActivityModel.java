@@ -35,6 +35,7 @@ public class ActivityModel implements Serializable {
         this.webPictureUrl = activityDto.getWebPictureUrl();
         this.appPictureUrl = activityDto.getAppPictureUrl();
         this.expiredTime = activityDto.getExpiredTime();
+        this.source = activityDto.getSource();
     }
 
     public long getId() {

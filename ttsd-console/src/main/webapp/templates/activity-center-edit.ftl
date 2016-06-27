@@ -1,16 +1,17 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-center.js" headLab="activity-manage" sideLab="activityCenter" title="添加活动">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <div class="row">
-        <form class="form-horizontal activity-form" action="" method="post">
+        <form class="form-horizontal activity-form"  method="post">
             <div class="form-group">
                 <label class="col-sm-2 control-label">渠道: </label>
                 <div class="col-sm-4">
-                    <input type="checkbox" name="source" class="activity-source"/>WEB
-                    <input type="checkbox" name="source" class="activity-source"/>IOS
-                    <input type="checkbox" name="source" class="activity-source"/>ANDROID
+                    <input type="checkbox" name="source" class="activity-source" value="WEB"/>WEB
+                    <input type="checkbox" name="source" class="activity-source" value="IOS"/>IOS
+                    <input type="checkbox" name="source" class="activity-source" value="ANDROID"/>ANDROID
                 </div>
                 <div class="col-sm-7">
 
@@ -115,9 +116,24 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="col-sm-4">
                 </div>
-                <div class="col-sm-7">
-                    <button type="button" class="btn jq-btn-form btn-primary activity-save">提交审核</button>
-                </div>
+                <@security.authorize access="hasAuthority('OPERATOR')">
+                    <#if !(dto??) || dto?? && ["APPROVED", "REJECTION"]?seq_contains(dto.status)>
+                        <div class="col-sm-7">
+                            <button type="button" class="btn jq-btn-form btn-primary activity-to_approve" data_url="/activity-manage/activity-center/TO_APPROVE">提交审核</button>
+                        </div>
+                    </#if>
+                </@security.authorize>
+                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                    <#if dto?? && ["TO_APPROVE"]?seq_contains(dto.status)>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn jq-btn-form btn-primary activity-rejection" data_url="/activity-manage/activity-center/REJECTION">驳回</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn jq-btn-form btn-primary activity-approved" data_url="/activity-manage/activity-center/APPROVED">审核通过</button>
+                        </div>
+                    </#if>
+
+                </@security.authorize>
             </div>
         </form>
     </div>

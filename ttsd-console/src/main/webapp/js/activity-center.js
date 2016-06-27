@@ -1,6 +1,7 @@
 require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatetimepicker','jquery-ui','csrf'], function ($) {
     $(function () {
         var $activityCenterForm = $('.activity-form'),
+            boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'); //错误提示节点
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         var _URL = window.URL || window.webkitURL;
@@ -102,7 +103,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
 
         //表单校验初始化参数
         $activityCenterForm.Validform({
-            btnSubmit: '.activity-save',
+            btnSubmit: '.activity-to_approve,.activity-rejection,.activity-approved',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
             ignoreHidden:true,
@@ -125,6 +126,25 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             callback: function(form) {
                 boolFlag = true;
                 return false;
+            }
+        });
+
+        $('.activity-to_approve,.activity-rejection,.activity-approved').on('click', function(event) {
+            event.preventDefault();
+            var $self = $(this),
+                actionUrl;
+            if (boolFlag) {
+                $self.attr('disabled', 'disabled');
+                if($self.hasClass("activity-to_approve")){
+                    actionUrl = "/activity-manage/activity-center/TO_APPROVE";
+                }else if($self.hasClass("activity-rejection")){
+                    actionUrl = "/activity-manage/activity-center/REJECTION";
+
+                }else if($self.hasClass("activity-approved")){
+                    actionUrl = "/activity-manage/activity-center/APPROVED";
+                }
+                $activityCenterForm[0].action = actionUrl;
+                $activityCenterForm[0].submit();
             }
         });
 

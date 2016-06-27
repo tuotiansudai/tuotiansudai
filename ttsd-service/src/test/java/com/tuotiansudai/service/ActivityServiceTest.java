@@ -8,15 +8,11 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.impl.ExperienceLoanDetailServiceImpl;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,9 +28,6 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class ActivityServiceTest {
-    @InjectMocks
-    private ExperienceLoanDetailServiceImpl experienceLoanDetailService;
-
     @Autowired
     InvestMapper investMapper;
 
@@ -52,11 +45,6 @@ public class ActivityServiceTest {
 
     @Autowired
     IdGenerator idGenerator;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
@@ -188,5 +176,86 @@ public class ActivityServiceTest {
         assertEquals("normal2", activityDtoList.get(4).getTitle());
         assertEquals("normal3", activityDtoList.get(5).getTitle());
         assertEquals("normal4", activityDtoList.get(6).getTitle());
+    }
+    private ActivityDto fakeActivityDto(String loginName,ActivityStatus activityStatus){
+        ActivityDto activityDto = new ActivityDto();
+        activityDto.setId(idGenerator.generate());
+        activityDto.setTitle("title");
+        activityDto.setWebActivityUrl("WebActivityUrl");
+        activityDto.setAppActivityUrl("AppActivityUrl");
+        activityDto.setWebPictureUrl("WebPictureUrl");
+        activityDto.setAppPictureUrl("AppPictureUrl");
+        activityDto.setExpiredTime(new DateTime().withTimeAtStartOfDay().toDate());
+        activityDto.setSource(Lists.newArrayList(Source.ANDROID));
+        activityDto.setStatus(activityStatus);
+        activityDto.setCreatedBy(loginName);
+        activityDto.setCreatedTime(new Date());
+        activityDto.setDescription("description");
+        return activityDto;
+    }
+
+    @Test
+    public void shouldCreateEditRecheckActivityByCreate(){
+        UserModel userModel = createUserModel("testUser");
+        ActivityDto activityDto = fakeActivityDto(userModel.getLoginName(),ActivityStatus.TO_APPROVE);
+
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
+
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+
+        assertEquals(activityDto.getId(), activityModelCreate.getId());
+        assertEquals(activityDto.getAppActivityUrl(), activityModelCreate.getAppActivityUrl());
+        assertEquals(activityDto.getWebActivityUrl(), activityModelCreate.getWebActivityUrl());
+        assertEquals(activityDto.getAppPictureUrl(), activityModelCreate.getAppPictureUrl());
+        assertEquals(activityDto.getWebPictureUrl(), activityModelCreate.getWebPictureUrl());
+        assertEquals(activityDto.getDescription(), activityModelCreate.getDescription());
+        assertEquals(activityDto.getTitle(), activityModelCreate.getTitle());
+        assertEquals(activityDto.getStatus(), activityModelCreate.getStatus());
+
+    }
+
+    @Test
+    public void shouldCreateEditRecheckActivityByEdit(){
+        UserModel userModel = createUserModel("testUser");
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityDto activityDto = new ActivityDto(activityModel);
+
+        activityDto.setAppPictureUrl("AppPictureUrlEdit");
+        activityDto.setSource(Lists.newArrayList(Source.ANDROID,Source.IOS));
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
+
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+
+        assertEquals(activityDto.getId(),activityModelCreate.getId());
+        assertEquals(activityDto.getAppActivityUrl(),activityModelCreate.getAppActivityUrl());
+        assertEquals(activityDto.getWebActivityUrl(),activityModelCreate.getWebActivityUrl());
+        assertEquals(activityDto.getAppPictureUrl(),activityModelCreate.getAppPictureUrl());
+        assertEquals(activityDto.getWebPictureUrl(),activityModelCreate.getWebPictureUrl());
+        assertEquals(activityDto.getDescription(),activityModelCreate.getDescription());
+        assertEquals(activityDto.getTitle(),activityModelCreate.getTitle());
+        assertEquals(ActivityStatus.TO_APPROVE,activityModelCreate.getStatus());
+
+    }
+
+    @Test
+    public void shouldCreateEditRecheckActivityByRejection(){
+        UserModel userModel = createUserModel("testUser");
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityDto activityDto = new ActivityDto(activityModel);
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.REJECTION, userModel.getLoginName());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+
+        assertEquals(ActivityStatus.REJECTION,activityModelCreate.getStatus());
+    }
+
+    @Test
+    public void shouldCreateEditRecheckActivityByRecheck(){
+        UserModel userModel = createUserModel("testUser");
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityDto activityDto = new ActivityDto(activityModel);
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.APPROVED, userModel.getLoginName());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+
+        assertEquals(ActivityStatus.APPROVED,activityModelCreate.getStatus());
     }
 }
