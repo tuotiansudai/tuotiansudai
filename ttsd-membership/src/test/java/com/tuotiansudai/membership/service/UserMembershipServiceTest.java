@@ -133,7 +133,7 @@ public class UserMembershipServiceTest {
     }
 
     private UserMembershipModel createUserMembership(long membershipId) {
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testuser", membershipId, new DateTime().plusDays(9000).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testuser", membershipId, DateTime.parse("2040-06-30T12:30").toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
         return userMembershipModel;
     }
@@ -170,7 +170,7 @@ public class UserMembershipServiceTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel();
         userMembershipModel.setLoginName(loginName);
         userMembershipModel.setCreatedTime(new Date());
-        userMembershipModel.setExpiredTime(new Date());
+        userMembershipModel.setExpiredTime(DateTime.parse("2040-06-30T12:30").toDate());
         userMembershipModel.setType(userMembershipType);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
         userMembershipMapper.create(userMembershipModel);
