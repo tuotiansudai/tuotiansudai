@@ -25,6 +25,7 @@
         <result column="type" property="userMembershipType"/>
         <result column="register_time" property="registerTime"/>
         <result column="created_time" property="createdTime"/>
+        <result column="expired_time" property="expiredTime"/>
     </resultMap>
 
     <insert id="create" parameterType="UserMembershipModel" useGeneratedKeys="true" keyProperty="id">
@@ -47,7 +48,7 @@
     <select id="findUserMembershipItemViews"
             resultMap="UserMembershipItemResultMap">
         SELECT user_membership.id, user_membership.login_name, account.user_name, user.mobile, account.membership_point,
-        membership.level, user_membership.type, user.register_time, user_membership.created_time
+        membership.level, user_membership.type, user.register_time, user_membership.created_time, user_membership.expired_time
         FROM `aa`.`user_membership` join `aa`.`membership` join `aa`.`user` join `aa`.`account`
         ON
         `user_membership`.`membership_id` = `membership`.`id` AND
