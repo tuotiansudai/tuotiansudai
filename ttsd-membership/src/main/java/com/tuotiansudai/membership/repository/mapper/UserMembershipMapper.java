@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 
-import com.tuotiansudai.membership.repository.model.UserMembershipItemModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import org.apache.ibatis.annotations.Param;
@@ -21,12 +21,12 @@ public interface UserMembershipMapper {
 
     List<UserMembershipModel> findByLoginName(String loginName);
 
-    List<UserMembershipItemModel> findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(@Param(value = "loginName") String loginName,
-                                                                                                               @Param(value = "mobile") String mobile,
-                                                                                                               @Param(value = "registerStartTime") Date registerStartTime,
-                                                                                                               @Param(value = "registerEndTime") Date registerEndTime,
-                                                                                                               @Param(value = "type") UserMembershipType userMembershipType,
-                                                                                                               @Param(value = "levels") List<Integer> levels);
+    List<UserMembershipItemView> findUserMembershipItemViews(@Param(value = "loginName") String loginName,
+                                                             @Param(value = "mobile") String mobile,
+                                                             @Param(value = "registerStartTime") Date registerStartTime,
+                                                             @Param(value = "registerEndTime") Date registerEndTime,
+                                                             @Param(value = "type") UserMembershipType userMembershipType,
+                                                             @Param(value = "levels") List<Integer> levels);
 
     UserMembershipModel findActiveByLoginName(String loginName);
 
@@ -41,13 +41,9 @@ public interface UserMembershipMapper {
     void updateMembershipPoint(@Param(value = "loginName") String loginName,
                                @Param(value = "membershipPoint") long membershipPoint);
 
-    int findAccountIdentityNumberByLoginName(String loginName);
-
-    long sumSuccessInvestAmountByLoginName(@Param(value = "loginName") String loginName);
-
-    Date findAccountRegisterTimeByLoginName(String loginName);
-
     UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
                                               @Param(value = "type") UserMembershipType type);
 
+    List<UserMembershipModel> findByLoginNameByMembershipId(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "membershipId") long membershipId);
 }

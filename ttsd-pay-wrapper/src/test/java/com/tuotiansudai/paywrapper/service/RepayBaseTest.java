@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;

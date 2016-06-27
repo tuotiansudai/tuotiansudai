@@ -1,6 +1,6 @@
 package com.tuotiansudai.membership.dto;
 
-import com.tuotiansudai.membership.repository.model.UserMembershipItemModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 
 import java.util.Date;
@@ -17,14 +17,14 @@ public class UserMembershipItemDto {
     public UserMembershipItemDto() {
     }
 
-    public UserMembershipItemDto(UserMembershipItemModel userMembershipItemModel) {
-        this.loginName = userMembershipItemModel.getLoginName();
-        this.realName = userMembershipItemModel.getRealName();
-        this.mobile = userMembershipItemModel.getMobile();
-        this.membershipPoint = userMembershipItemModel.getMembershipPoint();
-        this.membershipLevel = userMembershipItemModel.getMembershipLevel();
-        this.userMembershipType = userMembershipItemModel.getUserMembershipType();
-        this.registerTime = userMembershipItemModel.getRegisterTime();
+    public UserMembershipItemDto(UserMembershipItemView userMembershipItemView) {
+        this.loginName = userMembershipItemView.getLoginName();
+        this.realName = userMembershipItemView.getRealName();
+        this.mobile = userMembershipItemView.getMobile();
+        this.membershipPoint = userMembershipItemView.getMembershipPoint();
+        this.membershipLevel = userMembershipItemView.getMembershipLevel();
+        this.userMembershipType = userMembershipItemView.getUserMembershipType();
+        this.registerTime = userMembershipItemView.getRegisterTime();
     }
 
     public String getLoginName() {

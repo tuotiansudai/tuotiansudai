@@ -17,7 +17,7 @@
             </span>
         </div>
     </div>
-    <div class="col-md-10" style="line-height: 34px;">
+    <div class="col-md-10 avg-invest" style="line-height: 34px;">
         <strong>当日前十平均投资金额：${(avgInvestAmount/100)?string('0.00')}元</strong>
     </div>
 </div>
@@ -34,12 +34,13 @@
                 </tr>
             </thead>
             <tbody>
+            <#assign varInvest = 0>
             <#list heroRankingViewInvestList as heroRankingViewInvest>
-                <#assign varInvest = 0>
+                <#assign varInvest=varInvest+1 >
             <tr>
-                <td>${varInvest+1}</td>
+                <td>${varInvest}</td>
                 <td>${heroRankingViewInvest.loginName!}</td>
-                <td>${heroRankingViewInvest.mobile?string('0')}</td>
+                <td>${heroRankingViewInvest.mobile!}</td>
                 <td>${heroRankingViewInvest.userName!}</td>
                 <td>${(heroRankingViewInvest.sumAmount/100)?string('0.00')}</td>
             </tr>
@@ -60,12 +61,13 @@
             </tr>
             </thead>
             <tbody>
+            <#assign varReferrer = 0>
             <#list heroRankingViewReferrerList as heroRankingViewReferrer>
-                <#assign varReferrer = 0>
+                <#assign varReferrer=varReferrer+1 >
             <tr>
-                <td>${varReferrer+1}</td>
+                <td>${varReferrer}</td>
                 <td>${heroRankingViewReferrer.loginName!}</td>
-                <td>${heroRankingViewReferrer.mobile?string('0')}</td>
+                <td>${heroRankingViewReferrer.mobile!}</td>
                 <td>${heroRankingViewReferrer.userName!}</td>
                 <td>${(heroRankingViewReferrer.sumAmount/100)?string('0.00')}</td>
             </tr>

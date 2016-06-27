@@ -1,6 +1,11 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -32,6 +37,12 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -72,6 +83,11 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         loanRepay1.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
+
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
 
         InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, 0.1);
         invest.setStatus(InvestStatus.SUCCESS);

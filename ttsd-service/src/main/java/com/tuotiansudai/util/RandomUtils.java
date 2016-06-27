@@ -67,7 +67,7 @@ public class RandomUtils {
 
     public String encryptLoginName(String loginName, String encryLoginName, int showLength) {
         if (encryLoginName.equalsIgnoreCase(loginName)) {
-            return encryLoginName;
+            return "您的位置";
         }
         String encryptLoginName = encryLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
 
