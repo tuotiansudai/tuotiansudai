@@ -197,7 +197,7 @@ public class ActivityServiceTest {
         UserModel userModel = createUserModel("testUser");
         ActivityDto activityDto = fakeActivityDto(userModel.getLoginName(),ActivityStatus.TO_APPROVE);
 
-        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName(), "");
 
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
@@ -220,7 +220,7 @@ public class ActivityServiceTest {
 
         activityDto.setAppPictureUrl("AppPictureUrlEdit");
         activityDto.setSource(Lists.newArrayList(Source.ANDROID,Source.IOS));
-        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName(), "");
 
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
@@ -240,7 +240,7 @@ public class ActivityServiceTest {
         UserModel userModel = createUserModel("testUser");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
-        activityService.createEditRecheckActivity(activityDto, ActivityStatus.REJECTION, userModel.getLoginName());
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.REJECTION, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
         assertEquals(ActivityStatus.REJECTION,activityModelCreate.getStatus());
@@ -251,7 +251,7 @@ public class ActivityServiceTest {
         UserModel userModel = createUserModel("testUser");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
-        activityService.createEditRecheckActivity(activityDto, ActivityStatus.APPROVED, userModel.getLoginName());
+        activityService.createEditRecheckActivity(activityDto, ActivityStatus.APPROVED, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
         assertEquals(ActivityStatus.APPROVED,activityModelCreate.getStatus());
