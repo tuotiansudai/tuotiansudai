@@ -79,4 +79,15 @@
         </where>
     </select>
 
+    <select id="findOperatingActivities" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`activity`
+        WHERE
+        expired_time > now() AND
+        status = 'APPROVED'
+        <if test="source != null">
+            AND source like CONCAT('%', #{source}, '%')
+        </if>
+        ORDER BY activated_time DESC
+    </select>
+
 </mapper>

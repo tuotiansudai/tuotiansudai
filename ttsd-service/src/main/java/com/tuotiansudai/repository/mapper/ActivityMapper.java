@@ -21,4 +21,6 @@ public interface ActivityMapper {
                                        @Param(value = "activatedEndTime") Date activatedEndTime,
                                        @Param(value = "activityStatus") ActivityStatus activityStatus,
                                        @Param(value = "source") Source source);
+
+    List<ActivityModel> findOperatingActivities(@Param(value = "source") Source source);
 }

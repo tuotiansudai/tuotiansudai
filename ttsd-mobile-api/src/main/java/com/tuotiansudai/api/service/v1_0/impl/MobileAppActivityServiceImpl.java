@@ -3,9 +3,9 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterDataDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.repository.mapper.ActivityMapper;
+import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,15 @@ import java.util.List;
 public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Autowired
-    ActivityService activityService;
+    ActivityMapper activityMapper;
 
     @Override
     public ActivityCenterResponseDto getAppActivityCenterResponseData(String loginName, Source source, Integer index, Integer pageSize) {
-        List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName, source);
+        List<ActivityModel> activityModels = activityMapper.findOperatingActivities(source);
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
-        for (ActivityDto activityDto : activityDtos) {
-            activityCenterDataDtos.add(new ActivityCenterDataDto(activityDto));
+        for (ActivityModel activityModel : activityModels) {
+            activityCenterDataDtos.add(new ActivityCenterDataDto(activityModel));
         }
 
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
