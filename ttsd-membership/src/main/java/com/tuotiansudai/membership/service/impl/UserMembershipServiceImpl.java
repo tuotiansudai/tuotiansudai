@@ -58,7 +58,10 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     @Override
     public int getExpireDayByLoginName(String loginName) {
         UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
-        return Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime()).plusDays(1)).getDays();
+        if(userMembershipModel != null){
+            return Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime()).plusDays(1)).getDays();
+        }
+        return 0;
     }
 
     @Override
