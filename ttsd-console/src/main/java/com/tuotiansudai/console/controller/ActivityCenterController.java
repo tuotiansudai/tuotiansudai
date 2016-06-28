@@ -63,7 +63,7 @@ public class ActivityCenterController {
 
         ModelAndView modelAndView = new ModelAndView("/activity-center-list");
         modelAndView.addObject("activityStatusList", Lists.newArrayList(ActivityStatus.values()));
-        modelAndView.addObject("sourceList", Lists.newArrayList(Source.values()));
+        modelAndView.addObject("sourceList", Lists.newArrayList(Source.WEB, Source.IOS, Source.ANDROID));
 
         modelAndView.addObject("activityCenterList", activityDtoList);
         modelAndView.addObject("activityStatus", activityStatus);

@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-center-list.js" headLab="activity-manage" sideLab="activityCenter" title="活动中心管理">
 
@@ -6,7 +7,7 @@
     <form action="" method="get" class="form-inline query-build">
 
         <div class="form-group">
-            <label>日期</label>
+            <label>发布日期</label>
 
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="startTime"
@@ -50,6 +51,8 @@
         </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
+
+        <button type="button" class="btn btn-sm btn-default btnSearch">添加活动</button>
     </form>
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -70,27 +73,54 @@
             <tbody>
                 <#if activityCenterList?? >
                     <#list activityCenterList as activity>
-                    <tr>
-                        <td><span class="webImg"><img id="webPicture" src="http://localhost:9080/${activity.webPictureUrl!}"/></span></td>
-                        <td><span class="appImg"><img id="appPicture" src="${activity.appPictureUrl!}"/></span></td>
-                        <td>${activity.title!}</td>
-                        <td>${activity.activatedTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${activity.webActivityUrl!}|${activity.appActivityUrl!}</td>
-                        <td>${activity.description!}</td>
-                        <td>
-                            <#list activity.source as source>
-                            ${source.name()}<#sep>, </#sep>
-                            </#list>
-                        </td>
-                        <td>${activity.status.getDescription()!}</td>
+                        <tr>
+                            <td><span class="webImg"><img id="webPicture" src="http://localhost:9080/${activity.webPictureUrl!}"/></span></td>
+                            <td><span class="appImg"><img id="appPicture" src="${activity.appPictureUrl!}"/></span></td>
+                            <td>${activity.title!}</td>
+                            <td>${activity.activatedTime?string('yyyy-MM-dd')}</td>
+                            <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</td>
+                            <td><a href="${activity.webActivityUrl!}">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}">${activity.appActivityUrl!}</a></td>
+                            <td>${activity.description!}</td>
+                            <td>
+                                <#list activity.source as source>
+                                ${source.name()}<#sep>, </#sep>
+                                </#list>
+                            </td>
+                            <#if activity.expiredTime??>
+                                <#assign expiredTime = activity.expiredTime?string('yyyy-MM-dd HH:mm')>
+                                <#assign activatedTime = activity.activatedTime?string('yyyy-MM-dd HH:mm')>
+                                <#assign currentTime = .now?string('yyyy-MM-dd HH:mm')>
+                                <td>
+                                    <#if activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                        进行中
+                                    <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                        已结束
+                                    <#else>
+                                        ${activity.status.getDescription()!}
+                                    </#if>
+                                </td>
 
-                        <td>修改</td>
-                    </tr>
+                                <td>
+                                    <#if activity.status == 'TO_APPROVE' >
+                                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                            <a href="">审核</a>
+                                        </@security.authorize>
+                                    <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
+                                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                            <a href="">修改</a>
+                                        </@security.authorize>
+                                    <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                            修改
+                                        </@security.authorize>
+                                    </#if>
+                                </td>
+                            </#if>
+                        </tr>
                     <#else>
-                    <tr>
-                        <td colspan="10">暂时没有活动</td>
-                    </tr>
+                        <tr>
+                            <td colspan="10">暂时没有活动</td>
+                        </tr>
                     </#list>
 
                 </#if>

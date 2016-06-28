@@ -15,16 +15,18 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
             type: 1,
             shade: false,
             title: false,
-            content: '<img src ='+webPath+' width="250" height="250">'
+            area: ['250px', '250px'],
+            content: '<img src ='+webPath+'>'
         });
     }
 
     var appShowLayer = function() {
         layer.open({
-            shadeClose: false,
-            title: '活动图预览',
+            type: 1,
+            shade: false,
+            title: false,
             area: ['250px', '250px'],
-            content: '<img src ='+appPath+' width="250" height="250">'
+            content: '<img src ='+appPath+'>'
         });
     }
 

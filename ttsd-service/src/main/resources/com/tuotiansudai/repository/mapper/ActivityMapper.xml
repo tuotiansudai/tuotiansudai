@@ -89,8 +89,14 @@
             <if test="endTime != null">
                 AND activated_time &lt;= #{endTime}
             </if>
+            <if test="activityStatus != null and activityStatus == 'OPERATING'">
+                AND status = 'APPROVED' AND  expired_time &gt; now()
+            </if>
+            <if test="activityStatus != null and activityStatus == 'EXPIRED'">
+                AND  expired_time  &lt; now()
+            </if>
             <if test="activityStatus != null">
-                AND status = #{activityStatus}
+                AND  status = ${activityStatus}
             </if>
             <if test="source != null">
                 and source = #{source}
