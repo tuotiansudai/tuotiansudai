@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -96,5 +97,29 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityModel findById(long activityId) {
         return activityMapper.findById(activityId);
+    }
+
+
+    @Override
+    public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
+        List<ActivityModel> activityModels = activityMapper.findAllActivities(startTime, endTime, activityStatus, source);
+        List<ActivityDto> activityDtos = Lists.newArrayList();
+        for (int i = 0; i < activityModels.size(); i++) {
+            ActivityModel activityModel = activityModels.get(i);
+            ActivityDto activityDto = new ActivityDto();
+            activityDto.setActivityId(activityModel.getId());
+            activityDto.setTitle(activityModel.getTitle());
+            activityDto.setWebPictureUrl(activityModel.getWebPictureUrl());
+            activityDto.setAppPictureUrl(activityModel.getAppPictureUrl());
+            activityDto.setActivatedTime(activityModel.getActivatedTime());
+            activityDto.setExpiredTime(activityModel.getExpiredTime());
+            activityDto.setWebActivityUrl(activityModel.getWebActivityUrl());
+            activityDto.setAppActivityUrl(activityModel.getAppActivityUrl());
+            activityDto.setDescription(activityModel.getDescription());
+            activityDto.setSource(activityModel.getSource());
+            activityDto.setStatus(activityModel.getStatus());
+            activityDtos.add(activityDto);
+        }
+        return activityDtos;
     }
 }
