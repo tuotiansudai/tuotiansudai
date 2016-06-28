@@ -44,7 +44,7 @@ require(['jquery', 'underscore', 'moment', 'daterangepicker'], function ($, _, m
         $('#filter-btns').find('span').on('click', function () {
             var $t = $(this);
             var type = $t.data('type');
-            $dateTimePicker.clear();
+            $('#date-time-picker').data('dateRangePicker').clear();
             if (type == 'all') {
                 renderTable(null, function () {
                     $t.addClass('active').siblings().removeClass('active');
