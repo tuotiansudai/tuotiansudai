@@ -131,7 +131,7 @@ public class ActivityMapperTest {
 
         activityMapper.update(updatedActivityModel);
 
-        ActivityModel activityModel = activityMapper.findById(1);
+        ActivityModel activityModel = activityMapper.findById(1l);
 
         assertEquals(updatedActivityModel.getId(), activityModel.getId());
         assertEquals(updatedActivityModel.getTitle(), activityModel.getTitle());
