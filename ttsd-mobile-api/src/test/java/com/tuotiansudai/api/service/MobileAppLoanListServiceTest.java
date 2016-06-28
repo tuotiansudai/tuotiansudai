@@ -1,19 +1,24 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.LoanListRequestDto;
-import com.tuotiansudai.api.dto.v1_0.LoanListResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -24,35 +29,49 @@ import static org.mockito.Mockito.when;
 
 public class MobileAppLoanListServiceTest extends ServiceTestBase{
     @InjectMocks
-    private MobileAppLoanListServiceImpl mobileAppRegisterService;
+    private MobileAppLoanListServiceImpl mobileAppLoanListService;
     @Mock
     private LoanMapper loanMapper;
     @Mock
     private InvestMapper investMapper;
-
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
     @Autowired
     private IdGenerator idGenerator;
+    @Mock
+    private CouponService couponService;
     @Test
     public void shouldGenerateLoanListIsOk(){
+        ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
+
+        MembershipModel membershipModel = new MembershipModel(3,2,50000,0.09);
         List<LoanModel> loanModels = Lists.newArrayList();
-        loanModels.add(getFakeLoanModel("test1"));
-        loanModels.add(getFakeLoanModel("test2"));
-        LoanModel loanModelNovice = getFakeLoanModel("test3");
+        loanModels.add(getFakeLoanModel("test1",ProductType._30));
+        loanModels.add(getFakeLoanModel("test2", ProductType.EXPERIENCE));
+        LoanModel loanModelNovice = getFakeLoanModel("test3",ProductType._180);
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
         when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
+        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
+        when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testLoan");
+        loanListRequestDto.setBaseParam(baseParam);
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
         loanListRequestDto.setProductType(ProductType._30.getProductLine());
-        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
-        assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
-        assertEquals(ProductType._30.getProductLine(),dto.getData().getLoanList().get(0).getLoanType());
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListService.generateLoanList(loanListRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), dto.getCode());
+        assertEquals(ProductType._30.getProductLine(), dto.getData().getLoanList().get(0).getLoanType());
+        assertEquals(String.valueOf(membershipModel.getFee()),dto.getData().getLoanList().get(0).getInvestFeeRate());
+
+        assertEquals(String.valueOf(0.1),dto.getData().getLoanList().get(1).getInvestFeeRate());
 
     }
 
-    private LoanModel getFakeLoanModel(String fakeUserName){
+    private LoanModel getFakeLoanModel(String fakeUserName,ProductType productType){
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(0.16);
@@ -78,7 +97,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModel.setLoanerLoginName(fakeUserName);
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
-        loanModel.setProductType(ProductType._30);
+        loanModel.setProductType(productType);
 
         return loanModel;
     }

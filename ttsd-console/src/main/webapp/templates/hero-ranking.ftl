@@ -17,7 +17,7 @@
             </span>
         </div>
     </div>
-    <div class="col-md-10" style="line-height: 34px;">
+    <div class="col-md-10 avg-invest" style="line-height: 34px;">
         <strong>当日前十平均投资金额：${(avgInvestAmount/100)?string('0.00')}元</strong>
     </div>
 </div>

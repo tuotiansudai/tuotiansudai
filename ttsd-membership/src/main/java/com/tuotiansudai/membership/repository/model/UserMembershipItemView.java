@@ -1,8 +1,9 @@
 package com.tuotiansudai.membership.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserMembershipItemView {
+public class UserMembershipItemView implements Serializable{
     private long id;
     private String loginName;
     private String realName;
@@ -11,6 +12,8 @@ public class UserMembershipItemView {
     private int membershipLevel;
     private UserMembershipType userMembershipType;
     private Date registerTime;
+    private Date createdTime;
+    private Date expiredTime;
 
     public UserMembershipItemView() {
     }
@@ -81,5 +84,21 @@ public class UserMembershipItemView {
 
     public void setRegisterTime(Date registerTime) {
         this.registerTime = registerTime;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(Date expiredTime) {
+        this.expiredTime = expiredTime;
     }
 }

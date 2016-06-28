@@ -191,7 +191,7 @@
                         <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" width="100%">
                     </div>
                     <div class="gift-name"><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></div>
-                    <a href="/loan-list" class="get-rank" target="_blank">我要上榜</a>
+                    <a href="/loan-list?productType=JYF" class="get-rank" target="_blank">我要上榜</a>
                 </div>
             </div>
             <div class="model-list">
@@ -309,7 +309,7 @@
                     <li>3. 每日英雄榜排名将在活动页面实时更新。中奖结果将于次日由客服联系确认，红包和加息券在中奖次日发放，实物奖品将于月底活动结束后七个工作日内统一安排发放；</li>
                     <li>4. <span>特别提示</span>：活动期间一旦提交债权转让申请，则不可在活动期间继续参与投资英雄榜。即使发起债权转让申请的当天，累计投资额已入围当日前10名，也不可参与当日投资英雄榜排名及获取奖励；</li>
                     <li>5. 拓天速贷会根据活动的情况，以等值，增值为基础调整奖品类型；</li>
-                    <li class="tip-info">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有***</li>
+                    <li class="tip-info">***活动遵循法律声明，最终解释权归拓天速贷平台所有***</li>
                 </ul>
             </div>
             <div class="tip-vip-model" id="vipTipModel">

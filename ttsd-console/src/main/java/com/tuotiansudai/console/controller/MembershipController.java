@@ -95,7 +95,14 @@ public class MembershipController {
         AccountModel accountModel = accountService.findByLoginName(loginName);
         modelAndView.addObject("membershipExperienceCount", membershipExperienceCount);
         modelAndView.addObject("membershipExperienceList", membershipExperienceList);
-        modelAndView.addObject("membershipLevel", membershipModel == null ? "V0" : "V" + membershipModel.getLevel());
+        modelAndView.addObject("V0Experience", userMembershipService.getMembershipByLevel(0).getExperience());
+        modelAndView.addObject("V1Experience", userMembershipService.getMembershipByLevel(1).getExperience());
+        modelAndView.addObject("V2Experience", userMembershipService.getMembershipByLevel(2).getExperience());
+        modelAndView.addObject("V3Experience", userMembershipService.getMembershipByLevel(3).getExperience());
+        modelAndView.addObject("V4Experience", userMembershipService.getMembershipByLevel(4).getExperience());
+        modelAndView.addObject("V5Experience", userMembershipService.getMembershipByLevel(5).getExperience());
+
+        modelAndView.addObject("membershipLevel", membershipModel == null ? "0" : membershipModel.getLevel());
         modelAndView.addObject("membershipPoint", accountModel == null ? 0 : accountModel.getMembershipPoint());
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
