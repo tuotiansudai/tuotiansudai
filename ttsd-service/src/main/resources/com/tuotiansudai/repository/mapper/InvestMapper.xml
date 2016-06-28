@@ -729,7 +729,7 @@
                 )
     </select>
 
-    <select id="findCountNormalAndNewBieSuccess" parameterType="map" resultType="int">
+    <select id="findCountNormalAndNewBieSuccessByLoginName" parameterType="map" resultType="int">
         select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
         and l.product_type != 'EXPERIENCE'
         and i.status = 'SUCCESS'
