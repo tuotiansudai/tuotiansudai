@@ -1,12 +1,14 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -30,6 +32,12 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
@@ -63,14 +71,14 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        loanListResponseDataDto.setLoanList(convertLoanDto(loanModels));
+        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, loanModels));
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
@@ -96,7 +104,13 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
-            loanResponseDataDto.setInvestFeeRate(loan.getInvestFeeRate() + "");
+
+            MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+            double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+            if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+                investFeeRate = this.defaultFee;
+            }
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

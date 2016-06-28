@@ -216,8 +216,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         });
 
-
-
         // 充值金额保留小数点后2位
         var rep = /^\d+$/;
         var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
@@ -340,7 +338,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "duration": $('.jq-duration').val(),
                     "descriptionText": getContentTxt(),
                     "descriptionHtml": getContent(),
-                    "investFeeRate": $('.jq-fee').val(),
                     "minInvestAmount": $('.jq-min-pay').val(),
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
