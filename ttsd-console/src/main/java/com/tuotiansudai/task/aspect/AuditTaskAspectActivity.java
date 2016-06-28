@@ -42,7 +42,7 @@ public class AuditTaskAspectActivity {
 
             String realName = accountService.getRealName(loginName);
 
-            ActivityModel activityModelExist = activityMapper.findById(activityDto.getId());
+            ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
             String description;
 
             String creator = activityModelExist.getCreatedBy();
@@ -50,15 +50,19 @@ public class AuditTaskAspectActivity {
 
             switch (activityStatus) {
                 case TO_APPROVE:
-                    description = realName + " 创建/编辑了活动［" + activityDto.getTitle() + "］。";
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getId()), description, ip);
+                    if (activityDto.getActivityId() == null) {
+                        description = realName + " 创建了活动［" + activityDto.getTitle() + "］。";
+                    } else {
+                        description = realName + " 编辑了活动［" + activityDto.getTitle() + "］。";
+                    }
+                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
                     break;
                 case REJECTION:
                     description = realName + " 驳回了 " + creatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getId()), description, ip);
+                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
                 case APPROVED:
                     description = realName + " 审核通过了 " + creatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getId()), description, ip);
+                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
             }
         } catch (Exception e) {
             logger.error("after create edit recheck activity aspect fail ", e);
