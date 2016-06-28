@@ -18,9 +18,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -332,6 +330,7 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
+
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);

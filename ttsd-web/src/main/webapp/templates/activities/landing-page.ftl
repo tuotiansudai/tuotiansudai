@@ -72,6 +72,7 @@
         </div>
         <div class="content-wp">
             <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，</p>
+
             <p>成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
             <img src="${staticServer}/images/sign/actor/landingpage/gift-list.png" width="100%">
         </div>
@@ -84,12 +85,12 @@
             <ul>
                 <li>
                     <a href="/loan-list">
-                    <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
                     <a href="/loan-list">
-                    <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
             </ul>
@@ -125,8 +126,6 @@
             </ul>
         </div>
     </div>
-
-
 
     <div class="content-five">
         <div class="five-title">
@@ -578,12 +577,12 @@
             <ul>
                 <li>
                     <a href="/loan-list?productType=JYF">
-                    <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
                     <a href="/loan-list?productType=JYF">
-                    <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
             </ul>
