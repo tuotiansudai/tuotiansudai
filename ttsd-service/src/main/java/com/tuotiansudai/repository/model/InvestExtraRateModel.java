@@ -14,6 +14,8 @@ public class InvestExtraRateModel implements Serializable {
 
     private long amount;
 
+    private String loginName;
+
     private double extraRate;
 
     private long expectedInterest;
@@ -144,5 +146,13 @@ public class InvestExtraRateModel implements Serializable {
 
     public void setTransfer(boolean isTransfer) {
         this.isTransfer = isTransfer;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

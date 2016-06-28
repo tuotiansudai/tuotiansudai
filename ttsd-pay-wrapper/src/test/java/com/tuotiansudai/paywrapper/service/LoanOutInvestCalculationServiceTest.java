@@ -73,13 +73,13 @@ public class LoanOutInvestCalculationServiceTest {
 
         UserModel test1Model = createFakeUser("test0001","13333333333");
         InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
-                new Date(), Source.WEB, "tuotiansudai", 1);
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002","18999999999");
         InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
-                new Date(), Source.WEB, "tuotiansudai", 1);
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);
 
