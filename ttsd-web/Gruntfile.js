@@ -4,14 +4,15 @@ var path = require('path');
 var getJSModules = function() {
     var arr = fs.readdirSync(path.join(__dirname, 'src/main/webapp/js'));
     var modules = [];
-    arr.forEach(function(val) {
-        if (/\.js$/.test(val)) {
+    var exclude = ['cnzz_statistics.js', 'config.js'];
+    return arr.reduce(function(modules, val) {
+        if (/\.js$/.test(val) && exclude.indexOf(val) === -1) {
             modules.push({
                 name: 'js/' + val.substring(0, val.length - 3)
             });
         }
-    });
-    return modules;
+        return modules;
+    }, []);
 };
 
 module.exports = function(grunt) {
