@@ -15,7 +15,6 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -99,7 +98,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));

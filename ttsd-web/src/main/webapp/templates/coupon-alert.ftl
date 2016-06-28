@@ -8,7 +8,7 @@
         </div>
         <div class="coupon-name">${couponAlert.couponType.getName()}</div>
         <div class="coupon-tip">
-            已经放到您的口袋了<br />快来投资吧
+            已经放到您的口袋了<br/>快来投资吧
         </div>
         <div class="coupon-place">
             亲可以在“我的帐户－我的宝藏”中找到哦！

@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -70,7 +69,7 @@ public class AccountBalanceController {
             modelAndView.addObject("userAccountList", userItemDataDtoList);
             int count = userService.findUsersAccountBalanceCount(loginName, balanceMin, balanceMax);
             modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(loginName, balanceMin, balanceMax));
-            long totalPages = count / pageSize + (count % pageSize > 0 || count == 0? 1 : 0);
+            long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);

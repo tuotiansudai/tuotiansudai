@@ -3,10 +3,14 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.model.*;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +59,14 @@ public class RepayBaseTest {
     protected AccountModel getFakeAccount(UserModel userModel) {
         AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
         fakeAccount.setBalance(1000000);
+        fakeAccount.setMembershipPoint(50001);
         return fakeAccount;
+    }
+
+    protected UserMembershipModel getFakeUserMemberShip(String loginName, UserMembershipType type, long membershipId) {
+        Date expiredTime = new DateTime().plusYears(1).toDate();
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipId, expiredTime, type);
+        return userMembershipModel;
     }
 
     protected LoanModel getFakeNormalLoan(long loanId, LoanType loanType, long amount, int periods, double baseRate, double activityRate, double investFeeRate, String loginName, Date recheckTime) {
@@ -73,7 +84,6 @@ public class RepayBaseTest {
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setBaseRate(baseRate);
         fakeLoanModel.setActivityRate(activityRate);
-        fakeLoanModel.setInvestFeeRate(investFeeRate);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");

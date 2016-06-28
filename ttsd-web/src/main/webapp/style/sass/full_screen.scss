@@ -306,8 +306,8 @@ body {
     margin-top: 35px;
     padding-top: 35px;
     .page-width {
-      &.new-model{
-        margin-bottom:45px;
+      &.new-model {
+        margin-bottom: 45px;
       }
       .label-title {
         width: 100%;
@@ -389,7 +389,7 @@ body {
               left:0;
               width:56px;
               height:75px;
-              background:url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
+              background: url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
             }
             .loan-info-frame {
               width: 424px;
@@ -531,7 +531,7 @@ body {
         border: 1px solid #e6e6e6;
         background-color: #fff;
         overflow: hidden;
-        background:url("/images/sign/index_sprites_20160601.png") 0 0 no-repeat;
+        background: url("/images/sign/index_sprites_20160601.png") 0 0 no-repeat;
         a{
           float:left;
           width: 218px;
@@ -750,15 +750,15 @@ body {
         .product-box-inner {
           margin: 0 -20px;
           box-sizing: border-box;
-          &.active{
-            .new-free-pro{
-              z-index:9999;
+          &.active {
+            .new-free-pro {
+              z-index: 9999;
             }
-            .free-guide{
-              display:block;
+            .free-guide {
+              display: block;
             }
-            .guide-img{
-              display:block!important;
+            .guide-img {
+              display: block !important;
             }
           }
           .product-box {
@@ -785,7 +785,7 @@ body {
               background: url("/images/icons/new-user.png") no-repeat;
               background-size: 80%;
             }
-            .new-free{
+            .new-free {
               position: absolute;
               width: 40px;
               height: 50px;
@@ -907,38 +907,38 @@ body {
                 border-color: #ff9c1b;
               }
             }
-            .guide-img{
+            .guide-img {
               position: absolute;
-              top:115px;
-              left:50%;
-              margin-left:-100px;
-              width:200px;
-              height:100px;
-              background:url("/images/sign/actor/guide-img.png") no-repeat center;
+              top: 115px;
+              left: 50%;
+              margin-left: -100px;
+              width: 200px;
+              height: 100px;
+              background: url("/images/sign/actor/guide-img.png") no-repeat center;
               background-size: 100%;
-              display:none;
-              .guide-btn{
+              display: none;
+              .guide-btn {
                 position: absolute;
-                width:110px;
-                height:50px;
-                top:110px;
-                left:50%;
-                margin-left:-55px;
-                background:url("/images/sign/actor/guide-btn.png") no-repeat center;
+                width: 110px;
+                height: 50px;
+                top: 110px;
+                left: 50%;
+                margin-left: -55px;
+                background: url("/images/sign/actor/guide-btn.png") no-repeat center;
                 background-size: 80%;
               }
             }
           }
-          .free-guide{
+          .free-guide {
             position: fixed;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background:rgba(0,0,0,.5);
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);
-            z-index:999;
-            display:none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000, endColorstr=#7F000000);
+            z-index: 999;
+            display: none;
           }
         }
       }
@@ -951,58 +951,58 @@ body {
           border: 1px solid #e5e5e5;
         }
       }
-      .new-user-free{
-        float:left;
-        width:100%;
-        background:#fff;
+      .new-user-free {
+        float: left;
+        width: 100%;
+        background: #fff;
         border: 1px solid #e5e5e5;
-        box-sizing:border-box;
+        box-sizing: border-box;
         position: relative;
-        cursor:pointer;
-        &:hover{
+        cursor: pointer;
+        &:hover {
           background: #fff;
           box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
         }
-        &.active{
-          .mask-model{
-            display:block;
+        &.active {
+          .mask-model {
+            display: block;
           }
-          .mask-bg{
-            display:block;
+          .mask-bg {
+            display: block;
           }
         }
-        .left-intro{
-          float:left;
-          width:240px;
-          height:160px;
-          background:url("/images/sign/index_sprites_20160530.png") no-repeat;
+        .left-intro {
+          float: left;
+          width: 240px;
+          height: 160px;
+          background: url("/images/sign/index_sprites_20160530.png") no-repeat;
           background-position: 0px -255px;
-          a{
-            float:left;
-            width:100%;
-            height:100%;
+          a {
+            float: left;
+            width: 100%;
+            height: 100%;
           }
         }
-        .center-detail{
-          float:left;
-          width:370px;
-          height:160px;
-          padding-left:70px;
-          .loan-top{
-            float:left;
-            width:100%;
-            line-height:50px;
-            .l-title{
+        .center-detail {
+          float: left;
+          width: 370px;
+          height: 160px;
+          padding-left: 70px;
+          .loan-top {
+            float: left;
+            width: 100%;
+            line-height: 50px;
+            .l-title {
               font-size: 20px;
               color: #4e4e4e;
               display: inline-block;
               width: 300px;
-              text-align:left;
+              text-align: left;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-              .new-tip{
-                margin-left:10px;
+              .new-tip {
+                margin-left: 10px;
                 font-size: 12px;
                 color: #ff9c1b;
                 border: 1px solid #ff9c1b;
@@ -1011,25 +1011,25 @@ body {
               }
             }
           }
-          .loan-info-dl{
-            float:left;
-            width:100%;
-            dl{
+          .loan-info-dl {
+            float: left;
+            width: 100%;
+            dl {
               width: 50%;
               float: left;
               color: #808080;
               font-size: 17px;
-              dd{
-                color:#999;
-                em{
+              dd {
+                color: #999;
+                em {
                   font-size: 26px;
                   color: #ff7200;
                 }
-                i{
+                i {
                   font-size: 16px;
                   color: #ff7200;
                 }
-                span{
+                span {
                   font-size: 12px;
                   color: #ff9c1b;
                   border: 1px solid #ff9c1b;
@@ -1040,11 +1040,11 @@ body {
             }
           }
         }
-        .right-operat{
-          float:left;
-          width:240px;
-          padding-top:15px;
-          .p-title{
+        .right-operat {
+          float: left;
+          width: 240px;
+          padding-top: 15px;
+          .p-title {
             float: left;
             width: 100%;
             font-size: 12px;
@@ -1074,12 +1074,12 @@ body {
             font-size: 13px;
             padding-top: 10px;
             line-height: 1.3;
-            span{
-              float:left;
-              width:100%;
-              margin-top:10px;
-              i{
-                font-size:20px;
+            span {
+              float: left;
+              width: 100%;
+              margin-top: 10px;
+              i {
+                font-size: 20px;
               }
             }
             .btn-normal {
@@ -1091,35 +1091,35 @@ body {
             }
           }
         }
-        .mask-model{
+        .mask-model {
           position: absolute;
-          bottom:-22px;
-          left:81px;
-          width:100%;
-          height:300px;
-          background:url("/images/sign/index_sprites_20160530.png") no-repeat;
+          bottom: -22px;
+          left: 81px;
+          width: 100%;
+          height: 300px;
+          background: url("/images/sign/index_sprites_20160530.png") no-repeat;
           background-position: 0px -425px;
-          z-index:9999;
-          display:none;
-          .mask-btn{
-            float:left;
-            width:230px;
-            height:100px;
-            background:url("/images/sign/index_sprites_20160530.png") no-repeat;
+          z-index: 9999;
+          display: none;
+          .mask-btn {
+            float: left;
+            width: 230px;
+            height: 100px;
+            background: url("/images/sign/index_sprites_20160530.png") no-repeat;
             background-position: 0px -731px;
             margin: 150px 0 0 96px;
-            cursor:pointer;
+            cursor: pointer;
           }
         }
-        .mask-bg{
+        .mask-bg {
           position: fixed;
-          top:0;
-          left:0;
-          width:100%;
-          height:100%;
-          background:rgba(0,0,0,.5);
-          z-index:9998;
-          display:none;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, .5);
+          z-index: 9998;
+          display: none;
         }
       }
     }
@@ -1826,8 +1826,8 @@ body {
       padding-top: 0 !important;
       .page-width {
         padding: 15px;
-        &.new-model{
-          display:none;
+        &.new-model {
+          display: none;
         }
         .product-box-list {
           width: 100% !important;

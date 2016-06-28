@@ -246,7 +246,7 @@ public class InvestRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel();
         userMapper.create(fakeUserModel);
         loanMapper.create(fakeLoanModel);
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }
@@ -280,13 +280,13 @@ public class InvestRepayMapperTest {
         investRepayModels.add(investRepayModel);
         investMapper.create(investModel);
         investRepayMapper.create(investRepayModels);
-        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(fakeUserModel.getLoginName(), startTime, endTime, 0, 10);
         assertNotNull(investRepayModelList);
-        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
+        assertEquals(investRepayModelList.get(0).getId(), investRepayModel.getId());
     }
 
     @Test
-    public void shouldFindByLoginNameAndTimeNotSuccessInvestRepayListIsOk(){
+    public void shouldFindByLoginNameAndTimeNotSuccessInvestRepayListIsOk() {
         LoanModel loanModel = getFakeLoanModel();
         loanModel.setProductType(ProductType.EXPERIENCE);
         loanModel.setStatus(LoanStatus.COMPLETE);
@@ -313,8 +313,8 @@ public class InvestRepayMapperTest {
         investRepayModels.add(investRepayModel);
         investMapper.create(investModel);
         investRepayMapper.create(investRepayModels);
-        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(fakeUserModel.getLoginName(),startTime,endTime,0,10);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(fakeUserModel.getLoginName(), startTime, endTime, 0, 10);
         assertNotNull(investRepayModelList);
-        assertEquals(investRepayModelList.get(0).getId(),investRepayModel.getId());
+        assertEquals(investRepayModelList.get(0).getId(), investRepayModel.getId());
     }
 }
