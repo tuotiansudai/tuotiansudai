@@ -92,6 +92,7 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModel.setUpdatedTime(new Date());
                     activityModel.setStatus(ActivityStatus.TO_APPROVE);
                     activityMapper.create(activityModel);
+                    activityDto.setActivityId(activityModel.getId());
                 }
                 return true;
             case REJECTION:

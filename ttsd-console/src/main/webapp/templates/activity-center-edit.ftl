@@ -48,7 +48,7 @@
                         </#if>
                     </div>
                 </div>
-                <#if dto??&&dto.status != 'TO_APPROVE'>
+                <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
                     <div class="col-sm-4 appPicture">
                         <input type="file" name="appPictureImage" imageWidth="750" imageHeight="340"/>
                     </div>
@@ -70,7 +70,7 @@
                         </#if>
                     </div>
                 </div>
-                <#if dto??&&dto.status != 'TO_APPROVE'>
+                <#if !(dto??) || dto??&&dto.status != 'TO_APPROVE'>
                     <div class="col-sm-4 webPicture">
                         <input type="file" name="webPictureImage" imageWidth="1920" imageHeight="350"/>
                     </div>

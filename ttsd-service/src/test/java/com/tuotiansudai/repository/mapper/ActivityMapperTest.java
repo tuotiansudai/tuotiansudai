@@ -44,9 +44,8 @@ public class ActivityMapperTest {
         return userModel;
     }
 
-    private ActivityModel createActivityModel(long id, UserModel userModel, Date activatedTime, List<Source> source, ActivityStatus activityStatus) {
+    private ActivityModel createActivityModel(UserModel userModel, Date activatedTime, List<Source> source, ActivityStatus activityStatus) {
         ActivityModel activityModel = new ActivityModel();
-        activityModel.setId(id);
         activityModel.setTitle("testTitle");
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
@@ -72,11 +71,11 @@ public class ActivityMapperTest {
         UserModel userModel = createUserModel("testUser");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(1L, userModel, DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        ActivityModel activityModel = createActivityModel(userModel, DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(2L, userModel, DateTime.parse("2016-06-02T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-02T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(3L, userModel, DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
         activityModels.add(activityModel);
 
         return activityModels;
@@ -86,7 +85,7 @@ public class ActivityMapperTest {
     public void testCreateAndFindById() throws Exception {
         List<ActivityModel> activityModels = prepareData();
 
-        ActivityModel activityModel = activityMapper.findById(1L);
+        ActivityModel activityModel = activityMapper.findById(activityModels.get(0).getId());
         ActivityModel originalActivityModel = activityModels.get(0);
 
         assertEquals(originalActivityModel.getId(), activityModel.getId());
@@ -109,7 +108,7 @@ public class ActivityMapperTest {
 
     @Test
     public void testUpdate() throws Exception {
-        prepareData();
+        List<ActivityModel> activityModels = prepareData();
 
         ActivityModel updatedActivityModel = new ActivityModel();
         updatedActivityModel.setId(1L);
@@ -131,7 +130,7 @@ public class ActivityMapperTest {
 
         activityMapper.update(updatedActivityModel);
 
-        ActivityModel activityModel = activityMapper.findById(1l);
+        ActivityModel activityModel = activityMapper.findById(activityModels.get(0).getId());
 
         assertEquals(updatedActivityModel.getId(), activityModel.getId());
         assertEquals(updatedActivityModel.getTitle(), activityModel.getTitle());
