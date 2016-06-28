@@ -74,7 +74,7 @@
                 <#if activityCenterList?? >
                     <#list activityCenterList as activity>
                         <tr>
-                            <td><span class="webImg"><img id="webPicture" src="http://localhost:9080/${activity.webPictureUrl!}"/></span></td>
+                            <td><span class="webImg"><img id="webPicture" src="${activity.webPictureUrl!}"/></span></td>
                             <td><span class="appImg"><img id="appPicture" src="${activity.appPictureUrl!}"/></span></td>
                             <td>${activity.title!}</td>
                             <td>${activity.activatedTime?string('yyyy-MM-dd')}</td>
@@ -101,17 +101,20 @@
                                 </td>
 
                                 <td>
-                                    ${expiredTime?date('yyyy-MM-dd HH:mm')}--${currentTime?date('yyyy-MM-dd HH:mm')}
                                     <#if activity.status == 'TO_APPROVE' >
                                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                             <a href="">审核</a>
                                         </@security.authorize>
-                                    <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
+                                    <#elseif activity.status == 'REJECTION'>
                                         <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                                            <a href="">修改</a>
+                                            <a href="">修改1</a>
+                                        </@security.authorize>
+                                    <#elseif (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
+                                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                            <a href="">修改2</a>
                                         </@security.authorize>
                                     <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                       22222
+                                            --
                                     </#if>
                                 </td>
                             </#if>
