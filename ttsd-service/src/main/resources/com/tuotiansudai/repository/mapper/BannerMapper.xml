@@ -36,9 +36,10 @@
     <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
         select * from banner
         where active = '1' and deleted = '0'
-            <if test="isNotLogin == true">
-                and authenticated = '0'
+            <if test="authenticated != null">
+                and authenticated = #{authenticated}
             </if>
+
             <if test="source != null and source != ''">
                 and source = #{source}
             </if>

@@ -58,7 +58,7 @@ public class HomeController {
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),investModelList.size() % 100 ,couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
-        modelAndView.addObject("bannerList",bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? true : false, Source.WEB.name()));
+        modelAndView.addObject("bannerList",bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? false : true, Source.WEB.name()));
         return modelAndView;
     }
 }

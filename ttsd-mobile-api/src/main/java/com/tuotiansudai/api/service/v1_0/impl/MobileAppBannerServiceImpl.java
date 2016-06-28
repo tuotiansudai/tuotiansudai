@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
@@ -26,12 +27,12 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(false,baseParam.getPlatform());
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(baseParam.getUserId()) ? false : true,baseParam.getPlatform().toUpperCase());
         BannerResponseDataDto bannerResponseDataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);
         for(BannerModel bannerModel : bannerModelList){
-                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),staticDomainName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),bannerModel.isAuthenticated()));
+                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),staticDomainName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),false));
         }
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
         baseDto.setData(bannerResponseDataDto);
