@@ -191,7 +191,7 @@
                         <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" width="100%">
                     </div>
                     <div class="gift-name"><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></div>
-                    <a href="/loan-list" class="get-rank" target="_blank">我要上榜</a>
+                    <a href="/loan-list?productType=JYF" class="get-rank" target="_blank">我要上榜</a>
                 </div>
             </div>
             <div class="model-list">
