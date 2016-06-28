@@ -60,9 +60,13 @@ public class AuditTaskAspectActivity {
                 case REJECTION:
                     description = realName + " 驳回了 " + creatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
                     auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
+                    break;
                 case APPROVED:
                     description = realName + " 审核通过了 " + creatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
                     auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
+                    break;
+                default:
+                    throw new Exception("illegal activity status.");
             }
         } catch (Exception e) {
             logger.error("after create edit recheck activity aspect fail ", e);
