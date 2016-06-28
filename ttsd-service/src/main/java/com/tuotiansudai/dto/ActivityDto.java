@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ActivityDto {
-    private long id;
+    private Long activityId;
     private String title;
     private String webActivityUrl;
     private String appActivityUrl;
@@ -31,7 +31,7 @@ public class ActivityDto {
     }
 
     public ActivityDto(ActivityModel activityModel) {
-        this.id = activityModel.getId();
+        this.activityId = activityModel.getId();
         this.title = activityModel.getTitle();
         this.webActivityUrl = activityModel.getWebActivityUrl();
         this.appActivityUrl = activityModel.getAppActivityUrl();
@@ -49,12 +49,12 @@ public class ActivityDto {
         this.activatedBy = activityModel.getActivatedBy();
     }
 
-    public long getId() {
-        return id;
+    public Long getActivityId() {
+        return activityId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
 
     public String getTitle() {

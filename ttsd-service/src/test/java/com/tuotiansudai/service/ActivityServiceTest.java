@@ -177,7 +177,7 @@ public class ActivityServiceTest {
     }
     private ActivityDto fakeActivityDto(String loginName,ActivityStatus activityStatus){
         ActivityDto activityDto = new ActivityDto();
-        activityDto.setId(idGenerator.generate());
+        activityDto.setActivityId(idGenerator.generate());
         activityDto.setTitle("title");
         activityDto.setWebActivityUrl("WebActivityUrl");
         activityDto.setAppActivityUrl("AppActivityUrl");
@@ -199,9 +199,9 @@ public class ActivityServiceTest {
 
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
 
-        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
-        assertEquals(activityDto.getId(), activityModelCreate.getId());
+        assertEquals(activityDto.getActivityId(), activityModelCreate.getId());
         assertEquals(activityDto.getAppActivityUrl(), activityModelCreate.getAppActivityUrl());
         assertEquals(activityDto.getWebActivityUrl(), activityModelCreate.getWebActivityUrl());
         assertEquals(activityDto.getAppPictureUrl(), activityModelCreate.getAppPictureUrl());
@@ -222,9 +222,9 @@ public class ActivityServiceTest {
         activityDto.setSource(Lists.newArrayList(Source.ANDROID,Source.IOS));
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName());
 
-        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
-        assertEquals(activityDto.getId(),activityModelCreate.getId());
+        assertEquals(activityDto.getActivityId(),activityModelCreate.getId());
         assertEquals(activityDto.getAppActivityUrl(),activityModelCreate.getAppActivityUrl());
         assertEquals(activityDto.getWebActivityUrl(),activityModelCreate.getWebActivityUrl());
         assertEquals(activityDto.getAppPictureUrl(),activityModelCreate.getAppPictureUrl());
@@ -241,7 +241,7 @@ public class ActivityServiceTest {
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.REJECTION, userModel.getLoginName());
-        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
         assertEquals(ActivityStatus.REJECTION,activityModelCreate.getStatus());
     }
@@ -252,7 +252,7 @@ public class ActivityServiceTest {
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.APPROVED, userModel.getLoginName());
-        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getId());
+        ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
         assertEquals(ActivityStatus.APPROVED,activityModelCreate.getStatus());
     }

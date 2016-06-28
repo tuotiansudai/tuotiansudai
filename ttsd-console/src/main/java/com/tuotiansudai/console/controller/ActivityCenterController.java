@@ -1,9 +1,11 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,18 @@ public class ActivityCenterController {
 
     @RequestMapping(value = "/activity-center", method = RequestMethod.GET)
     public ModelAndView activityCenter(){
-        return new ModelAndView("/activity-center-edit");
+        ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
+        modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/activity-center/{activityId}", method = RequestMethod.GET)
     public ModelAndView activityCenter(@PathVariable long activityId){
         ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
+
         ActivityModel activityModel = activityService.findById(activityId);
         ActivityDto activityDto = new ActivityDto(activityModel);
+        modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
         modelAndView.addObject("dto",activityDto);
         return modelAndView;
     }
