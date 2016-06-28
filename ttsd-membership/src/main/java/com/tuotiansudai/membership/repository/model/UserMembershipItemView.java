@@ -13,6 +13,7 @@ public class UserMembershipItemView implements Serializable{
     private UserMembershipType userMembershipType;
     private Date registerTime;
     private Date createdTime;
+    private Date expiredTime;
 
     public UserMembershipItemView() {
     }
@@ -91,5 +92,13 @@ public class UserMembershipItemView implements Serializable{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Date getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(Date expiredTime) {
+        this.expiredTime = expiredTime;
     }
 }

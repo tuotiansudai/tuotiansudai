@@ -28,7 +28,7 @@
                     <div class="vip-bg vip-4 <#if membershipLevel == 4>active</#if>"></div>
                     <div class="vip-bg vip-5 <#if membershipLevel == 5>active</#if>"></div>
                     <#if membershipType == 'UPGRADE'>
-                        <#if membershipNextLevel < 5>
+                        <#if membershipNextLevel <= 5 && membershipLevel != 5>
                             <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
@@ -42,6 +42,7 @@
             <#if membershipLevel == 0>
                 <i class="icon multi-ensuring"></i>
                 <i class="icon anytime-withdraw"></i>
+                <i class="icon birthday-privilege"></i>
             <#elseif membershipLevel == 1>
                 <i class="icon multi-ensuring"></i>
                 <i class="icon anytime-withdraw"></i>
@@ -104,7 +105,7 @@
 
                             <p>24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账</p>
                         </li>
-                        <li class="birthday-privilege-hui">
+                        <li class="birthday-privilege">
                             <h3>生日特权</h3>
 
                             <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
