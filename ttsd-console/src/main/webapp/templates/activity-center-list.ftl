@@ -79,7 +79,7 @@
                             <td>${activity.title!}</td>
                             <td>${activity.activatedTime?string('yyyy-MM-dd')}</td>
                             <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</td>
-                            <td><a href="${activity.webActivityUrl!}">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}">${activity.appActivityUrl!}</a></td>
+                            <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}" target="_blank">${activity.appActivityUrl!}</a></td>
                             <td>${activity.description!}</td>
                             <td>
                                 <#list activity.source as source>
@@ -101,6 +101,7 @@
                                 </td>
 
                                 <td>
+                                    ${expiredTime?date('yyyy-MM-dd HH:mm')}--${currentTime?date('yyyy-MM-dd HH:mm')}
                                     <#if activity.status == 'TO_APPROVE' >
                                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                             <a href="">审核</a>
@@ -110,9 +111,7 @@
                                             <a href="">修改</a>
                                         </@security.authorize>
                                     <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                                            修改
-                                        </@security.authorize>
+                                       22222
                                     </#if>
                                 </td>
                             </#if>

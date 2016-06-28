@@ -134,7 +134,7 @@ public class ActivityServiceImpl implements ActivityService {
         for (int i = 0; i < activityModels.size(); i++) {
             ActivityModel activityModel = activityModels.get(i);
             ActivityDto activityDto = new ActivityDto();
-            activityDto.setId(activityModel.getId());
+            activityDto.setActivityId(activityModel.getId());
             activityDto.setTitle(activityModel.getTitle());
             activityDto.setWebPictureUrl(activityModel.getWebPictureUrl());
             activityDto.setAppPictureUrl(activityModel.getAppPictureUrl());
