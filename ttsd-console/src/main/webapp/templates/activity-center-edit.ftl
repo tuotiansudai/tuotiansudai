@@ -120,13 +120,15 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间: </label>
-                <div class='input-group date col-sm-3' id='datetimepicker1'>
-                    <input type='text' class="form-control" name="expiredTime"
-                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.expiredTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
+                <div class="date col-sm-4" id='datetimepicker1'>
+                    <div class="input-group">
+                        <input type='text' class="form-control" name="expiredTime"
+                               <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                               value="<#if dto??>${dto.expiredTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
+                    </div>
                 </div>
                 <div class="col-sm-7">
 
