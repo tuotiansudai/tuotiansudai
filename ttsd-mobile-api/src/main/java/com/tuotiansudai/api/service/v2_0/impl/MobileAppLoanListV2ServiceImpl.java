@@ -46,7 +46,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         if (Strings.isNullOrEmpty(loginName)
                 || (userCouponMapper.findCountSuccessByLoginAndProductTypes(loginName,Lists.newArrayList(ProductType.EXPERIENCE)) == 0
                 && investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0)) {
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,false));
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,true));
         }
 
         if(investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0){
