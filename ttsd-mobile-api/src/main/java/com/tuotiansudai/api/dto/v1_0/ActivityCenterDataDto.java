@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.repository.model.ActivityModel;
 
 public class ActivityCenterDataDto {
     private String descTitle;
@@ -10,10 +10,10 @@ public class ActivityCenterDataDto {
     public ActivityCenterDataDto() {
     }
 
-    public ActivityCenterDataDto(ActivityDto activityDto) {
-        this.descTitle = activityDto.getDescription();
-        this.imageUrl = activityDto.getAppPictureUrl();
-        this.activityUrl = activityDto.getAppActivityUrl();
+    public ActivityCenterDataDto(ActivityModel activityModel) {
+        this.descTitle = activityModel.getDescription();
+        this.imageUrl = activityModel.getAppPictureUrl();
+        this.activityUrl = activityModel.getAppActivityUrl();
     }
 
     public String getDescTitle() {

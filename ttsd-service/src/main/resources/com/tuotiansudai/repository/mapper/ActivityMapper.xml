@@ -79,4 +79,39 @@
         </where>
     </select>
 
+    <select id="findAllActivities" resultMap="activityResultMap" parameterType="map">
+        SELECT * FROM `aa`.`activity`
+        <where>
+            <if test="startTime != null">
+                AND activated_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND activated_time &lt;= #{endTime}
+            </if>
+            <if test="activityStatus != null and activityStatus == 'OPERATING'">
+                AND status = 'APPROVED' AND  expired_time &gt; now()
+            </if>
+            <if test="activityStatus != null and activityStatus == 'EXPIRED'">
+                AND  expired_time  &lt; now()
+            </if>
+            <if test="activityStatus != null">
+                AND  status = ${activityStatus}
+            </if>
+            <if test="source != null">
+                and source = #{source}
+            </if>
+        </where>
+        order by activated_time desc
+    </select>
+    <select id="findOperatingActivities" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`activity`
+        WHERE
+        expired_time > now() AND
+        status = 'APPROVED'
+        <if test="source != null">
+            AND source like CONCAT('%', #{source}, '%')
+        </if>
+        ORDER BY activated_time DESC
+    </select>
+
 </mapper>

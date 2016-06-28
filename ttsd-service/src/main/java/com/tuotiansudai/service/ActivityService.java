@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ActivityService {
@@ -14,5 +15,7 @@ public interface ActivityService {
     boolean createEditRecheckActivity(ActivityDto activityDto,ActivityStatus activityStatus,String loginName, String ip);
 
     ActivityModel findById(long activityId);
+
+    List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source);
 
 }
