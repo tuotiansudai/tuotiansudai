@@ -66,7 +66,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean createEditRecheckActivity(ActivityDto activityDto, ActivityStatus activityStatus, String loginName) {
+    public boolean createEditRecheckActivity(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
         ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
 
         switch(activityStatus){

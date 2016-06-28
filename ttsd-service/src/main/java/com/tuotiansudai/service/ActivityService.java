@@ -11,7 +11,7 @@ public interface ActivityService {
 
     List<ActivityDto> getAllOperatingActivities(String loginName, Source source);
 
-    boolean createEditRecheckActivity(ActivityDto activityDto,ActivityStatus activityStatus,String loginName);
+    boolean createEditRecheckActivity(ActivityDto activityDto,ActivityStatus activityStatus,String loginName, String ip);
 
     ActivityModel findById(long activityId);
 
