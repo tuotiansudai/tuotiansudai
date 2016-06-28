@@ -51,7 +51,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     public void repay(Date repayDate) {
         logger.debug(MessageFormat.format("[Experience Repay] starting at {0}", new Date().toString()));
 
-        List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,true);
 
         List<InvestRepayModel> repaySuccessInvestRepayModels = Lists.newArrayList();
 

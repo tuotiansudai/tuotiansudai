@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
@@ -7,13 +8,16 @@ import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,27 +36,30 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
 
-        if ((loginName == null || loginName.equals("")) &&
-                (investMapper.findCountNormalAndNewBieSuccessByInvestTime(loginName, DateTime.parse("2016-06-14").toDate()) == 0
-                        && investMapper.findCountInvestProductTypeSuccessByLoginName(loginName,ProductType.EXPERIENCE) == 0)) {
-            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true,ProductType.EXPERIENCE));
+        if (Strings.isNullOrEmpty(loginName)
+                || (userCouponMapper.findCountSuccessByLoginAndProductTypes(loginName,Lists.newArrayList(ProductType.EXPERIENCE)) == 0
+                && investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0)) {
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,false));
         }
 
-        if(investMapper.findCountNormalAndNewBieSuccessByInvestTime(loginName,null) == 0){
-            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true,null));
+        if(investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0){
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,null,true));
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false,null);
+        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,null,false);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }
 
         if (CollectionUtils.isEmpty(loanModels)) {
-            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false,null);
+            List<LoanModel> completeLoanModels = loanMapper.findByProductType(LoanStatus.COMPLETE, null,true);
             if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                 loanModels.add(completeLoanModels.get(0));
             }
