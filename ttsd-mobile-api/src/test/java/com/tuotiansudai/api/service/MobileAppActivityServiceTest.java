@@ -114,9 +114,9 @@ public class MobileAppActivityServiceTest {
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
         activityModel.setActivatedTime(activatedTime);
-        activityModel.setExpiredTime(DateTime.parse("2016-07-30T01:20").toDate());
+        activityModel.setExpiredTime(DateTime.parse("2040-07-30T01:20").toDate());
         activityModel.setSource(source);
-        activityModel.setStatus(ActivityStatus.OPERATING);
+        activityModel.setStatus(ActivityStatus.APPROVED);
         activityModel.setCreatedBy(userModel.getLoginName());
         activityModel.setCreatedTime(DateTime.parse("2016-04-30T01:20").toDate());
         activityModel.setUpdatedBy(userModel.getLoginName());
@@ -135,19 +135,19 @@ public class MobileAppActivityServiceTest {
         createInvests(userModel.getLoginName(), loanId);
 
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID));
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-09T01:20").toDate(), Lists.newArrayList(Source.ANDROID));
         activityModels.add(activityModel);
-        activityModel = createActivityModel(5L, userModel, "新手1", DateTime.parse("2016-06-02T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
+        activityModel = createActivityModel(5L, userModel, "新手1", DateTime.parse("2016-06-08T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityModels.add(activityModel);
-        activityModel = createActivityModel(4L, userModel, "normal4", DateTime.parse("2016-06-07T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
+        activityModel = createActivityModel(4L, userModel, "normal4", DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityModels.add(activityModel);
-        activityModel = createActivityModel(6L, userModel, "新手2", DateTime.parse("2016-06-04T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
+        activityModel = createActivityModel(6L, userModel, "新手2", DateTime.parse("2016-06-06T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityModels.add(activityModel);
         activityModel = createActivityModel(3L, userModel, "normal3", DateTime.parse("2016-06-05T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityModels.add(activityModel);
-        activityModel = createActivityModel(7L, userModel, "新手3", DateTime.parse("2016-06-06T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
+        activityModel = createActivityModel(7L, userModel, "新手3", DateTime.parse("2016-06-04T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityModels.add(activityModel);
-        activityModel = createActivityModel(2L, userModel, "normal2", DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.IOS));
+        activityModel = createActivityModel(2L, userModel, "normal2", DateTime.parse("2016-06-07T01:20").toDate(), Lists.newArrayList(Source.IOS));
         activityModels.add(activityModel);
 
         return activityModels;
@@ -168,17 +168,5 @@ public class MobileAppActivityServiceTest {
         assertEquals("normal2", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());
         assertEquals("normal3", activityCenterDataDtos.get(3).getDescTitle());
-
-        activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(null, Source.ANDROID, 1, 4);
-        assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
-        assertEquals(1, activityCenterResponseDto.getIndex().intValue());
-        assertEquals(4, activityCenterResponseDto.getPageSize().intValue());
-
-        activityCenterDataDtos = activityCenterResponseDto.getActivities();
-        assertEquals(4, activityCenterDataDtos.size());
-        assertEquals("新手1", activityCenterDataDtos.get(0).getDescTitle());
-        assertEquals("新手2", activityCenterDataDtos.get(1).getDescTitle());
-        assertEquals("新手3", activityCenterDataDtos.get(2).getDescTitle());
-        assertEquals("normal1", activityCenterDataDtos.get(3).getDescTitle());
     }
 }
