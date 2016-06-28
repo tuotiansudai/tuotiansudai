@@ -13,7 +13,7 @@ require(['jquery', 'underscore', 'moment', 'daterangepicker'], function ($, _, m
             $t.addClass('active').siblings().removeClass('active');
         });
 
-        $('#date-time-picker').dateRangePicker({
+        var $dateTimePicker = $('#date-time-picker').dateRangePicker({
             separator: ' ~ '
         }).on('datepicker-change', function (event, obj) {
             renderTable({
@@ -44,6 +44,7 @@ require(['jquery', 'underscore', 'moment', 'daterangepicker'], function ($, _, m
         $('#filter-btns').find('span').on('click', function () {
             var $t = $(this);
             var type = $t.data('type');
+            $dateTimePicker.clear();
             if (type == 'all') {
                 renderTable(null, function () {
                     $t.addClass('active').siblings().removeClass('active');
