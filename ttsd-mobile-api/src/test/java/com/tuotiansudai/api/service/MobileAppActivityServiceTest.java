@@ -130,8 +130,9 @@ public class MobileAppActivityServiceTest {
 
     private List<ActivityModel> prepareData() {
         UserModel userModel = createUserModel("testUser");
-        createLoanModel(userModel.getLoginName(), 1);
-        createInvests(userModel.getLoginName(), 1);
+        long loanId = idGenerator.generate();
+        createLoanModel(userModel.getLoginName(), loanId);
+        createInvests(userModel.getLoginName(), loanId);
 
         List<ActivityModel> activityModels = new ArrayList<>();
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID));
