@@ -22,8 +22,8 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Value("${web.server}")
     private String domainName;
 
-    @Value("${web.static.server}")
-    private String staticDomainName;
+    @Value("${web.banner.server}")
+    private String bannerName;
 
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
@@ -32,7 +32,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);
         for(BannerModel bannerModel : bannerModelList){
-                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),staticDomainName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),false));
+                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),bannerName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),false));
         }
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
         baseDto.setData(bannerResponseDataDto);

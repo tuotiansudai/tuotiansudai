@@ -40,7 +40,7 @@
                 and authenticated = #{authenticated}
             </if>
 
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and source = #{source}
             </if>
         order by banner.order

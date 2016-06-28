@@ -31,7 +31,10 @@ public class MobileAppBannerServiceTest extends ServiceTestBase{
         List<BannerModel> bannerModelList = Lists.newArrayList();
         bannerModelList.add(new BannerModel());
         when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(),anyString())).thenReturn(bannerModelList);
-        BaseResponseDto<BannerResponseDataDto> responseDto = mobileAppBannerService.generateBannerList(new BaseParam());
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("ceshi1");
+        baseParam.setPlatform("android");
+        BaseResponseDto<BannerResponseDataDto> responseDto = mobileAppBannerService.generateBannerList(baseParam);
         BannerResponseDataDto data = responseDto.getData();
         assertTrue(CollectionUtils.isNotEmpty(data.getPictures()));
     }
