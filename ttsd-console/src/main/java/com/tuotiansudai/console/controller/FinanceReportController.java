@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.service.FinanceReportService;
@@ -42,7 +41,6 @@ public class FinanceReportController {
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, index, pageSize);
         modelAndView.addObject("data", basePaginationDataDto);
         modelAndView.addObject("loanId", loanId);
-        modelAndView.addObject("periodList", Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         modelAndView.addObject("selectedPeriod", period);
         modelAndView.addObject("investLoginName", investLoginName);
         modelAndView.addObject("investStartTime", investStartTime);
@@ -75,7 +73,6 @@ public class FinanceReportController {
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, index, pageSize);
         modelAndView.addObject("data", basePaginationDataDto);
         modelAndView.addObject("loanId", loanId);
-        modelAndView.addObject("periodList", Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         modelAndView.addObject("selectedPeriod", period);
         modelAndView.addObject("investLoginName", investLoginName);
         modelAndView.addObject("investStartTime", investStartTime);

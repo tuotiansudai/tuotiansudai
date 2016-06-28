@@ -12,11 +12,18 @@
             <label>期限</label>
             <select class="selectpicker" name="period">
                 <option value="" <#if !(selectedPeriod??)>selected</#if>>全部</option>
-                <#list periodList as period>
-                    <option value="${period}" <#if selectedPeriod?? && period==selectedPeriod>selected</#if>>
-                        第${period}期
-                    </option>
-                </#list>
+                <option value="1" <#if selectedPeriod?? && 1==selectedPeriod>selected</#if>>第1期</option>
+                <option value="2" <#if selectedPeriod?? && 2==selectedPeriod>selected</#if>>第2期</option>
+                <option value="3" <#if selectedPeriod?? && 3==selectedPeriod>selected</#if>>第3期</option>
+                <option value="4" <#if selectedPeriod?? && 4==selectedPeriod>selected</#if>>第4期</option>
+                <option value="5" <#if selectedPeriod?? && 5==selectedPeriod>selected</#if>>第5期</option>
+                <option value="6" <#if selectedPeriod?? && 6==selectedPeriod>selected</#if>>第6期</option>
+                <option value="7" <#if selectedPeriod?? && 7==selectedPeriod>selected</#if>>第7期</option>
+                <option value="8" <#if selectedPeriod?? && 8==selectedPeriod>selected</#if>>第8期</option>
+                <option value="9" <#if selectedPeriod?? && 9==selectedPeriod>selected</#if>>第9期</option>
+                <option value="10" <#if selectedPeriod?? && 10==selectedPeriod>selected</#if>>第10期</option>
+                <option value="11" <#if selectedPeriod?? && 11==selectedPeriod>selected</#if>>第11期</option>
+                <option value="12" <#if selectedPeriod?? && 12==selectedPeriod>selected</#if>>第12期</option>
             </select>
         </div>
         <div class="form-group">
