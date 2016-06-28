@@ -102,7 +102,7 @@ public class ActivityServiceTest {
         }
     }
 
-    private ActivityModel createActivityModel(long id, UserModel userModel, String title, Date activatedTime) {
+    private ActivityModel createActivityModel(long id, UserModel userModel, String title, Date activatedTime, Date expiredTime) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setId(id);
         activityModel.setTitle(title);
@@ -112,9 +112,9 @@ public class ActivityServiceTest {
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
         activityModel.setActivatedTime(activatedTime);
-        activityModel.setExpiredTime(DateTime.parse("2016-07-30T01:20").toDate());
+        activityModel.setExpiredTime(expiredTime);
         activityModel.setSource(Lists.newArrayList(Source.WEB));
-        activityModel.setStatus(ActivityStatus.OPERATING);
+        activityModel.setStatus(ActivityStatus.APPROVED);
         activityModel.setCreatedBy(userModel.getLoginName());
         activityModel.setCreatedTime(DateTime.parse("2016-04-30T01:20").toDate());
         activityModel.setUpdatedBy(userModel.getLoginName());
@@ -132,21 +132,12 @@ public class ActivityServiceTest {
         createInvests(userModel.getLoginName(), 1);
 
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityModel activityModel = createActivityModel(1L, userModel, "activity1", DateTime.parse("2016-06-03T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         activityModels.add(activityModel);
-        activityModel = createActivityModel(5L, userModel, "新手1", DateTime.parse("2016-06-02T01:20").toDate());
+        activityModel = createActivityModel(5L, userModel, "activity2", DateTime.parse("2016-06-02T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         activityModels.add(activityModel);
-        activityModel = createActivityModel(4L, userModel, "normal4", DateTime.parse("2016-06-07T01:20").toDate());
+        activityModel = createActivityModel(4L, userModel, "activity3", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         activityModels.add(activityModel);
-        activityModel = createActivityModel(6L, userModel, "新手2", DateTime.parse("2016-06-04T01:20").toDate());
-        activityModels.add(activityModel);
-        activityModel = createActivityModel(3L, userModel, "normal3", DateTime.parse("2016-06-05T01:20").toDate());
-        activityModels.add(activityModel);
-        activityModel = createActivityModel(7L, userModel, "新手3", DateTime.parse("2016-06-06T01:20").toDate());
-        activityModels.add(activityModel);
-        activityModel = createActivityModel(2L, userModel, "normal2", DateTime.parse("2016-06-03T01:20").toDate());
-        activityModels.add(activityModel);
-
         return activityModels;
     }
 
@@ -155,25 +146,12 @@ public class ActivityServiceTest {
         prepareData();
 
         List<ActivityDto> activityDtoList = activityService.getAllOperatingActivities("testUser", Source.WEB);
-        assertEquals(7, activityDtoList.size());
-        assertEquals("normal1", activityDtoList.get(0).getTitle());
-        assertEquals("新手1", activityDtoList.get(1).getTitle());
-        assertEquals("normal2", activityDtoList.get(2).getTitle());
-        assertEquals("新手2", activityDtoList.get(3).getTitle());
-        assertEquals("normal3", activityDtoList.get(4).getTitle());
-        assertEquals("新手3", activityDtoList.get(5).getTitle());
-        assertEquals("normal4", activityDtoList.get(6).getTitle());
-
-        activityDtoList = activityService.getAllOperatingActivities(null, Source.WEB);
-        assertEquals(7, activityDtoList.size());
-        assertEquals("新手1", activityDtoList.get(0).getTitle());
-        assertEquals("新手2", activityDtoList.get(1).getTitle());
-        assertEquals("新手3", activityDtoList.get(2).getTitle());
-        assertEquals("normal1", activityDtoList.get(3).getTitle());
-        assertEquals("normal2", activityDtoList.get(4).getTitle());
-        assertEquals("normal3", activityDtoList.get(5).getTitle());
-        assertEquals("normal4", activityDtoList.get(6).getTitle());
+        assertEquals(3, activityDtoList.size());
+        assertEquals("activity1", activityDtoList.get(0).getTitle());
+        assertEquals("activity2", activityDtoList.get(1).getTitle());
+        assertEquals("activity3", activityDtoList.get(2).getTitle());
     }
+
     private ActivityDto fakeActivityDto(String loginName,ActivityStatus activityStatus){
         ActivityDto activityDto = new ActivityDto();
         activityDto.setActivityId(idGenerator.generate());
@@ -214,7 +192,7 @@ public class ActivityServiceTest {
     @Test
     public void shouldCreateEditRecheckActivityByEdit(){
         UserModel userModel = createUserModel("testUser");
-        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
 
         activityDto.setAppPictureUrl("AppPictureUrlEdit");
@@ -237,7 +215,7 @@ public class ActivityServiceTest {
     @Test
     public void shouldCreateEditRecheckActivityByRejection(){
         UserModel userModel = createUserModel("testUser");
-        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.REJECTION, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
@@ -248,7 +226,7 @@ public class ActivityServiceTest {
     @Test
     public void shouldCreateEditRecheckActivityByRecheck(){
         UserModel userModel = createUserModel("testUser");
-        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate());
+        ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.createEditRecheckActivity(activityDto, ActivityStatus.APPROVED, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());

@@ -11,9 +11,10 @@ import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -29,35 +30,7 @@ public class ActivityServiceImpl implements ActivityService {
     public List<ActivityDto> getAllOperatingActivities(String loginName, Source source) {
         final List<ActivityDto> activityDtos = new ArrayList<>();
 
-        List<ActivityModel> activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, source);
-
-        Collections.sort(activityModels, new Comparator<ActivityModel>() {
-            @Override
-            public int compare(ActivityModel o1, ActivityModel o2) {
-                if (o1.getActivatedTime().equals(o2.getActivatedTime())) {
-                    return 0;
-                } else if (o1.getActivatedTime().after(o2.getActivatedTime())) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
-
-        if (StringUtils.isEmpty(loginName) || 0 == investMapper.findCountByLoginName(loginName)) {
-            List<ActivityModel> newbieActivities = new ArrayList<>();
-            List<ActivityModel> normalActivities = new ArrayList<>();
-            for (ActivityModel activityModel : activityModels) {
-                if (activityModel.getTitle().contains("新手")) {
-                    newbieActivities.add(activityModel);
-                } else {
-                    normalActivities.add(activityModel);
-                }
-            }
-            newbieActivities.addAll(normalActivities);
-            activityModels.clear();
-            activityModels.addAll(newbieActivities);
-        }
+        List<ActivityModel> activityModels = activityMapper.findOperatingActivities(source);
 
         for (ActivityModel activityModel : activityModels) {
             activityDtos.add(new ActivityDto(activityModel));

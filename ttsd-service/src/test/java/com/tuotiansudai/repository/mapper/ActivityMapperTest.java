@@ -44,7 +44,7 @@ public class ActivityMapperTest {
         return userModel;
     }
 
-    private ActivityModel createActivityModel(UserModel userModel, Date activatedTime, List<Source> source, ActivityStatus activityStatus) {
+    private ActivityModel createActivityModel(UserModel userModel, Date activatedTime, Date expiredTime, List<Source> source, ActivityStatus activityStatus) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setTitle("testTitle");
         activityModel.setWebActivityUrl("testWebActivityUrl");
@@ -53,7 +53,7 @@ public class ActivityMapperTest {
         activityModel.setWebPictureUrl("testWebPictureUrl");
         activityModel.setAppPictureUrl("testAppPictureUrl");
         activityModel.setActivatedTime(activatedTime);
-        activityModel.setExpiredTime(DateTime.parse("2016-07-30T01:20").toDate());
+        activityModel.setExpiredTime(expiredTime);
         activityModel.setSource(source);
         activityModel.setStatus(activityStatus);
         activityModel.setCreatedBy(userModel.getLoginName());
@@ -71,11 +71,17 @@ public class ActivityMapperTest {
         UserModel userModel = createUserModel("testUser");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
-        ActivityModel activityModel = createActivityModel(userModel, DateTime.parse("2016-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        ActivityModel activityModel = createActivityModel(userModel, DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-02T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-02T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
         activityModels.add(activityModel);
-        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-03T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-06-03T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID), ActivityStatus.OPERATING);
+        activityModels.add(activityModel);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED);
+        activityModels.add(activityModel);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2000-06-01T01:20").toDate(), Lists.newArrayList(Source.ANDROID, Source.WEB), ActivityStatus.APPROVED);
+        activityModels.add(activityModel);
+        activityModel = createActivityModel(userModel, DateTime.parse("2016-07-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.APPROVED);
         activityModels.add(activityModel);
 
         return activityModels;
@@ -111,7 +117,7 @@ public class ActivityMapperTest {
         List<ActivityModel> activityModels = prepareData();
 
         ActivityModel updatedActivityModel = new ActivityModel();
-        updatedActivityModel.setId(1L);
+        updatedActivityModel.setId(activityModels.get(0).getId());
         updatedActivityModel.setTitle("Title");
         updatedActivityModel.setWebActivityUrl("WebActivityUrl");
         updatedActivityModel.setAppActivityUrl("AppActivityUrl");
@@ -155,7 +161,7 @@ public class ActivityMapperTest {
         List<ActivityModel> originalActivityModels = prepareData();
 
         List<ActivityModel> activityModels = activityMapper.findActivities(null, null, null, null);
-        assertEquals(3, activityModels.size());
+        assertEquals(6, activityModels.size());
 
         activityModels = activityMapper.findActivities(null, null, ActivityStatus.OPERATING, Source.ANDROID);
         assertEquals(1, activityModels.size());
@@ -179,7 +185,7 @@ public class ActivityMapperTest {
         assertEquals(originalActivityModel.getActivatedBy(), searchActivityModel.getActivatedBy());
 
         activityModels = activityMapper.findActivities(DateTime.parse("2016-06-02T02:20").toDate(), null, null, null);
-        assertEquals(1, activityModels.size());
+        assertEquals(4, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
             assertTrue(activityModel.getActivatedTime().after(DateTime.parse("2016-06-02T02:20").toDate()));
         }
@@ -197,7 +203,7 @@ public class ActivityMapperTest {
         }
 
         activityModels = activityMapper.findActivities(null, null, null, Source.ANDROID);
-        assertEquals(1, activityModels.size());
+        assertEquals(3, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
             assertEquals(Source.ANDROID, activityModel.getSource().get(0));
         }
@@ -214,5 +220,20 @@ public class ActivityMapperTest {
         assertEquals(0, activityMapper.findActivities(null, null, ActivityStatus.REJECTION, null).size());
         assertEquals(0, activityMapper.findActivities(DateTime.parse("2017-05-02T02:20").toDate(), null, ActivityStatus.TO_APPROVE, Source.WEB).size());
         assertEquals(0, activityMapper.findActivities(null, DateTime.parse("2014-05-02T02:20").toDate(), ActivityStatus.TO_APPROVE, Source.WEB).size());
+    }
+
+    @Test
+    public void testFindOperatingActivities() throws Exception {
+        prepareData();
+        List<ActivityModel> activityModels = activityMapper.findOperatingActivities(Source.WEB);
+        assertEquals(2, activityModels.size());
+        for (ActivityModel activityModel : activityModels) {
+            assertTrue(activityModel.getSource().contains(Source.WEB));
+        }
+        activityModels = activityMapper.findOperatingActivities(Source.ANDROID);
+        assertEquals(1, activityModels.size());
+        for (ActivityModel activityModel : activityModels) {
+            assertTrue(activityModel.getSource().contains(Source.ANDROID));
+        }
     }
 }
