@@ -18,10 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
@@ -80,7 +78,6 @@ public class ContractServiceTest {
         lm.setDescriptionText("123");
         lm.setDescriptionHtml("<p>123</p>");
         lm.setLoanAmount(1300);
-        lm.setInvestFeeRate(0.1);
         lm.setMinInvestAmount(100);
         lm.setMaxInvestAmount(1300);
         lm.setInvestIncreasingAmount(1);
@@ -102,7 +99,7 @@ public class ContractServiceTest {
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "testUserModel", new Date(), Source.ANDROID, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "testUserModel", new Date(), Source.ANDROID, null, 0.1);
         investModel.setCreatedTime(new Date());
         return investModel;
     }

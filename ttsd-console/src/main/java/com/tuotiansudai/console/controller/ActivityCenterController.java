@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -29,23 +31,28 @@ public class ActivityCenterController {
 
     @RequestMapping(value = "/activity-center", method = RequestMethod.GET)
     public ModelAndView activityCenter(){
-        return new ModelAndView("/activity-center-edit");
+        ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
+        modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/activity-center/{activityId}", method = RequestMethod.GET)
     public ModelAndView activityCenter(@PathVariable long activityId){
         ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
+
         ActivityModel activityModel = activityService.findById(activityId);
         ActivityDto activityDto = new ActivityDto(activityModel);
+        modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
         modelAndView.addObject("dto",activityDto);
         return modelAndView;
     }
 
     @RequestMapping(value = "/activity-center/{activityStatus}",method = RequestMethod.POST)
-    public ModelAndView activityCenter(@ModelAttribute ActivityDto activityDto, @PathVariable ActivityStatus activityStatus){
+    public ModelAndView activityCenter(@ModelAttribute ActivityDto activityDto, @PathVariable ActivityStatus activityStatus, HttpServletRequest request){
 
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        activityService.createEditRecheckActivity(activityDto,activityStatus,loginName);
+        activityService.createEditRecheckActivity(activityDto,activityStatus,loginName,ip);
 
         return new ModelAndView("redirect:/activity-manage/activity-center");
     }

@@ -67,8 +67,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean createEditRecheckActivity(ActivityDto activityDto, ActivityStatus activityStatus, String loginName) {
-        ActivityModel activityModelExist = activityMapper.findById(activityDto.getId());
+    public boolean createEditRecheckActivity(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
+        ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
 
         switch(activityStatus){
             case TO_APPROVE:
@@ -89,8 +89,11 @@ public class ActivityServiceImpl implements ActivityService {
                     ActivityModel activityModel = new ActivityModel(activityDto);
                     activityModel.setCreatedBy(loginName);
                     activityModel.setCreatedTime(new Date());
+                    activityModel.setUpdatedBy(loginName);
+                    activityModel.setUpdatedTime(new Date());
                     activityModel.setStatus(ActivityStatus.TO_APPROVE);
                     activityMapper.create(activityModel);
+                    activityDto.setActivityId(activityModel.getId());
                 }
                 return true;
             case REJECTION:

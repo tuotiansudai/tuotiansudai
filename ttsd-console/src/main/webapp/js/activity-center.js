@@ -132,19 +132,27 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
         $('.activity-to_approve,.activity-rejection,.activity-approved').on('click', function(event) {
             event.preventDefault();
             var $self = $(this),
-                actionUrl;
+                actionUrl,
+                operator;
             if (boolFlag) {
                 $self.attr('disabled', 'disabled');
                 if($self.hasClass("activity-to_approve")){
+                    operator = "提交审核";
                     actionUrl = "/activity-manage/activity-center/TO_APPROVE";
                 }else if($self.hasClass("activity-rejection")){
+                    operator = "驳回";
                     actionUrl = "/activity-manage/activity-center/REJECTION";
 
                 }else if($self.hasClass("activity-approved")){
+                    operator = "审核通过";
                     actionUrl = "/activity-manage/activity-center/APPROVED";
                 }
                 $activityCenterForm[0].action = actionUrl;
-                $activityCenterForm[0].submit();
+                if(confirm('确定要'+operator +'吗?')) {
+                    $activityCenterForm[0].submit();
+                }else{
+                    $self.removeAttr('disabled');
+                }
             }
         });
 

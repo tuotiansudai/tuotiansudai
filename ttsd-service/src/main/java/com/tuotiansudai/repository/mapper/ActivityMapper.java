@@ -15,7 +15,7 @@ public interface ActivityMapper {
 
     void update(ActivityModel activityModel);
 
-    ActivityModel findById(long id);
+    ActivityModel findById(Long id);
 
     List<ActivityModel> findActivities(@Param(value = "activatedStartTime") Date activatedStartTime,
                                        @Param(value = "activatedEndTime") Date activatedEndTime,

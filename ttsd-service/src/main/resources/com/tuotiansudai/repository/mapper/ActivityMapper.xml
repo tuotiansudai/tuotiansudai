@@ -26,12 +26,12 @@
         <result column="activated_by" property="activatedBy"/>
     </resultMap>
 
-    <insert id="create" parameterType="ActivityModel">
+    <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`activity`
-        (id, title, web_activity_url, app_activity_url, description, web_picture_url, app_picture_url, activated_time,
+        (title, web_activity_url, app_activity_url, description, web_picture_url, app_picture_url, activated_time,
         expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by)
         VALUES
-        (#{id}, #{title}, #{webActivityUrl}, #{appActivityUrl}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
+        (#{title}, #{webActivityUrl}, #{appActivityUrl}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
         #{expiredTime}, #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{activatedBy})
     </insert>
 

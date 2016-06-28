@@ -32,8 +32,8 @@ var require = {
         'template':staticServer+'/js/libs/template.min',
         'fancybox':staticServer+'/js/libs/jquery.fancybox.min',
         'count_down': staticServer+'/js/dest/count_down.min',
-        'placeholder':staticServer+'/js/libs/jquery.enplaceholder',
-        'superslide':staticServer+'/js/libs/jquery.SuperSlide.2.1.1'
+        'placeholder': staticServer + '/js/libs/jquery.enplaceholder',
+        'superslide': staticServer + '/js/libs/jquery.SuperSlide.2.1.1'
     },
     'waitSeconds':0,
     'shim': {
@@ -53,8 +53,8 @@ var require = {
         'drag':['jquery'],
         'rotate':['jquery'],
         'fancybox':['jquery'],
-        'placeholder':['jquery'],
-        'superslide':['jquery']
+        'placeholder': ['jquery'],
+        'superslide': ['jquery']
     },
 
     config: {

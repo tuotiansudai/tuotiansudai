@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="MembershipExperienceBillResultMap" type="MembershipExperienceBillModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="experience" property="experience"/>
+        <result column="total_experience" property="totalExperience"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipExperienceBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into membership_experience_bill (login_name, experience, total_experience, created_time, description)
+        value(#{loginName}, #{experience}, #{totalExperience}, #{createdTime}, #{description})
+    </insert>
+
+    <update id="update" parameterType="MembershipExperienceBillModel">
+        update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, total_experience = #{totalExperience}, created_time = #{createdTime}, description = #{description} where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="MembershipExperienceBillResultMap" parameterType="long">
+        select * from membership_experience_bill where id = #{id}
+    </select>
+
+
+    <select id="findMembershipExperienceBillByLoginName" resultMap="MembershipExperienceBillResultMap" parameterType="map">
+        select * from membership_experience_bill
+        where login_name = #{loginName}
+        <if test="startTime != null">
+            <![CDATA[ and created_time > #{startTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and created_time <= #{endTime} ]]>
+        </if>
+        order by created_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+
+    </select>
+
+    <select id="findMembershipExperienceBillCountByLoginName" resultType="long" parameterType="String">
+        select count(id) from membership_experience_bill
+        where login_name = #{loginName}
+        <if test="startTime != null">
+            <![CDATA[ and created_time > #{startTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and created_time <= #{endTime} ]]>
+        </if>
+    </select>
+
+</mapper>
