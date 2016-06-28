@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.RegisterRequestDto;
 import com.tuotiansudai.api.dto.v1_0.RegisterResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
 import com.tuotiansudai.dto.BaseDto;
@@ -32,6 +33,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
+
+    @Autowired
+    private MobileAppTokenProvider mobileAppTokenProvider;
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
@@ -99,6 +103,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         registerDataDto.setUserId(registerRequestDto.getUserName());
         registerDataDto.setUserName(registerRequestDto.getUserName());
         registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
+        registerDataDto.setToken(mobileAppTokenProvider.refreshToken(dto.getLoginName(), null));
         baseResponseDto.setData(registerDataDto);
 
         return baseResponseDto;
