@@ -558,16 +558,15 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
+        <if test="loanStatus.name() == 'COMPLETE' ">
             and (loan.status = #{loanStatus}
             OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
             OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
-        <if test="loanStatus.name() == 'COMPLETE' ">
-            and loan.status = #{loanStatus}
-        </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and loan.status in ('REPAYING','OVERDUE')
+            and (loan.status in ('REPAYING','OVERDUE')
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
