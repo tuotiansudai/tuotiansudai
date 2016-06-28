@@ -330,7 +330,7 @@ def restart_logstash(service):
     env.password = get_password()
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
-           'cms': restart_logstash_service_for_cms}.get(service)
+           'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity}.get(service)
     execute(func)
 
 

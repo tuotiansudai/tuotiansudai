@@ -9,6 +9,7 @@ web:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
+    - "nginx-server"
 console:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -57,6 +58,7 @@ activity:
   links:
     - "redis-server"
     - "static-server"
+    - "nginx-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:

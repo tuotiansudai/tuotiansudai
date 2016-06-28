@@ -12,13 +12,13 @@ class Deployment(object):
 
     def deploy(self, env):
         self._env=env
-        # self.clean()
-        # self.compile()
-        # self.migrate()
-        # self.jcversion()
-        # self.mkwar()
-        # self.mk_static_package()
-        # self.set_nginx_host()
+        self.clean()
+        self.compile()
+        self.migrate()
+        self.jcversion()
+        self.mkwar()
+        self.mk_static_package()
+        self.set_nginx_host()
         self.init_docker()
 
     def clean(self):

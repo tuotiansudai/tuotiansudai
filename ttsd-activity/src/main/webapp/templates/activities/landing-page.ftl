@@ -66,6 +66,36 @@
         </div>
     </div>
 
+    <div class="content-three">
+        <div class="three-title">
+            <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="content-wp">
+            <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，</p>
+
+            <p>成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
+            <img src="${staticServer}/images/sign/actor/landingpage/gift-list.png" width="100%">
+        </div>
+    </div>
+    <div class="content-four">
+        <div class="four-title">
+            <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="content-wp">
+            <ul>
+                <li>
+                    <a href="/loan-list">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                    </a>
+                </li>
+                <li>
+                    <a href="/loan-list">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="content-one">
         <div class="one-title">
@@ -97,6 +127,7 @@
             </ul>
         </div>
     </div>
+
     <div class="content-five">
         <div class="five-title">
             主流媒体眼中的我们
@@ -539,7 +570,21 @@
             <p>奖励请前往“我的账户--我的宝藏”查看</p>
         </div>
         <div class="landing-phone-section-header">
-            拓天速贷的优势
+            <h3><span><i class="left-icon"></i>新手项目<i class="right-icon"></i></span></h3>
+        </div>
+        <div class="product-box-list fl">
+            <ul>
+                <li>
+                    <a href="/loan-list?productType=JYF">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                    </a>
+                </li>
+                <li>
+                    <a href="/loan-list?productType=JYF">
+                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="landing-phone-section-header-right">
         </div>
