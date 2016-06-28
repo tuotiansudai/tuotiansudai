@@ -2,7 +2,6 @@ package com.tuotiansudai.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
