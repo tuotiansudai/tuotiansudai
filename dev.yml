@@ -107,4 +107,4 @@ nginx-server:
   volumes:
     - ./scripts/docker/ttsd-test-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
   ports:
-    - "20008:80"
+    - "20008:20008"

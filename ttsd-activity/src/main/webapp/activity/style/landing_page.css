@@ -279,7 +279,7 @@ form label.error {
     height: 90px;
     text-align: center;
     margin: 0 auto;
-    background: url("/activity/images/icons/logo-new.png") left center no-repeat; }
+    background: url("/activity/images/icons/logo-index.png") left center no-repeat; }
     .landing-container .landing-header a {
       display: inline-block;
       float: right;
@@ -294,7 +294,7 @@ form label.error {
   .landing-container .landing-top {
     position: relative;
     height: 500px;
-    background: url("/activity/images/sign/actor/landingpage/landing-top.png") center top no-repeat; }
+    background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat; }
     .landing-container .landing-top .landing-inner {
       width: 1200px;
       height: 30px;
@@ -436,8 +436,7 @@ form label.error {
       line-height: 120px;
       font-size: 26px;
       margin: 0 auto;
-      text-align: center;
-      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      text-align: center; }
     .landing-container .content-one .content-wp {
       width: 1200px;
       height: 320px;
@@ -471,19 +470,16 @@ form label.error {
               font-size: 26px; }
   .landing-container .content-two {
     width: 100%;
-    min-height: 600px;
-    background-color: #f5f5f5; }
+    background: #e5f3ff; }
     .landing-container .content-two .two-title {
       width: 950px;
       height: 120px;
       line-height: 120px;
       font-size: 26px;
       margin: 0 auto;
-      text-align: center;
-      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      text-align: center; }
     .landing-container .content-two .product-wp {
-      width: 1200px;
-      height: 610px;
+      width: 800px;
       margin: 0 auto;
       padding-bottom: 60px; }
       .landing-container .content-two .product-wp ul {
@@ -523,10 +519,7 @@ form label.error {
       line-height: 120px;
       font-size: 26px;
       margin: 0 auto;
-      text-align: center;
-      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
-      .landing-container .content-three .three-title span {
-        color: red; }
+      text-align: center; }
     .landing-container .content-three .content-wp {
       width: 1080px;
       padding-bottom: 40px;
@@ -542,29 +535,26 @@ form label.error {
         margin-bottom: 0; }
   .landing-container .content-four {
     width: 100%;
-    height: 600px;
-    background-color: #f5f5f5; }
+    background-color: #d9edff; }
     .landing-container .content-four .four-title {
       width: 950px;
       height: 120px;
       line-height: 120px;
       font-size: 26px;
       margin: 0 auto;
-      text-align: center;
-      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
-      .landing-container .content-four .four-title span {
-        color: red; }
-    .landing-container .content-four .text {
-      width: 1200px;
+      text-align: center; }
+    .landing-container .content-four .content-wp {
+      width: 1080px;
+      height: 360px;
       margin: 0 auto; }
-      .landing-container .content-four .text ul {
+      .landing-container .content-four .content-wp ul {
         float: left;
         width: 100%; }
-        .landing-container .content-four .text ul li {
+        .landing-container .content-four .content-wp ul li {
           float: left;
           width: 50%;
           text-align: center; }
-          .landing-container .content-four .text ul li a {
+          .landing-container .content-four .content-wp ul li a {
             display: inline-block; }
   .landing-container .content-five {
     width: 100%;
@@ -577,8 +567,7 @@ form label.error {
       line-height: 120px;
       font-size: 26px;
       margin: 0 auto;
-      text-align: center;
-      background: url("/activity/images/sign/actor/landingpage/one-title-bg.png") no-repeat center; }
+      text-align: center; }
     .landing-container .content-five .content-wp {
       width: 1080px;
       height: 300px;
@@ -651,26 +640,8 @@ form label.error {
     float: left;
     margin-top: 12px;
     margin-bottom: 20px;
-    width: 40%;
+    width: 100%;
     font-size: 16px; }
-    .landing-phone-container .landing-phone-section-header span {
-      color: #FC4333; }
-    .landing-phone-container .landing-phone-section-header span[id] {
-      color: white; }
-  .landing-phone-container .landing-phone-section-header-left {
-    float: left;
-    width: 30%;
-    height: 25px;
-    margin-top: 15px;
-    background: url("/activity/images/sign/actor/landingphone/landing-phone-decorate-left.png") center no-repeat;
-    background-size: 100% auto; }
-  .landing-phone-container .landing-phone-section-header-right {
-    float: left;
-    width: 30%;
-    height: 25px;
-    margin-top: 15px;
-    background: url("/activity/images/sign/actor/landingphone/landing-phone-decorate-right.png") center no-repeat;
-    background-size: 100% auto; }
   .landing-phone-container .landing-phone-logo {
     width: 100%;
     height: 50px; }
@@ -682,283 +653,246 @@ form label.error {
   .landing-phone-container .landing-phone-banner {
     width: 100%;
     height: auto; }
-  .landing-phone-container .wp {
+  .landing-phone-container .tuotian-newuser {
     float: left;
-    width: 100%; }
-    .landing-phone-container .wp p {
-      float: left;
-      width: 100%;
-      font-size: 12px;
-      color: #4c4c4c; }
-    .landing-phone-container .wp .slideBox {
-      float: left;
-      width: 100%;
-      margin-bottom: 25px;
-      position: relative; }
-      .landing-phone-container .wp .slideBox .bd {
-        float: left;
-        width: 100%;
-        height: 210px;
-        overflow: hidden; }
-        .landing-phone-container .wp .slideBox .bd ul {
-          float: left;
-          width: 100%; }
-          .landing-phone-container .wp .slideBox .bd ul li {
-            float: left;
-            width: 100%;
-            text-align: center; }
-      .landing-phone-container .wp .slideBox .prev {
-        width: 24px;
-        height: 84px;
-        position: absolute;
-        top: 50%;
-        left: 20px;
-        margin-top: -42px;
-        background: url("/activity/images/sign/actor/landingpage/left-icon.png") no-repeat center;
-        background-size: 100%; }
-      .landing-phone-container .wp .slideBox .next {
-        width: 24px;
-        height: 84px;
-        position: absolute;
-        top: 50%;
-        right: 20px;
-        margin-top: -42px;
-        background: url("/activity/images/sign/actor/landingpage/right-icon.png") no-repeat center;
-        background-size: 100%; }
-
-.tuotian-advantage {
-  float: left;
-  width: 100%;
-  background: white; }
-  .tuotian-advantage .tuotian-advantage-group {
-    margin-bottom: 25px; }
-    .tuotian-advantage .tuotian-advantage-group .img-icon {
-      margin-right: 15px;
-      width: 63px;
-      height: 69px; }
-    .tuotian-advantage .tuotian-advantage-group .landing-phone-span-left {
-      float: left;
-      width: 50%;
-      text-align: right; }
-    .tuotian-advantage .tuotian-advantage-group .landing-phone-span-right {
-      float: left;
-      width: 50%;
-      text-align: left;
-      line-height: 25px;
-      margin-top: 10px;
-      font-size: 16px; }
-      .tuotian-advantage .tuotian-advantage-group .landing-phone-span-right span {
-        font-size: 12px; }
-
-.tuotian-products {
-  float: left;
-  width: 100%;
-  background: #F2F2F2; }
-  .tuotian-products .product-box-list {
-    width: 96%;
-    padding: 0 2%;
-    padding-bottom: 25px; }
-    .tuotian-products .product-box-list ul {
+    width: 100%;
+    background: #e5f3ff; }
+    .landing-phone-container .tuotian-newuser .wp {
       float: left;
       width: 100%; }
-      .tuotian-products .product-box-list ul li {
-        float: left;
-        width: 100%;
-        text-align: center; }
-        .tuotian-products .product-box-list ul li a {
-          display: inline-block; }
-
-.tuotian-gifts {
-  float: left;
-  width: 100%;
-  background: white; }
-  .tuotian-gifts .landing-phone-gift-header {
-    width: 206px;
-    height: auto; }
-  .tuotian-gifts .gifts-content-container {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-    border: 0.5px solid #FC4333;
-    border-radius: 5px;
-    -webkit-border-radius: 5px; }
-    .tuotian-gifts .gifts-content-container .gifts-content-title {
-      background-color: #FC4333;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      font-size: 12px;
-      color: #fff; }
-      .tuotian-gifts .gifts-content-container .gifts-content-title span {
-        font-size: 14px;
-        color: yellow; }
-    .tuotian-gifts .gifts-content-container p {
-      margin-top: 15px;
-      margin-bottom: 15px;
-      font-size: 12px;
-      color: #FC4333; }
-  .tuotian-gifts .landing-phone-gift-footer {
-    width: 240px;
-    height: auto;
-    margin-bottom: 20px; }
-
-.tuotian-rewards {
-  float: left;
-  width: 100%;
-  background: #F2F2F2; }
-  .tuotian-rewards .rewards-header {
-    float: left;
-    text-align: left;
-    margin-top: 0px;
-    margin-bottom: 25px;
-    margin-left: 20px;
-    margin-right: 20px;
-    font-size: 12px; }
-    .tuotian-rewards .rewards-header ul {
-      float: left;
-      width: 100%; }
-      .tuotian-rewards .rewards-header ul li {
+      .landing-phone-container .tuotian-newuser .wp p {
         float: left;
         width: 100%;
         font-size: 12px;
         color: #4c4c4c; }
-        .tuotian-rewards .rewards-header ul li i {
-          float: left;
-          color: #ff7f00;
-          font-size: 12px;
-          width: 8%;
-          padding-top: 5px; }
-        .tuotian-rewards .rewards-header ul li span {
-          float: left;
-          width: 92%; }
-      .tuotian-rewards .rewards-header ul span {
-        color: #FC4333; }
-
-.tuotian-aboutus {
-  float: left;
-  width: 100%;
-  background: url("/activity/images/sign/actor/landingphone/landing-phone-aboutus-bg.png") center no-repeat; }
-  .tuotian-aboutus .aboutus-content-container {
-    float: left;
-    background: white;
-    margin-top: 0px;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 20px; }
-    .tuotian-aboutus .aboutus-content-container span {
-      float: left;
-      margin-left: 5%;
-      margin-bottom: 10px;
-      background: red;
-      color: white;
-      font-size: 12px;
-      padding-left: 5px;
-      padding-right: 5px;
-      height: 25px; }
-    .tuotian-aboutus .aboutus-content-container p {
-      float: left;
-      margin-left: 5%;
-      margin-right: 5%;
-      text-align: left;
-      font-size: 12px; }
-  .tuotian-aboutus .landing-phone-aboutus-header {
-    margin-top: 25px;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 10px;
-    width: 80%;
-    height: auto; }
-
-.tuotian-register {
-  float: left;
-  width: 100%;
-  background: #F2F2F2; }
-  .tuotian-register input[id=btn-register-now] {
-    width: 50%;
-    margin-bottom: 20px;
-    font-size: 12px;
-    color: white;
-    background: red;
-    border-color: white; }
-  .tuotian-register .tuotian-register-container {
-    float: left;
-    text-align: left;
-    background: white;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 25px;
-    margin-top: 0px;
-    padding: 5%;
-    width: 80%;
-    font-size: 12px; }
-    .tuotian-register .tuotian-register-container .reg-list {
-      float: left;
-      width: 100%; }
-      .tuotian-register .tuotian-register-container .reg-list .height {
-        clear: both;
-        color: #f71010; }
-      .tuotian-register .tuotian-register-container .reg-list .int-model {
+      .landing-phone-container .tuotian-newuser .wp .slideBox {
         float: left;
         width: 100%;
-        margin-bottom: 20px; }
-        .tuotian-register .tuotian-register-container .reg-list .int-model .captcha {
-          width: 40%; }
-        .tuotian-register .tuotian-register-container .reg-list .int-model .appCaptcha {
-          width: 40%; }
-    .tuotian-register .tuotian-register-container input {
-      width: 95%;
-      border-color: #F2F2F2; }
-    .tuotian-register .tuotian-register-container input[id=appCaptcha] {
+        margin-bottom: 25px;
+        position: relative; }
+        .landing-phone-container .tuotian-newuser .wp .slideBox .bd {
+          float: left;
+          width: 100%;
+          height: 210px;
+          overflow: hidden; }
+          .landing-phone-container .tuotian-newuser .wp .slideBox .bd ul {
+            float: left;
+            width: 100%; }
+            .landing-phone-container .tuotian-newuser .wp .slideBox .bd ul li {
+              float: left;
+              width: 100%;
+              text-align: center; }
+        .landing-phone-container .tuotian-newuser .wp .slideBox .prev {
+          width: 24px;
+          height: 84px;
+          position: absolute;
+          top: 50%;
+          left: 20px;
+          margin-top: -42px;
+          background: url("/activity/images/sign/actor/landingpage/left-icon.png") no-repeat center;
+          background-size: 100%; }
+        .landing-phone-container .tuotian-newuser .wp .slideBox .next {
+          width: 24px;
+          height: 84px;
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          margin-top: -42px;
+          background: url("/activity/images/sign/actor/landingpage/right-icon.png") no-repeat center;
+          background-size: 100%; }
+  .landing-phone-container .tuotian-advantage {
+    float: left;
+    width: 100%;
+    background: #e5f3ff; }
+    .landing-phone-container .tuotian-advantage .tuotian-advantage-group {
+      margin-bottom: 25px; }
+      .landing-phone-container .tuotian-advantage .tuotian-advantage-group .img-icon {
+        margin-right: 15px;
+        width: 63px;
+        height: 69px; }
+      .landing-phone-container .tuotian-advantage .tuotian-advantage-group .landing-phone-span-left {
+        float: left;
+        width: 50%;
+        text-align: right; }
+      .landing-phone-container .tuotian-advantage .tuotian-advantage-group .landing-phone-span-right {
+        float: left;
+        width: 50%;
+        text-align: left;
+        line-height: 25px;
+        margin-top: 10px;
+        font-size: 16px; }
+        .landing-phone-container .tuotian-advantage .tuotian-advantage-group .landing-phone-span-right span {
+          font-size: 12px; }
+  .landing-phone-container .tuotian-products {
+    float: left;
+    width: 100%;
+    background: #d9edff; }
+    .landing-phone-container .tuotian-products .product-box-list {
+      width: 96%;
+      padding: 0 2%;
+      padding-bottom: 25px; }
+      .landing-phone-container .tuotian-products .product-box-list ul {
+        float: left;
+        width: 100%; }
+        .landing-phone-container .tuotian-products .product-box-list ul li {
+          float: left;
+          width: 100%;
+          text-align: center; }
+          .landing-phone-container .tuotian-products .product-box-list ul li a {
+            display: inline-block; }
+  .landing-phone-container .tuotian-rewards {
+    float: left;
+    width: 100%;
+    background: #e5f3ff; }
+    .landing-phone-container .tuotian-rewards .rewards-header {
       float: left;
-      width: 40%;
-      margin-bottom: 0px; }
-    .tuotian-register .tuotian-register-container .image-captchaC {
-      width: 25%;
-      height: 30px;
-      margin-left: 5px;
-      margin-right: 5px; }
-    .tuotian-register .tuotian-register-container span[id=img-changeC] {
+      text-align: left;
+      margin-top: 0px;
+      margin-bottom: 25px;
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: 12px; }
+      .landing-phone-container .tuotian-rewards .rewards-header ul {
+        float: left;
+        width: 100%; }
+        .landing-phone-container .tuotian-rewards .rewards-header ul li {
+          float: left;
+          width: 100%;
+          font-size: 12px;
+          color: #4c4c4c; }
+          .landing-phone-container .tuotian-rewards .rewards-header ul li i {
+            float: left;
+            color: #ff7f00;
+            font-size: 12px;
+            width: 8%;
+            padding-top: 5px; }
+          .landing-phone-container .tuotian-rewards .rewards-header ul li span {
+            float: left;
+            width: 92%; }
+  .landing-phone-container .tuotian-aboutus {
+    float: left;
+    width: 100%;
+    background: #d9edff; }
+    .landing-phone-container .tuotian-aboutus .aboutus-content-container {
       float: left;
-      width: 25%;
-      font-size: 12px;
-      border-color: white; }
-    .tuotian-register .tuotian-register-container .captcha {
-      float: left;
-      width: 60%;
-      margin-bottom: 0px;
-      margin-right: 5px; }
-    .tuotian-register .tuotian-register-container .fetch-captchaC {
-      float: left;
-      width: 40%;
-      height: 32px;
-      padding: 8px;
+      background: white;
+      margin-top: 0px;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 20px; }
+      .landing-phone-container .tuotian-aboutus .aboutus-content-container span {
+        float: left;
+        margin-left: 5%;
+        margin-bottom: 10px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 25px; }
+      .landing-phone-container .tuotian-aboutus .aboutus-content-container p {
+        float: left;
+        margin-left: 5%;
+        margin-right: 5%;
+        text-align: left;
+        font-size: 12px; }
+    .landing-phone-container .tuotian-aboutus .landing-phone-aboutus-header {
+      margin-top: 25px;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 10px;
+      width: 80%;
+      height: auto; }
+  .landing-phone-container .tuotian-register {
+    float: left;
+    width: 100%;
+    background: #d9edff; }
+    .landing-phone-container .tuotian-register input[id=btn-register-now] {
+      width: 50%;
+      margin-bottom: 20px;
       font-size: 12px;
       color: white;
       background: red;
-      border-color: white;
-      border-radius: 15px;
-      -webkit-border-radius: 15px; }
-    .tuotian-register .tuotian-register-container input[id=btn-register] {
-      width: 60%;
-      margin-left: 20%;
-      font-size: 12px;
-      margin-top: 10px;
-      margin-bottom: 3px;
-      color: white;
-      background: red;
       border-color: white; }
-    .tuotian-register .tuotian-register-container label[id*=error] {
+    .landing-phone-container .tuotian-register .tuotian-register-container {
       float: left;
-      width: 100%;
-      margin-top: -20px; }
-    .tuotian-register .tuotian-register-container .check-labelC {
-      width: 100%;
-      text-align: center;
-      font-size: 10px; }
-      .tuotian-register .tuotian-register-container .check-labelC span {
-        color: red; }
-    .tuotian-register .tuotian-register-container .agree-last {
-      text-align: center; }
+      text-align: left;
+      background: white;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 25px;
+      margin-top: 0px;
+      padding: 5%;
+      width: 80%;
+      font-size: 12px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .reg-list {
+        float: left;
+        width: 100%; }
+        .landing-phone-container .tuotian-register .tuotian-register-container .reg-list .height {
+          clear: both;
+          color: #f71010; }
+        .landing-phone-container .tuotian-register .tuotian-register-container .reg-list .int-model {
+          float: left;
+          width: 100%;
+          margin-bottom: 20px; }
+          .landing-phone-container .tuotian-register .tuotian-register-container .reg-list .int-model .captcha {
+            width: 40%; }
+          .landing-phone-container .tuotian-register .tuotian-register-container .reg-list .int-model .appCaptcha {
+            width: 40%; }
+      .landing-phone-container .tuotian-register .tuotian-register-container input {
+        width: 95%;
+        border-color: #F2F2F2; }
+      .landing-phone-container .tuotian-register .tuotian-register-container input[id=appCaptcha] {
+        float: left;
+        width: 40%;
+        margin-bottom: 0px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .image-captchaC {
+        width: 25%;
+        height: 30px;
+        margin-left: 5px;
+        margin-right: 5px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container span[id=img-changeC] {
+        float: left;
+        width: 25%;
+        font-size: 12px;
+        border-color: white; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .captcha {
+        float: left;
+        width: 60%;
+        margin-bottom: 0px;
+        margin-right: 5px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .fetch-captchaC {
+        float: left;
+        width: 40%;
+        height: 32px;
+        padding: 8px;
+        font-size: 12px;
+        color: white;
+        background: red;
+        border-color: white;
+        border-radius: 15px;
+        -webkit-border-radius: 15px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container input[id=btn-register] {
+        width: 60%;
+        margin-left: 20%;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 3px;
+        color: white;
+        background: red;
+        border-color: white; }
+      .landing-phone-container .tuotian-register .tuotian-register-container label[id*=error] {
+        float: left;
+        width: 100%;
+        margin-top: -20px; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .check-labelC {
+        width: 100%;
+        text-align: center;
+        font-size: 10px; }
+        .landing-phone-container .tuotian-register .tuotian-register-container .check-labelC span {
+          color: red; }
+      .landing-phone-container .tuotian-register .tuotian-register-container .agree-last {
+        text-align: center; }
 
 @media screen and (max-width: 700px) {
   .landing-container {
