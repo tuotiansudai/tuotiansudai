@@ -86,7 +86,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
         loanDetailResponseDataDto.setTitle(title);
-        loanDetailResponseDataDto.setContent(MessageFormat.format(content,loanDetailResponseDataDto.getLoanMoney(),loanDetailResponseDataDto.getDeadline(),loanDetailResponseDataDto.getRepayUnit(),loanDetailResponseDataDto.getRatePercent()));
+        loanDetailResponseDataDto.setContent(MessageFormat.format(content,loanDetailResponseDataDto.getLoanMoney(),loan.getDuration(),loanDetailResponseDataDto.getRepayUnit(),loanDetailResponseDataDto.getRatePercent()));
         if(LoanStatus.PREHEAT.equals(loan.getStatus())){
             loanDetailResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
             loanDetailResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
