@@ -93,16 +93,18 @@
           width:90%;
           .fetch-captcha {
             padding: 12px;
+            padding:9px\9;
             letter-spacing: 0;
             position: absolute;
             right: 281px;
-            top: 3px;
+            top: 2px;
             font-size: 14px;
             border: 0;
             background: #ff9c1b;
             color: #fff;
             cursor: pointer;
-            &:disabled {
+
+            &[disabled] {
               cursor: default;
               background: #b3b3b3;
               color: #fff;
@@ -132,6 +134,7 @@
           padding-left: 26px;
           margin-bottom: 10px;
           cursor: pointer;
+          display: inline-block;
           i {
             left:0;
             top:5px;
@@ -159,6 +162,9 @@
             position: absolute;
             left: 330px;
           }
+          span {
+            margin-left: -40px;
+          }
         }
       }
       .register-account {
@@ -184,8 +190,9 @@
       }
       .btn-success {
         padding: 10px 50px;
-        &:disabled {
+        &[disabled] {
           background: #e6e6e6;
+          border: 1px solid #ccc;
         }
       }
     }
@@ -269,7 +276,9 @@
             background: #aaa!important;
             border:1px solid #aaa!important;
           }
+
         }
+
       input[type='text'],input[type='password'] {
         color: #999;
         width: 210px;
@@ -399,7 +408,6 @@
           cursor: pointer;
         }
       }
-
       .register-step-two {
         margin-top:20px;
       }
@@ -407,53 +415,4 @@
   }
 }
 
-@media screen\9 {
-//IE6,7
-  .register-container {
-    .register-box {
-      margin-left: 25%;
-      ul.reg-list {
-        li {
-          .reg-title{
-            display:inline-block;
-          }
-        }
-        .register-user {
-          margin-left: 130px;
-        }
-      }
-    }
-  }
 
-}
-
-@media screen\0 {
-  //IE8-10
-  .register-container {
-    .register-box {
-      margin-left: 25%;
-      ul.reg-list {
-        li {
-          .reg-title{
-            display:inline-block;
-          }
-          .captcha-tag {
-            .fetch-captcha {
-              right: 361px;
-
-            }
-          }
-          &.agree-last {
-            margin-left:60px;
-          }
-        }
-
-        .register-user {
-          margin-left: 130px;
-        }
-
-      }
-    }
-  }
-
-}

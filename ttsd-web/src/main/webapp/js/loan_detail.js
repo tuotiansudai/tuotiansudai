@@ -48,7 +48,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: false,
             title: '新手体验特权',
             btn: ['确认'],
-            area: ['500px', '180px'],
+            area: ['500px', 'auto'],
             content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
             btn1: function () {
                 layer.closeAll();
@@ -62,12 +62,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     var loanProgress = $loanDetail.data('loan-progress');
     if (loanProgress <= 50) {
-        $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * loanProgress + "deg)");
+        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
         $('.chart-box .rount2').hide();
     } else {
-        $('.chart-box .rount').css('webkitTransform', "rotate(180deg)");
+        $('.chart-box .rount').css('transform', "rotate(180deg)");
         $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
+        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
     var loadInvestData = function() {

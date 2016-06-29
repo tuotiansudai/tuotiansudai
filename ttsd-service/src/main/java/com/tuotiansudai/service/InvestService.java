@@ -16,7 +16,7 @@ public interface InvestService {
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
-    long estimateInvestIncome(long loanId, long amount);
+    long estimateInvestIncome(long loanId, String loginName, long amount);
 
     BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String investorLoginName,
                                                                                    int index,
@@ -24,13 +24,6 @@ public interface InvestService {
                                                                                    Date startTime,
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
-
-    BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName,
-                                                                                                    int index,
-                                                                                                    int pageSize,
-                                                                                                    Date startTime,
-                                                                                                    Date endTime,
-                                                                                                    LoanStatus loanStatus);
 
     long findCountInvestPagination(Long loanId, String investorLoginName,
                                    String channel, Source source, String role,
@@ -46,7 +39,7 @@ public interface InvestService {
                                                 Date startTime,
                                                 Date endTime,
                                                 InvestStatus investStatus,
-                                                LoanStatus loanStatus, boolean isPagination);
+                                                LoanStatus loanStatus);
 
     void turnOnAutoInvest(AutoInvestPlanModel model);
 

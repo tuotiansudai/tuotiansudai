@@ -28,7 +28,7 @@ public class ExperienceLoanDetailController {
 
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public ModelAndView getLoanDetail() {
-        ExperienceLoanDto experienceLoanDto = ExperienceLoanDetailService.findExperienceLoanDtoDetail(1,LoginUserInfo.getLoginName());
+        ExperienceLoanDto experienceLoanDto = ExperienceLoanDetailService.findExperienceLoanDtoDetail(1, LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("coupon", userCouponService.getExperienceInvestUserCoupon(LoginUserInfo.getLoginName()));

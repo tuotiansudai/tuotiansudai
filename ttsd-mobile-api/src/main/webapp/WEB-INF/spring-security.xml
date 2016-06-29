@@ -64,9 +64,12 @@
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
         <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
         <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
-        <intercept-url pattern="/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
-        <intercept-url pattern="/js/**" access="permitAll()"/>
+        <intercept-url pattern="/api/style/**" access="permitAll()"/>
+        <intercept-url pattern="/api/images/**" access="permitAll()"/>
+        <intercept-url pattern="/api/js/**" access="permitAll()"/>
+        <intercept-url pattern="/media-center/**" access="permitAll()"/>
+
+
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />
@@ -87,6 +90,7 @@
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
         <intercept-url pattern="/v1.**/get/banner" access="permitAll()"/>
         <intercept-url pattern="/v1.**/register" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/get/advertisement" access="permitAll()"/>
         <intercept-url pattern="/share-callback" access="permitAll()"/>
         <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
