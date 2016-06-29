@@ -74,7 +74,7 @@
             <p>新用户注册后，即可获得5888元体验金，可投资新手体验项目，</p>
 
             <p>成功投资新手体验项目后，可获得588现金红包及3%加息券！</p>
-            <img src="${staticServer}/images/sign/actor/landingpage/gift-list.png" width="100%">
+            <img src="${staticServer}/activity/images/sign/actor/landingpage/gift-list.png" width="100%">
         </div>
     </div>
     <div class="content-four">
@@ -85,12 +85,12 @@
             <ul>
                 <li>
                     <a href="/loan-list">
-                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                        <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
                     <a href="/loan-list">
-                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                        <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
             </ul>
@@ -559,9 +559,9 @@
             <div id="slideBox" class="slideBox">
                 <div class="bd">
                     <ul>
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
-                        <li><img src="${staticServer}/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/big-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/small-money.png" width="60%"/></li>
+                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/percent-coupon.png" width="60%"/></li>
                     </ul>
                 </div>
                 <a class="prev" href="javascript:void(0)"></a>
@@ -576,12 +576,12 @@
             <ul>
                 <li>
                     <a href="/loan-list?productType=JYF">
-                        <img src="${staticServer}/images/sign/actor/landingpage/pro-one.png" width="80%">
+                        <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-one.png" width="80%">
                     </a>
                 </li>
                 <li>
                     <a href="/loan-list?productType=JYF">
-                        <img src="${staticServer}/images/sign/actor/landingpage/pro-two.png" width="80%">
+                        <img src="${staticServer}/activity/images/sign/actor/landingpage/pro-two.png" width="80%">
                     </a>
                 </li>
             </ul>

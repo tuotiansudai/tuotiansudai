@@ -32,7 +32,8 @@ var require = {
         'template':staticServer+'/activity/js/libs/template.min',
         'fancybox':staticServer+'/activity/js/libs/jquery.fancybox.min',
         'count_down': staticServer+'/activity/js/count_down',
-        'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder'
+        'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
+        'superslide': staticServer + '/activity/js/libs/jquery.SuperSlide.2.1.1'
     },
     'waitSeconds':0,
     'shim': {
