@@ -156,39 +156,9 @@ public class UserMembershipServiceImpl implements UserMembershipService {
                                                               List<Integer> levels,
                                                               int index,
                                                               int pageSize) {
-        if (StringUtils.isEmpty(loginName)) {
-            loginName = null;
-        }
-        if (StringUtils.isEmpty(mobile)) {
-            mobile = null;
-        }
-        if (UserMembershipType.ALL == userMembershipType) {
-            userMembershipType = null;
-        }
-        if (CollectionUtils.isEmpty(levels)) {
-            return new ArrayList<>();
-        }
-        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels,index,pageSize);
 
-        List<UserMembershipItemView> upgradeMembershipItemViews = new ArrayList<>();
-        List<UserMembershipItemView> givenMembershipItemViews = new ArrayList<>();
-
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.UPGRADE)) {
-                upgradeMembershipItemViews.add(userMembershipItemView);
-            } else if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.GIVEN)) {
-                givenMembershipItemViews.add(userMembershipItemView);
-            }
-        }
-
-        List<UserMembershipItemView> filteredUpgradeUserMembershipItemViews = filterUpgradeUserMembershipItems(upgradeMembershipItemViews);
-        List<UserMembershipItemView> filteredGivenUserMembershipItemViews = filterGivenUserMembershipItems(givenMembershipItemViews);
-
-        List<UserMembershipItemView> filteredUserMembershipItemViews = new ArrayList<>();
-        filteredUserMembershipItemViews.addAll(filteredUpgradeUserMembershipItemViews);
-        filteredUserMembershipItemViews.addAll(filteredGivenUserMembershipItemViews);
-
-        return Lists.transform(filteredUserMembershipItemViews, new Function<UserMembershipItemView, UserMembershipItemDto>() {
+        return Lists.transform(userMembershipItemViews, new Function<UserMembershipItemView, UserMembershipItemDto>() {
             @Override
             public UserMembershipItemDto apply(UserMembershipItemView input) {
                 return new UserMembershipItemDto(input);

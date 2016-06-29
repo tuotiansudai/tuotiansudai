@@ -221,7 +221,7 @@ public class UserMembershipMapperTest {
     public void testFindUserMembershipItemViews() throws Exception {
         List<UserMembershipItemView> originUserMembershipItemViews = prepareUserMembershipData();
 
-        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, null);
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, null,10,0);
         assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(0).getLoginName(), userMembershipItemViews.get(0).getLoginName());
         assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
@@ -231,43 +231,43 @@ public class UserMembershipMapperTest {
         assertEquals(originUserMembershipItemViews.get(0).getMembershipPoint(), userMembershipItemViews.get(0).getMembershipPoint());
         assertEquals(originUserMembershipItemViews.get(0).getRegisterTime(), userMembershipItemViews.get(0).getRegisterTime());
 
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, originUserMembershipItemViews.get(0).getMobile(), null, null, null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, originUserMembershipItemViews.get(0).getMobile(), null, null, null, null,10,0);
         assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
 
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), null, null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), null, null, null,10,0);
         assertEquals(3, userMembershipItemViews.size());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, originUserMembershipItemViews.get(2).getRegisterTime(), null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, originUserMembershipItemViews.get(2).getRegisterTime(), null, null,10,0);
         assertEquals(3, userMembershipItemViews.size());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), originUserMembershipItemViews.get(0).getRegisterTime(), null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), originUserMembershipItemViews.get(0).getRegisterTime(), null, null,10,0);
         assertEquals(1, userMembershipItemViews.size());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(2).getRegisterTime(), null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(2).getRegisterTime(), null, null,10,0);
         assertEquals(2, userMembershipItemViews.size());
 
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.GIVEN, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.GIVEN, null,10,0);
         assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.UPGRADE, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.UPGRADE, null,10,0);
         assertEquals(2, userMembershipItemViews.size());
         assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
         assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(1).getLoginName());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, null);
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, null,10,0);
         assertEquals(3, userMembershipItemViews.size());
 
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(0));
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(0),10,0);
         assertEquals(2, userMembershipItemViews.size());
         assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
         assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(1).getLoginName());
-        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(5));
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(5),10,0);
         assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
 
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews("noUser", null, null, null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), "noMobile", null, null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(2).getLoginName(), originUserMembershipItemViews.get(2).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, UserMembershipType.GIVEN, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, originUserMembershipItemViews.get(0).getUserMembershipType(), Lists.newArrayList(3)).size());
-        assertEquals(1, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5)).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews("noUser", null, null, null, null, null,10,0).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), "noMobile", null, null, null, null,10,0).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null, null,10,0).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(2).getLoginName(), originUserMembershipItemViews.get(2).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null,10,0).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, UserMembershipType.GIVEN, null,10,0).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, originUserMembershipItemViews.get(0).getUserMembershipType(), Lists.newArrayList(3),10,0).size());
+        assertEquals(1, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5),10,0).size());
     }
 }

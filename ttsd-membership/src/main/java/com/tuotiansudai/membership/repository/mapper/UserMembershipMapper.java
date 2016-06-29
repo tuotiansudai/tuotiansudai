@@ -26,7 +26,9 @@ public interface UserMembershipMapper {
                                                              @Param(value = "registerStartTime") Date registerStartTime,
                                                              @Param(value = "registerEndTime") Date registerEndTime,
                                                              @Param(value = "type") UserMembershipType userMembershipType,
-                                                             @Param(value = "levels") List<Integer> levels);
+                                                             @Param(value = "levels") List<Integer> levels,
+                                                             @Param(value = "index") int index,
+                                                             @Param(value = "pageSize") int pageSize);
 
     UserMembershipModel findActiveByLoginName(String loginName);
 

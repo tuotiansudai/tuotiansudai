@@ -45,38 +45,101 @@
         select * from user_membership where login_name = #{loginName}
     </select>
 
-    <select id="findUserMembershipItemViews" resultMap="UserMembershipItemResultMap" parameterMap="map">
-        SELECT user_membership.id, user_membership.login_name, account.user_name, user.mobile, account.membership_point,
-        membership.level, user_membership.type, user.register_time, user_membership.created_time, user_membership.expired_time
-        FROM `aa`.`user_membership` join `aa`.`membership` join `aa`.`user` join `aa`.`account`
-        ON
-        `user_membership`.`membership_id` = `membership`.`id` AND
-        `user_membership`.`login_name` = `user`.`login_name` AND
-        `user_membership`.`login_name` = `account`.`login_name`
-        <where>
-            <if test="loginName != null">
-                user_membership.login_name = #{loginName}
-            </if>
-            <if test="mobile != null">
-                AND user.mobile = #{mobile}
-            </if>
-            <if test="registerStartTime != null">
-                AND user.register_time &gt;= #{registerStartTime}
-            </if>
-            <if test="registerEndTime != null">
-                AND user.register_time &lt;= #{registerEndTime}
-            </if>
-            <if test="type != null">
-                AND user_membership.type = #{type}
-            </if>
-            <if test="levels != null">
-                AND membership.level in
-                <foreach collection="levels" index="index" item="item" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
-        order by membership.login_name
+    <select id="findUserMembershipItemViews" resultMap="UserMembershipItemResultMap">
+        SELECT * FROM (
+          SELECT * FROM (
+            SELECT
+            user_membership.id,
+            user_membership.login_name,
+            account.user_name,
+            user.mobile,
+            account.membership_point,
+            membership.level,
+            user_membership.type,
+            user.register_time,
+            user_membership.created_time,
+            user_membership.expired_time
+            FROM
+            `aa`.`user_membership`
+            JOIN `aa`.`membership`
+            JOIN `aa`.`user`
+            JOIN `aa`.`account` ON `user_membership`.`membership_id` = `membership`.`id`
+            AND `user_membership`.`login_name` = `user`.`login_name`
+            AND `user_membership`.`login_name` = `account`.`login_name`
+            <where>
+                <if test="loginName != null and loginName != ''">
+                    user_membership.login_name = #{loginName}
+                </if>
+                <if test="mobile != null and mobile != ''">
+                    AND user.mobile = #{mobile}
+                </if>
+                <if test="registerStartTime != null">
+                    AND user.register_time &gt;= #{registerStartTime}
+                </if>
+                <if test="registerEndTime != null">
+                    AND user.register_time &lt;= #{registerEndTime}
+                </if>
+                <if test="type != null and type.name() != 'ALL'">
+                    AND user_membership.type = #{type}
+                </if>
+                <if test="levels != null and levels.size() > 0">
+                    AND membership.level in
+                    <foreach collection="levels" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            AND user_membership.type = 'GIVEN'
+            ORDER BY membership.level DESC) t
+            GROUP BY login_name
+        UNION ALL
+        SELECT * FROM (
+            SELECT
+            user_membership.id,
+            user_membership.login_name,
+            account.user_name,
+            user.mobile,
+            account.membership_point,
+            membership.level,
+            user_membership.type,
+            user.register_time,
+            user_membership.created_time,
+            user_membership.expired_time
+            FROM
+            `aa`.`user_membership`
+            JOIN `aa`.`membership`
+            JOIN `aa`.`user`
+            JOIN `aa`.`account` ON `user_membership`.`membership_id` = `membership`.`id`
+            AND `user_membership`.`login_name` = `user`.`login_name`
+            AND `user_membership`.`login_name` = `account`.`login_name`
+            <where>
+                <if test="loginName != null and loginName != ''">
+                    user_membership.login_name = #{loginName}
+                </if>
+                <if test="mobile != null and mobile != ''">
+                    AND user.mobile = #{mobile}
+                </if>
+                <if test="registerStartTime != null">
+                    AND user.register_time &gt;= #{registerStartTime}
+                </if>
+                <if test="registerEndTime != null">
+                    AND user.register_time &lt;= #{registerEndTime}
+                </if>
+                <if test="type != null and type.name() != 'ALL' ">
+                    AND user_membership.type = #{type}
+                </if>
+                <if test="levels != null and levels.size() > 0">
+                    AND membership.level in
+                    <foreach collection="levels" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            AND user_membership.type = 'UPGRADE'
+            ORDER BY user_membership.created_time DESC) t
+            GROUP BY login_name
+        ) t
+        ORDER BY user_name
         limit #{index}, #{pageSize}
     </select>
 
