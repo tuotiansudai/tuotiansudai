@@ -40,10 +40,11 @@ require(['jquery', 'mustache', 'text!tpl/transfer-transferable-table.mustache','
 
 			layer.open({
 			  title: '温馨提示',
+				type:1,
 			  btn:['再想想','确定'],
 			  skin: 'demo-class',
 			  area: ['400px', '180px'],
-			  content: '<p class="tc">您确定取消该笔债权的转让？</p>',
+			  content: '<p class="tc pad-m">您确定取消该笔债权的转让？</p>',
 			  btn1:function(){
 			  	layer.closeAll();
 			  },
