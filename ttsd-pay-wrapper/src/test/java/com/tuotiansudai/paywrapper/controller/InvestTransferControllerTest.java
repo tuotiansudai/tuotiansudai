@@ -5,6 +5,9 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -88,6 +91,9 @@ public class InvestTransferControllerTest {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
 
     @Before
     public void setUp() throws Exception {
@@ -140,6 +146,9 @@ public class InvestTransferControllerTest {
         TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+
+        mockUserMembership(transferee1.getLoginName());
+        mockUserMembership(transferee2.getLoginName());
 
         long investId1 = investOneDeal(transferee1.getLoginName(), fakeTransferApplication.getId());
         long investId2 = investOneDeal(transferee2.getLoginName(), fakeTransferApplication.getId());
@@ -223,7 +232,6 @@ public class InvestTransferControllerTest {
         fakeLoanModel.setStatus(LoanStatus.REPAYING);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setBaseRate(baseRate);
-        fakeLoanModel.setInvestFeeRate(0.1);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
@@ -234,7 +242,7 @@ public class InvestTransferControllerTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, new Date(), Source.WEB, null);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, new Date(), Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         investMapper.create(fakeInvestModel);
@@ -252,6 +260,12 @@ public class InvestTransferControllerTest {
         TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate(), 3);
         transferApplicationMapper.create(fakeTransferApplication);
         return fakeTransferApplication;
+    }
+
+    private void mockUserMembership(String loginName) {
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
     }
 
     private void jobAsyncInvestNotify() throws Exception {

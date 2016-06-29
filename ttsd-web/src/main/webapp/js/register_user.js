@@ -29,8 +29,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
 
-    $checkbox.on('click',function(event) {
-        if(event.target.tagName.toUpperCase()=='A') {
+    $checkbox.on('click', function (event) {
+        if (event.target.tagName.toUpperCase() == 'A') {
             return;
         }
         var $this=$(this),
@@ -125,7 +125,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
                         var seconds = 60
-                         countTimer = setInterval(function () {
+                        countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(countTimer);
