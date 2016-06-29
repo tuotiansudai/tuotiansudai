@@ -6,6 +6,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -37,6 +39,12 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
+
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -49,7 +57,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels);
+            loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -73,7 +81,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
-        List<LoanResponseDataDto> loanDtoList = convertLoanDto(loanModels);
+        List<LoanResponseDataDto> loanDtoList = convertLoanDto(loanModels,baseParamDto.getBaseParam().getUserId());
         loanListResponseDataDto.setLoanList(loanDtoList);
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -82,7 +90,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
 
-    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
@@ -123,10 +131,15 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
-            loanResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
-            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+            loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
+            MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+            double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+            if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+                investFeeRate = this.defaultFee;
+            }
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

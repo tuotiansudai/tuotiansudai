@@ -144,11 +144,11 @@ public class InterestCalculator {
         return expectedInterest;
     }
 
-    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount) {
+    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
         long estimateCouponExpectedInterest = estimateCouponExpectedInterest(amount, loanModel, couponModel);
         long expectedFee = 0;
         if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
-            expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
         return expectedFee;
     }

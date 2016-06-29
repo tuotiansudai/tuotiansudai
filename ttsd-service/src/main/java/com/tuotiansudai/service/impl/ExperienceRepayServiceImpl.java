@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.ExperienceRepayNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -42,7 +43,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -78,7 +79,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                             investRepayMapper.update(investRepayModel);
                             logger.debug(MessageFormat.format("[Experience Repay] invest({0}) repay is success", String.valueOf(investModel.getId())));
 
-                            couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS), null, null);
+                            couponAssignmentService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS));
                             logger.debug(MessageFormat.format("[Experience Repay] assign invest({0}) user coupon is success", String.valueOf(investModel.getId())));
 
                             repaySuccessInvestRepayModels.add(investRepayModel);

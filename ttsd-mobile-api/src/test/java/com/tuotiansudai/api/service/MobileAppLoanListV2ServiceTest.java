@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -11,6 +12,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -34,6 +36,8 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
     @Autowired
     private UserMapper userMapper;
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Test
     public void shouldNoLoginNameGenerateIndexLoanIsOk(){
@@ -104,13 +108,11 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         assertTrue(dto.getData().getLoanList().get(0).getActivityType().equals("NORMAL"));
     }
 
-
     private InvestModel getInvestModel(String loginName,long loanId){
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null,0.1);
         investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
-
     private UserModel getUserModelTest(String loginName) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(loginName);

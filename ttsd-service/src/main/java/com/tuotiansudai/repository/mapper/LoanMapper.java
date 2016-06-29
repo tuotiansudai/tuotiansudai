@@ -1,6 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanAchievementView;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
