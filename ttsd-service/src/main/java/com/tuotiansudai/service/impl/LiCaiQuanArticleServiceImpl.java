@@ -88,7 +88,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         Map<byte[], byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
         for (byte[] key : articleDtoListHkey.keySet()) {
             LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) SerializeUtil.deserialize(articleDtoListHkey.get(key));
-            if (StringUtils.isNotEmpty(title) && liCaiQuanArticleDto.getTitle().indexOf(title) == -1) {
+            if (StringUtils.isNotEmpty(title) && liCaiQuanArticleDto.getTitle().toUpperCase().indexOf(title.toUpperCase()) == -1) {
                 continue;
             }
 
@@ -152,12 +152,12 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
 
         if (CollectionUtils.isNotEmpty(redisList) && CollectionUtils.isNotEmpty(databaseList)) {
             Set<Long> ids = new HashSet<>();
-            for (LiCaiQuanArticleDto redis : redisList) {
-                ids.add(redis.getArticleId());
-            }
             for (LiCaiQuanArticleDto database : databaseList) {
-               if(ids.contains(database.getArticleId())){
-                   database.setOriginal(true);
+                ids.add(database.getArticleId());
+            }
+            for (LiCaiQuanArticleDto redis : redisList) {
+               if(ids.contains(redis.getArticleId())){
+                   redis.setOriginal(true);
                }
             }
 
