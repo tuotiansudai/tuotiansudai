@@ -459,6 +459,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                     logger.error("getJedis timeoutCount=" + timeoutCount, e);
                     if (timeoutCount > 3)
                     {
+                        broken = handleException(e);
                         break;
                     }
                 }else{
