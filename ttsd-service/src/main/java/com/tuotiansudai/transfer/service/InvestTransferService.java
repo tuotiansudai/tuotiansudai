@@ -26,8 +26,8 @@ public interface InvestTransferService {
                                                                              Date startTime,
                                                                              Date endTime,
                                                                              TransferStatus status,
-                                                                             String transferrerLoginName,
-                                                                             String transfereeLoginName,
+                                                                                                          String transferrerMobile,
+                                                                                                          String transfereeMobile,
                                                                              Long loanId,
                                                                              Integer index,
                                                                              Integer pageSize);

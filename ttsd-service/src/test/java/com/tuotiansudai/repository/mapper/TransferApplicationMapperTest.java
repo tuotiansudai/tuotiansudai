@@ -70,9 +70,9 @@ public class TransferApplicationMapperTest {
         assertEquals(1000, transferApplicationRecordDto.get(0).getTransferAmount());
         assertEquals(1200, transferApplicationRecordDto.get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), transferApplicationRecordDto.get(0).getTransferTime());
-        assertEquals(TransferStatus.TRANSFERRING,transferApplicationRecordDto.get(0).getTransferStatus());
-        assertEquals(transfereeInvestModel.getLoginName(),transferApplicationRecordDto.get(0).getTransfereeLoginName());
-        assertEquals(transferrerInvestModel.getLoginName(),transferApplicationRecordDto.get(0).getTransferrerLoginName());
+        assertEquals(TransferStatus.TRANSFERRING, transferApplicationRecordDto.get(0).getTransferStatus());
+        assertEquals(transfereeModel.getMobile(), transferApplicationRecordDto.get(0).getTransfereeMobile());
+        assertEquals(transferrerModel.getMobile(), transferApplicationRecordDto.get(0).getTransferrerMobile());
     }
     @Test
     public void shouldFindTransferApplicationPaginationByLoginNameIsSuccess(){
@@ -138,8 +138,8 @@ public class TransferApplicationMapperTest {
         assertEquals(new DateTime("2016-01-02").toDate(), transferApplicationRecordDto.get(0).getTransferTime());
         assertEquals(TransferStatus.SUCCESS,transferApplicationRecordDto.get(0).getTransferStatus());
         assertEquals(new Long(transferInvestModel.getId()),transferApplicationRecordDto.get(0).getTransferInvestId());
-        assertEquals(transferModel.getLoginName(),transferApplicationRecordDto.get(0).getTransferrerLoginName());
-        assertEquals(transfereeModel.getLoginName(),transferApplicationRecordDto.get(0).getTransfereeLoginName());
+        assertEquals(transferModel.getMobile(), transferApplicationRecordDto.get(0).getTransferrerMobile());
+        assertEquals(transfereeModel.getMobile(), transferApplicationRecordDto.get(0).getTransfereeMobile());
         assertEquals(1300,transferApplicationRecordDto.get(0).getTransferFee());
 
     }
