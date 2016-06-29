@@ -3,7 +3,6 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
@@ -129,8 +128,8 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize){
-        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int index, int pageSize){
+        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
 
         List<PointBillPaginationItemDataDto> pointBillPaginationItemDataDtoList = new ArrayList<>();
         for(PointBillModel pointBillModel : pointBillModels) {

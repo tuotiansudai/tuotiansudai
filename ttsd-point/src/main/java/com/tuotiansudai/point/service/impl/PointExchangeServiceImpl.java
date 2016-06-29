@@ -42,7 +42,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Override
     public List<ExchangeCouponDto> findExchangeableCouponList() {
-        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList(0, 100);
+        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList(1, 100);
         return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {

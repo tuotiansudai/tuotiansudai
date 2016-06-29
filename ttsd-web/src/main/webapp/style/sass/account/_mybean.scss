@@ -1030,7 +1030,6 @@
           &.reward {
             background: #edf1f5;
             display: inline-block;
-            padding-right:10px;
             line-height: 26px;
             padding-right: 30px;
             span {
@@ -1041,7 +1040,7 @@
             }
             margin-bottom:10px;
           }
-          button {
+          button,a.btn-normal {
             border-radius:0!important;
             letter-spacing: 0;
           }
@@ -1069,7 +1068,7 @@
         }
       }
     }
-    button {
+    button,a.btn-normal {
       border-radius: 0;
     }
     .button-more {

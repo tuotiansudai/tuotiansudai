@@ -12,6 +12,9 @@ public interface PointTaskService {
 
     void completeAdvancedTask(PointTask pointTask, String loginName);
 
-    List<PointTaskDto> displayPointTask(int index,int pageSize,String loginName);
+    List<PointTaskDto> getNewbiePointTasks(String loginName);
 
+    List<PointTaskDto> getAdvancedPointTasks(String loginName);
+
+    List<PointTaskDto> getCompletedAdvancedPointTasks(String loginName);
 }

@@ -15,6 +15,8 @@ public class PointTaskModel implements Serializable {
 
     private boolean multiple;
 
+    private long maxLevel;
+
     private Date createdTime;
 
     public long getId() {
@@ -55,6 +57,14 @@ public class PointTaskModel implements Serializable {
 
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
+    }
+
+    public long getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(long maxLevel) {
+        this.maxLevel = maxLevel;
     }
 
     public Date getCreatedTime() {

@@ -82,14 +82,14 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldQueryPointTaskIsOk(){
+    public void shouldQueryPointTaskIsOk() {
         PointTaskModel pointTaskModel = new PointTaskModel();
         pointTaskModel.setPoint(60);
         pointTaskModel.setName(PointTask.BIND_BANK_CARD);
         pointTaskModel.setCreatedTime(new Date());
         pointTaskModel.setId(111);
 
-        List<PointTaskModel> pointTaskModels =  Lists.newArrayList();
+        List<PointTaskModel> pointTaskModels = Lists.newArrayList();
         pointTaskModels.add(pointTaskModel);
 
         UserPointTaskModel userPointTaskModel = new UserPointTaskModel();
@@ -99,7 +99,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
         when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1L);
         when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
-        when(userPointTaskMapper.findByLoginNameAndId(anyLong(),anyString())).thenReturn(userPointTaskModel);
+        when(userPointTaskMapper.findByLoginNameAndTask(anyString(), any(PointTask.class))).thenReturn(Lists.newArrayList(userPointTaskModel));
         PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
         pointTaskRequestDto.setIndex(1);
         pointTaskRequestDto.setPageSize(10);
@@ -115,10 +115,10 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldGetLastSignInTimeIsOk(){
+    public void shouldGetLastSignInTimeIsOk() {
         AccountModel accountModel = new AccountModel();
         SignInPointDto signInPointDto = new SignInPointDto();
-        signInPointDto.setSignInDate(DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(),-1));
+        signInPointDto.setSignInDate(DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         signInPointDto.setNextSignInPoint(10);
         signInPointDto.setSignInCount(1);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
@@ -130,26 +130,26 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         baseParamDto.setBaseParam(baseParam);
         BaseResponseDto baseResponseDto = mobileAppPointService.getLastSignInTime(baseParamDto);
         assertNotNull(baseResponseDto);
-        LastSignInTimeResponseDataDto lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto)baseResponseDto.getData();
-        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(),1);
-        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(),10);
+        LastSignInTimeResponseDataDto lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto) baseResponseDto.getData();
+        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(), 1);
+        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(), 10);
 
-        signInPointDto.setSignInDate(DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(),-2));
+        signInPointDto.setSignInDate(DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -2));
         signInPointDto.setNextSignInPoint(10);
         signInPointDto.setSignInCount(0);
         baseResponseDto = mobileAppPointService.getLastSignInTime(baseParamDto);
-        lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto)baseResponseDto.getData();
+        lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto) baseResponseDto.getData();
         assertNotNull(baseResponseDto);
-        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(),0);
-        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(),10);
+        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(), 0);
+        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(), 10);
 
         signInPointDto.setSignInDate(new DateTime().withTimeAtStartOfDay().toDate());
         signInPointDto.setNextSignInPoint(10);
         signInPointDto.setSignInCount(0);
         baseResponseDto = mobileAppPointService.getLastSignInTime(baseParamDto);
-        lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto)baseResponseDto.getData();
+        lstSignInTimeResponseDataDto = (LastSignInTimeResponseDataDto) baseResponseDto.getData();
         assertNotNull(baseResponseDto);
-        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(),0);
-        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(),10);
+        assertEquals(lstSignInTimeResponseDataDto.getSignInTimes(), 0);
+        assertEquals(lstSignInTimeResponseDataDto.getNextSignInPoint(), 10);
     }
 }

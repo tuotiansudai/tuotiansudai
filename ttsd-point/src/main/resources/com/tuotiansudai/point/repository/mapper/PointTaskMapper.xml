@@ -12,6 +12,7 @@
         <result column="point" property="point"/>
         <result property="active" column="active"/>
         <result property="multiple" column="multiple"/>
+        <result property="maxLevel" column="max_level"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 

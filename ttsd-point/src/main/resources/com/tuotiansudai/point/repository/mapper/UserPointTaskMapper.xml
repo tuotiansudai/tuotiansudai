@@ -18,6 +18,7 @@
             <result property="point" column="point_task_point"/>
             <result property="active" column="point_task_active"/>
             <result property="multiple" column="point_task_multiple"/>
+            <result property="maxLevel" column="point_task_max_level"/>
             <result property="createdTime" column="point_task_created_time"/>
         </association>
     </resultMap>
@@ -38,14 +39,18 @@
          point_task.point as point_task_point,
          point_task.active as point_task_active,
          point_task.multiple as point_task_multiple,
+         point_task.max_level as point_task_max_level,
          point_task.created_time as point_task_created_time
         from user_point_task inner join point_task on user_point_task.point_task_id = point_task.id
         where user_point_task.login_name = #{loginName}
         order by created_time desc;
     </select>
 
-    <select id="findByLoginNameAndId" parameterType="map" resultMap="userPointTaskResultMap">
-      select * from user_point_task where point_task_id = #{pointTaskId} and login_name = #{loginName}
+    <select id="findByLoginNameAndTask" parameterType="map" resultMap="userPointTaskResultMap">
+        select * from user_point_task
+        join point_task on user_point_task.point_task_id = point_task.id
+        where login_name = #{loginName}
+        and point_task.name = #{pointTask}
     </select>
 
     <select id="findMaxTaskLevelByLoginName" resultType="long" parameterType="map">
@@ -55,7 +60,4 @@
         where login_name = #{loginName}
         and point_task.name = #{pointTask}
     </select>
-
-
-
 </mapper>

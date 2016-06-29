@@ -6,8 +6,6 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $signTip = $('#signLayer'),
                 $closeSign = $('#closeSign'),
                 $taskBtn = $('#taskBtn'),
-                $taskTip = $('#taskLayer'),
-                $closeTask = $('#closeTask'),
                 $beanDetail=$('#beansDetail'),
                 $beansNum=$('.beans-coupon .bean-use'),
                 $taskStatusMenu=$('#taskStatusMenu'),
@@ -95,13 +93,10 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
             //show task tip
             $taskBtn.on('click', function (event) {
                 event.preventDefault();
-                $taskTip.fadeIn('fast');
+                $navBtn.eq(1).trigger('click');
+
             });
-            //hide task tip
-            $closeTask.on('click', function (event) {
-                event.preventDefault();
-                $taskTip.fadeOut('fast');
-            });
+
             $beanDetail.on('click', function (event) {
                 event.preventDefault();
                 $('.column-title .title-navli:eq(2)').trigger('click');
