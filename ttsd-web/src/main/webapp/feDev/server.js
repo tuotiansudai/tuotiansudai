@@ -23,11 +23,11 @@ var config = [{
 	data: 'footer'
 }
 
-	,{
-		route: '/point',
-		template: 'point_demo',
-		data: 'point_demo'
-	}
+	//,{
+	//	route: '/point',
+	//	template: 'point_demo',
+	//	data: 'point_demo'
+	//}
 ];
 
 
