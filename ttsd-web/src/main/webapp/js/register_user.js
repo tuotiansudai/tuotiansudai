@@ -172,11 +172,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     registerUserForm.validate({
         ignore:'.referrer,.agreement',
         rules: {
-            loginName: {
-                required: true,
-                regex: /(?!^\d+$)^\w{5,25}$/,
-                checkLoginName:true
-            },
             mobile: {
                 required: true,
                 digits: true,
@@ -197,10 +192,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             }
         },
         messages: {
-            loginName: {
-                required: "请输入用户名",
-                regex: '5位至25位数字与字母下划线组合，不能全部数字'
-            },
             mobile: {
                 required: '请输入手机号',
                 digits: '必须是数字',
@@ -280,30 +271,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
     });
-    jQuery.validator.addMethod("checkLoginName", function(value, element) {
-        var deferred = $.Deferred();
-        if(/(?!^\d+$)^\w{5,25}$/.test(value)) {
-            $.ajax({
-                url:'/register/user/login-name/'+value+'/is-exist',
-                async:false,
-                dataType:"json",
-                success:function(response) {
-                    var status = response.data.status;
-                    if (status) {
-                        deferred.reject();
-                    } else {
-                        deferred.resolve();
-                    }
-                }
-            });
-        }
-        else {
-            deferred.reject();
-        }
-        checkInputValid();
-
-        return deferred.state() == "resolved" ? true : false;
-    },'用户名已存在');
 
     jQuery.validator.addMethod("checkCaptcha", function(value, element) {
         var mobile=$('input.mobile',registerUserForm).val();
