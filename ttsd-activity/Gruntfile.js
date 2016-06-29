@@ -56,6 +56,14 @@ module.exports = function(grunt) {
                         '<%= meta.baseCssPath %>/base64'
                     ]
                 }]
+            },
+            debug: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= meta.baseJsPath %>/debug'
+                    ]
+                }]
             }
         },
         uglify: {
@@ -186,5 +194,5 @@ module.exports = function(grunt) {
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', ['clean', 'sass', 'connect', 'watch']);
-    grunt.registerTask('dist', ['clean', 'sass', 'dataUri', 'cssmin:base64', 'clean:base64', 'requirejs', 'uglify', 'filerev']);
+    grunt.registerTask('dist', ['clean', 'sass', 'dataUri', 'cssmin:base64', 'clean:base64', 'requirejs', 'uglify', 'filerev', 'clean:debug']);
 };
