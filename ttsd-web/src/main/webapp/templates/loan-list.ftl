@@ -88,7 +88,8 @@
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
-                            <span class="l-title fl">${loanItem.name}<#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金投资</i></#if></span>
+                            <span class="l-title fl">${loanItem.name}<#if loanItem.productType == 'EXPERIENCE'><i
+                                    class="new-tip">仅限使用体验金投资</i></#if></span>
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">
@@ -120,7 +121,9 @@
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
-                                <dd><em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></dd>
+                                <dd>
+                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
+                                    (体验金)</#if></dd>
                             </dl>
                         </div>
                     </div>
