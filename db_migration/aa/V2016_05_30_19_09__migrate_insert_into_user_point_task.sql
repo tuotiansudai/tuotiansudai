@@ -84,7 +84,7 @@ INSERT INTO user_point_task (`login_name`, `point_task_id`, `created_time`, `poi
     now(),
     1000,
     1
-  FROM `user`.`account`
+  FROM `aa`.`account`
   WHERE `no_password_invest` IS TRUE;
 
 

@@ -9,7 +9,6 @@ import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -48,37 +47,10 @@ public class PointTaskAspect {
 
         if (returnValue.getData().getStatus()) {
             RegisterAccountDto registerAccountDto = (RegisterAccountDto) joinPoint.getArgs()[0];
-            pointTaskService.completeTask(PointTask.REGISTER, registerAccountDto.getLoginName());
+            pointTaskService.completeNewbieTask(PointTask.REGISTER, registerAccountDto.getLoginName());
         }
 
         logger.debug("after returning register account, point task aspect completed");
-    }
-
-    @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
-    public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        logger.debug("after returning invest, point task aspect starting...");
-
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
-        pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
-        pointService.obtainPointInvest(investModel);
-
-        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, investModel.getLoginName());
-
-        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, investModel.getLoginName());
-
-        logger.debug("after returning invest, point task aspect completed");
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* *..RechargeService.rechargeCallback(..))")
-    public void afterReturningRechargeCallback(JoinPoint joinPoint) {
-        logger.debug("after returning recharge, point task aspect starting...");
-
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        RechargeModel rechargeModel = rechargeMapper.findById(Long.parseLong(paramsMap.get("order_id")));
-        pointTaskService.completeTask(PointTask.FIRST_RECHARGE, rechargeModel.getLoginName());
-
-        logger.debug("after returning recharge, point task aspect completed");
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -88,17 +60,48 @@ public class PointTaskAspect {
 
         Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
         BankCardModel bankCardModel = bankCardMapper.findById(Long.parseLong(paramsMap.get("order_id")));
-        pointTaskService.completeTask(PointTask.BIND_BANK_CARD, bankCardModel.getLoginName());
+        pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, bankCardModel.getLoginName());
 
         logger.debug("after returning bind card, point task aspect completed");
     }
 
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..RechargeService.rechargeCallback(..))")
+    public void afterReturningRechargeCallback(JoinPoint joinPoint) {
+        logger.debug("after returning recharge, point task aspect starting...");
+
+        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
+        RechargeModel rechargeModel = rechargeMapper.findById(Long.parseLong(paramsMap.get("order_id")));
+        pointTaskService.completeNewbieTask(PointTask.FIRST_RECHARGE, rechargeModel.getLoginName());
+
+        logger.debug("after returning recharge, point task aspect completed");
+    }
+
+    @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
+    public void afterReturningInvestSuccess(JoinPoint joinPoint) {
+        logger.debug("after returning invest, point task aspect starting...");
+
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
+        String loginName = investModel.getLoginName();
+        pointTaskService.completeNewbieTask(PointTask.FIRST_INVEST, loginName);
+
+        pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, loginName);
+        pointService.obtainPointInvest(investModel);
+
+        logger.debug("after returning invest, point task aspect completed");
+    }
+
     @AfterReturning(value = "execution(* *..UserService.registerUser(..))", returning = "returnValue")
-    public void afterReturningRegisterUser(JoinPoint joinPoint, Object returnValue) {
+    public void afterReturningRegisterUser(JoinPoint joinPoint, boolean returnValue) {
         logger.debug("after returning registerUser success, point task aspect starting...");
         RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-        if ((boolean) returnValue && StringUtils.isNotEmpty(registerUserDto.getReferrer())) {
-            pointTaskService.completeTask(PointTask.EACH_RECOMMEND, registerUserDto.getReferrer());
+        if (returnValue) {
+            pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, registerUserDto.getLoginName());
         }
         logger.debug("after returning registerUser success, point task aspect completed");
     }
@@ -112,7 +115,7 @@ public class PointTaskAspect {
         AgreementBusinessType agreementBusinessType = (AgreementBusinessType) joinPoint.getArgs()[1];
 
         if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
-            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+            pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
         }
 
         logger.debug("after returning agreement, point task aspect completed");
@@ -127,7 +130,7 @@ public class PointTaskAspect {
         boolean isTurn = (boolean) joinPoint.getArgs()[1];
 
         if (isTurn) {
-            pointTaskService.completeTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+            pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
         }
 
         logger.debug("after returning turn on no password invest, point task aspect completed");
@@ -140,7 +143,7 @@ public class PointTaskAspect {
 
         String loginName = (String) joinPoint.getArgs()[0];
 
-        pointTaskService.completeTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
+        pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
 
         logger.debug("after returning turn on auto invest, point task aspect completed");
     }

@@ -194,6 +194,9 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
+    int countInvestSuccessByProductType(@Param(value = "productType") ProductType productType,
+                                        @Param(value = "loginName") String loginName);
+
     List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,
                                                                                                       @Param(value = "index") Integer index,
                                                                                                       @Param(value = "pageSize") Integer pageSize);

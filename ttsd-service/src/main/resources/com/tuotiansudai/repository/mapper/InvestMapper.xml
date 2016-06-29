@@ -206,6 +206,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
+            and loan_id != 1
         </where>
         and status = 'SUCCESS'
     </select>
@@ -462,6 +463,12 @@
 
     <select id="findByLoanIdAndLoginName" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
+    </select>
+
+
+    <select id="countInvestSuccessByProductType" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id
+      where i.status = 'SUCCESS' and i.login_name = #{loginName} and l.product_type = #{productType}
     </select>
 
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
