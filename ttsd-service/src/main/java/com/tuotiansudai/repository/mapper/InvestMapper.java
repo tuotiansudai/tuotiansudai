@@ -194,35 +194,42 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
-    int countInvestSuccessByProductType(@Param(value = "productType") ProductType productType,
-                                        @Param(value = "loginName") String loginName);
+    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime,
+                                                       @Param(value = "activityBeginTime") String activityBeginTime,
+                                                       @Param(value = "activityEndTime") String activityEndTime);
+
+    List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
+                                                    @Param(value = "activityBeginTime") String activityBeginTime,
+                                                    @Param(value = "activityEndTime") String activityEndTime,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
 
     List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,
-                                                                                                      @Param(value = "index") Integer index,
-                                                                                                      @Param(value = "pageSize") Integer pageSize);
+                                                                                     @Param(value = "index") Integer index,
+                                                                                     @Param(value = "pageSize") Integer pageSize);
 
     long findWebCountTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName);
 
     List<InvestModel> findTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName,
-                                      @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize);
+                                                                       @Param(value = "index") Integer index,
+                                                                       @Param(value = "pageSize") Integer pageSize);
 
     long findCountTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestModel> findInvestAchievementsByLoanId(@Param(value = "loanId") long loanId);
 
     List<InvestModel> findInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
-                                                   @Param(value = "loanStatus") LoanStatus loanStatus,
-                                                   @Param(value = "index") int index,
-                                                   @Param(value = "pageSize") int pageSize);
+                                                                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                                  @Param(value = "index") int index,
+                                                                  @Param(value = "pageSize") int pageSize);
 
     long countInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
-                                       @Param(value = "loanStatus") LoanStatus loanStatus);
+                                                      @Param(value = "loanStatus") LoanStatus loanStatus);
 
     List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
                                                @Param(value = "loginName") String loginName);
 
     List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
-                                       @Param(value = "startTime") Date startTime,
-                                       @Param(value = "endTime") Date endTime);
+                                                     @Param(value = "startTime") Date startTime,
+                                                     @Param(value = "endTime") Date endTime);
 }

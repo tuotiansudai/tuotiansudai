@@ -7,7 +7,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
@@ -23,12 +22,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -88,7 +88,6 @@ public class TransferServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -137,14 +136,14 @@ public class TransferServiceTest {
     }
 
     private InvestModel createInvests(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
     }
 
     private void createInvestsTransferSuccess(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(model);
     }

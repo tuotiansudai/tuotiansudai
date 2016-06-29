@@ -79,27 +79,27 @@
                     <td>
                         {{$value.amount}}
                         {{if $value.productType=='EXPERIENCE'}}
-                            体验金
+                        体验金
                         {{/if}}
                     </td>
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
                         {{if $value.productType=='EXPERIENCE'}}
-                            {{$value.nextRepayAmount}}(现金红包)
+                        {{$value.nextRepayAmount}}(现金红包)
                         {{else}}
-                            {{if $value.nextRepayDate}}
-                            {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
-                            {{else}}
-                            --
-                            {{/if}}
+                        {{if $value.nextRepayDate}}
+                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                        {{else}}
+                        --
+                        {{/if}}
                         {{/if}}
                     </td>
                     <td>
                     {{if $value.investRepayExist}}
-                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a>
+                        <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a>
                         {{if $value.productType!='EXPERIENCE'}}
-                            <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank"> | 合同</a>
+                        <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank"> | 合同</a>
                         {{/if}}
                     {{else}}
                     --
