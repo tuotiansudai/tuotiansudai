@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -46,7 +45,7 @@ public class ExperienceLoanDto implements Serializable {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
         this.duration = loanModel.getDuration();
-        this.baseRate = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+        this.baseRate = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         this.progress = experienceProgress;
         this.investAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount);
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
