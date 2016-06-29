@@ -128,8 +128,9 @@ public class ActivityServiceTest {
 
     private List<ActivityModel> prepareData() {
         UserModel userModel = createUserModel("testUser");
-        createLoanModel(userModel.getLoginName(), 1);
-        createInvests(userModel.getLoginName(), 1);
+        long loanId = idGenerator.generate();
+        createLoanModel(userModel.getLoginName(), loanId);
+        createInvests(userModel.getLoginName(), loanId);
 
         List<ActivityModel> activityModels = new ArrayList<>();
         ActivityModel activityModel = createActivityModel(1L, userModel, "activity1", DateTime.parse("2016-06-03T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
