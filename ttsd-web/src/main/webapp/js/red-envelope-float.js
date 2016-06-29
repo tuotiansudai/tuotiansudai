@@ -85,7 +85,7 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
     });
 
     //feedback click
-    $('.type-list dt').on('click', function(event) {
+    $('.type-list dt,.type-list i').on('click', function(event) {
         event.preventDefault();
         var $self=$(this),
             $list=$self.siblings('dd');
