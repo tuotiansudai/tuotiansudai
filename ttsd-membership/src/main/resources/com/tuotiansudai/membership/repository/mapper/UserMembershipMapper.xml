@@ -45,8 +45,7 @@
         select * from user_membership where login_name = #{loginName}
     </select>
 
-    <select id="findUserMembershipItemViews"
-            resultMap="UserMembershipItemResultMap">
+    <select id="findUserMembershipItemViews" resultMap="UserMembershipItemResultMap" parameterMap="map">
         SELECT user_membership.id, user_membership.login_name, account.user_name, user.mobile, account.membership_point,
         membership.level, user_membership.type, user.register_time, user_membership.created_time, user_membership.expired_time
         FROM `aa`.`user_membership` join `aa`.`membership` join `aa`.`user` join `aa`.`account`
@@ -77,6 +76,8 @@
                 </foreach>
             </if>
         </where>
+        order by membership.login_name
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findActiveByLoginName" resultMap="UserMembershipResultMap" parameterType="string">

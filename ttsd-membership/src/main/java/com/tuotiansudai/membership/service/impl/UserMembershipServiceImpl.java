@@ -1,5 +1,7 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -151,7 +153,9 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
                                                               Date registerStartTime, Date registerEndTime,
                                                               UserMembershipType userMembershipType,
-                                                              List<Integer> levels) {
+                                                              List<Integer> levels,
+                                                              int index,
+                                                              int pageSize) {
         if (StringUtils.isEmpty(loginName)) {
             loginName = null;
         }
@@ -184,17 +188,12 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         filteredUserMembershipItemViews.addAll(filteredUpgradeUserMembershipItemViews);
         filteredUserMembershipItemViews.addAll(filteredGivenUserMembershipItemViews);
 
-        Collections.sort(filteredUserMembershipItemViews, new Comparator<UserMembershipItemView>() {
+        return Lists.transform(filteredUserMembershipItemViews, new Function<UserMembershipItemView, UserMembershipItemDto>() {
             @Override
-            public int compare(UserMembershipItemView o1, UserMembershipItemView o2) {
-                return o2.getLoginName().compareTo(o1.getLoginName());
+            public UserMembershipItemDto apply(UserMembershipItemView input) {
+                return new UserMembershipItemDto(input);
             }
         });
-        List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
-        for (UserMembershipItemView userMembershipItemView : filteredUserMembershipItemViews) {
-            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemView));
-        }
-        return userMembershipItemDtos;
     }
 
     @Override

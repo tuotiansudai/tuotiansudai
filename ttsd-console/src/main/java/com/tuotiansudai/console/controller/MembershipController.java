@@ -52,7 +52,7 @@ public class MembershipController {
                                        @RequestParam(value = "type", required = false, defaultValue = "") UserMembershipType userMembershipType,
                                        @RequestParam(value = "levels", required = false, defaultValue = "") List<Integer> selectedLevels) {
         List<UserMembershipItemDto> userMembershipItemDtos = userMembershipService.getUserMembershipItems(loginName,
-                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels);
+                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels,index,pageSize);
         List<UserMembershipItemDto> results = new ArrayList<>();
         for (int startIndex = (index - 1) * pageSize,
              endIndex = index * pageSize <= userMembershipItemDtos.size() ? index * pageSize : userMembershipItemDtos.size();
