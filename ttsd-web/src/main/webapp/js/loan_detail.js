@@ -618,7 +618,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             },
             getRelativeRate: function(arr, num) {
                 var index =  _.findLastIndex(__extraRate, function(value) {
-                    if (num > value.minInvestAmount && (value.maxInvestAmount >= num || value.maxInvestAmount === 0)) {
+                    if (num >= value.minInvestAmount && (value.maxInvestAmount > num || value.maxInvestAmount === 0)) {
                         return true;
                     }
                 });
@@ -656,9 +656,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
-        var changeHTML = function(rate) {
-            $('.chart-box').find('[data-extra-rate]').html(rate);
-        };
+        var changeHTML = function() {
+            var $element = $('.chart-box').find('[data-extra-rate]');
+            return function(rate) {
+                $element.html(rate);
+            }
+        }();
         var addSign = function(rate) {
             if (!rate) {
                 return ''
@@ -668,6 +671,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function() {
                 return $(this).val()
-            }));
+            })).trigger('change');
     })();
 });

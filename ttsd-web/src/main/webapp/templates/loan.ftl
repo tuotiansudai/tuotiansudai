@@ -61,11 +61,7 @@
                         </div>
                         <% _.each(__extraRate, function(value){ %>
                             <div class="clearfix">
-                                <% if (value.maxInvestAmount === 0) { %>
-                                <div class="td fl"><%= value.minInvestAmount %>元以上</div>
-                                <% } else { %>
-                                <div class="td fl"><%= value.minInvestAmount %> ~ <%= value.maxInvestAmount %>元</div>
-                                <% } %>
+                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
                                 <div class="td fl"><%= value.rate %>%</div>
                             </div>
                         <% }) %>
