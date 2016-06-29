@@ -539,13 +539,15 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
+        <if test="loanStatus.name() == 'COMPLETE' ">
             and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and loan.status in ('REPAYING','OVERDUE')
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK')
         </if>
-
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
@@ -556,8 +558,11 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
+        <if test="loanStatus.name() == 'COMPLETE' ">
             and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and loan.status in ('REPAYING','OVERDUE')
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK')
