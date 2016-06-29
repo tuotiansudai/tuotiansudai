@@ -36,14 +36,10 @@
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
                     <#if loan.newbieInterestCouponRate gt 0>
-                        <!-- <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div> -->
-                    </#if>
-                <#else>
-                    <#if loan.productType??>
-                        <!-- <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div> -->
+                        <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
                     </#if>
                 </#if>
-                <#if extraLoanRateModels ??>
+                <#if extraLoanRateModels?size != 0 >
                      <div class="product-type-text extra-rate" id="extra-rate">投资加息+${minRate*100}%~${maxRate*100}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
                      <script>
                          var __extraRate = [
