@@ -48,4 +48,13 @@ public interface UserMembershipMapper {
 
     List<UserMembershipModel> findByLoginNameByMembershipId(@Param(value = "loginName") String loginName,
                                                       @Param(value = "membershipId") long membershipId);
+
+    int findCountUserMembershipItemViews(@Param(value = "loginName") String loginName,
+                                     @Param(value = "mobile") String mobile,
+                                     @Param(value = "registerStartTime") Date registerStartTime,
+                                     @Param(value = "registerEndTime") Date registerEndTime,
+                                     @Param(value = "type") UserMembershipType userMembershipType,
+                                     @Param(value = "levels") List<Integer> levels,
+                                     @Param(value = "index") int index,
+                                     @Param(value = "pageSize") int pageSize);
 }

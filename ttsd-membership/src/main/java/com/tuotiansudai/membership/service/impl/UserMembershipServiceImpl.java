@@ -25,13 +25,8 @@ import java.util.*;
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
 
-    static Logger logger = Logger.getLogger(UserMembershipServiceImpl.class);
-
     @Autowired
     private MembershipMapper membershipMapper;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
@@ -82,71 +77,6 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         }
 
         return userMembershipModels.size() == 1 ? userMembershipModels.get(0) : returnUserMembershipModel;
-    }
-
-    private List<UserMembershipItemView> filterUpgradeUserMembershipItems(List<UserMembershipItemView> userMembershipItemViews) {
-        class Data {
-            public int index;
-            public Date createdTime;
-
-            public Data(int index, Date createdTime) {
-                this.index = index;
-                this.createdTime = createdTime;
-            }
-        }
-        HashMap<String, Data> membershipFilterInfo = new HashMap<>();
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            Data data = membershipFilterInfo.get(userMembershipItemView.getLoginName());
-            if (null != data) {
-                if (data.createdTime.before(userMembershipItemView.getCreatedTime())) {
-                    data.index = userMembershipItemViews.indexOf(userMembershipItemView);
-                    data.createdTime = userMembershipItemView.getCreatedTime();
-                }
-            } else {
-                if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.UPGRADE)) {
-                    membershipFilterInfo.put(userMembershipItemView.getLoginName(),
-                            new Data(userMembershipItemViews.indexOf(userMembershipItemView), userMembershipItemView.getCreatedTime()));
-                }
-            }
-        }
-        List<UserMembershipItemView> filteredUserMembershipItems = new ArrayList<>();
-        for (Data data : membershipFilterInfo.values()) {
-            filteredUserMembershipItems.add(userMembershipItemViews.get(data.index));
-        }
-        return filteredUserMembershipItems;
-    }
-
-    private List<UserMembershipItemView> filterGivenUserMembershipItems(List<UserMembershipItemView> userMembershipItemViews) {
-        class Data {
-            public int index;
-            public int membershipLevel;
-
-            public Data(int index, int membershipLevel) {
-                this.index = index;
-                this.membershipLevel = membershipLevel;
-            }
-        }
-        HashMap<String, Data> membershipFilterInfo = new HashMap<>();
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            Data data = membershipFilterInfo.get(userMembershipItemView.getLoginName());
-            if (null != data) {
-                if (data.membershipLevel < userMembershipItemView.getMembershipLevel()) {
-                    data.index = userMembershipItemViews.indexOf(userMembershipItemView);
-                    data.membershipLevel = userMembershipItemView.getMembershipLevel();
-                }
-            } else {
-                if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.GIVEN) &&
-                        userMembershipItemView.getExpiredTime().after(new Date())) {
-                    membershipFilterInfo.put(userMembershipItemView.getLoginName(),
-                            new Data(userMembershipItemViews.indexOf(userMembershipItemView), userMembershipItemView.getMembershipLevel()));
-                }
-            }
-        }
-        List<UserMembershipItemView> filteredUserMembershipItems = new ArrayList<>();
-        for (Data data : membershipFilterInfo.values()) {
-            filteredUserMembershipItems.add(userMembershipItemViews.get(data.index));
-        }
-        return filteredUserMembershipItems;
     }
 
     @Override

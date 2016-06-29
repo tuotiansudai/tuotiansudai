@@ -216,7 +216,7 @@ public class UserMembershipServiceTest {
 
         List<UserMembershipItemDto> userMembershipItemDtos;
 
-        userMembershipItemDtos = userMembershipService.getUserMembershipItems(originUserMembershipItemList.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 2, 3, 4, 5),1,10);
+        userMembershipItemDtos = userMembershipService.getUserMembershipItems(originUserMembershipItemList.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 2, 3, 4, 5),0,10);
         assertEquals(1, userMembershipItemDtos.size());
         assertEquals(originUserMembershipItemList.get(0).getLoginName(), userMembershipItemDtos.get(0).getLoginName());
         assertEquals(originUserMembershipItemList.get(0).getMobile(), userMembershipItemDtos.get(0).getMobile());
