@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.repository.mapper;
 
+import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -10,10 +11,12 @@ import java.util.List;
 public interface UserMessageMapper {
 
     List<UserMessageModel> findMessagesByLoginName(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "channels") MessageChannel channels,
                                                    @Param(value = "index") Integer index,
                                                    @Param(value = "pageSize") Integer pageSize);
 
-    long countMessagesByLoginName(String loginName);
+    long countMessagesByLoginName(@Param(value = "loginName") String loginName,
+                                  @Param(value = "channels") MessageChannel channels);
 
     long countUnreadMessagesByLoginName(String loginName);
 

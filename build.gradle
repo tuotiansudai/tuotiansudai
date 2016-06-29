@@ -9,7 +9,7 @@ subprojects {
     apply plugin: "application"
     apply plugin: "jacoco"
     repositories {
-        maven { url 'http://maven.oschina.net/content/groups/public/' }
+        maven { url 'http://maven.antelink.com/content/repositories/central/' }
     }
 
     gradle.startParameter.continueOnFailure = true
