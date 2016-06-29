@@ -113,7 +113,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                     showErrorMessage(msg, o.obj);
                 }
             },
-            beforeCheck: function(curform) {
+            beforeCheck: function($activityCenterForm) {
                 $errorDom.html('');
                 var activityDescription = $('.activity-description').val();
 
@@ -123,7 +123,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                 }
 
             },
-            callback: function(form) {
+            callback: function($activityCenterForm) {
                 boolFlag = true;
                 return false;
             }

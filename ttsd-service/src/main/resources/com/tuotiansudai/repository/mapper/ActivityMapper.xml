@@ -18,7 +18,7 @@
         <result column="expired_time" property="expiredTime"/>
         <result column="source" property="source"
                 typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
-        <result column="activity_status" property="status"/>
+        <result column="status" property="status"/>
         <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_by" property="updatedBy"/>
@@ -61,24 +61,6 @@
         SELECT * FROM `aa`.`activity` WHERE id = #{id}
     </select>
 
-    <select id="findActivities" resultMap="activityResultMap">
-        SELECT * FROM `aa`.`activity`
-        <where>
-            <if test="activatedStartTime != null">
-                AND activated_time &gt;= #{activatedStartTime}
-            </if>
-            <if test="activatedEndTime != null">
-                AND activated_time &lt;= #{activatedEndTime}
-            </if>
-            <if test="activityStatus != null">
-                AND status = #{activityStatus}
-            </if>
-            <if test="source != null">
-                and source like CONCAT(CONCAT('%', #{source}), '%')
-            </if>
-        </where>
-    </select>
-
     <select id="findAllActivities" resultMap="activityResultMap" parameterType="map">
         SELECT * FROM `aa`.`activity`
         <where>
@@ -88,17 +70,17 @@
             <if test="endTime != null">
                 AND activated_time &lt;= #{endTime}
             </if>
-            <if test="activityStatus != null and activityStatus == 'OPERATING'">
+            <if test="activityStatus != null and activityStatus.name() == 'OPERATING'">
                 AND status = 'APPROVED' AND  expired_time &gt; now()
             </if>
-            <if test="activityStatus != null and activityStatus == 'EXPIRED'">
+            <if test="activityStatus != null and activityStatus.name() == 'EXPIRED'">
                 AND  expired_time  &lt; now()
             </if>
-            <if test="activityStatus != null">
-                AND  status = ${activityStatus}
+            <if test="activityStatus != null and activityStatus.name() != 'OPERATING' and activityStatus.name() != 'EXPIRED'">
+                AND  status = #{activityStatus}
             </if>
             <if test="source != null">
-                and source = #{source}
+                AND source like CONCAT('%', #{source}, '%')
             </if>
         </where>
         order by activated_time desc

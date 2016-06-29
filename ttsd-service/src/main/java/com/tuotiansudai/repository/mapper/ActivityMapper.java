@@ -17,11 +17,6 @@ public interface ActivityMapper {
 
     ActivityModel findById(Long id);
 
-    List<ActivityModel> findActivities(@Param(value = "activatedStartTime") Date activatedStartTime,
-                                       @Param(value = "activatedEndTime") Date activatedEndTime,
-                                       @Param(value = "activityStatus") ActivityStatus activityStatus,
-                                       @Param(value = "source") Source source);
-
     List<ActivityModel> findAllActivities(@Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime,
                                        @Param(value = "activityStatus") ActivityStatus activityStatus,

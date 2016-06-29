@@ -593,3 +593,10 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.webImg img, .appImg img{
+    width: 100px;
+    height: 50px;
+}
+
+

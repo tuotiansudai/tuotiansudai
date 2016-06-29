@@ -120,8 +120,8 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间: </label>
-                <div class="date col-sm-4" id='datetimepicker1'>
-                    <div class="input-group">
+                <div class="date col-sm-4" >
+                    <div class="input-group" id='datetimepicker1'>
                         <input type='text' class="form-control" name="expiredTime"
                                <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
                                value="<#if dto??>${dto.expiredTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
