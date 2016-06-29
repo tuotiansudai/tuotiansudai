@@ -72,7 +72,9 @@
                                 {{if $value.achievement=='MAX_AMOUNT'}}
                                 <i class="max-icon"></i>
                                 {{/if}}
-                                <i class="extra-rate" data-benefit="0.2"></i>
+                                {{if $value.extraRate !== null}}
+                                <i class="extra-rate" data-benefit="{{$value.extraRate * 100}}"></i>
+                                {{/if}}
                             {{/if}}
                         </span>
                         <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
