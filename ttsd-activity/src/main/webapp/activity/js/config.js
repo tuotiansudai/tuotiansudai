@@ -53,7 +53,8 @@ var require = {
         'drag':['jquery'],
         'rotate':['jquery'],
         'fancybox':['jquery'],
-        'placeholder':['jquery']
+        'placeholder':['jquery'],
+        'superslide':['jquery']
     },
 
     config: {
