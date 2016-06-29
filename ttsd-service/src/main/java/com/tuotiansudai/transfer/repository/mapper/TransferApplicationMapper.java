@@ -1,6 +1,5 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -82,6 +81,7 @@ public interface TransferApplicationMapper {
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 
+    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
 
 
 }

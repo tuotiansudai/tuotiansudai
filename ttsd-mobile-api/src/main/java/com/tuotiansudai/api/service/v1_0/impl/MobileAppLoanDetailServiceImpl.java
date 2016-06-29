@@ -152,7 +152,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if(loan.getRaisingCompleteTime() != null) {
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
-        loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
         loanDetailResponseDataDto.setDuration("" + loan.getDuration());
         loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
                 new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
