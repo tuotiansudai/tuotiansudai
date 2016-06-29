@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
@@ -38,6 +39,9 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
 
     @Mock
     private MobileAppChannelService channelService;
+
+    @Mock
+    private MobileAppTokenProvider mobileAppTokenProvider;
 
     @Test
     public void shouldSendRegisterByMobileNumberSMS() {
@@ -102,6 +106,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
+        when(mobileAppTokenProvider.refreshToken(anyString(), anyString())).thenReturn("");
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
         assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());
