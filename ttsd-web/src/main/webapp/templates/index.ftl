@@ -436,7 +436,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <a href="/loan/" class="btn-normal">立即投资</a>
+                        <a href="/loan/1" class="btn-normal">立即投资</a>
 
                         <div class="guide-img">
                             <span class="guide-btn"></span>
