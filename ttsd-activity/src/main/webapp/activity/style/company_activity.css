@@ -353,7 +353,8 @@
             left: 20px;
             bottom: 23px;
             width: 285px;
-            height: 52px; }
+            height: 52px;
+            background: url(about:blank); }
         .birth-month-container .wp p.text-pro span.pro-wap-list {
           float: left;
           width: 100%;
