@@ -11,12 +11,12 @@
                 <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li>
-                            <label for="" class="reg-title">用户名:</label>
-                            <i class="sprite-register-login-name"></i>
-                            <input type="text" id="login-name" class="login-name long" name="loginName"
-                                   placeholder="用户名" maxlength="25" value="">
+                            <label for="" class="reg-title">手机号:</label>
+                            <i class="sprite-register-ic-mobile"></i>
+                            <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
+                                   maxlength="11" value="">
                         </li>
-                        <li id="login-nameErr" class="height"></li>
+                        <li id="mobileErr" class="height"></li>
                         <li>
                             <label for="" class="reg-title">密码:</label>
                             <i class="sprite-register-ic-password"></i>
@@ -24,13 +24,6 @@
                                    class="password long" value="">
                         </li>
                         <li id="passwordErr" class="height"></li>
-                        <li>
-                            <label for="" class="reg-title">手机号:</label>
-                            <i class="sprite-register-ic-mobile"></i>
-                            <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
-                                   maxlength="11" value="">
-                        </li>
-                        <li id="mobileErr" class="height"></li>
                         <li class="code">
                             <label for="" class="reg-title">验证码:</label>
                             <i class="sprite-register-ic-img-code"></i>
