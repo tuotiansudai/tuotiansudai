@@ -17,12 +17,18 @@ var getData = function(fileName) {
 	return _.compose(JSON.parse, fs.readFileSync, path.join)(__dirname, 'data/' + fileName + '.json');
 };
 
-
 var config = [{
 	route: '/',
 	template: 'footer',
 	data: 'footer'
-}];
+}
+
+	//,{
+	//	route: '/point',
+	//	template: 'point_demo',
+	//	data: 'point_demo'
+	//}
+];
 
 
 config.forEach(function(val) {

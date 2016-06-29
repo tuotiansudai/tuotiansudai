@@ -2,6 +2,7 @@
 @import 'daterangepicker';
 @import "coupon_alert";
 @import "fancybox";
+@import "account/mybean";
 
 .layui-layer-btn {
   text-align: center !important;
@@ -187,13 +188,13 @@ body{
     line-height: 38px;
     border: 1px solid #ff7200;
     border-radius: 2px;
-      span {
-        background: #ff0000;
-        color: #fff;
-        padding: 3px 8px;
-        border-radius: 10px;
-        margin: 0 10px;
-      }
+    span {
+      background: #ff0000;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 10px;
+      margin: 0 10px;
+    }
   }
   .sign-layer {
     position: fixed;
@@ -1013,10 +1014,10 @@ body{
       }
     }
   }
-.wrapper-list {
-  li {
-    border-bottom: 1px solid #e6e6e6;
-    padding: 12px;
+  .wrapper-list {
+    li {
+      border-bottom: 1px solid #e6e6e6;
+      padding: 12px;
 
       span {
         padding-right: 10px;
