@@ -65,4 +65,13 @@ public class RandomUtils {
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) :encryptLoginName;
     }
 
+    public String encryptLoginName(String loginName, String encryLoginName, int showLength) {
+        if (encryLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+        String encryptLoginName = encryLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+
+        return encryptLoginName;
+    }
+
 }

@@ -180,7 +180,8 @@ public class PayWrapperClient extends BaseClient {
             if (json == null)
                 return null;
             else
-                return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+                return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
+                });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

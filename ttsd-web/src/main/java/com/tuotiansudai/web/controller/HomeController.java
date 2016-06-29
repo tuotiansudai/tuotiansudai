@@ -63,8 +63,8 @@ public class HomeController {
         long experienceLoanId = 1;
         Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
         Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId,beginTime,endTime);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId),investModelList.size() % 100 ,couponService.findExperienceInvestAmount(investModelList));
+        List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(LoginUserInfo.getLoginName()) ? false : true, Source.WEB.name()), new Function<BannerModel,BannerModel>(){
             @Override

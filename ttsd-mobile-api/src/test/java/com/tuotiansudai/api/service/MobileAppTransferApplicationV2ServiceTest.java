@@ -57,7 +57,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     private InvestService investService;
 
     @Test
-    public void shouldGenerateTransferableInvestIsSuccess(){
+    public void shouldGenerateTransferableInvestIsSuccess() {
         TransferRuleModel transferRuleModel = new TransferRuleModel();
         transferRuleModel.setLevelOneFee(0.01);
         transferRuleModel.setLevelOneLower(1);
@@ -85,7 +85,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         when(investMapper.findCountTransferableApplicationPaginationByLoginName(anyString())).thenReturn(1L);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(investService.estimateInvestIncome(anyLong(),anyLong())).thenReturn(1000l);
+        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(1000l);
         BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationV2Service.generateTransferableInvest(transferableInvestRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(String.valueOf(loanId), baseResponseDto.getData().getInvestList().get(0).getLoanId());
@@ -110,7 +110,6 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -126,11 +125,10 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
-
 
 
 }

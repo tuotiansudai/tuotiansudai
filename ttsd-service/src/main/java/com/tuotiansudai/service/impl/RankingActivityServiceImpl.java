@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
@@ -37,7 +38,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private AccountService accountService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -177,9 +178,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     private void sendInterestCoupon5(String loginName) {
-        List<UserGroup> userGroups = new ArrayList<>();
-        userGroups.add(UserGroup.WINNER);
-        couponActivationService.assignUserCoupon(loginName, userGroups, 300L, null);
+        couponAssignmentService.assignUserCoupon(loginName, 300L);
     }
 
     // reutrn null if not exists

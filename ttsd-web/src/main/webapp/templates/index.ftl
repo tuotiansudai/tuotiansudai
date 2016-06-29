@@ -379,11 +379,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="/loan/" class="btn-normal">立即投资</a>
-                            <div class="guide-img">
-                                <span class="guide-btn"></span>
-                            </div>
+                        <a href="/loan/1" class="btn-normal">立即投资</a>
+
+                        <div class="guide-img">
+                            <span class="guide-btn"></span>
                         </div>
+                    </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
