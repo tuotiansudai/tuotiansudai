@@ -17,7 +17,7 @@ public class MobileAppTransferApplicationV2Controller extends MobileAppBaseContr
 
     @RequestMapping(value = "/get/transferable", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto generateTransferableInvest(@RequestBody TransferableInvestListRequestDto requestDto,BindingResult bindingResult) {
+    public BaseResponseDto generateTransferableInvest(@RequestBody TransferableInvestListRequestDto requestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);

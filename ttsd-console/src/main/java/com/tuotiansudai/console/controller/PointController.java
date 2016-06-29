@@ -6,11 +6,11 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/point-manage")
@@ -64,7 +64,7 @@ public class PointController {
 
         modelAndView.addObject("userPointDetailList", pointBillPaginationItemDataDtoList);
         long count = pointBillService.getPointBillCountByLoginName(loginName);
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0? 1 : 0);
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

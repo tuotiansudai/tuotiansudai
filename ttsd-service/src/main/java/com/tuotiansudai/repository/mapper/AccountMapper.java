@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -49,5 +50,7 @@ public interface AccountMapper {
 
     List<AccountModel> findAccountWithBalance(@Param(value = "startLimit") int startLimit,
                                               @Param(value = "endLimit") int endLimit);
+
+    Date findAccountRegisterTimeByLoginName(String loginName);
 
 }

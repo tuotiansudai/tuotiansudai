@@ -4,6 +4,7 @@ public class RegisterResponseDataDto extends BaseResponseDataDto {
     private String userId;
     private String userName;
     private String phoneNum;
+    private String token;
 
     public String getUserId() {
         return userId;
@@ -27,5 +28,13 @@ public class RegisterResponseDataDto extends BaseResponseDataDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
