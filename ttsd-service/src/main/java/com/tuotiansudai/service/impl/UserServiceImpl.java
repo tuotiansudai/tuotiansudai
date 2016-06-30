@@ -20,8 +20,6 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -335,6 +333,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findLoginNameLike(String loginName) {
         return userMapper.findLoginNameLike(loginName);
+    }
+
+    @Override
+    public List<String> findMobileLike(String mobile) {
+        return userMapper.findMobileLike(mobile);
     }
 
     @Override

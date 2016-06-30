@@ -252,6 +252,10 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
+    <select id="findMobileLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select mobile from user where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+    </select>
+
     <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
         and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')

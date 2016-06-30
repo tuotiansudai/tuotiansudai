@@ -35,7 +35,7 @@ public class SecurityLogController {
     private UserOpLogService userOpLogService;
 
     @RequestMapping(path = "/login-log", method = RequestMethod.GET)
-    public ModelAndView loginLog(@RequestParam(name = "loginName", required = false) String loginName,
+    public ModelAndView loginLog(@RequestParam(name = "mobile", required = false) String mobile,
                                  @RequestParam(name = "selectedYear", required = false) Integer selectedYear,
                                  @RequestParam(name = "selectedMonth", required = false) Integer selectedMonth,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
@@ -54,14 +54,14 @@ public class SecurityLogController {
 
         if (new DateTime().withDate(selectedYear, selectedMonth, 1).isBeforeNow() &&
                 new DateTime().withDate(selectedYear, selectedMonth, new DateTime().withDate(selectedYear, selectedMonth, 1).dayOfMonth().getMaximumValue()).isAfter(new DateTime(2015, 11, 1, 0, 0, 0))) {
-            BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(loginName, success, index, pageSize, selectedYear, selectedMonth);
+            BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(mobile, success, index, pageSize, selectedYear, selectedMonth);
             modelAndView.addObject("data", data);
         } else {
             modelAndView.addObject("data", new BasePaginationDataDto<>(1, pageSize, 0, Lists.<LoginLogPaginationItemDataDto>newArrayList()));
         }
 
         modelAndView.addObject("years", Lists.newArrayList("2015", "2016", "2017", "2018", "2019", "2020"));
-        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("selectedYear", String.valueOf(selectedYear));
         modelAndView.addObject("selectedMonth", String.valueOf(selectedMonth));
         modelAndView.addObject("success", success);

@@ -8,7 +8,10 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.EditUserDto;
+import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
@@ -131,6 +134,12 @@ public class UserController {
     @ResponseBody
     public List<String> searchStaffName(@PathVariable String loginName) {
         return userService.findStaffNameFromUserLike(loginName);
+    }
+
+    @RequestMapping(value = "/mobile/{mobile}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> searchMobile(@PathVariable String mobile) {
+        return userService.findMobileLike(mobile);
     }
 
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)

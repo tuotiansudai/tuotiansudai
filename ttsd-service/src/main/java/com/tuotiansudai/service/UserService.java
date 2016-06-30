@@ -3,12 +3,9 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -48,6 +45,8 @@ public interface UserService {
     List<String> findAccountLikeLoginName(String loginName);
 
     List<String> findLoginNameLike(String loginName);
+
+    List<String> findMobileLike(String mobile);
 
     boolean verifyPasswordCorrect(String loginName, String password);
 

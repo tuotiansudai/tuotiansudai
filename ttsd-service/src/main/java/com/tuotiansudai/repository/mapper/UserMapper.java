@@ -33,6 +33,8 @@ public interface UserMapper {
 
     List<String> findLoginNameLike(String loginName);
 
+    List<String> findMobileLike(String mobile);
+
     List<String> findAllChannels();
 
     List<String> findAllUserChannels();
