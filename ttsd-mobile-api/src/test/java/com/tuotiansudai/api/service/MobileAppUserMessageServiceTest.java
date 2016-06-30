@@ -37,8 +37,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
     private MessageMapper messageMapper;
 
     @Test
-    @Transactional
-    public void getUserMessages() {
+    public void shouldUserMessages() {
         UserModel userModel = getFakeUser("test");
         userMapper.create(userModel);
         MessageModel messageModel = getFakeMessage(userModel.getLoginName());
@@ -49,22 +48,12 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messagesRequestDto.setBaseParam(baseParam);
         BaseResponseDto<UserMessageResponseDataDto> baseResponseDto = mobileAppUserMessageService.getUserMessages(messagesRequestDto);
 
-        baseResponseDto.getData().getData().size();
+        assertThat("0000",is(baseResponseDto.getCode()));
         assertThat(1L, is(baseResponseDto.getData().getTotalCount()));
         assertThat(1, is(baseResponseDto.getData().getData().size()));
     }
 
-    private UserModel getFakeUser(String loginName) {
-        UserModel fakeUser = new UserModel();
-        fakeUser.setLoginName(loginName);
-        fakeUser.setPassword("password");
-        fakeUser.setEmail("email@tuotiansudai.com");
-        fakeUser.setMobile("18900000000");
-        fakeUser.setRegisterTime(new Date());
-        fakeUser.setStatus(UserStatus.ACTIVE);
-        fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return fakeUser;
-    }
+
 
     private MessageModel getFakeMessage(String loginName) {
         MessageModel messageModel = new MessageModel();

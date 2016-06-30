@@ -1,16 +1,18 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserMessageDto implements Serializable{
+public class UserMessageDto implements Serializable {
     private long userMessageId;
     private String title;
     private String content;
     private boolean read;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date createdTime;
 
     public UserMessageDto(UserMessageModel userMessageModel) {
