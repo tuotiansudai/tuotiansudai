@@ -85,7 +85,8 @@
         </where>
         order by activated_time desc
     </select>
-    <select id="findOperatingActivities" resultMap="activityResultMap">
+
+    <select id="findActiveActivities" resultMap="activityResultMap">
         SELECT * FROM `aa`.`activity`
         WHERE
         expired_time > now() AND
@@ -94,6 +95,17 @@
             AND source like CONCAT('%', #{source}, '%')
         </if>
         ORDER BY activated_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="countActiveActivities" resultType="java.lang.Integer">
+        SELECT count(1) FROM `aa`.`activity`
+        WHERE
+        expired_time > now() AND
+        status = 'APPROVED'
+        <if test="source != null">
+            AND source like CONCAT('%', #{source}, '%')
+        </if>
     </select>
 
 </mapper>

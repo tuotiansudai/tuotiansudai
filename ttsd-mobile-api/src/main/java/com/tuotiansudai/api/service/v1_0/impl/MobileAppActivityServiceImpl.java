@@ -20,7 +20,14 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Override
     public ActivityCenterResponseDto getAppActivityCenterResponseData(String loginName, Source source, Integer index, Integer pageSize) {
-        List<ActivityModel> activityModels = activityMapper.findOperatingActivities(source);
+        if (null == index) {
+            index = 1;
+        }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
+
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, (index - 1) * pageSize, pageSize);
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {
@@ -30,18 +37,9 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
         activityCenterResponseDto.setIndex(index);
         activityCenterResponseDto.setPageSize(pageSize);
-        activityCenterResponseDto.setTotalCount(activityCenterDataDtos.size());
-        if (null == index || null == pageSize) {
-            activityCenterResponseDto.setActivities(activityCenterDataDtos);
-        } else {
-            List<ActivityCenterDataDto> results = new ArrayList<>();
-            for (int startIndex = (index - 1) * pageSize,
-                 endIndex = index * pageSize <= activityCenterDataDtos.size() ? index * pageSize : activityCenterDataDtos.size();
-                 startIndex < endIndex; ++startIndex) {
-                results.add(activityCenterDataDtos.get(startIndex));
-            }
-            activityCenterResponseDto.setActivities(results);
-        }
+        activityCenterResponseDto.setTotalCount(activityMapper.countActiveActivities(source));
+        activityCenterResponseDto.setActivities(activityCenterDataDtos);
+
         return activityCenterResponseDto;
     }
 }

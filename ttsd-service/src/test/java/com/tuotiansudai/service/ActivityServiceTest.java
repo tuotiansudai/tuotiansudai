@@ -146,7 +146,7 @@ public class ActivityServiceTest {
     public void testGetAllOperatingActivities() throws Exception {
         prepareData();
 
-        List<ActivityDto> activityDtoList = activityService.getAllOperatingActivities("testUser", Source.WEB);
+        List<ActivityDto> activityDtoList = activityService.getAllActiveActivities("testUser", Source.WEB);
         assertEquals(3, activityDtoList.size());
         assertEquals("activity1", activityDtoList.get(0).getTitle());
         assertEquals("activity2", activityDtoList.get(1).getTitle());

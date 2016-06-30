@@ -18,8 +18,13 @@ public interface ActivityMapper {
     ActivityModel findById(Long id);
 
     List<ActivityModel> findAllActivities(@Param(value = "startTime") Date startTime,
-                                       @Param(value = "endTime") Date endTime,
-                                       @Param(value = "activityStatus") ActivityStatus activityStatus,
-                                       @Param(value = "source") Source source);
-    List<ActivityModel> findOperatingActivities(@Param(value = "source") Source source);
+                                          @Param(value = "endTime") Date endTime,
+                                          @Param(value = "activityStatus") ActivityStatus activityStatus,
+                                          @Param(value = "source") Source source);
+
+    List<ActivityModel> findActiveActivities(@Param(value = "source") Source source,
+                                             @Param(value = "index") int index,
+                                             @Param(value = "pageSize") int pageSize);
+
+    int countActiveActivities(@Param(value = "source") Source source);
 }

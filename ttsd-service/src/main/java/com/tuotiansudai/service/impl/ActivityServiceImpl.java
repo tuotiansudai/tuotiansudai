@@ -27,11 +27,14 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     InvestMapper investMapper;
 
-    public List<ActivityDto> getAllOperatingActivities(String loginName, Source source) {
+    public List<ActivityDto> getAllActiveActivities(String loginName, Source source) {
+        //Web不分页
+        final int fixedIndex = 1;
+        final int fixedPageSize = 1000;
+
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, (fixedIndex - 1) * fixedPageSize, fixedPageSize);
+
         final List<ActivityDto> activityDtos = new ArrayList<>();
-
-        List<ActivityModel> activityModels = activityMapper.findOperatingActivities(source);
-
         for (ActivityModel activityModel : activityModels) {
             activityDtos.add(new ActivityDto(activityModel));
         }
@@ -106,9 +109,9 @@ public class ActivityServiceImpl implements ActivityService {
     public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
         List<ActivityModel> activityModels = activityMapper.findAllActivities(startTime, endTime, activityStatus, source);
         List<ActivityDto> activityDtos = Lists.newArrayList();
-        for (int i = 0; i < activityModels.size(); i++) {
-            ActivityModel activityModel = activityModels.get(i);
-            ActivityDto activityDto = new ActivityDto();
+        for (ActivityModel activityModel : activityModels) {
+            ActivityDto activityDto = new ActivityDto(activityModel);
+
             activityDto.setActivityId(activityModel.getId());
             activityDto.setTitle(activityModel.getTitle());
             activityDto.setWebPictureUrl(activityModel.getWebPictureUrl());
@@ -120,6 +123,7 @@ public class ActivityServiceImpl implements ActivityService {
             activityDto.setDescription(activityModel.getDescription());
             activityDto.setSource(activityModel.getSource());
             activityDto.setStatus(activityModel.getStatus());
+
             activityDtos.add(activityDto);
         }
         return activityDtos;

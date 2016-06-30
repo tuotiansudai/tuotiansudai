@@ -24,7 +24,7 @@ public class ActivityCenterController {
         ModelAndView modelAndView = new ModelAndView("/activity-center");
 
         String loginName = LoginUserInfo.getLoginName();
-        List<ActivityDto> activityDtos = activityService.getAllOperatingActivities(loginName, Source.WEB);
+        List<ActivityDto> activityDtos = activityService.getAllActiveActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);
 
         return modelAndView;
