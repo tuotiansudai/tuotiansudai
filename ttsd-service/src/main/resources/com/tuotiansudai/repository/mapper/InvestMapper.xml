@@ -293,7 +293,13 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
@@ -313,7 +319,13 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
     </select>
@@ -392,7 +404,14 @@
 
     <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
-        from invest
+        from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
+        where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
+    </select>
+
+    <select id="sumSuccessExperienceInvestCountByLoginName" parameterType="String" resultType="int">
+        select count(*)
+        from invest join loan on invest.loan_id = loan.id and loan.product_type = 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
     </select>
@@ -539,13 +558,19 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
-            and loan.status = #{loanStatus}
+        <if test="loanStatus.name() == 'COMPLETE' ">
+            and (loan.status = #{loanStatus}
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and (loan.status in ('REPAYING','OVERDUE')
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
@@ -556,8 +581,11 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
+        <if test="loanStatus.name() == 'COMPLETE' ">
             and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and loan.status in ('REPAYING','OVERDUE')
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK')
