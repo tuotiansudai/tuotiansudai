@@ -1,7 +1,12 @@
 package com.tuotiansudai.api.service;
 
 
-import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.UserMessageResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
+import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -16,13 +21,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
+
     @Autowired
-    private UserMessageMapper userMessageMapper;
+    private MobileAppUserMessageService mobileAppUserMessageService;
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     @Transactional
@@ -30,6 +42,16 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         UserModel userModel = getFakeUser("test");
         userMapper.create(userModel);
         MessageModel messageModel = getFakeMessage(userModel.getLoginName());
+        messageMapper.create(messageModel);
+        UserMessagesRequestDto messagesRequestDto = new UserMessagesRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("test");
+        messagesRequestDto.setBaseParam(baseParam);
+        BaseResponseDto<UserMessageResponseDataDto> baseResponseDto = mobileAppUserMessageService.getUserMessages(messagesRequestDto);
+
+        baseResponseDto.getData().getData().size();
+        assertThat(1L, is(baseResponseDto.getData().getTotalCount()));
+        assertThat(1, is(baseResponseDto.getData().getData().size()));
     }
 
     private UserModel getFakeUser(String loginName) {
@@ -58,11 +80,10 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setStatus(MessageStatus.APPROVED);
         messageModel.setExpiredTime(new DateTime(new Date()).plusDays(1).toDate());
         messageModel.setCreatedBy(loginName);
+        messageModel.setCreatedTime(new Date());
+        messageModel.setUpdatedBy(loginName);
+        messageModel.setUpdatedTime(new Date());
         return messageModel;
     }
 
-    private UserMessageModel fillUserMessage() {
-        UserMessageModel messageModel = new UserMessageModel();
-        return null;
-    }
 }
