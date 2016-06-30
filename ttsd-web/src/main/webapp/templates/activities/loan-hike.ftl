@@ -17,7 +17,7 @@
 					<table class="table table-border">
 						<thead>
 							<tr>
-								<th>投资金额（元）</th>
+								<th>投资金额(元)</th>
 								<th>90天项目</th>
 								<th>180天项目</th>
 								<th>360天项目</th>
@@ -50,7 +50,7 @@
 					<table class="table table-border">
 						<thead>
 							<tr>
-								<th>投资金额（元）</th>
+								<th>投资金额(元)</th>
 								<th>90天项目</th>
 								<th>180天项目</th>
 								<th>360天项目</th>
@@ -83,7 +83,7 @@
 				<a href="javascript:void(0)" class="example-show">如何投资1元赚取266元收益？点击查看例子</a>
 			</div>
 			<div class="example-text">
-				<span class="name-text">举个栗子：</span>李先生选择了一个“车辆抵押借款”项目（360天）投资49999元，按照活动规则可以享受0.6%的加息，预期总收益为6036.04元，李先生再次投资50000元，那么加息后预期总收益将达到6302.46元，仅仅多投<span class="call-out">1元钱</span>就可以拿到额外<span class="call-out">266.42元</span>收益哦！
+				<span class="name-text">举个栗子：</span>李先生选择了一个“车辆抵押借款”项目(360天)投资49999元，按照活动规则可以享受0.6%的加息，预期总收益为6036.04元，李先生再次投资50000元，那么加息后预期总收益将达到6302.46元，仅仅多投<span class="call-out">1元钱</span>就可以拿到额外<span class="call-out">266.42元</span>收益哦！
 			</div>
 			<div class="arrow-icon"></div>
 			<div class="notice-container">
