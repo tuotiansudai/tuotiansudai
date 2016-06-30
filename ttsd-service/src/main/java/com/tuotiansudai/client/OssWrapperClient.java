@@ -178,7 +178,9 @@ public class OssWrapperClient {
         } finally {
             try {
                 swapStream.close();
-                ios.close();
+                if (ios != null) {
+                    ios.close();
+                }
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
