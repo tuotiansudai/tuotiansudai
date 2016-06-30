@@ -1,8 +1,6 @@
-require('../style/sass/main.scss'); 
-var $=require('jquery');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-
-$('body').css('background','blue');
-
-
-document.write('<h1>Hello world,I am fine</h1> ');
+ReactDOM.render(
+  <h1>Hello, world00!</h1>,
+  document.querySelector('#app')

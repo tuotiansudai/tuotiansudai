@@ -4,8 +4,7 @@
   "description": "question answer projects",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --inline",
-    "build":"webpack --progress --profile --colors --config webpack.production.config.js"
+    "start": "webpack-dev-server --hot --inline"
   },
   "keywords": [
     "build",
