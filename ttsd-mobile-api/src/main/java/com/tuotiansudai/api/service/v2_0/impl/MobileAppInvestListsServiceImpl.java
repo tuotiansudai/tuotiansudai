@@ -53,7 +53,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         List<InvestModel>  investModels = investMapper.findInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus(), index, pageSize);
 
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investModels));
+        dtoData.setInvestList(convertResponseData(investModels,userInvestListRequestDto.getStatus()));
         dtoData.setIndex(userInvestListRequestDto.getIndex());
         dtoData.setPageSize(userInvestListRequestDto.getPageSize());
         long investModelCount = investMapper.countInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus());
@@ -67,12 +67,15 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         return dto;
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels) {
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels,LoanStatus loanStatus) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(investModels)) {
             for (InvestModel investModel : investModels) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
+                if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+                    dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
+                }
                 long actualInterest = 0;
                 long expectedInterest = 0;
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
