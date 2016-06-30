@@ -58,7 +58,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,ActivityType.NEWBIE));
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,null);
+        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,ActivityType.NORMAL);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }

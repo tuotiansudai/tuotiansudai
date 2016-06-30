@@ -179,9 +179,6 @@
         <if test="status != null">
             and temp.status = #{status}
         </if>
-        <if test="status == null">
-            and temp.status != 'WAITING_VERIFY'
-        </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
                 <![CDATA[ and (temp.base_rate + temp.activity_rate) >=  #{rateStart} ]]>
@@ -659,9 +656,8 @@
             <if test="loanStatus.name() == 'COMPLETE'">
                 and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
             </if>
-
-            <if test="isContainNewbieLoan != null">
-                and loan.activity_type = 'NEWBIE'
+            <if test="activityType !=null ">
+                and activity_type = #{activityType}
             </if>
         </where>
         ORDER BY CASE loan.status
