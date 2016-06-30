@@ -29,30 +29,45 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
     private int mybatisDb;
 
     private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
-        Jedis jedis = getJedis();
-        if (StringUtils.isNotEmpty(getRedisPassword())) {
-            jedis.auth(getRedisPassword());
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = getJedis();
+            return jedisAction.action(jedis);
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
         }
-        jedis.select(redisDb);
-        return jedisAction.action(jedis);
     }
 
     private void execute(JedisActionNoResult jedisAction) throws JedisException {
-        Jedis jedis = getJedis();
-        if (StringUtils.isNotEmpty(getRedisPassword())) {
-            jedis.auth(getRedisPassword());
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = getJedis();
+            jedisAction.action(jedis);
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
         }
-        jedis.select(redisDb);
-        jedisAction.action(jedis);
     }
 
     public String clearMybatisCache() {
-        Jedis jedis = getJedis();
-        if (StringUtils.isNotEmpty(getRedisPassword())) {
-            jedis.auth(getRedisPassword());
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = getJedis();
+            return jedis.flushDB();
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
         }
-        jedis.select(mybatisDb);
-        return jedis.flushDB();
     }
 
     public String get(final String key) {
@@ -447,11 +462,14 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
 
     private Jedis getJedis(){
         int timeoutCount = 0;
-        boolean broken = false;
-        Jedis jedis = null;
+        Jedis jedis;
         while(true){
             try{
                 jedis = getJedisPool().getResource();
+                if (StringUtils.isNotEmpty(getRedisPassword())) {
+                    jedis.auth(getRedisPassword());
+                }
+                jedis.select(redisDb);
                 break;
             }catch (Exception e){
                 if (e instanceof JedisConnectionException || e instanceof SocketTimeoutException){
@@ -459,32 +477,15 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                     logger.error("getJedis timeoutCount=" + timeoutCount, e);
                     if (timeoutCount > 3)
                     {
-                        broken = handleException(e);
-                        break;
+                        logger.error(e.getLocalizedMessage(), e);
+                        throw e;
                     }
                 }else{
-                    broken = handleException(e);
-                    break;
+                    logger.error(e.getLocalizedMessage(), e);
+                    throw e;
                 }
-            }finally {
-                closeResource(jedis, broken);
             }
         }
         return jedis;
-    }
-    
-    protected boolean handleException(Exception exception) {
-        if (exception instanceof JedisConnectionException) {
-            logger.error(exception.getLocalizedMessage(), exception);
-        } else if (exception instanceof JedisDataException) {
-            if ((exception.getMessage() != null) && (exception.getMessage().contains("READONLY"))) {
-                logger.error(exception.getLocalizedMessage(), exception);
-            } else {
-                return false;
-            }
-        } else {
-            logger.error(exception.getLocalizedMessage(), exception);
-        }
-        return true;
     }
 }
