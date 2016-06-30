@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -95,6 +96,11 @@ public class UserServiceImpl implements UserService {
 
     public static String SHA = "SHA";
 
+    @Autowired
+    private IdGenerator idGenerator;
+
+    private static String LOGIN_NAME = "user-{0}";
+
     @Override
     public boolean emailIsExist(String email) {
         return userMapper.findByEmail(email) != null;
@@ -120,10 +126,12 @@ public class UserServiceImpl implements UserService {
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
 
         boolean loginNameIsExist = false;
-        String loginName = null;
+        String loginName;
         if (StringUtils.isNotEmpty(dto.getLoginName())) {
             loginName = dto.getLoginName();
             loginNameIsExist = this.loginNameIsExist(loginName);
+        } else {
+            loginName = MessageFormat.format(LOGIN_NAME, idGenerator.generate());
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());

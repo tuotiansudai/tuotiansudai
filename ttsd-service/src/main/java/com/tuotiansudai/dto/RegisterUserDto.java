@@ -10,7 +10,6 @@ import java.io.Serializable;
 
 public class RegisterUserDto implements Serializable {
 
-    @NotEmpty
     @Pattern(regexp = "(?!^\\d+$)^\\w{5,25}$")
     private String loginName;
 
@@ -26,6 +25,7 @@ public class RegisterUserDto implements Serializable {
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
     private String password;
 
+    @Pattern(regexp = "^1\\d{10}$")
     private String referrer;
 
     private String channel;
