@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.UserOpLogView;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoginLogService;
@@ -100,20 +100,20 @@ public class SecurityLogController {
     }
 
     @RequestMapping(path = "/user-op-log", method = RequestMethod.GET)
-    public ModelAndView userOpLog(@RequestParam(name = "loginName", required = false) String loginName,
+    public ModelAndView userOpLog(@RequestParam(name = "mobile", required = false) String mobile,
                                   @RequestParam(name = "opType", required = false) UserOpType opType,
                                   @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                   @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                   @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-        BasePaginationDataDto<UserOpLogModel> data = userOpLogService.getUserOpLogPaginationData(loginName, opType, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<UserOpLogView> data = userOpLogService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/user-op-log");
 
         modelAndView.addObject("data", data);
         modelAndView.addObject("opType", opType);
-        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("index", index);
