@@ -132,6 +132,7 @@ public class UserServiceImpl implements UserService {
             loginNameIsExist = this.loginNameIsExist(loginName);
         } else {
             loginName = MessageFormat.format(LOGIN_NAME, idGenerator.generate());
+            dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());

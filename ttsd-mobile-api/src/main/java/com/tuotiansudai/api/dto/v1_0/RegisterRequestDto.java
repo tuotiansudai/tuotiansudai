@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class RegisterRequestDto extends BaseParamDto {
-    @NotEmpty(message = "0005")
     @Pattern(regexp = "(?!^\\d+$)^\\w{5,25}$", message = "0006")
     private String userName;
     @NotEmpty(message = "0001")
@@ -19,6 +18,7 @@ public class RegisterRequestDto extends BaseParamDto {
     @NotEmpty(message = "0012")
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$", message = "0012")
     private String password;
+    @Pattern(regexp = "^1\\d{10}$", message = "0200")
     private String referrer;
 
     public String getUserName() {
