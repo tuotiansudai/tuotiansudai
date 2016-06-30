@@ -74,11 +74,11 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long expectedTotalInterest = receivedReward + receivedInterest;
         //待收本息 = 应收利息 ＋ 应收本金
         long receivableCorpusInterest = receivableInterest + receivableCorpus;
+        int level = 0;
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(userId);
         if(membershipModel != null){
-            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(userId, membershipModel.getId());
+            level = membershipModel.getLevel();
         }
-
 
         FundManagementResponseDataDto fundManagementResponseDataDto = new FundManagementResponseDataDto();
         fundManagementResponseDataDto.setAccountBalance(AmountConverter.convertCentToString(accountBalance));
@@ -97,6 +97,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setUsableUserCouponCount(CollectionUtils.isNotEmpty(unusedUserCoupons) ? String.valueOf(unusedUserCoupons.size()) : "0");
         fundManagementResponseDataDto.setPoint(String.valueOf(myPoint));
         fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
+        fundManagementResponseDataDto.setMembershipLevel(String.valueOf(level));
+        fundManagementResponseDataDto.setMembershipPoint(String.valueOf(accountModel == null ? 0 : accountModel.getMembershipPoint()));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
