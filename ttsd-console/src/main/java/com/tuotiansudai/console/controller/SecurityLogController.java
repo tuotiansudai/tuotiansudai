@@ -72,23 +72,23 @@ public class SecurityLogController {
     @RequestMapping(path = "/audit-log", method = RequestMethod.GET)
     public ModelAndView auditLog(@RequestParam(name = "operationType", required = false) OperationType operationType,
                                  @RequestParam(name = "targetId", required = false) String targetId,
-                                 @RequestParam(name = "operatorLoginName", required = false) String operatorLoginName,
-                                 @RequestParam(name = "auditorLoginName", required = false) String auditorLoginName,
+                                 @RequestParam(name = "operatorMobile", required = false) String operatorMobile,
+                                 @RequestParam(name = "auditorMobile", required = false) String auditorMobile,
                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
-        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/audit-log");
 
         modelAndView.addObject("data", data);
         modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("targetId", targetId);
-        modelAndView.addObject("operatorLoginName", operatorLoginName);
-        modelAndView.addObject("auditorLoginName", auditorLoginName);
+        modelAndView.addObject("operatorMobile", operatorMobile);
+        modelAndView.addObject("auditorMobile", auditorMobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("index", index);
