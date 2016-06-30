@@ -11,12 +11,14 @@ public interface PointBillService {
 
     void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
 
+    void createTaskPointBill(String loginName, long pointTaskId, long point, String note);
+
     BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
-                                                                              int index,
-                                                                              int pageSize,
-                                                                              Date startTime,
-                                                                              Date endTime,
-                                                                              PointBusinessType businessType);
+                                                                                 int index,
+                                                                                 int pageSize,
+                                                                                 Date startTime,
+                                                                                 Date endTime,
+                                                                                 PointBusinessType businessType);
 
     List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize);
 

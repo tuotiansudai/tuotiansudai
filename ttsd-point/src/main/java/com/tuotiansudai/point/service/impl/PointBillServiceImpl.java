@@ -8,9 +8,11 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
+import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -42,6 +44,9 @@ public class PointBillServiceImpl implements PointBillService {
     private PointTaskMapper pointTaskMapper;
 
     @Autowired
+    private UserPointTaskMapper userPointTaskMapper;
+
+    @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
@@ -60,13 +65,19 @@ public class PointBillServiceImpl implements PointBillService {
         accountMapper.update(accountModel);
     }
 
+    @Override
+    @Transactional
+    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        accountModel.setPoint(accountModel.getPoint() + point);
+        pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
+        accountMapper.update(accountModel);
+    }
+
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
         switch (businessType) {
             case SIGN_IN:
                 return MessageFormat.format("{0} 签到", new DateTime().toString("yyyy-MM-dd"));
-            case TASK:
-                PointTaskModel pointTaskModel = pointTaskMapper.findById(orderId);
-                return pointTaskModel.getName().getDescription();
             case EXCHANGE:
                 CouponModel couponModel = couponMapper.findById(orderId);
                 switch (couponModel.getCouponType()) {

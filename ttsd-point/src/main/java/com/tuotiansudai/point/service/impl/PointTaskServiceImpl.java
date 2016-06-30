@@ -91,19 +91,22 @@ public class PointTaskServiceImpl implements PointTaskService {
         if (this.isCompletedAdvancedTaskConditions(pointTask, loginName)) {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
             long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask);
+            String pointBillNote;
             switch (pointTask) {
                 case EACH_SUM_INVEST:
                     long eachSumInvestTaskLevel = this.getEachSumInvestTaskLevel(investMapper.sumSuccessInvestAmountByLoginName(null, loginName));
                     for (long level = maxTaskLevel + 1; level <= eachSumInvestTaskLevel; level++) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), this.getEachSumInvestTaskPointByLevel(level), level));
-                        pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, this.getEachSumInvestTaskPointByLevel(level));
+                        pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}财豆", AmountConverter.convertCentToString(this.getEachSumInvestTaskAmountByLevel(level)), String.valueOf(this.getEachSumInvestTaskPointByLevel(level)));
+                        pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), this.getEachSumInvestTaskPointByLevel(level), pointBillNote);
                     }
                     break;
                 case FIRST_SINGLE_INVEST:
                     int eachSingleInvestTaskLevel = this.getFirstSingleInvestTaskLevel(investMapper.findLatestSuccessInvest(loginName).getAmount());
                     for (long level = maxTaskLevel + 1; level <= eachSingleInvestTaskLevel; level++) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), this.getFirstSingleInvestTaskPointByLevel(level), level));
-                        pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, this.getFirstSingleInvestTaskPointByLevel(level));
+                        pointBillNote = MessageFormat.format("单笔投资满{0}元奖励{1}财豆", AmountConverter.convertCentToString(this.getFirstSingleInvestTaskAmountByLevel(level)), String.valueOf(this.getFirstSingleInvestTaskPointByLevel(level)));
+                        pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), this.getFirstSingleInvestTaskPointByLevel(level), pointBillNote);
                     }
                     break;
                 case EACH_RECOMMEND:
@@ -112,11 +115,13 @@ public class PointTaskServiceImpl implements PointTaskService {
                     String referrer = userMapper.findByLoginName(loginName).getReferrer();
                     long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
                     userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                    pointBillService.createPointBill(referrer, pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
+                    pointBillNote = MessageFormat.format("{0}奖励{1}财豆", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
+                    pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
                 default:
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
-                    pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
+                    pointBillNote = MessageFormat.format("{0}奖励{1}财豆", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
+                    pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
             }
         }
 

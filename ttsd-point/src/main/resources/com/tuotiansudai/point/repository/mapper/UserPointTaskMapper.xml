@@ -49,7 +49,7 @@
     <select id="findByLoginNameAndTask" parameterType="map" resultMap="userPointTaskResultMap">
         select * from user_point_task
         join point_task on user_point_task.point_task_id = point_task.id
-        where login_name = #{loginName}
+        where user_point_task.login_name = #{loginName}
         and point_task.name = #{pointTask}
     </select>
 
