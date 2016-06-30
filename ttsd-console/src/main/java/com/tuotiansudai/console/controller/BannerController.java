@@ -3,16 +3,15 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BannerDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BannerService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,17 +41,24 @@ public class BannerController {
     }
 
     @RequestMapping(value = "/banner/{id}/delete", method = RequestMethod.DELETE)
-    public String delBanner(@PathVariable Long id, HttpServletRequest request) {
+    @ResponseBody
+    public BaseDto<BaseDataDto> delBanner(@PathVariable Long id, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String ip = RequestIPParser.parse(request);
         BannerModel bannerModel = this.bannerService.findById(id);
         bannerModel.setDeleted(true);
         bannerService.updateBanner(bannerModel, loginName, ip);
-        return "redirect:/banner-manage/list";
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
     }
 
     @RequestMapping(value = "/banner/{id}/deactivated", method = RequestMethod.POST)
-    public String deactivatedBanner(@PathVariable Long id, HttpServletRequest request) {
+    @ResponseBody
+    public BaseDto<BaseDataDto> deactivatedBanner(@PathVariable Long id, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String ip = RequestIPParser.parse(request);
         BannerModel bannerModel = this.bannerService.findById(id);
@@ -60,7 +66,12 @@ public class BannerController {
         bannerModel.setActive(false);
         bannerModel.setDeactivatedBy(LoginUserInfo.getLoginName());
         bannerService.updateBanner(bannerModel, loginName, ip);
-        return "redirect:/banner-manage/list";
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
     }
 
     @RequestMapping(value = "/banner/{id}/edit", method = RequestMethod.GET)
