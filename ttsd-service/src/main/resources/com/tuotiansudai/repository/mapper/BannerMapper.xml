@@ -52,6 +52,8 @@
         `web_image_url` = #{webImageUrl},
         `app_image_url` = #{appImageUrl},
         `url` = #{url},
+        `title` = #{title},
+        `shared_url` = #{sharedUrl},
         `content` = #{content},
         `source` = #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},
         `authenticated` = #{authenticated},
@@ -69,7 +71,7 @@
         select * from banner where `id` = #{id}
     </select>
 
-    <select id="findBannerList" parameterType="map" resultMap="bannerResultMap">
+    <select id="findAllBannerList" parameterType="map" resultMap="bannerResultMap">
         select * from banner
         where `deleted` is FALSE
         order by `active` desc,
@@ -77,12 +79,6 @@
           when deactivated_time is not null then `deactivated_time`
           else `active` end desc,
         `order` asc
-        limit #{index}, #{pageSize}
-    </select>
-
-    <select id="findBannerCount" parameterType="map" resultType="int">
-        select count(1) from banner
-        where `deleted` is FALSE 
     </select>
 
 </mapper>

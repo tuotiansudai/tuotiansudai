@@ -18,7 +18,7 @@ public class BannerServiceImpl implements BannerService{
     private BannerMapper bannerMapper;
 
     @Override
-    public void create(BannerDto bannerDto, String loginName) {
+    public void create(BannerDto bannerDto, String loginName, String ip) {
         BannerModel bannerModel = new BannerModel(bannerDto);
         bannerModel.setActive(true);
         bannerModel.setCreatedTime(new Date());
@@ -30,17 +30,12 @@ public class BannerServiceImpl implements BannerService{
     }
 
     @Override
-    public List<BannerDto> findBannerList(int index, int pageSize){
-        return bannerMapper.findBannerList((index - 1) * pageSize, pageSize);
+    public List<BannerModel> findAllBannerList(){
+        return bannerMapper.findAllBannerList();
     }
 
     @Override
-    public int findBannerCount(){
-        return bannerMapper.findBannerCount();
-    }
-
-    @Override
-    public boolean updateBanner(BannerModel bannerModel){
+    public boolean updateBanner(BannerModel bannerModel, String loginName, String ip){
         return bannerMapper.updateBanner(bannerModel);
     }
 

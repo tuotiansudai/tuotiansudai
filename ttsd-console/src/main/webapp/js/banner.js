@@ -128,13 +128,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                     $self.attr('disabled', 'disabled');
                     var operate;
                     if($('.jq-id').val() != null && $('.jq-id').val() != '') {
-                        if($('.jq_operator').val() == 'edit'){
-                            operate = 'edit';
-                        }
-                        else{
-                            operate = 'reuse';
-                        }
-
+                        operate = 'edit';
                     } else {
                         operate = 'create';
                     }

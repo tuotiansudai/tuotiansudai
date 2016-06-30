@@ -1,8 +1,58 @@
 require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csrf','layerWrapper'], function ($) {
     $(function () {
+        var $body=$('body'),
+            $confirmBtn=$('.confirm-btn'),
+            $bannerDeactivated = $('.banner-deactivated'),
+            $tooltip = $('.add-tooltip'),
+            $bannerDelete = $('.banner-delete'),
+            $tipCom=$('.tip-container');
 
         $('.bannerAD').click(function(){
             window.location.href = '/banner-manage/create';
+        });
+
+        $bannerDelete.on('click',function(){
+            var $self = $(this),
+                thisLink = $self.attr('data-link');
+            if (!confirm("是否确认删除?")) {
+                return;
+            } else {
+                $.ajax({
+                        url: thisLink,
+                        type: 'DELETE',
+                        dataType: 'json'
+                    })
+                    .done(function(res){
+                        if (res.data.status) {
+                            window.location.href = '/banner-manage/list';
+                        }
+                    })
+                    .fail(function(res){
+                        console.log("fail");
+                    });
+            }
+        });
+
+        $bannerDeactivated.on('click',function(){
+            var $self = $(this),
+                thisLink = $self.attr('data-link');
+            if (!confirm("是否确认下线?")) {
+                return;
+            } else {
+                $.ajax({
+                        url: thisLink,
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function(res){
+                        if (res.data.status) {
+                            window.location.href = '/banner-manage/list';
+                        }
+                    })
+                    .fail(function(res){
+                        console.log("fail");
+                    });
+            }
         });
 
         var webPath = $('#webUrl')[0].src;

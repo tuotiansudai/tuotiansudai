@@ -8,13 +8,11 @@ import java.util.List;
 
 public interface BannerService {
 
-    void create(BannerDto bannerDto, String loginName);
+    void create(BannerDto bannerDto, String loginName, String ip);
 
-    List<BannerDto> findBannerList(int index, int pageSize);
+    List<BannerModel> findAllBannerList();
 
-    int  findBannerCount();
-
-    boolean updateBanner(BannerModel bannerModel);
+    boolean updateBanner(BannerModel bannerModel, String loginName, String ip);
 
     BannerModel findById(long id);
 }

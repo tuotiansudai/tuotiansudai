@@ -49,9 +49,9 @@
                             <td>
                                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                     <#if banner.active>
-                                        <a href="/banner-manage/banner/edit/${banner.id?c}">编辑</a> <a href="/banner-manage/banner/deactivated/${banner.id?c}" onclick="return confirm('确定下线吗?')">下线</a>
+                                        <a href="/banner-manage/banner/${banner.id?c}/edit" >编辑</a> <a href="javascript:void(0)" class="banner-deactivated" data-link="/banner-manage/banner/${banner.id?c}/deactivated">下线</a>
                                     <#else>
-                                        <a href="/banner-manage/banner/reuse/${banner.id?c}">复用</a> <a href="/banner-manage/banner/del/${banner.id?c}" onclick="return confirm('确定删除吗?')">删除</a>
+                                        <a href="javascript:void(0)" class="banner-delete" data-link="/banner-manage/banner/${banner.id?c}/delete">删除</a>
                                     </#if>
                                 </@security.authorize>
                             </td>
@@ -61,37 +61,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- pagination  -->
-    <nav class="pagination-control">
-        <div>
-            <span class="bordern">总共${count}条, 每页显示${pageSize}条</span>
-        </div>
-        <#if bannerList?has_content>
-            <ul class="pagination pull-left">
-                <li>
-                    <#if hasPreviousPage >
-                    <a href="?index=${index - 1}" aria-label="Previous">
-                    <#else>
-                    <a href="#" aria-label="Previous">
-                    </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-                </li>
-                <li><a>${index}</a></li>
-                <li>
-                    <#if hasNextPage>
-                    <a href="?index=${index + 1}" aria-label="Next">
-                    <#else>
-                    <a href="#" aria-label="Next">
-                    </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-                </li>
-            </ul>
-        </#if>
-    </nav>
-    <!-- pagination -->
 </div>
 <!-- content area end -->
 </@global.main>
