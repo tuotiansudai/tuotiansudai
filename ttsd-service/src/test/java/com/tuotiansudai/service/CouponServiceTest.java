@@ -62,7 +62,6 @@ public class CouponServiceTest {
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
-
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();

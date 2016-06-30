@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.membership.repository.model.UserMembershipItemModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -184,19 +184,19 @@ public class UserMembershipMapperTest {
         return userMembershipModel;
     }
 
-    private UserMembershipItemModel combineUserMembershipItemModel(UserModel userModel, AccountModel accountModel, UserMembershipModel userMembershipModel) {
-        UserMembershipItemModel userMembershipItemModel = new UserMembershipItemModel();
-        userMembershipItemModel.setLoginName(userModel.getLoginName());
-        userMembershipItemModel.setMobile(userModel.getMobile());
-        userMembershipItemModel.setRealName(accountModel.getUserName());
-        userMembershipItemModel.setRegisterTime(userModel.getRegisterTime());
-        userMembershipItemModel.setUserMembershipType(userMembershipModel.getType());
-        userMembershipItemModel.setMembershipLevel(membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
-        userMembershipItemModel.setMembershipPoint(accountModel.getMembershipPoint());
-        return userMembershipItemModel;
+    private UserMembershipItemView combineUserMembershipItemModel(UserModel userModel, AccountModel accountModel, UserMembershipModel userMembershipModel) {
+        UserMembershipItemView userMembershipItemView = new UserMembershipItemView();
+        userMembershipItemView.setLoginName(userModel.getLoginName());
+        userMembershipItemView.setMobile(userModel.getMobile());
+        userMembershipItemView.setRealName(accountModel.getUserName());
+        userMembershipItemView.setRegisterTime(userModel.getRegisterTime());
+        userMembershipItemView.setUserMembershipType(userMembershipModel.getType());
+        userMembershipItemView.setMembershipLevel(membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
+        userMembershipItemView.setMembershipPoint(accountModel.getMembershipPoint());
+        return userMembershipItemView;
     }
 
-    private List<UserMembershipItemModel> prepareUserMembershipData() {
+    private List<UserMembershipItemView> prepareUserMembershipData() {
         UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2010-06-30T12:30").toDate());
         AccountModel accountModel1 = createFakeAccount(userModel1, "userName1", 1);
         UserMembershipModel userMembershipModel1 = createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 0);
@@ -209,65 +209,65 @@ public class UserMembershipMapperTest {
         AccountModel accountModel3 = createFakeAccount(userModel3, "userName3", 3);
         UserMembershipModel userMembershipModel3 = createUserMembershipModel("testUser3", UserMembershipType.UPGRADE, 0);
 
-        List<UserMembershipItemModel> userMembershipItemModels = new ArrayList<>();
-        userMembershipItemModels.add(combineUserMembershipItemModel(userModel1, accountModel1, userMembershipModel1));
-        userMembershipItemModels.add(combineUserMembershipItemModel(userModel2, accountModel2, userMembershipModel2));
-        userMembershipItemModels.add(combineUserMembershipItemModel(userModel3, accountModel3, userMembershipModel3));
+        List<UserMembershipItemView> userMembershipItemViews = new ArrayList<>();
+        userMembershipItemViews.add(combineUserMembershipItemModel(userModel1, accountModel1, userMembershipModel1));
+        userMembershipItemViews.add(combineUserMembershipItemModel(userModel2, accountModel2, userMembershipModel2));
+        userMembershipItemViews.add(combineUserMembershipItemModel(userModel3, accountModel3, userMembershipModel3));
 
-        return userMembershipItemModels;
+        return userMembershipItemViews;
     }
 
     @Test
-    public void testFindUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel() throws Exception {
-        List<UserMembershipItemModel> originUserMembershipItemModels = prepareUserMembershipData();
+    public void testFindUserMembershipItemViews() throws Exception {
+        List<UserMembershipItemView> originUserMembershipItemViews = prepareUserMembershipData();
 
-        List<UserMembershipItemModel> userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), null, null, null, null, null);
-        assertEquals(1, userMembershipItemModels.size());
-        assertEquals(originUserMembershipItemModels.get(0).getLoginName(), userMembershipItemModels.get(0).getLoginName());
-        assertEquals(originUserMembershipItemModels.get(0).getMobile(), userMembershipItemModels.get(0).getMobile());
-        assertEquals(originUserMembershipItemModels.get(0).getRealName(), userMembershipItemModels.get(0).getRealName());
-        assertEquals(originUserMembershipItemModels.get(0).getUserMembershipType(), userMembershipItemModels.get(0).getUserMembershipType());
-        assertEquals(originUserMembershipItemModels.get(0).getMembershipLevel(), userMembershipItemModels.get(0).getMembershipLevel());
-        assertEquals(originUserMembershipItemModels.get(0).getMembershipPoint(), userMembershipItemModels.get(0).getMembershipPoint());
-        assertEquals(originUserMembershipItemModels.get(0).getRegisterTime(), userMembershipItemModels.get(0).getRegisterTime());
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, null);
+        assertEquals(1, userMembershipItemViews.size());
+        assertEquals(originUserMembershipItemViews.get(0).getLoginName(), userMembershipItemViews.get(0).getLoginName());
+        assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
+        assertEquals(originUserMembershipItemViews.get(0).getRealName(), userMembershipItemViews.get(0).getRealName());
+        assertEquals(originUserMembershipItemViews.get(0).getUserMembershipType(), userMembershipItemViews.get(0).getUserMembershipType());
+        assertEquals(originUserMembershipItemViews.get(0).getMembershipLevel(), userMembershipItemViews.get(0).getMembershipLevel());
+        assertEquals(originUserMembershipItemViews.get(0).getMembershipPoint(), userMembershipItemViews.get(0).getMembershipPoint());
+        assertEquals(originUserMembershipItemViews.get(0).getRegisterTime(), userMembershipItemViews.get(0).getRegisterTime());
 
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, originUserMembershipItemModels.get(0).getMobile(), null, null, null, null);
-        assertEquals(1, userMembershipItemModels.size());
-        assertEquals(originUserMembershipItemModels.get(0).getMobile(), userMembershipItemModels.get(0).getMobile());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, originUserMembershipItemViews.get(0).getMobile(), null, null, null, null);
+        assertEquals(1, userMembershipItemViews.size());
+        assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
 
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, originUserMembershipItemModels.get(0).getRegisterTime(), null, null, null);
-        assertEquals(3, userMembershipItemModels.size());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, originUserMembershipItemModels.get(2).getRegisterTime(), null, null);
-        assertEquals(3, userMembershipItemModels.size());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, originUserMembershipItemModels.get(0).getRegisterTime(), originUserMembershipItemModels.get(0).getRegisterTime(), null, null);
-        assertEquals(1, userMembershipItemModels.size());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, originUserMembershipItemModels.get(1).getRegisterTime(), originUserMembershipItemModels.get(2).getRegisterTime(), null, null);
-        assertEquals(2, userMembershipItemModels.size());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), null, null, null);
+        assertEquals(3, userMembershipItemViews.size());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, originUserMembershipItemViews.get(2).getRegisterTime(), null, null);
+        assertEquals(3, userMembershipItemViews.size());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(0).getRegisterTime(), originUserMembershipItemViews.get(0).getRegisterTime(), null, null);
+        assertEquals(1, userMembershipItemViews.size());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(2).getRegisterTime(), null, null);
+        assertEquals(2, userMembershipItemViews.size());
 
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, null, UserMembershipType.GIVEN, null);
-        assertEquals(1, userMembershipItemModels.size());
-        assertEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(0).getLoginName());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, null, UserMembershipType.UPGRADE, null);
-        assertEquals(2, userMembershipItemModels.size());
-        assertNotEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(0).getLoginName());
-        assertNotEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(1).getLoginName());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, null, null, null);
-        assertEquals(3, userMembershipItemModels.size());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.GIVEN, null);
+        assertEquals(1, userMembershipItemViews.size());
+        assertEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, UserMembershipType.UPGRADE, null);
+        assertEquals(2, userMembershipItemViews.size());
+        assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
+        assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(1).getLoginName());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, null);
+        assertEquals(3, userMembershipItemViews.size());
 
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, null, null, Lists.newArrayList(0));
-        assertEquals(2, userMembershipItemModels.size());
-        assertNotEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(0).getLoginName());
-        assertNotEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(1).getLoginName());
-        userMembershipItemModels = userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(null, null, null, null, null, Lists.newArrayList(5));
-        assertEquals(1, userMembershipItemModels.size());
-        assertEquals(originUserMembershipItemModels.get(1).getLoginName(), userMembershipItemModels.get(0).getLoginName());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(0));
+        assertEquals(2, userMembershipItemViews.size());
+        assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
+        assertNotEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(1).getLoginName());
+        userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(null, null, null, null, null, Lists.newArrayList(5));
+        assertEquals(1, userMembershipItemViews.size());
+        assertEquals(originUserMembershipItemViews.get(1).getLoginName(), userMembershipItemViews.get(0).getLoginName());
 
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel("noUser", null, null, null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), "noMobile", null, null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), originUserMembershipItemModels.get(0).getMobile(), originUserMembershipItemModels.get(1).getRegisterTime(), null, null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(2).getLoginName(), originUserMembershipItemModels.get(2).getMobile(), originUserMembershipItemModels.get(1).getRegisterTime(), originUserMembershipItemModels.get(1).getRegisterTime(), null, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), originUserMembershipItemModels.get(0).getMobile(), null, null, UserMembershipType.GIVEN, null).size());
-        assertEquals(0, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), originUserMembershipItemModels.get(0).getMobile(), null, null, originUserMembershipItemModels.get(0).getUserMembershipType(), Lists.newArrayList(3)).size());
-        assertEquals(1, userMembershipMapper.findUserMembershipItemsByLoginNameAndMobileAndRegisterTimeAndTypeAndVipLevel(originUserMembershipItemModels.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5)).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews("noUser", null, null, null, null, null).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), "noMobile", null, null, null, null).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null, null).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(2).getLoginName(), originUserMembershipItemViews.get(2).getMobile(), originUserMembershipItemViews.get(1).getRegisterTime(), originUserMembershipItemViews.get(1).getRegisterTime(), null, null).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, UserMembershipType.GIVEN, null).size());
+        assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, originUserMembershipItemViews.get(0).getUserMembershipType(), Lists.newArrayList(3)).size());
+        assertEquals(1, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5)).size());
     }
 }
