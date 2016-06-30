@@ -7,6 +7,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
 import com.tuotiansudai.api.util.BannerUtils;
 import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.model.BannerModel;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(baseParam.getUserId()) ? false : true,baseParam.getPlatform().toUpperCase());
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(baseParam.getUserId()) ? false : true,baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
         BannerResponseDataDto bannerResponseDataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);
         for(BannerModel bannerModel : bannerModelList){
-                pictures.add(new BannerPictureResponseDataDto("",bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),bannerName + "/" + bannerModel.getAppImageUrl(),"",bannerModel.getContent(),false));
+                pictures.add(new BannerPictureResponseDataDto(bannerModel.getTitle(),domainName + bannerModel.getUrl(),domainName + bannerModel.getSharedUrl(),bannerModel.getOrder(),bannerName + "/" + bannerModel.getAppImageUrl(),bannerModel.getContent(),false));
         }
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
         baseDto.setData(bannerResponseDataDto);
