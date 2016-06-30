@@ -44,11 +44,10 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
 
-        if (investMapper.sumSuccessExperienceInvestCountByLoginName(loginName) == 0) {
-            loanModels.addAll(loanMapper.findByProductType(ProductType.EXPERIENCE));
-        }
-
         if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
+            if (investMapper.sumSuccessExperienceInvestCountByLoginName(loginName) == 0) {
+                loanModels.addAll(loanMapper.findByProductType(ProductType.EXPERIENCE));
+            }
             loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true));
             if (CollectionUtils.isEmpty(loanModels)) {
                 List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true);
