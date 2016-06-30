@@ -468,15 +468,10 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 jedis.select(db);
                 break;
             }catch (Exception e){
-                if (e instanceof JedisConnectionException){
-                    timeoutCount++;
-                    logger.error("getJedis timeoutCount=" + timeoutCount, e);
-                    if (timeoutCount > 3)
-                    {
-                        logger.error(e.getLocalizedMessage(), e);
-                        throw e;
-                    }
-                }else{
+                timeoutCount++;
+                logger.error("getJedis timeoutCount=" + timeoutCount, e);
+                if (timeoutCount > 3)
+                {
                     logger.error(e.getLocalizedMessage(), e);
                     throw e;
                 }
