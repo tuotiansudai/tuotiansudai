@@ -8,14 +8,10 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
-
-import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 @Component
 public class RedisWrapperClient extends AbstractRedisWrapperClient {
@@ -32,7 +28,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedis();
+            jedis = getJedis(redisDb);
             return jedisAction.action(jedis);
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -46,7 +42,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedis();
+            jedis = getJedis(redisDb);
             jedisAction.action(jedis);
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -60,7 +56,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedis();
+            jedis.select(mybatisDb);
             return jedis.flushDB();
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -460,7 +456,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    private Jedis getJedis(){
+    private Jedis getJedis(int db){
         int timeoutCount = 0;
         Jedis jedis;
         while(true){
@@ -469,10 +465,10 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 if (StringUtils.isNotEmpty(getRedisPassword())) {
                     jedis.auth(getRedisPassword());
                 }
-                jedis.select(redisDb);
+                jedis.select(db);
                 break;
             }catch (Exception e){
-                if (e instanceof JedisConnectionException || e instanceof SocketTimeoutException){
+                if (e instanceof JedisConnectionException){
                     timeoutCount++;
                     logger.error("getJedis timeoutCount=" + timeoutCount, e);
                     if (timeoutCount > 3)
