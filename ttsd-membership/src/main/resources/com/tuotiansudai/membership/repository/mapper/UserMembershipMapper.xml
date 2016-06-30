@@ -140,7 +140,7 @@
             GROUP BY login_name
         ) t
         ORDER BY user_name
-        limit #{index}, #{pageSize}
+        limit #{pageIndex}, #{pageSize}
     </select>
 
     <select id="findCountUserMembershipItemViews" resultType="int">
