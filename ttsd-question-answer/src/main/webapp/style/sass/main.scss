@@ -1,0 +1,7 @@
+@import './variables.scss';
+$imgUrl:'../../images';
+
+h1 {
+	color:$red;
+	background:url($imgUrl+'/ic-register-account.png') left top no-repeat;
+}

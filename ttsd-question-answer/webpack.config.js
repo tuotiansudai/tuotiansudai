@@ -1,7 +1,14 @@
 var path = require('path');
 var os = require('os');
 var webpack = require('webpack');
-var basePath = path.join(__dirname, 'src/main/webapp/');
+var ROOT_PATH=path.resolve(__dirname);
+var basePath = path.join(ROOT_PATH, 'src/main/webapp/');
+var JS_PATH=path.resolve(basePath,'js');
+var STYLE_PATH=path.resolve(basePath,'style');
+var TEMPLATE_PATH=path.resolve(basePath,'templates');
+
+var HtmlwebpackPlugin=require('html-webpack-plugin');
+
 var port = 8080;
 var getIP = function() {
     var ipList = os.networkInterfaces();
@@ -21,43 +28,61 @@ var getIP = function() {
 
 var IP = getIP();
 console.log('IP:', IP);
-
+IP='localhost';
 module.exports = {
     entry: [
         'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://' + IP + ':' + port,
-        path.join(basePath, 'js/main.js')
+        'webpack-dev-server/client?http://'+IP+':'+port,
+        path.join(JS_PATH, 'main.jsx')
     ],
     output: {
         filename: 'bundle.js',
         path: path.join(basePath, 'dist'),
         publicPath: '/assets/'
     },
+    module:{
+        loaders:[{
+              test: /\.jsx?$/,
+              exclude: /node_modules/,
+              loader: 'babel',
+              query: {
+                presets: ['es2015', 'react']
+              }
+            },  
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader?modules!postcss-loader'
+            }, 
+            {
+                test: /\.scss/,
+                loader: 'style-loader!css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded'
+            }, 
+            {
+                 test: /\.(png|jpg|gif|woff|woff2)$/,
+                 loader: 'url-loader?limit=8192'
+            }
+        ]
+        
+    },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new HtmlwebpackPlugin({
+            title:'hello,how are you!'
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({
+          $: "jquery",
+          jQuery: "jquery",
+          "window.jQuery": "jquery"
+        })
       ],
     cache: true,
+    devtool: 'eval-source-map',
     devServer: {
-        contentBase: basePath,
+        contentBase:TEMPLATE_PATH,
+        port:port,
         historyApiFallback: true,
-        watchOptions: {
-           aggregateTimeout: 300,
-           poll: 1000
-        },
         hot: true,
-        port: port,
-        publicPath: '/templates/',
-        noInfo: false,
-        proxy: {
-          '/src/main*': {
-            target: 'https://other-server.example.com',
-            secure: false,
-            bypass: function(req, res, proxyOptions) {
-              if (req.headers.accept.indexOf('html') !== -1) {
-                console.log('Skipping proxy for browser request.');
-                return '/index.html';
-            }
-          }
-        }
+        inline:true,
+        progress:true
     }
 };

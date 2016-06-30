@@ -1,1 +1,7 @@
-document.write('<h1>Hello eee55</h1>');
+require('../style/sass/main.scss'); 
+
+// var $=require('jquery');
+
+$('#app').text('Hello Worlds');
+
+
