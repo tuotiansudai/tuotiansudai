@@ -29,12 +29,12 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         userMessageServices.generateUserMessages(loginName);
-        Integer index = (requestDto.getIndex() == null || requestDto.getIndex() <= 0) ? 1 : requestDto.getIndex();
+        Integer index = (requestDto.getIndex() == null || requestDto.getIndex() <= 0) ? 0 : requestDto.getIndex();
         Integer pageSize = (requestDto.getPageSize() == null || requestDto.getPageSize() <= 0) ? 10 : requestDto.getPageSize();
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, index, pageSize);
         BaseResponseDto responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        responseDto.setCode(ReturnMessage.SUCCESS.getMsg());
+        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         responseDto.setData(messageDataDto);
         return responseDto;
     }
