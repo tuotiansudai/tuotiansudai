@@ -469,10 +469,10 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 break;
             }catch (Exception e){
                 timeoutCount++;
-                logger.error("getJedis timeoutCount=" + timeoutCount, e);
+                logger.error("Get Redis pool failure timeoutCount=" + timeoutCount, e);
                 if (timeoutCount > 3)
                 {
-                    logger.error(e.getLocalizedMessage(), e);
+                    logger.error("Get Redis pool failure more than 3 times.",e);
                     throw e;
                 }
             }
