@@ -129,8 +129,8 @@
         ELSE 3 END,
         CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
-        CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN 'verify_time,created_time' END DESC,
-        CASE  WHEN temp.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN 'verify_time,created_time' END DESC,
+        CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
 
@@ -196,8 +196,8 @@
         ELSE 3 END,
         CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
-        CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN 'verify_time,created_time' END DESC,
-        CASE  WHEN temp.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN 'verify_time,created_time' END DESC,
+        CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
 
@@ -665,7 +665,7 @@
         WHEN 'PREHEAT' THEN '2' END,
         CASE  WHEN loan.activity_type = 'NEWBIE' and loan.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
         CASE  WHEN loan.status in ('RAISING','PREHEAT') THEN duration END,
-        CASE  WHEN loan.status in ('RAISING','PREHEAT') THEN 'verify_time,created_time' END DESC,
-        CASE  WHEN loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
+        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN 'verify_time,created_time' END DESC,
+        CASE  WHEN loan.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
     </select>
 </mapper>
