@@ -133,7 +133,7 @@
                         <dl class="fl">
                             <dt>${advancePointTask.title}<span class="color-key"> ${advancePointTask.point?string.computer}财豆</span></dt>
                             <#if advancePointTask.description??>
-                            ${advancePointTask.description}
+                            <dd>${advancePointTask.description}</dd>
                             </#if>
                         </dl>
                         <a href="<#switch advancePointTask.name.name()>

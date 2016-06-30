@@ -16,6 +16,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -135,6 +136,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
             PointTaskDto pointTaskDto = new PointTaskDto();
             pointTaskDto.setName(pointTask);
+            pointTaskDto.setTitle(pointTask.getTitle());
             pointTaskDto.setPoint(pointTaskModel.getPoint());
             pointTaskDto.setCompleted(CollectionUtils.isNotEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)));
             data.add(pointTaskDto);
@@ -157,9 +159,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                         long nextLevelSumSuccessInvestAmount = this.getEachSumInvestTaskAmountByLevel(completedMaxTaskLevel + 1);
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(nextLevelSumSuccessInvestAmount)));
                         pointTaskDto.setPoint(this.getEachSumInvestTaskPointByLevel(completedMaxTaskLevel + 1));
-                        pointTaskDto.setDescription(MessageFormat.format("<dd>已累计投资<span class='color-key'>{0}元</span>，再投<span class='color-key'>{1}元</span>即可获得奖励</dd>",
-                                AmountConverter.convertCentToString(sumSuccessInvestAmount),
-                                AmountConverter.convertCentToString(nextLevelSumSuccessInvestAmount - sumSuccessInvestAmount)));
+                        pointTaskDto.setDescription(MessageFormat.format("还差<span class='color-key'>{0}元</span>即可获得奖励", AmountConverter.convertCentToString(nextLevelSumSuccessInvestAmount - sumSuccessInvestAmount)));
                         break;
                     case FIRST_SINGLE_INVEST:
                         pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(),
@@ -169,14 +169,20 @@ public class PointTaskServiceImpl implements PointTaskService {
                     case EACH_RECOMMEND:
                         pointTaskDto.setTitle(pointTask.getTitle());
                         pointTaskDto.setPoint(pointTaskModel.getPoint());
-                        pointTaskDto.setDescription(MessageFormat.format("<dd>已邀请{0}名好友注册，获得了<span class='color-key'>{1}财豆</span>的奖励 <a href='/referrer/refer-list'>查看邀请详情</a></dd>",
+                        pointTaskDto.setDescription(MessageFormat.format("已邀请{0}名好友注册",
                                 String.valueOf(referrerRelationMapper.findByReferrerLoginNameAndLevel(loginName, 1).size()),
                                 String.valueOf(pointTaskModel.getPoint() * completedMaxTaskLevel)));
                         break;
                     case EACH_REFERRER_INVEST:
                         pointTaskDto.setTitle(pointTask.getTitle());
                         pointTaskDto.setPoint(pointTaskModel.getPoint());
-                        pointTaskDto.setDescription(pointTask.getDescription());
+                        String referrer = userMapper.findByLoginName(loginName).getReferrer();
+                        List<ReferrerRelationModel> referrerRelations = referrerRelationMapper.findByReferrerLoginNameAndLevel(referrer, 1);
+                        long amount = 0;
+                        for (ReferrerRelationModel referrerRelation : referrerRelations) {
+                            amount += investMapper.sumSuccessInvestAmountByLoginName(null, referrerRelation.getLoginName());
+                        }
+                        pointTaskDto.setDescription(MessageFormat.format("已邀请好友投资{0}元", AmountConverter.convertCentToString(amount)));
                         break;
                     default:
                         pointTaskDto.setTitle(pointTask.getTitle());

@@ -68,6 +68,7 @@
         <intercept-url pattern="/api/images/**" access="permitAll()"/>
         <intercept-url pattern="/api/js/**" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
+        <intercept-url pattern="/task-center/**" access="permitAll()"/>
 
 
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
