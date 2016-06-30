@@ -339,7 +339,7 @@
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.extraRate > 0)>
-                                                    ~ <@percentInteger>${loan.baseRate + loan.extraRate}</@percentInteger><@percentFraction>${loan.extraRate}</@percentFraction>
+                                                    ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
                                                 </#if>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
