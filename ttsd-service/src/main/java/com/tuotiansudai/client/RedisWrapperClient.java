@@ -1,14 +1,12 @@
 package com.tuotiansudai.client;
 
 import com.tuotiansudai.util.SerializeUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,50 +17,28 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
     static Logger logger = Logger.getLogger(RedisWrapperClient.class);
 
     @Value("${common.redis.db}")
-    private int redisDb;
+    protected int redisDb;
 
     @Value("${common.mybatis.cache.db}")
     private int mybatisDb;
 
-    private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+    private <T> T execute(JedisAction<T> jedisAction) {
         Jedis jedis = null;
-        boolean broken = false;
         try {
-            jedis = getJedis(redisDb);
+            jedis = getJedis(this.redisDb);
             return jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
         } finally {
-            closeResource(jedis, broken);
-        }
-    }
-
-    private void execute(JedisActionNoResult jedisAction) throws JedisException {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedis(redisDb);
-            jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+            closeResource(jedis);
         }
     }
 
     public String clearMybatisCache() {
         Jedis jedis = null;
-        boolean broken = false;
         try {
-            jedis.select(mybatisDb);
+            jedis = getJedis(mybatisDb);
             return jedis.flushDB();
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
         } finally {
-            closeResource(jedis, broken);
+            closeResource(jedis);
         }
     }
 
@@ -84,20 +60,20 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public void setex(final String key, final int seconds, final String value) {
-        execute(new JedisActionNoResult() {
+    public String setex(final String key, final int seconds, final String value) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.setex(key, seconds, value);
+            public String action(Jedis jedis) {
+                return jedis.setex(key, seconds, value);
             }
         });
     }
 
-    public void set(final String key, final String value) {
-        execute(new JedisActionNoResult() {
+    public String set(final String key, final String value) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.set(key, value);
+            public String action(Jedis jedis) {
+                return jedis.set(key, value);
             }
         });
     }
@@ -118,23 +94,23 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.keys(pattern);
             }
         });
-        return keys.size() == 0 ? true : this.del(keys.toArray(new String[]{}));
+        return keys.size() == 0 || this.del(keys.toArray(new String[]{}));
     }
 
     public boolean del(final String... keys) {
         return execute(new JedisAction<Boolean>() {
             @Override
             public Boolean action(Jedis jedis) {
-                return jedis.del(keys) == keys.length ? true : false;
+                return jedis.del(keys) == keys.length;
             }
         });
     }
 
-    public void append(final String key, final String value) {
-        execute(new JedisActionNoResult() {
+    public Long append(final String key, final String value) {
+        return execute(new JedisAction<Long>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.append(key, value);
+            public Long action(Jedis jedis) {
+                return jedis.append(key, value);
             }
         });
     }
@@ -202,30 +178,30 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public void hmset(final String key, final Map map) {
-        execute(new JedisActionNoResult() {
+    public String hmset(final String key, final Map map) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.hmset(key, map);
+            public String action(Jedis jedis) {
+                return jedis.hmset(key, map);
             }
         });
     }
 
-    public void hset(final String key, final String hkey, final String value) {
-        execute(new JedisActionNoResult() {
+    public Long hset(final String key, final String hkey, final String value) {
+        return execute(new JedisAction<Long>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.hset(key, hkey, value);
+            public Long action(Jedis jedis) {
+                return jedis.hset(key, hkey, value);
             }
         });
     }
 
-    public void hset(final String key, final String hkey, final String value, final int lifeSecond) {
-        execute(new JedisActionNoResult() {
+    public Long hset(final String key, final String hkey, final String value, final int lifeSecond) {
+        return execute(new JedisAction<Long>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.hset(key, hkey, value);
+            public Long action(Jedis jedis) {
                 jedis.expire(key, lifeSecond);
+                return jedis.hset(key, hkey, value);
             }
         });
     }
@@ -366,11 +342,11 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
     }
 
 
-    public void setSeri(final String key, final Object value) {
-        execute(new JedisActionNoResult() {
+    public String setSeri(final String key, final Object value) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.set(key.getBytes(), SerializeUtil.serialize(value));
+            public String action(Jedis jedis) {
+                return jedis.set(key.getBytes(), SerializeUtil.serialize(value));
             }
         });
     }
@@ -384,11 +360,11 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public void hsetSeri(final String key, final String field, final Object value) {
-        execute(new JedisActionNoResult() {
+    public Long hsetSeri(final String key, final String field, final Object value) {
+        return execute(new JedisAction<Long>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.hset(key.getBytes(), field.getBytes(), SerializeUtil.serialize(value));
+            public Long action(Jedis jedis) {
+                return jedis.hset(key.getBytes(), field.getBytes(), SerializeUtil.serialize(value));
             }
         });
     }
@@ -454,29 +430,5 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.hincrBy(key, field, increasement);
             }
         });
-    }
-
-    private Jedis getJedis(int db){
-        int timeoutCount = 0;
-        Jedis jedis;
-        while(true){
-            try{
-                jedis = getJedisPool().getResource();
-                if (StringUtils.isNotEmpty(getRedisPassword())) {
-                    jedis.auth(getRedisPassword());
-                }
-                jedis.select(db);
-                break;
-            }catch (Exception e){
-                timeoutCount++;
-                logger.error("Get Redis pool failure timeoutCount=" + timeoutCount, e);
-                if (timeoutCount > 3)
-                {
-                    logger.error("Get Redis pool failure more than 3 times.",e);
-                    throw e;
-                }
-            }
-        }
-        return jedis;
     }
 }
