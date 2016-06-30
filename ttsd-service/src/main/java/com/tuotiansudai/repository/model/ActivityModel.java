@@ -27,7 +27,6 @@ public class ActivityModel implements Serializable {
 
     }
     public ActivityModel(ActivityDto activityDto){
-        this.id = activityDto.getActivityId();
         this.title = activityDto.getTitle();
         this.webActivityUrl = activityDto.getWebActivityUrl();
         this.appActivityUrl = activityDto.getAppActivityUrl();

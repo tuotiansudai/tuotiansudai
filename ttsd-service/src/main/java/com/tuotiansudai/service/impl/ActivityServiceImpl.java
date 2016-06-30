@@ -40,7 +40,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean createEditRecheckActivity(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
+    public boolean saveOrUpdate(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
         ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
 
         switch(activityStatus){
@@ -95,8 +95,10 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public ActivityModel findById(long activityId) {
-        return activityMapper.findById(activityId);
+    public ActivityDto findActivityDtoById(long activityId) {
+        ActivityModel activityModel = activityMapper.findById(activityId);
+
+        return new ActivityDto(activityModel);
     }
 
 

@@ -12,9 +12,9 @@ public interface ActivityService {
 
     List<ActivityDto> getAllOperatingActivities(String loginName, Source source);
 
-    boolean createEditRecheckActivity(ActivityDto activityDto,ActivityStatus activityStatus,String loginName, String ip);
+    boolean saveOrUpdate(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip);
 
-    ActivityModel findById(long activityId);
+    ActivityDto findActivityDtoById(long activityId);
 
     List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source);
 

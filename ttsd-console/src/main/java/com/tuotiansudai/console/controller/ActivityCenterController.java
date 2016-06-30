@@ -9,7 +9,6 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -40,8 +39,7 @@ public class ActivityCenterController {
     public ModelAndView activityCenter(@PathVariable long activityId){
         ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
 
-        ActivityModel activityModel = activityService.findById(activityId);
-        ActivityDto activityDto = new ActivityDto(activityModel);
+        ActivityDto activityDto = activityService.findActivityDtoById(activityId);
         modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
         modelAndView.addObject("dto",activityDto);
         return modelAndView;
@@ -52,7 +50,7 @@ public class ActivityCenterController {
 
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        activityService.createEditRecheckActivity(activityDto,activityStatus,loginName,ip);
+        activityService.saveOrUpdate(activityDto, activityStatus, loginName, ip);
 
         return new ModelAndView("redirect:/activity-manage/activity-center-list");
     }

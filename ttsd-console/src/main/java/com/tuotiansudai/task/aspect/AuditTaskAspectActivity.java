@@ -41,7 +41,7 @@ public class AuditTaskAspectActivity {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.ActivityService.createEditRecheckActivity(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.ActivityService.saveOrUpdate(..))", returning = "returnValue")
     public void afterCreateEditRecheckActivity(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after create edit recheck activity aspect.");
         try {
