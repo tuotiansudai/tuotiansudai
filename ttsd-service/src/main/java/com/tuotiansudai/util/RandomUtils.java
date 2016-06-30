@@ -1,6 +1,8 @@
 package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,16 @@ public class RandomUtils {
 
     private static final String letterChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+    private static final String numberChar = "0123456789";
+
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private static String generateMixString(int length) {
         StringBuilder sb = new StringBuilder();
@@ -37,6 +44,15 @@ public class RandomUtils {
         return generateMixString(length).toLowerCase();
     }
 
+    public String generateNumString(int length) {
+        StringBuffer stringBuffer = new StringBuffer();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            stringBuffer.append(numberChar.charAt(random.nextInt(numberChar.length())));
+        }
+        return stringBuffer.toString();
+    }
+
     public  String generateUpperString(int length) {
         return generateMixString(length).toUpperCase();
     }
@@ -47,6 +63,23 @@ public class RandomUtils {
             sb.append('*');
         }
         return sb.toString();
+    }
+
+    public String encryptMobile(String loginName, String investorLoginName, long investId) {
+        String userMobile;
+        String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
+        if (StringUtils.isNotEmpty(loginName)) {
+            userMobile = userMapper.findByLoginName(loginName).getMobile();
+            if (investUserMobile.equalsIgnoreCase(userMobile)) {
+                return investUserMobile;
+            }
+        }
+        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investUserMobile);
+        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
+            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
+        }
+        String encryptMobile = investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + investUserMobile.substring(7);
+        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
     public String encryptLoginName(String loginName, String investorLoginName, int showLength, long investId) {
