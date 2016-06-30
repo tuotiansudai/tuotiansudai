@@ -647,11 +647,11 @@
     <select id="findByProductType" resultMap="loanResultMap">
         select * from loan
         <where>
-            <if test="productType != null">
-                product_type = #{productType}
-            </if>
-            <if test="productType == null">
-                and  loan.product_type != 'EXPERIENCE'
+            <if test="productTypeList != null ">
+                and loan.product_type IN
+                <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                    #{productType}
+                </foreach>
             </if>
             <if test="loanStatus.name() == 'RAISING'">
                 and loan.status in ('RAISING','PREHEAT')
@@ -659,11 +659,9 @@
             <if test="loanStatus.name() == 'COMPLETE'">
                 and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
             </if>
-            <if test="isContainNewbieLoan == false">
-                and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
-            </if>
-            <if test="isContainNewbieLoan == true">
-                and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
+
+            <if test="isContainNewbieLoan != null">
+                and loan.activity_type = 'NEWBIE'
             </if>
         </where>
         ORDER BY CASE loan.status

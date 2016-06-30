@@ -776,7 +776,7 @@ public class InvestMapperTest {
         investModel.setTransferInvestId(investModel2.getId());
         investMapper.create(investModel2);
         investMapper.create(investModel);
-        int count = investMapper.findCountNormalAndNewBieSuccessByLoginName(User_ID2);
+        int count = investMapper.findCountSuccessByLoginNameAndProductTypes(User_ID2,Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360,ProductType.EXPERIENCE));
         assertTrue(count > 0);
     }
 
@@ -817,7 +817,7 @@ public class InvestMapperTest {
         investModel.setTransferInvestId(investModel2.getId());
         investMapper.create(investModel2);
         investMapper.create(investModel);
-        int count = investMapper.findCountNormalAndNewBieSuccessByLoginName(User_ID2);
+        int count = investMapper.findCountSuccessByLoginNameAndProductTypes(User_ID2,Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360));
         assertTrue(count == 0);
     }
 

@@ -254,13 +254,4 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
-    <select id="findCountSuccessByLoginAndProductTypes" parameterType="map" resultType="int">
-        select count(1) from user_coupon uc left join coupon c on uc.coupon_id = c.id
-        where uc.status = 'SUCCESS'
-        and uc.login_name = #{loginName}
-        and c.product_types IN
-        <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
-            #{productType}
-        </foreach>
-    </select>
 </mapper>

@@ -409,13 +409,6 @@
         and invest.status = 'SUCCESS'
     </select>
 
-    <select id="sumSuccessExperienceInvestCountByLoginName" parameterType="String" resultType="int">
-        select count(*)
-        from invest join loan on invest.loan_id = loan.id and loan.product_type = 'EXPERIENCE'
-        where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
-    </select>
-
     <select id="countSuccessInvest" parameterType="long" resultType="long">
         select count(*)
         from invest
@@ -823,10 +816,15 @@
                 )
     </select>
 
-    <select id="findCountNormalAndNewBieSuccessByLoginName" parameterType="map" resultType="int">
+    <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
         select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
-        and l.product_type != 'EXPERIENCE'
         and i.status = 'SUCCESS'
+        <if test="productTypeList != null ">
+            and l.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
     </select>
 
 </mapper>

@@ -49,7 +49,4 @@ public interface UserCouponMapper {
     List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
-
-    int findCountSuccessByLoginAndProductTypes(@Param("loginName") String loginName, @Param("productTypeList") List<ProductType> productTypeList);
-
 }

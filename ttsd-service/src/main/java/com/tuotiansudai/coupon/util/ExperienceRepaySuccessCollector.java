@@ -32,7 +32,7 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,true);
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
         if (CollectionUtils.isEmpty(loanModels)) {
             return false;
         }

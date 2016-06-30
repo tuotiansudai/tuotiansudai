@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoanAchievementView;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -95,7 +92,7 @@ public interface LoanMapper {
     long findLoanAchievementCount(@Param(value = "loginName") String loginName);
 
     List<LoanModel> findByProductType(@Param(value = "loanStatus") LoanStatus loanStatus,
-                                      @Param(value = "productType") ProductType productType,
-                                      @Param(value = "isContainNewbieLoan") boolean isContainNewbieLoan);
+                                      @Param("productTypeList") List<ProductType> productTypeList,
+                                      @Param(value = "activityType") ActivityType activityType);
 
 }

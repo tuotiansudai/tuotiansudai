@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
@@ -37,9 +38,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private InvestMapper investMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Value(value = "${pay.interest.fee}")
@@ -48,24 +46,25 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
+        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360,ProductType.EXPERIENCE);
+        List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360);
 
         if (Strings.isNullOrEmpty(loginName)
-                || (userCouponMapper.findCountSuccessByLoginAndProductTypes(loginName,Lists.newArrayList(ProductType.EXPERIENCE)) == 0
-                && investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0)) {
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,ProductType.EXPERIENCE,true));
+                || investMapper.findCountSuccessByLoginNameAndProductTypes(loginName,allProductTypesCondition) == 0) {
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE));
         }
 
-        if(investMapper.findCountNormalAndNewBieSuccessByLoginName(loginName) == 0){
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,null,true));
+        if(investMapper.findCountSuccessByLoginNameAndProductTypes(loginName,noContainExperienceCondition) == 0){
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,ActivityType.NEWBIE));
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,null,false);
+        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,null);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }
 
         if (CollectionUtils.isEmpty(loanModels)) {
-            List<LoanModel> completeLoanModels = loanMapper.findByProductType(LoanStatus.COMPLETE, null,true);
+            List<LoanModel> completeLoanModels = loanMapper.findByProductType(LoanStatus.COMPLETE, allProductTypesCondition,null);
             if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                 loanModels.add(completeLoanModels.get(0));
             }
