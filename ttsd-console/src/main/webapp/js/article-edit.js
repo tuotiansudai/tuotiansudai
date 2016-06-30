@@ -26,36 +26,73 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             html += '</div>';
             $errorDom.append(html);
         }
-
+        var _URL = window.URL || window.webkitURL;
         $('.thumbPicture,.showPicture').on('change',function(){
-            var $self = $(this);
+            var $self = $(this),
+                imageWidth,
+                imageHeight;
             var file = $self.find('input').get(0).files[0];
             var formData = new FormData();
             formData.append('upfile',file);
-            $.ajax({
-                url:'/ueditor?action=uploadimage',
-                type:'POST',
-                data:formData,
-                dataType:'JSON',
-                contentType: false,
-                processData: false
-            })
-            .done(function(data){
-                if(data.state){
-                    if($self.hasClass('thumbPicture')){
-                        $('.article-thumbPicture').val(data.title);
-                        $('.thumbPictureImage').html('');
-                        $('.thumbPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+            imageWidth = $self.find('input').attr("imageWidth");
+            imageHeight = $self.find('input').attr("imageHeight");
+            checkImage(file,imageWidth,imageHeight).done(function(){
+                var formData = new FormData();
+                formData.append('upfile',file);
+                $.ajax({
+                    url:'/ueditor?action=uploadimage',
+                    type:'POST',
+                    data:formData,
+                    dataType:'JSON',
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                        if(data.state){
+                            if($self.hasClass('thumbPicture')){
+                                $('.article-thumbPicture').val(data.title);
+                                $('.thumbPictureImage').html('');
+                                $('.thumbPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
-                    }
-                    if($self.hasClass('showPicture')){
-                        $('.article-showPicture').val(data.title)
-                        $('.showPictureImage').html('');
-                        $('.showPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
-                    }
+                            }
+                            if($self.hasClass('showPicture')){
+                                $('.article-showPicture').val(data.title)
+                                $('.showPictureImage').html('');
+                                $('.showPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                            }
+                        }
+                    });
+            }).fail(function(message){
+                if($self.hasClass('thumbPicture')){
+                    showErrorMessage(message, $('.article-thumbPicture', $articleForm));
                 }
+                if($self.hasClass('showPicture')){
+
+                    showErrorMessage(message, $('.article-showPicture', $articleForm));
+                }
+
             });
+
         });
+
+        var checkImage = function(file,width,height){
+            var defer = $.Deferred(),
+                img = new Image();
+            img.src = _URL.createObjectURL(file);
+            img.onload = function(){
+                if(this.width != width){
+                    defer.reject('图片长宽应为'+width);
+                    return;
+
+                }
+                if(this.height != height){
+                    defer.reject('图片长宽应为' + height);
+                    return;
+                }
+                defer.resolve(file);
+            }
+            return defer.promise();
+
+        };
 
         //表单校验初始化参数
         $(".article-form").Validform({

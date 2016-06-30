@@ -29,14 +29,13 @@ public class MobileAppRegisterController extends MobileAppBaseController {
             List<String> errorList = (List)bindingResult.getAllErrors();
             //当验证的用户名和密码同时错误时
             if(errorList.size() > 1){
-                return new BaseResponseDto("0018",ReturnMessage.getErrorMsgByCode("0018"));
+                return new BaseResponseDto(ReturnMessage.USER_NAME_OR_PASSWORD_IS_INVALID.getCode(), ReturnMessage.USER_NAME_OR_PASSWORD_IS_INVALID.getMsg());
             }
             else{
                 String errorCode = bindingResult.getFieldError().getDefaultMessage();
                 String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
                 return new BaseResponseDto(errorCode,errorMessage);
             }
-
         } else {
             return mobileAppRegisterService.registerUser(registerRequestDto);
         }
@@ -48,5 +47,4 @@ public class MobileAppRegisterController extends MobileAppBaseController {
         String remoteIp = CommonUtils.getRemoteHost(request);
         return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
     }
-
 }

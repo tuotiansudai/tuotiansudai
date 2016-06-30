@@ -4,18 +4,18 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="" class="form-inline query-build">
+    <form action="" class="form-inline query-form">
         <div class="row">
             <div class="form-group">
                 <label for="control-label">用户名</label>
-                <input type="text" class="form-control" id="loginName" value="${loginName!}"/>
+                <input type="text" class="form-control" name="loginName" value="${loginName!}"/>
             </div>
             <div class="form-group">
                 <label for="control-label">注册时间</label>
 
                 <div class='input-group date' id='datetimepickerStartTime'>
-                    <input type='text' class="form-control" id="startTime"
-                           value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                    <input type='text' class="form-control" name="startTime"
+                           value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"/>
                         </span>
@@ -23,7 +23,7 @@
                 <span>-</span>
 
                 <div class='input-group date' id='datetimepickerEndTime'>
-                    <input type='text' class="form-control" id="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                    <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"/>
                         </span>
@@ -31,14 +31,14 @@
             </div>
             <div class="form-group">
                 <label for="control-label">手机号</label>
-                <input type="text" class="form-group" id="mobile" value="${mobile!}">
+                <input type="text" class="form-group" name="mobile" value="${mobile!}">
             </div>
             <div class="form-group">
                 <label for="control-label">获取方式</label>
-                <select class="selectpicker" id="type">
+                <select class="selectpicker" name="type">
                     <#list userMembershipTypeList as typeDescription>
                         <option value="${typeDescription}"
-                                <#if (selected?has_content && selected == typeDescription.description)>selected</#if>>
+                                <#if (selectedType?has_content && selectedType == typeDescription)>selected</#if>>
                         ${typeDescription.description}
                         </option>
                     </#list>
@@ -48,7 +48,7 @@
                 <label for="control-label">会员等级</label>
                 <#list levels as level>
                     <#assign checkedLevels = selectedLevels?split(',')>
-                    <label><input class="level-box" data-id="${level}" type="checkbox"
+                    <label><input class="level-box" data-id="${level}" type="checkbox" name="levels" value="${level}"
                                   <#if checkedLevels?seq_contains(level?string)>checked=1</#if>>V${level}</label>
                 </#list>
             </div>
@@ -107,7 +107,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if data.hasPreviousPage >
-                        <a href="/membership-manage/membership-list?index=${data.index - 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                        <a href="/membership-manage/membership-list?index=${data.index - 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&mobile=${mobile!}&type=${selectedType!}&levels=${selectedLevels!}"
                            aria-label="Previous">
                         <#else>
                         <a href="#" aria-label="Previous">
@@ -118,7 +118,7 @@
                     <li><a>${data.index}</a></li>
                     <li>
                         <#if data.hasNextPage>
-                        <a href="/membership-manage/membership-list?index=${data.index + 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&mobile=${mobile!}&type=${type!}&levels=${selectedLevels!}"
+                        <a href="/membership-manage/membership-list?index=${data.index + 1}&pageSize=${data.pageSize}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&mobile=${mobile!}&type=${selectedType!}&levels=${selectedLevels!}"
                            aria-label="Next">
                         <#else>
                         <a href="#" aria-label="Next">

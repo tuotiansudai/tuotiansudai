@@ -63,6 +63,7 @@
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
         <intercept-url pattern="/upload/**" access="permitAll()"/>
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
+        <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>

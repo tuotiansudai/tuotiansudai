@@ -33,7 +33,7 @@
         select * from membership_experience_bill
         where login_name = #{loginName}
         <if test="startTime != null">
-            <![CDATA[ and created_time >= #{startTime} ]]>
+            <![CDATA[ and created_time > #{startTime} ]]>
         </if>
         <if test="endTime != null">
             <![CDATA[ and created_time <= #{endTime} ]]>
@@ -49,7 +49,7 @@
         select count(id) from membership_experience_bill
         where login_name = #{loginName}
         <if test="startTime != null">
-            <![CDATA[ and created_time >= #{startTime} ]]>
+            <![CDATA[ and created_time > #{startTime} ]]>
         </if>
         <if test="endTime != null">
             <![CDATA[ and created_time <= #{endTime} ]]>

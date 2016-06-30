@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
+import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 
 import java.util.Date;
@@ -23,5 +24,7 @@ public interface HeroRankingService {
     void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
 
     MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
+
+    GivenMembership receiveMembership(String loginName);
 
 }

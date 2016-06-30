@@ -186,6 +186,22 @@
                     </div>
                 </div>
                 <div class="mask-model">
+                    <div class="model-project-precess">
+                        <div class="right-operat">
+                            <div class="p-title">
+                                <span class="fl">项目进度</span>
+                                <span class="point fr">${experienceLoanDto.progress} %</span>
+                            </div>
+                            <div class="process-percent">
+                                <div class="percent" style="width:${experienceLoanDto.progress}%">
+                                </div>
+                            </div>
+                            <div class="rest-amount">
+                                <span>可投额度：<i>${experienceLoanDto.investAmount}</i>元(体验金)</span>
+                                <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mask-btn"></div>
                 </div>
                 <div class="mask-bg"></div>
@@ -397,34 +413,33 @@
                 <div class="product-box-inner">
                     <div class="free-guide"></div>
                     <div class="product-box tc product-type new-free-pro">
-                        <i class="new-free"></i>
-                        <div class="pad-m" title="BLQ001" data-url="/loan/1">
-                            <h2 class="pr-title">新手体验项目</h2>
-                            <div class="pr-square tc">
-                                <div class="pr-square-in">
-                                    <em><b>${experienceLoanDto.baseRate}</b>
-                                       %</em>
-                                    <i>预期年化收益</i>
-                                </div>
-                            </div>
-                            <dl class="pr-info">
-                                <dd class="dl-month"><i>${experienceLoanDto.duration}</i>天 <span>项目期限</span></dd>
-                                <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
-                            </dl>
-                            <div class="project-schedule clear-blank clearfix">
-                                <div class="pro">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">${experienceLoanDto.progress} %</span>
-                                    </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:${experienceLoanDto.progress}%"></div>
+                            <i class="new-free"></i>
+                            <div class="pad-m" title="BLQ001" data-url="/loan/1">
+                                <h2 class="pr-title">新手体验项目</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em><b>${experienceLoanDto.baseRate}</b>
+                                           %</em>
+                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${experienceLoanDto.duration}</i>天 <span>项目期限</span></dd>
+                                    <dd class="dl-amount"><i class="new-user-coupon">仅限使用体验金投资</i></dd>
+                                </dl>
+                                <div class="project-schedule clear-blank clearfix">
+                                    <div class="pro">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${experienceLoanDto.progress} %</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${experienceLoanDto.progress}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <a href="/loan/" class="btn-normal">立即投资</a>
+                        <a href="/loan/1" class="btn-normal">立即投资</a>
 
                     <div class="guide-img">
                         <span class="guide-btn"></span>
