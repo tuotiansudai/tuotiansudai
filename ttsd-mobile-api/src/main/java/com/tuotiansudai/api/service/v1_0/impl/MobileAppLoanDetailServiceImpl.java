@@ -121,6 +121,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
             List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
             investedAmount = couponService.findExperienceInvestAmount(investModelList);
+            loanDetailResponseDataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
         }
