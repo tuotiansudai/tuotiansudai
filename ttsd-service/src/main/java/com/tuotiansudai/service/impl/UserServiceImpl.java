@@ -20,8 +20,6 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -120,8 +118,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-        String loginName = dto.getLoginName();
-        boolean loginNameIsExist = this.loginNameIsExist(loginName);
+
+        boolean loginNameIsExist = false;
+        String loginName = null;
+        if (StringUtils.isNotEmpty(dto.getLoginName())) {
+            loginName = dto.getLoginName();
+            loginNameIsExist = this.loginNameIsExist(loginName);
+        }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
@@ -148,21 +151,21 @@ public class UserServiceImpl implements UserService {
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(loginName.toLowerCase());
+        userRoleModel.setLoginName(userModel.getLoginName().toLowerCase());
         userRoleModel.setRole(Role.USER);
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
+            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), userModel.getLoginName());
         }
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(userModel.getLoginName(), membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
-        myAuthenticationManager.createAuthentication(loginName);
+        myAuthenticationManager.createAuthentication(userModel.getLoginName());
 
         return true;
     }
