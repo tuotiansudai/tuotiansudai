@@ -10,6 +10,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import java.text.MessageFormat;
+
 @Component
 public abstract class AbstractRedisWrapperClient {
 
@@ -41,7 +43,7 @@ public abstract class AbstractRedisWrapperClient {
                 jedis.select(db);
                 break;
             } catch (JedisConnectionException e) {
-                logger.error(e.getLocalizedMessage(), e);
+                logger.error(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
                     throw e;
                 }

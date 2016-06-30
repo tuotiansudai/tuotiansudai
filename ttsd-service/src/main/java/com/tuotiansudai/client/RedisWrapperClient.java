@@ -94,14 +94,14 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.keys(pattern);
             }
         });
-        return keys.size() == 0 ? true : this.del(keys.toArray(new String[]{}));
+        return keys.size() == 0 || this.del(keys.toArray(new String[]{}));
     }
 
     public boolean del(final String... keys) {
         return execute(new JedisAction<Boolean>() {
             @Override
             public Boolean action(Jedis jedis) {
-                return jedis.del(keys) == keys.length ? true : false;
+                return jedis.del(keys) == keys.length;
             }
         });
     }
