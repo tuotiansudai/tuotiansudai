@@ -1,5 +1,6 @@
 package com.tuotiansudai.client;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,8 +9,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
 
 @Component
 public abstract class AbstractRedisWrapperClient {
@@ -30,6 +29,27 @@ public abstract class AbstractRedisWrapperClient {
 
     private static JedisPool jedisPool;
 
+    protected Jedis getJedis(int db) {
+        int timeoutCount = 0;
+        Jedis jedis;
+        while (true) {
+            try {
+                jedis = getJedisPool().getResource();
+                if (StringUtils.isNotEmpty(getRedisPassword())) {
+                    jedis.auth(getRedisPassword());
+                }
+                jedis.select(db);
+                break;
+            } catch (JedisConnectionException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                if (++timeoutCount >= 3) {
+                    throw e;
+                }
+            }
+        }
+        return jedis;
+    }
+
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
             jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
@@ -41,50 +61,9 @@ public abstract class AbstractRedisWrapperClient {
         T action(Jedis jedis);
     }
 
-    public interface JedisActionNoResult {
-        void action(Jedis jedis);
-    }
-
-    protected boolean handleJedisException(JedisException jedisException) {
-        if (jedisException instanceof JedisConnectionException) {
-            logger.error(jedisException.getLocalizedMessage(), jedisException);
-        } else if (jedisException instanceof JedisDataException) {
-            if ((jedisException.getMessage() != null) && (jedisException.getMessage().contains("READONLY"))) {
-                logger.error(jedisException.getLocalizedMessage(), jedisException);
-            } else {
-                return false;
-            }
-        } else {
-            logger.error(jedisException.getLocalizedMessage(), jedisException);
-        }
-        return true;
-    }
-
-    protected void closeResource(Jedis jedis, boolean connectionBroken) {
-        try {
-            if (connectionBroken) {
-                jedisPool.returnBrokenResource(jedis);
-            } else {
-                jedisPool.returnResource(jedis);
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            destroyJedis(jedis);
-        }
-    }
-
-    private static void destroyJedis(Jedis jedis) {
-        if ((jedis != null) && jedis.isConnected()) {
-            try {
-                try {
-                    jedis.quit();
-                } catch (Exception e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
-                jedis.disconnect();
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
+    protected void closeResource(Jedis jedis) {
+        if (jedis != null) {
+            jedis.close();
         }
     }
 
