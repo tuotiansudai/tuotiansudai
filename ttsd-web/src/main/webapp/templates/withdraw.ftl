@@ -7,7 +7,7 @@
         <div class="borderBox withdraw" data-access="${hasAccess}">
             可提现额度：<i class="color-note">${balance}</i>元<br/>
             <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-l-zero="deny"
-                                                      data-v-min="0.00" data-v-max="99999999999.99" placeholder="0.00"> 元
+                                                      data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
             <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
