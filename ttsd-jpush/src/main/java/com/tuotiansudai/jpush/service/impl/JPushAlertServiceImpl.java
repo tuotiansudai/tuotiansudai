@@ -32,8 +32,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -347,23 +345,27 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private Map chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         Map<String,String> extras = Maps.newHashMap();
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
-        for(String key : jumpTo.getParams()){
-            switch (key){
-                case "jumpTo":
-                    extras.put("jumpTo",jumpTo.getIndex());
-                    break;
-                case "jumpToLink":
-                    extras.put("jumpToLink",jPushAlertDto.getJumpToLink());
-                    break;
-                case "investId":
-                    extras.put("investId",jPushAlertDto.getInvestId());
-                    break;
-                case "loanId":
-                    extras.put("loanId",jPushAlertDto.getLoanId());
-                    break;
-                case "isCompleted":
-                    extras.put("isCompleted",jPushAlertDto.getIsCompleted());
-                    break;
+        if(jumpTo == null){
+            extras.put("jumpToLink",jPushAlertDto.getJumpToLink());
+        }else{
+            for(String key : jumpTo.getParams()){
+                switch (key){
+                    case "jumpTo":
+                        extras.put("jumpTo",jumpTo.getIndex());
+                        break;
+                    case "jumpToLink":
+                        extras.put("jumpToLink",jPushAlertDto.getJumpToLink());
+                        break;
+                    case "investId":
+                        extras.put("investId",jPushAlertDto.getInvestId());
+                        break;
+                    case "loanId":
+                        extras.put("loanId",jPushAlertDto.getLoanId());
+                        break;
+                    case "isCompleted":
+                        extras.put("isCompleted",jPushAlertDto.getIsCompleted());
+                        break;
+                }
             }
         }
         return extras;
