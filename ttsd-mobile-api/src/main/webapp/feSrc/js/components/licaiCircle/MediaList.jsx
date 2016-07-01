@@ -72,8 +72,16 @@ class MediaList extends React.Component {
 			});
 		});
 	}
+	findDelegateEle(ele) {
+		if (ele.dataset.delegate || ele.nodeName.toLowerCase() === 'body') {
+			return ele;
+		} else {
+			return this.findDelegateEle.call(this, ele.parentNode);
+		}
+	}
 	listItemTapHandler(event) {
-		hashHistory.push(`media-center/article/${event.target.dataset.id}`);
+		let target = this.findDelegateEle.call(this, event.target);
+		hashHistory.push(`media-center/article/${target.dataset.id}`);
 	}
 	pagination() {
 		this.listIndex++;
@@ -169,7 +177,7 @@ class MediaList extends React.Component {
 						<ul className="list">
 							{this.state.listData.map((value, index) => {
 								return (
-									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>
+									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
 										<div className="pull-left">
 											<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
 										</div>
