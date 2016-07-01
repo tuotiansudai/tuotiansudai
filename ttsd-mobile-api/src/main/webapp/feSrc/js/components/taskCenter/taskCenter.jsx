@@ -37,7 +37,8 @@ class ButtonStatus extends React.Component {
         let description=this.props.description;
 
         if(!isComplete) {
-            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'}  data-value={value} data-url={url} onClick={this.jumpToWhere.bind(this)}>去完成</a>;
+            // onClick={this.jumpToWhere.bind(this)}
+            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} href={url} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
            button=<button className={description? 'TaskItemCompleteBtn' : 'TaskItemCompleteBtn column-one'}  disabled>已完成</button>;
@@ -69,7 +70,7 @@ class NewbieTaskGroup extends React.Component {
                                 <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
-                        <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.location} />
+                        <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                    </div>);
         });
             return (
@@ -108,7 +109,7 @@ class AdvanceTaskGroup extends React.Component {
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>
-                    <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.location} />
+                    <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                 </div>);
         });
 
