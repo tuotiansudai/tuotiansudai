@@ -67,4 +67,8 @@
     <select id="countUnreadMessagesByLoginName" parameterType="string" resultType="long">
         select count(1) from user_message where login_name = #{loginName} and `read` = FALSE
     </select>
+
+    <update id="updateReadAndReadTimeById" parameterType="map">
+        update user_message m set m.read = #{read},m.read_time= #{readTime} where m.id = #{id}
+    </update>
 </mapper>
