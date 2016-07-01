@@ -106,7 +106,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         }
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
-        if (CollectionUtils.isEmpty(userPointPrizeModelToday) || true ||
+        if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
                 (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
             UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
