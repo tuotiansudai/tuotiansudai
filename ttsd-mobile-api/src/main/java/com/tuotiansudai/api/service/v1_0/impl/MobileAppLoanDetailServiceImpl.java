@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
@@ -50,6 +52,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
     private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -113,6 +121,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
             List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
             investedAmount = couponService.findExperienceInvestAmount(investModelList);
+            loanDetailResponseDataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
         }
@@ -156,6 +165,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
                 new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
         loanDetailResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+            investFeeRate = this.defaultFee;
+        }
+        loanDetailResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
         return loanDetailResponseDataDto;
 
     }

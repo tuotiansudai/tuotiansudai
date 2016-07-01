@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;

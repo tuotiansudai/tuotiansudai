@@ -45,7 +45,10 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         List<LoanModel> loanModels = Lists.newArrayList();
 
         if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
-            loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true);
+            if (investMapper.sumSuccessExperienceInvestCountByLoginName(loginName) == 0) {
+                loanModels.addAll(loanMapper.findByProductType(ProductType.EXPERIENCE));
+            }
+            loanModels.addAll(loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true));
             if (CollectionUtils.isEmpty(loanModels)) {
                 List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true);
                 if (CollectionUtils.isNotEmpty(completeLoanModels)) {
