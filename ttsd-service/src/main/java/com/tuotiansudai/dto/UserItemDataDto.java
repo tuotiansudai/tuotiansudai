@@ -1,6 +1,9 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.UserView;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -12,7 +15,7 @@ public class UserItemDataDto implements Serializable {
     private String userName;
     private String email;
     private String mobile;
-    private String referrer;
+    private String referrerMobile;
     private String channel;
     private boolean staff;
     private Date registerTime;
@@ -61,12 +64,12 @@ public class UserItemDataDto implements Serializable {
         this.mobile = mobile;
     }
 
-    public String getReferrer() {
-        return referrer;
+    public String getReferrerMobile() {
+        return referrerMobile;
     }
 
-    public void setReferrer(String referrer) {
-        this.referrer = referrer;
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 
     public String getChannel() {
@@ -201,30 +204,10 @@ public class UserItemDataDto implements Serializable {
         }
     }
 
-    public UserItemDataDto(UserModel userModel) {
-        this.loginName = userModel.getLoginName();
-        this.email = userModel.getEmail();
-        this.referrer = userModel.getReferrer();
-        this.channel = userModel.getChannel();
-        this.source = userModel.getSource();
-        this.mobile = userModel.getMobile();
-        this.registerTime = userModel.getRegisterTime();
-        if (userModel.getAccount() != null) {
-            this.userName = userModel.getAccount().getUserName();
-        }
-        this.balance = AmountConverter.convertCentToString(userModel.getAccount().getBalance());
-        this.status = userModel.getStatus();
-        this.autoInvestStatus = userModel.getAutoInvestStatus();
-        this.identityNumber = userModel.getAccount().getIdentityNumber();
-        this.province = userModel.getProvince();
-        this.city = userModel.getCity();
-        this.lastBillTime = userModel.getLastBillTime();
-    }
-
     public UserItemDataDto(UserView userView) {
         this.loginName = userView.getLoginName();
         this.email = userView.getEmail();
-        this.referrer = userView.getReferrerMobile();
+        this.referrerMobile = userView.getReferrerMobile();
         this.channel = userView.getChannel();
         this.source = userView.getSource();
         this.mobile = userView.getMobile();

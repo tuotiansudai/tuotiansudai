@@ -399,12 +399,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for(UserModel userModel : userModels) {
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+        for(UserView userView : userViews) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userView.getLoginName(), Role.STAFF));
             userItemDataDtoList.add(userItemDataDto);
         }
         return userItemDataDtoList;

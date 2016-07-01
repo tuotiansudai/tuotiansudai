@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,7 @@ public interface UserMapper {
 
     List<UserModel> findUserByProvince();
 
-    List<UserModel> findUsersAccountBalance(@Param(value = "loginName") String loginName,
+    List<UserView> findUsersAccountBalance(@Param(value = "loginName") String loginName,
                                             @Param(value = "balanceMin") int balanceMin,
                                             @Param(value = "balanceMax") int balanceMax,
                                             @Param(value = "startLimit") int startLimit,

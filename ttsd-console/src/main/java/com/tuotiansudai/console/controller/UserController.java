@@ -204,7 +204,7 @@ public class UserController {
                 dataModel.add(userItemDataDto.getUserName());
                 dataModel.add(userItemDataDto.getMobile());
                 dataModel.add(userItemDataDto.getEmail());
-                dataModel.add(userItemDataDto.getReferrer());
+                dataModel.add(userItemDataDto.getReferrerMobile());
                 dataModel.add(userItemDataDto.isReferrerStaff() ? "是" : "否");
                 dataModel.add(userItemDataDto.getSource() != null ? userItemDataDto.getSource().name() : "");
                 dataModel.add(userItemDataDto.getChannel());
