@@ -130,7 +130,7 @@
         CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
-        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
         CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
@@ -198,7 +198,7 @@
         CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
         CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
-        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
         CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
