@@ -29,8 +29,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         userMessageServices.generateUserMessages(loginName);
-        Integer index = (requestDto.getIndex() == null || requestDto.getIndex() <= 0) ? 0 : requestDto.getIndex();
-        Integer pageSize = (requestDto.getPageSize() == null || requestDto.getPageSize() <= 0) ? 10 : requestDto.getPageSize();
+        int index = requestDto.getIndex();
+        int pageSize = requestDto.getPageSize();
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, index, pageSize);
         BaseResponseDto responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -39,9 +39,20 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         return responseDto;
     }
 
-    private UserMessageResponseDataDto fillMessageDataDto(String loginName, Integer index, Integer pageSize) {
+    @Override
+    public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        long unreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP);
+
+        MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount();
+        BaseResponseDto responseDto = new BaseResponseDto();
+        responseDto.setData(messageCount);
+        return responseDto;
+    }
+
+    private UserMessageResponseDataDto fillMessageDataDto(String loginName, int index, int pageSize) {
         UserMessageResponseDataDto responseDataDto = new UserMessageResponseDataDto();
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP, index, pageSize);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP, (index - 1) * pageSize, pageSize);
         long totalCount = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.APP);
         List<UserMessageDto> userMessages = CollectionUtils.isEmpty(userMessageModels) ? new ArrayList<UserMessageDto>() :
                 Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
@@ -53,7 +64,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         responseDataDto.setIndex(index);
         responseDataDto.setPageSize(pageSize);
         responseDataDto.setTotalCount(totalCount);
-        responseDataDto.setData(userMessages);
+        responseDataDto.setMessages(userMessages);
         return responseDataDto;
     }
 

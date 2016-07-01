@@ -10,16 +10,13 @@ import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -38,21 +35,22 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldUserMessages() {
-        UserModel userModel = getFakeUser("test");
-        userMapper.create(userModel);
+        UserModel userModel = getFakeUser("gaoyinglong");
+//        userMapper.create(userModel);
         MessageModel messageModel = getFakeMessage(userModel.getLoginName());
         messageMapper.create(messageModel);
         UserMessagesRequestDto messagesRequestDto = new UserMessagesRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("test");
         messagesRequestDto.setBaseParam(baseParam);
+        messagesRequestDto.setIndex(1);
+        messagesRequestDto.setPageSize(10);
         BaseResponseDto<UserMessageResponseDataDto> baseResponseDto = mobileAppUserMessageService.getUserMessages(messagesRequestDto);
 
-        assertThat("0000",is(baseResponseDto.getCode()));
+        assertThat("0000", is(baseResponseDto.getCode()));
         assertThat(1L, is(baseResponseDto.getData().getTotalCount()));
-        assertThat(1, is(baseResponseDto.getData().getData().size()));
+        assertThat(1, is(baseResponseDto.getData().getMessages().size()));
     }
-
 
 
     private MessageModel getFakeMessage(String loginName) {

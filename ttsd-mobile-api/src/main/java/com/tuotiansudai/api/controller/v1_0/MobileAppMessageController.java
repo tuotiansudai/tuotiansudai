@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
@@ -20,5 +21,11 @@ public class MobileAppMessageController extends MobileAppBaseController {
     public BaseResponseDto getMessages(@RequestBody UserMessagesRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppUserMessageService.getUserMessages(requestDto);
+    }
+
+    @RequestMapping(value = "/get/unread-message-count")
+    public BaseResponseDto getUnreadMessageCount(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
     }
 }
