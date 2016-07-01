@@ -1,8 +1,9 @@
 import React from 'react';
-import { main } from './taskCenter.scss'; 
+import { main ,spinner } from './taskCenter.scss'; 
 import changeTitle from 'utils/changeTitle';
 import ajax from 'utils/ajax';
 import IScroll from 'iscroll';
+import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
 import taskBanner from './task_banner.png';
@@ -29,12 +30,12 @@ class ButtonStatus extends React.Component {
         window.location.href = dataset.url;
     } 
     render() { 
-        let stocked=this.props.stocked;
+        let isComplete=this.props.stocked;
         let button=null;
         let value=this.props.value;
         let url=this.props.location;
-        if(stocked) {
-            button=<span className="TaskItemBtn" data-value={value} data-url={url} onTouchTap={this.jumpToWhere.bind(this)}>去完成</span>;
+        if(!isComplete) {
+            button=<span className="TaskItemBtn" data-value={value} data-url={url} onClick={this.jumpToWhere.bind(this)}>去完成</span>;
         }
         else  {
            button=<span className="TaskItemCompleteBtn" disabled>已完成</span>;
@@ -44,23 +45,28 @@ class ButtonStatus extends React.Component {
     };
 
 class NewbieTaskGroup extends React.Component {
+    static defaultProps = {
+        data: []
+    }
     render() {
-        let NewData=this.props.data;
+        let newbieTasks=this.props.data;
         let rows=[];
         let jumto=this.props.jumpToEvent;
-        NewData.forEach(function(option,key) { 
-            rows.push(<div className="TaskItemNewbie" key={key}>
-                        <div className="SerialNum">{option.number}</div>
+        let keyNum;
+        newbieTasks.forEach(function(option,key) { 
+            keyNum=key+1; 
+            rows.push(<div className={option.completed ? 'TaskItemNewbie completed-tasks' : 'TaskItemNewbie'} key={key} >
+                        <div className="SerialNum" >0{keyNum}</div>
                             <div className="TaskContent">
-                            <div className="TaskItemTitle">{option.category}</div>
-                            <div className="TaskItemDes">{option.description}</div>
+                            <div className="TaskItemTitle">{option.title}</div>
+                            <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                             <div className="TaskItemLine"></div>
                             <div className="TaskRewardGroup">
-                                <div className="TaskReward">{option.reward}</div>
+                                <div className="TaskReward">奖励{option.point}</div>
                                 <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
-                        <ButtonStatus stocked={option.stocked} value={option.number} location={option.location} />
+                        <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
                    </div>);
         });
 
@@ -89,13 +95,13 @@ class AdvanceTaskGroup extends React.Component {
             rows.push(<div className="TaskItemNewbie" key={key}>
                     <div className="TaskAdvanceContent">
                         <div className="TaskAdvanceRewardGroup">
-                            <div className="TaskAdvanceItemTitle">{option.category}</div>
+                            <div className="TaskAdvanceItemTitle">{option.title}</div>
                             <div className="TaskAdvanceReward">{option.reward}</div>
                             <img className="TaskAdvanceBeanImg" src={taskBean}/>
                         </div>
-                        <div className="TaskAdvanceItemDes">{option.description}</div>
+                        <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>
-                    <ButtonStatus stocked={option.stocked} value={option.number} location={option.location} />
+                    <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
                 </div>);
         });
 
@@ -121,217 +127,121 @@ class taskCenter extends React.Component {
 
         state = {
             active: MenuData.tabHeader[0].value,
-            isShowLoading: false,
+            isShowLoading: true,
             listData: {
-                newData: [{
-                        number: '01',
-                        category: '实名认证',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '02',
-                        category: '绑定银行卡',
-                        description: '绑定常用银行卡，赚钱快人一步',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '03',
-                        category: '首次充值',
-                        description: '在拓天平台首次成功充值',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '04',
-                        category: '首次投资',
-                        description: '在拓天平台首次成功投资',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '05',
-                        category: '首次投资',
-                        description: '在拓天平台首次成功投资',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: false
-                    }, {
-                        number: '06',
-                        category: '首次投资',
-                        description: '在拓天平台首次成功投资',
-                        reward: '奖励200',
-                        location:'nopwdpay',
-                        stocked: false
-                    }
-
-                ],
-                ongoingData: [{
-                    number: '01',
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '02',
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '03',
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        location:'nopwdpay',
-                        stocked: true
-                    }, {
-                        number: '04',
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        location:'nopwdpay',
-                        stocked: false
-                    }, {
-                        number: '05',
-                        category: '累计投资满5000元',
-                        description: '完成实名认证，开通个人账户',
-                        reward: '奖励1000',
-                        location:'nopwdpay',
-                        stocked: false
-                    }
-
-                ]
+                newbieTasks: [],
+                advancedTasks: []
             }
         };
 
     listIndex = 1;
 
-    tabHeaderClickHandler(event) {
-        let value = event.target.dataset.value;
-        this.setState({
-          active: value
-        });
-
-        this.listIndex = 1;
-
-        // this.fetchData(1, value, (response) => {
-        //     this.setState((previousState) => {
-        //         return {
-        //             listData: Immutable(response.data.articleList),
-        //             isShowLoading: response.data.articleList.length < pageSize ? false : true
-        //         };
-        //     });
-        // });   
-
-    }
-
-	destroyIscroll() {
-		if (this.myScroll) {
-			this.myScroll.destroy();
-			this.myScroll = null;
-		}
-	}
-
-    fetchData(index = 1, section = 'ALL', callback = function() {}) {
-        let sendData = {
-            "index": index,//当前页面
-            "pageSize": pageSize,
-            "section": section
-        };
-        if (section === 'ALL') {
-            delete sendData.section;
+    destroyIscroll() {
+        if (this.myScroll) {
+            this.myScroll.destroy();
+            this.myScroll = null;
         }
+    }
+   
+    fetchData(url , callback = function() {}) {
         ajax({
-            url: '/media-center/article-list',
-            data: sendData,
+            url: url,
+            type: 'get',
             done: callback
         });
     }
+    tabHeaderClickHandler(event) {
+        let value = event.target.dataset.value;
+        this.setState({
+          active: value,
+          isShowLoading:true
+        });
 
-	 jumpTo(n) {
-            switch (n) {
-                case 0://实名认证
-                case 1://绑定银行卡
-                    window.location.href = "tuotiantask://accountinfo";
-                    break;
-                case 2://首次充值
-                    window.location.href = "tuotiantask://recharge";
-                    break;
-                case 3://首次投资
-                case 4://累计投满5000元
-                case 5://单笔投资满1万元
-                case 9://首次投资180天标的
-                    window.location.href = "tuotiantask://invest";
-                    break;
-                case 6://每邀请一名好友注册
-                case 7://首次邀请好友投资
-                case 8://每邀请好友投资1000元
-                    window.location.href = "tuotiantask://invitefriend";
-                    break;
-                case 10://首次开通免密支付
-                    window.location.href = "tuotiantask://nopwdpay";
-                    break;
-                case 11://首次开通自动投标
-                    window.location.href = "tuotiantask://autoinvest";
-                    break;
-
-                default :
-                    break;
-            }
+        if(value=='ONGOING') {
+            this.fetchData('/task-center/tasks',(response) => {
+            this.setState((previousState) => {
+                return {
+                    isShowLoading:false,
+                    listData: {
+                        newbieTasks: response.data.newbieTasks,
+                        advancedTasks: response.data.advancedTasks
+                    }
+                };
+            });
+         });
         }
+        else if(value=='FINISHED') {
+           this.fetchData('/task-center/completed-tasks',(response) => {
+            this.setState((previousState) => {
+                return {
+                    isShowLoading:false,
+                    listData: {
+                        newbieTasks: response.data.newbieTasks,
+                        advancedTasks: response.data.advancedTasks
+                    }
+                };
+            });
+        }); 
+        }
+        }  
+
 	componentDidMount() {
 		changeTitle('任务中心');
 		let isComplete = 0;
         let listData = [];
+        
+        this.fetchData('/task-center/tasks',(response) => {
+            this.setState((previousState) => {
+                return {
+                    isShowLoading:false,
+                    listData: {
+                        newbieTasks: response.data.newbieTasks,
+                        advancedTasks: response.data.advancedTasks
+                    }
+                };
+            });
+         });
 
 	}
     componentDidUpdate() {
-        setTimeout(() => {
-                if (!this.myScroll) {
-                    let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-                    this.refs.tabBody.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
-                    this.myScroll = new IScroll(this.refs.scrollWrap);
-                    this.myScroll.on('scrollEnd', () => {
-                        if (this.myScroll.y <= this.myScroll.maxScrollY) {
-                            if (this.state.isShowLoading) {
-                                this.pagination.call(this);
-                            }
-                        }
-                    });
-                } else {
-                    this.myScroll.refresh();
-                    if (this.listIndex === 1) {
-                        this.myScroll.scrollTo(0, 0);
-                    }
-                }
-            }, 200);
+        imagesLoaded(this.refs.scrollWrap).on('always', () => {
+            setTimeout(() => {
+            if (!this.myScroll) {
+                this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
+                this.myScroll = new IScroll(this.refs.scrollWrap);
+            }
+            else {
+                this.myScroll.refresh();
+            }
+          },200);
+        });
     }
 
 	componentWillUnmount() {
 		this.destroyIscroll.call(this);
 	}
 	render() { 
+        let loading = null;
+        if (this.state.isShowLoading) {
+            loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
+        }
   		return (
-			<div className={main} >
-			    <div className="MenuBox">
+			<div className={main}>
+			    <div className="MenuBox" ref="tabHeader">
 			        <ul>
                         {MenuData.tabHeader.map((value, index) => {
-                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onClick={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
                         })}
 			        </ul>
 			    </div>
 		
-			<div className="ContentBox">
-			<div id="OngoingBox" className="OngoingBox" ref="tabBody">
+			<div className="ContentBox" ref="scrollWrap">
+			<div id="OngoingBox" className="OngoingBox" >
+            {loading}
+			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
 
-			<NewbieTaskGroup data={this.state.listData.newData} jumpToEvent={this.jumpTo} />
-
-			<AdvanceTaskGroup data={this.state.listData.ongoingData} jumpToEvent={this.jumpTo} />
+			<AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
+            
 			</div>
 			</div>
 			</div>	    

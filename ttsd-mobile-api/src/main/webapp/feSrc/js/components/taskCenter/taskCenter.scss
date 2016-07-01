@@ -4,6 +4,11 @@
     height: auto;
     overflow: auto;
     :global { 
+        .loading {
+            text-align:center;
+            font-size:30px;
+            i { color:#fff;}
+        }
         div {
             font-size: 20px; /*px*/
             color: #0f3d70;
@@ -20,7 +25,8 @@
         .MenuBox {
             width: 100%;
             height:414px;         
-            background:url('task_banner.png');
+            background:url('task_banner.png') no-repeat;
+            background-size: cover;
             position:relative;
         }
 
@@ -52,7 +58,8 @@
         }
 
         .ContentBox {
-            margin-top: 20px;
+            height: auto;
+            overflow: auto;
             margin-left: 3%;
             margin-right: 3%;
         }
@@ -92,18 +99,24 @@
                     margin-top:13px;
                 }
             }
+            .SerialNum {
+                width: 10%;
+                float: left;
+                display: inline-block;
+                color: #ff5959;
+                font-size: 70px; /*px*/
+                margin-left: 2%;
+                margin-top: 0.75rem;
+            }
+            &.completed-tasks {
+                .SerialNum {
+                    color: #989898;
+                }
+            }
         }
 
 
-        .SerialNum {
-            width: 10%;
-            float: left;
-            display: inline-block;
-            color: #ff5959;
-            font-size: 70px; /*px*/
-            margin-left: 2%;
-            margin-top: 0.75rem;
-        }
+        
 
         .TaskContent {
             width: 64%;
@@ -240,6 +253,8 @@
             color: #34312b;
         }
     }
+
+
 }
 
         
