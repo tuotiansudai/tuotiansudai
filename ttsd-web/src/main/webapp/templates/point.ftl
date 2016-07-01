@@ -122,21 +122,22 @@
                 </#list>
             </div>
 
-            <div class="title-task clearfix" id="taskStatusMenu">
-                <span class="active">进阶任务</span>
-                <span>已完成任务</span>
-            </div>
+            <@global.role hasRole="'INVESTOR','LOANER'">
+                <div class="title-task clearfix" id="taskStatusMenu">
+                    <span class="active">进阶任务</span>
+                    <span>已完成任务</span>
+                </div>
 
-            <div class="task-status active">
-                <#list advancedPointTasks as advancePointTask>
-                    <div class="border-box <#if advancePointTask.description??>two-col<#else>one-col</#if>">
-                        <dl class="fl">
-                            <dt>${advancePointTask.title}<span class="color-key"> ${advancePointTask.point?string.computer}财豆</span></dt>
-                            <#if advancePointTask.description??>
-                            <dd>${advancePointTask.description}</dd>
-                            </#if>
-                        </dl>
-                        <a href="<#switch advancePointTask.name.name()>
+                <div class="task-status active">
+                    <#list advancedPointTasks as advancePointTask>
+                        <div class="border-box <#if advancePointTask.description??>two-col<#else>one-col</#if>">
+                            <dl class="fl">
+                                <dt>${advancePointTask.title}<span class="color-key"> ${advancePointTask.point?string.computer}财豆</span></dt>
+                                <#if advancePointTask.description??>
+                                    <dd>${advancePointTask.description}</dd>
+                                </#if>
+                            </dl>
+                            <a href="<#switch advancePointTask.name.name()>
                                             <#case 'EACH_SUM_INVEST'>
                                             <#case 'FIRST_SINGLE_INVEST'>
                                             <#case 'FIRST_INVEST_180'>
@@ -155,31 +156,33 @@
                                                 /auto-invest/agreement
                                             <#break>
                                         </#switch>"
-                           class="fr btn-normal">去完成</a>
-                    </div>
-                </#list>
-                <#if advancedPointTasks?size &gt; 4>
-                    <div class="tc button-more">
-                        <a href="javascript:void(0);"><span>点击查看更多任务</span> <i class="fa fa-chevron-circle-down"></i></a>
-                    </div>
-                </#if>
+                               class="fr btn-normal">去完成</a>
+                        </div>
+                    </#list>
+                    <#if advancedPointTasks?size &gt; 4>
+                        <div class="tc button-more">
+                            <a href="javascript:void(0);"><span>点击查看更多任务</span> <i class="fa fa-chevron-circle-down"></i></a>
+                        </div>
+                    </#if>
 
-            </div>
-            <div class="task-status" style="display: none;">
-                <#list completedAdvancedPointTasks as completedAdvancePointTask>
-                    <div class="border-box one-col">
-                        <dl class="fl">
-                            <dt>${completedAdvancePointTask.title}<span class="color-key"> ${completedAdvancePointTask.point?string.computer}财豆</span></dt>
-                        </dl>
-                        <button class="fr btn-normal" disabled>已完成</button>
-                    </div>
-                </#list>
-                <#if completedAdvancedPointTasks?size &gt; 4>
-                    <div class="tc button-more">
-                        <a href="javascript:void(0);"><span>点击查看更多任务 </span><i class="fa fa-chevron-circle-down"></i></a>
-                    </div>
-                </#if>
-            </div>
+                </div>
+                <div class="task-status" style="display: none;">
+                    <#list completedAdvancedPointTasks as completedAdvancePointTask>
+                        <div class="border-box one-col">
+                            <dl class="fl">
+                                <dt>${completedAdvancePointTask.title}<span class="color-key"> ${completedAdvancePointTask.point?string.computer}财豆</span></dt>
+                            </dl>
+                            <button class="fr btn-normal" disabled>已完成</button>
+                        </div>
+                    </#list>
+                    <#if completedAdvancedPointTasks?size &gt; 4>
+                        <div class="tc button-more">
+                            <a href="javascript:void(0);"><span>点击查看更多任务 </span><i class="fa fa-chevron-circle-down"></i></a>
+                        </div>
+                    </#if>
+                </div>
+            </@global.role>
+
 
         </div>
         <div class="choi-beans-list">
