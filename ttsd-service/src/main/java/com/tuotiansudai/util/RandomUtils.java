@@ -107,4 +107,13 @@ public class RandomUtils {
         return encryptLoginName;
     }
 
+    public String encryptMiddleMobile(String mobile){
+        if(mobile.length() < 11){
+            return "****";
+        }
+        String encryptLoginName = mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(8, 11);
+
+        return encryptLoginName;
+    }
+
 }
