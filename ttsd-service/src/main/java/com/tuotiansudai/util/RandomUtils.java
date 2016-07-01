@@ -107,4 +107,12 @@ public class RandomUtils {
         return encryptLoginName;
     }
 
+    public String encryptMobile(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+        String encryptMobile = userMapper.findByLoginName(encryptLoginName).getMobile();
+        return encryptMobile.substring(0, 3) + RandomUtils.showChar(4) + encryptMobile.substring(7);
+    }
+
 }
