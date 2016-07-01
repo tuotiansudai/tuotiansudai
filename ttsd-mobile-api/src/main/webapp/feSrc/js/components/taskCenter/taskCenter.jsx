@@ -53,7 +53,8 @@ class NewbieTaskGroup extends React.Component {
         let rows=[];
         let jumto=this.props.jumpToEvent;
         let keyNum;
-        newbieTasks.forEach(function(option,key) { 
+        if(newbieTasks) {
+            newbieTasks.forEach(function(option,key) { 
             keyNum=key+1; 
             rows.push(<div className={option.completed ? 'TaskItemNewbie completed-tasks' : 'TaskItemNewbie'} key={key} >
                         <div className="SerialNum" >0{keyNum}</div>
@@ -69,8 +70,7 @@ class NewbieTaskGroup extends React.Component {
                         <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
                    </div>);
         });
-
-        return (
+            return (
             <div className="NewbieTaskGroup">
             <div className="HeaderGroup">
                 <img src={taskLineLeft} />
@@ -82,6 +82,11 @@ class NewbieTaskGroup extends React.Component {
                 </div>
             </div>
             );
+
+        }  
+        else {
+            return (<div></div>);
+        }
              
     }
 }
@@ -89,8 +94,8 @@ class AdvanceTaskGroup extends React.Component {
     render() {
         let AdvanceData=this.props.data;
         let rows=[];
-    
-        AdvanceData.forEach(function(option,key) { 
+        if(AdvanceData) {
+            AdvanceData.forEach(function(option,key) { 
 
             rows.push(<div className="TaskItemNewbie" key={key}>
                     <div className="TaskAdvanceContent">
@@ -119,6 +124,10 @@ class AdvanceTaskGroup extends React.Component {
             
             </div>
             );
+        }
+        else {
+            return (<div></div>);
+        }  
     };
 }
 
