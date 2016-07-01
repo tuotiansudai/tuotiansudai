@@ -101,7 +101,7 @@ class AdvanceTaskGroup extends React.Component {
                     <div className="TaskAdvanceContent">
                         <div className="TaskAdvanceRewardGroup">
                             <div className="TaskAdvanceItemTitle">{option.title}</div>
-                            <div className="TaskAdvanceReward">{option.reward}</div>
+                            <div className="TaskAdvanceReward">奖励{option.point}</div>
                             <img className="TaskAdvanceBeanImg" src={taskBean}/>
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>

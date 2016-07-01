@@ -1,7 +1,6 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -137,8 +136,11 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTaskDto pointTaskDto = new PointTaskDto();
             pointTaskDto.setName(pointTask);
             pointTaskDto.setTitle(pointTask.getTitle());
+            pointTaskDto.setDescription(pointTask.getDescription());
             pointTaskDto.setPoint(pointTaskModel.getPoint());
             pointTaskDto.setCompleted(CollectionUtils.isNotEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)));
+            pointTaskDto.setUrl(this.getTaskUrl(pointTask));
+
             data.add(pointTaskDto);
         }
         return data;
@@ -153,6 +155,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             if (pointTaskModel.getMaxLevel() == 0 || completedMaxTaskLevel < pointTaskModel.getMaxLevel()) {
                 PointTaskDto pointTaskDto = new PointTaskDto();
                 pointTaskDto.setName(pointTask);
+                pointTaskDto.setUrl(this.getTaskUrl(pointTask));
                 switch (pointTask) {
                     case EACH_SUM_INVEST:
                         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
@@ -192,6 +195,25 @@ public class PointTaskServiceImpl implements PointTaskService {
             }
         }
         return data;
+    }
+
+    private String getTaskUrl(PointTask pointTask) {
+        switch (pointTask) {
+            case EACH_SUM_INVEST:
+            case FIRST_SINGLE_INVEST:
+            case FIRST_INVEST_180:
+            case FIRST_INVEST_360:
+                return "/loan-list";
+            case EACH_RECOMMEND:
+            case EACH_REFERRER_INVEST:
+            case FIRST_REFERRER_INVEST:
+                return "/referrer/refer-list";
+            case FIRST_TURN_ON_NO_PASSWORD_INVEST:
+                return "/personal-info";
+            case FIRST_TURN_ON_AUTO_INVEST:
+                return "/auto-invest/agreement";
+        }
+        return null;
     }
 
     @Override

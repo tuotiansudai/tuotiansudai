@@ -10,6 +10,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTaskCenterService;
 import com.tuotiansudai.point.dto.PointTaskDto;
 import com.tuotiansudai.point.service.PointTaskService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Service
 public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterService {
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Autowired
     private PointTaskService pointTaskService;
@@ -37,7 +41,10 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
         })) {
             data.setNewbieTasks(newbiePointTasks);
         }
-        data.setAdvancedTasks(pointTaskService.getAdvancedPointTasks(loginName));
+
+        if (accountMapper.findByLoginName(loginName) != null) {
+            data.setAdvancedTasks(pointTaskService.getAdvancedPointTasks(loginName));
+        }
 
         responseDto.setData(data);
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -61,7 +68,11 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
         })) {
             data.setNewbieTasks(newbiePointTasks);
         }
-        data.setAdvancedTasks(pointTaskService.getCompletedAdvancedPointTasks(loginName));
+
+        if (accountMapper.findByLoginName(loginName) != null) {
+            data.setAdvancedTasks(pointTaskService.getCompletedAdvancedPointTasks(loginName));
+        }
+
 
         responseDto.setData(data);
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());

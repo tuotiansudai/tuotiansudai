@@ -98,22 +98,7 @@
                             <dd>说明：${newbiePointTask.name.getDescription()}</dd>
                             <dd class="reward">奖励：<span>${newbiePointTask.point?string.computer}财豆</span></dd>
                             <dd>
-                                <a class="btn-normal"
-                                   href="<#switch newbiePointTask.name.name()>
-                                            <#case 'REGISTER'>
-                                                /register/account
-                                            <#break>
-                                            <#case 'BIND_BANK_CARD'>
-                                                /bind-card
-                                            <#break>
-                                            <#case 'FIRST_RECHARGE'>
-                                                /recharge
-                                            <#break>
-                                            <#case 'FIRST_INVEST'>
-                                                /loan-list
-                                            <#break>
-                                        </#switch>"
-                                   <#if newbiePointTask.completed>disabled="disabled"</#if>>
+                                <a class="btn-normal" href="${newbiePointTask.url}" <#if newbiePointTask.completed>disabled="disabled"</#if>>
                                 ${newbiePointTask.completed?string('已完成', '立即去完成')}
                                 </a>
                             </dd>
@@ -137,26 +122,7 @@
                                     <dd>${advancePointTask.description}</dd>
                                 </#if>
                             </dl>
-                            <a href="<#switch advancePointTask.name.name()>
-                                            <#case 'EACH_SUM_INVEST'>
-                                            <#case 'FIRST_SINGLE_INVEST'>
-                                            <#case 'FIRST_INVEST_180'>
-                                            <#case 'FIRST_INVEST_360'>
-                                                /loan-list
-                                            <#break>
-                                            <#case 'EACH_RECOMMEND'>
-                                            <#case 'EACH_REFERRER_INVEST'>
-                                            <#case 'FIRST_REFERRER_INVEST'>
-                                                /referrer/refer-list
-                                            <#break>
-                                            <#case 'FIRST_TURN_ON_NO_PASSWORD_INVEST'>
-                                                /personal-info
-                                            <#break>
-                                            <#case 'FIRST_TURN_ON_AUTO_INVEST'>
-                                                /auto-invest/agreement
-                                            <#break>
-                                        </#switch>"
-                               class="fr btn-normal">去完成</a>
+                            <a href="${advancePointTask.url}" class="fr btn-normal">去完成</a>
                         </div>
                     </#list>
                     <#if advancedPointTasks?size &gt; 4>

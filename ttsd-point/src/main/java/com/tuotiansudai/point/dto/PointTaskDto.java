@@ -15,6 +15,8 @@ public class PointTaskDto {
 
     private boolean completed;
 
+    private String url;
+
     public PointTask getName() {
         return name;
     }
@@ -53,5 +55,13 @@ public class PointTaskDto {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
