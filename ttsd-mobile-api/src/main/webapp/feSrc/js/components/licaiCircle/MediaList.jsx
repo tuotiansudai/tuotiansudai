@@ -178,7 +178,7 @@ class MediaList extends React.Component {
 											<time className="pull-left">{value.creatTime}</time>
 											<div className="pull-right">
 												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise"></Praise>
+												<Praise className="praise" likeCount={value.likeCount}></Praise>
 											</div>
 										</div>
 									</li>
