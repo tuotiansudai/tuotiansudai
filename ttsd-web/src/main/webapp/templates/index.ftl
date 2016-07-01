@@ -5,16 +5,16 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
-                <a href="/activity/hero-ranking" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/hero-ranking" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
                 <li>
-                <a href="/activity/invest-achievement" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/invest-achievement" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
@@ -41,10 +41,10 @@
                     </a>
                 </li>
                 <li>
-                <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
-                    <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                    <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
-                </a>
+                    <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+                        <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                        <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
@@ -206,7 +206,6 @@
                 </div>
                 <div class="mask-bg"></div>
             </div>
-        </div>
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
@@ -412,9 +411,7 @@
             </div>
             <div class="product-box-list fl">
                 <div class="product-box-inner">
-                    <div class="free-guide">
-
-                    </div>
+                    <div class="free-guide"></div>
                     <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
                             <div class="pad-m" title="BLQ001" data-url="/loan/1">
@@ -444,10 +441,10 @@
                             </div>
                         <a href="/loan/1" class="btn-normal">立即投资</a>
 
-                        <div class="guide-img">
-                            <span class="guide-btn"></span>
-                        </div>
+                    <div class="guide-img">
+                        <span class="guide-btn"></span>
                     </div>
+                </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
