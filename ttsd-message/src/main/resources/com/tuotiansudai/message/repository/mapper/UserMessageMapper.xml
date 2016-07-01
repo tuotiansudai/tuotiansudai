@@ -47,7 +47,7 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            m.channels = #{channels}
+            and m.channels = #{channels}
         </if>
         order by created_time desc
         <if test="index != null and pageSize != null">
@@ -60,7 +60,7 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            m.channels = #{channels}
+            and m.channels = #{channels}
         </if>
     </select>
 
