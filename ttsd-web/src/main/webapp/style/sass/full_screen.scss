@@ -1099,13 +1099,22 @@ body {
           height: 300px;
           background: url("/images/sign/index_sprites_20160530.png") no-repeat;
           background-position: 0px -425px;
-          z-index: 9999;
-          display: none;
-          .mask-btn {
-            float: left;
-            width: 230px;
-            height: 100px;
-            background: url("/images/sign/index_sprites_20160530.png") no-repeat;
+          z-index:9999;
+          display:none;
+          .model-project-precess {
+            width: 265px;
+            height: 140px;
+            background: #fff;
+            float: right;
+            margin-top: 130px;
+            margin-right: 100px;
+
+          }
+          .mask-btn{
+            float:left;
+            width:230px;
+            height:100px;
+            background:url("/images/sign/index_sprites_20160530.png") no-repeat;
             background-position: 0px -731px;
             margin: 150px 0 0 96px;
             cursor: pointer;
@@ -1117,7 +1126,9 @@ body {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, .5);
+          background: #000;
+          opacity: .5;
+          filter: alpha(opacity=50);
           z-index: 9998;
           display: none;
         }
