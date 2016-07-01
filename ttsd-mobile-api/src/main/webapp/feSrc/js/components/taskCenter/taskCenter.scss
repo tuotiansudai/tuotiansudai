@@ -4,6 +4,11 @@
     height: auto;
     overflow: auto;
     :global { 
+        .loading {
+            text-align:center;
+            font-size:30px;
+            i { color:#fff;}
+        }
         div {
             font-size: 20px; /*px*/
             color: #0f3d70;
@@ -249,19 +254,7 @@
         }
     }
 
-    @keyframes spinner {
-        0% {
-            transform: rotate(0)
-        }
-        100% {
-            transform: rotate(360deg)
-        }
-    }
-    .spinner {
-        animation: spinner 1s infinite;
-        text-align: center;
-        font-size: 50px;
-    }
+
 }
 
         

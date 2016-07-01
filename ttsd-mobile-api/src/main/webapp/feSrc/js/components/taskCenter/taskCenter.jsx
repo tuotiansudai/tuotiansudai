@@ -127,7 +127,7 @@ class taskCenter extends React.Component {
 
         state = {
             active: MenuData.tabHeader[0].value,
-            isShowLoading: false,
+            isShowLoading: true,
             listData: {
                 newbieTasks: [],
                 advancedTasks: []
@@ -154,14 +154,14 @@ class taskCenter extends React.Component {
         let value = event.target.dataset.value;
         this.setState({
           active: value,
-          isShowLoading:false
+          isShowLoading:true
         });
 
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
             this.setState((previousState) => {
                 return {
-                    isShowLoading:true,
+                    isShowLoading:false,
                     listData: {
                         newbieTasks: response.data.newbieTasks,
                         advancedTasks: response.data.advancedTasks
@@ -174,7 +174,7 @@ class taskCenter extends React.Component {
            this.fetchData('/task-center/completed-tasks',(response) => {
             this.setState((previousState) => {
                 return {
-                    isShowLoading:true,
+                    isShowLoading:false,
                     listData: {
                         newbieTasks: response.data.newbieTasks,
                         advancedTasks: response.data.advancedTasks
@@ -193,7 +193,7 @@ class taskCenter extends React.Component {
         this.fetchData('/task-center/tasks',(response) => {
             this.setState((previousState) => {
                 return {
-                    isShowLoading:true,
+                    isShowLoading:false,
                     listData: {
                         newbieTasks: response.data.newbieTasks,
                         advancedTasks: response.data.advancedTasks
@@ -223,7 +223,7 @@ class taskCenter extends React.Component {
 	render() { 
         let loading = null;
         if (this.state.isShowLoading) {
-            loading = <div style={{textAlign: 'center', fontSize: 50}}><i className={spinner + ' fa fa-spinner'} aria-hidden="true"></i></div>;
+            loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
         }
   		return (
 			<div className={main}>
@@ -237,11 +237,11 @@ class taskCenter extends React.Component {
 		
 			<div className="ContentBox" ref="scrollWrap">
 			<div id="OngoingBox" className="OngoingBox" >
-
+            {loading}
 			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
 
 			<AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
-            {loading}
+            
 			</div>
 			</div>
 			</div>	    
