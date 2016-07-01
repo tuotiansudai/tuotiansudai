@@ -169,18 +169,16 @@ class MediaList extends React.Component {
 						<ul className="list">
 							{this.state.listData.map((value, index) => {
 								return (
-									<li key={index} className="clearfix">
+									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>
 										<div className="pull-left">
-											<a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>
-												<img src={value.thumbPicture} alt={value.title} data-id={value.articleId}/>
-											</a>
+											<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
 										</div>
-										<h3><a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>{value.title}</a></h3>
+										<h3>{value.title}</h3>
 										<div className="clearfix bottom-block">
 											<time className="pull-left">{value.creatTime}</time>
 											<div className="pull-right">
 												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise" likeCount={value.likeCount} id={value.articleId}></Praise>
+												<Praise className="praise"></Praise>
 											</div>
 										</div>
 									</li>
