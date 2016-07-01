@@ -5,6 +5,7 @@ import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.UserView;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public interface UserService {
 
     void refreshAreaByMobileInJob();
 
-    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
+    List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber);
 
     List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
 

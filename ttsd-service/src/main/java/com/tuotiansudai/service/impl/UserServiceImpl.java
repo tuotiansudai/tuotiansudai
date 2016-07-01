@@ -392,8 +392,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
-        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    public List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
     @Override

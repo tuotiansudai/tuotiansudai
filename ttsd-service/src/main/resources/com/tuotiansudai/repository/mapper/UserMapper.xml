@@ -307,13 +307,19 @@
         select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
     </select>
 
-    <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
+    <select id="searchAllUsers" parameterType="map" resultMap="userViewResultMap">
         SELECT
-        *
+        u.*,
+        a.*,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        user u
+        (user u
         LEFT JOIN account a
-        ON u.`login_name` = a.`login_name`
+        ON
+        u.`login_name` = a.`login_name`)
+        LEFT JOIN user referrer_u
+        ON
+        u.`referrer` = referrer_u.`login_name`
         <where>
             <if test="identityNumber != null and identityNumber != '' ">
                 AND a.`identity_number` = #{identityNumber}
@@ -321,8 +327,8 @@
             <if test="loginName != null and loginName != '' ">
                 AND u.`login_name` = #{loginName}
             </if>
-            <if test="referrer != null and referrer != '' ">
-                AND u.`referrer` = #{referrer}
+            <if test="referrerMobile != null and referrerMobile != '' ">
+                AND referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND u.`mobile` = #{mobile}

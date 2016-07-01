@@ -25,8 +25,10 @@ public interface UserMapper {
 
     void updateUser(UserModel userModel);
 
-    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName, @Param(value = "referrer") String referrer, @Param(value = "mobile") String mobile,
-                                   @Param(value = "identityNumber") String identityNumber);
+    List<UserView> searchAllUsers(@Param(value = "loginName") String loginName,
+                                  @Param(value = "referrerMobile") String referrerMobile,
+                                  @Param(value = "mobile") String mobile,
+                                  @Param(value = "identityNumber") String identityNumber);
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 

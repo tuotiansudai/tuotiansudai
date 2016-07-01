@@ -162,16 +162,16 @@ public class UserController {
 
     @RequestMapping(value = "/users-search", method = RequestMethod.GET)
     public ModelAndView searchAllUsers(String loginName,
-                                       String referrer,
+                                       String referrerMobile,
                                        String mobile,
                                        String identityNumber, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("/user-search");
         if (request.getParameterMap().size() != 0) {
             mv.addObject("loginName", loginName);
-            mv.addObject("referrer", referrer);
+            mv.addObject("referrerMobile", referrerMobile);
             mv.addObject("mobile", mobile);
             mv.addObject("identityNumber", identityNumber);
-            mv.addObject("userList", userService.searchAllUsers(loginName, referrer, mobile, identityNumber));
+            mv.addObject("userList", userService.searchAllUsers(loginName, referrerMobile, mobile, identityNumber));
         }
         return mv;
     }
