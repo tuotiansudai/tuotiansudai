@@ -164,7 +164,7 @@ class MediaList extends React.Component {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body" ref="tabBody">
+				<div className="tab-body" ref="scroll-wrap">
 					<div className="scroll-wrap" ref="scrollWrap">
 						<ul className="list">
 							{this.state.listData.map((value, index) => {

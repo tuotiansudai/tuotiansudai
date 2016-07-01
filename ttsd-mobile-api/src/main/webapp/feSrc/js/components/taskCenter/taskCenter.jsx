@@ -3,6 +3,7 @@ import { main } from './taskCenter.scss';
 import changeTitle from 'utils/changeTitle';
 import ajax from 'utils/ajax';
 import IScroll from 'iscroll';
+import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
 import taskBanner from './task_banner.png';
@@ -51,15 +52,17 @@ class NewbieTaskGroup extends React.Component {
         let newbieTasks=this.props.data;
         let rows=[];
         let jumto=this.props.jumpToEvent;
+        let keyNum;
         newbieTasks.forEach(function(option,key) { 
-            rows.push(<div className="TaskItemNewbie" key={key}>
-                        <div className="SerialNum">0{key}</div>
+            keyNum=key+1; 
+            rows.push(<div className={option.completed ? 'TaskItemNewbie completed-tasks' : 'TaskItemNewbie'} key={key} >
+                        <div className="SerialNum" >0{keyNum}</div>
                             <div className="TaskContent">
                             <div className="TaskItemTitle">{option.title}</div>
                             <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                             <div className="TaskItemLine"></div>
                             <div className="TaskRewardGroup">
-                                <div className="TaskReward">{option.point}</div>
+                                <div className="TaskReward">奖励{option.point}</div>
                                 <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
@@ -98,7 +101,7 @@ class AdvanceTaskGroup extends React.Component {
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>
-                    <ButtonStatus stocked={option.stocked} value={option.number} location={option.location} />
+                    <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
                 </div>);
         });
 
@@ -132,6 +135,13 @@ class taskCenter extends React.Component {
         };
 
     listIndex = 1;
+
+    destroyIscroll() {
+        if (this.myScroll) {
+            this.myScroll.destroy();
+            this.myScroll = null;
+        }
+    }
    
     fetchData(url , callback = function() {}) {
         ajax({
@@ -193,25 +203,17 @@ class taskCenter extends React.Component {
 
 	}
     componentDidUpdate() {
-        // setTimeout(() => {
-        //         if (!this.myScroll) {
-        //             let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-        //             this.refs.tabBody.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
-        //             this.myScroll = new IScroll(this.refs.scrollWrap);
-        //             this.myScroll.on('scrollEnd', () => {
-        //                 if (this.myScroll.y <= this.myScroll.maxScrollY) {
-        //                     if (this.state.isShowLoading) {
-        //                         this.pagination.call(this);
-        //                     }
-        //                 }
-        //             });
-        //         } else {
-        //             this.myScroll.refresh();
-        //             if (this.listIndex === 1) {
-        //                 this.myScroll.scrollTo(0, 0);
-        //             }
-        //         }
-        //     }, 200);
+        imagesLoaded(this.refs.scrollWrap).on('always', () => {
+            setTimeout(() => {
+            if (!this.myScroll) {
+                this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
+                this.myScroll = new IScroll(this.refs.scrollWrap);
+            }
+            else {
+                this.myScroll.refresh();
+            }
+          },200);
+        });
     }
 
 	componentWillUnmount() {
@@ -219,8 +221,8 @@ class taskCenter extends React.Component {
 	}
 	render() { 
   		return (
-			<div className={main} >
-			    <div className="MenuBox">
+			<div className={main}>
+			    <div className="MenuBox" ref="tabHeader">
 			        <ul>
                         {MenuData.tabHeader.map((value, index) => {
                             return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onClick={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
@@ -228,8 +230,8 @@ class taskCenter extends React.Component {
 			        </ul>
 			    </div>
 		
-			<div className="ContentBox">
-			<div id="OngoingBox" className="OngoingBox" ref="tabBody">
+			<div className="ContentBox" ref="scrollWrap">
+			<div id="OngoingBox" className="OngoingBox" >
 
 			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
 

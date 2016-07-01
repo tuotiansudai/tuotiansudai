@@ -25,31 +25,13 @@ app.get('/task-center/completed-tasks', function(req, res) {
 			}, {
 				name: "FIRST_SINGLE_INVEST",
 				title: "单笔投资满10000.00元",
-				description: null,
+				description: '可获得奖励',
 				point: 2000,
 				completed: true
 			},{
 				name: "FIRST_INVEST_180",
 				title: "首次投资180天标的",
-				description: null,
-				point: 1000,
-				completed: true
-			}, {
-				name: "FIRST_INVEST_360",
-				title: "首次投资360天标的",
-				description: null,
-				point: 1000,
-				completed: true
-			}, {
-				name: "FIRST_TURN_ON_NO_PASSWORD_INVEST",
-				title: "首次开通免密支付",
-				description: null,
-				point: 1000,
-				completed: true
-			}, {
-				name: "FIRST_TURN_ON_AUTO_INVEST",
-				title: "首次开通自动投标",
-				description: null,
+				description: '可获得奖励',
 				point: 1000,
 				completed: true
 			}],
@@ -62,9 +44,9 @@ app.get('/task-center/completed-tasks', function(req, res) {
 			}, {
 				name: "FIRST_SINGLE_INVEST",
 				title: "单笔投资满10000.00元",
-				description: null,
+				description: '可获得奖励',
 				point: 2000,
-				completed: false
+				completed: true
 			}, {
 				name: "EACH_RECOMMEND",
 				title: "每邀请1名好友注册",
@@ -74,7 +56,7 @@ app.get('/task-center/completed-tasks', function(req, res) {
 			}, {
 				name: "FIRST_REFERRER_INVEST",
 				title: "首次邀请好友投资",
-				description: null,
+				description: '可获得奖励',
 				point: 5000,
 				completed: true
 			}, {
@@ -113,7 +95,7 @@ app.get('/task-center/tasks', function(req, res) {
 			}, {
 				name: "FIRST_REFERRER_INVEST",
 				title: "首次邀请好友投资",
-				description: null,
+				description: 'rrr',
 				point: 5000,
 				completed: false
 			}],
