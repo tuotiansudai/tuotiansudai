@@ -2,12 +2,12 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
     var loanProgress = $('.loan-detail-content').data('loan-progress');
 
     if (loanProgress <= 50) {
-        $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * loanProgress + "deg)");
+        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
         $('.chart-box .rount2').hide();
     } else {
-        $('.chart-box .rount').css('webkitTransform', "rotate(180deg)");
+        $('.chart-box .rount').css('transform', "rotate(180deg)");
         $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
+        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
     $.ajax({
