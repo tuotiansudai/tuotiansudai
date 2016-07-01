@@ -266,7 +266,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -350,7 +350,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -381,7 +381,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
