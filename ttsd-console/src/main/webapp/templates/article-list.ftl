@@ -68,7 +68,7 @@
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                 <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>/
                             </@security.authorize>
-                            <@security.authorize access="hasAnyAuthority('OPERATOR','EDIT_ARTICLE')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR','EDITOR')">
                                 <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
                             </@security.authorize>
                             <a href="/announce-manage/article/${article.articleId?c}/retrace"> 撤销</a>
