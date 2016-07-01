@@ -24,7 +24,7 @@ var getIP = function() {
 var IP = getIP();
 console.log('IP:', IP);
 // proxy logic
-var proxyList = ['/media-center*'];
+var proxyList = ['/media-center*', '/task-center*'];
 var proxyObj = {};
 proxyList.forEach(function(value) {
 	proxyObj[value] = {
