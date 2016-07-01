@@ -248,6 +248,20 @@
             color: #34312b;
         }
     }
+
+    @keyframes spinner {
+        0% {
+            transform: rotate(0)
+        }
+        100% {
+            transform: rotate(360deg)
+        }
+    }
+    .spinner {
+        animation: spinner 1s infinite;
+        text-align: center;
+        font-size: 50px;
+    }
 }
 
         
