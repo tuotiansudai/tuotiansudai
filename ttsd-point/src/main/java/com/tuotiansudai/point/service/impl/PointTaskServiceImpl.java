@@ -199,6 +199,13 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private String getTaskUrl(PointTask pointTask) {
         switch (pointTask) {
+            case REGISTER:
+                return "/register/account";
+            case BIND_BANK_CARD:
+                return "/bind-card";
+            case FIRST_RECHARGE:
+                return "/recharge";
+            case FIRST_INVEST:
             case EACH_SUM_INVEST:
             case FIRST_SINGLE_INVEST:
             case FIRST_INVEST_180:
@@ -224,6 +231,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             long taskLevel = userPointTaskModel.getTaskLevel();
             PointTaskDto pointTaskDto = new PointTaskDto();
             pointTaskDto.setPoint(userPointTaskModel.getPoint());
+            pointTaskDto.setCompleted(true);
             PointTask pointTask = userPointTaskModel.getPointTask().getName();
             switch (pointTask) {
                 case EACH_SUM_INVEST:

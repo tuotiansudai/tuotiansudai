@@ -54,7 +54,7 @@ module.exports = objectAssign(commonOptions, {
 		hot: true,
 		host: '0.0.0.0',
 		port: port,
-		publicPath: '/assets/',
+		publicPath: '/api/js/',
 		noInfo: false,
 		proxy: proxyObj
 	}

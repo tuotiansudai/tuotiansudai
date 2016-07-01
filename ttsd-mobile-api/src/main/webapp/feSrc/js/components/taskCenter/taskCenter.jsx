@@ -34,11 +34,14 @@ class ButtonStatus extends React.Component {
         let button=null;
         let value=this.props.value;
         let url=this.props.location;
+        let description=this.props.description;
+
         if(!isComplete) {
-            button=<span className="TaskItemBtn" data-value={value} data-url={url} onClick={this.jumpToWhere.bind(this)}>去完成</span>;
+            // onClick={this.jumpToWhere.bind(this)}
+            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} href={url} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
-           button=<span className="TaskItemCompleteBtn" disabled>已完成</span>;
+           button=<button className={description? 'TaskItemCompleteBtn' : 'TaskItemCompleteBtn column-one'}  disabled>已完成</button>;
         }
         return button;
     }  
@@ -60,14 +63,14 @@ class NewbieTaskGroup extends React.Component {
                         <div className="SerialNum" >0{keyNum}</div>
                             <div className="TaskContent">
                             <div className="TaskItemTitle">{option.title}</div>
-                            <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
+                            <div className="TaskItemDes" dangerouslySetInnerHTML={{__html: option.description}} ></div>
                             <div className="TaskItemLine"></div>
                             <div className="TaskRewardGroup">
                                 <div className="TaskReward">奖励{option.point}</div>
                                 <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
-                        <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
+                        <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                    </div>);
         });
             return (
@@ -106,7 +109,7 @@ class AdvanceTaskGroup extends React.Component {
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>
-                    <ButtonStatus stocked={option.completed} value={option.number} location={option.location} />
+                    <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
                 </div>);
         });
 

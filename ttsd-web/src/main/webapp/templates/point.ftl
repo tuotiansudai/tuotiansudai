@@ -117,7 +117,7 @@
                     <#list advancedPointTasks as advancePointTask>
                         <div class="border-box <#if advancePointTask.description??>two-col<#else>one-col</#if>">
                             <dl class="fl">
-                                <dt>${advancePointTask.title}<span class="color-key"> ${advancePointTask.point?string.computer}财豆</span></dt>
+                                <dt>${advancePointTask.title} <span class="color-key">奖励${advancePointTask.point?string.computer}财豆</span></dt>
                                 <#if advancePointTask.description??>
                                     <dd>${advancePointTask.description}</dd>
                                 </#if>
@@ -136,7 +136,7 @@
                     <#list completedAdvancedPointTasks as completedAdvancePointTask>
                         <div class="border-box one-col">
                             <dl class="fl">
-                                <dt>${completedAdvancePointTask.title}<span class="color-key"> ${completedAdvancePointTask.point?string.computer}财豆</span></dt>
+                                <dt>${completedAdvancePointTask.title} <span class="color-key">奖励${completedAdvancePointTask.point?string.computer}财豆</span></dt>
                             </dl>
                             <button class="fr btn-normal" disabled>已完成</button>
                         </div>
