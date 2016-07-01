@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -222,6 +219,26 @@ public class UserItemDataDto implements Serializable {
         this.province = userModel.getProvince();
         this.city = userModel.getCity();
         this.lastBillTime = userModel.getLastBillTime();
+    }
+
+    public UserItemDataDto(UserView userView) {
+        this.loginName = userView.getLoginName();
+        this.email = userView.getEmail();
+        this.referrer = userView.getReferrerMobile();
+        this.channel = userView.getChannel();
+        this.source = userView.getSource();
+        this.mobile = userView.getMobile();
+        this.registerTime = userView.getRegisterTime();
+        if (userView.getAccount() != null) {
+            this.userName = userView.getAccount().getUserName();
+        }
+        this.balance = AmountConverter.convertCentToString(userView.getAccount().getBalance());
+        this.status = userView.getStatus();
+        this.autoInvestStatus = userView.getAutoInvestStatus();
+        this.identityNumber = userView.getAccount().getIdentityNumber();
+        this.province = userView.getProvince();
+        this.city = userView.getCity();
+        this.lastBillTime = userView.getLastBillTime();
     }
 }
 

@@ -180,7 +180,7 @@ public class UserController {
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    RoleStage roleStage, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    RoleStage roleStage, String referrerMobile, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
@@ -193,25 +193,25 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, 1, count);
+            int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
-            for (int i = 0; i < userItemDataDtos.size(); i++) {
+            for (UserItemDataDto userItemDataDto : userItemDataDtos) {
                 List<String> dataModel = Lists.newArrayList();
-                dataModel.add(userItemDataDtos.get(i).getLoginName());
-                dataModel.add(userItemDataDtos.get(i).isBankCard() ? "是" : "否");
-                dataModel.add(userItemDataDtos.get(i).getUserName());
-                dataModel.add(userItemDataDtos.get(i).getMobile());
-                dataModel.add(userItemDataDtos.get(i).getEmail());
-                dataModel.add(userItemDataDtos.get(i).getReferrer());
-                dataModel.add(userItemDataDtos.get(i).isReferrerStaff() ? "是" : "否");
-                dataModel.add(userItemDataDtos.get(i).getSource() != null ? userItemDataDtos.get(i).getSource().name() : "");
-                dataModel.add(userItemDataDtos.get(i).getChannel());
-                dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
-                dataModel.add("1".equals(userItemDataDtos.get(i).getAutoInvestStatus()) ? "是" : "否");
+                dataModel.add(userItemDataDto.getLoginName());
+                dataModel.add(userItemDataDto.isBankCard() ? "是" : "否");
+                dataModel.add(userItemDataDto.getUserName());
+                dataModel.add(userItemDataDto.getMobile());
+                dataModel.add(userItemDataDto.getEmail());
+                dataModel.add(userItemDataDto.getReferrer());
+                dataModel.add(userItemDataDto.isReferrerStaff() ? "是" : "否");
+                dataModel.add(userItemDataDto.getSource() != null ? userItemDataDto.getSource().name() : "");
+                dataModel.add(userItemDataDto.getChannel());
+                dataModel.add(new DateTime(userItemDataDto.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+                dataModel.add("1".equals(userItemDataDto.getAutoInvestStatus()) ? "是" : "否");
 
-                List<UserRoleModel> userRoleModels = userItemDataDtos.get(i).getUserRoles();
+                List<UserRoleModel> userRoleModels = userItemDataDto.getUserRoles();
                 List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
                     @Override
                     public String apply(UserRoleModel input) {
@@ -220,16 +220,16 @@ public class UserController {
                 });
 
                 dataModel.add(StringUtils.join(userRole, ";"));
-                dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
-                dataModel.add(userItemDataDtos.get(i).getBirthday());
-                dataModel.add(userItemDataDtos.get(i).getProvince());
-                dataModel.add(userItemDataDtos.get(i).getCity());
+                dataModel.add(userItemDataDto.getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
+                dataModel.add(userItemDataDto.getBirthday());
+                dataModel.add(userItemDataDto.getProvince());
+                dataModel.add(userItemDataDto.getCity());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);
@@ -238,7 +238,7 @@ public class UserController {
             mv.addObject("beginTime", beginTime);
             mv.addObject("endTime", endTime);
             mv.addObject("roleStage", roleStage);
-            mv.addObject("referrer", referrer);
+            mv.addObject("referrerMobile", referrerMobile);
             mv.addObject("channel", channel);
             mv.addObject("source", source);
             mv.addObject("pageIndex", index);
