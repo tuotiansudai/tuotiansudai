@@ -5,3 +5,6 @@ h1 {
 	color:$red;
 	background:url($imgUrl+'/ic-register-account.png') left top no-repeat;
 }
+:global(h2) {
+  color: blue;
+}

@@ -9,6 +9,12 @@ var TEMPLATE_PATH=path.resolve(basePath,'templates');
 
 var HtmlwebpackPlugin=require('html-webpack-plugin');
 
+
+var devFlagPlugin = new webpack.DefinePlugin({
+  __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
+});
+
+
 var port = 8080;
 var getIP = function() {
     var ipList = os.networkInterfaces();
