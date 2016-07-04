@@ -416,7 +416,6 @@ html, body {
     -webkit-background-size: 659px 631px;
     -moz-background-size: 659px 631px;
     background-size: 659px 631px; } }
-
 #fp-nav ul li {
   width: 25px;
   height: 25px; }
@@ -536,7 +535,6 @@ body {
       width: 100%;
       position: relative;
       margin: 0 0 10px 0; }
-
 .home-page-container .notice-list {
   width: 100%;
   height: 40px;
@@ -587,7 +585,6 @@ body {
         margin-top: 3px; }
         .home-page-container .notice-list .notice-container .notice-text .text-href:hover {
           text-decoration: underline; }
-
 .home-page-container .main-advantage {
   margin-top: 20px; }
   .home-page-container .main-advantage:after {
@@ -625,7 +622,6 @@ body {
           display: block; }
         .home-page-container .main-advantage dl dd img.icon-on {
           display: none; }
-
 .home-page-container .home-content {
   background: #fafafa;
   margin-top: 35px;
@@ -1190,7 +1186,6 @@ body {
     .assurance-container .down .down-icon {
       -webkit-animation: fade 3s infinite linear;
       animation: fade 3s infinite linear; }
-
 @-webkit-keyframes fade {
   0% {
     opacity: 1; }
@@ -1198,7 +1193,6 @@ body {
     opacity: 0.3; }
   100% {
     opacity: 1; } }
-
 @keyframes fade {
   0% {
     opacity: 1; }
@@ -1279,7 +1273,6 @@ body {
       .new-guide-container .page-width .down .down-icon {
         -webkit-animation: fade 3s infinite linear;
         animation: fade 3s infinite linear; }
-
 @-webkit-keyframes fade {
   0% {
     opacity: 1; }
@@ -1287,7 +1280,6 @@ body {
     opacity: 0.3; }
   100% {
     opacity: 1; } }
-
 @keyframes fade {
   0% {
     opacity: 1; }
@@ -1441,7 +1433,6 @@ body {
       .want-recruit-container .page-width .down .down-icon {
         -webkit-animation: fade 3s infinite linear;
         animation: fade 3s infinite linear; }
-
 @-webkit-keyframes fade {
   0% {
     opacity: 1; }
@@ -1449,7 +1440,6 @@ body {
     opacity: 0.3; }
   100% {
     opacity: 1; } }
-
 @keyframes fade {
   0% {
     opacity: 1; }
@@ -1626,27 +1616,35 @@ body {
 @media screen and (max-width: 1370px) and (max-height: 680px) {
   .assurance-container .box-benift .page-width img.fl {
     margin-top: 20px; }
+
   .assurance-container .down {
     top: 350px; }
+
   .assurance-container .section-title b {
     font-size: 44px; }
+
   .assurance-container .section-title em {
     font-size: 20px; }
+
   .assurance-container .box-wealth p {
     font-size: 12px; }
+
   .assurance-container .box-insurance p {
     font-size: 12px; }
+
   .box-benift {
     padding-top: 10px; }
+
   .box-wealth {
     padding-top: 10px; }
+
   .assurance-container .box-insurance {
     padding-top: 45px; }
     .assurance-container .box-insurance .page-width .fr {
       padding-top: 275px; }
+
   .assurance-container .down {
     top: 370px; } }
-
 @media screen and (max-width: 700px) {
   .home-page-container .main-advantage, .home-page-container .register-ad-box {
     display: none; }
@@ -1783,6 +1781,7 @@ body {
         margin-bottom: 0 !important; }
   .home-page-container .media-hide {
     display: none; }
+
   /* project schedule progress */
   .project-schedule {
     width: 35%;
@@ -1793,6 +1792,7 @@ body {
       display: none; }
     .project-schedule .p-title .point {
       color: #ff752a; }
+
   /* new guide page  */
   .new-guide-container .page-width .down {
     bottom: 0 !important; }
@@ -1855,12 +1855,14 @@ body {
         display: block; }
   .new-guide-container .intro-text {
     background: url("/activity/images/sign/guide-bg.png") no-repeat center fixed; }
+
   .refer-reward-instruction .refer-reward-bg {
     background: #fff; }
     .refer-reward-instruction .refer-reward-bg .refer-reward-inner {
       width: 100%; }
       .refer-reward-instruction .refer-reward-bg .refer-reward-inner img {
         width: 95%; }
+
   .back-home {
     background: rgba(0, 0, 0, 0.6);
     color: #fff;
@@ -1871,6 +1873,7 @@ body {
     top: 10px;
     font-size: 12px;
     padding: 5px 12px; }
+
   .assurance-container p {
     line-height: 1.8;
     font-size: 12px; }
@@ -1945,6 +1948,7 @@ body {
         display: inline-block;
         padding: 5px 14px;
         line-height: 1.3; }
+
   .want-recruit-container .down {
     bottom: 0 !important; }
     .want-recruit-container .down b {
@@ -2031,11 +2035,12 @@ body {
         .want-recruit-container .three-model p.tel-text span {
           padding: 10px 15px;
           font-size: 14px; }
+
   .loan-list-index {
     display: none !important; }
+
   .product-box-list {
     display: block !important; } }
-
 @media screen and (max-width: 320px) {
   .want-recruit-container .one-model {
     text-align: center;
@@ -2058,8 +2063,9 @@ body {
       .want-recruit-container .three-model p.tel-text span {
         padding: 10px 15px;
         font-size: 14px; } }
-
 @media screen {
   .home-page-container .main-advantage dl dd {
     float: left;
     margin-bottom: 30px; } }
+
+/*# sourceMappingURL=full_screen.css.map */
