@@ -3,8 +3,6 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
@@ -18,6 +16,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -67,14 +66,18 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private RandomUtils randomUtils;
+
     public static String redisShareTemple = "web:ranking:shared:{0}:{1}";
+
+    private static String[] telFirst="134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153,186,188".split(",");
+
+    private static String telTemplate = "{0}****{1}";
 
     @Override
     public void imitateLottery() {
-        String loginName;
-        do {
-            loginName = this.imitateLoginName();
-        } while (userMapper.findByLoginName(loginName) != null);
+        String mobile = this.imitateMobile();
         long notRealNum = userPointPrizeMapper.findAllNotReal();
         List<PointPrizeModel> pointPrizeModels;
         if (notRealNum % 2880 != 0 || notRealNum == 0) {
@@ -83,20 +86,15 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
         }
         int num = new Random().nextInt(pointPrizeModels.size());
-        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
+        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), mobile, false);
         userPointPrizeMapper.create(userPointPrizeModel);
     }
 
-    private String imitateLoginName() {
-        int length = new Random().nextInt(20) + 5;
-        String base = "abcdefghijklmnopqrstuvwxyz";
+    private String imitateMobile() {
         Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
-        }
-        return sb.toString();
+        int temp = random.nextInt(telFirst.length);
+        int end = (int) (Math.random() * 9000 + 1000);
+        return MessageFormat.format(telTemplate, telFirst[temp], String.valueOf(end));
     }
 
     @Override
@@ -165,7 +163,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
             @Override
             public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName()), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
                 return userPointPrizeDto;
             }
         });

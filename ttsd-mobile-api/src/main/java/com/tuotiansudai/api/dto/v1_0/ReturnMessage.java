@@ -17,7 +17,6 @@ public enum ReturnMessage {
     PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-20位"),
     USER_NAME_OR_PASSWORD_IS_INVALID("0018","用户名或密码不符合规则"),
     LOGIN_FAILED("0019","用户名或密码错误"),
-    REFERRER_IS_INVALID("0200","推荐人只能输入电话"),
     /******手机端注册返回码******/
 
     /******手机端实名认证返回码******/

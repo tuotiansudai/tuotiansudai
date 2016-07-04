@@ -3,6 +3,7 @@ package com.tuotiansudai.util;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -108,11 +109,22 @@ public class RandomUtils {
         return encryptLoginName;
     }
 
-    public String encryptMiddleMobile(String mobile){
-        if(Strings.isNullOrEmpty(mobile) || mobile.length() != 11){
+    public String encryptMobile(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+        UserModel userModel = userMapper.findByLoginName(encryptLoginName);
+        if (userModel == null) {
+            return encryptLoginName;
+        }
+        return encryptMiddleMobile(userModel.getMobile());
+    }
+
+    public String encryptMiddleMobile(String mobile) {
+        if (Strings.isNullOrEmpty(mobile) || mobile.length() != 11) {
             return "****";
         }
-        String encryptLoginName = mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(7, mobile.length());
+        String encryptLoginName = mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(7);
 
         return encryptLoginName;
     }

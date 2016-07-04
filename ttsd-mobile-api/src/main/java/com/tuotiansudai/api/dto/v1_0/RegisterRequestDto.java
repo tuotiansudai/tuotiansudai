@@ -18,7 +18,7 @@ public class RegisterRequestDto extends BaseParamDto {
     @NotEmpty(message = "0012")
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$", message = "0012")
     private String password;
-    @Pattern(regexp = "^1\\d{10}$", message = "0200")
+
     private String referrer;
 
     public String getUserName() {
