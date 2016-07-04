@@ -19,6 +19,12 @@ public class LoanInvestAchievementDto implements Serializable {
 
     private String loanRemainingAmount;
 
+    private String firstInvestAchievementMobile;
+
+    private String lastInvestAchievementMobile;
+
+    private String maxAmountAchievementMobile;
+
     public String getFirstInvestAchievementLoginName() {
         return firstInvestAchievementLoginName;
     }
@@ -73,5 +79,29 @@ public class LoanInvestAchievementDto implements Serializable {
 
     public void setLoanRemainingAmount(String loanRemainingAmount) {
         this.loanRemainingAmount = loanRemainingAmount;
+    }
+
+    public String getFirstInvestAchievementMobile() {
+        return firstInvestAchievementMobile;
+    }
+
+    public void setFirstInvestAchievementMobile(String firstInvestAchievementMobile) {
+        this.firstInvestAchievementMobile = firstInvestAchievementMobile;
+    }
+
+    public String getLastInvestAchievementMobile() {
+        return lastInvestAchievementMobile;
+    }
+
+    public void setLastInvestAchievementMobile(String lastInvestAchievementMobile) {
+        this.lastInvestAchievementMobile = lastInvestAchievementMobile;
+    }
+
+    public String getMaxAmountAchievementMobile() {
+        return maxAmountAchievementMobile;
+    }
+
+    public void setMaxAmountAchievementMobile(String maxAmountAchievementMobile) {
+        this.maxAmountAchievementMobile = maxAmountAchievementMobile;
     }
 }

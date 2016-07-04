@@ -4,7 +4,7 @@
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
     <ul class="info-list" id="personInfoBox">
         <li><span class="info-title"> 用户名</span>
-            <em class="info">${loginName}</em>
+            <em class="info">${mobile}</em>
         </li>
         <li><span class="info-title"> 实名认证</span>
             <#if userName??>

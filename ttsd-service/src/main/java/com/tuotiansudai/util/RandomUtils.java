@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -108,10 +109,10 @@ public class RandomUtils {
     }
 
     public String encryptMiddleMobile(String mobile){
-        if(mobile.length() < 11){
+        if(Strings.isNullOrEmpty(mobile) || mobile.length() != 11){
             return "****";
         }
-        String encryptLoginName = mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(8, 11);
+        String encryptLoginName = mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(7, mobile.length());
 
         return encryptLoginName;
     }

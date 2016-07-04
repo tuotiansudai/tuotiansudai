@@ -57,6 +57,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private RandomUtils randomUtils;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -90,6 +93,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
+                    item.setMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(loginName)));
+
 
                     long amount = 0;
                     List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
@@ -152,17 +157,20 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
                 achievementDto.setFirstInvestAchievementLoginName(firstInvest.getLoginName());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(firstInvest.getLoginName())));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
                 achievementDto.setMaxAmountAchievementLoginName(maxInvest.getLoginName());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(maxInvest.getLoginName())));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
                 achievementDto.setLastInvestAchievementLoginName(lastInvest.getLoginName());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(lastInvest.getLoginName())));
             }
             achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
 

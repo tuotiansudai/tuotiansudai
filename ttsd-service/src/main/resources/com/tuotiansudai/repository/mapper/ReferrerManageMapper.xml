@@ -430,7 +430,8 @@
         SELECT
             rr.login_name,
             rr.level,
-            u.register_time
+            u.register_time,
+            u.mobile
         FROM
             referrer_relation rr
         LEFT JOIN user u

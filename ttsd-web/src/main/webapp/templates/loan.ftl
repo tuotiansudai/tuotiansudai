@@ -239,10 +239,10 @@
                     <tbody>
                     <tr>
                         <td class="title">获得者</td>
-                        <td>${loan.achievement.firstInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
+                        <td>${loan.achievement.firstInvestAchievementMobile!('<span class="text-lighter">虚位以待</span>')}</td>
                         <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
-                                ${loan.achievement.maxAmountAchievementLoginName}
+                            <#if loan.achievement.maxAmountAchievementMobile??>
+                                ${loan.achievement.maxAmountAchievementMobile}
                                 <#if loan.loanStatus == 'RAISING'>
                                     <span class="text-lighter">(待定)</span>
                                 </#if>
@@ -250,26 +250,26 @@
                                 <span class="text-lighter">虚位以待</span>
                             </#if>
                         </td>
-                        <td>${loan.achievement.lastInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
+                        <td>${loan.achievement.lastInvestAchievementMobile!('<span class="text-lighter">虚位以待</span>')}</td>
                     </tr>
                     <tr>
                         <td class="title">战况</td>
                         <td>
-                            <#if loan.achievement.firstInvestAchievementLoginName??>
+                            <#if loan.achievement.firstInvestAchievementMobile??>
                                 ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 占领先锋
                             <#else>
                                 --
                             </#if>
                         </td>
                         <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
+                            <#if loan.achievement.maxAmountAchievementMobile??>
                                 以累积投资 ${loan.achievement.maxAmountAchievementAmount}元 夺得标王
                             <#else>
                                 --
                             </#if>
                         </td>
                         <td>
-                            <#if loan.achievement.lastInvestAchievementLoginName??>
+                            <#if loan.achievement.lastInvestAchievementMobile??>
                                 ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 一锤定音
                             <#else>
                                 目前项目剩余${loan.achievement.loanRemainingAmount}元<br/>快来一锤定音吧

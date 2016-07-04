@@ -3,10 +3,12 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +31,12 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
     @Value(value = "${pay.staff.reward}")
     private String staffReward;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Override
     public List<ReferrerManageView> findReferrerManage(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, int currentPageNo, int pageSize) {
@@ -55,6 +63,9 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
+        for(ReferrerRelationView referrerRelationView : referRelationList){
+            referrerRelationView.setMobile(userMapper.findUsersMobileByLoginName(referrerRelationView.getMobile()));
+        }
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
         BasePaginationDataDto<ReferrerRelationView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, referRelationList);
         dataDto.setStatus(true);
@@ -77,6 +88,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         for (ReferrerManageView view : referrerManageViewList) {
             view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
             view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
+            view.setMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(view.getInvestName())));
         }
     }
 
