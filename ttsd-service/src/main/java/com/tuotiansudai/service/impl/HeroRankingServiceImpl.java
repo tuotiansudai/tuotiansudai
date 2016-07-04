@@ -14,8 +14,10 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.RandomUtils;
@@ -39,6 +41,8 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private InvestMapper investMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -75,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
-        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 1, 10);
+        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 0, 10);
     }
 
     @Override
@@ -177,17 +181,27 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
         long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null,loginName);
         Date registerTime = accountMapper.findAccountRegisterTimeByLoginName(loginName);
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 1000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000){
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }
 
-        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 1000){
+        if(registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0),DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount >= 100000){
             createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
             return GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000;
         }
 
         createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         return GivenMembership.AFTER_START_ACTIVITY_REGISTER;
+    }
+
+    @Override
+    public long findUsersCount(){
+        return userMapper.findUsersCount();
+    }
+
+    @Override
+    public long sumInvestAmount(){
+        return investMapper.sumInvestAmount(null, null, null, null, null, null, null, InvestStatus.SUCCESS, null);
     }
 
     private void createUserMembershipModel(String loginName,int level){

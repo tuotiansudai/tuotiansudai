@@ -58,7 +58,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         List<InvestModel>  investModels = investMapper.findInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus(), index, pageSize);
 
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investModels));
+        dtoData.setInvestList(convertResponseData(investModels,userInvestListRequestDto.getStatus()));
         dtoData.setIndex(userInvestListRequestDto.getIndex());
         dtoData.setPageSize(userInvestListRequestDto.getPageSize());
         long investModelCount = investMapper.countInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus());
@@ -72,7 +72,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         return dto;
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels) {
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels,LoanStatus loanStatus) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if (CollectionUtils.isNotEmpty(investModels)) {
@@ -83,6 +83,9 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
                 dto.setExtraRate(investExtraRateModel != null ? decimalFormat.format(investExtraRateModel.getExtraRate() * 100) : null);
 
+                if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+                    dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
+                }
                 long actualInterest = 0;
                 long expectedInterest = 0;
 

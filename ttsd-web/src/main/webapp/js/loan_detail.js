@@ -48,6 +48,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: false,
             title: '新手体验特权',
             btn: ['确认'],
+            type: 1,
             area: ['500px', 'auto'],
             content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
             btn1: function () {
