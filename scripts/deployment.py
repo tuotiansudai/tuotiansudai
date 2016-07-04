@@ -78,7 +78,7 @@ class Deployment(object):
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
 
     def set_nginx_host(self):
-        _, _host_ = commands.getstatusoutput("ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}'")
+        _, _host_ = commands.getstatusoutput("ifconfig eno16777984 | grep inet | grep -v inet6 | awk '{print $2}'")
         sh("sed 's/_host_name_/{0}/g' ./scripts/docker/ttsd-test-nginx-rewrite.conf.temp > ./scripts/docker/ttsd-test-nginx-rewrite.conf".format(_host_))
 
     def init_docker(self):
