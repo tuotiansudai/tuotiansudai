@@ -20,7 +20,7 @@ class Deployment(object):
         self.jcversion()
         self.mkwar()
         self.mk_static_package()
-        self.set_nginx_host()
+        # self.set_nginx_host()
         self.init_docker()
 
     def clean(self):

@@ -9,7 +9,6 @@ web:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
-    - "nginx-server"
 console:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -109,3 +108,4 @@ nginx-server:
     - "20008:20008"
   links:
     - "activity"
+    - "web"
