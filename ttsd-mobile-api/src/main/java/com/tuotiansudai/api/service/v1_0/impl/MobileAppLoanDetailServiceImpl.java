@@ -171,18 +171,18 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRaisingPeriod(String.valueOf(Days.daysBetween(new DateTime(loan.getFundraisingStartTime()).withTimeAtStartOfDay(),
                 new DateTime(loan.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1));
         loanDetailResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-        if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
-            investFeeRate = this.defaultFee;
-        }
-        loanDetailResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
 
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
         if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
             loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
         }
 
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+            investFeeRate = this.defaultFee;
+        }
+        loanDetailResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
         return loanDetailResponseDataDto;
 
     }

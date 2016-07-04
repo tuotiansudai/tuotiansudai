@@ -616,6 +616,19 @@ td.td {
     background:#fff;
     margin-bottom:0;
 }
-.ladder-table:hover .tip-table{
-    display:block;
+.ladder-table:hover .tip-table {
+    display: block;
+}
+.ladder-table:hover .tip-table {
+    display: block;
+}
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
 }
