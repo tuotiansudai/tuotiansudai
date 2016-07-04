@@ -58,6 +58,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         messageCount.setNewMessage(existUnreadMessage);
         BaseResponseDto responseDto = new BaseResponseDto();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         responseDto.setData(messageCount);
         return responseDto;
     }
