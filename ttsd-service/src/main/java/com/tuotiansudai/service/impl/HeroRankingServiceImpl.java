@@ -79,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
-        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 1, 10);
+        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 0, 10);
     }
 
     @Override
