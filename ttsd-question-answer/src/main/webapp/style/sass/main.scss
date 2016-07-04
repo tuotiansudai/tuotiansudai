@@ -8,3 +8,17 @@ h1 {
 :global(h2) {
   color: blue;
 }
+
+ul ,li {
+	list-style-type: none;
+}
+header li { 
+	display:inline-block; 
+	margin-right:20px; 
+
+	a {
+		font-weight:bold;
+		color:red; 
+	}
+
+}
