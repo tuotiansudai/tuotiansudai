@@ -40,7 +40,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldUserMessages() {
-        UserModel userModel = getFakeUser("test");
+        UserModel userModel = getFakeUser("testFakeUser");
         userMapper.create(userModel);
         MessageModel messageModel = getFakeMessage(userModel.getLoginName());
         messageMapper.create(messageModel);
