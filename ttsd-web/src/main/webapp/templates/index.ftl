@@ -536,9 +536,9 @@
                                         <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                </#if>%</em>
+                                            <#if (loan.extraRate > 0)>
+                                                ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
+                                            </#if>%</em>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
