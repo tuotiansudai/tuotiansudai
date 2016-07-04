@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
@@ -8,6 +9,7 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
@@ -45,6 +47,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Autowired
     private RandomUtils randomUtils;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Value("${web.server}")
     private String domainName;
@@ -172,6 +177,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             investFeeRate = this.defaultFee;
         }
         loanDetailResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
+
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
+        if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+            loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
+        }
+
         return loanDetailResponseDataDto;
 
     }
@@ -198,6 +209,15 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         return evidenceResponseDataDtos;
 
+    }
+
+    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
     }
 
     private String calculateRemainTime(Date fundraisingEndTime, LoanStatus status) {
