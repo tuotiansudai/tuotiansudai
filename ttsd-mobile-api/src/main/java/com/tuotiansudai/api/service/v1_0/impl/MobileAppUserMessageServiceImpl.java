@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Autowired
     private RedisWrapperClient redisClient;
 
-    public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:";
+    public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
 
     @Override
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
@@ -49,12 +50,14 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
+        userMessageServices.generateUserMessages(loginName);
         long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP);
         boolean existUnreadMessage = existUnreadMessage(loginName, currentUnreadMessageCount);
         MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount();
         messageCount.setUnreadMessageCount(currentUnreadMessageCount);
         messageCount.setNewMessage(existUnreadMessage);
         BaseResponseDto responseDto = new BaseResponseDto();
+        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setData(messageCount);
         return responseDto;
     }
@@ -78,12 +81,15 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     }
 
     private boolean existUnreadMessage(String loginName, long currentUnreadMessageCount) {
-        String unreadMessageCountValue = redisClient.get(UNREAD_MESSAGE_COUNT_ID_KEY + loginName);
-        long lastUnreadMessageCount = StringUtils.isNotEmpty(unreadMessageCountValue) ? 0 : Long.parseLong(unreadMessageCountValue);
+        String unreadMessageKey = MessageFormat.format(UNREAD_MESSAGE_COUNT_ID_KEY, loginName);
+        String unreadMessageCountValue = redisClient.get(unreadMessageKey);
+
+        long lastUnreadMessageCount = StringUtils.isEmpty(unreadMessageCountValue) ? 0 : Long.parseLong(unreadMessageCountValue);
+
         if (lastUnreadMessageCount == currentUnreadMessageCount) {
             return false;
         } else {
-            redisClient.set(unreadMessageCountValue, String.valueOf(currentUnreadMessageCount));
+            redisClient.set(unreadMessageKey, String.valueOf(currentUnreadMessageCount));
             return true;
         }
     }

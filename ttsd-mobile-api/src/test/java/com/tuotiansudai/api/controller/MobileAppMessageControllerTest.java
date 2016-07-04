@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller;
 
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppMessageController;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
@@ -30,6 +31,13 @@ public class MobileAppMessageControllerTest extends ControllerTestBase {
     public void shouldGetMessages() throws Exception {
         when(service.getUserMessages(any(UserMessagesRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/messages", new UserMessagesRequestDto());
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
+
+    @Test
+    public void shouldGetUnreadMessageCount() throws Exception {
+        when(service.getUnreadMessageCount(any(BaseParamDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/unread-message-count", new BaseParamDto());
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
