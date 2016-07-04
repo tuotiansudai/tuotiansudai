@@ -28,7 +28,21 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
-
+    $referrerOpen.on('click',function() {
+        var $this=$(this),
+            checkOption=false,
+            iconArrow=$this.find('i');
+        $this.next('li').toggleClass('hide');
+        checkOption=$this.next('li').hasClass('hide');
+        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+            referrerValidBool=false;
+        }
+        checkInputValid();
+    });
     $checkbox.on('click', function (event) {
         if (event.target.tagName.toUpperCase() == 'A') {
             return;
@@ -51,22 +65,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         checkInputValid();
 
     });
-    $referrerOpen.on('click',function() {
-        var $this=$(this),
-            checkOption=false,
-            iconArrow=$this.find('i');
-        $this.next('li').toggleClass('hide');
-        checkOption=$this.next('li').hasClass('hide');
-        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
-        if($referrer.is(':hidden')) {
-            $referrer.val('');
-            $referrer.removeClass('error').addClass('valid');
-            referrerError.html('').hide();
-            referrerValidBool=true;
-            checkInputValid();
-        }
-    });
-
     showAgreement.click(function () {
         layer.open({
             type: 1,
@@ -233,15 +231,27 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     fetchCaptchaElement.prop('disabled', false);
                 }
             }
+        },
+        submitHandler: function (form) {
+
+            if($referrer.hasClass('error')) {
+                $referrerOpen.trigger('click');
+                referrerError.html('推荐人不存在').show();
+                return false;
+            }
+            else {
+                form.submit();
+            }
         }
     });
-
     function checkInputValid(event) {
         loginNameValid=$loginName.hasClass('valid');
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
-
-        if(loginNameValid && mobileValid && passwordValid && captchaValid && referrerValidBool && agreementValid) {
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        if(referrerValidBool && loginNameValid && mobileValid && passwordValid && captchaValid && agreementValid) {
             $registerSubmit.prop('disabled',false);
         }
         else {
@@ -316,8 +326,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             deferred.reject();
             loginNameValid=false;
         }
-        checkInputValid();
-
         return deferred.state() == "resolved" ? true : false;
     },'用户名已存在');
 
