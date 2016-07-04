@@ -194,9 +194,9 @@ public class ContractServiceImpl implements ContractService {
             AccountModel accountModel = accountMapper.findByLoginName(invest.getLoginName());
             String rowsString = insertRow(6);
             String deadLine = loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")";
-            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(invest.getLoginName())), loginName, contractType))
-                    .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType))
-                    .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType))
+            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType,userMapper.findUsersMobileByLoginName(invest.getLoginName())))
+                    .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType,""))
+                    .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType,""))
                     .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))
                     .replace("#{4}", deadLine)
                     .replace("#{5}", format.format(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()));
@@ -206,7 +206,7 @@ public class ContractServiceImpl implements ContractService {
         return table.outerHtml();
     }
 
-    private String encryString(String sourceString, String type, String investId, String loginUserId, ContractType contractType) {
+    private String encryString(String sourceString, String type, String investId, String loginUserId, ContractType contractType,String mobile) {
 
         String encryString = sourceString;
 
@@ -216,7 +216,7 @@ public class ContractServiceImpl implements ContractService {
                 if ("platformAccount".equals(type)) {//平台账号
 
                     if (sourceString.length() >= 3) {
-                        encryString = randomUtils.encryptMiddleMobile(sourceString);
+                        encryString = randomUtils.encryptMiddleMobile(mobile);
                     }
 
                 } else if ("realName".equals(type)) {//真实姓名
@@ -232,6 +232,8 @@ public class ContractServiceImpl implements ContractService {
                     }
                 }
 
+            }else{
+                encryString = "platformAccount".equals(type) ? mobile : sourceString;
             }
         }
 

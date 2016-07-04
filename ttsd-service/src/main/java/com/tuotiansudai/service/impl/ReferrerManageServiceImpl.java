@@ -35,9 +35,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private RandomUtils randomUtils;
-
     @Override
     public List<ReferrerManageView> findReferrerManage(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, int currentPageNo, int pageSize) {
         return referrerManageMapper.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, (currentPageNo - 1) * pageSize, pageSize);
@@ -64,7 +61,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
         for(ReferrerRelationView referrerRelationView : referRelationList){
-            referrerRelationView.setMobile(userMapper.findUsersMobileByLoginName(referrerRelationView.getMobile()));
+            referrerRelationView.setMobile(referrerRelationView.getMobile());
         }
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
         BasePaginationDataDto<ReferrerRelationView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, referRelationList);
@@ -88,7 +85,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         for (ReferrerManageView view : referrerManageViewList) {
             view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
             view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
-            view.setMobile(randomUtils.encryptMiddleMobile(userMapper.findUsersMobileByLoginName(view.getInvestName())));
+            view.setMobile(userMapper.findUsersMobileByLoginName(view.getInvestName()));
         }
     }
 
