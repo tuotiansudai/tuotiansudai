@@ -22,6 +22,10 @@ var config = [{
 	route: '/',
 	template: 'footer',
 	data: 'footer'
+}, {
+	route: '/loan-detail',
+	template: 'loan-detail',
+	data: 'loan-detail'
 }];
 
 
