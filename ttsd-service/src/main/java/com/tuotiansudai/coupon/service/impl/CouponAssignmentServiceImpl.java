@@ -156,7 +156,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
+            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
                 @Override
                 public boolean apply(UserCouponModel input) {
                     return input.getStatus() == InvestStatus.SUCCESS;
@@ -185,12 +185,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
 
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
-                boolean isLotteryWinner = this.isLotteryWinner(couponModel);
-                return isInUserGroup && (isAssignableCoupon || isLotteryWinner);
-            }
-
-            private boolean isLotteryWinner(CouponModel couponModel) {
-                return couponModel.getUserGroup() == UserGroup.WINNER;
+                return isInUserGroup && isAssignableCoupon;
             }
 
             private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
