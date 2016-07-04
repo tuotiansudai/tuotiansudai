@@ -449,6 +449,37 @@ body{
       }
     }
   }
+  .vip {
+    display: inline-block;
+    width: 38px;
+    height: 14px;
+    vertical-align: middle;
+    &.vip0 {
+      background: url("/images/icons/vip/account-vip/v0.png") no-repeat;
+    }
+    &.vip1 {
+      background: url("/images/icons/vip/account-vip/v1.png") no-repeat;
+    }
+    &.vip2 {
+      background: url("/images/icons/vip/account-vip/v2.png") no-repeat;
+    }
+    &.vip3 {
+      background: url("/images/icons/vip/account-vip/v3.png") no-repeat;
+    }
+    &.vip4 {
+      background: url("/images/icons/vip/account-vip/v4.png") no-repeat;
+    }
+    &.vip5 {
+      background: url("/images/icons/vip/account-vip/v5.png") no-repeat;
+    }
+  }
+  .user-info {
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    vertical-align: middle;
+    background: url("/images/icons/vip/account-vip/user-info.png") no-repeat;
+  }
 }
 .assets-box {
   overflow: hidden;

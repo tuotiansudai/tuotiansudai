@@ -94,7 +94,7 @@
                 </tr>
                 <tr>
                     <td>生日特权</td>
-                    <td></td>
+                    <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>

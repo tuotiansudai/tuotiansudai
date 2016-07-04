@@ -47,7 +47,7 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            m.channels = #{channels}
+            and m.channels = #{channels}
         </if>
         order by created_time desc
         <if test="index != null and pageSize != null">
@@ -60,11 +60,17 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            m.channels = #{channels}
+            and m.channels = #{channels}
         </if>
     </select>
 
     <select id="countUnreadMessagesByLoginName" parameterType="string" resultType="long">
-        select count(1) from user_message where login_name = #{loginName} and `read` = FALSE
+        select count(u.id) from user_message u
+        inner join message m on u.message_id = m.id
+        where login_name = #{loginName}
+        <if test="channels != null">
+            and m.channels = #{channels}
+        </if>
+        and `read` = FALSE
     </select>
 </mapper>
