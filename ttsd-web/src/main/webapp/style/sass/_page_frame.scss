@@ -280,6 +280,9 @@
             border-top: #ff7200 3px solid;
           }
         }
+        &.top-membership {
+          display: none;
+        }
       }
     }
   }
@@ -328,6 +331,9 @@
     padding-right:10px;
     .header-download {
       display: block;
+    }
+    .header-membership {
+      display: none;
     }
     .header {
       width:100%;
@@ -381,6 +387,9 @@
               border-bottom: #ff7200 1px solid;
               border-top:3px solid #fff;
             }
+          }
+          &.top-membership {
+            display: block;
           }
         }
       }
