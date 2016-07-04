@@ -40,7 +40,7 @@
                     </#if>
                 </#if>
                 <#if extraLoanRateModels?size != 0 >
-                     <div class="product-type-text extra-rate" id="extra-rate">投资加息+${minRate*100}%~${maxRate*100}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                     <div class="extra-rate" id="extra-rate">投资加息+${minRate*100}%~${maxRate*100}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
                      <script>
                          var __extraRate = [
                             <#list extraLoanRateModels as extraLoanRate>
