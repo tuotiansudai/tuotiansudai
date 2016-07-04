@@ -51,7 +51,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageMapper.create(messageModel);
         UserMessagesRequestDto messagesRequestDto = new UserMessagesRequestDto();
         BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("test");
+        baseParam.setUserId("testFakeUser");
         messagesRequestDto.setBaseParam(baseParam);
         messagesRequestDto.setIndex(1);
         messagesRequestDto.setPageSize(10);
@@ -70,7 +70,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageMapper.create(messageModel);
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("test");
+        baseParam.setUserId("testFakeUser");
         baseParamDto.setBaseParam(baseParam);
         BaseResponseDto<MobileAppUnreadMessageCount> messageCountBaseResponseDto = mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
 
@@ -87,12 +87,8 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setTitle("test");
         messageModel.setTemplate("测试模板猜猜猜");
         messageModel.setType(MessageType.MANUAL);
-        List<MessageUserGroup> userGroups = new ArrayList<>();
-        userGroups.add(MessageUserGroup.ALL_USER);
-        messageModel.setUserGroups(userGroups);
-        List<MessageChannel> channels = new ArrayList<>();
-        channels.add(MessageChannel.APP);
-        messageModel.setChannels(channels);
+        messageModel.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageModel.setChannels(Lists.newArrayList(MessageChannel.APP));
         messageModel.setStatus(MessageStatus.APPROVED);
         messageModel.setExpiredTime(new DateTime(new Date()).plusDays(1).toDate());
         messageModel.setCreatedBy(loginName);
@@ -103,7 +99,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldUpdateReadAndReadTimeByIdIsOk(){
+    public void shouldUpdateReadAndReadTimeByIdIsOk() {
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
 
@@ -117,7 +113,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         userMessageModel.setRead(false);
         userMessageMapper.create(userMessageModel);
         mobileAppUserMessageService.updateReadMessage(String.valueOf(userMessageModel.getId()));
-        assertThat(userMessageMapper.findById(userMessageModel.getId()).isRead(),is(true));
+        assertThat(userMessageMapper.findById(userMessageModel.getId()).isRead(), is(true));
     }
 
 }
