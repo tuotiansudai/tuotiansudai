@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class UserMessageDto implements Serializable {
     public UserMessageDto(UserMessageModel userMessageModel) {
         this.userMessageId = userMessageModel.getMessageId();
         this.title = userMessageModel.getTitle();
-        this.content = userMessageModel.getContent();
+        this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getTitle() : userMessageModel.getContent();
         this.read = userMessageModel.isRead();
         this.createdTime = userMessageModel.getCreatedTime();
     }
