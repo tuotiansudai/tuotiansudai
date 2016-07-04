@@ -4,14 +4,16 @@ from paver.shell import sh
 
 class Deployment(object):
 
-    _, _gradle=commands.getstatusoutput("which gradle")
-    _, _dockerCompose=commands.getstatusoutput("which docker-compose")
-    _, _paver=commands.getstatusoutput("which paver")
+    _gradle='/opt/gradle/latest/bin/gradle'
+    _dockerCompose='/usr/local/bin/docker-compose'
+    _paver='/usr/bin/paver'
 
-    _env='QA'
+    # DEV:
+    # _gradle='/usr/local/bin/gradle'
+    # _dockerCompose='/usr/local/bin/docker-compose'
+    # _paver='/usr/local/bin/paver'
 
-    def deploy(self, env):
-        self._env=env
+    def deploy(self):
         self.clean()
         self.compile()
         self.migrate()

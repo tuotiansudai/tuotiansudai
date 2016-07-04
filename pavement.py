@@ -78,15 +78,12 @@ def qa():
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy('QA')
+    deployment.deploy()
 
 
 @task
-def dev_docker():
-    from scripts.deployment import Deployment
-
-    deployment = Deployment()
-    deployment.deploy('DEV')
+def dev():
+    print 'need to change command first. then run: paver qa'
 
 @task
 @cmdopts([
@@ -231,10 +228,9 @@ def versioning_mobile_api_files(path):
 
     owd = os.getcwd()
     try:
-        _, cmd=commands.getstatusoutput("which npm")
         os.chdir(path)
-        sh('{0} install'.format(cmd))
-        sh('{0} run dist'.format(cmd))
+        sh('/usr/bin/npm install')
+        sh('/usr/bin/npm run dist')
     finally:
         os.chdir(owd)
 
