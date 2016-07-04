@@ -3,6 +3,7 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -66,6 +69,8 @@ public class PayWrapperClient extends BaseClient {
     private String noPasswordInvestPath = "/no-password-invest";
 
     private String transferCashPath = "/transfer-cash";
+
+    private String transfer = "/transfer-cash";
 
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
@@ -216,6 +221,19 @@ public class PayWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return Maps.newHashMap();
+    }
+
+    public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
+        String json = this.execute(MessageFormat.format("/transfer-bill/user/{0}/start-date/{1}/end-date/{2}",
+                loginName,
+                new SimpleDateFormat("yyyyMMdd").format(startDate),
+                new SimpleDateFormat("yyyyMMdd").format(endDate)), null, "GET");
+        try {
+            return objectMapper.readValue(json, new TypeReference<List<List<String>>>() {});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return Lists.newArrayList();
     }
 
     public BaseDto<PayDataDto> postNormalRepay(long loanRepayId) {

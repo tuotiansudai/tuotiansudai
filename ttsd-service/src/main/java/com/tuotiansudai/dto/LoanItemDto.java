@@ -41,6 +41,8 @@ public class LoanItemDto {
 
     private int duration;
 
+    private double extraRate;
+
     public long getId() {
         return id;
     }
@@ -168,4 +170,8 @@ public class LoanItemDto {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    public double getExtraRate() { return extraRate; }
+
+    public void setExtraRate(double extraRate) { this.extraRate = extraRate; }
 }
