@@ -593,6 +593,16 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage {
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
 .ladder-table{
     width:180px;
     position: relative;
@@ -605,6 +615,9 @@ td.td {
     display:none;
     background:#fff;
     margin-bottom:0;
+}
+.ladder-table:hover .tip-table {
+    display: block;
 }
 .ladder-table:hover .tip-table {
     display: block;

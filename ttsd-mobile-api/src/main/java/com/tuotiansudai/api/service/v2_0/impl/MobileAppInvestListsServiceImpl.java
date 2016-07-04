@@ -80,12 +80,12 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
 
-                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-                dto.setExtraRate(investExtraRateModel != null ? decimalFormat.format(investExtraRateModel.getExtraRate() * 100) : null);
-
                 if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
                     dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
                 }
+
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+                dto.setExtraRate(investExtraRateModel != null ? decimalFormat.format(investExtraRateModel.getExtraRate() * 100) : null);
                 long actualInterest = 0;
                 long expectedInterest = 0;
 
