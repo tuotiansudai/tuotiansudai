@@ -122,7 +122,7 @@ public class MessageServiceTest {
 
         originMessageDto.setTitle("editTitle");
         originMessageDto.setTemplate("editTitle");
-        originMessageDto.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
+        originMessageDto.setChannels(Lists.newArrayList(MessageChannel.APP));
         originMessageDto.setUserGroups(Lists.newArrayList(MessageUserGroup.CHANNEL_USER));
 
         messageService.createAndEditManualMessage(originMessageDto, 0);
