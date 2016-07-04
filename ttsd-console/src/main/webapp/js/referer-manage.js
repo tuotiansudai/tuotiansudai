@@ -37,15 +37,15 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
 
         //自动完成提示
         var autoValue = '';
-        $(".referrerLoginName, .investLoginName").autocomplete({
+        $(".referrerMobile, .investMobile").autocomplete({
             source: function (query, process) {
-                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
             }
         });
-        $(".referrerLoginName, .investLoginName").blur(function () {
+        $(".referrerMobile, .investMobile").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
@@ -60,8 +60,8 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             //var formData=$('form').serialize()+'&currentPageNo=1&pageSize=10';
             //window.location.href='/referrerManage?'+formData;
 
-            var referrerLoginName = $('.referrerLoginName').val();
-            var investLoginName = $('.investLoginName').val();
+            var referrerMobile = $('.referrerMobile').val();
+            var investMobile = $('.investMobile').val();
             var investStartTime = $('.investStartTime').val();
             var investEndTime = $('.investEndTime').val();
 
@@ -74,12 +74,12 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
             var source = $('.source').val();
-            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&index=1&pageSize=10';
+            window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source + '&index=1&pageSize=10';
         });
 
         $('.down-load').on('click',function(){
-            var referrerLoginName = $('.referrerLoginName').val();
-            var investLoginName = $('.investLoginName').val();
+            var referrerMobile = $('.referrerMobile').val();
+            var investMobile = $('.investMobile').val();
             var investStartTime = $('.investStartTime').val();
             var investEndTime = $('.investEndTime').val();
             var level = $('.level').val();
@@ -87,7 +87,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
             var source = $('.source').val();
-            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&export=csv';
+            window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source + '&export=csv';
         });
     });
 })
