@@ -28,21 +28,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
-    $referrerOpen.on('click',function() {
-        var $this=$(this),
-            checkOption=false,
-            iconArrow=$this.find('i');
-        $this.next('li').toggleClass('hide');
-        checkOption=$this.next('li').hasClass('hide');
-        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
-        if($referrer.is(':hidden')) {
-            referrerValidBool=true;
-        }
-        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
-            referrerValidBool=false;
-        }
-        checkInputValid();
-    });
     $checkbox.on('click', function (event) {
         if (event.target.tagName.toUpperCase() == 'A') {
             return;
@@ -63,7 +48,21 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             agreementValid=true;
         }
         checkInputValid();
-
+    });
+    $referrerOpen.on('click',function() {
+        var $this=$(this),
+            checkOption=false,
+            iconArrow=$this.find('i');
+        $this.next('li').toggleClass('hide');
+        checkOption=$this.next('li').hasClass('hide');
+        iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+            referrerValidBool=false;
+        }
+        checkInputValid();
     });
     showAgreement.click(function () {
         layer.open({
