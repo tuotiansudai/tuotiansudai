@@ -106,7 +106,6 @@ public class TransferApplicationMapperTest {
 
     }
 
-
     @Test
     public void shouldFindCountTransferApplicationPaginationIsSuccess(){
         long loanId = idGenerator.generate();
