@@ -55,7 +55,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         }
 
         if(investMapper.findCountSuccessByLoginNameAndProductTypes(loginName,noContainExperienceCondition) == 0){
-            activityType = ActivityType.NEWBIE;
+            activityType = null;
         }
 
         List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,activityType);
