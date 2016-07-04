@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -93,6 +94,18 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             redisClient.set(unreadMessageKey, String.valueOf(currentUnreadMessageCount));
             return true;
         }
+    }
+
+    @Override
+    public BaseResponseDto updateReadMessage(String messageId) {
+        BaseResponseDto baseDto = new BaseResponseDto();
+        baseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        UserMessageModel userMessageModel = userMessageMapper.findById(Long.parseLong(messageId));
+        userMessageModel.setRead(true);
+        userMessageModel.setReadTime(new Date());
+        userMessageMapper.update(userMessageModel);
+        return baseDto;
     }
 
 }
