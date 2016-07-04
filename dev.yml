@@ -58,7 +58,6 @@ activity:
   links:
     - "redis-server"
     - "static-server"
-    - "nginx-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:
@@ -108,3 +107,5 @@ nginx-server:
     - ./scripts/docker/ttsd-test-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20008:20008"
+  links:
+    - "activity"
