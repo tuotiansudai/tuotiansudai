@@ -47,7 +47,9 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            and m.channels = #{channels}
+            <foreach collection="channels" index="index" item="item" open="(" separator="," close=")">
+                and m.channels = #{item}
+            </foreach>
         </if>
         order by created_time desc
         <if test="index != null and pageSize != null">
@@ -60,7 +62,9 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            and m.channels = #{channels}
+            <foreach collection="channels" index="index" item="item" open="(" separator="," close=")">
+                and m.channels = #{item}
+            </foreach>
         </if>
     </select>
 
@@ -69,7 +73,9 @@
         inner join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
-            and m.channels = #{channels}
+            <foreach collection="channels" index="index" item="item" open="(" separator="," close=")">
+                and m.channels = #{item}
+            </foreach>
         </if>
         and `read` = FALSE
     </select>
