@@ -48,17 +48,17 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         List<LoanModel> loanModels = Lists.newArrayList();
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360,ProductType.EXPERIENCE);
         List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360);
-
+        ActivityType activityType = ActivityType.NORMAL;
         if (Strings.isNullOrEmpty(loginName)
                 || investMapper.findCountSuccessByLoginNameAndProductTypes(loginName,allProductTypesCondition) == 0) {
             loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE));
         }
 
         if(investMapper.findCountSuccessByLoginNameAndProductTypes(loginName,noContainExperienceCondition) == 0){
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,ActivityType.NEWBIE));
+            activityType = ActivityType.NEWBIE;
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,ActivityType.NORMAL);
+        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING,noContainExperienceCondition,activityType);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }
