@@ -2,6 +2,7 @@ package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -111,7 +112,11 @@ public class RandomUtils {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return "您的位置";
         }
-        String encryptMobile = userMapper.findByLoginName(encryptLoginName).getMobile();
+        UserModel userModel = userMapper.findByLoginName(encryptLoginName);
+        if (userModel == null) {
+            return encryptLoginName;
+        }
+        String encryptMobile = userModel.getMobile();
         return encryptMobile.substring(0, 3) + RandomUtils.showChar(4) + encryptMobile.substring(7);
     }
 

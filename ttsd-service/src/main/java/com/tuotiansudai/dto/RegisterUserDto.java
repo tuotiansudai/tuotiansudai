@@ -25,7 +25,6 @@ public class RegisterUserDto implements Serializable {
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
     private String password;
 
-    @Pattern(regexp = "^1\\d{10}$")
     private String referrer;
 
     private String channel;
