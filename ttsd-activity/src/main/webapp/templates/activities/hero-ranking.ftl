@@ -20,7 +20,7 @@
                 </div>
                 <div class="img-two">
                     <p class="intro-text">历史借款项目全部全额兑付！</p>
-                    <p class="intro-text"><strong>198488</strong>个投资人加入了我们</p>
+                    <p class="intro-text"><strong>${userCount!}</strong>个投资人加入了我们</p>
                 </div>
             </div>
             <div class="model-list">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="img-three">
                     <p class="intro-text">出于对我们的信任</p>
-                    <p class="intro-text"><strong>76294735.58</strong>元投资发生在这里</p>
+                    <p class="intro-text"><strong>${(totalInvestAmount/100)?string('#.##')}</strong>元投资发生在这里</p>
                 </div>
             </div>
             <div class="model-list">

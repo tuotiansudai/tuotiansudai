@@ -45,6 +45,8 @@ public class HeroRankingController {
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
         modelAndView.addObject("investRanking",investRanking);
         modelAndView.addObject("referRanking",referRanking);
+        modelAndView.addObject("userCount",heroRankingService.findUsersCount());
+        modelAndView.addObject("totalInvestAmount",heroRankingService.sumInvestAmount());
         modelAndView.addObject("mysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
