@@ -168,6 +168,8 @@ def generate_git_log_file():
 
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
@@ -243,6 +245,11 @@ def jcversion():
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
+
+    versioning_min_files('ttsd-activity/src/main/webapp/activity/js/dest/*.min.js')
+    versioning_min_files('ttsd-activity/src/main/webapp/activity/style/dest/*.min.css')
+    replace_min_files_in_config_js_file('ttsd-activity/src/main/webapp/activity/js/dest/')
+
     versioning_mobile_api_files('ttsd-mobile-api/')
 
 def get_current_dir():
