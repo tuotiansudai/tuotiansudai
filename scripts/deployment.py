@@ -53,15 +53,14 @@ class Deployment(object):
 
     def mkwar(self):
         print "Making war..."
-        if self._env == 'QA' :
-            sh('{0} war'.format(self._gradle))
-        else :
-            sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        sh('{0} war'.format(self._gradle))
+        # DEV:
+        # sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        # sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        # sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        # sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        # sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        # sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
         self.build_and_unzip_worker()
 
     def mk_static_package(self):
