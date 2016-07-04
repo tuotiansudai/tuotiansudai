@@ -7,7 +7,6 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -129,7 +128,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setTransferFee(1300l);
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName(), null, 0, 1);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName().length() > 10 ? "m" + transfereeInvestModel.getLoginName().substring(0, 10) : "m" + transfereeInvestModel.getLoginName(), null, 0, 1);
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());
         assertEquals(1000, transferApplicationRecordDto.get(0).getTransferAmount());
@@ -218,7 +217,7 @@ public class TransferApplicationMapperTest {
         userModelTest.setLoginName(userId);
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
+        userModelTest.setMobile(userId.length() > 10 ? "m" + userId.substring(0, 10) : "m" + userId);
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
