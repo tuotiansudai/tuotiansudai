@@ -593,6 +593,7 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+<<<<<<< HEAD
 .ladder-table{
     width:180px;
     position: relative;
@@ -608,4 +609,16 @@ td.td {
 }
 .ladder-table:hover .tip-table{
     display:block;
+=======
+
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+>>>>>>> master
 }
