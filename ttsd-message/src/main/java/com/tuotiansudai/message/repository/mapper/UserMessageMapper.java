@@ -19,7 +19,8 @@ public interface UserMessageMapper {
     long countMessagesByLoginName(@Param(value = "loginName") String loginName,
                                   @Param(value = "channels") MessageChannel channels);
 
-    long countUnreadMessagesByLoginName(String loginName);
+    long countUnreadMessagesByLoginName(@Param("loginName") String loginName,
+                                        @Param("channels") MessageChannel channels);
 
     void create(UserMessageModel model);
 
