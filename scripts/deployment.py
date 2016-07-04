@@ -1,4 +1,3 @@
-import commands
 from paver.shell import sh
 
 
@@ -8,19 +7,16 @@ class Deployment(object):
     _dockerCompose='/usr/local/bin/docker-compose'
     _paver='/usr/bin/paver'
 
-    # DEV:
-    # _gradle='/usr/local/bin/gradle'
-    # _dockerCompose='/usr/local/bin/docker-compose'
-    # _paver='/usr/local/bin/paver'
+    _env='QA'
 
-    def deploy(self):
-        self.clean()
-        self.compile()
-        self.migrate()
-        self.jcversion()
-        self.mkwar()
-        self.mk_static_package()
-        # self.set_nginx_host()
+    def deploy(self, env):
+        self._env = env
+        # self.clean()
+        # self.compile()
+        # self.migrate()
+        # self.jcversion()
+        # self.mkwar()
+        # self.mk_static_package()
         self.init_docker()
 
     def clean(self):
@@ -53,14 +49,15 @@ class Deployment(object):
 
     def mkwar(self):
         print "Making war..."
-        sh('{0} war'.format(self._gradle))
-        # DEV:
-        # sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        # sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        # sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        # sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        # sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-        # sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+        if self._env == 'QA' :
+            sh('{0} war'.format(self._gradle))
+        else :
+            sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
         self.build_and_unzip_worker()
 
     def mk_static_package(self):
@@ -76,10 +73,6 @@ class Deployment(object):
         sh('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
         sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
-
-    def set_nginx_host(self):
-        _, _host_ = commands.getstatusoutput("ifconfig eno16777984 | grep inet | grep -v inet6 | awk '{print $2}'")
-        sh("sed 's/_host_name_/{0}/g' ./scripts/docker/ttsd-test-nginx-rewrite.conf.temp > ./scripts/docker/ttsd-test-nginx-rewrite.conf".format(_host_))
 
     def init_docker(self):
         print "Initialing docker..."

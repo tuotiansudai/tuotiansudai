@@ -1,6 +1,5 @@
 import os
 import sys
-import commands
 
 sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 from paver.tasks import task, needs, cmdopts
@@ -57,6 +56,7 @@ def stop():
     from paver.shell import sh
 
     sh('pkill python')
+    sh('pkill python')
 
 
 def remove_old_container(name):
@@ -78,12 +78,15 @@ def qa():
     from scripts.deployment import Deployment
 
     deployment = Deployment()
-    deployment.deploy()
-
+    deployment.deploy('QA')
 
 @task
 def dev():
-    print 'need to change command first. then run: paver qa'
+    from scripts.deployment import Deployment
+
+    deployment = Deployment()
+    deployment.deploy('DEV')
+
 
 @task
 @cmdopts([

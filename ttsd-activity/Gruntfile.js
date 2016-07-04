@@ -115,7 +115,7 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8088,
+                    port: 8089,
                     hostname: '*',
                     base: 'src/main/webapp/activity',
                     middleware: function(connect, options, middlewares) {
