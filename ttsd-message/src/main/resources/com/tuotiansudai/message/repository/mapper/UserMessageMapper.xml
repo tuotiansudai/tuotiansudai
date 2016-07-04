@@ -80,7 +80,4 @@
         and `read` = FALSE
     </select>
 
-    <update id="updateReadAndReadTimeById" parameterType="map">
-        update user_message m set m.read = #{read},m.read_time= #{readTime} where m.id = #{id}
-    </update>
 </mapper>

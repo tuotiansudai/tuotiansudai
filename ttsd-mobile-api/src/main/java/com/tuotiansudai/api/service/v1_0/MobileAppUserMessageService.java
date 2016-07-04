@@ -10,4 +10,6 @@ public interface MobileAppUserMessageService {
     BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto);
 
     BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto);
+
+    BaseResponseDto updateReadMessage(String messageId);
 }

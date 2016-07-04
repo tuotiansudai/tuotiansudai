@@ -72,21 +72,4 @@ public class UserMessageMapperTest {
         return fakeUser;
     }
 
-    @Test
-    public void shouldUpdateReadAndReadTimeByIdIsOk(){
-        UserModel creator = getFakeUser("messageCreator");
-        userMapper.create(creator);
-
-        MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
-        messageMapper.create(messageModel);
-
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
-        userMessageModel.setRead(false);
-        userMessageMapper.create(userMessageModel);
-        userMessageMapper.updateReadAndReadTimeById(userMessageModel.getId(),true, DateTime.now().toDate());
-        assertThat(userMessageMapper.findById(userMessageModel.getId()).isRead(),is(true));
-    }
 }

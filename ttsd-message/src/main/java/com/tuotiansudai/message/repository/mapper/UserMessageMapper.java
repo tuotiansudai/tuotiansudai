@@ -27,8 +27,4 @@ public interface UserMessageMapper {
     void update(UserMessageModel model);
 
     UserMessageModel findById(long id);
-
-    void updateReadAndReadTimeById(@Param(value = "id") long id,
-                                   @Param(value = "read") boolean read,
-                                   @Param(value = "readTime") Date readTime);
 }

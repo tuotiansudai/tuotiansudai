@@ -1,10 +1,12 @@
 package com.tuotiansudai.api.service;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
+import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -37,6 +39,9 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
     private RedisWrapperClient redisClient;
 
     public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
+
+    @Autowired
+    private UserMessageMapper userMessageMapper;
 
     @Test
     public void shouldUserMessages() {
@@ -95,6 +100,24 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setUpdatedBy(loginName);
         messageModel.setUpdatedTime(new Date());
         return messageModel;
+    }
+
+    @Test
+    public void shouldUpdateReadAndReadTimeByIdIsOk(){
+        UserModel creator = getFakeUser("messageCreator");
+        userMapper.create(creator);
+
+        MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+        messageMapper.create(messageModel);
+
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
+        userMessageModel.setRead(false);
+        userMessageMapper.create(userMessageModel);
+        mobileAppUserMessageService.updateReadMessage(String.valueOf(userMessageModel.getId()));
+        assertThat(userMessageMapper.findById(userMessageModel.getId()).isRead(),is(true));
     }
 
 }
