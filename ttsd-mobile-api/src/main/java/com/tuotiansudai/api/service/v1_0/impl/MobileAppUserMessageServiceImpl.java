@@ -51,7 +51,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         userMessageServices.generateUserMessages(loginName);
-        long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP);
+        long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, Lists.newArrayList(MessageChannel.APP));
         boolean existUnreadMessage = existUnreadMessage(loginName, currentUnreadMessageCount);
         MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount();
         messageCount.setUnreadMessageCount(currentUnreadMessageCount);
@@ -65,8 +65,8 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     private UserMessageResponseDataDto fillMessageDataDto(String loginName, int index, int pageSize) {
         UserMessageResponseDataDto responseDataDto = new UserMessageResponseDataDto();
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP, (index - 1) * pageSize, pageSize);
-        long totalCount = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.APP);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, Lists.newArrayList(MessageChannel.APP), (index - 1) * pageSize, pageSize);
+        long totalCount = userMessageMapper.countMessagesByLoginName(loginName, Lists.newArrayList(MessageChannel.APP));
         List<UserMessageDto> userMessages = CollectionUtils.isEmpty(userMessageModels) ? new ArrayList<UserMessageDto>() :
                 Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
                     @Override
