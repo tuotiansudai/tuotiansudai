@@ -24,8 +24,10 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
     @Override
     public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        Integer index = (requestDto.getIndex() == null || requestDto.getIndex() <= 0) ? 0 : requestDto.getIndex();
-        Integer pageSize = (requestDto.getPageSize() == null || requestDto.getPageSize() <= 0) ? 10 : requestDto.getPageSize();
+
+        int index = requestDto.getIndex();
+        int pageSize = requestDto.getPageSize();
+
         MembershipResponseDataDto dataDto = fillMembershipDataDto(loginName, index, pageSize);
         BaseResponseDto responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -36,7 +38,7 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
 
     private MembershipResponseDataDto fillMembershipDataDto(String loginName, Integer index, Integer pageSize) {
         MembershipResponseDataDto dataDto = new MembershipResponseDataDto();
-        List<MembershipExperienceBillModel> membershipExperienceBillModels = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, null, null, index, pageSize);
+        List<MembershipExperienceBillModel> membershipExperienceBillModels = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, null, null, (index - 1) * pageSize, pageSize);
         List<MembershipExperienceBillDataDto> membershipExperienceBillDtos = CollectionUtils.isEmpty(membershipExperienceBillModels) ? new ArrayList<MembershipExperienceBillDataDto>() :
                 Lists.transform(membershipExperienceBillModels, new Function<MembershipExperienceBillModel, MembershipExperienceBillDataDto>() {
                     @Override

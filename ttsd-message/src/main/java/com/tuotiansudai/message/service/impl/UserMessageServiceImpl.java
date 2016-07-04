@@ -44,11 +44,11 @@ public class UserMessageServiceImpl implements UserMessageService {
     public BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize) {
         this.generateUserMessages(loginName);
 
-        long count = userMessageMapper.countMessagesByLoginName(loginName,MessageChannel.WEBSITE);
+        long count = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.WEBSITE);
         pageSize = pageSize < 1 ? 10 : pageSize;
         int totalPage = (int) (count > 0 && count % pageSize == 0 ? count / pageSize : count / pageSize + 1);
         index = index < 1 ? 1 : Ints.min(index, totalPage);
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE,(index - 1) * pageSize, pageSize);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, (index - 1) * pageSize, pageSize);
 
         List<UserMessagePaginationItemDto> records = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessagePaginationItemDto>() {
             @Override
@@ -84,7 +84,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     public boolean readAll(String loginName) {
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName,null, null, null);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (!userMessageModel.isRead()) {
                 ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
@@ -96,7 +96,7 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Override
     public long getUnreadMessageCount(String loginName) {
         List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
-        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName);
+        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
         return unreadManualMessages.size() + unreadCount;
     }
 
@@ -112,7 +112,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     private List<MessageModel> getUnreadManualMessages(String loginName) {
         List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null,null, null);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
 
         List<MessageModel> unreadManualMessages = Lists.newArrayList();
         for (final MessageModel message : messages) {
