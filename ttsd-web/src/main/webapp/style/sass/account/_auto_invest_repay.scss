@@ -1,0 +1,101 @@
+//auto invest
+.auto-invest, .auto-repay {
+  .CertifiedImg {
+    background: url('/images/sign/re-s01.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .CertifiedImg-repay {
+    background: url('/images/sign/re-s02.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .panel {
+    color: nth($baseColor, 6);
+    padding-left: 40px;
+  }
+  p.notice {
+    b {
+      font-size: nth($fontSize, 4);
+    }
+  }
+  .btnBox {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .planSwitch {
+    color: nth($baseColor, 3);
+
+    form {
+      margin-left: 28px;
+      margin-top: 15px;
+    }
+    dl {
+      margin-bottom: 15px;
+      clear: both;
+
+      dt {
+        color: nth($baseColor, 4);
+        display: inline-block;
+        float: left;
+        width: 80px;
+        text-align: right;
+      }
+      dd.projectLimit {
+        float: left;
+        width: 50%;
+
+        label {
+          margin-right: 5px;
+        }
+        span {
+          display: inline-block;
+          color: nth($baseColor, 4);
+          width: 60px;
+          text-align: center;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #e1e1e1;
+          position: relative;
+          cursor: pointer;
+
+          & .badge {
+            background-image: url("/images/icons/spr.png");
+            background-position: -387px -172px;
+            background-repeat: no-repeat;
+            width: 13px;
+            height: 13px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+          }
+          &.active {
+            border: 1px solid nth($btnColor, 5);
+            color: nth($btnColor, 5);
+
+            & .badge {
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+    & .agreeStatus {
+      margin-bottom: 20px;
+      color: nth($baseColor, 4);
+
+      label {
+        vertical-align: middle;
+      }
+    }
+  }
+  .borderBox:nth-child(2) {
+    margin-top: 10px;
+  }
+  .planSet {
+    i {
+      color: nth($btnColor, 5);
+    }
+  }
+}
