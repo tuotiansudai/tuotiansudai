@@ -150,18 +150,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(firstInvest.getLoginName());
+                achievementDto.setFirstInvestAchievementLoginName(getEncryptLoginName(loginName,firstInvest.getLoginName(),6));
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(maxInvest.getLoginName());
+                achievementDto.setMaxAmountAchievementLoginName(getEncryptLoginName(loginName,maxInvest.getLoginName(),6));
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(lastInvest.getLoginName());
+                achievementDto.setLastInvestAchievementLoginName(getEncryptLoginName(loginName,lastInvest.getLoginName(),6));
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
             }
             achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
@@ -180,5 +180,12 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             return 0L;
         }
         return maxAvailableInvestAmount - (maxAvailableInvestAmount - loanModel.getMinInvestAmount()) % loanModel.getInvestIncreasingAmount();
+    }
+
+    private String getEncryptLoginName(String loginName,String encryptLoginName,int showLength){
+        if(loginName.equals(encryptLoginName)){
+            return encryptLoginName;
+        }
+        return encryptLoginName.substring(0, 3) + randomUtils.showChar(showLength);
     }
 }
