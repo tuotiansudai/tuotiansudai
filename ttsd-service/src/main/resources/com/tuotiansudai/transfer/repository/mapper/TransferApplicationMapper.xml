@@ -192,7 +192,9 @@
                 <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
             </if>
         </where>
-        order by transfer_time
+        order by
+        CASE ta.status WHEN 'TRANSFERRING' THEN '1' WHEN 'SUCCESS' THEN '2' ELSE '3' END,
+        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time ELSE ta.transfer_time END desc
         limit #{index}, #{pageSize}
     </select>
 
