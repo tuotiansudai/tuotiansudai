@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -36,7 +38,9 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
-    final private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final PathMatcher matcher = new AntPathMatcher();
 
     private List<String> ignoreUrls = Lists.newArrayList("/login");
 
@@ -46,12 +50,13 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
+        if (shouldNotAuthenticated(httpServletRequest)) {
+            chain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+        }
 
-        String loginName = mobileAppTokenProvider.getLoginName(bufferedRequest);
-
-        if (Strings.isNullOrEmpty(loginName) || shouldNotFilter(httpServletRequest)) {
-            authenticateAnonymousToken();
+        String loginName = mobileAppTokenProvider.getLoginName(httpServletRequest);
+        if (Strings.isNullOrEmpty(loginName)) {
             chain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
@@ -65,16 +70,15 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         chain.doFilter(httpServletRequest, response);
     }
 
-    private boolean shouldNotFilter(HttpServletRequest request) {
+    private boolean shouldNotAuthenticated(HttpServletRequest request) {
         final String uri = request.getRequestURI();
-        boolean isIgnoreUri = Iterators.any(ignoreUrls.iterator(), new Predicate<String>() {
+
+        return Iterators.any(ignoreUrls.iterator(), new Predicate<String>() {
             @Override
-            public boolean apply(String input) {
-                return input.equalsIgnoreCase(uri);
+            public boolean apply(String ignoreUrl) {
+                return matcher.match(ignoreUrl, uri);
             }
         });
-
-        return request.getMethod().equalsIgnoreCase(HttpMethod.GET.name()) || isIgnoreUri;
     }
 
     private void processGenerateTokenRequest(HttpServletResponse httpServletResponse, String loginName) throws IOException {

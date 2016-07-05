@@ -1,4 +1,4 @@
-package com.tuotiansudai.api;
+package com.tuotiansudai.api.controller;
 
 
 import org.springframework.stereotype.Controller;

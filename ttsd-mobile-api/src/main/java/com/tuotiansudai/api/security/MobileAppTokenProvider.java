@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,10 +93,12 @@ public class MobileAppTokenProvider {
                 return httpServletRequest.getParameter("token");
             }
             // API token在baseParam里
-            BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
-            BaseParamDto dto = objectMapper.readValue(bufferedRequest.getInputStream(), BaseParamDto.class);
-            BaseParam baseParam = dto.getBaseParam();
-            return baseParam.getToken();
+            if (httpServletRequest.getMethod().equalsIgnoreCase(HttpMethod.POST.name())) {
+                BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
+                BaseParamDto dto = objectMapper.readValue(bufferedRequest.getInputStream(), BaseParamDto.class);
+                BaseParam baseParam = dto.getBaseParam();
+                return baseParam.getToken();
+            }
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(), e);
         }
