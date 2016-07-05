@@ -5,10 +5,16 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
-                    <a href="/activity/invest-achievement" target="_blank">
-                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
-                    </a>
+                <a href="/activity/hero-ranking" target="_blank">
+                    <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
+                    <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
+                </a>
+                </li>
+                <li>
+                <a href="/activity/invest-achievement" target="_blank">
+                    <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                    <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                </a>
                 </li>
                 <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
@@ -57,6 +63,7 @@
         <div class="hd">
             <ul class="scroll-num">
                 <li class="on"></li>
+                <li></li>
                 <li></li>
                 <li></li>
                 <li></li>
@@ -179,6 +186,22 @@
                     </div>
                 </div>
                 <div class="mask-model">
+                    <div class="model-project-precess">
+                        <div class="right-operat">
+                            <div class="p-title">
+                                <span class="fl">项目进度</span>
+                                <span class="point fr">${experienceLoanDto.progress} %</span>
+                            </div>
+                            <div class="process-percent">
+                                <div class="percent" style="width:${experienceLoanDto.progress}%">
+                                </div>
+                            </div>
+                            <div class="rest-amount">
+                                <span>可投额度：<i>${experienceLoanDto.investAmount}</i>元(体验金)</span>
+                                <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mask-btn"></div>
                 </div>
                 <div class="mask-bg"></div>
@@ -390,7 +413,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <div class="free-guide">
-                                
+
                     </div>
                     <div class="product-box tc product-type new-free-pro">
                             <i class="new-free"></i>
@@ -419,11 +442,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="/loan/" class="btn-normal">立即投资</a>
-                            <div class="guide-img">
-                                <span class="guide-btn"></span>
-                            </div>
+                        <a href="/loan/1" class="btn-normal">立即投资</a>
+
+                        <div class="guide-img">
+                            <span class="guide-btn"></span>
                         </div>
+                    </div>
                 <#list loans as loan>
                     <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">

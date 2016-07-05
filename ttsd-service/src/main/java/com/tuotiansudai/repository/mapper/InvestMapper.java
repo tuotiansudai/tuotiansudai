@@ -194,6 +194,15 @@ public interface InvestMapper {
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
 
+    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime,
+                                                       @Param(value = "activityBeginTime") String activityBeginTime,
+                                                       @Param(value = "activityEndTime") String activityEndTime);
+
+    List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
+                                                    @Param(value = "activityBeginTime") String activityBeginTime,
+                                                    @Param(value = "activityEndTime") String activityEndTime,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
     List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,
                                                                                                       @Param(value = "index") Integer index,
                                                                                                       @Param(value = "pageSize") Integer pageSize);
@@ -221,7 +230,10 @@ public interface InvestMapper {
     long countInvestSuccessExperienceToday();
 
     List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
-                                       @Param(value = "startTime") Date startTime,
-                                       @Param(value = "endTime") Date endTime);
+                                                     @Param(value = "startTime") Date startTime,
+                                                     @Param(value = "endTime") Date endTime);
+
+    int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
+                                                   @Param("productTypeList") List<ProductType> productTypeList);
 
 }

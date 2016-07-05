@@ -68,7 +68,6 @@ public class InvestRepayServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -96,14 +95,14 @@ public class InvestRepayServiceTest {
     }
 
     private void createInvest(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
     }
 
     private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new Date(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate(), repayStatus);
         investRepayModel.setActualInterest(100);
         investRepayModel.setActualFee(100);
         investRepayModel.setDefaultInterest(100);

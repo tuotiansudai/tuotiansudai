@@ -32,6 +32,17 @@ a:hover {
     height: auto;
 }
 
+.clearfix:after,.clearfix:before,
+.clear:after,.clear:before{
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+    font-size:0;
+}
+
 .top-menu {
     background: url(/images/nav_bg.jpg) repeat-x;
 }
@@ -581,4 +592,15 @@ td.td {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
 }

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class MobileAppJPushClient {
@@ -51,14 +52,14 @@ public class MobileAppJPushClient {
         return jPushClient;
     }
 
-    public PushPayload buildPushObject_all_registration_id_alertWithExtras(List<String> registrationIds, String alert, String extraKey, String extraValue, PushSource pushSource) {
+    public PushPayload buildPushObject_all_registration_id_alertWithExtras(List<String> registrationIds, String alert, Map<String,String> extras, PushSource pushSource) {
 
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
                 .setAudience(getAudience(registrationIds))
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBadge(0).build())
-                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtras(extras).setBadge(0).build())
+                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtras(extras).setBuilderId(2).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
@@ -96,13 +97,13 @@ public class MobileAppJPushClient {
         return platform;
     }
 
-    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue, PushSource pushSource) {
+    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, Map<String,String> extras, PushSource pushSource) {
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
                 .setAudience(getAudienceAll())
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
-                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtras(extras).build())
+                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtras(extras).setBuilderId(2).build())
 
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
@@ -120,13 +121,13 @@ public class MobileAppJPushClient {
         }
     }
 
-    public boolean sendPushAlertByAll(String jPushAlertId, String alert, String extraKey, String extraValue, PushSource pushSource) {
-        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue, pushSource);
+    public boolean sendPushAlertByAll(String jPushAlertId, String alert, Map<String,String> extras, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert,extras, pushSource);
         return sendPush(payload, jPushAlertId);
     }
 
-    public boolean sendPushAlertByRegistrationIds(String jPushAlertId, List<String> registrationIds, String alert, String extraKey, String extraValue, PushSource pushSource) {
-        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds, alert, extraKey, extraValue, pushSource);
+    public boolean sendPushAlertByRegistrationIds(String jPushAlertId, List<String> registrationIds, String alert, Map<String,String> extras, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds, alert,extras, pushSource);
         return sendPush(payload, jPushAlertId);
     }
 
@@ -163,4 +164,5 @@ public class MobileAppJPushClient {
     public static void setjPushClient(JPushClient jPushClient) {
         MobileAppJPushClient.jPushClient = jPushClient;
     }
+
 }
