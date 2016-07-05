@@ -103,6 +103,19 @@ public class MembershipController {
 
         return modelAndView;
     }
+    @RequestMapping(path = "/store", method = RequestMethod.GET)
+    public ModelAndView store() {
+        ModelAndView modelAndView = new ModelAndView("/membership-store");
+
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/task", method = RequestMethod.GET)
+    public ModelAndView task() {
+        ModelAndView modelAndView = new ModelAndView("/membership-task");
+
+        return modelAndView;
+    }
 
 
     @ResponseBody
