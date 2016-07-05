@@ -1,0 +1,13 @@
+{
+	"css": {
+		"login": "full_screen.css"
+	},
+	"js": {
+		"questions": "bundle.js"
+	},
+	"linkExchangeList": [{
+		"linkUrl": 1212,
+		"noFollow": true,
+		"title": 121212
+	}]
+}

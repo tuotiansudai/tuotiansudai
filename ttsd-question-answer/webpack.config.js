@@ -7,7 +7,7 @@ var JS_PATH=path.resolve(basePath,'js');
 var STYLE_PATH=path.resolve(basePath,'style');
 var TEMPLATE_PATH=path.resolve(basePath,'templates');
 
-var HtmlwebpackPlugin=require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
 var devFlagPlugin = new webpack.DefinePlugin({
@@ -39,12 +39,12 @@ module.exports = {
     entry: [
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://'+IP+':'+port,
-        path.join(JS_PATH, 'main.jsx')
+        path.join(JS_PATH, 'mainSite.js')
     ],
     output: {
         filename: 'bundle.js',
         path: path.join(basePath, 'dist'),
-        publicPath: '/assets/'
+        publicPath: '/js/'
     },
     module:{
         loaders:[
@@ -52,15 +52,15 @@ module.exports = {
                 test: /\.js[x]?$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader?presets[]=es2015&presets[]=react',
-              }, 
+              },
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader?modules!postcss-loader'
-            }, 
-            {
-                test: /\.scss/,
-                loader: 'style-loader!css-loader?modules!postcss-loader!sass-loader?outputStyle=expanded'
-            }, 
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap"),
+                exclude: STYLE_PATH
+            }, {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+            },
             {
                  test: /\.(png|jpg|gif|woff|woff2)$/,
                  loader: 'url-loader?limit=8192'
@@ -69,15 +69,17 @@ module.exports = {
         
     },
     plugins: [
-        new HtmlwebpackPlugin({
-            title:'hello,how are you!'
-        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({
           $: "jquery",
           jQuery: "jquery",
           "window.jQuery": "jquery"
+        }),
+        new ExtractTextPlugin("[name].css", {
+            disable: false,
+            allChunks: true
         })
+
       ],
     cache: true,
     devtool: 'eval-source-map',
@@ -87,6 +89,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline:true,
-        progress:true
+        progress:true,
+        publicPath: '/js/'
     }
 };
