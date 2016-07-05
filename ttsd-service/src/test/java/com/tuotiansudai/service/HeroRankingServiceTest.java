@@ -77,6 +77,11 @@ public class HeroRankingServiceTest {
 
     @Test
     public void shouldFindHeroRankingByReferrer() {
+        List<String> date = Lists.newArrayList();
+        date.add(new DateTime(2016, 7, 1, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss"));
+        date.add(new DateTime(2016, 7, 31, 23, 59, 59).toString("yyyy-MM-dd HH:mm:ss"));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
@@ -120,6 +125,11 @@ public class HeroRankingServiceTest {
 
     @Test
     public void shouldObtainHeroRankingIsSuccess(){
+        List<String> date = Lists.newArrayList();
+        date.add(new DateTime(2016,7,1,0,0,0).toString("yyyy-MM-dd HH:mm:ss"));
+        date.add(new DateTime(2016,7,31,23,59,59).toString("yyyy-MM-dd HH:mm:ss"));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
@@ -217,6 +227,11 @@ public class HeroRankingServiceTest {
 
     @Test
     public void shouldObtainHeroRankingByLoginNameIsSuccess(){
+        List<String> date = Lists.newArrayList();
+        date.add(new DateTime(2016, 7, 1, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss"));
+        date.add(new DateTime(2016, 7, 31, 23, 59, 59).toString("yyyy-MM-dd HH:mm:ss"));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
