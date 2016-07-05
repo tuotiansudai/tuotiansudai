@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class RedisWrapperClient extends AbstractRedisWrapperClient {
@@ -28,11 +32,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
+            jedis = getJedis();
             return jedisAction.action(jedis);
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -46,11 +46,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
+            jedis = getJedis();
             jedisAction.action(jedis);
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -64,11 +60,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(mybatisDb);
+            jedis = getJedis();
             return jedis.flushDB();
         } catch (JedisException e) {
             broken = handleJedisException(e);
@@ -466,5 +458,34 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.hincrBy(key, field, increasement);
             }
         });
+    }
+
+    private Jedis getJedis(){
+        int timeoutCount = 0;
+        Jedis jedis;
+        while(true){
+            try{
+                jedis = getJedisPool().getResource();
+                if (StringUtils.isNotEmpty(getRedisPassword())) {
+                    jedis.auth(getRedisPassword());
+                }
+                jedis.select(redisDb);
+                break;
+            }catch (Exception e){
+                if (e instanceof JedisConnectionException || e instanceof SocketTimeoutException){
+                    timeoutCount++;
+                    logger.error("getJedis timeoutCount=" + timeoutCount, e);
+                    if (timeoutCount > 3)
+                    {
+                        logger.error(e.getLocalizedMessage(), e);
+                        throw e;
+                    }
+                }else{
+                    logger.error(e.getLocalizedMessage(), e);
+                    throw e;
+                }
+            }
+        }
+        return jedis;
     }
 }

@@ -7,7 +7,6 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -20,6 +19,7 @@ import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +110,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean validate(InvestDto investDto) {
+        if (StringUtils.isEmpty(investDto.getLoginName())) {
+            logger.error("[Experience Invest] the login name is null");
+            return false;
+        }
+
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
 
         long investAmount = Long.parseLong(investDto.getAmount());
