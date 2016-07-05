@@ -260,13 +260,5 @@ public class FinanceReportServiceTest {
 
         List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null);
         assertEquals(8, csvData.size());
-        if (csvData.get(0).size() > 22) {
-            System.out.println("csvData:");
-            for (String s : csvData.get(0)) {
-                System.out.println(s);
-            }
-            System.out.println("csvDate End");
-        }
-        assertEquals(22, csvData.get(0).size());
     }
 }
