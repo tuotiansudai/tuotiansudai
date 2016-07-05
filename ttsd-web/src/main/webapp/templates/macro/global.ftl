@@ -131,7 +131,13 @@
 </div>
 
 <#if !isAppSource>
-    <#include "../footer.ftl" />
+    <#switch site>
+        <#case "membership">
+            <#include "../membership-footer.ftl"/>
+            <#break>
+        <#default>
+            <#include "../footer.ftl" />
+    </#switch>
 </#if>
 
 <script type="text/javascript" charset="utf-8">
@@ -228,10 +234,11 @@
     };
 
     phoneLoadFun();
-
-    document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');
-        toggleClass(obj,"active");
+    if(window.$('getMore')){
+        document.getElementById('getMore').onclick=function(){
+            var obj = document. getElementById('getMore');
+            toggleClass(obj,"active");
+        }
     }
 
     function hasClass(obj, cls) {
