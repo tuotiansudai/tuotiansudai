@@ -27,4 +27,7 @@ public interface HeroRankingService {
 
     GivenMembership receiveMembership(String loginName);
 
+    long findUsersCount();
+
+    long sumInvestAmount();
 }

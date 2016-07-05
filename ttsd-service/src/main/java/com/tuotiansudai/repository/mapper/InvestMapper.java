@@ -155,8 +155,6 @@ public interface InvestMapper {
 
     int sumSuccessInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
-    int sumSuccessExperienceInvestCountByLoginName(@Param(value = "loginName") String loginName);
-
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
 
     List<String> findAllChannels();
@@ -234,4 +232,8 @@ public interface InvestMapper {
     List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
                                                      @Param(value = "startTime") Date startTime,
                                                      @Param(value = "endTime") Date endTime);
+
+    int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
+                                                   @Param("productTypeList") List<ProductType> productTypeList);
+
 }
