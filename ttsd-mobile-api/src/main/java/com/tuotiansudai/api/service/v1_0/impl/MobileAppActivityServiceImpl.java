@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
     @Autowired
     ActivityMapper activityMapper;
+    @Autowired
+    @Value("${web.server}")
+    private String domainName;
 
     @Override
     public ActivityCenterResponseDto getAppActivityCenterResponseData(String loginName, Source source, Integer index, Integer pageSize) {
@@ -31,7 +35,9 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {
-            activityCenterDataDtos.add(new ActivityCenterDataDto(activityModel));
+            ActivityCenterDataDto activityCenterDataDto = new ActivityCenterDataDto(activityModel);
+            activityCenterDataDto.setImageUrl(domainName + "/" + activityModel.getAppPictureUrl());
+            activityCenterDataDtos.add(activityCenterDataDto);
         }
 
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
