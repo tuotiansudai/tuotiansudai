@@ -80,7 +80,7 @@ class NewbieTaskGroup extends React.Component {
                 <span className="HeaderTitle">新手任务</span>
                 <img src={taskLineRight}/>
             </div>
-            <div className="scroll-wrap" ref="scrollWrap">
+            <div className="scroll-wrap clearfix" ref="scrollWrap">
                 {rows}
                 </div>
             </div>
@@ -121,7 +121,7 @@ class AdvanceTaskGroup extends React.Component {
                 <img src={taskLineRight} />
             </div>
 
-            <div className="scroll-wrap" ref="scrollOngoing">
+            <div className="scroll-wrap clearfix" ref="scrollOngoing">
                {rows}
             </div>
             
@@ -242,13 +242,13 @@ class taskCenter extends React.Component {
 			    <div className="MenuBox" ref="tabHeader">
 			        <ul>
                         {MenuData.tabHeader.map((value, index) => {
-                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onClick={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
                         })}
 			        </ul>
 			    </div>
 		
 			<div className="ContentBox" ref="scrollWrap">
-			<div id="OngoingBox" className="OngoingBox" >
+			<div id="OngoingBox" className="OngoingBox clearfix" >
             {loading}
 			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
 
