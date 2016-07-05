@@ -101,16 +101,11 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private void authenticateToken(String loginName) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                 userDetails.getPassword(),
                 userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
+        authentication.setDetails(userDetails);
 
-    private void authenticateAnonymousToken() {
-        AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken("anonymousUser",
-                "anonymousUser",
-                Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ANONYMOUS")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

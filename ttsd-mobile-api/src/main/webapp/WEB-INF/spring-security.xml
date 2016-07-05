@@ -72,6 +72,7 @@
         <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
         <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
         <intercept-url pattern="/api/**" access="permitAll()"/>
+        <intercept-url pattern="/api-template" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()"/>
