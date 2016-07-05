@@ -1,0 +1,80 @@
+@import "grid";
+
+$gray: #e6e6e6;
+$orange: #ee7b2f;
+@mixin border() {
+	border: 1px solid $gray;
+}
+
+.global-loan-detail {
+	.mt10 {
+		margin-top: 10px;
+	}
+	.pr10 {
+		padding-right: 10px;
+	}
+	.orange {
+		color: $orange;
+	}
+	.container-block {
+		@include border;
+		background: #fff;
+		.title-block {
+			border-bottom: 1px solid $gray;
+			line-height: 50px;
+		}
+	}
+	.loan-info {
+		.title-block {
+			padding: 0 20px;
+			line-height: 50px;
+			.title {
+				font-size: 20px;
+			}
+		}
+		.boilerplate {
+			font-size: 14px;
+		}
+		.extra-rate {
+			font-size: 14px;
+			padding-left: 1em;
+			.fa {
+				font-size: 16px;
+			}
+		}
+		.content {
+			padding: 30px 40px;
+		}
+		.loan-number-detail {
+			border-bottom: 1px dashed $gray;
+			.title {
+				font-size: 18px;
+			}
+			.number {
+				font-size: 40px;
+				span {
+					font-size: 24px;
+				}
+			}
+		}
+		.loan-active-detail {
+			>div {
+				margin-top: 15px;
+				line-height: 1;
+			}
+		}
+		.progress-bar {
+			display: inline-block;
+			width: 140px;
+			background: $gray;
+			height: 10px;
+			border-radius: 5px;
+			.progress-inner {
+				background: $orange;
+				width: 40%;
+				height: 10px;
+				border-radius: 5px;
+			}
+		}
+	}
+}
