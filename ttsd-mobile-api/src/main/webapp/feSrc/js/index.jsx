@@ -11,7 +11,11 @@ import 'components/lib-flexible/lib-flexible';
 import changeTitle from 'utils/changeTitle';
 import './index.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+injectTapEventPlugin({
+shouldRejectClick: function (lastTouchEventTimestamp, clickEventTimestamp) {
+    return true;
+ 	}
+});
 
 import MediaList from 'components/licaiCircle/MediaList';
 import Article from 'components/licaiCircle/Article';

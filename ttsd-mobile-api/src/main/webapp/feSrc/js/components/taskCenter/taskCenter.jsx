@@ -38,7 +38,7 @@ class ButtonStatus extends React.Component {
 
         if(!isComplete) {
             // onClick={this.jumpToWhere.bind(this)}
-            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} href={url} data-value={value} data-url={url} >去完成</a>;
+            button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} url={url} onTouchTap={this.jumpToWhere.bind(this)} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
            button=<button className={description? 'TaskItemCompleteBtn' : 'TaskItemCompleteBtn column-one'}  disabled>已完成</button>;
