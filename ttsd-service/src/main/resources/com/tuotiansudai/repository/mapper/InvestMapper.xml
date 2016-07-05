@@ -266,7 +266,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -350,7 +350,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -381,7 +381,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -405,13 +405,6 @@
     <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
-        where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
-    </select>
-
-    <select id="sumSuccessExperienceInvestCountByLoginName" parameterType="String" resultType="int">
-        select count(*)
-        from invest join loan on invest.loan_id = loan.id and loan.product_type = 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
     </select>
@@ -821,6 +814,17 @@
                     AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
                     DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
                 )
+    </select>
+
+    <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
+        and i.status = 'SUCCESS'
+        <if test="productTypeList != null ">
+            and l.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
     </select>
 
 </mapper>
