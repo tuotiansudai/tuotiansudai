@@ -101,7 +101,7 @@ public class FinanceReportServiceTest {
     }
 
     private InvestModel createInvestModel(long investId, long loanId, AccountModel investor, Date investTime) {
-        InvestModel investModel = new InvestModel(investId, loanId, null, 1000L, investor.getLoginName(), investTime, Source.WEB, "channel");
+        InvestModel investModel = new InvestModel(investId, loanId, null, 1000L, investor.getLoginName(), investTime, Source.WEB, "channel", 0.01);
         investMapper.create(investModel);
         return investModel;
     }
@@ -174,7 +174,7 @@ public class FinanceReportServiceTest {
 
         List<FinanceReportItemView> financeReportItemViews = new ArrayList<>();
 
-        LoanModel loanModel = createLoanModel(1, "房产", agentUserModel, loanerAccountModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
+        LoanModel loanModel = createLoanModel(1000, "房产", agentUserModel, loanerAccountModel, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         InvestModel investModel = createInvestModel(1, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         InvestRepayModel investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
         InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.STAFF);
@@ -214,7 +214,7 @@ public class FinanceReportServiceTest {
         assertEquals(2, basePaginationDataDto.getIndex());
         assertEquals(3, basePaginationDataDto.getRecords().size());
 
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(1L, 1, "investorWithReferrer", null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 1, "investorWithReferrer", null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         FinanceReportItemView financeReportItemView = originalFinanceReportItemViewList.get(0);
         FinanceReportDto financeReportDto = basePaginationDataDto.getRecords().get(0);
@@ -244,7 +244,7 @@ public class FinanceReportServiceTest {
         assertEquals(1, basePaginationDataDto.getRecords().size());
         financeReportDto = basePaginationDataDto.getRecords().get(0);
         assertEquals(184, financeReportDto.getBenefitDays());
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(1L, 2, "investorWithReferrer", null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 2, "investorWithReferrer", null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         financeReportDto = basePaginationDataDto.getRecords().get(0);
         assertEquals(0, financeReportDto.getBenefitDays());
