@@ -34,7 +34,11 @@
     <beans:bean id="mobileAppLogoutSuccessHandler" class="com.tuotiansudai.api.security.MobileAppLogoutSuccessHandler"/>
 
     <beans:bean id="tokenFilter" class="com.tuotiansudai.api.security.MobileAppAuthenticationTokenProcessingFilter">
-        <beans:property name="ignoreUrls" value="/login"/>
+        <beans:property name="ignoreUrls">
+            <beans:list>
+                <beans:value>/login</beans:value>
+            </beans:list>
+        </beans:property>
         <beans:property name="refreshTokenUrl" value="/refresh-token"/>
     </beans:bean>
 
@@ -71,21 +75,21 @@
         <intercept-url pattern="/task-center/**" access="permitAll()"/>
 
 
-        <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
-        <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
-        <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />
-        <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
-        <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
+        <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/invests" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loans" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/get/loan" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/nodes" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/node" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
-        <intercept-url pattern="/v2.0/get/index" access="permitAll()" />
-        <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/loan" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/nodes" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/node" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/version" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/index" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()"/>
+        <intercept-url pattern="/v2.0/get/index" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()"/>
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>

@@ -205,11 +205,12 @@ SET `account`.`point` = `account`.`point` + (t.`count` * 200);
 
 # 首次邀请好友投资奖励5000财豆
 UPDATE `account`
-  JOIN (SELECT
-          `referrer_relation`.`referrer_login_name` AS `login_name`,
-          count(1)                                  AS `count`
+  JOIN (SELECT `referrer_relation`.`referrer_login_name` AS `login_name`
         FROM `referrer_relation`
         WHERE `referrer_relation`.`level` = 1
+              AND EXISTS(SELECT 1
+                         FROM `invest`
+                         WHERE `invest`.`login_name` = `referrer_relation`.`login_name` AND `invest`.`status` = 'SUCCESS' AND `invest`.`transfer_invest_id` IS NULL)
         GROUP BY `referrer_relation`.`referrer_login_name`) t
     ON `account`.`login_name` = t.`login_name`
 SET `account`.`point` = `account`.`point` + 5000;
@@ -221,7 +222,7 @@ UPDATE `account`
           count(1)                                  AS `count`
         FROM `referrer_relation`
           JOIN `invest` ON `referrer_relation`.`login_name` = `invest`.`login_name`
-        WHERE `referrer_relation`.`level` = 1 AND `invest`.`status` = 'SUCCESS' AND `invest`.`amount` >= 100000
+        WHERE `referrer_relation`.`level` = 1 AND `invest`.`status` = 'SUCCESS' AND `invest`.`amount` >= 100000 AND `invest`.`transfer_invest_id` IS NULL
         GROUP BY `referrer_relation`.`referrer_login_name`) t
     ON `account`.`login_name` = t.`login_name`
 SET `account`.`point` = `account`.`point` + t.`count` * 1000;
@@ -231,7 +232,7 @@ UPDATE `account`
   JOIN (SELECT `invest`.`login_name` AS `login_name`
         FROM `invest`
           JOIN `loan` ON `invest`.`loan_id` = `loan`.id
-        WHERE `invest`.`status` = 'SUCCESS' AND `loan`.`product_type` = '_180'
+        WHERE `invest`.`status` = 'SUCCESS' AND `loan`.`product_type` = '_180' AND `invest`.`transfer_invest_id` IS NULL
         GROUP BY `invest`.`login_name`) t
     ON `account`.`login_name` = t.`login_name`
 SET `account`.`point` = `account`.`point` + 1000;
@@ -241,7 +242,7 @@ UPDATE `account`
   JOIN (SELECT `invest`.`login_name` AS `login_name`
         FROM `invest`
           JOIN `loan` ON `invest`.`loan_id` = `loan`.id
-        WHERE `invest`.`status` = 'SUCCESS' AND `loan`.`product_type` = '_360'
+        WHERE `invest`.`status` = 'SUCCESS' AND `loan`.`product_type` = '_360' AND `invest`.`transfer_invest_id` IS NULL
         GROUP BY `invest`.`login_name`) t
     ON `account`.`login_name` = t.`login_name`
 SET `account`.`point` = `account`.`point` + 1000;

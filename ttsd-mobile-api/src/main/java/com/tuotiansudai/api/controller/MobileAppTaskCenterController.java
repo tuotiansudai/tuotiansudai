@@ -17,11 +17,6 @@ public class MobileAppTaskCenterController {
     @Autowired
     private MobileAppTaskCenterService mobileAppTaskCenterService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView taskCenter() {
-        return new ModelAndView("/api-template");
-    }
-
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponseDto<TaskCenterResponseDataDto> getTasks() {
