@@ -66,7 +66,7 @@ def compile():
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
