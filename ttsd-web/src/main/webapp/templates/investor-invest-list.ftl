@@ -72,6 +72,9 @@
                                 {{if $value.achievement=='MAX_AMOUNT'}}
                                 <i class="max-icon"></i>
                                 {{/if}}
+                                {{if $value.extraRate !== null}}
+                                <i class="extra-rate" data-benefit="{{$value.extraRate * 100}}"></i>
+                                {{/if}}
                             {{/if}}
                         </span>
                         <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
@@ -113,8 +116,8 @@
             </tbody>
         </table>
     </script>
-        
-    
+
+
     <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
     </div>
 </div>
