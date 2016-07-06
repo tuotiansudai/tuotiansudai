@@ -17,7 +17,7 @@ public class UserMessageDto implements Serializable {
     private Date createdTime;
 
     public UserMessageDto(UserMessageModel userMessageModel) {
-        this.userMessageId = userMessageModel.getMessageId();
+        this.userMessageId = userMessageModel.getId();
         this.title = userMessageModel.getTitle();
         this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getTitle() : userMessageModel.getContent();
         this.read = userMessageModel.isRead();
