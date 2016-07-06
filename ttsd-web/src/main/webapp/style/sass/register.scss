@@ -313,7 +313,24 @@
 }
 
 @media (max-width: 700px) {
-
+  .forget-phone-box {
+    .retrieve-box {
+      width: 90%;
+      margin:0 5%;
+      li {
+        label {
+          width: 60px;
+        }
+        input {
+          width: calc(100% - 60px);
+        }
+      }
+    }
+    .re-title {
+      padding-left: 0;
+      padding-bottom: 10px;
+    }
+  }
   .main-frame.full-screen {
     .register-skin{
       width: 100%!important;
@@ -414,5 +431,6 @@
     }
   }
 }
+
 
 
