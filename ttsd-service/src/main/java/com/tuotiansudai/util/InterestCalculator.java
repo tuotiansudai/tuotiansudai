@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class InterestCalculator {
@@ -198,6 +199,18 @@ public class InterestCalculator {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
         return totalExpectedInterestAmount;
+    }
+
+    public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
+        DateTime startTime;
+        if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
+            startTime =new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+        } else {
+            startTime = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+        }
+        int periodDuration = Days.daysBetween(startTime, new DateTime(endTime).withTimeAtStartOfDay()).getDays();
+        return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
+                divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
 }

@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -15,15 +14,11 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -86,8 +81,14 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -183,7 +184,9 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        return expectedInterest - expectedFee;
+        long extraRateInterest = getExtraRate(loanId,amount,loanModel.getDuration());
+        long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return (expectedInterest  - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -231,9 +234,11 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+
             items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
-                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
+                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel));
         }
 
         BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);
@@ -304,7 +309,8 @@ public class InvestServiceImpl implements InvestService {
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
+                InvestExtraRateModel extraRateModel = investExtraRateMapper.findByInvestId(view.getId());
+                InvestPaginationItemDataDto investPaginationItemDataDto =(extraRateModel == null)?new InvestPaginationItemDataDto(view):new InvestPaginationItemDataDto(view,extraRateModel);
                 investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
@@ -395,5 +401,22 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void markNoPasswordRemind(String loginName) {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
+    }
+
+    private long getExtraRate(long loanId,long amount,int duration){
+        double rate = 0;
+        List<ExtraLoanRateModel> extraLoanRateModelList = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList){
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && extraLoanRateModel.getMaxInvestAmount() == 0){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+            if(extraLoanRateModel.getMinInvestAmount() <= amount && amount < extraLoanRateModel.getMaxInvestAmount()){
+                rate = extraLoanRateModel.getRate();
+                break;
+            }
+        }
+
+        return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 }
