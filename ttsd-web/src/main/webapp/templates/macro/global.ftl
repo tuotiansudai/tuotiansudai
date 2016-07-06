@@ -78,7 +78,7 @@
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
+        <link rel="stylesheet" href="${staticServer}${cssPath}${css.ie_hack_grid}">
     <![endif]-->
     <script>
         var _czc = _czc || [];
