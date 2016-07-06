@@ -36,7 +36,7 @@
                 and business_type IN ('SIGN_IN','TASK','INVEST')
             </if>
             <if test="businessType != null and businessType.name() == 'EXCHANGE'">
-                and business_type = 'EXCHANGE'
+                and business_type IN ('EXCHANGE','LOTTERY')
             </if>
             <if test="startTime != null  &amp;&amp;  endTime != null">
                 and created_time between #{startTime} and #{endTime}
