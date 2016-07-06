@@ -19,9 +19,6 @@ public class ActivitiesController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private HomeService homeService;
-
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
@@ -34,12 +31,4 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/landing-page", method = RequestMethod.GET)
-    public ModelAndView landing() {
-        ModelAndView modelAndView = new ModelAndView("/activities/landing-page", "responsive", true);
-
-        modelAndView.addObject("loans", homeService.getLoans());
-
-        return modelAndView;
-    }
 }
