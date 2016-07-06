@@ -5,16 +5,22 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
-                <a href="/activity/hero-ranking" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/hero-ranking" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
+                <#--<li>-->
+                    <#--<a href="/activity/loan-hike" target="_blank">-->
+                        <#--<img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">-->
+                        <#--<img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">-->
+                    <#--</a>-->
+                <#--</li>-->
                 <li>
-                <a href="/activity/invest-achievement" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/invest-achievement" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
@@ -41,10 +47,10 @@
                     </a>
                 </li>
                 <li>
-                <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
-                    <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                    <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
-                </a>
+                    <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+                        <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                        <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
@@ -71,6 +77,7 @@
                 <li></li>
                 <li></li>
                 <li></li>
+                <#--<li></li>-->
             </ul>
         </div>
         <div class="page-width">
@@ -186,6 +193,22 @@
                     </div>
                 </div>
                 <div class="mask-model">
+                    <div class="model-project-precess">
+                        <div class="right-operat">
+                            <div class="p-title">
+                                <span class="fl">项目进度</span>
+                                <span class="point fr">${experienceLoanDto.progress} %</span>
+                            </div>
+                            <div class="process-percent">
+                                <div class="percent" style="width:${experienceLoanDto.progress}%">
+                                </div>
+                            </div>
+                            <div class="rest-amount">
+                                <span>可投额度：<i>${experienceLoanDto.investAmount}</i>元(体验金)</span>
+                                <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mask-btn"></div>
                 </div>
                 <div class="mask-bg"></div>
@@ -315,6 +338,9 @@
                                         <dt>预期年化收益</dt>
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <#if (loan.extraRate > 0)>
+                                                    ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
+                                                </#if>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
                                                 </#if>%
@@ -405,9 +431,9 @@
                                 <h2 class="pr-title">新手体验项目</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b>${experienceLoanDto.baseRate}</b>
                                            %</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -442,12 +468,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -507,12 +533,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                </#if>%</em>
-                                        <i>预期年化收益</i>
+                                            <#if (loan.extraRate > 0)>
+                                                ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
+                                            </#if>%</em>
                                     </div>
                                 </div>
                                 <dl class="pr-info">

@@ -1,9 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
@@ -18,7 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -38,6 +42,9 @@ public class InvestServiceTest {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
@@ -136,6 +143,54 @@ public class InvestServiceTest {
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.isEnabled();
+    }
+
+    @Test
+    public void shouldEstimateInvestIncomeIsOk(){
+        String loginName = "testExtraRate";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createLoanByUserId(loginName,loanId);
+        List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
+        extraLoanRateMapper.create(extraLoanRateModels);
+        long amount = investService.estimateInvestIncome(loanId,loginName,100000);
+        assertNotNull(amount);
+        assertTrue(amount == 2810);
+        amount = investService.estimateInvestIncome(loanId,loginName,1000000);
+        assertNotNull(amount);
+        assertTrue(amount == 42904);
+        amount = investService.estimateInvestIncome(loanId,loginName,5000000);
+        assertNotNull(amount);
+        assertTrue(amount == 288494);
+    }
+
+    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId){
+        ExtraLoanRateModel model = new ExtraLoanRateModel();
+        model.setLoanId(loanId);
+        model.setExtraRateRuleId(100001);
+        model.setCreatedTime(new Date());
+        model.setMinInvestAmount(100000);
+        model.setMaxInvestAmount(1000000);
+        model.setRate(0.1);
+        ExtraLoanRateModel model2 = new ExtraLoanRateModel();
+        model2.setLoanId(loanId);
+        model2.setExtraRateRuleId(100001);
+        model2.setCreatedTime(new Date());
+        model2.setMinInvestAmount(1000000);
+        model2.setMaxInvestAmount(5000000);
+        model2.setRate(0.3);
+        ExtraLoanRateModel model3 = new ExtraLoanRateModel();
+        model3.setLoanId(loanId);
+        model3.setExtraRateRuleId(100001);
+        model3.setCreatedTime(new Date());
+        model3.setMinInvestAmount(5000000);
+        model3.setMaxInvestAmount(0);
+        model3.setRate(0.5);
+        List<ExtraLoanRateModel> list = Lists.newArrayList();
+        list.add(model);
+        list.add(model2);
+        list.add(model3);
+        return list;
     }
 
 }

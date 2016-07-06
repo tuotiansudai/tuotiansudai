@@ -6,10 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +32,7 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        List<LoanModel> loanModels = loanMapper.findByProductType(ProductType.EXPERIENCE);
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
         if (CollectionUtils.isEmpty(loanModels)) {
             return false;
         }
