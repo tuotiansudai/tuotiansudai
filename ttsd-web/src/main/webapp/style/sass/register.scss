@@ -312,23 +312,57 @@
   }
 }
 
-@media (max-width: 700px) {
+@media screen and (max-width:700px) {
+
   .forget-phone-box {
+    width: 90%;
+    margin:0 5%;
     .retrieve-box {
-      width: 90%;
-      margin:0 5%;
+      width:100%;
       li {
+        height: auto;
+        overflow: auto;
+        margin-bottom: 15px;
         label {
-          width: 60px;
+          &.title {
+            width: 60px;
+            line-height: 38px;
+            float: left;
+            display: inline-block;
+          }
+          &.error {
+            display: block;
+            clear: both;
+            padding-top: 10px;
+          }
         }
-        input {
-          width: calc(100% - 60px);
+        input[type="text"],input[type="text"] {
+          width: calc(100% - 64px)!important;
+          float: right;
+          box-sizing: border-box;
+          padding: 12px 2px 12px 10px;
+          border-radius: 0;
+          box-shadow: none;
+        }
+        input.btn-send-form {
+          margin:10px auto;
+        }
+        .fetch-captcha  {
+          right:2px;
+          border-radius: 0;
+          padding: 11px 6px;
         }
       }
     }
     .re-title {
       padding-left: 0;
       padding-bottom: 10px;
+    }
+    .tips_message {
+      padding:20px 0;
+      span {
+        display: block;
+      }
     }
   }
   .main-frame.full-screen {

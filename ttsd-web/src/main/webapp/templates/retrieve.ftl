@@ -6,22 +6,22 @@
        <ul class="retrieve-box">
            <li class="re-title">通过认证手机找回密码</li>
            <li>
-               <label for="">手机号：</label>
+               <label for="" class="title">手机号：</label>
                <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile!''}" placeholder="请输入手机号"/>
            </li>
            <li class="get-captcha">
-               <label for="">验证码：</label>
+               <label for="" class="title">验证码：</label>
                    <input type="text" name="captcha" class="yzm-txt" minlength="6" maxlength="6" placeholder="请输入验证码"/>
                    <button type="button" class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
            </li>
-           <li class="clear-blank-m">
+           <li class="clear-blank-m tc">
 
                <input type="submit" class="btn-send-form btn-success"  value="提交"/>
 
            </li>
        </ul>
         </form>
-        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （服务时间：9:00－20:00）</div>
+        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：<span>400-169-1188 （服务时间：9:00－20:00）</span></div>
     </div>
 
     <div class="verification-code-main" style="display: none;">
