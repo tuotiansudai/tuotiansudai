@@ -2,16 +2,14 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.LoanTitleDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
@@ -36,6 +34,12 @@ public class LoanController {
 
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
+
+    @Autowired
+    private ExtraLoanRateService extraLoanRateService;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
@@ -78,6 +82,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
+        modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
@@ -119,6 +124,12 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanDto loanDto) {
         return loanService.applyAuditLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType){
+        return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
 
 }
