@@ -88,6 +88,9 @@ public class InvestController {
                 dataModel.add(itemDataDto.isAutoInvest() ? "是" : "否");
                 dataModel.add(itemDataDto.getAmount());
                 dataModel.add(itemDataDto.getStatus());
+                dataModel.add(itemDataDto.getRate());
+                dataModel.add(itemDataDto.getExpectedFee());
+                dataModel.add(itemDataDto.getActualFee());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
