@@ -10,12 +10,12 @@
                         <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
                     </a>
                 </li>
-                <li>
-                    <a href="/activity/loan-hike" target="_blank">
-                        <img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">
-                    </a>
-                </li>
+                <#--<li>-->
+                    <#--<a href="/activity/loan-hike" target="_blank">-->
+                        <#--<img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">-->
+                        <#--<img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">-->
+                    <#--</a>-->
+                <#--</li>-->
                 <li>
                     <a href="/activity/invest-achievement" target="_blank">
                         <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
@@ -77,7 +77,7 @@
                 <li></li>
                 <li></li>
                 <li></li>
-                <li></li>
+                <#--<li></li>-->
             </ul>
         </div>
         <div class="page-width">
