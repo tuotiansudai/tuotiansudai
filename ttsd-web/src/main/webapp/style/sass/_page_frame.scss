@@ -262,6 +262,9 @@
             border-top: #ff7200 3px solid;
           }
         }
+        &.top-membership {
+          display: none;
+        }
       }
     }
   }
@@ -311,13 +314,16 @@
     .header-download {
       display: block;
     }
+    .header-membership {
+      display: none;
+    }
     .header {
       width:100%;
       ul li {
         margin-left:10px;
         margin-right:0;
       }
-      time,.login-pop-app {
+      time,.login-pop-app,.header-membership {
         display: none;
       }
     }
@@ -363,6 +369,9 @@
               border-bottom: #ff7200 1px solid;
               border-top:3px solid #fff;
             }
+          }
+          &.top-membership {
+            display: block;
           }
         }
       }
