@@ -1,11 +1,9 @@
 package com.tuotiansudai.client;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.Set;
 
@@ -15,7 +13,7 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
     static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
     @Value("${common.mybatis.cache.db}")
-    private int redisDb;
+    protected int redisDb;
 
     @Value("${common.mybatis.cache.expire.seconds}")
     private int second;
@@ -28,39 +26,13 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
         this.second = second;
     }
 
-    private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+    private <T> T execute(JedisAction<T> jedisAction) {
         Jedis jedis = null;
-        boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
+            jedis = getJedis(this.redisDb);
             return jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
         } finally {
-            closeResource(jedis, broken);
-        }
-    }
-
-    private void execute(JedisActionNoResult jedisAction) throws JedisException {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(redisDb);
-            jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+            closeResource(jedis);
         }
     }
 
@@ -73,20 +45,20 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public Object expire(final byte[] key, final int seconds) {
-        return execute(new JedisAction<Object>() {
+    public Long expire(final byte[] key, final int seconds) {
+        return execute(new JedisAction<Long>() {
             @Override
-            public Object action(Jedis jedis) {
+            public Long action(Jedis jedis) {
                 return jedis.expire(key, seconds);
             }
         });
     }
 
-    public void set(final byte[] key, final byte[] value) {
-        execute(new JedisActionNoResult() {
+    public String set(final byte[] key, final byte[] value) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.set(key, value);
+            public String action(Jedis jedis) {
+                return jedis.set(key, value);
             }
         });
     }
@@ -99,5 +71,4 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
             }
         });
     }
-
 }
