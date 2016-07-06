@@ -41,7 +41,7 @@
             </if>
 
             <if test="source != null">
-                and source = #{source}
+                and source like CONCAT(CONCAT('%', #{source}), '%')
             </if>
         order by banner.order
     </select>
