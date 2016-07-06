@@ -65,7 +65,7 @@ public class PointBillMapperTest {
         pointBillMapper.create(pointBillModel);
         PointBillModel pointBillModel1 = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.EXCHANGE, "note");
         pointBillMapper.create(pointBillModel1);
-        List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeUserModel.getLoginName(),0,10,null,null,PointBusinessType.EXCHANGE);
+        List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeUserModel.getLoginName(),0,10,null,null,Lists.newArrayList(PointBusinessType.EXCHANGE,PointBusinessType.LOTTERY));
         assertThat(pointBillModelList.size(), is(2));
     }
 }
