@@ -2,8 +2,8 @@
 <@global.main pageCss="${css.loan_hike}" pageJavascript="${js.loan_hike}" activeNav="" activeLeftNav="" title="拓天排行榜_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
 <div class="loan-hike-container">
 	<div class="container">
-		<img src="${staticServer}/images/sign/actor/loanhike/top-pc.png" width="100%" class="responsive-pc">
-		<img src="${staticServer}/images/sign/actor/loanhike/top-phone.png" width="100%" class="responsive-phone">
+		<img src="${staticServer}/activity/images/sign/actor/loanhike/top-pc.png" width="100%" class="responsive-pc">
+		<img src="${staticServer}/activity/images/sign/actor/loanhike/top-phone.png" width="100%" class="responsive-phone">
 	</div>
 	<div class="container">
 		<div class="wp clearfix">
@@ -13,7 +13,7 @@
 			<div class="arrow-icon"></div>
 			<div class="model-list">
 				<div class="list-template list-left">
-					<h3><i class="title-icon"><img src="${staticServer}/images/sign/actor/loanhike/car-icon.png" width="100%"></i>车辆抵押借款</h3>
+					<h3><i class="title-icon"><img src="${staticServer}/activity/images/sign/actor/loanhike/car-icon.png" width="100%"></i>车辆抵押借款</h3>
 					<table class="table table-border">
 						<thead>
 							<tr>
@@ -46,7 +46,7 @@
 					</table>
 				</div>
 				<div class="list-template list-right">
-					<h3><i class="title-icon"><img src="${staticServer}/images/sign/actor/loanhike/house-icon.png" width="100%"></i>房产抵押借款</h3>
+					<h3><i class="title-icon"><img src="${staticServer}/activity/images/sign/actor/loanhike/house-icon.png" width="100%"></i>房产抵押借款</h3>
 					<table class="table table-border">
 						<thead>
 							<tr>
@@ -88,7 +88,7 @@
 			<div class="arrow-icon"></div>
 			<div class="notice-container">
 				<div class="notice-left">
-					<img src="${staticServer}/images/sign/actor/loanhike/stress-intro.png">
+					<img src="${staticServer}/activity/images/sign/actor/loanhike/stress-intro.png">
 				</div>
 				<div class="notice-right">
 					这次加息活动，在活动期间及范围内，不仅可以<span>无限次</span>使用，并且可以与平台其他优惠<span>一起使用</span>!包括: <span>生日月收益翻倍</span>、<span>现金红包</span>、<span>加息券</span>！
@@ -131,7 +131,7 @@
 			</div>
 			<div class="rule-container">
 				<div class="rule-left">
-					<img src="${staticServer}/images/sign/actor/loanhike/actor-intro.png">
+					<img src="${staticServer}/activity/images/sign/actor/loanhike/actor-intro.png">
 				</div>
 				<div class="rule-right">
 					<ul class="rule-list">
