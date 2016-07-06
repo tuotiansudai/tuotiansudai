@@ -74,7 +74,10 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
                 if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
-                    dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
+                    List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+                    if(CollectionUtils.isNotEmpty(userCouponModelList)){
+                        dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponModelList.get(0).getCouponId()).getAmount()));
+                    }
                 }
                 long actualInterest = 0;
                 long expectedInterest = 0;
