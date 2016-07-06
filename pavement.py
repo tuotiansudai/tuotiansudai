@@ -56,6 +56,7 @@ def stop():
     from paver.shell import sh
 
     sh('pkill python')
+    sh('pkill python')
 
 
 def remove_old_container(name):
@@ -74,10 +75,17 @@ def qa():
     """
     Deploy Staging/QA environment
     """
-    from scripts.deployment import QADeployment
+    from scripts.deployment import Deployment
 
-    qa_env = QADeployment()
-    qa_env.deploy()
+    deployment = Deployment()
+    deployment.deploy('QA')
+
+@task
+def dev():
+    from scripts.deployment import Deployment
+
+    deployment = Deployment()
+    deployment.deploy('DEV')
 
 
 @task
@@ -157,6 +165,7 @@ def only_worker():
     """
     fab_command("worker")
 
+
 def versioning_files(path):
     from paver.shell import sh
 
@@ -175,6 +184,7 @@ def jcversion():
     """
     versioning_files('ttsd-web/')
     versioning_files('ttsd-mobile-api/')
+    versioning_files('ttsd-activity/')
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
