@@ -20,6 +20,9 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        if (!"app".equalsIgnoreCase(request.getParameter("isAppSource"))) {
+            return true;
+        }
         String token = Strings.isNullOrEmpty(request.getHeader("token"))?request.getParameter("token"):request.getHeader("token");
         if (Strings.isNullOrEmpty(token)) {
             logger.debug(MessageFormat.format("url:{0},uri:{1} , token is null",request.getRequestURL(),request.getRequestURI()));

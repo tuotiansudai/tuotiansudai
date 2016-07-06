@@ -33,8 +33,8 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.web.interceptors.AppTokenInterceptor" />
         <bean class="com.tuotiansudai.web.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.web.interceptors.AppTokenInterceptor" />
         <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>
 
