@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +108,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
+        if(endTime != null){
+            endTime = new DateTime(endTime).plusDays(1).minusSeconds(1).toDate();
+        }
         List<ActivityModel> activityModels = activityMapper.findAllActivities(startTime, endTime, activityStatus, source);
         List<ActivityDto> activityDtos = Lists.newArrayList();
         for (ActivityModel activityModel : activityModels) {
