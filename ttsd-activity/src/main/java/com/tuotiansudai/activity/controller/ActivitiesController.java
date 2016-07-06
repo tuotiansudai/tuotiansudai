@@ -34,12 +34,4 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/landing-page", method = RequestMethod.GET)
-    public ModelAndView landing() {
-        ModelAndView modelAndView = new ModelAndView("/activities/landing-page", "responsive", true);
-
-        modelAndView.addObject("loans", homeService.getLoans());
-
-        return modelAndView;
-    }
 }
