@@ -10,12 +10,12 @@ import java.awt.image.BufferedImage;
 import java.security.SecureRandom;
 import java.util.*;
 
-public class CaptureDefaultWordRenderer implements WordRenderer{
+public class CaptchaDefaultWordRenderer implements WordRenderer{
     private static final Random RAND = new SecureRandom();
     private final java.util.List<Color> _colors;
     private final java.util.List<Font> _fonts;
 
-    public CaptureDefaultWordRenderer(java.util.List<Color> colors, java.util.List<Font> fonts) {
+    public CaptchaDefaultWordRenderer(java.util.List<Color> colors, java.util.List<Font> fonts) {
         this._colors = new ArrayList();
         this._fonts = new ArrayList();
         this._colors.addAll(colors);
@@ -28,7 +28,7 @@ public class CaptureDefaultWordRenderer implements WordRenderer{
         hints.add(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
         g.setRenderingHints(hints);
         FontRenderContext frc = g.getFontRenderContext();
-        int xBaseline = (int)Math.round((double)image.getWidth() * 0.12D);
+        int xBaseline = (int)Math.round((double)image.getWidth() * 0.02D);
         int yBaseline = image.getHeight() - (int)Math.round((double)image.getHeight() * 0.25D);
         char[] chars = new char[1];
         char[] var12;
