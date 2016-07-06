@@ -1,7 +1,10 @@
 @import "grid";
 
 $gray: #e6e6e6;
+$grayLight: #b2b2b2;
 $orange: #ee7b2f;
+$red: #eb4a3e;
+
 @mixin border() {
 	border: 1px solid $gray;
 }
@@ -75,6 +78,14 @@ $orange: #ee7b2f;
 				height: 10px;
 				border-radius: 5px;
 			}
+		}
+	}
+	.loan-operation {
+		.title-block {
+			color: $grayLight;
+		}
+		.content {
+			height: 173px;
 		}
 	}
 }

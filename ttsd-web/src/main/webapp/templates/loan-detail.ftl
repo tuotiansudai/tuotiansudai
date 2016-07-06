@@ -49,14 +49,19 @@
                     </div> <#-- .container-block end tag -->
                 </div>
                 <div class="col-md-4">
-                    <div class="container-block">
+                    <div class="container-block loan-operation">
                         <div class="title-block clearfix">
                             <div class="fr">
                                 拓天速贷提醒您：投资非存款，投资需谨慎！
                             </div>
                         </div>
                         <div class="content">
-                            sdfdsf
+                            <div class="pre">
+                                <div class="time">
+                                    <span>22:33:12</span> 后可投资
+                                </div>
+                                <a href="#" class="btn">预热中</a>
+                            </div>
                         </div>
                     </div>
                 </div>
