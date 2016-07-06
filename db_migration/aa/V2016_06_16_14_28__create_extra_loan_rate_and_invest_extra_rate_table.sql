@@ -21,6 +21,7 @@ CREATE TABLE `aa`.`invest_extra_rate` (
   `invest_id`             BIGINT UNSIGNED NOT NULL,
   `is_transfer`          TINYINT(1) NOT NULL DEFAULT '0',
   `amount`                 BIGINT UNSIGNED NOT NULL,
+  `login_name`            VARCHAR(25) NOT NULL,
   `extra_rate`            DOUBLE  NOT NULL,
   `expected_interest`    BIGINT UNSIGNED NOT NULL,
   `expected_fee`          BIGINT UNSIGNED NOT NULL,
@@ -32,7 +33,8 @@ CREATE TABLE `aa`.`invest_extra_rate` (
   `created_time`          DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_INVEST_EXTRA_RATE_LOAN_ID_REF_LOAN_ID FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`),
-  CONSTRAINT FK_INVEST_EXTRA_RATE_INVEST_ID_REF_INVEST_ID FOREIGN KEY (`invest_id`) REFERENCES `aa`.`invest` (`id`)
+  CONSTRAINT FK_INVEST_EXTRA_RATE_INVEST_ID_REF_INVEST_ID FOREIGN KEY (`invest_id`) REFERENCES `aa`.`invest` (`id`),
+  CONSTRAINT FK_INVEST_EXTRA_RATE_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = INNODB
   AUTO_INCREMENT = 100001

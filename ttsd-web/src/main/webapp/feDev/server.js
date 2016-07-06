@@ -25,11 +25,12 @@ var config = [{
 	template: 'footer',
 	data: 'footer'
 },
-	{
-		route: '/activity',
-		template: 'activity-center',
-		data: 'activity_demo'
-	}];
+{
+	route: '/activity',
+	template: 'activity-center',
+	data: 'activity_demo'
+}];
+
 
 
 config.forEach(function(val) {

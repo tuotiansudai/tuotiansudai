@@ -1,19 +1,14 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
-import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
+import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +31,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Autowired
@@ -48,16 +40,10 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private InvestMapper investMapper;
 
     @Autowired
-    private AmountTransfer amountTransfer;
-
-    @Autowired
-    private SystemBillService systemBillService;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestRateService investRateService;
 
     @Override
     public void transferPurchase(long investId) {
@@ -80,12 +66,21 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
                 long actualInterest = investExtraRateModel.getExpectedInterest();
                 long actualFee = investExtraRateModel.getExpectedFee();
-                this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
+                try {
+                    this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
+                } catch (Exception e) {
+                    logger.error(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                            String.valueOf(loanRepayId),
+                            String.valueOf(investExtraRateModel.getInvestId()),
+                            investExtraRateModel.getLoginName(),
+                            String.valueOf(investExtraRateModel.getAmount())), e);
+                    continue;
+                }
             }
         }
     }
 
-    private void sendExtraRateAmount(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) {
+    private void sendExtraRateAmount(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception{
         InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
         AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if (accountModel == null) {
@@ -96,35 +91,16 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             return;
         }
         long amount = actualInterest - actualFee;
-        if (amount <= 0) {
-            return;
-        }
-        long orderId = idGenerator.generate();
-        try {
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
+        boolean isSuccess = false;
+        if (amount > 0) {
+            String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
+            TransferRequestModel requestModel = TransferRequestModel.newRequest(orderId, accountModel.getPayUserId(), String.valueOf(amount));
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-            if (responseModel.isSuccess()) {
-                this.updateExtraRateData(investExtraRateModel, investModel, accountModel, actualInterest, actualFee, amount, orderId);
-            }
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("extra rate is failed, investId={0} loginName={1} amount={3}",
-                    String.valueOf(investModel.getId()),
-                    investModel.getLoginName(),
-                    String.valueOf(investModel.getAmount())), e);
-            return;
+            isSuccess = responseModel.isSuccess();
         }
-    }
-
-    private void updateExtraRateData(InvestExtraRateModel investExtraRateModel, InvestModel investModel, AccountModel accountModel, long actualInterest, long actualFee, long amount, long orderId) throws AmountTransferException {
-        amountTransfer.transferInBalance(accountModel.getLoginName(), orderId, amount, UserBillBusinessType.EXTRA_RATE, null, null);
-        String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
-                investModel.getLoginName(), String.valueOf(investModel.getId()));
-        systemBillService.transferOut(orderId, amount, SystemBillBusinessType.EXTRA_RATE, detail);
-        investExtraRateModel.setActualInterest(actualInterest);
-        investExtraRateModel.setActualFee(actualFee);
-        investExtraRateModel.setRepayAmount(amount);
-        investExtraRateModel.setActualRepayDate(new Date());
-        investExtraRateMapper.update(investExtraRateModel);
+        if (isSuccess || amount == 0) {
+            investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+        }
     }
 
     @Override
@@ -135,10 +111,18 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId);
         for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
             InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
-            MembershipModel membershipModel = userMembershipEvaluator.evaluate(investModel.getLoginName());
             long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
-            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(membershipModel.getFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-            this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
+            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            try {
+                this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Advance Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
+                        String.valueOf(loanRepayId),
+                        String.valueOf(investExtraRateModel.getInvestId()),
+                        investExtraRateModel.getLoginName(),
+                        String.valueOf(investExtraRateModel.getAmount())), e);
+                continue;
+            }
         }
     }
 

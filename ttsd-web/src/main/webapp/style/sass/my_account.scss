@@ -1521,11 +1521,22 @@ body{
         font-size: 16px;
         color: #ff752a;
         line-height: 26px;
-        &.extra-rate {
-          width: auto;
-          padding: 0 .5em;
-          left: 53px;
-          bottom: 35px;
+      }
+      .extra-rate {
+        position: absolute;
+        width: auto;
+        padding: 0 .5em;
+        text-align: center;
+        border: 1px dashed #ff752a;
+        border-radius: 34px;
+        line-height: 26px;
+        font-size: 16px;
+        color: #ff752a;
+        left: 53px;
+        bottom: 35px;
+        .fa-question-circle-o {
+          transform: translate(0, -2px);
+          -webkit-transform: translate(0, -2px);
         }
       }
     }
@@ -4132,6 +4143,12 @@ body{
       position: relative;
       left: 50%;
       margin-left: -100px !important;
+      float: none !important;
+    }
+    .extra-rate {
+      position: static !important;
+      width: 185px !important;
+      margin: 0 auto 20px !important;
     }
   }
   .account-info {

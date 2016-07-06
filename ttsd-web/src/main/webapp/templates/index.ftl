@@ -5,16 +5,22 @@
         <div class="banner-img-list bd">
             <ul>
                 <li>
-                <a href="/activity/hero-ranking" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/hero-ranking" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
                 <li>
-                <a href="/activity/invest-achievement" target="_blank">
-                    <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                    <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
-                </a>
+                    <a href="/activity/loan-hike" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">
+                    </a>
+                </li>
+                <li>
+                    <a href="/activity/invest-achievement" target="_blank">
+                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
+                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt="" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
@@ -41,10 +47,10 @@
                     </a>
                 </li>
                 <li>
-                <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
-                    <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                    <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
-                </a>
+                    <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+                        <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                        <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
+                    </a>
                 </li>
                 <li>
                     <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
@@ -63,6 +69,7 @@
         <div class="hd">
             <ul class="scroll-num">
                 <li class="on"></li>
+                <li></li>
                 <li></li>
                 <li></li>
                 <li></li>
@@ -332,7 +339,7 @@
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.extraRate > 0)>
-                                                    ~ <@percentInteger>${loan.baseRate + loan.extraRate}</@percentInteger><@percentFraction>${loan.extraRate}</@percentFraction>
+                                                    ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
                                                 </#if>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
@@ -529,9 +536,9 @@
                                         <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                </#if>%</em>
+                                            <#if (loan.extraRate > 0)>
+                                                ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
+                                            </#if>%</em>
                                     </div>
                                 </div>
                                 <dl class="pr-info">

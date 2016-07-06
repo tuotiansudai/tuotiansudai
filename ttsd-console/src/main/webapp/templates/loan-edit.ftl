@@ -273,7 +273,7 @@
                         <#list extraLoanRates as extraLoanRate>
                             <tr>
                                 <td>${(extraLoanRate.minInvestAmount/100)?string('0')}≤投资额<#if extraLoanRate.maxInvestAmount gt 0><${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
-                                <td>${extraLoanRate.rate}</td>
+                                <td>${extraLoanRate.rate * 100}</td>
                             </tr>
                         </#list>
                         </tbody>
