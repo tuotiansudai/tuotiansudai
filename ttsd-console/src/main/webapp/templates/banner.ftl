@@ -6,7 +6,7 @@
 
     <form action="" method="post" class="form-horizontal form-list banner-form">
         <div class="form-group">
-            <label class="col-sm-2 control-label">名称:</label>
+            <label class="col-sm-1 control-label">名称:</label>
                 <#if banner??>
                     <input type="hidden" class="jq-id" name="id" value="${(banner.id?string('0'))!}">
                 </#if>
@@ -16,14 +16,19 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">大图:</label>
+            <label class="col-sm-1 control-label">大图:</label>
+
+            <div class="col-sm-4 ">
+                <input type="text" name="webImageUrl" class="form-control banner-webImageUrl" readonly placeholder="" value="<#if banner??>${banner.webImageUrl!}</#if>" datatype="*" errormsg="大图不能为空" >
+            </div>
 
             <div class="col-sm-4 webImageUrl">
                 <input type="file" imageWidth="1920" imageHeight="350"/>
             </div>
-            图片必须是1920px * 350px
-            <div class="col-sm-4 ">
-                <input type="hidden" name="webImageUrl" class="form-control banner-webImageUrl" placeholder="" value="<#if banner??>${banner.webImageUrl!}</#if>" datatype="*" errormsg="大图不能为空" >
+            <div class="col-sm-4 text-danger">
+                (图片必须是1920px * 350px)
+            </div>
+            <div class="col-sm-4" style="margin-left: 100px;">
                 <div class="webImageUrlImage">
                     <#if banner?? && banner.webImageUrl??>
                         <img style="width:100%" src="/${banner.webImageUrl!}" alt="缩略图"/>
@@ -34,14 +39,18 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">小图:</label>
+            <label class="col-sm-1 control-label">小图:</label>
 
+            <div class="col-sm-4 ">
+                <input type="text" name="appImageUrl" class="form-control banner-appImageUrl" readonly placeholder="" value="<#if banner??>${banner.appImageUrl!}</#if>" datatype="*" errormsg="小图不能为空" >
+            </div>
             <div class="col-sm-4 appImageUrl">
                 <input type="file" imageWidth="750" imageHeight="340"/>
             </div>
-            图片必须是750px * 340px
-            <div class="col-sm-4 ">
-                <input type="hidden" name="appImageUrl" class="form-control banner-appImageUrl" placeholder="" value="<#if banner??>${banner.appImageUrl!}</#if>" datatype="*" errormsg="小图不能为空" >
+            <div class="col-sm-4 text-danger">
+                (图片必须是750px * 340px)
+            </div>
+            <div class="col-sm-4" style="margin-left: 100px;">
                 <div class="appImageUrlImage">
                     <#if banner?? && banner.appImageUrl??>
                         <img style="width:100%" src="/${banner.appImageUrl!}" alt="缩略图"/>
@@ -52,35 +61,35 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">链接:</label>
+            <label class="col-sm-1 control-label">链接:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="url" placeholder="" value="<#if banner??>${banner.url!}</#if>" datatype="*" errormsg="链接不能为空">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">分享后标题:</label>
+            <label class="col-sm-1 control-label">分享后标题:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="title" placeholder="" value="<#if banner??>${banner.title!}</#if>" datatype="*" errormsg="分享后标题不能为空">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">分享后描述:</label>
+            <label class="col-sm-1 control-label">分享后描述:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="content" placeholder="" value="<#if banner??>${banner.content!}</#if>" datatype="*" errormsg="分享后描述不能为空">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">分享后链接:</label>
+            <label class="col-sm-1 control-label">分享后链接:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="sharedUrl" placeholder="" value="<#if banner??>${banner.sharedUrl!}</#if>" datatype="*" errormsg="分享后链接不能为空">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">终端:</label>
+            <label class="col-sm-1 control-label">终端:</label>
             <div class="col-sm-4">
                 <#list sources as source>
                     <label><input type="checkbox" name="source" class="source"
@@ -92,14 +101,14 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">属性:</label>
+            <label class="col-sm-1 control-label">属性:</label>
             <div class="col-sm-4">
                 <input type="checkbox" name="authenticated" <#if banner?? && banner.authenticated>checked</#if>>登录后可见
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">顺序:</label>
+            <label class="col-sm-1 control-label">顺序:</label>
             <div class="col-sm-1">
                 <input type="text" class="form-control order" name="order" placeholder="" value="<#if banner??>${banner.order!}</#if>" datatype="*" errormsg="顺序不能为空">
             </div>

@@ -113,6 +113,30 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                     return false;
                 }
 
+                if($("input[name='name']").val().length >= 50){
+                    showErrorMessage('名称最多50个中文字符!', $("input[name='name']", curform));
+                    return false;
+                }
+
+                if($("input[name='url']").val().length >= 50){
+                    showErrorMessage('链接最多50个中文字符!', $("input[name='url']", curform));
+                    return false;
+                }
+
+                if($("input[name='sharedUrl']").val().length >= 100){
+                    showErrorMessage('分享后链接最多100个中文字符!', $("input[name='sharedUrl']", curform));
+                    return false;
+                }
+
+                if($("input[name='title']").val().length >= 50){
+                    showErrorMessage('分享后标题最多50个中文字符!', $("input[name='title']", curform));
+                    return false;
+                }
+
+                if($("input[name='content']").val().length >= 500){
+                    showErrorMessage('分享后内容最多500个中文字符!', $("input[name='content']", curform));
+                    return false;
+                }
             },
             callback: function(form) {
                 boolFlag = true;
@@ -123,6 +147,15 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
         $submitBtn.on('click', function(event) {
             event.preventDefault();
             var $self = $(this);
+            if(!IsURL($("input[name='url']").val())){
+                showErrorMessage("链接网址格式不正确,请以http://或 https://开始");
+                return false;
+            }
+
+            if(!IsURL($("input[name='sharedUrl']").val())){
+                showErrorMessage("分享后链接网址格式不正确,请以http://或 https://开始");
+                return false;
+            }
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     $self.attr('disabled', 'disabled');
@@ -139,6 +172,16 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
 
             }
         });
+
+        //验证网址的合法性
+        function IsURL(str_url){
+            str_url = str_url.match(/^(https|http)?:\/\/.+/);
+            if (str_url == null){
+                return false;
+            }else{
+                return true;
+            }
+        }
 
     });
 
