@@ -58,6 +58,141 @@
     .store-title{
       float:left;
       width:100%;
+      background:#f9f9f9;
+      text-align:center;
+      span{
+        display: inline-block;
+        border: 1px solid #0087e6;
+        font-size: 20px;
+        color: #0087e6;
+        text-align: center;
+        padding: 0 29px;
+        border-radius: 20px;
+        margin: 30px 0;
+        line-height: 38px;
+        position: relative;
+        i{
+          position: absolute;
+          width:170px;
+          height:40px;
+          top:0;
+          &.title-left{
+            left:-170px;
+            background:url("/images/membership/title-left.png") no-repeat center;
+            background-size: 100%;
+          }
+          &.title-right{
+            right:-170px;
+            background:url("/images/membership/title-right.png") no-repeat center;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    .store-material{
+      float:left;
+      width:100%;
+      background:#fff;
+      padding:30px 0;
+      .material-list{
+        float:left;
+        margin:0 -10px;
+        li{
+          float:left;
+          width:300px;
+          height:280px;
+          margin:10px;
+          border:1px solid #bcbcbc;
+          box-sizing:border-box;
+          padding:15px 69px;
+          &:hover{
+            border:1px solid #0087e6;
+            box-shadow:0px 0px 5px #0087e6;
+          }
+          &.big-gift{
+            width:460px;
+            height:170px;
+            padding:20px 30px;
+            .convert-btn{
+              margin-left:35px;
+            }
+          }
+          p{
+            float:left;
+            margin-bottom:0;
+            &.num-text{
+              width:100%;
+              color:#fc4a52;
+              font-size:14px;
+            }
+            &.mater-img{
+              &.coupon-bg{
+                width:80px;
+                height:40px;
+                padding:30px 40px;
+                background:url("/images/membership/coupon-bg.png") no-repeat center;
+                span{
+                  float:left;
+                  width:100%;
+                  font-size:12px;
+                  color:#fc933c;
+                  line-height:16px;
+                  text-align:center;
+                  i{
+                    font-size:30px;
+                    color:#fc8d32;
+                  }
+                }
+              }
+              &.bag-bg{
+                width:80px;
+                height:60px;
+                padding:20px 40px;
+                background:url("/images/membership/bag-bg.png") no-repeat center;
+                span{
+                  float:left;
+                  width:100%;
+                  font-size:16px;
+                  color:#fff;
+                  line-height:16px;
+                  text-align:center;
+                  i{
+                    font-size:26px;
+                  }
+                }
+              }
+            }
+            &.convert-btn{
+              width:140px;
+              height:100px;
+              span{
+                float:left;
+                width:100%;
+                &.name-text{
+                  font-size:14px;
+                  color:#4c4c4c;
+                }
+                &.price-text{
+                  font-size:14px;
+                  color:#999999;
+                  i{
+                    color:#0087e6;
+                  }
+                }
+                &.get-btn{
+                  font-size:16px;
+                  color:#fff;
+                  line-height:35px;
+                  text-align:center;
+                  background:#fc4a52;
+                  margin-top:10px;
+                  cursor:pointer;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

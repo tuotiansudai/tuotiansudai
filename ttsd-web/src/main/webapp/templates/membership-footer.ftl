@@ -8,18 +8,18 @@
         </dl>
         <dl class="list-normal">
             <dt>积分消费</dt>
-            <dd><a href="/membership">积分商城</a></dd>
-            <dd><a href="/membership/structure">积分抽奖</a></dd>
+            <dd><a href="/membership/store">积分商城</a></dd>
+            <!-- <dd><a href="/membership/lottery">积分抽奖</a></dd> -->
         </dl>
         <dl class="list-normal">
             <dt>赚取积分</dt>
-            <dd><a href="/membership">我要投资</a></dd>
-            <dd><a href="/membership/structure">积分任务</a></dd>
+            <dd><a href="/loan-list">我要投资</a></dd>
+            <dd><a href="/membership/task">积分任务</a></dd>
         </dl>
         <dl class="list-contact">
             <dt>联系我们</dt>
-            <dd><a href="/membership">客服电话：<span>400-169-1188</span> ( 服务时间：9:00-20:00 )</a></dd>
-            <dd><a href="/membership/structure">商务合作：<span>010-47167320</span></a></dd>
+            <dd><a href="javascript:void(0)">客服电话：<span>400-169-1188</span> ( 服务时间：9:00-20:00 )</a></dd>
+            <dd><a href="javascript:void(0)">商务合作：<span>010-47167320</span></a></dd>
         </dl>
         <div class="images-app">
             <i class="img-app-download"></i>
