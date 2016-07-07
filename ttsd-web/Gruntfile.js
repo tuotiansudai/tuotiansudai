@@ -70,9 +70,6 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 // banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyymmddHHMM") %> */\n'
-                screwIE8: false,
-                mangle: false,
-                beautify: true
             },
             dist: {
                 files: [{
