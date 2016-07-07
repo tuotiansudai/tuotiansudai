@@ -10,6 +10,7 @@ import org.joda.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
                 if (input.getRaisingCompleteTime() == null) {
                     input.setCompleteInvestDuration("/");
                 } else {
-                    input.setCompleteInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(input.getRaisingCompleteTime())));
+                    input.setCompleteInvestDuration(hours(input.getFundraisingStartTime(),input.getRaisingCompleteTime()));
                 }
                 Date firstInvestDate = investMapper.findFirstTradeTimeInvestByLoanId(input.getLoanId());
                 input.setFirstInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
@@ -66,4 +67,7 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
         return stringBuffer.toString();
     }
 
+    private String hours(Date startTime, Date endTime) {
+        return new DecimalFormat("0.00").format((double)(((endTime.getTime() - startTime.getTime()) / 1000) / 60) / 60) + "小时";
+    }
 }
