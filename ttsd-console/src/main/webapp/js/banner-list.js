@@ -55,35 +55,32 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             }
         });
 
-        var webPath = $('#webUrl')[0].src;
-        var appPath = $('#appUrl')[0].src;
-
-        var webShowLayer = function() {
+        var webShowLayer = function(src) {
             layer.open({
                 type: 1,
                 shade: false,
                 title: false,
                 area: ['1024px', '350px'], //宽高
-                content: '<img src ='+webPath+'>'
+                content: '<img src ='+src+'>'
             });
         }
 
-        var appShowLayer = function() {
+        var appShowLayer = function(src) {
             layer.open({
                 type: 1,
                 shade: false,
                 title: false,
                 area: ['750px', '340px'], //宽高
-                content: '<img src ='+appPath+'>'
+                content: '<img src ='+src+'>'
             });
         }
 
         $('.webImg').click(function(){
-            webShowLayer();
+            webShowLayer($(this).find('img').attr('src'));
         });
 
         $('.appImg').click(function(){
-            appShowLayer();
+            appShowLayer($(this).find('img').attr('src'));
         });
 
     });

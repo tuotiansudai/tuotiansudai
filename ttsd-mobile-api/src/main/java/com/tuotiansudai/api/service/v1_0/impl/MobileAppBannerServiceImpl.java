@@ -28,8 +28,6 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
-        boolean s = Strings.isNullOrEmpty(baseParam.getUserId()) ? false : true;
-        Source sdd = baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS;
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(Strings.isNullOrEmpty(baseParam.getUserId()) ? false : true,baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
         BannerResponseDataDto bannerResponseDataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
