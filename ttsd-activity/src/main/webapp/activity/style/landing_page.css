@@ -894,7 +894,52 @@ form label.error {
 
 @media screen and (max-width: 700px) {
   .landing-container {
-    display: none; }
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 2269px; }
+    .landing-container .landing-header {
+      display: none; }
+    .landing-container .landing-top {
+      background: none;
+      height: auto; }
+      .landing-container .landing-top .landing-inner {
+        width: 100%;
+        height: auto; }
+      .landing-container .landing-top .register-box {
+        width: 90%;
+        right: auto;
+        left: 5%;
+        border-radius: 0;
+        padding-bottom: 30px; }
+        .landing-container .landing-top .register-box .register-user-form {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 20px; }
+        .landing-container .landing-top .register-box .register-step-one {
+          margin-top: 0; }
+        .landing-container .landing-top .register-box ul.reg-list li input[type="text"], .landing-container .landing-top .register-box ul.reg-list li input[type="password"] {
+          padding: 15px;
+          box-sizing: border-box; }
+        .landing-container .landing-top .register-box ul.reg-list li input.captcha,
+        .landing-container .landing-top .register-box ul.reg-list li input.appCaptcha {
+          width: 177px !important; }
+        .landing-container .landing-top .register-box ul.reg-list li .long {
+          width: 100%; }
+        .landing-container .landing-top .register-box ul.reg-list li i {
+          display: none; }
+        .landing-container .landing-top .register-box ul.reg-list li .fetch-captcha {
+          height: 40px !important;
+          padding: 10px 26px !important;
+          border-radius: 25px !important;
+          font-size: 13px !important;
+          width: auto !important; }
+        .landing-container .landing-top .register-box input.register-user {
+          padding: 10px; }
+        .landing-container .landing-top .register-box .agree-last {
+          display: none; }
+    .landing-container .content-three, .landing-container .content-four, .landing-container .content-one, .landing-container .content-five, .landing-container .content-two {
+      display: none; }
 
   .landing-phone-container {
     display: block; }

@@ -5,66 +5,67 @@
     <div class="landing-header">
         <a href="/">访问首页</a>
     </div>
-    <div class="landing-top">
-        <div class="landing-inner">
-            <div class="register-box">
-                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
-                    <ul class="reg-list tl register-step-one">
-                        <li>
-                            <label for="" class="reg-title">用户名:</label>
-                            <i class="sprite-register-login-name"></i>
-                            <input type="text" id="login-name" class="login-name long" name="loginName"
-                                   placeholder="用户名" maxlength="25" value="">
-                        </li>
-                        <li id="login-nameErr" class="height"></li>
-                        <li>
-                            <label for="" class="reg-title">密码:</label>
-                            <i class="sprite-register-ic-password"></i>
-                            <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
-                                   class="password long" value="">
-                        </li>
-                        <li id="passwordErr" class="height"></li>
-                        <li>
-                            <label for="" class="reg-title">手机号:</label>
-                            <i class="sprite-register-ic-mobile"></i>
-                            <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
-                                   maxlength="11" value="">
-                        </li>
-                        <li id="mobileErr" class="height"></li>
-                        <li class="code">
-                            <label for="" class="reg-title">验证码:</label>
-                            <i class="sprite-register-ic-img-code"></i>
-                            <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="5"
-                                   class="appCaptcha" value="">
-                            <em class="image-captcha">
-                                <img src="" alt=""/>
-                            </em>
-                            <span class="img-change">换一张</span>
-                        </li>
-                        <li id="appCaptchaErr" class="height appCaptchaErr"></li>
-                        <li>
-                            <label for="captcha" class="reg-title">手机验证码:</label>
-                            <i class="sprite-register-ic-captcha"></i>
+    <#if !isAppSource>
+        <div class="landing-top">
+            <div class="landing-inner">
+                <div class="register-box">
+                    <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
+                        <ul class="reg-list tl register-step-one">
+                            <li>
+                                <label for="" class="reg-title">用户名:</label>
+                                <i class="sprite-register-login-name"></i>
+                                <input type="text" id="login-name" class="login-name long" name="loginName"
+                                       placeholder="用户名" maxlength="25" value="">
+                            </li>
+                            <li id="login-nameErr" class="height"></li>
+                            <li>
+                                <label for="" class="reg-title">密码:</label>
+                                <i class="sprite-register-ic-password"></i>
+                                <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
+                                       class="password long" value="">
+                            </li>
+                            <li id="passwordErr" class="height"></li>
+                            <li>
+                                <label for="" class="reg-title">手机号:</label>
+                                <i class="sprite-register-ic-mobile"></i>
+                                <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
+                                       maxlength="11" value="">
+                            </li>
+                            <li id="mobileErr" class="height"></li>
+                            <li class="code">
+                                <label for="" class="reg-title">验证码:</label>
+                                <i class="sprite-register-ic-img-code"></i>
+                                <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
+                                       class="appCaptcha" value="">
+                                <em class="image-captcha">
+                                    <img src="" alt=""/>
+                                </em>
+                                <span class="img-change">换一张</span>
+                            </li>
+                            <li id="appCaptchaErr" class="height appCaptchaErr"></li>
+                            <li>
+                                <label for="captcha" class="reg-title">手机验证码:</label>
+                                <i class="sprite-register-ic-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
-                                <input type="text" class="captcha" autocomplete="off"
-                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
-                                       value="">
+                                <input type="text"  class="captcha" autocomplete="off" name="captcha" id="captcha"
+                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" >
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
-
-                        </li>
-                        <li class="agree-last">
-                            <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
-                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                        </li>
-                        <li id="agreementInputErr" class="height"></li>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="submit" class="register-user" value="立即注册">
-                    </ul>
-                </form>
+                            </li>
+                            <li id="captchaErr" class="height"></li>
+                            <li class="agree-last">
+                                <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
+                                <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                            </li>
+                            <li id="agreementInputErr" class="height"></li>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="submit" class="register-user" value="立即注册">
+                        </ul>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </#if>
 
     <div class="content-three">
         <div class="three-title">
@@ -642,56 +643,7 @@
 
         <#if isAppSource>
             <a href="/register/user"> <input type="button" id="btn-register-now" class="register-user-phoneC-now" value="立即注册"></a>
-        <#else>
-            <div class="tuotian-register-container">
-                <form class="register-user-form-c" id="registerPhoneC" action="/register/user" method="post" autocomplete="off"
-                      novalidate="novalidate">
-                    <ul class="reg-list tl register-step-one">
-                        <li class="int-model">
-                            <input type="text" id="loginNamePhoneC" class="login-name long" name="loginName" placeholder="用户名"
-                                   maxlength="25" value="">
-                        </li>
-                        <li id="loginNamePhoneCErr" class="height"></li>
-                        <li class="int-model">
-                            <input type="password" id="passwordPhoneC" name="password" placeholder="密码" maxlength="20"
-                                   class="password long" value="">
-                        </li>
-                        <li id="passwordPhoneCErr" class="height"></li>
-                        <li class="int-model">
-                            <input type="text" id="mobilePhoneC" name="mobile" class="mobile long" placeholder="手机号"
-                                   maxlength="11" value="">
-                        </li>
-                        <li id="mobilePhoneCErr" class="height"></li>
-                        <li class="code int-model">
-                            <input type="text" id="appCaptchaPhoneC" name="" placeholder="验证码" maxlength="5" class="appCaptcha"
-                                   value="">
-                            <em class="image-captchaC">
-                                <img src="" alt="" width="75" height="30"/>
-                            </em>
-                            <span class="img-changeC">换一张</span>
-                        </li>
-                        <li id="appCaptchaPhoneCErr" class="height"></li>
-                        <li class="int-model">
-                            <span class="captcha-tag" id="phoneCaptcha">
-                                <input type="text"  class="captcha" autocomplete="off"
-                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
-                                       value="">
-                                <button type="button" id="btn-get-phone-captcha" class="fetch-captchaC btn" disabled="disabled">获取验证码</button>
-                            </span>
-
-                        </li>
-                        <li class="height captcha-phone-error"></li>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="agreement" value="true">
-                        <input type="submit" id="btn-register" class="register-user-phoneC" value="立即注册">
-                        <li class="agree-last">
-                            <label for="agreementInput" class="check-labelC">点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement-phone">《服务协议》</a></label>
-                        </li>
-                    </ul>
-
-                </form>
-            </div>
-        </#if>
-    </div>
+       </#if>
+         </div>
 </div>
 </@global.main>

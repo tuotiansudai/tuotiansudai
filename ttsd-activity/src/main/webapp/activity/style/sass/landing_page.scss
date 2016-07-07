@@ -856,7 +856,73 @@ form label.error {
 
 @media screen and (max-width: 700px) {
   .landing-container {
-    display: none;
+
+    position: absolute;
+    left:0;
+    width: 100%;
+    top: 2269px;
+
+    .landing-header {
+      display: none;
+    }
+    .landing-top {
+      background: none;
+      height:auto;
+      .landing-inner {
+        width:100%;
+        height: auto;
+      }
+      .register-box {
+        width: 90%;
+        right: auto;
+        left: 5%;
+        border-radius: 0;
+        padding-bottom: 30px;
+        .register-user-form {
+          box-sizing: border-box;
+          width:100%;
+          padding: 20px;
+        }
+        .register-step-one {
+          margin-top:0;
+        }
+        ul.reg-list li {
+          input[type="text"],input[type="password"] {
+            padding: 15px;
+            box-sizing: border-box;
+          }
+          input.captcha,
+          input.appCaptcha
+          {
+            width: 177px!important;
+          }
+          .long {
+            width: 100%;
+          }
+          i {
+            display: none;
+          }
+          .fetch-captcha  {
+            height: 40px!important;
+            padding: 10px 26px!important;
+            border-radius: 25px!important;
+            font-size: 13px!important;
+            width:auto!important;
+          }
+
+        }
+        input.register-user  {
+          padding:10px;
+        }
+        .agree-last {
+          display: none;
+        }
+      }
+    }
+    .content-three ,.content-four,.content-one,.content-five,.content-two {
+      display: none;
+    }
+
   }
   .landing-phone-container {
     display: block;
