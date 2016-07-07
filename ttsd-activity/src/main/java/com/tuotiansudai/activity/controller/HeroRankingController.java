@@ -61,7 +61,7 @@ public class HeroRankingController {
     @ResponseBody
     public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
-        BaseListDataDto baseListDataDto = new BaseListDataDto();
+        BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
         List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
         if (heroRankingViews != null) {
             baseListDataDto.setRecords(Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {

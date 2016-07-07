@@ -53,7 +53,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
-    private List<String> heroRankingActivityPeriod;
+    private List<String> heroRankingActivityPeriod = Lists.newArrayList();
 
     @Autowired
     private MembershipMapper membershipMapper;

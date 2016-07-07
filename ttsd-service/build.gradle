@@ -1,3 +1,6 @@
+import org.flywaydb.gradle.FlywayExtension
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
 apply plugin: 'java'
 apply plugin: 'org.flywaydb.flyway'
 
@@ -86,23 +89,7 @@ processResources {
  *
  */
 flyway {
-    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-env.properties"
-    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-env.properties"
-    def properties = new Properties()
-
-    def sourceFile = new File(sourcePropertiesFilePath)
-    if (sourceFile.isFile()) {
-        properties.load(new FileInputStream(sourceFile))
-    }
-
-    def buildFile = new File(buildPropertiesFilePath)
-    if (buildFile.isFile()) {
-        properties.load(new FileInputStream(buildFile))
-    }
-
-    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
-        properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
-    }
+    def properties = getEnvProperties()
 
     def defaultDatabase = 'aa'
     def defaultHost = properties.getProperty("common.jdbc.host")
@@ -124,4 +111,108 @@ flyway {
     url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     user = properties.getProperty("common.jdbc.username")
     password = properties.getProperty("common.jdbc.password")
+}
+
+task flywayAA(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/aa"]
+    extension.schemas = ["aa"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/aa?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("common.jdbc.username")
+    extension.password = properties.getProperty("common.jdbc.password")
+}
+
+task flywayUMP(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/ump_operations"]
+    extension.schemas = ["ump_operations"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/ump_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("common.jdbc.username")
+    extension.password = properties.getProperty("common.jdbc.password")
+}
+
+task flywaySms(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/sms_operations"]
+    extension.schemas = ["sms_operations"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/sms_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("common.jdbc.username")
+    extension.password = properties.getProperty("common.jdbc.password")
+}
+task flywayWorker(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/job_worker"]
+    extension.schemas = ["job_worker"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("common.jdbc.username")
+    extension.password = properties.getProperty("common.jdbc.password")
+}
+
+def getEnvProperties() {
+    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-env.properties"
+    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-env.properties"
+    def properties = new Properties()
+
+    def sourceFile = new File(sourcePropertiesFilePath)
+    if (sourceFile.isFile()) {
+        properties.load(new FileInputStream(sourceFile))
+    }
+
+    def buildFile = new File(buildPropertiesFilePath)
+    if (buildFile.isFile()) {
+        properties.load(new FileInputStream(buildFile))
+    }
+
+    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
+        properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
+    }
+    return properties
 }
