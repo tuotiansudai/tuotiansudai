@@ -53,6 +53,31 @@
         background:#fff url("/images/membership/login-bg.png") no-repeat 95px -32px;
         border-radius: 5px;
         overflow: hidden;
+        .login-model{
+          float:left;
+          width:100%;
+          margin-top:110px;
+          p{
+            float:left;
+            width:100%;
+            margin-bottom:0;
+            text-align:center;
+            .login-btn{
+              display:inline-block;
+              width:160px;
+              height:40px;
+              line-height:40px;
+              color:#fff;
+              font-size:16px;
+              background:#ff9c1b;
+            }
+            .regist-btn{
+              font-size:12px;
+              color:#ff9c1b;
+              text-decoration:underline;
+            }
+          }
+        }
       }
     }
     .store-title{
