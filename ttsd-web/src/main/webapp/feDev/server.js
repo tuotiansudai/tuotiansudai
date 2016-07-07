@@ -18,11 +18,13 @@ var getData = function(fileName) {
 };
 
 
-var config = [{
-	route: '/',
-	template: 'footer',
-	data: 'footer'
-}];
+var config = [
+	{
+		route: '/',
+		template: 'footer',
+		data: 'footer'
+	}
+];
 
 
 config.forEach(function(val) {

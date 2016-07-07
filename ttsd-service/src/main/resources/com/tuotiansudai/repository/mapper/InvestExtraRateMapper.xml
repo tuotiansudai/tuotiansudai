@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.InvestExtraRateMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="investExtraRateResultMap" type="InvestExtraRateModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="is_transfer" property="isTransfer"></result>
+        <result column="amount" property="amount"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="extra_rate" property="extraRate"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
+        <result column="expected_fee" property="expectedFee"></result>
+        <result column="actual_interest" property="actualInterest"></result>
+        <result column="actual_fee" property="actualFee"></result>
+        <result column="repay_amount" property="repayAmount"></result>
+        <result column="repay_date" property="repayDate"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <select id="findByLoanId" parameterType="long" resultMap="investExtraRateResultMap">
+        select * from invest_extra_rate where loan_id = #{loanId} and is_transfer is false
+    </select>
+
+    <update id="update" parameterType="InvestExtraRateModel">
+        update invest_extra_rate
+        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, actual_repay_date = #{actualRepayDate}, is_transfer=#{isTransfer}
+        where id = #{id}
+    </update>
+
+    <insert id="create" parameterType="InvestExtraRateModel" useGeneratedKeys="true" keyProperty="id">
+        insert into invest_extra_rate(loan_id,invest_id,is_transfer,amount,login_name,extra_rate,expected_interest,expected_fee,actual_interest,actual_fee,repay_amount,repay_date,actual_repay_date,created_time)
+        values(#{loanId},#{investId},false,#{amount},#{loginName},#{extraRate},#{expectedInterest},#{expectedFee},#{actualInterest},#{actualFee},#{repayAmount},#{repayDate},#{actualRepayDate},now())
+    </insert>
+
+    <select id="findByInvestId" parameterType="map" resultMap="investExtraRateResultMap">
+        select * from invest_extra_rate where invest_id = #{investId}
+    </select>
+
+</mapper>
