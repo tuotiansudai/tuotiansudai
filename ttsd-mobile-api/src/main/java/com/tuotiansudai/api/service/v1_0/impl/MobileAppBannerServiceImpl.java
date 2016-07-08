@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
 public class MobileAppBannerServiceImpl implements MobileAppBannerService {
+
+    private final static String BANNER_URL_TEMPLATE = "{0}?source=app";
 
     @Autowired
     private BannerMapper bannerMapper;
@@ -24,7 +27,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     private String domainName;
 
     @Value("${web.banner.server}")
-    private String bannerName;
+    private String bannerServer;
 
     @Autowired
     private MobileAppTokenProvider mobileAppTokenProvider;
@@ -32,15 +35,15 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
         boolean isAuthenticated = false;
-        if(!Strings.isNullOrEmpty(baseParam.getToken()) &&  !Strings.isNullOrEmpty(mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()))){
+        if (!Strings.isNullOrEmpty(baseParam.getToken()) && !Strings.isNullOrEmpty(mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()))) {
             isAuthenticated = true;
         }
-        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated,baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated, baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
         BannerResponseDataDto bannerResponseDataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictures = Lists.newArrayList();
         bannerResponseDataDto.setPictures(pictures);
-        for(BannerModel bannerModel : bannerModelList){
-                pictures.add(new BannerPictureResponseDataDto(bannerModel.getTitle(),bannerModel.getUrl(),bannerModel.getSharedUrl(),bannerModel.getOrder(),bannerName + "/" + bannerModel.getAppImageUrl(),bannerModel.getContent(),false));
+        for (BannerModel bannerModel : bannerModelList) {
+            pictures.add(new BannerPictureResponseDataDto(bannerModel.getTitle(), MessageFormat.format(BANNER_URL_TEMPLATE, bannerModel.getUrl()), bannerModel.getSharedUrl(), bannerModel.getOrder(), bannerServer + bannerModel.getAppImageUrl(), bannerModel.getContent(), false));
         }
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
         baseDto.setData(bannerResponseDataDto);
