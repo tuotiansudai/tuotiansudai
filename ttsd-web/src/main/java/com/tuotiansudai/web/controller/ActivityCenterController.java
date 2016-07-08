@@ -13,13 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/activity-center")
+@RequestMapping(value = "/activity-center")
 public class ActivityCenterController {
 
     @Autowired
     ActivityService activityService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAllOperatingActivities() {
         ModelAndView modelAndView = new ModelAndView("/activity-center");
 
