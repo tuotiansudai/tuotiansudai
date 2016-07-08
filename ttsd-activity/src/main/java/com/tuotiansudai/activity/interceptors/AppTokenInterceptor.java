@@ -18,9 +18,11 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
 
+    private final static String APP_SOURCE_FLAG = "app";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        if(!"true".equalsIgnoreCase(request.getParameter("isAppSource"))){
+        if(!APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source"))){
             return true;
         }
         String token = Strings.isNullOrEmpty(request.getHeader("token"))?request.getParameter("token"):request.getHeader("token");
