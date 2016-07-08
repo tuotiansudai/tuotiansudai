@@ -18,11 +18,11 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestIdHeader = request.getHeader(REQUEST_ID);
         String userIdHeader = request.getHeader(USER_ID);
-        if (Strings.isNullOrEmpty(requestIdHeader)) {
+        if (!Strings.isNullOrEmpty(requestIdHeader)) {
             MDC.put(REQUEST_ID, requestIdHeader);
         }
 
-        if (Strings.isNullOrEmpty(userIdHeader)) {
+        if (!Strings.isNullOrEmpty(userIdHeader)) {
             MDC.put(USER_ID, userIdHeader);
         }
 
