@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v2_0;
 
+import java.util.List;
+
 public class LoanResponseDataDto {
     private String loanId;
     private String loanName;
@@ -18,6 +20,7 @@ public class LoanResponseDataDto {
     private String maxInvestMoney;
     private String productNewType;
     private String investFeeRate;
+    private List<ExtraRateListResponseDataDto> extraRates;
 
     public String getLoanId() { return loanId; }
 
@@ -93,5 +96,13 @@ public class LoanResponseDataDto {
 
     public void setInvestFeeRate(String investFeeRate) {
         this.investFeeRate = investFeeRate;
+    }
+
+    public List<ExtraRateListResponseDataDto> getExtraRates() {
+        return extraRates;
+    }
+
+    public void setExtraRates(List<ExtraRateListResponseDataDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }

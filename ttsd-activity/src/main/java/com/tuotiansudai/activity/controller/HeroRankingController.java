@@ -2,7 +2,6 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.util.AppTokenParser;
 import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.repository.model.HeroRankingView;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -33,12 +31,9 @@ public class HeroRankingController {
     @Autowired
     private RandomUtils randomUtils;
 
-    @Autowired
-    private AppTokenParser appTokenParser;
-
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
-        String loginName = appTokenParser.getLoginName(httpServletRequest);
+    public ModelAndView loadPageData() {
+        String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime",new DateTime().withTimeAtStartOfDay().toDate());
