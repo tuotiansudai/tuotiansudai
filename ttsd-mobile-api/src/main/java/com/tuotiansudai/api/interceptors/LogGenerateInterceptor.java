@@ -23,7 +23,7 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
         MDC.put(REQUEST_ID, UUIDGenerator.generate());
         HttpServletRequest webRequest = new BufferedRequestWrapper(request);
         Object currentLoginName = webRequest.getAttribute("currentLoginName");
-        String loginName = (currentLoginName instanceof String && currentLoginName != null) ? currentLoginName.toString() : ANONYMOUS;
+        String loginName = (currentLoginName != null && currentLoginName instanceof String) ? currentLoginName.toString() : ANONYMOUS;
         MDC.put(USER_ID, loginName);
         return true;
     }
