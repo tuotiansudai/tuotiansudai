@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.security.MobileAppTokenProvider;
@@ -31,7 +32,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
         boolean isAuthenticated = false;
-        if(!baseParam.getToken().isEmpty() &&  !mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()).isEmpty()){
+        if(!Strings.isNullOrEmpty(baseParam.getToken()) &&  !mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()).isEmpty()){
             isAuthenticated = true;
         }
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated,baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
