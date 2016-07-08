@@ -85,7 +85,45 @@ $red: #eb4a3e;
 			color: $grayLight;
 		}
 		.content {
+			position: relative;
 			height: 173px;
+		}
+		.pre {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+			.time {
+				padding: 10px 25px;
+				border: 1px dashed $red;
+				border-radius: 30px;
+				position: absolute;
+				top: 30%;
+				left: 30%;
+				span {
+					color: $red;
+				}
+			}
+			.btn-normal {
+				position: absolute;
+				bottom: 20px;
+				width: 80%;
+				left: 10%;
+				box-sizing: border-box;
+			}
+		}
+	}
+	.main-content {
+		.title-block {
+			height: 50px;
+			line-height: 50px;
+			.item {
+				padding: 0 40px;
+				font-size: 18px;
+				cursor: pointer;
+			}
 		}
 	}
 }

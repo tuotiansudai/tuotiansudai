@@ -60,15 +60,20 @@
                                 <div class="time">
                                     <span>22:33:12</span> 后可投资
                                 </div>
-                                <a href="#" class="btn">预热中</a>
+                                <a href="#" class="btn-invest btn-normal">预热中</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div> <#-- .row end tag -->
-            <div class="row container-block mt10">
-                <div class="title-block">
-                    title
+            <div class="row container-block mt10 main-content">
+                <div class="title-block clearfix">
+                    <div class="item fl">
+                        借款详情
+                    </div>
+                    <div class="item fl">
+                        投资记录
+                    </div>
                 </div>
                 <div class="content">
                     网络技术老地方进度了
