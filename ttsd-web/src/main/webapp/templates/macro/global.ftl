@@ -80,7 +80,7 @@
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="${staticServer}${cssPath}${css.ie_hack_grid}">
         <script>
-             if (!console) {
+             if (!window.console) {
                 window.console = {};
                 console.log = function() {};
                 console.error = function() {};
