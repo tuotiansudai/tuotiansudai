@@ -20,8 +20,6 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -338,6 +336,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> findMobileLike(String mobile) {
+        return userMapper.findMobileLike(mobile);
+    }
+
+    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
@@ -389,19 +392,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
-        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    public List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
     @Override
     public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for(UserModel userModel : userModels) {
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+        for(UserView userView : userViews) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userView.getLoginName(), Role.STAFF));
             userItemDataDtoList.add(userItemDataDto);
         }
         return userItemDataDtoList;
