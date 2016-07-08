@@ -936,7 +936,8 @@ form label.error {
         padding: 10px 26px !important;
         border-radius: 25px !important;
         font-size: 13px !important;
-        width: auto !important; }
+        width: auto !important;
+        position: relative !important; }
       .landing-top .register-box ul.reg-list li .register-user {
         padding: 10px;
         margin: 0 auto; }
