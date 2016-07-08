@@ -31,7 +31,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList(BaseParam baseParam) {
         boolean isAuthenticated = false;
-        if(!baseParam.getToken().isEmpty() &&  !mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()).isEmpty()){
+        if(baseParam.getToken() != null && !baseParam.getToken().isEmpty() &&  !mobileAppTokenProvider.getUserNameByToken(baseParam.getToken()).isEmpty()){
             isAuthenticated = true;
         }
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(isAuthenticated,baseParam.getPlatform().toUpperCase().equals(Source.ANDROID.name()) ? Source.ANDROID : Source.IOS);
