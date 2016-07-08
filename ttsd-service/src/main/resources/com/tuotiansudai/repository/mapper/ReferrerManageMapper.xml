@@ -5,32 +5,32 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.ReferrerManageMapper">
 
     <resultMap id="referrerManageMap" type="ReferrerManageView">
-        <result column="loan_id" property="loanId"></result>
-        <result column="loan_name" property="loanName"></result>
-        <result column="periods" property="periods"></result>
-        <result column="invest_login_name" property="investLoginName"></result>
-        <result column="invest_name" property="investName"></result>
-        <result column="invest_amount" property="investAmount"></result>
-        <result column="invest_time" property="investTime"></result>
-        <result column="referrer_login_name" property="referrerLoginName"></result>
-        <result column="referrer_name" property="referrerName"></result>
-        <result column="role" property="role"></result>
-        <result column="source" property="source"></result>
-        <result column="level" property="level"></result>
-        <result column="reward_amount" property="rewardAmount"></result>
-        <result column="status" property="status"></result>
-        <result column="reward_time" property="rewardTime"></result>
-        <result column="product_type" property="productType"></result>
+        <result column="loan_id" property="loanId"/>
+        <result column="loan_name" property="loanName"/>
+        <result column="periods" property="periods"/>
+        <result column="invest_mobile" property="investMobile"/>
+        <result column="invest_name" property="investName"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="invest_time" property="investTime"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="referrer_name" property="referrerName"/>
+        <result column="role" property="role"/>
+        <result column="source" property="source"/>
+        <result column="level" property="level"/>
+        <result column="reward_amount" property="rewardAmount"/>
+        <result column="status" property="status"/>
+        <result column="reward_time" property="rewardTime"/>
+        <result column="product_type" property="productType"/>
     </resultMap>
 
     <select id="findReferrerManage" parameterType="map" resultMap="referrerManageMap">
         SELECT
         l.`name` AS loan_name,
         l.`periods` AS periods,
-        n.investLoginName AS invest_login_name,
+        n.investMobile AS invest_mobile,
         n.investAmount AS invest_amount,
         n.investTime AS invest_time,
-        n.referrerLoginName AS referrer_login_name,
+        n.referrerMobile AS referrer_mobile,
         n.role_name AS role,
         n.level,
         n.rewardAmount AS reward_amount,
@@ -41,13 +41,13 @@
         n.source
         FROM
         (SELECT
-        temp.investLoginName,
+        temp.investMobile,
         temp.investAmount,
         temp.investTime,
         temp.loanId,
         temp.rewardAmount,
         temp.rewardTime,
-        temp.referrerLoginName,
+        temp.referrerMobile,
         temp.role_name,
         temp.status,
         temp.investName,
@@ -59,6 +59,7 @@
         JOIN
         (SELECT
         i.`login_name` AS investLoginName,
+        i.`invest_mobile` AS investMobile,
         i.`amount` AS investAmount,
         i.`created_time` AS investTime,
         i.`loan_id` AS loanId,
@@ -67,20 +68,26 @@
         irr.`amount` AS rewardAmount,
         irr.`created_time` AS rewardTime,
         irr.`referrer_login_name` AS referrerLoginName,
+        irr.`referrer_mobile` AS referrerMobile,
         irr.`referrer_role` as role_name,
         irr.`status`,
         irr.referrerName
         FROM
         (SELECT
         a.*,
-        b.`user_name` AS referrerName
+        b.`user_name` AS referrerName,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        invest_referrer_reward a
-        LEFT JOIN account b
-        ON a.`referrer_login_name` = b.`login_name`
+        (invest_referrer_reward a
+        LEFT JOIN
+        account b
+        ON a.`referrer_login_name` = b.`login_name`)
+        LEFT JOIN
+        user referrer_u
+        ON a.`referrer_login_name` = referrer_u.login_name
         <where>
-            <if test="referrerLoginName != null and referrerLoginName != ''">
-                a.`referrer_login_name` = #{referrerLoginName}
+            <if test="referrerMobile != null and referrerMobile != ''">
+                referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="rewardStartTime != null">
                 AND a.`created_time` >= #{rewardStartTime}
@@ -99,14 +106,18 @@
         JOIN
         (SELECT
         m.*,
-        n.`user_name` AS investName
+        n.`user_name` AS investName,
+        invest_u.`mobile` AS invest_mobile
         FROM
-        invest m
+        (invest m
         LEFT JOIN account n
-        ON m.`login_name` = n.`login_name`
+        ON m.`login_name` = n.`login_name`)
+        LEFT JOIN
+        user invest_u
+        ON m.`login_name` = invest_u.`login_name`
         <where>
-            <if test="investLoginName != null and investLoginName != ''">
-                m.`login_name` = #{investLoginName}
+            <if test="investMobile != null and investMobile != ''">
+                invest_u.`mobile` = #{investMobile}
             </if>
             <if test="investStartTime != null">
                 AND m.`created_time` >= #{investStartTime}
@@ -117,8 +128,9 @@
             <if test="source != null">
                 AND m.`source` = #{source}
             </if>
+            AND m.`status` = 'SUCCESS'
         </where>
-        AND m.`status` = 'SUCCESS') i
+        ) i
         ON irr.`invest_id` = i.`id`) temp
         ON rr.`login_name` = temp.investLoginName
         AND rr.`referrer_login_name` = temp.referrerLoginName
@@ -137,47 +149,33 @@
 
     <select id="findReferrerManageCount" parameterType="map" resultType="int">
         SELECT
-        COUNT(*)
+        COUNT(1)
         FROM
         (SELECT
-        temp.investLoginName,
-        temp.investAmount,
-        temp.investTime,
-        temp.loanId,
-        temp.rewardAmount,
-        temp.rewardTime,
-        temp.referrerLoginName,
-        temp.role_name,
-        temp.status,
-        temp.investName,
-        temp.referrerName,
-        rr.`level`
+        temp.loanId
         FROM
         referrer_relation rr right
         JOIN
         (SELECT
         i.`login_name` AS investLoginName,
-        i.`amount` AS investAmount,
-        i.`created_time` AS investTime,
         i.`loan_id` AS loanId,
-        i.investName,
-        irr.`amount` AS rewardAmount,
-        irr.`created_time` AS rewardTime,
-        irr.`referrer_login_name` AS referrerLoginName,
-        irr.`referrer_role` as role_name,
-        irr.`status`,
-        irr.referrerName
+        irr.`referrer_login_name` AS referrerLoginName
         FROM
         (SELECT
         a.*,
-        b.`user_name` AS referrerName
+        b.`user_name` AS referrerName,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        invest_referrer_reward a
-        LEFT JOIN account b
-        ON a.`referrer_login_name` = b.`login_name`
+        (invest_referrer_reward a
+        LEFT JOIN
+        account b
+        ON a.`referrer_login_name` = b.`login_name`)
+        LEFT JOIN
+        user referrer_u
+        ON a.`referrer_login_name` = referrer_u.login_name
         <where>
-            <if test="referrerLoginName != null and referrerLoginName != ''">
-                a.`referrer_login_name` = #{referrerLoginName}
+            <if test="referrerMobile != null and referrerMobile != ''">
+                referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="rewardStartTime != null">
                 AND a.`created_time` >= #{rewardStartTime}
@@ -196,14 +194,18 @@
         JOIN
         (SELECT
         m.*,
-        n.`user_name` AS investName
+        n.`user_name` AS investName,
+        invest_u.`mobile` AS invest_mobile
         FROM
-        invest m
+        (invest m
         LEFT JOIN account n
-        ON m.`login_name` = n.`login_name`
+        ON m.`login_name` = n.`login_name`)
+        LEFT JOIN
+        user invest_u
+        ON m.`login_name` = invest_u.`login_name`
         <where>
-            <if test="investLoginName != null and investLoginName != ''">
-                m.`login_name` = #{investLoginName}
+            <if test="investMobile != null and investMobile != ''">
+                invest_u.`mobile` = #{investMobile}
             </if>
             <if test="investStartTime != null">
                 AND m.`created_time` >= #{investStartTime}
@@ -214,8 +216,9 @@
             <if test="source != null">
                 AND m.`source` = #{source}
             </if>
+            AND m.`status` = 'SUCCESS'
         </where>
-        AND m.`status` = 'SUCCESS') i
+        ) i
         ON irr.`invest_id` = i.`id`) temp
         ON rr.`login_name` = temp.investLoginName
         AND rr.`referrer_login_name` = temp.referrerLoginName
@@ -235,18 +238,8 @@
           IFNULL(sum(investAmount),0) as invest_amount
         FROM
         (SELECT
-        temp.investLoginName,
         temp.investAmount,
-        temp.investTime,
-        temp.loanId,
-        temp.rewardAmount,
-        temp.rewardTime,
-        temp.referrerLoginName,
-        temp.role_name,
-        temp.status,
-        temp.investName,
-        temp.referrerName,
-        rr.`level`
+        temp.loanId
         FROM
         referrer_relation rr right
         JOIN
@@ -265,14 +258,19 @@
         FROM
         (SELECT
         a.*,
-        b.`user_name` AS referrerName
+        b.`user_name` AS referrerName,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        invest_referrer_reward a
-        LEFT JOIN account b
-        ON a.`referrer_login_name` = b.`login_name`
+        (invest_referrer_reward a
+        LEFT JOIN
+        account b
+        ON a.`referrer_login_name` = b.`login_name`)
+        LEFT JOIN
+        user referrer_u
+        ON a.`referrer_login_name` = referrer_u.login_name
         <where>
-            <if test="referrerLoginName != null and referrerLoginName != ''">
-                a.`referrer_login_name` = #{referrerLoginName}
+            <if test="referrerMobile != null and referrerMobile != ''">
+                referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="rewardStartTime != null">
                 AND a.`created_time` >= #{rewardStartTime}
@@ -291,14 +289,18 @@
         JOIN
         (SELECT
         m.*,
-        n.`user_name` AS investName
+        n.`user_name` AS investName,
+        invest_u.`mobile` AS invest_mobile
         FROM
-        invest m
+        (invest m
         LEFT JOIN account n
-        ON m.`login_name` = n.`login_name`
+        ON m.`login_name` = n.`login_name`)
+        LEFT JOIN
+        user invest_u
+        ON m.`login_name` = invest_u.`login_name`
         <where>
-            <if test="investLoginName != null and investLoginName != ''">
-                m.`login_name` = #{investLoginName}
+            <if test="investMobile != null and investMobile != ''">
+                invest_u.`mobile` = #{investMobile}
             </if>
             <if test="investStartTime != null">
                 AND m.`created_time` >= #{investStartTime}
@@ -309,8 +311,9 @@
             <if test="source != null">
                 AND m.`source` = #{source}
             </if>
+            AND m.`status` = 'SUCCESS'
         </where>
-        AND m.`status` = 'SUCCESS') i
+        ) i
         ON irr.`invest_id` = i.`id`) temp
         ON rr.`login_name` = temp.investLoginName
         AND rr.`referrer_login_name` = temp.referrerLoginName
@@ -330,18 +333,8 @@
           IFNULL(sum(rewardAmount),0) as reward_amount
         FROM
         (SELECT
-        temp.investLoginName,
-        temp.investAmount,
-        temp.investTime,
         temp.loanId,
-        temp.rewardAmount,
-        temp.rewardTime,
-        temp.referrerLoginName,
-        temp.role_name,
-        temp.status,
-        temp.investName,
-        temp.referrerName,
-        rr.`level`
+        temp.rewardAmount
         FROM
         referrer_relation rr right
         JOIN
@@ -360,14 +353,19 @@
         FROM
         (SELECT
         a.*,
-        b.`user_name` AS referrerName
+        b.`user_name` AS referrerName,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        invest_referrer_reward a
-        LEFT JOIN account b
-        ON a.`referrer_login_name` = b.`login_name`
+        (invest_referrer_reward a
+        LEFT JOIN
+        account b
+        ON a.`referrer_login_name` = b.`login_name`)
+        LEFT JOIN
+        user referrer_u
+        ON a.`referrer_login_name` = referrer_u.login_name
         <where>
-            <if test="referrerLoginName != null and referrerLoginName != ''">
-                a.`referrer_login_name` = #{referrerLoginName}
+            <if test="referrerMobile != null and referrerMobile != ''">
+                referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="rewardStartTime != null">
                 AND a.`created_time` >= #{rewardStartTime}
@@ -386,14 +384,18 @@
         JOIN
         (SELECT
         m.*,
-        n.`user_name` AS investName
+        n.`user_name` AS investName,
+        invest_u.`mobile` AS invest_mobile
         FROM
-        invest m
+        (invest m
         LEFT JOIN account n
-        ON m.`login_name` = n.`login_name`
+        ON m.`login_name` = n.`login_name`)
+        LEFT JOIN
+        user invest_u
+        ON m.`login_name` = invest_u.`login_name`
         <where>
-            <if test="investLoginName != null and investLoginName != ''">
-                m.`login_name` = #{investLoginName}
+            <if test="investMobile != null and investMobile != ''">
+                invest_u.`mobile` = #{investMobile}
             </if>
             <if test="investStartTime != null">
                 AND m.`created_time` >= #{investStartTime}
@@ -404,8 +406,9 @@
             <if test="source != null">
                 AND m.`source` = #{source}
             </if>
+            AND m.`status` = 'SUCCESS'
         </where>
-        AND m.`status` = 'SUCCESS') i
+        ) i
         ON irr.`invest_id` = i.`id`) temp
         ON rr.`login_name` = temp.investLoginName
         AND rr.`referrer_login_name` = temp.referrerLoginName

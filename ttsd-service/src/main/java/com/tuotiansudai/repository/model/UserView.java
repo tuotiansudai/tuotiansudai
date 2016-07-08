@@ -3,55 +3,27 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserModel implements Cloneable, Serializable {
-
+public class UserView implements Cloneable, Serializable {
     private long id;
-
     private String loginName;
-
     private String password;
-
     private String email;
-
     private String mobile;
-
     private Date registerTime = new Date();
-
     private Date lastModifiedTime;
-
     private String lastModifiedUser;
-
     private String avatar;
-
-    private String referrer;
-
+    private String referrerMobile;
     private UserStatus status = UserStatus.ACTIVE;
-
     private String salt;
-
     private Source source;
-
     private String channel;
-
     private String province;
-
     private String city;
-
     private String autoInvestStatus;
-
     private boolean staff;
-
     private AccountModel account;
-
     private Date lastBillTime;
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public long getId() {
         return id;
@@ -125,12 +97,12 @@ public class UserModel implements Cloneable, Serializable {
         this.avatar = avatar;
     }
 
-    public String getReferrer() {
-        return referrer;
+    public String getReferrerMobile() {
+        return referrerMobile;
     }
 
-    public void setReferrer(String referrer) {
-        this.referrer = referrer;
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 
     public UserStatus getStatus() {
@@ -141,24 +113,12 @@ public class UserModel implements Cloneable, Serializable {
         this.status = status;
     }
 
-    public boolean isActive() {
-        return this.status == UserStatus.ACTIVE;
+    public String getSalt() {
+        return salt;
     }
 
-    public AccountModel getAccount() {
-        return account;
-    }
-
-    public void setAccount(AccountModel account) {
-        this.account = account;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Source getSource() {
@@ -167,6 +127,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public String getProvince() {
@@ -201,6 +169,14 @@ public class UserModel implements Cloneable, Serializable {
         this.staff = staff;
     }
 
+    public AccountModel getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountModel account) {
+        this.account = account;
+    }
+
     public Date getLastBillTime() {
         return lastBillTime;
     }
@@ -210,8 +186,8 @@ public class UserModel implements Cloneable, Serializable {
     }
 
     @Override
-    public UserModel clone() throws CloneNotSupportedException {
-        UserModel clone = (UserModel) super.clone();
+    public UserView clone() throws CloneNotSupportedException {
+        UserView clone = (UserView) super.clone();
         clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
         clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
         return clone;

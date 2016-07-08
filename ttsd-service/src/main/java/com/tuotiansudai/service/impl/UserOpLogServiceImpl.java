@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserOpLogMapper;
 import com.tuotiansudai.repository.model.UserOpLogModel;
+import com.tuotiansudai.repository.model.UserOpLogView;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.UserOpLogService;
 import org.joda.time.DateTime;
@@ -26,7 +27,7 @@ public class UserOpLogServiceImpl implements UserOpLogService {
 
 
     @Override
-    public BasePaginationDataDto<UserOpLogModel> getUserOpLogPaginationData(String loginName,
+    public BasePaginationDataDto<UserOpLogView> getUserOpLogPaginationData(String mobile,
                                                                      UserOpType opType,
                                                                      Date startTime,
                                                                      Date endTime,
@@ -44,13 +45,13 @@ public class UserOpLogServiceImpl implements UserOpLogService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        long count = userOpLogMapper.count(loginName, opType, startTime, endTime);
+        long count = userOpLogMapper.count(mobile, opType, startTime, endTime);
 
-        List<UserOpLogModel> data = Lists.newArrayList();
+        List<UserOpLogView> data = Lists.newArrayList();
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            data = userOpLogMapper.getPaginationData(loginName, opType, startTime, endTime, (index - 1) * pageSize, pageSize);
+            data = userOpLogMapper.getPaginationData(mobile, opType, startTime, endTime, (index - 1) * pageSize, pageSize);
         }
 
         return new BasePaginationDataDto<>(index, pageSize, count, data);
