@@ -11,7 +11,7 @@ public class ReferrerManageView {
 
     private int periods;
 
-    private String investLoginName;
+    private String investMobile;
 
     private String investName;
 
@@ -21,7 +21,7 @@ public class ReferrerManageView {
 
     private Date investTime;
 
-    private String referrerLoginName;
+    private String referrerMobile;
 
     private String referrerName;
 
@@ -59,12 +59,12 @@ public class ReferrerManageView {
         this.periods = periods;
     }
 
-    public String getInvestLoginName() {
-        return investLoginName;
+    public String getInvestMobile() {
+        return investMobile;
     }
 
-    public void setInvestLoginName(String investLoginName) {
-        this.investLoginName = investLoginName;
+    public void setInvestMobile(String investMobile) {
+        this.investMobile = investMobile;
     }
 
     public String getInvestName() {
@@ -91,12 +91,12 @@ public class ReferrerManageView {
         this.investTime = investTime;
     }
 
-    public String getReferrerLoginName() {
-        return referrerLoginName;
+    public String getReferrerMobile() {
+        return referrerMobile;
     }
 
-    public void setReferrerLoginName(String referrerLoginName) {
-        this.referrerLoginName = referrerLoginName;
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 
     public String getReferrerName() {

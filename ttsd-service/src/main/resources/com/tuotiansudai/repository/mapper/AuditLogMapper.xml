@@ -5,14 +5,25 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.AuditLogMapper">
 
     <resultMap id="auditLogModelResultMap" type="AuditLogModel">
-        <id column="id" property="id"></id>
-        <result column="auditor_login_name" property="auditorLoginName"></result>
-        <result column="operator_login_name" property="operatorLoginName"></result>
-        <result column="target_id" property="targetId"></result>
-        <result column="operation_type" property="operationType"></result>
-        <result column="ip" property="ip"></result>
-        <result column="operation_time" property="operationTime"></result>
-        <result column="description" property="description"></result>
+        <id column="id" property="id"/>
+        <result column="auditor_login_name" property="auditorLoginName"/>
+        <result column="operator_login_name" property="operatorLoginName"/>
+        <result column="target_id" property="targetId"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="ip" property="ip"/>
+        <result column="operation_time" property="operationTime"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <resultMap id="auditLogViewResultMap" type="AuditLogView">
+        <id column="id" property="id"/>
+        <result column="auditor_mobile" property="auditorMobile"/>
+        <result column="operator_mobile" property="operatorMobile"/>
+        <result column="target_id" property="targetId"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="ip" property="ip"/>
+        <result column="operation_time" property="operationTime"/>
+        <result column="description" property="description"/>
     </resultMap>
 
     <insert id="create" parameterType="AuditLogModel">
@@ -20,8 +31,11 @@
         value(#{auditorLoginName}, #{operatorLoginName}, #{targetId}, #{operationType}, #{ip}, #{operationTime}, #{description})
     </insert>
 
-    <select id="getPaginationData" parameterType="map" resultMap="auditLogModelResultMap">
-        select * from audit_log
+    <select id="getPaginationData" parameterType="map" resultMap="auditLogViewResultMap">
+        select id, u1.mobile as auditor_mobile, u2.mobile as operator_mobile, target_id, operation_type, ip,
+        operation_time, description
+        from audit_log join user u1 join user u2
+        on audit_log.auditor_login_name = u1.login_name and audit_log.operator_login_name = u2.login_name
         <where>
             <if test="operationType != null">
                 and operation_type = #{operationType}
@@ -29,11 +43,11 @@
             <if test="targetId != null and targetId != ''">
                 and target_id = #{targetId}
             </if>
-            <if test="operatorLoginName != null and operatorLoginName != ''">
-                and operator_login_name = #{operatorLoginName}
+            <if test="operatorMobile != null and operatorMobile != ''">
+                and u2.mobile = #{operatorMobile}
             </if>
-            <if test="auditorLoginName != null and auditorLoginName != ''">
-                and auditor_login_name = #{auditorLoginName}
+            <if test="auditorMobile != null and auditorMobile != ''">
+                and u1.mobile = #{auditorMobile}
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and operation_time between #{startTime} and #{endTime}
@@ -44,7 +58,9 @@
     </select>
 
     <select id="count" parameterType="map" resultType="long">
-        select count(1) from audit_log
+        select count(1)
+        from audit_log join user u1 join user u2
+        on audit_log.auditor_login_name = u1.login_name and audit_log.operator_login_name = u2.login_name
         <where>
             <if test="operationType != null">
                 and operation_type = #{operationType}
@@ -52,11 +68,11 @@
             <if test="targetId != null and targetId != ''">
                 and target_id = #{targetId}
             </if>
-            <if test="operatorLoginName != null and operatorLoginName != ''">
-                and operator_login_name = #{operatorLoginName}
+            <if test="operatorMobile != null and operatorMobile != ''">
+                and u2.mobile = #{operatorMobile}
             </if>
-            <if test="auditorLoginName != null and auditorLoginName != ''">
-                and auditor_login_name = #{auditorLoginName}
+            <if test="auditorMobile != null and auditorMobile != ''">
+                and u1.mobile = #{auditorMobile}
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and operation_time between #{startTime} and #{endTime}

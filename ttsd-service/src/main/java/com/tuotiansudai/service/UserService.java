@@ -3,12 +3,10 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.UserView;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -49,6 +47,8 @@ public interface UserService {
 
     List<String> findLoginNameLike(String loginName);
 
+    List<String> findMobileLike(String mobile);
+
     boolean verifyPasswordCorrect(String loginName, String password);
 
     List<String> findAllChannels();
@@ -59,7 +59,7 @@ public interface UserService {
 
     void refreshAreaByMobileInJob();
 
-    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
+    List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber);
 
     List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
 

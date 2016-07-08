@@ -1,33 +1,25 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.task.OperationType;
 
 import java.util.Date;
 
-public class AuditLogPaginationItemDataDto {
-
+public class AuditLogView {
+    private long id;
     private String auditorMobile;
-
     private String operatorMobile;
-
     private String targetId;
-
     private OperationType operationType;
-
     private String ip;
-
+    private Date operationTime = new Date();
     private String description;
 
-    private Date operationTime;
+    public long getId() {
+        return id;
+    }
 
-    public AuditLogPaginationItemDataDto(String auditorMobile, String operatorMobile, String targetId, OperationType operationType, String ip, String description, Date operationTime) {
-        this.auditorMobile = auditorMobile;
-        this.operatorMobile = operatorMobile;
-        this.targetId = targetId;
-        this.operationType = operationType;
-        this.ip = ip;
-        this.description = description;
-        this.operationTime = operationTime;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getAuditorMobile() {
@@ -70,19 +62,19 @@ public class AuditLogPaginationItemDataDto {
         this.ip = ip;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Date getOperationTime() {
         return operationTime;
     }
 
     public void setOperationTime(Date operationTime) {
         this.operationTime = operationTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

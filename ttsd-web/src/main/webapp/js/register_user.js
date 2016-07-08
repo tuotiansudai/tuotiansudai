@@ -232,12 +232,10 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     function checkInputValid(event) {
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
-
         if($referrer.is(':hidden')) {
             referrerValidBool=true;
         }
         if(referrerValidBool && mobileValid && passwordValid && captchaValid && agreementValid) {
-
             $registerSubmit.prop('disabled',false);
         }
         else {
