@@ -77,6 +77,19 @@
             _czc.push(["_trackEvent()", "1257936541"]);
         </#if>
     </script>
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="${staticServer}${cssPath}${css.ie_hack_grid}">
+        <script>
+             if (!console) {
+                window.console = {};
+                console.log = function() {};
+                console.error = function() {};
+                console.info = function() {};
+                console.debug = function() {};
+                console.dir = function() {};
+             }
+        </script>
+    <![endif]-->
 
     <#--growingio-->
     <script type='text/javascript'>

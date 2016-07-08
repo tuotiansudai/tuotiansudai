@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        uglify: {
+        copy: {
             options: {
                 // banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyymmddHHMM") %> */\n'
             },
@@ -184,7 +184,7 @@ module.exports = function(grunt) {
                 options: {
                     baseUrl: 'src/main/webapp/activity',
                     mainConfigFile: '<%= meta.baseJsPath %>/config.js',
-                    optimize: 'none',
+                    // optimize: 'none',
                     stubModules: ['text'],
                     modules: getJSModules(),
                     dir: '<%= meta.baseJsPath %>/debug'
@@ -195,5 +195,5 @@ module.exports = function(grunt) {
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', ['clean', 'sass', 'connect', 'watch']);
-    grunt.registerTask('dist', ['clean', 'sass', 'dataUri', 'cssmin:base64', 'clean:base64', 'requirejs', 'uglify', 'filerev', 'clean:debug']);
+    grunt.registerTask('dist', ['clean', 'sass', 'dataUri', 'cssmin:base64', 'clean:base64', 'requirejs', 'copy', 'filerev', 'clean:debug']);
 };
