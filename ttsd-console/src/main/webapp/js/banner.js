@@ -97,22 +97,12 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             tiptype: function(msg, o, cssctl) {
                 if (o.type == 3) {
                     var msg = o.obj.attr('errormsg') || msg;
+                    boolFlag = false;
                     showErrorMessage(msg, o.obj);
                 }
             },
             beforeCheck: function(curform) {
                 $errorDom.html('');
-                var order = $('.order').val();
-                if (isNaN(order) || parseInt(order) <= 0) {
-                    showErrorMessage('序号必须为正整数', $('.order', curform));
-                    return false;
-                }
-
-                if ($('.source:checked').length <= 0) {
-                    showErrorMessage('终端必须选择', $('.source', curform));
-                    return false;
-                }
-
             },
             callback: function(form) {
                 boolFlag = true;
@@ -157,6 +147,18 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                 showErrorMessage("分享后描述最多500个中文字符");
                 return false;
             }
+
+            if ($('.source:checked').length <= 0) {
+                showErrorMessage("终端必须选择");
+                return false;
+            }
+
+            var order = $('.order').val();
+            if (isNaN(order) || parseInt(order) <= 0) {
+                showErrorMessage("序号必须为正整数");
+                return false;
+            }
+
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
