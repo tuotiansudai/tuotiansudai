@@ -26,7 +26,7 @@ public class ActivityCenterController {
         String loginName = LoginUserInfo.getLoginName();
         List<ActivityDto> activityDtos = activityService.getAllActiveActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);
-
+        modelAndView.addObject("responsive",true);
         return modelAndView;
     }
 }
