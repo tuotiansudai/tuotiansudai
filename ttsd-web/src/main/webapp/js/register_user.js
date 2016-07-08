@@ -26,7 +26,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
-
     $checkbox.on('click', function (event) {
         if (event.target.tagName.toUpperCase() == 'A') {
             return;
@@ -47,7 +46,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             agreementValid=true;
         }
         checkInputValid();
-
     });
     $referrerOpen.on('click',function() {
         var $this=$(this),
@@ -57,14 +55,13 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         checkOption=$this.next('li').hasClass('hide');
         iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
         if($referrer.is(':hidden')) {
-            $referrer.val('');
-            $referrer.removeClass('error').addClass('valid');
-            referrerError.html('').hide();
             referrerValidBool=true;
-            checkInputValid();
         }
+        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+            referrerValidBool=false;
+        }
+        checkInputValid();
     });
-
     showAgreement.click(function () {
         layer.open({
             type: 1,
@@ -219,14 +216,26 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     $mobileInput.attr('preValue',$mobileInput.val());
                 }
             }
+        },
+        submitHandler: function (form) {
+
+            if($referrer.hasClass('error')) {
+                $referrerOpen.trigger('click');
+                referrerError.html('推荐人不存在').show();
+                return false;
+            }
+            else {
+                form.submit();
+            }
         }
     });
-
     function checkInputValid(event) {
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
-
-        if(mobileValid && passwordValid && captchaValid && referrerValidBool && agreementValid) {
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        if(referrerValidBool && mobileValid && passwordValid && captchaValid && agreementValid) {
             $registerSubmit.prop('disabled',false);
         }
         else {
@@ -312,7 +321,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 type: 'GET',
                 dataType: 'json',
                 async:false,
-                contentType: 'application/json; charset=UTF-8',
+                contentType: 'application/json; charset=UTF-8'
             })
                 .done(function (res) {
                    var  checkValid=res.data.status;
@@ -342,6 +351,5 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             referrerValidBool=true;
         }
         checkInputValid();
-
     });
 });

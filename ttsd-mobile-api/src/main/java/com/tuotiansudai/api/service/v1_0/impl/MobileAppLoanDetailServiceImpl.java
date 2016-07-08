@@ -152,9 +152,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
                 }
             }
+            loanDetailResponseDataDto.setMarqueeTitle(marqueeTitle.toString());
         }
-        loanDetailResponseDataDto.setMarqueeTitle(marqueeTitle.toString());
-
         loanDetailResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
         loanDetailResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
         loanDetailResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));

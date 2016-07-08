@@ -211,6 +211,8 @@ public class LoanDto extends BaseDataDto implements Serializable {
         * */
     private int duration;
 
+    private List<Long> extraRateIds;
+
     public LoanDto() {
     }
 
@@ -525,5 +527,13 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public List<Long> getExtraRateIds() {
+        return extraRateIds;
+    }
+
+    public void setExtraRateIds(List<Long> extraRateIds) {
+        this.extraRateIds = extraRateIds;
     }
 }

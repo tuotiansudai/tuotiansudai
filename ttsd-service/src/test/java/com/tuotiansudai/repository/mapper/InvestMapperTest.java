@@ -756,4 +756,69 @@ public class InvestMapperTest {
         assertEquals(investAmount, investModel.getAmount());
     }
 
+    @Test
+    public void shouldFindCountInvestProductTypeSuccessByLoginName(){
+        long newbieLoanId = idGenerator.generate();
+        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(newbieLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
+        investModel.setStatus(InvestStatus.SUCCESS);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(newbieLoanId);
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
+        investModel2.setStatus(InvestStatus.SUCCESS);
+
+        investModel.setTransferInvestId(investModel2.getId());
+        investMapper.create(investModel2);
+        investMapper.create(investModel);
+        int count = investMapper.findCountSuccessByLoginNameAndProductTypes(User_ID2,Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360,ProductType.EXPERIENCE));
+        assertTrue(count > 0);
+    }
+
+    @Test
+    public void shouldFindCountNormalAndNewBieSuccessByInvestTimeIsOk(){
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName(User_ID);
+        fakeLoanModel.setLoanerLoginName(User_ID);
+        fakeLoanModel.setLoanerUserName(User_ID);
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(User_ID);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.NORMAL);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType.EXPERIENCE);
+        loanMapper.create(fakeLoanModel);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(fakeLoanModel.getId());
+        investModel.setLoginName(User_ID2);
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setInvestTime(DateTime.now().toDate());
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(fakeLoanModel.getId());
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel.setInvestTime(DateTime.now().toDate());
+        investModel.setTransferInvestId(investModel2.getId());
+        investMapper.create(investModel2);
+        investMapper.create(investModel);
+        int count = investMapper.findCountSuccessByLoginNameAndProductTypes(User_ID2,Lists.newArrayList(ProductType._30,ProductType._90,ProductType._180,ProductType._360));
+        assertTrue(count == 0);
+    }
+
 }
