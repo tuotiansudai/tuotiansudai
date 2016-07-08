@@ -137,17 +137,6 @@
                 </a>
             </div>
             <div class="right">
-                <ul>
-                    <a href="http://economy.gmw.cn/2016-03/31/content_19527114.htm" target="_blank">
-                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-one.png"></li>
-                    </a>
-                    <a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank">
-                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-two.png"></li>
-                    </a>
-                    <a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">
-                        <li><img src="${staticServer}/activity/images/sign/actor/landingpage/media-three.png"></li>
-                    </a>
-                </ul>
                 <div class="title">拓天速贷以卓越风控打造高效资产平台</div>
                 <p>
                     随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，
@@ -615,7 +604,7 @@
         </div>
         <div class="aboutus-content-container">
             <img class="landing-phone-aboutus-header"
-                 src="/activity/images/sign/actor/landingpage/landing-phone-aboutus-new.png"></img>
+                 src="/activity/images/sign/actor/landingpage/landing-phone-about-new.png"></img>
 
             <p>
                 随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，引领行业持续健康的发展...
