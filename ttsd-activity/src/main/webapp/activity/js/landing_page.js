@@ -1,18 +1,5 @@
 require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function(){
-        //if($(window).width()<700){
-        //    $('#phoneCaptcha').find('.captcha').attr({
-        //        'id':'captcha',
-        //        'name':'captcha'
-        //    });
-        //    $('#phoneCaptcha').parent().siblings('.captcha-phone-error').attr('id','captchaErr');
-        //}else{
-        //    $('#pcCaptcha').find('.captcha').attr({
-        //        'id':'captcha',
-        //        'name':'captcha'
-        //    });
-        //    $('#pcCaptcha').parent().siblings('.captcha-error').attr('id','captchaErr');
-        //}
         var $registerForm=$('.register-user-form'),
             $phoneDom=$('#mobile'),
             $fetchCaptcha=$('.fetch-captcha'),
@@ -31,7 +18,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
         if(bCategory=='mobile') {
             $webRegister.empty();
             $mobileRegister.empty().append($landingTop);
-
         }
 
         $('input[type="text"],input[type="password"]',$registerForm).placeholder();
