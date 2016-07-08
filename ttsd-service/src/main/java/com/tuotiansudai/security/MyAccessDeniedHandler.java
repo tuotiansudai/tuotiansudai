@@ -5,10 +5,10 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AjaxAccessDeniedDto;
 import com.tuotiansudai.dto.BaseDto;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 import javax.servlet.ServletException;
@@ -20,28 +20,30 @@ import java.util.Map;
 
 public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 
-    private Map<String, String> errorPageMapping = Maps.newHashMap();
+    static Logger logger = Logger.getLogger(MyAccessDeniedHandler.class);
 
-    private String onlyUserAccessDeniedRedirect;
+    private Map<String, String> errorPageMapping = Maps.newHashMap();
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    private Map<String, String> accessDeniedExceptionRedirect = Maps.newHashMap();
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        boolean isOnlyUserAccessDenied = accessDeniedException instanceof UserRoleAccessDeniedException;
-        if (isOnlyUserAccessDenied) {
+        String accessDeniedRedirectUrl = this.getAccessDeniedRedirectUrl(accessDeniedException);
+        if (!Strings.isNullOrEmpty(accessDeniedRedirectUrl)) {
             if (isAjaxRequest(request)) {
-                this.generateAjaxAccessDeniedResponse(request, response);
+                this.generateAjaxAccessDeniedResponse(request, response, accessDeniedRedirectUrl);
                 return;
             }
-            response.sendRedirect(onlyUserAccessDeniedRedirect);
+            response.sendRedirect(accessDeniedRedirectUrl);
             return;
         }
 
         String requestURI = request.getRequestURI();
         if (!errorPageMapping.containsKey(requestURI)) {
             if (isAjaxRequest(request)) {
-                this.generateAjaxAccessDeniedResponse(request, response);
+                this.generateAjaxAccessDeniedResponse(request, response, "/");
                 return;
             }
             super.handle(request, response, accessDeniedException);
@@ -53,7 +55,20 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         }
     }
 
-    private void generateAjaxAccessDeniedResponse(HttpServletRequest request, HttpServletResponse response) {
+    private String getAccessDeniedRedirectUrl(AccessDeniedException accessDeniedException) {
+        for (String exception : accessDeniedExceptionRedirect.keySet()) {
+            try {
+                if (Class.forName(exception).isInstance(accessDeniedException)) {
+                    return accessDeniedExceptionRedirect.get(exception);
+                }
+            } catch (ClassNotFoundException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+        return null;
+    }
+
+    private void generateAjaxAccessDeniedResponse(HttpServletRequest request, HttpServletResponse response, String accessDeniedRedirectUrl) {
         if (response.isCommitted()) {
             return;
         }
@@ -61,7 +76,7 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         BaseDto<AjaxAccessDeniedDto> baseDto = new BaseDto<>();
         AjaxAccessDeniedDto dataDto = new AjaxAccessDeniedDto();
         dataDto.setStatus(true);
-        dataDto.setDirectUrl(onlyUserAccessDeniedRedirect);
+        dataDto.setDirectUrl(accessDeniedRedirectUrl);
         baseDto.setData(dataDto);
 
         String referer = request.getHeader(HttpHeaders.REFERER);
@@ -89,14 +104,11 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         this.errorPageMapping = errorPageMapping;
     }
 
-    public void setOnlyUserAccessDeniedRedirect(String onlyUserAccessDeniedRedirect) {
-        this.onlyUserAccessDeniedRedirect = onlyUserAccessDeniedRedirect;
-    }
-
     private boolean isAjaxRequest(HttpServletRequest request) {
         return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
     }
 
-    public void setLoginUrl(String loginUrl) {
+    public void setAccessDeniedExceptionRedirect(Map<String, String> accessDeniedExceptionRedirect) {
+        this.accessDeniedExceptionRedirect = accessDeniedExceptionRedirect;
     }
 }
