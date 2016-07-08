@@ -2,7 +2,6 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.util.AppTokenParser;
 import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.repository.model.HeroRankingView;
