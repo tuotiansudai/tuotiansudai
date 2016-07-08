@@ -14,26 +14,28 @@ CREATE TABLE `loan_details` (
   COMMENT '标的详情';
 
 CREATE TABLE `loaner_details` (
-  `id`              BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT
+  `id`                BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT
   COMMENT '主键',
-  `loan_id`         BIGINT(20) UNSIGNED NOT NULL
+  `loan_id`           BIGINT(20) UNSIGNED NOT NULL
   COMMENT '标的ID',
-  `login_name`      VARCHAR(20)         NOT NULL
+  `login_name`        VARCHAR(20)         NOT NULL
   COMMENT '借款人登录名',
-  `user_name`       VARCHAR(40)                  DEFAULT NULL
+  `user_name`         VARCHAR(40)                  DEFAULT NULL
   COMMENT '借款人真实姓名',
-  `gender`          VARCHAR(10)                  DEFAULT NULL
+  `gender`            VARCHAR(10)                  DEFAULT NULL
   COMMENT '借款人性别',
-  `age`             INT(11)                      DEFAULT NULL
+  `age`               INT(11)                      DEFAULT NULL
   COMMENT '借款人年龄',
-  `identify_number` VARCHAR(18)                  DEFAULT NULL
+  `identify_number`   VARCHAR(18)                  DEFAULT NULL
   COMMENT '借款人身份证号',
-  `marriage`        VARCHAR(30)                  DEFAULT NULL
+  `marriage`          VARCHAR(30)                  DEFAULT NULL
   COMMENT '借款人婚姻情况',
-  `region`          VARCHAR(40)                  DEFAULT NULL
+  `region`            VARCHAR(40)                  DEFAULT NULL
   COMMENT '借款人所在地区',
-  `income`          VARCHAR(50)                  DEFAULT NULL
+  `income`            VARCHAR(50)                  DEFAULT NULL
   COMMENT '借款人收入情况',
+  `employment_status` VARCHAR(20)                  DEFAULT NULL
+  COMMENT '借款人就业情况',
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_LOANER_DETAILS_LOAN_ID_REF_LOAN_ID` FOREIGN KEY (`loan_id`) REFERENCES `loan` (`id`)
 )
