@@ -14,8 +14,10 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.RandomUtils;
@@ -39,6 +41,8 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private InvestMapper investMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -49,7 +53,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
-    private List<String> heroRankingActivityPeriod;
+    private List<String> heroRankingActivityPeriod = Lists.newArrayList();
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -75,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
-        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 1, 10);
+        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 0, 10);
     }
 
     @Override
@@ -188,6 +192,16 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
         createUserMembershipModel(loginName, MembershipLevel.V5.getLevel());
         return GivenMembership.AFTER_START_ACTIVITY_REGISTER;
+    }
+
+    @Override
+    public long findUsersCount(){
+        return userMapper.findUsersCount();
+    }
+
+    @Override
+    public long sumInvestAmount(){
+        return investMapper.sumInvestAmount(null, null, null, null, null, null, null, InvestStatus.SUCCESS, null);
     }
 
     private void createUserMembershipModel(String loginName,int level){

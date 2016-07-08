@@ -48,9 +48,8 @@
 
         <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login/**" access="permitAll()"/>
-        <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
 
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN','EDITOR')"/>
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
         <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
@@ -70,6 +69,8 @@
         <intercept-url pattern="/user-manage/user/*/impersonate" access="hasAuthority('ADMIN')"/>
         <intercept-url pattern="/security-log/clear-db-cache" access="hasAuthority('ADMIN')"/>
         <intercept-url pattern="/link-exchange-manage/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/announce-manage/article/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN','EDITOR')"/>
+        <intercept-url pattern="/ueditor/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN','EDITOR')"/>
 
         <intercept-url pattern="/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>

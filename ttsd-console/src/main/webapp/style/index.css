@@ -593,3 +593,30 @@ td.td {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.ladder-table{
+    width:180px;
+}
+.ladder-table .tip-table{
+    position: absolute;
+    width:auto;
+    height:auto;
+    top:0;
+    left:390px;
+    z-index:99;
+    display:none;
+    background:#fff;
+    margin-bottom:0;
+}
+.ladder-table:hover .tip-table {
+    display: block;
+}
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}

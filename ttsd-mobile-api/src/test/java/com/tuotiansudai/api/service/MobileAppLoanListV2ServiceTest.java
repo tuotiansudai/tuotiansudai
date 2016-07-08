@@ -1,112 +1,149 @@
 package com.tuotiansudai.api.service;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
-import java.util.List;
+import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
 
-    @Mock
+    @Autowired
     private LoanMapper loanMapper;
-    @Mock
+    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private IdGenerator idGenerator;
-    @InjectMocks
+    @Autowired
     private MobileAppLoanListV2ServiceImpl mobileAppLoanListV2Service;
+    @Autowired
+    private UserMapper userMapper;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
 
-
     @Test
-    public void shouldGenerateIndexLoanIsOk(){
-        ReflectionTestUtils.setField(mobileAppLoanListV2Service, "defaultFee", 0.1);
-        when(investMapper.sumSuccessInvestCountByLoginName(anyString())).thenReturn(1);
-
-        List<LoanModel> loanModels = Lists.newArrayList();
-        loanModels.add(getFakeExperienceLoan("test1"));
-        loanModels.add(getFakeLoan("test1"));
-        MembershipModel membershipModel = new MembershipModel(idGenerator.generate(),1,100l,0.09);
-
-        when(loanMapper.findHomeLoanByIsContainNewbie(any(LoanStatus.class), anyBoolean())).thenReturn(loanModels);
-        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
-
-        BaseResponseDto<LoanListResponseDataDto> baseResponseDto = mobileAppLoanListV2Service.generateIndexLoan("shenjiaojiao");
-
-        assertNotNull(baseResponseDto.getData());
-        assertThat(baseResponseDto.getData().getLoanList().get(0).getProductNewType(), is(ProductType.EXPERIENCE.name()));
-        assertEquals("0.1", baseResponseDto.getData().getLoanList().get(0).getInvestFeeRate());
-        assertThat(baseResponseDto.getData().getLoanList().get(1).getProductNewType(), is(ProductType._30.name()));
-        assertEquals(String.valueOf(membershipModel.getFee()), baseResponseDto.getData().getLoanList().get(1).getInvestFeeRate());
-
+    public void shouldNoLoginNameGenerateIndexLoanIsOk(){
+        String loginName = "testHomeFindName";
+        userMapper.create(getUserModelTest(loginName));
+        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        loanMapper.create(loanModel);
+        InvestModel investModel = getInvestModel(loginName,loanModel.getId());
+        investMapper.create(investModel);
+        LoanModel loanModel1 = getFakeLoan(loginName,ActivityType.NEWBIE,ProductType.EXPERIENCE,LoanStatus.RAISING);
+        loanMapper.create(loanModel1);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(null);
+        assertTrue(dto.getData().getLoanList().get(0).getProductNewType().equals("EXPERIENCE"));
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName) {
+    @Test
+    public void shouldLoginInvestExperienceGenerateIndexLoanIsOk(){
+        String loginName = "testHomeFindName";
+        userMapper.create(getUserModelTest(loginName));
+        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        loanMapper.create(loanModel);
+        InvestModel investModel = getInvestModel(loginName,loanModel.getId());
+        investMapper.create(investModel);
+        LoanModel loanModel1 = getFakeLoan(loginName,ActivityType.NEWBIE,ProductType.EXPERIENCE,LoanStatus.RAISING);
+        loanMapper.create(loanModel1);
+        InvestModel investModel1 = getInvestModel(loginName,loanModel1.getId());
+        investMapper.create(investModel1);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
+        assertTrue(!dto.getData().getLoanList().get(0).getProductNewType().equals("EXPERIENCE"));
+        assertTrue(!dto.getData().getLoanList().get(0).getActivityType().equals("NEWBIE"));
+    }
+
+    @Test
+    public void shouldLoginInvestNewBieGenerateIndexLoanIsOk(){
+        String loginName = "testHomeFindName";
+        userMapper.create(getUserModelTest(loginName));
+        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        loanMapper.create(loanModel);
+        InvestModel investModel = getInvestModel(loginName,loanModel.getId());
+        investMapper.create(investModel);
+        LoanModel loanModel1 = getFakeLoan(loginName,ActivityType.NEWBIE,ProductType._30,LoanStatus.RAISING);
+        loanMapper.create(loanModel1);
+        InvestModel investModel1 = getInvestModel(loginName,loanModel1.getId());
+        investModel1.setInvestTime(DateTime.parse("2016-06-12").toDate());
+        investMapper.create(investModel1);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
+        assertTrue(!dto.getData().getLoanList().get(0).getProductNewType().equals("NEWBIE"));
+    }
+
+    @Test
+    public void shouldLoginNormalGenerateIndexLoanIsOk(){
+        String loginName = "testHomeFindName";
+        userMapper.create(getUserModelTest(loginName));
+        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        loanMapper.create(loanModel);
+        InvestModel investModel = getInvestModel(loginName,loanModel.getId());
+        investMapper.create(investModel);
+        LoanModel loanModel1 = getFakeLoan(loginName,ActivityType.NEWBIE,ProductType._30,LoanStatus.RAISING);
+        loanMapper.create(loanModel1);
+        InvestModel investModel1 = getInvestModel(loginName,loanModel1.getId());
+        investModel1.setInvestTime(DateTime.parse("2016-06-12").toDate());
+        investMapper.create(investModel1);
+        LoanModel loanModel2 = getFakeLoan(loginName,ActivityType.NEWBIE,ProductType.EXPERIENCE,LoanStatus.RAISING);
+        loanMapper.create(loanModel2);
+        InvestModel investModel2 = getInvestModel(loginName,loanModel1.getId());
+        investMapper.create(investModel2);
+        BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(loginName);
+        assertTrue(dto.getData().getLoanList().get(0).getActivityType().equals("NORMAL"));
+    }
+
+    private InvestModel getInvestModel(String loginName,long loanId){
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null,0.1);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        return investModel;
+    }
+    private UserModel getUserModelTest(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
+    private LoanModel getFakeLoan(String loanerLoginName,ActivityType activityType,ProductType productType,LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
-        fakeLoanModel.setName("loanName");
+        fakeLoanModel.setName(loanerLoginName);
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
-        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerUserName(loanerLoginName);
         fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
         fakeLoanModel.setAgentLoginName(loanerLoginName);
         fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
-        fakeLoanModel.setStatus(LoanStatus.COMPLETE);
-        fakeLoanModel.setActivityType(ActivityType.NEWBIE);
+        fakeLoanModel.setStatus(loanStatus);
+        fakeLoanModel.setActivityType(activityType);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
-        fakeLoanModel.setProductType(ProductType._30);
-        return fakeLoanModel;
-    }
-
-    private LoanModel getFakeExperienceLoan(String loginName) {
-        LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
-        fakeLoanModel.setName("loanName");
-        fakeLoanModel.setLoanerLoginName(loginName);
-        fakeLoanModel.setLoanerUserName("借款人");
-        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
-        fakeLoanModel.setAgentLoginName(loginName);
-        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        fakeLoanModel.setPeriods(3);
-        fakeLoanModel.setStatus(LoanStatus.RAISING);
-        fakeLoanModel.setActivityType(ActivityType.NEWBIE);
-        fakeLoanModel.setFundraisingStartTime(new Date());
-        fakeLoanModel.setFundraisingEndTime(new Date());
-        fakeLoanModel.setDescriptionHtml("html");
-        fakeLoanModel.setDescriptionText("text");
-        fakeLoanModel.setCreatedTime(new Date());
-        fakeLoanModel.setProductType(ProductType.EXPERIENCE);
+        fakeLoanModel.setProductType(productType);
+        fakeLoanModel.setActivityType(activityType);
         return fakeLoanModel;
     }
 

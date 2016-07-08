@@ -101,6 +101,7 @@
                 <th>投资时间</th>
                 <th>自动投标</th>
                 <th>投资金额(元)</th>
+                <th>加息利率（%）/预期收益（元）/实发收益（元）</th>
                 <th>投资状态</th>
                 <th>回款记录</th>
             </tr>
@@ -130,6 +131,7 @@
                     <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
+                    <td>${invest.rate}/${invest.expectedFee}/${invest.actualFee}</td>
                     <td>${invest.status}</td>
                     <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>

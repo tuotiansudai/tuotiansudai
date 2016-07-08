@@ -6,7 +6,9 @@ import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.MonitorDataDto;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -18,6 +20,12 @@ public abstract class BaseClient {
     private final static String URL_TEMPLATE = "http://{host}:{port}{applicationContext}{uri}";
 
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private final static String REQUEST_ID = "requestId";
+
+    private final static String ANONYMOUS = "anonymous";
+
+    private final static String USER_ID = "userId";
 
     protected String host;
 
@@ -36,10 +44,16 @@ public abstract class BaseClient {
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
         }
+
+        String requestId = (MDC.get(REQUEST_ID) != null && MDC.get(REQUEST_ID) instanceof String) ? MDC.get(REQUEST_ID).toString() : UUIDGenerator.generate();
+        String userId = (MDC.get(USER_ID) != null && MDC.get(USER_ID) instanceof String) ? MDC.get(USER_ID).toString() : ANONYMOUS;
+
         Request request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
-                .addHeader("Content-Type", "application/json; charset=UTF-8")
+                .addHeader("Content-Type", "application/json; chattsd-activity/src/main/webapp/templates/activities/app-download.ftlrset=UTF-8")
+                .addHeader(REQUEST_ID, requestId)
+                .addHeader(USER_ID, userId)
                 .build();
 
         try {
