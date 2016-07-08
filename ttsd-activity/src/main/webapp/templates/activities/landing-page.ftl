@@ -5,7 +5,7 @@
     <div class="landing-header">
         <a href="/">访问首页</a>
     </div>
-    <#if !isAppSource>
+    <div class="web-page-register">
         <div class="landing-top">
             <div class="landing-inner">
                 <div class="register-box">
@@ -58,15 +58,16 @@
                                 <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                             </li>
                             <li id="agreementInputErr" class="height"></li>
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="submit" class="register-user" value="立即注册">
+                            <li  class="tc">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <input type="submit" class="register-user" value="立即注册">
+                            </li>
                         </ul>
                     </form>
                 </div>
             </div>
         </div>
-    </#if>
-
+    </div>
     <div class="content-three">
         <div class="three-title">
             <h3><span><i class="left-icon"></i>新人福利<i class="right-icon"></i></span></h3>
@@ -643,7 +644,10 @@
 
         <#if isAppSource>
             <a href="/register/user"> <input type="button" id="btn-register-now" class="register-user-phoneC-now" value="立即注册"></a>
-       </#if>
+        <#else>
+            <div class="mobile-page-register clearfix">
+            </div>
+        </#if>
          </div>
 </div>
 </@global.main>
