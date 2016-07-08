@@ -7,7 +7,7 @@
 }
 .btn {
   font: {
-    size: 22px;
+    size: 18px;
     weight: normal;
     family: $fontStack;
   }
@@ -15,7 +15,7 @@
   padding: 8px 35px;
   margin-bottom: 0;
   text-align: center;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   line-height: 1.3;
   white-space: nowrap;
   vertical-align: middle;
@@ -28,6 +28,7 @@
   &.focus {
     text-decoration: none;
     background: nth($btnColor1,2);
+    color:#fff;
   }
   &:active,
   &.active {
@@ -51,6 +52,8 @@
   @extend .btn;
   background: nth($btnColor2,1);
   color: #fff!important;
+  font-size:22px;
+  letter-spacing: 3px;
   &:hover {
     background: nth($btnColor2,2);
   }

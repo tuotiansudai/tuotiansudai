@@ -28,6 +28,11 @@ var config = [
 		route: '/questions',
 		template: 'questions',
 		data: 'footer'
+	},
+	{
+		route: '/answers',
+		template: 'to-answer',
+		data: 'footer'
 	}];
 
 
