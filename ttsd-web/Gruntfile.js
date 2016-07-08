@@ -183,7 +183,7 @@ module.exports = function(grunt) {
                 options: {
                     baseUrl: 'src/main/webapp/',
                     mainConfigFile: '<%= meta.baseJsPath %>/config.js',
-                    optimize: 'none',
+                    // optimize: 'none',
                     stubModules: ['text'],
                     modules: getJSModules(),
                     dir: '<%= meta.baseJsPath %>/debug'
