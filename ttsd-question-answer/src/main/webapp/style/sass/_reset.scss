@@ -183,7 +183,8 @@ form {
   box-sizing: border-box;
 }
 .borderBox {
-  border: 1px solid #e5e5e5;
+  //border: 1px solid #e5e5e5;
+ @include border-color(#e5e5e5);
   padding: 20px;
   height: auto;
   background: #fff;

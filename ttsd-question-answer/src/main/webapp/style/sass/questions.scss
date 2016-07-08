@@ -4,7 +4,11 @@
     width:700px;
     .switch-menu {
       clear: both;
+      height:auto;
+      overflow:auto;
       li {
+        height:auto;
+        overflow:auto;
         display: inline-block;
         float: left;
         background: #fff;
@@ -67,7 +71,11 @@
       }
     }
   }
-
+  .aside-frame {
+    width:288px;
+    @include border-color(#e5e5e5);
+    margin-top:44px;
+  }
 
 
 }

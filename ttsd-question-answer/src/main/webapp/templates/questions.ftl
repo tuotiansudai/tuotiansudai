@@ -4,6 +4,7 @@
         <a href="#" class="btn-main">我要提问</a>
     </div>
 <div class="question-container">
+
     <div class="article-content fl">
         <ul class="switch-menu clearfix">
             <li class="active"><a href="javascript:void(0)" >全部问题</a></li>
@@ -89,6 +90,7 @@
             <a href="#">末页</a>
         </div>
     </div>
-    <div class="aside-frame"></div>
+    <div class="aside-frame fr"></div>
 </div>
+
 </@global.main>

@@ -13,7 +13,6 @@ $baseIconUrl:'/images/icons/';
 @each $header, $size in $headings {
   #{$header} {
     font-size: $size;
-
     font-weight: normal;
 
   }
