@@ -12,33 +12,20 @@ class Deployment(object):
     def deploy(self, env):
         self._env = env
         self.clean()
-        self.compile()
-        self.migrate()
         self.jcversion()
-        self.mkwar()
+        self.compile()
+        self.build_and_unzip_worker()
         self.mk_static_package()
         self.init_docker()
 
     def clean(self):
         print "Cleaning..."
         print self._gradle
-        sh('{0} clean'.format(self._gradle))
         sh('/usr/bin/git clean -fd', ignore_error=True)
 
     def compile(self):
         print "Compiling..."
-        sh('{0} compileJava'.format(self._gradle))
-
-    def migrate(self):
-        print "Migrating..."
-        sh('{0} -Pdatabase=aa ttsd-service:flywayRepair'.format(self._gradle))
-        sh('{0} -Pdatabase=aa ttsd-service:flywayMigrate'.format(self._gradle))
-        sh('{0} -Pdatabase=ump_operations ttsd-service:flywayRepair'.format(self._gradle))
-        sh('{0} -Pdatabase=ump_operations ttsd-service:flywayMigrate'.format(self._gradle))
-        sh('{0} -Pdatabase=sms_operations ttsd-service:flywayRepair'.format(self._gradle))
-        sh('{0} -Pdatabase=sms_operations ttsd-service:flywayMigrate'.format(self._gradle))
-        sh('{0} -Pdatabase=job_worker ttsd-service:flywayRepair'.format(self._gradle))
-        sh('{0} -Pdatabase=job_worker ttsd-service:flywayMigrate'.format(self._gradle))
+        sh('{0} clean ttsd-service:flywayAA ttsd-service:flywayUMP ttsd-service:flywaySms ttsd-service:flywayWorker war'.format(self._gradle))
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
