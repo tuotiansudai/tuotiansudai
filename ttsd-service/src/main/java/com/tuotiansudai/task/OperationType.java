@@ -12,6 +12,8 @@ public enum OperationType implements Serializable{
 
     TRANSFER_RULE("债权转让", "修改债权转让规则"),
 
+    BANNER("banner", "banner操作"),
+
     PUSH("App推送", "新建App推送");
 
     private String targetType;

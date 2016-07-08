@@ -1,16 +1,24 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Function;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +48,12 @@ public class HomeController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private BannerMapper bannerMapper;
+
+    @Value("${web.banner.server}")
+    private String bannerServer;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
@@ -52,6 +66,15 @@ public class HomeController {
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
+        List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB), new Function<BannerModel,BannerModel>(){
+            @Override
+            public BannerModel apply(BannerModel input) {
+                input.setAppImageUrl(bannerServer + "/" + input.getAppImageUrl());
+                input.setWebImageUrl(bannerServer + "/" + input.getWebImageUrl());
+                return input;
+            }
+        });
+        modelAndView.addObject("bannerList",bannerModelList);
         return modelAndView;
     }
 }
