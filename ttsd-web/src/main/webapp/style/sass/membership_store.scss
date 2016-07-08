@@ -78,6 +78,35 @@
             }
           }
         }
+        .user-info{
+          float:left;
+          width:100%;
+          h3{
+            float:left;
+            width:100%;
+            font-size:24px;
+            color:#999;
+            text-align:center;
+            margin-top:40px;
+          }
+          p{
+            float:left;
+            width:100%;
+            text-align:center;
+            font-size:34px;
+            color:#ff9c1b;
+            line-height:40px;
+            margin-bottom:0;
+            span{
+              display:inline-block;
+              width:80px;
+              height:35px;
+              font-size:16px;
+              color:#fff;
+              background:#ff9c1b;
+            }
+          }
+        }
       }
     }
     .store-title{

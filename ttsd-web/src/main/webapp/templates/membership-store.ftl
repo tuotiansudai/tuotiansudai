@@ -16,7 +16,7 @@
             </div>
             <div class="user-info">
                 <h3>我的积分</h3>
-                <p>1900300</p>
+                <p>1,900,300</p>
                 <p><span>签到</span></p>
             </div>
             <ul class="other-list">
