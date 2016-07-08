@@ -129,10 +129,14 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
         //show protocol info
         $('.show-agreement').on('click', function(event) {
             event.preventDefault();
+            var area=['950px', '600px'];
+             if(bCategory=='mobile') {
+                area=['100%', '100%'];
+            }
             layer.open({
                 type: 1,
                 title: '拓天速贷服务协议',
-                area: ['950px', '600px'],
+                area: area,
                 shadeClose: true,
                 move: false,
                 scrollbar: true,
@@ -187,20 +191,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
         $registerBtn.on('click', function (event) {
             event.preventDefault();
             $('body,html').animate({scrollTop:0},'fast');
-        });
-
-        $('.show-agreement-phone').on('click', function(event) {
-            event.preventDefault();
-            layer.open({
-                type: 1,
-                title: '拓天速贷服务协议',
-                area: ['100%', '100%'],
-                shadeClose: true,
-                move: false,
-                scrollbar: true,
-                skin:'register-skin',
-                content: $('#agreementBoxPhone')
-            });
         });
 
         $("#slideBox").slide({mainCell: ".bd ul", effect: "left", trigger: "click"});

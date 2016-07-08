@@ -366,6 +366,8 @@ form label.error {
             left: 20px; }
           .landing-top .register-box ul.reg-list li.agree-last .agreement-check {
             margin-right: 300px; }
+        .landing-top .register-box ul.reg-list li.mobile-agreement {
+          display: none; }
         .landing-top .register-box ul.reg-list li.error-box {
           height: 20px;
           overflow: hidden; }
@@ -900,6 +902,9 @@ form label.error {
   .landing-container {
     display: none; }
 
+  .mobile-page-register {
+    height: 560px; }
+
   .landing-top {
     background: none;
     height: auto; }
@@ -912,7 +917,9 @@ form label.error {
       left: 5%;
       top: 0;
       border-radius: 0;
-      padding-bottom: 30px; }
+      padding-bottom: 30px;
+      margin-top: 0;
+      height: 440px; }
       .landing-top .register-box .register-user-form {
         box-sizing: border-box;
         width: 100%;
@@ -940,8 +947,10 @@ form label.error {
         position: relative !important; }
       .landing-top .register-box ul.reg-list li .register-user {
         padding: 10px;
-        margin: 0 auto; }
-      .landing-top .register-box .agree-last {
+        margin: -10px auto 10px auto; }
+      .landing-top .register-box ul.reg-list li.mobile-agreement {
+        display: block; }
+      .landing-top .register-box ul.reg-list li.agree-last {
         display: none; }
 
   .landing-phone-container {
