@@ -5,15 +5,13 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,6 +38,9 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
     private IdGenerator idGenerator;
     @Mock
     private CouponService couponService;
+
+    @Mock
+    private ExtraLoanRateMapper extraLoanRateMapper;
     @Test
     public void shouldGenerateLoanListIsOk(){
         ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
@@ -55,6 +56,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
+        when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
