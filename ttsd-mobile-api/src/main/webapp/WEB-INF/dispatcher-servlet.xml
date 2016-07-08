@@ -12,9 +12,14 @@
 
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
+    <mvc:interceptors>
+        <bean class="com.tuotiansudai.api.interceptors.LogGenerateInterceptor"/>
+    </mvc:interceptors>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
-            <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <bean id="jacksonMessageConverter"
+                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
                     <bean class="com.tuotiansudai.api.util.CustomerObjectMapper"/>
                 </property>
@@ -60,7 +65,6 @@
             </map>
         </property>
     </bean>
-
 
 
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">

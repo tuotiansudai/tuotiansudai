@@ -21,9 +21,9 @@ public class AgreementController {
     @Autowired
     private AgreementService agreementService;
 
-    @RequestMapping(value = "/agreement",method = RequestMethod.POST)
+    @RequestMapping(value = "/agreement", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> agreement(@Valid @RequestBody AgreementDto dto, HttpServletRequest request){
+    public BaseDto<PayFormDataDto> agreement(@Valid @RequestBody AgreementDto dto, HttpServletRequest request) {
         dto.setIp(RequestIPParser.parse(request));
         return agreementService.agreement(dto);
     }

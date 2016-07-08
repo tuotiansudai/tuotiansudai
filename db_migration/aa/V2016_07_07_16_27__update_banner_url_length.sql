@@ -1,0 +1,2 @@
+ALTER TABLE `aa`.`banner`
+CHANGE COLUMN `url` `url` VARCHAR(200) NOT NULL ;
