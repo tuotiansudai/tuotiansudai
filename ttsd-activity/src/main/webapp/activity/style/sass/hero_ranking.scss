@@ -647,6 +647,7 @@
               width: 90%;
               margin: 0 5%;
               h3{
+                width:100%;
                 font-size: 14px;
                 margin: 10px 0;
                 span{
@@ -682,7 +683,7 @@
                 }
               }
               .data-list{
-                height: 280px;
+                height: auto;
                 dt{
                   line-height:25px;
                 }
