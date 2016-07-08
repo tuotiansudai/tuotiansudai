@@ -39,7 +39,7 @@ public abstract class BaseClient {
         Request request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
-                .addHeader("Content-Type", "application/json; charset=UTF-8")
+                .addHeader("Content-Type", "application/json; chattsd-activity/src/main/webapp/templates/activities/app-download.ftlrset=UTF-8")
                 .build();
 
         try {
