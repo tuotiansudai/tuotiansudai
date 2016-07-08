@@ -28,7 +28,7 @@
             <div class="col-sm-4 text-danger">
                 (图片必须是1920px * 350px)
             </div>
-            <div class="col-sm-4" style="margin-left: 100px;">
+            <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="webImageUrlImage">
                     <#if banner?? && banner.webImageUrl??>
                         <img style="width:100%" src="/${banner.webImageUrl!}" alt="缩略图"/>
@@ -50,7 +50,7 @@
             <div class="col-sm-4 text-danger">
                 (图片必须是750px * 340px)
             </div>
-            <div class="col-sm-4" style="margin-left: 100px;">
+            <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="appImageUrlImage">
                     <#if banner?? && banner.appImageUrl??>
                         <img style="width:100%" src="/${banner.appImageUrl!}" alt="缩略图"/>
