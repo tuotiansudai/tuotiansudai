@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-center")
+@RequestMapping(value = "/web-activity-center")
 public class ActivityCenterController {
 
     @Autowired
