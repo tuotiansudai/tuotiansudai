@@ -193,6 +193,10 @@ def worker():
     pre_deploy()
     execute(deploy_worker)
 
+def pay():
+    pre_deploy()
+    execute(deploy_pay)
+
 
 def get_30days_before(date_format="%Y-%m-%d"):
     from datetime import timedelta, date

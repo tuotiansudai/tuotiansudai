@@ -14,17 +14,23 @@ var fm = new Freemarker({
 });
 
 var getData = function(fileName) {
-	return _.compose(JSON.parse, fs.readFileSync, path.join)(__dirname, 'data/' + fileName + '.json');
+	return _.compose(_.partial(_.extend, {
+		staticServer: 'http://localhost:8088'
+	}), JSON.parse, fs.readFileSync, path.join)(__dirname, 'data/' + fileName + '.json');
 };
 
 
-var config = [
-	{
-		route: '/',
-		template: 'footer',
-		data: 'footer'
-	}
-];
+var config = [{
+	route: '/',
+	template: 'footer',
+	data: 'footer'
+},
+{
+	route: '/activity',
+	template: 'activity-center',
+	data: 'activity_demo'
+}];
+
 
 
 config.forEach(function(val) {

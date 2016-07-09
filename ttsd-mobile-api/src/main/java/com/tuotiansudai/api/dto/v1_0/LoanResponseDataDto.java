@@ -1,5 +1,10 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoanResponseDataDto {
     private String loanId;
     private String loanType;
@@ -26,6 +31,7 @@ public class LoanResponseDataDto {
     private String duration;
     private String productNewType;
     private String activityType;
+    private List<ExtraLoanRateDto> extraRates;
 
     public String getLoanId() {
         return loanId;
@@ -221,5 +227,16 @@ public class LoanResponseDataDto {
 
     public void setActivityType(String activityType) {
         this.activityType = activityType;
+    }
+
+    public List<ExtraLoanRateDto> getExtraRates() {
+        if (CollectionUtils.isEmpty(extraRates)) {
+            return new ArrayList<>();
+        }
+        return extraRates;
+    }
+
+    public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }
