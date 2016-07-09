@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.exception.CaptchaNotMatchException;
+import com.tuotiansudai.exception.ImageCaptchaException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -51,14 +52,28 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         addLoginLog(request);
         String username = request.getParameter("j_username");
-        logUserLoginFail(username);
-        ReturnMessage errorMsg = ReturnMessage.LOGIN_FAILED;
+        ReturnMessage errorMsg ;
         if(exception instanceof DisabledException){
             errorMsg = ReturnMessage.USER_IS_DISABLED;
         }else if(exception instanceof CaptchaNotMatchException){
             errorMsg = ReturnMessage.IMAGE_CAPTCHA_IS_WRONG;
+        }else if(exception instanceof ImageCaptchaException){
+            errorMsg = ReturnMessage.NEED_IMAGE_CAPTCHA;
+        }else{
+            errorMsg = logUserLoginFail(username);
         }
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(errorMsg);
+
+        if(ReturnMessage.LOGIN_FAILED.getCode().equals(dto.getCode())){
+
+            dto.setMessage(MessageFormat.format(errorMsg.getMsg(),));
+        }else if(ReturnMessage.USER_IS_DISABLED.getCode().equals(errorMsg.getCode())){
+            UserModel userModel = userMapper.findByLoginNameOrMobile(username);
+            String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
+            Long leftSeconds = redisWrapperClient.ttl(redisKey);
+            dto.setMessage(MessageFormat.format(errorMsg.getMsg(),leftSeconds));
+        }
+
         String jsonBody = objectMapper.writeValueAsString(dto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -74,10 +89,10 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         loginLogService.generateLoginLog(username, source, RequestIPParser.parse(request), deviceId, false);
     }
 
-    private void logUserLoginFail(String loginName) {
+    private ReturnMessage logUserLoginFail(String loginName) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
         if (userModel == null) {
-            return;
+            return ReturnMessage.LOGIN_FAILED;
         }
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
         if (!redisWrapperClient.exists(redisKey)) {
@@ -89,7 +104,10 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
                 redisWrapperClient.setex(redisKey, second, String.valueOf(times));
                 userModel.setStatus(UserStatus.INACTIVE);
                 userMapper.updateUser(userModel);
+                return ReturnMessage.USER_IS_DISABLED;
             }
         }
+
+        return ReturnMessage.LOGIN_FAILED;
     }
 }

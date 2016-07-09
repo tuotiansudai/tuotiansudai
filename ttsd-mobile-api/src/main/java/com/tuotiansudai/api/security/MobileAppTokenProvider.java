@@ -82,6 +82,7 @@ public class MobileAppTokenProvider {
         return dto;
     }
 
+
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;
     }
