@@ -227,7 +227,7 @@ public class LoanServiceImpl implements LoanService {
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        if (loanMapper.findById(loanDto.getId()) == null) {
+        if (loanMapper.lockById(loanDto.getId()) == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;

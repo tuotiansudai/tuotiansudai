@@ -86,6 +86,10 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <select useCache="false" id="lockById" parameterType="long" resultMap="loanResultMap">
+        select * from loan where id = #{loanId} for update
+    </select>
+
     <select id="getCompletedXsInvest"  resultMap="loanResultMap">
         select * from loan where status = 'COMPLETE' and activity_type = 'NOVICE' limit 1;
     </select>

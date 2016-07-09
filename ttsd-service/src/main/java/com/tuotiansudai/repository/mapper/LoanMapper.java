@@ -14,6 +14,8 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
+    LoanModel lockById(@Param(value = "loanId") long loanId);
+
     List<LoanModel> findLoanListWeb(@Param(value = "name") String name,
                                     @Param(value = "status") LoanStatus status,
                                     @Param(value = "rateStart") double rateStart,
