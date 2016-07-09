@@ -1,39 +1,38 @@
 var require = {
-    'baseUrl': staticServer,
     'paths': {
-        'text': staticServer + '/js/libs/text-2.0.14',
-        'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
-        'csrf': staticServer + '/js/libs/csrf',
-        'jqueryPage': staticServer + '/js/libs/jquery.page',
-        'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
-        'jquery.form': staticServer + '/js/libs/jquery.form-3.51.0.min',
-        'autoNumeric': staticServer + '/js/libs/autoNumeric',
-        'mustache': staticServer + '/js/libs/mustache-2.1.3.min',
-        'moment': staticServer + '/js/libs/moment-2.10.6.min',
-        'underscore': staticServer + '/js/libs/underscore-1.8.3.min',
-        'jquery.ajax.extension': staticServer + '/js/dest/jquery_ajax_extension.min',
-        'daterangepicker': staticServer + '/js/libs/jquery.daterangepicker-0.0.7',
-        'pagination': staticServer + '/js/dest/pagination.min',
-        'lodash': staticServer + '/js/libs/lodash.min',
-        'layer': staticServer + '/js/libs/layer/layer',
-        'layer-extend':staticServer+'/js/libs/layer/extend/layer.ext',
-        'echarts': staticServer + '/js/libs/echarts/dist/echarts.min',
-        'jquery.validate.extension': staticServer + '/js/dest/jquery_validate_extension.min',
-        'commonFun': staticServer + '/js/dest/common.min',
-        'layerWrapper': staticServer + '/js/dest/wrapper-layer.min',
-        'fullPage':staticServer+'/js/libs/jquery.fullPage.min',
-        'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
-        'load-swiper':staticServer+'/js/dest/load_swiper.min',
-        'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
-        'cnzz-statistics': staticServer+'/js/dest/cnzz_statistics.min',
-        'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
-        'drag': staticServer+'/js/libs/drag',
-        'rotate': staticServer+'/js/libs/jqueryrotate.min',
-        'template':staticServer+'/js/libs/template.min',
-        'fancybox':staticServer+'/js/libs/jquery.fancybox.min',
-        'count_down': staticServer+'/js/dest/count_down.min',
-        'placeholder': staticServer + '/js/libs/jquery.enplaceholder',
-        'superslide': staticServer + '/js/libs/jquery.SuperSlide.2.1.1'
+        'text': 'js/libs/text-2.0.14',
+        'jquery': 'js/libs/jquery-1.11.3.min',
+        'csrf': 'js/libs/csrf',
+        'jqueryPage': 'js/libs/jquery.page',
+        'jquery.validate': 'js/libs/jquery.validate-1.14.0.min',
+        'jquery.form': 'js/libs/jquery.form-3.51.0.min',
+        'autoNumeric': 'js/libs/autoNumeric',
+        'mustache': 'js/libs/mustache-2.1.3.min',
+        'moment': 'js/libs/moment-2.10.6.min',
+        'underscore': 'js/libs/underscore-1.8.3.min',
+        'jquery.ajax.extension': 'js/jquery_ajax_extension',
+        'daterangepicker': 'js/libs/jquery.daterangepicker-0.0.7',
+        'pagination': 'js/pagination',
+        'lodash': 'js/libs/lodash.min',
+        'layer1': 'js/libs/layer/layer',
+        'layer-extend': 'js/libs/layer/extend/layer.ext',
+        'echarts': 'js/libs/echarts/dist',
+        'jquery.validate.extension': 'js/jquery_validate_extension',
+        'commonFun': 'js/common',
+        'layerWrapper': 'js/wrapper-layer',
+        'fullPage':'js/libs/jquery.fullPage.min',
+        'swiper':'js/libs/swiper-3.2.7.jquery.min',
+        'load-swiper':'js/load_swiper',
+        'coupon-alert': 'js/coupon_alert',
+        'cnzz-statistics': 'js/cnzz_statistics',
+        'red-envelope-float': 'js/red-envelope-float',
+        'drag': 'js/libs/drag',
+        'rotate': 'js/libs/jqueryrotate.min',
+        'template':'js/libs/template.min',
+        'fancybox':'js/libs/jquery.fancybox.min',
+        'count_down': 'js/count_down',
+        'placeholder':'js/libs/jquery.enplaceholder',
+        'superslide': 'js/libs/jquery.SuperSlide.2.1.1'
     },
     'waitSeconds':0,
     'shim': {
@@ -42,10 +41,10 @@ var require = {
         'jqueryPage': ['jquery'],
         'autoNumeric': ['jquery'],
         'pagination': ['jquery'],
-        'layer': ['jquery'],
-        'layer-extend': ['jquery','layer'],
-        'layerWrapper':['layer','layer-extend'],
-        'commonFun': ['jquery.validate'],
+        'layer1': ['jquery'],
+        'layer-extend': ['jquery','layer1'],
+        'layerWrapper':['layer1','layer-extend'],
+        'commonFun': ['jquery.validate', 'echarts/echarts.min'],
         'jquery.validate.extension': ['jquery', 'jquery.validate'],
         'fullPage': ['jquery'],
         'swiper':['jquery'],
@@ -56,7 +55,6 @@ var require = {
         'placeholder': ['jquery'],
         'superslide': ['jquery']
     },
-
     config: {
         text: {
             useXhr: function (url, protocol, hostname, port) {
@@ -66,3 +64,6 @@ var require = {
     }
 };
 
+if (this.document) {
+    require.baseUrl = staticServer;
+}

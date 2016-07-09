@@ -1,8 +1,8 @@
-require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache','text!/tpl/transferrer-transfer-record-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,transferrerRecordTemplate,pagination, layer) {
+require(['jquery', 'mustache', 'text!tpl/transfer-transferable-table.mustache','text!tpl/transferrer-transfer-application-table.mustache','text!tpl/transferrer-transfer-record-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,transferrerRecordTemplate,pagination, layer) {
 	$(function() {
 		var activeIndex=$('.filters-list li.active').index(),
 			$paginationElement = $('.pagination');
-		
+
 		function loadLoanData(currentPage) { //template data to page and generate pagenumber
 			var status = $('.filters-list li.active').attr('data-status').split(',');
 			var requestData = {status: status, index: currentPage || 1};
@@ -32,7 +32,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 
 		};
 		loadLoanData();
-		
+
 		$('body').on('click', '.cancel-btn' ,function(event) {//click cancle btn
 			event.preventDefault();
 			var $self=$(this),

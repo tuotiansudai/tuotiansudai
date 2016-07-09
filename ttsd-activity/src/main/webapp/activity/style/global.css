@@ -10,6 +10,7 @@
   src: url("/activity/style/fonts/fontawesome-webfont.eot?#iefix&v=4.6.1") format("embedded-opentype"), url("/activity/style/fonts/fontawesome-webfont.woff2?v=4.6.1") format("woff2"), url("/activity/style/fonts/fontawesome-webfont.woff?v=4.6.1") format("woff"), url("/activity/style/fonts/fontawesome-webfont.ttf?v=4.6.1") format("truetype"), url("/activity/style/fonts/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
+
 .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -103,6 +104,7 @@
   100% {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 @keyframes fa-spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -110,6 +112,7 @@
   100% {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg); } }
+
 .fa-rotate-90 {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
   -webkit-transform: rotate(90deg);
@@ -2233,6 +2236,7 @@ h5 {
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
+
 * {
   margin: 0;
   padding: 0; }
@@ -2394,6 +2398,7 @@ p {
 
 form input.error, form input.valid {
   font-size: 14px; }
+
 form label.error {
   font-size: 12px;
   color: #f71010;
@@ -2405,9 +2410,11 @@ form label.error {
     font: normal normal normal 14px/1 FontAwesome;
     display: inline-block;
     font-size: 16px; }
+
 form input.valid + label.error:before {
   content: "\f058";
   color: #6bc21e; }
+
 form input.error + label.error:before {
   content: "\f057";
   color: #f71010; }
@@ -2853,6 +2860,7 @@ h5 {
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
+
 .header-container {
   background: #333;
   font-size: 12px;
@@ -3110,7 +3118,6 @@ h5 {
         margin-right: 0; }
       .header-container .header time, .header-container .header .login-pop-app {
         display: none; }
-
   .nav-container .nav {
     width: auto; }
     .nav-container .nav .logo {
@@ -3147,13 +3154,10 @@ h5 {
             border-top: 3px solid #fff; }
         .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
           display: block; }
-
   .footer-container .page-width {
     display: none; }
-
   .footer-container .footer-responsive {
     display: block; }
-
   .main-frame .content-container {
     padding: 10px !important; }
   .main-frame .left-nav {
@@ -3164,6 +3168,7 @@ h5 {
       width: 16.666666%; }
       .main-frame .left-nav li:nth-child(4) {
         display: none; } }
+
 .pagination {
   margin: 10px 0;
   text-align: center;
@@ -3265,6 +3270,7 @@ h5 {
   line-height: 1.8; }
   .project-schedule .p-title .point {
     color: #ff752a; }
+
 .project-schedule .process-percent {
   border-radius: 10px;
   background: #ffe3d4;
@@ -3598,14 +3604,12 @@ h5 {
 @media screen and (max-width: 700px) {
   .page-width {
     width: 100%; }
-
   .column-title.article em {
     text-align: center;
     margin-top: 10px;
     line-height: 1.3; }
   .column-title.article time {
     margin-top: 0; }
-
   /* MAKE IMAGE GRAY */
   .img-gray {
     -webkit-filter: grayscale(0%);
@@ -3614,7 +3618,6 @@ h5 {
     -o-filter: grayscale(0%);
     filter: grayscale(0%);
     filter: none; }
-
   /*RESET FROM ERROR TIP*/
   form label.error:before {
     font: normal normal normal 13px/1 FontAwesome; }
@@ -3622,30 +3625,21 @@ h5 {
     display: none !important; }
     form input.valid + label.error:before {
       display: none !important; }
-
   .main-frame.full-screen {
     width: 100%;
     margin: 0 auto !important; }
-
   .responsive-width {
     width: 100% !important;
     margin: 0 !important; }
-
   .is-show {
     display: none !important; }
-
   .click-article {
     padding: 15px 10px !important; }
-
   .title-img {
     width: 30% !important; }
-
   .text-overflow {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-
   .layer-tip-box, .fix-nav-list {
     display: none; } }
-
-/*# sourceMappingURL=global.css.map */

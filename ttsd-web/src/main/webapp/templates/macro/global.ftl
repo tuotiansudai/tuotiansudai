@@ -78,7 +78,17 @@
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
+        <link rel="stylesheet" href="${staticServer}${cssPath}${css.ie_hack_grid}">
+        <script>
+             if (!window.console) {
+                window.console = {};
+                console.log = function() {};
+                console.error = function() {};
+                console.info = function() {};
+                console.debug = function() {};
+                console.dir = function() {};
+             }
+        </script>
     <![endif]-->
     <script>
         var _czc = _czc || [];
@@ -260,8 +270,9 @@
 
 
 </script>
-
+<#if !isProduction>
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
+</#if>
 
 <#if pageJavascript?? && pageJavascript?length gt 0>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
