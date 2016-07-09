@@ -137,7 +137,7 @@
             </div>
             <div class="leader-list">
                 <div class="table-gift">
-                    <img src="${staticServer}/activity/images/sign/actor/ranklist/gift-table-new.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png" width="100%">
                 </div>
             </div>
         </div>
