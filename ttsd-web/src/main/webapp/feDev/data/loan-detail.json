@@ -4,5 +4,6 @@
 	},
 	"js": {
 		"loanDetail": ""
-	}
+	},
+	"staticServer": "http://localhost:8088"
 }
