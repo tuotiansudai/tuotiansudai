@@ -49,6 +49,9 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Mock
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     @Test
     public void shouldGenerateLoanDetailIsOk(){
         LoanModel loanModel = new LoanModel();
@@ -119,6 +122,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         investModels.add(investModel6);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
+        when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
 

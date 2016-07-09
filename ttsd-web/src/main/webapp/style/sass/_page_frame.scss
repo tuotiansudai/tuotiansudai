@@ -262,7 +262,7 @@
             border-top: #ff7200 3px solid;
           }
         }
-        &.top-membership {
+        &.top-membership,&.top-activity {
           display: none;
         }
       }
@@ -314,7 +314,7 @@
     .header-download {
       display: block;
     }
-    .header-membership {
+    .header-membership,.header-activity-center {
       display: none;
     }
     .header {
@@ -370,7 +370,7 @@
               border-top:3px solid #fff;
             }
           }
-          &.top-membership {
+          &.top-membership,&.top-activity {
             display: block;
           }
         }
