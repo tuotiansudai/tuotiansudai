@@ -38,7 +38,9 @@ public class InvestorInvestPaginationItemDataDto {
 
     private ProductType productType;
 
-    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist) {
+    private Double extraRate;
+
+    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
         this.loanName = loanModel.getName();
@@ -59,6 +61,7 @@ public class InvestorInvestPaginationItemDataDto {
         }
         this.investRepayExist = investRepayExist;
         this.productType = loanModel.getProductType();
+        this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
     }
 
     public long getInvestId() {
@@ -112,5 +115,13 @@ public class InvestorInvestPaginationItemDataDto {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public Double getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(Double extraRate) {
+        this.extraRate = extraRate;
     }
 }

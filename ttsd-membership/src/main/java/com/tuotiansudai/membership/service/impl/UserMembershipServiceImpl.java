@@ -1,5 +1,7 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -23,13 +25,8 @@ import java.util.*;
 @Service
 public class UserMembershipServiceImpl implements UserMembershipService {
 
-    static Logger logger = Logger.getLogger(UserMembershipServiceImpl.class);
-
     @Autowired
     private MembershipMapper membershipMapper;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
@@ -52,7 +49,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         MembershipModel membershipModel = membershipMapper.findByLevel(currentLevel);
         MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(currentLevel >= 5 ? currentLevel : (currentLevel + 1));
         double changeable = ((membershipPoint - membershipModel.getExperience()) / (double) (NextLevelMembershipModel.getExperience() - membershipModel.getExperience())) * 0.2 * 100;
-        return (int) (membershipModel.getLevel() * 20 == 100 ? 100 : (membershipModel.getLevel() * 20 + changeable));
+        return (int) (membershipModel.getLevel() * 20 == 100 ? 100 : (membershipModel.getLevel() * 20 + changeable) > 100 ? 100 : (membershipModel.getLevel() * 20 + changeable));
     }
 
     @Override
@@ -82,119 +79,21 @@ public class UserMembershipServiceImpl implements UserMembershipService {
         return userMembershipModels.size() == 1 ? userMembershipModels.get(0) : returnUserMembershipModel;
     }
 
-    private List<UserMembershipItemView> filterUpgradeUserMembershipItems(List<UserMembershipItemView> userMembershipItemViews) {
-        class Data {
-            public int index;
-            public Date createdTime;
-
-            public Data(int index, Date createdTime) {
-                this.index = index;
-                this.createdTime = createdTime;
-            }
-        }
-        HashMap<String, Data> membershipFilterInfo = new HashMap<>();
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            Data data = membershipFilterInfo.get(userMembershipItemView.getLoginName());
-            if (null != data) {
-                if (data.createdTime.before(userMembershipItemView.getCreatedTime())) {
-                    data.index = userMembershipItemViews.indexOf(userMembershipItemView);
-                    data.createdTime = userMembershipItemView.getCreatedTime();
-                }
-            } else {
-                if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.UPGRADE)) {
-                    membershipFilterInfo.put(userMembershipItemView.getLoginName(),
-                            new Data(userMembershipItemViews.indexOf(userMembershipItemView), userMembershipItemView.getCreatedTime()));
-                }
-            }
-        }
-        List<UserMembershipItemView> filteredUserMembershipItems = new ArrayList<>();
-        for (Data data : membershipFilterInfo.values()) {
-            filteredUserMembershipItems.add(userMembershipItemViews.get(data.index));
-        }
-        return filteredUserMembershipItems;
-    }
-
-    private List<UserMembershipItemView> filterGivenUserMembershipItems(List<UserMembershipItemView> userMembershipItemViews) {
-        class Data {
-            public int index;
-            public int membershipLevel;
-
-            public Data(int index, int membershipLevel) {
-                this.index = index;
-                this.membershipLevel = membershipLevel;
-            }
-        }
-        HashMap<String, Data> membershipFilterInfo = new HashMap<>();
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            Data data = membershipFilterInfo.get(userMembershipItemView.getLoginName());
-            if (null != data) {
-                if (data.membershipLevel < userMembershipItemView.getMembershipLevel()) {
-                    data.index = userMembershipItemViews.indexOf(userMembershipItemView);
-                    data.membershipLevel = userMembershipItemView.getMembershipLevel();
-                }
-            } else {
-                if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.GIVEN) &&
-                        userMembershipItemView.getExpiredTime().after(new Date())) {
-                    membershipFilterInfo.put(userMembershipItemView.getLoginName(),
-                            new Data(userMembershipItemViews.indexOf(userMembershipItemView), userMembershipItemView.getMembershipLevel()));
-                }
-            }
-        }
-        List<UserMembershipItemView> filteredUserMembershipItems = new ArrayList<>();
-        for (Data data : membershipFilterInfo.values()) {
-            filteredUserMembershipItems.add(userMembershipItemViews.get(data.index));
-        }
-        return filteredUserMembershipItems;
-    }
-
     @Override
     public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
                                                               Date registerStartTime, Date registerEndTime,
                                                               UserMembershipType userMembershipType,
-                                                              List<Integer> levels) {
-        if (StringUtils.isEmpty(loginName)) {
-            loginName = null;
-        }
-        if (StringUtils.isEmpty(mobile)) {
-            mobile = null;
-        }
-        if (UserMembershipType.ALL == userMembershipType) {
-            userMembershipType = null;
-        }
-        if (CollectionUtils.isEmpty(levels)) {
-            return new ArrayList<>();
-        }
-        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels);
+                                                              List<Integer> levels,
+                                                              int index,
+                                                              int pageSize) {
+        List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(loginName, mobile, registerStartTime, registerEndTime, userMembershipType, levels,index,pageSize);
 
-        List<UserMembershipItemView> upgradeMembershipItemViews = new ArrayList<>();
-        List<UserMembershipItemView> givenMembershipItemViews = new ArrayList<>();
-
-        for (UserMembershipItemView userMembershipItemView : userMembershipItemViews) {
-            if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.UPGRADE)) {
-                upgradeMembershipItemViews.add(userMembershipItemView);
-            } else if (userMembershipItemView.getUserMembershipType().equals(UserMembershipType.GIVEN)) {
-                givenMembershipItemViews.add(userMembershipItemView);
-            }
-        }
-
-        List<UserMembershipItemView> filteredUpgradeUserMembershipItemViews = filterUpgradeUserMembershipItems(upgradeMembershipItemViews);
-        List<UserMembershipItemView> filteredGivenUserMembershipItemViews = filterGivenUserMembershipItems(givenMembershipItemViews);
-
-        List<UserMembershipItemView> filteredUserMembershipItemViews = new ArrayList<>();
-        filteredUserMembershipItemViews.addAll(filteredUpgradeUserMembershipItemViews);
-        filteredUserMembershipItemViews.addAll(filteredGivenUserMembershipItemViews);
-
-        Collections.sort(filteredUserMembershipItemViews, new Comparator<UserMembershipItemView>() {
+        return Lists.transform(userMembershipItemViews, new Function<UserMembershipItemView, UserMembershipItemDto>() {
             @Override
-            public int compare(UserMembershipItemView o1, UserMembershipItemView o2) {
-                return o2.getLoginName().compareTo(o1.getLoginName());
+            public UserMembershipItemDto apply(UserMembershipItemView input) {
+                return new UserMembershipItemDto(input);
             }
         });
-        List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
-        for (UserMembershipItemView userMembershipItemView : filteredUserMembershipItemViews) {
-            userMembershipItemDtos.add(new UserMembershipItemDto(userMembershipItemView));
-        }
-        return userMembershipItemDtos;
     }
 
     @Override

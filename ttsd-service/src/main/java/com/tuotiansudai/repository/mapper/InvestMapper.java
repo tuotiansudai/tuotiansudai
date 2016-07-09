@@ -233,4 +233,7 @@ public interface InvestMapper {
                                                      @Param(value = "startTime") Date startTime,
                                                      @Param(value = "endTime") Date endTime);
 
+    int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
+                                                   @Param("productTypeList") List<ProductType> productTypeList);
+
 }
