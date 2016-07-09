@@ -83,7 +83,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         when(exchangeCodeService.checkExchangeCodeUsed(anyLong(), anyString())).thenReturn(false);
         when(exchangeCodeService.checkExchangeCodeDailyCount(anyString())).thenReturn(false);
         doNothing().when(couponAssignmentService).assignUserCoupon(anyString(), anyString());
-        doNothing().when(redisWrapperClient).hset(anyString(), anyString(), anyString());
+        when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(userCouponMapper.findByLoginName(anyString(),any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));

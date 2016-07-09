@@ -106,6 +106,9 @@
                                     <#else>
                                         <em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
                                         <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
+                                            <#if (loanItem.extraRate > 0)>
+                                                ~ <@percentInteger>${loanItem.baseRate + loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.extraRate}</@percentFraction>
+                                            </#if>
                                             <#if (loanItem.activityRate > 0)>
                                                 +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
                                             </#if>%

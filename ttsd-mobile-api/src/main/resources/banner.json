@@ -8,7 +8,7 @@
     "picture": "{static}/images/app-banner/app-banner-anniversary.jpg",
     "noticeId": "",
     "content": "不知道为什么，就想送你超级会员，红包，还有神秘大奖",
-    "isAuthorized": true
+    "isAuthorized": false
   },
   {
     "pictureId": "",
