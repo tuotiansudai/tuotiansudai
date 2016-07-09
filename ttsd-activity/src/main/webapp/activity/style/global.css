@@ -3062,7 +3062,7 @@ h5 {
           .nav-container .nav ul li a.active {
             color: #ff7200;
             border-top: #ff7200 3px solid; }
-        .nav-container .nav ul li.top-membership {
+        .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
           display: none; }
 
 .main-frame {
@@ -3101,7 +3101,7 @@ h5 {
     padding-right: 10px; }
     .header-container .header-download {
       display: block; }
-    .header-container .header-membership {
+    .header-container .header-membership, .header-container .header-activity-center {
       display: none; }
     .header-container .header {
       width: 100%; }
@@ -3145,7 +3145,7 @@ h5 {
             color: #ff7200;
             border-bottom: #ff7200 1px solid;
             border-top: 3px solid #fff; }
-        .nav-container .nav ul li.top-membership {
+        .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
           display: block; }
 
   .footer-container .page-width {

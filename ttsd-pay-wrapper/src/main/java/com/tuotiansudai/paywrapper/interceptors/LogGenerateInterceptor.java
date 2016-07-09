@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.interceptors;
 
 
+import com.google.common.base.Strings;
 import org.apache.log4j.MDC;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,8 +16,16 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        MDC.put(REQUEST_ID, request.getHeader(REQUEST_ID));
-        MDC.put(USER_ID, request.getHeader(USER_ID));
+        String requestIdHeader = request.getHeader(REQUEST_ID);
+        String userIdHeader = request.getHeader(USER_ID);
+        if (!Strings.isNullOrEmpty(requestIdHeader)) {
+            MDC.put(REQUEST_ID, requestIdHeader);
+        }
+
+        if (!Strings.isNullOrEmpty(userIdHeader)) {
+            MDC.put(USER_ID, userIdHeader);
+        }
+
         return true;
     }
 
