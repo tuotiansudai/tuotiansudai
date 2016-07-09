@@ -62,17 +62,7 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         }else{
             errorMsg = logUserLoginFail(username);
         }
-        BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(errorMsg);
-
-        if(ReturnMessage.LOGIN_FAILED.getCode().equals(dto.getCode())){
-
-            dto.setMessage(MessageFormat.format(errorMsg.getMsg(),));
-        }else if(ReturnMessage.USER_IS_DISABLED.getCode().equals(errorMsg.getCode())){
-            UserModel userModel = userMapper.findByLoginNameOrMobile(username);
-            String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
-            Long leftSeconds = redisWrapperClient.ttl(redisKey);
-            dto.setMessage(MessageFormat.format(errorMsg.getMsg(),leftSeconds));
-        }
+        BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(errorMsg,username);
 
         String jsonBody = objectMapper.writeValueAsString(dto);
         response.setContentType("application/json; charset=UTF-8");
