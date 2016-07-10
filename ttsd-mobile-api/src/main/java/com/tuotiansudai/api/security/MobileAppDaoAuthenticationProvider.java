@@ -51,8 +51,7 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = httpServletRequest.getParameter("j_deviceId");
-            if(StringUtils.isEmpty(captcha)
-                    && captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA,httpServletRequest.getRemoteAddr())){
+            if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getRemoteAddr()) && StringUtils.isEmpty(captcha) ){
                 logger.debug("Authentication failed: need image captcha but image captcha is null");
                 throw new ImageCaptchaException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.needImageCaptcha", "need image captcha"));
             }
