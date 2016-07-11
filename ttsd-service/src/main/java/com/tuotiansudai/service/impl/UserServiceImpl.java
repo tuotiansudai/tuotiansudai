@@ -20,8 +20,7 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.LoginNameGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -117,13 +116,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-        String loginName = dto.getLoginName();
-        boolean loginNameIsExist = this.loginNameIsExist(loginName);
+        String loginName = "";
+        for (int i = 0; i < 100; ++i) {
+            loginName = LoginNameGenerator.generate();
+            if (!loginNameIsExist(loginName)) {
+                break;
+            }
+        }
+        dto.setLoginName(loginName);
+        if (loginNameIsExist(loginName)) {
+            return false;
+        }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
-        if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
+        if (mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
 
