@@ -12,7 +12,12 @@
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
-        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
+        <beans:property name="accessDeniedExceptionRedirect">
+            <beans:map>
+                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
+            </beans:map>
+        </beans:property>
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>

@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($,layer) {
+require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
     $('#datepickerBegin,#datepickerEnd').datetimepicker({
         format: 'YYYY-MM-DD'
     });

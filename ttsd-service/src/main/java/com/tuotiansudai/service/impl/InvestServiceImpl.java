@@ -234,9 +234,11 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+
             items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
-                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels)));
+                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel));
         }
 
         BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);

@@ -72,14 +72,14 @@ public class LoanOutInvestCalculationServiceTest {
         extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001","13333333333");
-        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 250, test1Model.getLoginName(),
-                new Date(), Source.WEB, "tuotiansudai", 1);
+        InvestModel test1InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002","18999999999");
-        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 310, test2Model.getLoginName(),
-                new Date(), Source.WEB, "tuotiansudai", 1);
+        InvestModel test2InvestModel = new InvestModel(idGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);
 
@@ -154,23 +154,23 @@ public class LoanOutInvestCalculationServiceTest {
         level1.setLoanId(loanModel.getId());
         level1.setExtraRateRuleId(extraLoanRateRuleModels.get(0).getId());
         level1.setRate(extraLoanRateRuleModels.get(0).getRate());
-        level1.setMinInvestAmount(100);
-        level1.setMaxInvestAmount(200);
+        level1.setMinInvestAmount(10000);
+        level1.setMaxInvestAmount(20000);
         extraLoanRateModels.add(level1);
 
         ExtraLoanRateModel level2 = new ExtraLoanRateModel();
         level2.setLoanId(loanModel.getId());
         level2.setRate(extraLoanRateRuleModels.get(1).getRate());
         level2.setExtraRateRuleId(extraLoanRateRuleModels.get(1).getId());
-        level2.setMinInvestAmount(200);
-        level2.setMaxInvestAmount(300);
+        level2.setMinInvestAmount(20000);
+        level2.setMaxInvestAmount(30000);
         extraLoanRateModels.add(level2);
 
         ExtraLoanRateModel level3 = new ExtraLoanRateModel();
         level3.setLoanId(loanModel.getId());
         level3.setRate(extraLoanRateRuleModels.get(2).getRate());
         level3.setExtraRateRuleId(extraLoanRateRuleModels.get(2).getId());
-        level3.setMinInvestAmount(300);
+        level3.setMinInvestAmount(30000);
         level3.setMaxInvestAmount(0);
         extraLoanRateModels.add(level3);
         return extraLoanRateModels;

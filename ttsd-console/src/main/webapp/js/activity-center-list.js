@@ -7,10 +7,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         location.href = "/activity-manage/activity-center-list";
     });
 
-    var webPath = $('#webPicture')[0].src;
-    var appPath = $('#appPicture')[0].src;
-
-    var webShowLayer = function() {
+    var webShowLayer = function(webPath) {
 
         var img=new Image();
         img.src=webPath;
@@ -26,7 +23,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     }
 
-    var appShowLayer = function() {
+    var appShowLayer = function(appPath) {
         var img=new Image();
         img.src=appPath;
         img.onload=function(event) {
@@ -41,11 +38,13 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     }
 
     $('.webImg').click(function(){
-        webShowLayer();
+        var webPath = $(this).find('img').attr('src');
+        webShowLayer(webPath);
     });
 
     $('.appImg').click(function(){
-        appShowLayer();
+        var appPath = $(this).find('img').attr('src');
+        appShowLayer(appPath);
     });
     $('.btnAddActivity').click(function(){
         window.location.href = '/activity-manage/activity-center';

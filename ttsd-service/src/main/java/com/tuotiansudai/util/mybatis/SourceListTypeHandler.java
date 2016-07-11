@@ -1,6 +1,7 @@
 package com.tuotiansudai.util.mybatis;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -9,7 +10,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SourceListTypeHandler extends BaseTypeHandler<List<Source>> {
@@ -49,12 +49,12 @@ public class SourceListTypeHandler extends BaseTypeHandler<List<Source>> {
         if (s == null) {
             return null;
         }
-
-        List<Source> sourceList = new ArrayList<>();
+        List<Source> sources = Lists.newArrayList();
         String[] sourceStr = s.split(",");
         for (String type : sourceStr) {
-            sourceList.add(Enum.valueOf(Source.class, type));
+            sources.add(Enum.valueOf(Source.class, type));
         }
-        return sourceList;
+        return sources;
     }
+
 }
