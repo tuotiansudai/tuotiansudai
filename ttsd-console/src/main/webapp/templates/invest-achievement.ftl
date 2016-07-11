@@ -4,8 +4,8 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="loginName">用户名</label>
-            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
+            <label for="loginName">电话号码</label>
+            <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}" />
         </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
     </form>
