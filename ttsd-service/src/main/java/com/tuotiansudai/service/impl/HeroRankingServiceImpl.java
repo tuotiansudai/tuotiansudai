@@ -53,7 +53,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private final static String MYSTERIOUSREDISKEY = "console:mysteriousPrize";
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
-    private List<String> heroRankingActivityPeriod;
+    private List<String> heroRankingActivityPeriod = Lists.newArrayList();
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -79,7 +79,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Override
     public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
-        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 1, 10);
+        return investMapper.findHeroRankingByReferrer(tradingTime,heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1), 0, 10);
     }
 
     @Override

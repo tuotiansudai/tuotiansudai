@@ -21,7 +21,9 @@ public interface UserMembershipService {
     List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
                                                        Date registerStartTime, Date registerEndTime,
                                                        UserMembershipType userMembershipType,
-                                                       List<Integer> levels);
+                                                       List<Integer> levels,
+                                                       int index,
+                                                       int pageSize);
 
     List<Integer> getAllLevels();
 

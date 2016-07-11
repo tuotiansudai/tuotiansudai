@@ -32,11 +32,11 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
-                and business_type IN ('SIGN_IN','TASK','INVEST')
-            </if>
-            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
-                and business_type = 'EXCHANGE'
+            <if test="businessTypes.size() > 0 ">
+                and business_type IN
+                <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
+                    #{businessType}
+                </foreach>
             </if>
             <if test="startTime != null  &amp;&amp;  endTime != null">
                 and created_time between #{startTime} and #{endTime}
@@ -53,11 +53,11 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
-                and business_type IN ('SIGN_IN','TASK','INVEST')
-            </if>
-            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
-                and business_type = 'EXCHANGE'
+            <if test="businessTypes.size() > 0">
+                and business_type IN
+                <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
+                    #{businessType}
+                </foreach>
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and created_time between #{startTime} and #{endTime}
