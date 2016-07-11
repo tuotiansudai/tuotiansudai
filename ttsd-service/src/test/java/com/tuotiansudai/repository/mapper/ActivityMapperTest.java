@@ -159,17 +159,17 @@ public class ActivityMapperTest {
     @Test
     public void testFindActiveActivities() throws Exception {
         prepareData();
-        List<ActivityModel> activityModels = activityMapper.findActiveActivities(Source.WEB, 0, 10);
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("2199-1-1").toDate(), 0, 10);
         assertEquals(2, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
             assertTrue(activityModel.getSource().contains(Source.WEB));
         }
-        activityModels = activityMapper.findActiveActivities(Source.ANDROID, 0, 10);
+        activityModels = activityMapper.findActiveActivities(Source.ANDROID, DateTime.parse("2199-1-1").toDate(), 0, 10);
         assertEquals(1, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
             assertTrue(activityModel.getSource().contains(Source.ANDROID));
         }
-        activityModels = activityMapper.findActiveActivities(Source.WEB, 0, 1);
+        activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("2199-1-1").toDate(), 0, 1);
         assertEquals(1, activityModels.size());
     }
 }

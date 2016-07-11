@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,7 +28,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
             pageSize = 10;
         }
 
-        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, (index - 1) * pageSize, pageSize);
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {
