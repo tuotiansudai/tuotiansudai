@@ -1,19 +1,19 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
@@ -40,6 +40,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private CouponService couponService;
 
     @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Value(value = "${pay.interest.fee}")
@@ -55,6 +58,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
+
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId());
@@ -73,6 +77,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
             dto.setData(loanListResponseDataDto);
         }
+
         return dto;
     }
 
@@ -134,6 +139,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
+            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
+            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+                loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));
+            }
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
             if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
@@ -145,5 +154,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return loanDtoList;
     }
 
+    private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
+    }
 
 }

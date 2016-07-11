@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.activity.util.AppTokenParser;
 import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
@@ -35,12 +34,9 @@ public class RankingActivityController {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private AppTokenParser appTokenParser;
-
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
-        String loginName = appTokenParser.getLoginName(httpServletRequest);
+        String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
 

@@ -2,17 +2,16 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
-import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.ExtraLoanRateModel;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -39,6 +38,9 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -107,6 +109,10 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(membershipModel == null ? defaultFee : membershipModel.getFee()));
+
+            loanResponseDataDto.setExtraRates(convertExtraRateList(loan.getId()));
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
             if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
                 investFeeRate = this.defaultFee;
@@ -116,4 +122,19 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         }
         return loanDtoList;
     }
+
+    private List<ExtraRateListResponseDataDto> convertExtraRateList(long loanId) {
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        List<ExtraRateListResponseDataDto> extraRateListResponseDataDtos = Lists.newArrayList();
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
+        for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
+            ExtraRateListResponseDataDto extraRateListResponseDataDto = new ExtraRateListResponseDataDto();
+            extraRateListResponseDataDto.setRate(decimalFormat.format(extraLoanRateModel.getRate() * 100));
+            extraRateListResponseDataDto.setAmountLower(AmountConverter.convertCentToString(extraLoanRateModel.getMinInvestAmount()));
+            extraRateListResponseDataDto.setAmountUpper(AmountConverter.convertCentToString(extraLoanRateModel.getMaxInvestAmount()));
+            extraRateListResponseDataDtos.add(extraRateListResponseDataDto);
+        }
+        return extraRateListResponseDataDtos;
+    }
+
 }
