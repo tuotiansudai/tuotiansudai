@@ -96,6 +96,7 @@ public enum ReturnMessage {
 
     USER_IS_DISABLED("0049", "用户名或密码错误,账户冻结30分钟,如您着急投资请与拓天速贷客服联系"),
     IMAGE_CAPTCHA_IS_WRONG("0081", "图形验证码错误"),
+    NEED_IMAGE_CAPTCHA("0077", "需要图形验证码"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
     /******自动投标******/
     AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),

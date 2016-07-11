@@ -2,31 +2,38 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
-import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsService;
+import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.CaptchaHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 
-public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService {
+@Service
+public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service {
 
-    static Logger logger = Logger.getLogger(MobileAppSendSmsServiceImpl.class);
+    static Logger logger = Logger.getLogger(MobileAppSendSmsV2ServiceImpl.class);
     @Autowired
     private UserService userService;
     @Autowired
     private SmsCaptchaService smsCaptchaService;
+    @Autowired
+    private CaptchaHelper captchaHelper;
 
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
-        if(Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
-
+        if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA,remoteIp) && Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
+            logger.debug("Authentication failed: need image captcha but image captcha is null");
+            return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
 
         ReturnMessage returnMessage = checkSendSms(sendSmsCompositeRequestDto);
