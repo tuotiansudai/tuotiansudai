@@ -142,6 +142,12 @@ public class UserController {
         return userService.findMobileLike(mobile);
     }
 
+    @RequestMapping(value = "/mobile/account/{mobile}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> searchAccountMobile(@PathVariable String mobile) {
+        return userService.findAccountMobileLike(mobile);
+    }
+
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView editUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {

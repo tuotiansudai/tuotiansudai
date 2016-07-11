@@ -8,7 +8,7 @@
             <label for="login-name" class="col-sm-1 control-label system-recharge-label">资金来源账户</label>
 
             <div class="col-sm-8 col-lg-3">
-                <input id="login-name" name="loginName" class="form-control" />
+                <input id="login-name" name="mobile" class="form-control" />
             </div>
             <label for="balance" class="col-sm-1 control-label system-recharge-label">来源账户余额:</label>
             <input id="balance" name="balance" class="system-recharge-balance" value="" />

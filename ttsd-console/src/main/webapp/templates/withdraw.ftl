@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="control-label">用户名</label>
-                <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input"
-                       datatype="*" autocomplete="off" value="${loginName!}"/>
+                <label for="control-label">电话号码</label>
+                <input type="text" id="loginName" name="mobile" class="form-control ui-autocomplete-input"
+                       datatype="*" autocomplete="off" value="${mobile!}"/>
             </div>
             </br>
             <div class="form-group">
@@ -105,7 +105,7 @@
                             </#if>
                         </td>
                         <td>${withdrawItem.userName}</td>
-                        <td>${withdrawItem.mobile}</td>
+                        <td>${withdrawItem.mobile!}</td>
                         <td>${withdrawItem.amount}</td>
                         <td>${withdrawItem.fee}</td>
                         <td>${withdrawItem.bankCard}</td>
@@ -131,7 +131,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -142,7 +142,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

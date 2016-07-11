@@ -355,6 +355,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> findAccountMobileLike(String mobile) {
+        return userMapper.findAccountMobileLike(mobile);
+    }
+
+    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
@@ -411,9 +416,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserView> userViews = userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapper.findUsersAccountBalance(mobile,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
         for(UserView userView : userViews) {
@@ -425,16 +430,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+    public int findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
+        return userMapper.findUsersAccountBalanceCount(mobile, balance[0], balance[1]);
     }
 
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
+        return userMapper.findUsersAccountBalanceSum(mobile, balance[0], balance[1]);
     }
 
     @Override

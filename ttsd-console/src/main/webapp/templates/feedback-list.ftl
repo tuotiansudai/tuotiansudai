@@ -113,12 +113,12 @@
 
             <ul class="pagination">
                 <li <#if !hasPreviousPage>class="disabled"</#if>>
-                    <a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index-1}&pageSize=${pageSize}" class="previous <#if !hasPreviousPage>disabled</#if>"><span
+                    <a href="?mobile=${mobile!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index-1}&pageSize=${pageSize}" class="previous <#if !hasPreviousPage>disabled</#if>"><span
                             aria-hidden="true">&laquo;</span></a>
                 </li>
                 <li class="disabled"><a class="current-page" data-index="${index}">${index}</a></li>
                 <li <#if !hasNextPage>class="disabled"</#if>>
-                    <a href="?loginName=${loginName!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index+1}&pageSize=${pageSize}" class="next <#if !hasNextPage>disabled</#if>"><span
+                    <a href="?mobile=${mobile!}&source=${source!}&type=${type!}&status=${status!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&index=${index+1}&pageSize=${pageSize}" class="next <#if !hasNextPage>disabled</#if>"><span
                             aria-hidden="true">&raquo;</span></a>
                 </li>
             </ul>

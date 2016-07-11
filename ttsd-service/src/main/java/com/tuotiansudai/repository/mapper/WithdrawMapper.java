@@ -20,7 +20,7 @@ public interface WithdrawMapper {
     long findSumSuccessWithdrawByLoginName(String loginName);
 
     List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") String withdrawId,
-                                                        @Param(value = "loginName") String loginName,
+                                                        @Param(value = "mobile") String mobile,
                                                         @Param(value = "status") WithdrawStatus status,
                                                         @Param(value = "source") Source source,
                                                         @Param(value = "index") int index,
@@ -30,7 +30,7 @@ public interface WithdrawMapper {
 
 
     long findSumWithdrawAmount(@Param(value = "withdrawId") String withdrawId,
-                               @Param(value = "loginName") String loginName,
+                               @Param(value = "mobile") String mobile,
                                @Param(value = "status") WithdrawStatus status,
                                @Param(value = "source") Source source,
                                @Param(value = "role") Role role,
@@ -39,14 +39,14 @@ public interface WithdrawMapper {
 
 
     long findSumWithdrawFee(@Param(value = "withdrawId") String withdrawId,
-                            @Param(value = "loginName") String loginName,
+                            @Param(value = "mobile") String mobile,
                             @Param(value = "status") WithdrawStatus status,
                             @Param(value = "source") Source source,
                             @Param(value = "startTime") Date startTime,
                             @Param(value = "endTime") Date endTime);
 
     int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
-                          @Param(value = "loginName") String loginName,
+                          @Param(value = "mobile") String mobile,
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "source") Source source,
                           @Param(value = "startTime") Date startTime,

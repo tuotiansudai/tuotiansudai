@@ -38,13 +38,15 @@ public interface UserMapper {
 
     List<String> findMobileLike(String mobile);
 
+    List<String> findAccountMobileLike(String mobile);
+
     List<String> findAllChannels();
 
     List<String> findAllUserChannels();
 
     List<UserModel> findUserByProvince();
 
-    List<UserView> findUsersAccountBalance(@Param(value = "loginName") String loginName,
+    List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
                                             @Param(value = "balanceMin") int balanceMin,
                                             @Param(value = "balanceMax") int balanceMax,
                                             @Param(value = "startLimit") int startLimit,
@@ -52,11 +54,11 @@ public interface UserMapper {
 
 
 
-    long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
+    long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
                                     @Param(value = "balanceMin") int balanceMin,
                                     @Param(value = "balanceMax") int balanceMax);
 
-    int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
+    int findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
                                      @Param(value = "balanceMin") int balanceMin,
                                      @Param(value = "balanceMax") int balanceMax);
 

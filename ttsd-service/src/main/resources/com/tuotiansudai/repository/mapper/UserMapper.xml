@@ -290,6 +290,10 @@
         select mobile from user where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
     </select>
 
+    <select id="findAccountMobileLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select mobile from user join account on user.login_name = account.login_name where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+    </select>
+
     <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
         and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
@@ -337,7 +341,7 @@
         ORDER BY u.`register_time` DESC
     </select>
 
-    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
         SELECT
         *,
         referrer_u.mobile AS referrer_mobile,
@@ -350,9 +354,6 @@
         AND a.`balance` >= #{balanceMin}
         AND a.`balance` &lt;= #{balanceMax}
         AND u.referrer = referrer_u.login_name
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
         WHERE NOT EXISTS
         (SELECT
         1
@@ -360,6 +361,9 @@
         user_role r
         WHERE u.`login_name` = r.`login_name`
         AND r.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND u.`mobile` = #{mobile}
+        </if>
         ORDER BY a.`balance` DESC
         limit #{startLimit}, #{endLimit}
     </select>
@@ -373,9 +377,6 @@
         ON u.`login_name` = a.`login_name`
         AND a.`balance` >= #{balanceMin}
         AND a.`balance` &lt;= #{balanceMax}
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
         WHERE NOT EXISTS
         (SELECT
         1
@@ -383,6 +384,9 @@
         user_role r
         WHERE u.`login_name` = r.`login_name`
         AND r.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND u.`mobile` = #{mobile}
+        </if>
     </select>
 
     <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
@@ -394,9 +398,6 @@
         ON u.`login_name` = a.`login_name`
         AND a.`balance` >= #{balanceMin}
         AND a.`balance` &lt;= #{balanceMax}
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
         WHERE NOT EXISTS
         (SELECT
         1
@@ -404,6 +405,9 @@
         user_role r
         WHERE u.`login_name` = r.`login_name`
         AND r.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND u.`mobile` = #{mobile}
+        </if>
     </select>
 
     <select id="findAllUsers" resultType="java.lang.String">

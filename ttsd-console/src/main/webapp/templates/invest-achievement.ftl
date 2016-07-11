@@ -68,7 +68,7 @@
         <ul class="pagination pull-left">
             <li>
                 <#if hasPreviousPage >
-                <a href="?loginName=${loginName!}&pageSize=${pageSize}&index=${index-1}"
+                <a href="?mobile=${mobile!}&pageSize=${pageSize}&index=${index-1}"
                    aria-label="Previous">
                 <#else>
                 <a href="#" aria-label="Previous">
@@ -79,7 +79,7 @@
             <li><a>${index}</a></li>
             <li>
                 <#if hasNextPage >
-                <a href="?loginName=${loginName!}&pageSize=${pageSize}&index=${index+1}"
+                <a href="?mobile=${mobile!}&pageSize=${pageSize}&index=${index+1}"
                    aria-label="Next">
                 <#else>
                 <a href="#" aria-label="Next">

@@ -10,7 +10,6 @@ import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,7 +39,7 @@ public class RechargeController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
     public ModelAndView getRechargeList(@RequestParam(value = "rechargeId", required = false) String rechargeId,
-                                        @RequestParam(value = "loginName", required = false) String loginName,
+                                        @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
@@ -58,8 +57,8 @@ public class RechargeController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = rechargeMapper.findRechargeCount(rechargeId, loginName, source, status, channel, startTime, endTime);
-            BaseDto<BasePaginationDataDto> baseDto = rechargeService.findRechargePagination(rechargeId, loginName, source, status, channel, 1, count, startTime, endTime);
+            int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);
+            BaseDto<BasePaginationDataDto> baseDto = rechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, 1, count, startTime, endTime);
             List<List<String>> data = Lists.newArrayList();
             List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0 ;i < rechargePaginationItemDataDtos.size(); i++) {
@@ -83,7 +82,7 @@ public class RechargeController {
         } else {
             ModelAndView modelAndView = new ModelAndView("/recharge");
             BaseDto<BasePaginationDataDto> baseDto = rechargeService.findRechargePagination(rechargeId,
-                    loginName,
+                    mobile,
                     source,
                     status,
                     channel,
@@ -93,7 +92,7 @@ public class RechargeController {
                     endTime);
             List<String> channelList = rechargeService.findAllChannel();
 
-            long sumAmount = rechargeService.findSumRechargeAmount(rechargeId, loginName, source, status, channel, startTime, endTime);
+            long sumAmount = rechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
             modelAndView.addObject("baseDto", baseDto);
             modelAndView.addObject("sumAmount", sumAmount);
             modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));
@@ -102,7 +101,7 @@ public class RechargeController {
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("rechargeId", rechargeId);
-            modelAndView.addObject("loginName", loginName);
+            modelAndView.addObject("mobile", mobile);
             modelAndView.addObject("startTime", startTime);
             modelAndView.addObject("endTime", endTime);
             modelAndView.addObject("source", source);
