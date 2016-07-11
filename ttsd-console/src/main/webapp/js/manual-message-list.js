@@ -1,0 +1,49 @@
+require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'jquery-ui'], function ($) {
+    $(function () {
+        $('.approve-btn').on('click', function () {
+            var messageId = $(this).attr('data-messageId');
+            var url = "/message-manage/manual-message/" + messageId + "/approve";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json'
+            }).complete(function (data) {
+                if (data.status) {
+                    location.reload();
+                } else {
+                    alert(data.data.message);
+                }
+            })
+        });
+        $('.reject-btn').on('click', function () {
+            var messageId = $(this).attr('data-messageId');
+            var url = "/message-manage/manual-message/" + messageId + "/reject";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json'
+            }).complete(function (data) {
+                if (data.status) {
+                    location.reload();
+                } else {
+                    alert(data.data.message);
+                }
+            })
+        });
+        $('.delete-btn').on('click', function () {
+            var messageId = $(this).attr('data-messageId');
+            var url = "/message-manage/manual-message/" + messageId + "/delete";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json'
+            }).complete(function (data) {
+                if (data.status) {
+                    location.reload();
+                } else {
+                    alert(data.data.message);
+                }
+            })
+        });
+    });
+})

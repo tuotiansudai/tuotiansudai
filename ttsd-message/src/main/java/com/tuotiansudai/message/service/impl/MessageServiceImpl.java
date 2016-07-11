@@ -113,6 +113,8 @@ public class MessageServiceImpl implements MessageService {
         }
         MessageModel messageModel = messageMapper.findById(messageId);
         if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
+            messageModel.setActivatedBy(checkerName);
+            messageModel.setActivatedTime(new Date());
             messageModel.setStatus(MessageStatus.APPROVED);
             messageModel.setUpdatedTime(new Date());
             messageModel.setUpdatedBy(checkerName);

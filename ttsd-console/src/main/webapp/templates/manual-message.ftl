@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="/message-manage/manual-message" method="post" class="form-horizontal message-form">
+    <form action="/message-manage/manual-message/create" method="post" class="form-horizontal message-form">
         <div class="form-group">
             <input type="hidden" name="messageId" class="messageId" value="]${(dto.id)!0}">
 
