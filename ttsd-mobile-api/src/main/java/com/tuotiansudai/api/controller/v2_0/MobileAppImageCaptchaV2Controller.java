@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.controller.v2_0;
 
 
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.ImageCaptchaResponseDataDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
 import nl.captcha.Captcha;
