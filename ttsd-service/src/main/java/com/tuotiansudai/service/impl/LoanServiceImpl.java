@@ -239,7 +239,7 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     loanDto.setVerifyTime(new Date());
-                    updateLoanAndLoanTitleRelation(loanDto, false);
+                    updateAllLoan(loanDto);
 
                     // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
                     LoanModel loanModel = loanMapper.findById(loanDto.getId());
@@ -270,7 +270,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        updateLoanAndLoanTitleRelation(loanDto, true);
+        updateLoanWithoutStatus(loanDto);
         LoanModel loanModelAfter = loanMapper.findById(loanDto.getId());
         if (loanModelBefore.getFundraisingEndTime() != loanModelAfter.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(loanModelAfter);
@@ -389,14 +389,21 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    private void updateLoanAndLoanTitleRelation(LoanDto loanDto, boolean withoutStatus) {
+    private void updateAllLoan(LoanDto loanDto) {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
-        if (withoutStatus) {
-            loanMapper.updateWithoutStatus(loanModel);
-        } else {
-            loanMapper.update(loanModel);
-        }
+        loanMapper.update(loanModel);
+        updateLoanTitleAndExtraRate(loanDto, loanModel);
+    }
+
+    private void updateLoanWithoutStatus(LoanDto loanDto) {
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanDto.getLoanStatus());
+        loanMapper.updateWithoutStatus(loanModel);
+        updateLoanTitleAndExtraRate(loanDto, loanModel);
+    }
+
+    private void updateLoanTitleAndExtraRate(LoanDto loanDto, LoanModel loanModel) {
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
         if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.delete(loanDto.getId());
@@ -484,7 +491,7 @@ public class LoanServiceImpl implements LoanService {
         baseDto = processLoanOutPayRequest(loanDto.getId());
         if (baseDto.getData().getStatus()) {
             loanDto.setLoanStatus(LoanStatus.REPAYING);
-            this.updateLoanAndLoanTitleRelation(loanDto, false);
+            this.updateAllLoan(loanDto);
             return baseDto;
         }
 
