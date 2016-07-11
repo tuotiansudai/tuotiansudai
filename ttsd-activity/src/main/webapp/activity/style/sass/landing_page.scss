@@ -134,7 +134,6 @@ form label.error {
             font-size: 12px;
             border-radius: 15px;
             background: #ff0000;
-
             &:hover {
               color: #fff;
             }
@@ -148,7 +147,7 @@ form label.error {
           border: #cecece 1px solid;
           padding: 10px 2px 10px 47px;
           background-color: #fff;
-          &.captcha { width:100px;}
+          &.captcha,&.appCaptcha { width:100px;}
 
         }
         .agreement {
