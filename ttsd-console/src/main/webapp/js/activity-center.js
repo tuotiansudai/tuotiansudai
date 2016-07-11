@@ -116,11 +116,16 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             beforeCheck: function($activityCenterForm) {
                 $errorDom.html('');
                 var activityDescription = $('.activity-description').val();
-
+                if($('.activity-source:checked').length == 0){
+                    showErrorMessage('请选择渠道', $('.activity-source', $activityCenterForm));
+                    return false;
+                }
                 if (activityDescription.length > 15) {
                     showErrorMessage('活动介绍最多15个中文字符', $('.activity-description', $activityCenterForm));
                     return false;
                 }
+
+
 
             },
             callback: function($activityCenterForm) {
