@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -30,6 +31,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Override
     public List<HomeLoanDto> getLoans() {
@@ -57,7 +61,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels);
+                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels,extraLoanRateMapper.findMaxRateByLoanId(loan.getId()));
             }
         });
     }

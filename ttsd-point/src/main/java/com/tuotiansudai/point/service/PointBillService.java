@@ -18,11 +18,9 @@ public interface PointBillService {
                                                                                  int pageSize,
                                                                                  Date startTime,
                                                                                  Date endTime,
-                                                                                 PointBusinessType businessType);
+                                                                                 List<PointBusinessType> businessTypes);
 
     List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize);
 
     long getPointBillCountByLoginName(String loginName);
-
-
 }

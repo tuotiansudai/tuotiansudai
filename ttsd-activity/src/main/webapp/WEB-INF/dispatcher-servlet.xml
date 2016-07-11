@@ -14,7 +14,8 @@
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
-            <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <bean id="jacksonMessageConverter"
+                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
                     <bean class="com.tuotiansudai.activity.configuration.CustomerObjectMapper"/>
                 </property>
@@ -34,7 +35,9 @@
 
 
     <mvc:interceptors>
+        <bean class="com.tuotiansudai.activity.interceptors.LogGenerateInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.activity.interceptors.AppTokenInterceptor" />
         <bean class="com.tuotiansudai.activity.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>
 

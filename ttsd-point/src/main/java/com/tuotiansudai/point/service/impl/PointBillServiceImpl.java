@@ -99,7 +99,7 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                  int pageSize,
                                                                                  Date startTime,
                                                                                  Date endTime,
-                                                                                 PointBusinessType businessType){
+                                                                                 List<PointBusinessType> businessTypes){
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -114,11 +114,11 @@ public class PointBillServiceImpl implements PointBillService {
 
         List<PointBillModel> items = Lists.newArrayList();
 
-        long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessType);
+        long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessTypes);
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessType);
+            items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessTypes);
         }
         List<PointBillPaginationItemDataDto> records = Lists.transform(items, new Function<PointBillModel, PointBillPaginationItemDataDto>() {
             @Override

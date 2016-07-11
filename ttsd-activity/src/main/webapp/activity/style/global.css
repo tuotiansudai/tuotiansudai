@@ -2902,6 +2902,9 @@ h5 {
       .header-container .header ul li a {
         padding-left: 8px;
         color: #fff; }
+  .header-container .header-membership {
+    padding-right: 19px;
+    background: #333 url("/activity/images/icons/top-icon.png") no-repeat 100% 50%; }
 
 .footer-container {
   width: 100%;
@@ -3059,6 +3062,8 @@ h5 {
           .nav-container .nav ul li a.active {
             color: #ff7200;
             border-top: #ff7200 3px solid; }
+        .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
+          display: none; }
 
 .main-frame {
   width: 1000px;
@@ -3096,6 +3101,8 @@ h5 {
     padding-right: 10px; }
     .header-container .header-download {
       display: block; }
+    .header-container .header-membership, .header-container .header-activity-center {
+      display: none; }
     .header-container .header {
       width: 100%; }
       .header-container .header ul li {
@@ -3138,6 +3145,8 @@ h5 {
             color: #ff7200;
             border-bottom: #ff7200 1px solid;
             border-top: 3px solid #fff; }
+        .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
+          display: block; }
 
   .footer-container .page-width {
     display: none; }

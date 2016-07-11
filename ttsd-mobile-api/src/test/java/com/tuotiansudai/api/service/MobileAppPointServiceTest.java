@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,8 +66,8 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         List<PointBillModel> pointBillModelList = Lists.newArrayList();
         pointBillModelList.add(pointBillModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(new AccountModel());
-        when(pointBillMapper.findPointBillPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(PointBusinessType.class))).thenReturn(pointBillModelList);
-        when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), any(PointBusinessType.class))).thenReturn(1L);
+        when(pointBillMapper.findPointBillPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
+        when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
 
         PointBillRequestDto pointBillRequestDto = new PointBillRequestDto();
         pointBillRequestDto.setIndex(1);
