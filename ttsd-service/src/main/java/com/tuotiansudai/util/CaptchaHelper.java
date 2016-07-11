@@ -2,10 +2,8 @@ package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,12 +15,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.Date;
 
 public class CaptchaHelper {
 
     static Logger logger = Logger.getLogger(CaptchaHelper.class);
+
+    public final static String BASIC_CAPTCHA = "BASIC_CAPTCHA";
 
     public final static String LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
 
@@ -37,6 +35,8 @@ public class CaptchaHelper {
     public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY = "api:{deviceId}:{type}";
 
     public final static String MOBILE_APP_IMAGE_CAPTCHA_IP_KEY = "api:{ip}:{type}";
+
+    public final static String MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY = "basic:image:captcha:{deviceId}:{type}";
 
 
     @Autowired
@@ -57,7 +57,14 @@ public class CaptchaHelper {
 
     public void storeCaptcha(String attributeKey, String captcha, String deviceId) {
         redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+
+        if (attributeKey.equals(CaptchaHelper.BASIC_CAPTCHA)) {
+            redisWrapperClient.setex(MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+        } else {
+            redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+        }
     }
+
 
     public boolean captchaVerify(String attributeKey, String captcha, String deviceId) {
         String loginImageCaptcha = MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey);

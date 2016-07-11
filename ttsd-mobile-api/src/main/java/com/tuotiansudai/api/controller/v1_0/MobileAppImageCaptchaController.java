@@ -28,7 +28,8 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController {
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
-        this.captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
+
+        captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
 
         String imageCaptcha = captchaHelper.transferImageToBase64(captcha.getImage());
 
