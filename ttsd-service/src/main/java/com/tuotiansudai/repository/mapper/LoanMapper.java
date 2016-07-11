@@ -87,9 +87,9 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "mobile") String mobile);
 
-    long findLoanAchievementCount(@Param(value = "loginName") String loginName);
+    long findLoanAchievementCount(@Param(value = "mobile") String mobile);
 
     List<LoanModel> findByProductType(@Param(value = "loanStatus") LoanStatus loanStatus,
                                       @Param("productTypeList") List<ProductType> productTypeList,

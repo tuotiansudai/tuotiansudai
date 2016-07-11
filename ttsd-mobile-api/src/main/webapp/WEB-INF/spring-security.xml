@@ -76,6 +76,7 @@
         <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
         <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/activities" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loans" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loan" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/nodes" access="permitAll()" />
