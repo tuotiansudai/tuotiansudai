@@ -349,6 +349,7 @@ public class InvestServiceImpl implements InvestService {
         } else {
             AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
             autoInvestPlanModel.setId(idGenerator.generate());
+            autoInvestPlanModel.setLoginName(loginName);
             autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
             autoInvestPlanModel.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
             autoInvestPlanModel.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));

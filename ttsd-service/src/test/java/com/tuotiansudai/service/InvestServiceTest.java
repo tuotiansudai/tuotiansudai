@@ -111,7 +111,7 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldCreateAutoInvestPlanAndTurnOff(){
+    public void shouldCreateAutoInvestPlanAndTurnOff() {
         String loginName = "testuser";
 
         AutoInvestPlanModel model = investService.findAutoInvestPlan(loginName);
