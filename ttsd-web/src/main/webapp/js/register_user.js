@@ -280,7 +280,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
     });
-
     jQuery.validator.addMethod("checkCaptcha", function(value, element) {
         var mobile=$('input.mobile',registerUserForm).val();
         var deferred = $.Deferred();

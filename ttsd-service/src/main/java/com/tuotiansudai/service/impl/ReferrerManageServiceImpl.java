@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ReferrerManageService;
@@ -30,6 +31,9 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     @Value(value = "${pay.staff.reward}")
     private String staffReward;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public List<ReferrerManageView> findReferrerManage(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, int currentPageNo, int pageSize) {
         return referrerManageMapper.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, (currentPageNo - 1) * pageSize, pageSize);
@@ -55,6 +59,9 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
+        for(ReferrerRelationView referrerRelationView : referRelationList){
+            referrerRelationView.setMobile(referrerRelationView.getMobile());
+        }
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
         BasePaginationDataDto<ReferrerRelationView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, referRelationList);
         dataDto.setStatus(true);
@@ -77,6 +84,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         for (ReferrerManageView view : referrerManageViewList) {
             view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
             view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
+            view.setMobile(userMapper.findUsersMobileByLoginName(view.getInvestName()));
         }
     }
 
