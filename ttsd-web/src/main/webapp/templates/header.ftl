@@ -11,6 +11,9 @@
             <li class="header-membership">
                 <a href="/membership">会员中心</a>
             </li>
+            <li class="header-activity-center">
+                <a href="/web-activity-center">活动中心</a>
+            </li>
             <li class="login-pop-app" id="iphone-app-pop">
                 <a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
                 <div id="iphone-app-img" class="img-app-pc-top"></div>

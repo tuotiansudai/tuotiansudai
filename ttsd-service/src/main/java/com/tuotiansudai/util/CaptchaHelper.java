@@ -24,6 +24,8 @@ public class CaptchaHelper {
 
     static Logger logger = Logger.getLogger(CaptchaHelper.class);
 
+    public final static String BASIC_CAPTCHA = "BASIC_CAPTCHA";
+
     public final static String LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
 
     public final static String REGISTER_CAPTCHA = "REGISTER_CAPTCHA";
@@ -37,6 +39,8 @@ public class CaptchaHelper {
     public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY = "api:{deviceId}:{type}";
 
     public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_IP_KEY = "api:{ip}:{type}";
+
+    public final static String MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY = "basic:image:captcha:{deviceId}:{type}";
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -54,16 +58,22 @@ public class CaptchaHelper {
         httpServletRequest.getSession().setAttribute(attributeKey, captcha);
     }
 
-    public void storeCaptcha(String attributeKey,String captcha,String deviceId) {
-        redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+    public void storeCaptcha(String attributeKey, String captcha, String deviceId) {
+        if (attributeKey.equals(CaptchaHelper.BASIC_CAPTCHA)) {
+            redisWrapperClient.setex(MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+        } else {
+            redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+        }
     }
 
-    public boolean captchaVerify(String attributeKey, String captcha,String deviceId) {
-        String loginImageCaptcha = MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}",attributeKey);
+
+    public boolean captchaVerify(String attributeKey, String captcha, String deviceId) {
+        String loginImageCaptcha = MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey);
         String actualCaptcha = redisWrapperClient.get(loginImageCaptcha);
         redisWrapperClient.del(loginImageCaptcha);
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
+
     public boolean captchaVerify(String attributeKey, String captcha) {
         String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
         httpServletRequest.getSession().removeAttribute(attributeKey);
@@ -71,7 +81,7 @@ public class CaptchaHelper {
     }
 
 
-    public String transferImageToBase64(BufferedImage bufferedImage){
+    public String transferImageToBase64(BufferedImage bufferedImage) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] data = null;
         InputStream in = null;
@@ -83,17 +93,17 @@ public class CaptchaHelper {
             // 对字节数组Base64编码
             return DatatypeConverter.printBase64Binary(data);// 返回Base64编码过的字节数组字符串
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(),e);
-        }finally {
-            try{
-                if(os != null){
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            try {
+                if (os != null) {
                     os.close();
                 }
-                if(in != null){
+                if (in != null) {
                     in.close();
                 }
-            }catch (IOException ioe){
-                logger.error(ioe.getLocalizedMessage(),ioe);
+            } catch (IOException ioe) {
+                logger.error(ioe.getLocalizedMessage(), ioe);
             }
         }
         return null;

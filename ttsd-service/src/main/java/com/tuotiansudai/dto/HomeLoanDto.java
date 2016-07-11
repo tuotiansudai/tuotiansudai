@@ -44,7 +44,9 @@ public class HomeLoanDto {
 
     private int duration;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel,LoanModel loan,long investAmount ,List<LoanRepayModel> loanRepayModels) {
+    private double extraRate;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel,LoanModel loan,long investAmount ,List<LoanRepayModel> loanRepayModels,double extraRate) {
         this.id = loan.getId();
         this.name = loan.getName();
         this.productType = loan.getProductType();
@@ -68,6 +70,9 @@ public class HomeLoanDto {
             if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
                 completedPeriods++;
             }
+        }
+        if(extraRate != 0){
+            this.extraRate = extraRate;
         }
     }
 
@@ -137,5 +142,13 @@ public class HomeLoanDto {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public double getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(double extraRate) {
+        this.extraRate = extraRate;
     }
 }

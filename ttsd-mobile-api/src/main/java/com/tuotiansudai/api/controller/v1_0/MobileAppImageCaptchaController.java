@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppImageCaptchaController extends MobileAppBaseController{
+public class MobileAppImageCaptchaController extends MobileAppBaseController {
 
 
     @Autowired
@@ -25,10 +25,11 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController{
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
-        this.captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
+
+        captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
 
         String imageCaptcha = captchaHelper.transferImageToBase64(captcha.getImage());
-        
+
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

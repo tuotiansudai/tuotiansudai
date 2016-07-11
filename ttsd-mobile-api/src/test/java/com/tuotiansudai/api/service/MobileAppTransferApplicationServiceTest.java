@@ -152,6 +152,9 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setPlatform("Android");
+        transferApplyRequestDto.setBaseParam(baseParam);
         transferApplyRequestDto.setTransferInvestId("123");
         transferApplyRequestDto.setTransferAmount("99.50");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
