@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,6 +28,11 @@ public class MobileAppTokenProvider {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+    @Autowired
+    private UserMapper userMapper;
+
+    @Value("${web.login.max.failed.times}")
+    private int times;
 
     public String refreshToken(String loginName, String oldToken) {
         if (!Strings.isNullOrEmpty(oldToken)) {
@@ -81,6 +89,35 @@ public class MobileAppTokenProvider {
         dto.setMessage(returnMessage.getMsg());
         return dto;
     }
+
+    public BaseResponseDto generateResponseDto(ReturnMessage returnMessage,String loginName) {
+        String message = returnMessage.getMsg();
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+        if(userModel != null){
+            String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
+
+            if(ReturnMessage.LOGIN_FAILED.getCode().equals(returnMessage.getCode())){
+                if(redisWrapperClient.exists(redisKey)){
+                    int failTimes = Integer.parseInt(redisWrapperClient.get(redisKey));
+                    message = MessageFormat.format(returnMessage.getMsg(),times - failTimes);
+                }
+            }else if(ReturnMessage.USER_IS_DISABLED.getCode().equals(returnMessage.getCode())){
+                Long leftSeconds = redisWrapperClient.ttl(redisKey);
+                message = MessageFormat.format(returnMessage.getMsg(),leftSeconds % 60 == 0? leftSeconds/60 : leftSeconds/60 + 1);
+            }
+        }
+
+        LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
+        loginResponseDataDto.setToken("");
+
+        BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>();
+        dto.setData(loginResponseDataDto);
+
+        dto.setCode(returnMessage.getCode());
+        dto.setMessage(message);
+        return dto;
+    }
+
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;
