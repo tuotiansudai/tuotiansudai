@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.aspect;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import org.apache.log4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -59,7 +57,7 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponAssignmentService.assignUserCoupon(registerUserDto.getLoginName(),
+                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(),
                         Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
             }
         } catch (Exception e) {
