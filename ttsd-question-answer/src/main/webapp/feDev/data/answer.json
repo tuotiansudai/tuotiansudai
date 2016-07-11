@@ -1,10 +1,11 @@
 {
 	"css": {
-		"login": "full_screen.css"
+		"answer": "answer.css"
 	},
 	"js": {
-		"questions": "bundle.js"
+		"answer": "answer.js"
 	},
+    "staticServer": "http://localhost:8080/",
 	"linkExchangeList": [{
 		"linkUrl": 1212,
 		"noFollow": true,

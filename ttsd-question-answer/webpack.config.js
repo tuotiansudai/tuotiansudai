@@ -8,8 +8,6 @@ var STYLE_PATH=path.resolve(basePath,'style');
 var TEMPLATE_PATH=path.resolve(basePath,'templates');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-
 var devFlagPlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
 });
@@ -39,10 +37,12 @@ module.exports = {
     entry: [
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://'+IP+':'+port,
-        path.join(JS_PATH, 'mainSite.js')
+        path.join(JS_PATH, 'mainSite.js'),
+
     ],
     output: {
-        filename: 'bundle.js',
+        filename: "[name].js",
+        //filename: 'bundle.js',
         path: path.join(basePath, 'dist'),
         publicPath: '/js/'
     },
@@ -55,12 +55,17 @@ module.exports = {
             //  },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap"),
-                exclude: STYLE_PATH
-            }, {
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            },
+            {
+                test: /\.less$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+            },
+            {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
             },
+
             {
                  test: /\.(png|jpg|gif|woff|woff2)$/,
                  loader: 'url-loader?limit=8192'
@@ -75,16 +80,13 @@ module.exports = {
           jQuery: "jquery",
           "window.jQuery": "jquery"
         }),
-        new ExtractTextPlugin("[name].css", {
-            disable: false,
-            allChunks: true
-        })
+        new ExtractTextPlugin("[name].css")
 
       ],
     cache: true,
     devtool: 'eval-source-map',
     devServer: {
-        contentBase:TEMPLATE_PATH,
+        contentBase:basePath,
         port:port,
         historyApiFallback: true,
         hot: true,

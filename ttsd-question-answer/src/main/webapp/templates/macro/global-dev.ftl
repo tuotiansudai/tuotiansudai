@@ -1,4 +1,4 @@
-<#macro main pageCss pageJavascript="" staticServer="http://localhost:8080/" jsPath="js/" cssPath="style/" >
+<#macro main pageCss pageJavascript="" staticServer="http://localhost:8080/" jsPath="js/" cssPath="js/" >
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +15,7 @@
     <title>拓天速贷-互联网金融信息服务平台</title>
     <link href="http://localhost:8080/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css"  href="http://localhost:8080/js/main.css">
+
 
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />

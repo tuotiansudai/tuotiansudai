@@ -22,17 +22,17 @@ var config = [
 	{
 		route: '/',
 		template: 'footer',
-		data: 'footer'
+		data: 'answer'
 	},
 	{
 		route: '/questions',
 		template: 'questions',
-		data: 'footer'
+		data: 'questions'
 	},
 	{
 		route: '/answers',
 		template: 'to-answer',
-		data: 'footer'
+		data: 'answer'
 	}];
 
 

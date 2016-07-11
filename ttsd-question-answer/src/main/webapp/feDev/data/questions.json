@@ -1,0 +1,14 @@
+{
+	"css": {
+		"questions": "questions.css"
+	},
+	"js": {
+		"questions": "questions.js"
+	},
+    "staticServer": "http://localhost:8080/",
+	"linkExchangeList": [{
+		"linkUrl": 1212,
+		"noFollow": true,
+		"title": 121212
+	}]
+}

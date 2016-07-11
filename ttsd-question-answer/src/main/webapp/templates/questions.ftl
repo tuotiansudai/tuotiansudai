@@ -1,5 +1,5 @@
 <#import "macro/global-dev.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.questions}">
+<@global.main pageCss="${css.questions}" pageJavascript="${js.questions}">
     <div class="borderBox tc">
         <a href="#" class="btn-main">我要提问</a>
     </div>
@@ -125,7 +125,7 @@
             </ul>
         </div>
 
-        <img src="../images/welfare.jpg" alt="新人送福利" class="margin-top-10">
+        <img src="${staticServer}/images/welfare.jpg" alt="新人送福利" class="margin-top-10">
 
     </div>
 </div>

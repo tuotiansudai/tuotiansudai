@@ -86,7 +86,13 @@ p {
     margin-bottom: 0;
   }
 }
+input,textarea,select {
+  @include border-color(#e5e5e5);
+  width:calc(100% - 20px);
+  padding: 6px 10px;
+  font-size:14px;
 
+}
 //@extend
 .auto-height {
   overflow: auto;
@@ -131,7 +137,8 @@ p {
 .error {
   color: $required;
   font-size:13px;
-
+  background: url("../../images/icons/error.png") no-repeat 0 7px;
+  padding-left:20px;
 }
 // form validation
 .fa:before {
