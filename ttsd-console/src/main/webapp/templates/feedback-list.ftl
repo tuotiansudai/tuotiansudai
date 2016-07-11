@@ -6,8 +6,8 @@
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">用户名</label>
-                <input type="text" class="form-control jq-title jq-loginName" name="loginName" value="${loginName!}">
+                <label for="control-label">电话号码</label>
+                <input type="text" class="form-control jq-title jq-loginName" name="mobile" value="${mobile!}">
             </div>
 
             <div class="form-group">
