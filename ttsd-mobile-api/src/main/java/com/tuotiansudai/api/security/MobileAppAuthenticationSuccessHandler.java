@@ -35,6 +35,9 @@ public class MobileAppAuthenticationSuccessHandler extends SimpleUrlAuthenticati
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             addLoginLog(request);
             String username = request.getParameter("j_username");
+            if(StringUtils.isEmpty(username)){
+                username = request.getParameter("mobile");
+            }
             clearFailHistory(username);
 
             String token = mobileAppTokenProvider.refreshToken(authentication.getName(), null);
@@ -50,9 +53,19 @@ public class MobileAppAuthenticationSuccessHandler extends SimpleUrlAuthenticati
 
     private void addLoginLog(HttpServletRequest request){
         String username = request.getParameter("j_username");
+        if(StringUtils.isEmpty(username)){
+            username = request.getParameter("mobile");
+        }
         String strSource = request.getParameter("j_source");
+        if(StringUtils.isEmpty(strSource)){
+            strSource = request.getParameter("source");
+        }
         Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+
         String deviceId = request.getParameter("j_deviceId");
+        if(StringUtils.isEmpty(deviceId)){
+            deviceId = request.getParameter("deviceId");
+        }
         loginLogService.generateLoginLog(username, source, RequestIPParser.parse(request), deviceId, true);
     }
 
