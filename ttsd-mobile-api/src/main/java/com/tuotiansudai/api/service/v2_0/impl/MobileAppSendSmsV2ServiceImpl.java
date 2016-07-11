@@ -31,7 +31,7 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
 
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
-        if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA,remoteIp) && Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
+        if(captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(),remoteIp) && Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
             logger.debug("Authentication failed: need image captcha but image captcha is null");
             return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
