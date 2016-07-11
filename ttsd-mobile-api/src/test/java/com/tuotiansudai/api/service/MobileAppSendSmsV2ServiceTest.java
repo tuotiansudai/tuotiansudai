@@ -27,7 +27,7 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldSendSmsIsFault(){
+    public void shouldSendSmsIsFail(){
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
         sendSmsCompositeRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
