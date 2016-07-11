@@ -8,10 +8,8 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +43,7 @@ public class InvestController {
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "loginName", required = false) String investorLoginName,
                                       @RequestParam(name = "channel", required = false) String channel,
-                                      @RequestParam(name = "source", required = false) String source,
+                                      @RequestParam(name = "source", required = false) Source source,
                                       @RequestParam(name = "role", required = false) String role,
                                       @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                                       @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
@@ -55,7 +53,6 @@ public class InvestController {
                                       @RequestParam(value = "export", required = false) String export,
                                       HttpServletResponse response) throws IOException {
 
-        Source enumSource = StringUtils.isEmpty(source) ? null : Source.valueOf(source);
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
@@ -64,8 +61,8 @@ public class InvestController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, enumSource, role, startTime, endTime, investStatus, null);
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int) count, startTime, endTime, investStatus, null);
+            long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, source, role, 1, (int) count, startTime, endTime, investStatus, null);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();
             for (int i = 0; i < investPaginationItemDataDtos.size(); i++) {
@@ -91,12 +88,15 @@ public class InvestController {
                 dataModel.add(itemDataDto.isAutoInvest() ? "是" : "否");
                 dataModel.add(itemDataDto.getAmount());
                 dataModel.add(itemDataDto.getStatus());
+                dataModel.add(itemDataDto.getRate());
+                dataModel.add(itemDataDto.getExpectedFee());
+                dataModel.add(itemDataDto.getActualFee());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
             return null;
         } else {
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, index, pageSize, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
             List<String> channelList = investService.findAllChannel();
 
             ModelAndView mv = new ModelAndView("/invest-list");

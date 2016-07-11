@@ -102,7 +102,7 @@ public class InvestRepayServiceTest {
 
     private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
-        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new Date(), repayStatus);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new DateTime().withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate(), repayStatus);
         investRepayModel.setActualInterest(100);
         investRepayModel.setActualFee(100);
         investRepayModel.setDefaultInterest(100);

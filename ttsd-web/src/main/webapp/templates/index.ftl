@@ -186,6 +186,22 @@
                     </div>
                 </div>
                 <div class="mask-model">
+                    <div class="model-project-precess">
+                        <div class="right-operat">
+                            <div class="p-title">
+                                <span class="fl">项目进度</span>
+                                <span class="point fr">${experienceLoanDto.progress} %</span>
+                            </div>
+                            <div class="process-percent">
+                                <div class="percent" style="width:${experienceLoanDto.progress}%">
+                                </div>
+                            </div>
+                            <div class="rest-amount">
+                                <span>可投额度：<i>${experienceLoanDto.investAmount}</i>元(体验金)</span>
+                                <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mask-btn"></div>
                 </div>
                 <div class="mask-bg"></div>
@@ -315,6 +331,9 @@
                                         <dt>预期年化收益</dt>
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <#if (loan.extraRate > 0)>
+                                                    ~ <@percentInteger>${loan.baseRate + loan.extraRate}</@percentInteger><@percentFraction>${loan.extraRate}</@percentFraction>
+                                                </#if>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
                                                 </#if>%
@@ -405,9 +424,9 @@
                                 <h2 class="pr-title">新手体验项目</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b>${experienceLoanDto.baseRate}</b>
                                            %</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -442,12 +461,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
@@ -507,12 +526,12 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
+                                        <i>预期年化收益</i>
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                     <@percentFraction>${loan.activityRate}</@percentFraction>
                                                 </#if>%</em>
-                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">

@@ -9,7 +9,6 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.RankingActivityService;
-import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,12 +34,9 @@ public class RankingActivityController {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private AppTokenParser appTokenParser;
-
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
-        String loginName = appTokenParser.getLoginName(httpServletRequest);
+        String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
 
