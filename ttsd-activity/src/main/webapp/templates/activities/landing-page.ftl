@@ -641,8 +641,8 @@
                       novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li class="int-model">
-                            <input type="text" id="loginNamePhoneC" class="login-name long" name="loginName" placeholder="用户名"
-                                   maxlength="25" value="">
+                            <input type="text" id="mobilePhoneC" name="mobile" class="mobile long" placeholder="手机号"
+                                   maxlength="11" value="">
                         </li>
                         <li id="loginNamePhoneCErr" class="height"></li>
                         <li class="int-model">
@@ -650,11 +650,6 @@
                                    class="password long" value="">
                         </li>
                         <li id="passwordPhoneCErr" class="height"></li>
-                        <li class="int-model">
-                            <input type="text" id="mobilePhoneC" name="mobile" class="mobile long" placeholder="手机号"
-                                   maxlength="11" value="">
-                        </li>
-                        <li id="mobilePhoneCErr" class="height"></li>
                         <li class="code int-model">
                             <input type="text" id="appCaptchaPhoneC" name="" placeholder="验证码" maxlength="5" class="appCaptcha"
                                    value="">
