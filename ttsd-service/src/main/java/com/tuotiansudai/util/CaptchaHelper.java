@@ -2,10 +2,8 @@ package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,8 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.Date;
 
 public class CaptchaHelper {
 
@@ -38,9 +34,10 @@ public class CaptchaHelper {
 
     public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY = "api:{deviceId}:{type}";
 
-    public final static String MOBILE_APP_LOGIN_IMAGE_CAPTCHA_IP_KEY = "api:{ip}:{type}";
+    public final static String MOBILE_APP_IMAGE_CAPTCHA_IP_KEY = "api:{ip}:{type}";
 
     public final static String MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY = "basic:image:captcha:{deviceId}:{type}";
+
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -59,6 +56,8 @@ public class CaptchaHelper {
     }
 
     public void storeCaptcha(String attributeKey, String captcha, String deviceId) {
+        redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
+
         if (attributeKey.equals(CaptchaHelper.BASIC_CAPTCHA)) {
             redisWrapperClient.setex(MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
         } else {
@@ -110,13 +109,13 @@ public class CaptchaHelper {
 
     }
 
-    public boolean isNeedImageCaptcha(String attributeKey,String ip){
-        String ipRedisKey = MOBILE_APP_LOGIN_IMAGE_CAPTCHA_IP_KEY.replace("{ip}",ip).replace("{type}",attributeKey);
-        if(redisWrapperClient.exists(ipRedisKey)){
-            redisWrapperClient.setex(ipRedisKey,ipLeftSecond,new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+    public boolean isNeedImageCaptcha(String attributeKey, String ip) {
+        String ipRedisKey = MOBILE_APP_IMAGE_CAPTCHA_IP_KEY.replace("{ip}", ip).replace("{type}", attributeKey);
+        if (redisWrapperClient.exists(ipRedisKey)) {
+            redisWrapperClient.setex(ipRedisKey, ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             return true;
         }
-        redisWrapperClient.setex(ipRedisKey,ipLeftSecond,new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.setex(ipRedisKey, ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         return false;
     }
 }
