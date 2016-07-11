@@ -52,7 +52,6 @@ public class MobileAppRegisterControllerTest extends ControllerTestBase {
 
     public RegisterRequestDto getFakeRegisterRequestDto(){
         RegisterRequestDto registerRequestDto = new RegisterRequestDto();
-        registerRequestDto.setUserName("loginName");
         registerRequestDto.setCaptcha("123456");
         registerRequestDto.setPassword("123ssword");
         registerRequestDto.setPhoneNum("13900000000");
