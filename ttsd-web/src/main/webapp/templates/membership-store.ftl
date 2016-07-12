@@ -6,7 +6,7 @@
 <div class="global-member-store">
     <div class="store-top">
         <div class="store-login">
-            <div class="login-model hide">
+            <div class="login-model">
                 <p>
                     <a href="/login" class="login-btn">立即登录</a>
                 </p>
@@ -14,22 +14,22 @@
                    <a href="/register/user" class="regist-btn">新用户注册></a> 
                 </p> 
             </div>
-            <div class="user-info">
+            <div class="user-info hide">
                 <h3>我的积分</h3>
                 <p>1,900,300</p>
                 <p><span>签到</span></p>
             </div>
             <ul class="other-list">
-                <li>
+                <li class="right-line">
                     <p><span>做任务赚积分</span></p>
-                    <p><span>去做任务</span></p>
+                    <p><a href="#">去做任务</a></p>
                 </li>
                 <li>
                     <p><span>投资赚积分</span></p>
-                    <p><span>去投资</span></p>
+                    <p><a href="#">去投资</a></p>
                 </li>
             </ul>
-            <div class="user-trade">
+            <div class="user-trade hide">
                 <a href="#">兑换记录></a> | <a href="#">积分明细></a>
             </div>
         </div>
