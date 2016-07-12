@@ -3,7 +3,7 @@
 		"loanDetail": "loan_detail.css"
 	},
 	"js": {
-		"loanDetail": ""
+		"loanDetail": "loan_detail1.js"
 	},
 	"staticServer": "http://localhost:8088"
 }

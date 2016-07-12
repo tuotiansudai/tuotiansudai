@@ -1,4 +1,5 @@
 @import "grid";
+@import "fancybox";
 
 $gray: #e6e6e6;
 $grayLight: #b2b2b2;
@@ -29,6 +30,41 @@ $red: #eb4a3e;
 	}
 	.red {
 		color: $red;
+	}
+	.dropdown {
+		$color: #c45927;
+		$bg: #fdf3e9;
+		width: 200px;
+		border: 1px solid $color;
+		height: 30px;
+		cursor: pointer;
+		position: relative;
+		.dropdown-main {
+			height: 30px;
+			line-height: 30px;
+			background: $bg;
+			.text {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 30px;
+				width: 150px;
+				text-align: center;
+				color: $color;
+				font-size: 14px;
+			}
+			.fa {
+				font-size: 18px;
+				position: absolute;
+				right: 10px;
+				top: 2px;
+				line-height: 1;
+				color: #f6caa1;
+			}
+		}
+		.dropdown-list {
+			background: $bg;
+		}
 	}
 	.container-block {
 		@include border;
@@ -192,61 +228,132 @@ $red: #eb4a3e;
 		}
 		.content {
 			padding: 30px;
-			.subtitle {
-				padding-left: 20px;
-				position: relative;
-				&:before {
-					content: '';
-					position: absolute;
+			&.detail {
+				.subtitle {
+					padding-left: 20px;
+					position: relative;
+					&:before {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 100%;
+						width: 5px;
+						background: #ff752a;
+						border-radius: 5px;
+					}
+					h3 {
+						background: #f5f5f5;
+						font-size: 16px;
+						text-indent: .5em;
+					}
+				}
+				.list-block {
+					padding: 15px 0 15px 25px;
+					color: #808080;
+					.row>div {
+						height: 35px;
+						line-height: 35px;
+					}
+				}
+				.danger-control {
+					padding-bottom: 20px;
+					.table {
+						padding: 0 30px;
+						text-align: center;
+						margin-top: 20px;
+						font-size: 14px;
+						.fa {
+							font-size: 16px;
+							color: $orange;
+							margin-right: .5em;
+						}
+						.bg {
+							background: #f2f6fa;
+							font-weight: 900;
+						}
+						.br-b {
+							border-bottom: 1px solid $gray;
+						}
+						.br-r {
+							border-right: 1px solid $gray;
+						}
+						.col-xs-6 {
+							text-align: center;
+							line-height: 40px;
+							border-top: 1px solid $gray;
+							border-left: 1px solid $gray;
+						}
+					}
+				}
+			}
+			&.record {
+				display: none;
+				.title-list {
+					.br {
+						padding-right: 10px;
+					}
+					.item {
+						border: 1px solid #e6e6e6;
+						text-align: center;
+						padding: 0 10px;
+						h4 {
+							font-size: 24px;
+							color: #808080;
+						}
+						p{
+							font-size: 14px;
+							margin-bottom: 10px;
+							margin-top: 10px;
+						}
+					}
+				}
+			}
+		}
+		.apply-data {
+			padding-left: 20px;
+			h5 {
+				font-size: 14px;
+				color: #808080;
+				padding: 20px 0;
+			}
+		}
+		.scroll-wrap {
+			padding: 0 39px;
+			position: relative;
+			.left-button {
+				width: 20px;
+				height: 100%;
+				background: red;
+				position: absolute;
 					top: 0;
 					left: 0;
-					height: 100%;
-					width: 5px;
-					background: #ff752a;
-					border-radius: 5px;
-				}
-				h3 {
-					background: #f5f5f5;
-					font-size: 16px;
-					text-indent: .5em;
-				}
 			}
-			.list-block {
-				padding: 15px 0 15px 25px;
-				color: #808080;
-				.row>div {
-					height: 35px;
-					line-height: 35px;
-				}
+			.right-button {
+				width: 20px;
+				height: 100%;
+				background: red;
+				position: absolute;
+					top: 0;
+					right: 10px;
 			}
-			.danger-control {
-				padding-bottom: 20px;
-				.table {
-					padding: 0 30px;
-					text-align: center;
-					margin-top: 20px;
-					font-size: 14px;
-					.fa {
-						font-size: 16px;
-						color: $orange;
-						margin-right: .5em;
-					}
-					.bg {
-						background: #f2f6fa;
-						font-weight: 900;
-					}
-					.br-b {
-						border-bottom: 1px solid $gray;
-					}
-					.br-r {
-						border-right: 1px solid $gray;
-					}
-					.col-xs-6 {
-						text-align: center;
-						line-height: 40px;
-						border-top: 1px solid $gray;
-						border-left: 1px solid $gray;
-					}
+			.scroll-content {
+				overflow: hidden;
+				>.row {
+					width: 1000%;
+				}
+				.col {
+					width: 200px;
+					float: left;
+					margin-right: 10px;
+					display: block;
+				}
+				.img {
+					display: block;
+					margin: 0 auto;
+					width: 198px;
+					height: 118px;
+					border: 1px solid #fafafa;
 				}
 			}
 		}

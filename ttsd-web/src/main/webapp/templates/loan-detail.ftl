@@ -100,7 +100,20 @@
                                         优 惠 券：
                                     </div>
                                     <div class="fr">
-                                        <input type="text" />
+                                        <div class="dropdown">
+                                            <div class="dropdown-main">
+                                                <span class="text">斯蒂芬斯拉夫</span>
+                                                <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="dropdown-list">
+                                                <div class="item">
+                                                    sdf
+                                                </div>
+                                                <div class="item">
+                                                    sdf
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="expected-interest mt10 clearfix">
@@ -117,7 +130,7 @@
                     </div>
                 </div>
             </div> <#-- .row end tag -->
-            <div class="row container-block mt10 main-content">
+            <div class="row container-block mt10 main-content" data-tab>
                 <div class="title-block clearfix">
                     <div class="item fl active">
                         借款详情
@@ -126,7 +139,7 @@
                         投资记录
                     </div>
                 </div>
-                <div class="content">
+                <div class="content detail">
                     <div class="subtitle">
                         <h3>借款基本信息</h3>
                     </div>
@@ -190,6 +203,76 @@
                     </div> <#-- .danger-control end tag -->
                     <div class="subtitle">
                         <h3>申请资料</h3>
+                    </div>
+                    <div class="apply-data">
+                        <h5>1、身份证</h5>
+                        <div class="scroll-wrap" scroll-carousel>
+                            <div class="scroll-content">
+                                <div class="row">
+                                    <a class="col" href="http://placekitten.com/200/125" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                    <a class="col" href="http://placekitten.com/200/120" rel="example_group">
+                                        <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="left-button">
+                            </div>
+                            <div class="right-button">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content record">
+                    <div class="row title-list">
+                        <div class="col-md-4">
+                            <div class="br">
+                                <div class="item">
+                                    <h4>拓荒先锋 >></h4>
+                                    <p>恭喜yyh***2016-05-21 10:49:21 拔得头筹奖励0.2％加息券＋50元红包</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="br">
+                                <div class="item">
+                                    <h4>拓天标王 >></h4>
+                                    <p>恭喜yyh****以累计投资 60000.00元 夺得标王奖励0.2％加息券＋50元红包</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="br">
+                                <div class="item">
+                                    <h4>一锤定音 >></h4>
+                                    <p>恭喜yyh***2016-05-21 10:49:21 终结此标奖励0.2％加息券＋50元红包</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="invests-list-pagination" class="pagination" data-url="/loan/39963386690640/invests" data-page-size="10">
                     </div>
                 </div>
             </div>
