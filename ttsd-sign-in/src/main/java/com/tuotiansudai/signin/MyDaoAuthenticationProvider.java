@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.CaptchaHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 
 public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
+
+    static Logger logger = Logger.getLogger(MyDaoAuthenticationProvider.class);
 
     @Autowired
     private HttpServletRequest httpServletRequest;

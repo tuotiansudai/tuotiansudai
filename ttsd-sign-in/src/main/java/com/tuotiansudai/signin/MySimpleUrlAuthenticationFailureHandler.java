@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
@@ -26,6 +27,8 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationFailureHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 

@@ -1,5 +1,5 @@
 sign-in:
-  image: "leoshi/ttsd-java7:UTC8"
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
     - "20001:8080"
   volumes:
