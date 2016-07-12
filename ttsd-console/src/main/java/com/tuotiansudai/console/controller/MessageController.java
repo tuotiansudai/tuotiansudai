@@ -133,8 +133,8 @@ public class MessageController {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
         InputStream inputStream = null;
-        if (!multipartFile.getOriginalFilename().endsWith(".xls")) {
-            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是xls格式"));
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是csv格式"));
         }
         long newImportUsersId = importUsersId;
         try {
