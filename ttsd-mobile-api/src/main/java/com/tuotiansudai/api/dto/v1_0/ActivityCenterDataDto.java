@@ -6,6 +6,10 @@ public class ActivityCenterDataDto {
     private String descTitle;
     private String imageUrl;
     private String activityUrl;
+    private String title;
+    private String shareUrl;
+    private String content;
+
 
     public ActivityCenterDataDto() {
     }
@@ -14,6 +18,9 @@ public class ActivityCenterDataDto {
         this.descTitle = activityModel.getDescription();
         this.imageUrl = activityModel.getAppPictureUrl();
         this.activityUrl = activityModel.getAppActivityUrl();
+        this.title = activityModel.getTitle();
+        this.content = activityModel.getShareContent();
+        this.shareUrl = activityModel.getShareUrl();
     }
 
     public String getDescTitle() {
@@ -38,5 +45,29 @@ public class ActivityCenterDataDto {
 
     public void setActivityUrl(String activityUrl) {
         this.activityUrl = activityUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
