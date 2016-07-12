@@ -125,10 +125,10 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank('list', $('.date-info:eq(0)').text());
+		heroRank('list', $('.date-text:eq(0)').text());
 		heroRank('history', $('.date-info:eq(0)').text());
-		refeInvest('list', $('.date-info:eq(1)').text());
-		refeInvest('history', $('.date-info:eq(1)').text());
+		refeInvest('list', $('.date-text:eq(0)').text());
+		refeInvest('history', $('.date-info:eq(0)').text());
 
 		$getRank.on('click', function() {
 			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');

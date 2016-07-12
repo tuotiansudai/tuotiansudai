@@ -118,16 +118,16 @@
                             <dd>第五名：海岛游</dd>
                         </dl>
                         <dl class="gift-one">
-                            <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖励:</dt>
-                            <dd>第一名：现金5万</dd>
-                            <dd>第二名：现金3万</dd>
-                            <dd>第三名：日韩双人游</dd>
+                            <dt>奖池累积中...</br>投资满<span>2,000万</span>则奖励:</dt>
+                            <dd>第一名：现金12000元</dd>
+                            <dd>第二名：现金7000元</dd>
+                            <dd>第三名：现金2000元</dd>
                         </dl>
                         <div class="stage-num first-stage">
                             <span>8,500万</span><i class="line-single"></i>
                         </div>
                         <div class="stage-num two-stage">
-                            <span>8,500万</span><i class="line-single"></i>
+                            <span>2,000万</span><i class="line-single"></i>
                         </div>
                         <div class="color-line">
                             <div class="color-pro" data-totalInvest="${totalInvest?c}" id="linePro"></div>
@@ -137,7 +137,7 @@
             </div>
             <div class="leader-list">
                 <div class="table-gift">
-                    <img src="${staticServer}/activity/images/sign/actor/ranklist/gift-table.png" width="100%">
+                    <img src="${staticServer}/activity/images/sign/actor/ranklist/gift-table-newer.png" width="100%">
                 </div>
             </div>
         </div>
@@ -677,16 +677,16 @@
                     <dd>第五名：海岛游</dd>
                 </dl>
                 <dl class="gift-one">
-                    <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖励:</dt>
-                    <dd>第一名：现金5万</dd>
-                    <dd>第二名：现金3万</dd>
-                    <dd>第三名：日韩双人游</dd>
+                    <dt>奖池累积中...</br>投资满<span>2,000万</span>则奖励:</dt>
+                    <dd>第一名：现金12000元</dd>
+                    <dd>第二名：现金7000元</dd>
+                    <dd>第三名：现金2000元</dd>
                 </dl>
                 <div class="stage-num first-stage">
                     <span>8,500万</span><i class="line-single"></i>
                 </div>
                 <div class="stage-num two-stage">
-                    <span>8,500万</span><i class="line-single"></i>
+                    <span>2,000万</span><i class="line-single"></i>
                 </div>
                 <div class="color-line">
                     <div class="color-pro" data-totalInvest="${totalInvest?c}" id="lineProPhone"></div>
