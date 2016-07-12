@@ -1,4 +1,80 @@
 @import 'variables';
+
+.agree-ok {
+  @include border-color(#e5e5e5);
+  padding: 8px 20px 8px 40px;
+  padding-right: 20px!important;
+  background: url('../../images/icons/zan-n.png') 20px 7px no-repeat;
+  color: #808080;
+  &.active {
+    background-image: url(../../images/icons/zan.png);
+    color: #ff7200;
+  }
+}
+.answers-box {
+  height: auto;
+  overflow: auto;
+  dl.answers-list {
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border-bottom:1px solid #e5e5e5;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom:20px;
+    color: #808080;
+    height: auto;
+    overflow: auto;
+    &:nth-last-child(1) {
+      margin-bottom: 0px;
+      border-bottom-width: 0;
+    }
+
+    dt {
+      font-weight: bold;
+      font-size:18px;
+      color: #333;
+    }
+    dd {
+      //padding-bottom:20px;
+      span {
+        display: inline-block;
+        margin-right:6px;
+        line-height: 15px;
+        padding-right:10px;
+        border-right:1px solid #e5e5e5;
+        &.datetime {
+          border-right-width: 0;
+        }
+      }
+      &.tag-answer {
+        display: block;
+        clear: both;
+        margin-top:5px;
+        margin-bottom: 5px;
+      }
+      &.answer-button {
+        margin-top:15px;
+      }
+    }
+    .tag {
+      background: #f1f6fa;
+      border:1px solid #e5e5e5;
+      border-radius: 18px;
+      line-height: 15px;
+      border-radius: 18px;
+      padding: 5px 18px;
+
+    }
+
+
+  }
+}
+
+.date-time-answer {
+  color: #808080;
+  margin-top: 20px;
+}
+
 .question-container {
   margin-top:10px;
   .article-content {
@@ -30,60 +106,7 @@
     .borderBox {
       padding:0;
     }
-    .answers-box {
-      dl.answers-list {
-        margin-bottom: 10px;
-        margin-top: 10px;
-        border-bottom:1px solid #e5e5e5;
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-bottom:10px;
-        color: #808080;
-        &:nth-last-child(1) {
-          margin-bottom: 0px;
-          border-bottom-width: 0;
-        }
-        dt {
-          font-weight: bold;
-          font-size:18px;
-          color: #333;
-        }
-        dd {
-          //padding-bottom:20px;
-          span {
-            display: inline-block;
-            margin-right:6px;
-            line-height: 15px;
-            padding-right:10px;
-            border-right:1px solid #e5e5e5;
-            &.datetime {
-              border-right-width: 0;
-            }
-          }
-          &.tag-answer {
-            display: block;
-            clear: both;
-            margin-top:5px;
-            margin-bottom: 5px;
-          }
-          &.answer-button {
-            margin-bottom:15px;
-            margin-top:15px;
-          }
-        }
-        .tag {
-          background: #f1f6fa;
-          border:1px solid #e5e5e5;
-          border-radius: 18px;
-          line-height: 15px;
-          border-radius: 18px;
-          padding: 5px 18px;
 
-        }
-
-
-      }
-    }
   }
   .aside-frame {
     width:288px;
@@ -186,23 +209,27 @@
   }
   .best-answer {
     position: relative;
+    padding-top: 15px!important;
     .answers-box dl.answers-list {
       color: #333333;
     }
+    .best-answer-sign {
+      width: 70px;
+      height: 70px;
+      background: url('../../images/icons/best-answer.png') no-repeat;
+      position: absolute;
+      bottom: 35px;
+      right:190px;
+    }
     .date-time-answer {
-      color: #808080;
-      margin-top: 20px;
       margin-bottom: 40px;
     }
-    .agree-ok {
-      @include border-color(#e5e5e5);
-      padding: 8px 20px 8px 40px;
-      padding-right: 20px!important;
-      background: url('../../images/icons/zan.png') 20px 7px no-repeat;
-      color: #ff7200;
-    }
+  }
 
-
+  .other-title {
+    padding:10px 10px 10px 40px;
+    color: #666;
+    @include border-color(#e5e5e5);
   }
 
 }

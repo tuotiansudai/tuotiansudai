@@ -38,6 +38,7 @@ module.exports = {
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://'+IP+':'+port,
         path.join(JS_PATH, 'mainSite.js'),
+        //path.join(JS_PATH, 'questions.js')
 
     ],
     output: {
@@ -75,11 +76,11 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.ProvidePlugin({
-          $: "jquery",
-          jQuery: "jquery",
-          "window.jQuery": "jquery"
-        }),
+        //new webpack.ProvidePlugin({
+        //  $: "jquery",
+        //  jQuery: "jquery",
+        //  "window.jQuery": "jquery"
+        //}),
         new ExtractTextPlugin("[name].css")
 
       ],

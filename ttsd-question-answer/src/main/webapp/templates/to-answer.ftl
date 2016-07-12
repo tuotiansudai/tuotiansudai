@@ -1,5 +1,5 @@
 <#import "macro/global-dev.ftl" as global>
-<@global.main pageCss="${css.answer}" pageJavascript="${js.answer}">
+<@global.main pageCss="${css.main}" pageJavascript="${js.main}">
     <div class="borderBox tc">
         <a href="#" class="btn-main">我要提问</a>
     </div>
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="to-answer-box">
+        <div class="to-answer-box" style="display: none">
             <div class="m-title">我来回答</div>
             <form name="formAnswer" class="formAnswer">
                 <dl class="form-answer-in">
@@ -51,7 +51,7 @@
                     <dd class="date-time-answer"><span>miaojiahang</span>
                         <span>回答：2</span>
                         <span class="datetime">2016-05-30 11:43</span>
-                        <span class="agree-ok fr">10</span>
+                        <span class="agree-ok active fr">10</span>
                     </dd>
                 </dl>
                 <div class="best-answer-sign"></div>
@@ -60,29 +60,30 @@
 
         <div class="ad-answer"><img src="${staticServer}/images/sign/ad-answer.jpg"></div>
 
-        <div class="other-answer-box">
-            <div class="">其他2个回复</div>
-            <dl class="answers-list">
+        <div class="borderBox clearfix margin-top-10">
+            <div class="answers-box ">
+                <div class="other-title">其他2个回复</div>
+                <dl class="answers-list">
 
-                <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
-                <dd class="date-time-answer"><span>miaojiahang</span>
-                    <span>回答：2</span>
-                    <span class="datetime">2016-05-30 11:43</span>
-                    <span class="agree-ok fr">10</span>
-                </dd>
-            </dl>
-        </div>
+                    <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
+                    <dd class="date-time-answer"><span>miaojiahang</span>
+                        <span>回答：2</span>
+                        <span class="datetime">2016-05-30 11:43</span>
+                        <span class="agree-ok fr">10</span>
+                    </dd>
+                </dl>
 
-        <div class="pagination">
-            <a href="#">首页</a>
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#"> > </a>
-            <a href="#">末页</a>
-        </div>
+                <dl class="answers-list">
+
+                    <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
+                    <dd class="date-time-answer"><span>miaojiahang</span>
+                        <span>回答：2</span>
+                        <span class="datetime">2016-05-30 11:43</span>
+                        <span class="agree-ok fr">10</span>
+                    </dd>
+                </dl>
+            </div>
+            </div>
     </div>
     <div class="aside-frame fr">
         <div class="profile-box">

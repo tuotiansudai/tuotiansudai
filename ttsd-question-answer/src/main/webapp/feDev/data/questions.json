@@ -1,9 +1,9 @@
 {
 	"css": {
-		"questions": "questions.css"
+		"main": "main.css"
 	},
 	"js": {
-		"questions": "questions.js"
+		"main": "main.js"
 	},
     "staticServer": "http://localhost:8080/",
 	"linkExchangeList": [{
