@@ -10,6 +10,7 @@ import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationIt
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
@@ -41,9 +42,6 @@ public class TransferServiceTest {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private InvestService investService;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -60,6 +58,9 @@ public class TransferServiceTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -239,7 +240,7 @@ public class TransferServiceTest {
 
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
-        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is("tes******"));
+        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser")));
         assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));
