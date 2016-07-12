@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.ask.repository.mapper.QuestionMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="questionResultMap" type="QuestionModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="question" property="question"/>
+        <result column="addition" property="addition"/>
+        <result column="tags" property="tags" typeHandler="com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler"/>
+        <result column="answers" property="answers"/>
+        <result column="approved" property="approved"/>
+        <result column="approved_by" property="approvedBy"/>
+        <result column="approved_time" property="approvedTime"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
+        insert into ask_question (login_name, question, addition, tags, answers, approved, approved_by, approved_time, created_time)
+        value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{approved}, #{approvedBy}, #{approvedTime}, now())
+    </insert>
+
+    <select id="findByLoginName" parameterType="string" resultMap="questionResultMap">
+        select * from ask_question where login_name = #{loginName}
+    </select>
+
+    <update id="update" parameterType="QuestionModel">
+        update ask_question set
+        login_name = #{loginName},
+        question = #{question},
+        addition = #{addition},
+        tags = #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler},
+        answers = #{answers},
+        approved = #{approved},
+        approved_by = #{approvedBy},
+        approved_time = #{approvedTime}
+        where id = #{id}
+    </update>
+</mapper>
