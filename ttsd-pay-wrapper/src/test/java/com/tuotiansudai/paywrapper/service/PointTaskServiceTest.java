@@ -74,23 +74,23 @@ public class PointTaskServiceTest {
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         assertThat(pointBillModels.size(), is(6));
-        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
-
-        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(1).getPoint(), is(2000L));
-
-        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(2).getPoint(), is(5000L));
-
-        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(3).getPoint(), is(10000L));
+        assertThat(pointBillModels.get(5).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(5).getPoint(), is(1000L));
 
         assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(4).getPoint(), is(50000L));
+        assertThat(pointBillModels.get(4).getPoint(), is(2000L));
 
-        assertThat(pointBillModels.get(5).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(5).getPoint(), is(100000L));
+        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(3).getPoint(), is(5000L));
+
+        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(2).getPoint(), is(10000L));
+
+        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(1).getPoint(), is(50000L));
+
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(100000L));
     }
 
     @Test
@@ -114,20 +114,20 @@ public class PointTaskServiceTest {
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         assertThat(pointBillModels.size(), is(5));
-        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(2000L));
+        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(4).getPoint(), is(2000L));
 
-        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(1).getPoint(), is(5000L));
+        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(3).getPoint(), is(5000L));
 
         assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
         assertThat(pointBillModels.get(2).getPoint(), is(10000L));
 
-        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(3).getPoint(), is(20000L));
+        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(1).getPoint(), is(20000L));
 
-        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(4).getPoint(), is(50000L));
+        assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
+        assertThat(pointBillModels.get(0).getPoint(), is(50000L));
     }
 
     @Test
