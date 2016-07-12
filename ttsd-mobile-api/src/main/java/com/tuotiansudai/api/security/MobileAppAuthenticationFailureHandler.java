@@ -52,6 +52,9 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         addLoginLog(request);
         String username = request.getParameter("j_username");
+        if(StringUtils.isEmpty(username)){
+            username = request.getParameter("mobile");
+        }
         ReturnMessage errorMsg ;
         if(exception instanceof DisabledException){
             errorMsg = ReturnMessage.USER_IS_DISABLED;
@@ -73,9 +76,18 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
 
     private void addLoginLog(HttpServletRequest request){
         String username = request.getParameter("j_username");
+        if(StringUtils.isEmpty(username)){
+            username = request.getParameter("mobile");
+        }
         String strSource = request.getParameter("j_source");
+        if(StringUtils.isEmpty(strSource)){
+            strSource = request.getParameter("source");
+        }
         Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
         String deviceId = request.getParameter("j_deviceId");
+        if(StringUtils.isEmpty(deviceId)){
+            deviceId = request.getParameter("deviceId");
+        }
         loginLogService.generateLoginLog(username, source, RequestIPParser.parse(request), deviceId, false);
     }
 

@@ -40,8 +40,8 @@
 
     <beans:bean id="loginFilter" class="com.tuotiansudai.api.security.MobileAppUsernamePasswordAuthenticationFilter">
         <beans:property name="authenticationManager" ref="authenticationManager"/>
-        <beans:property name="usernameParameter" value="j_username"/>
-        <beans:property name="passwordParameter" value="j_password"/>
+        <beans:property name="usernameParameter" value="mobile"/>
+        <beans:property name="passwordParameter" value="password"/>
         <beans:property name="authenticationSuccessHandler" ref="mobileAppAuthenticationSuccessHandler"/>
         <beans:property name="authenticationFailureHandler" ref="mobileAppAuthenticationFailureHandler"/>
     </beans:bean>
