@@ -54,7 +54,7 @@ public class PointController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/point");
         modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
-        modelAndView.addObject("latestThreePointBills", pointBillService.getPointBillPagination(loginName, 1, 3, new Date(0), new Date(), null));
+        modelAndView.addObject("latestThreePointBills", pointBillService.getPointBillPagination(loginName, 1, 3, new Date(0), new Date(), Lists.<PointBusinessType>newArrayList()));
         modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
         modelAndView.addObject("newbiePointTasks", pointTaskService.getNewbiePointTasks(loginName));
         modelAndView.addObject("advancedPointTasks", pointTaskService.getAdvancedPointTasks(loginName));
