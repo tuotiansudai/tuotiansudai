@@ -43,6 +43,16 @@ var config = [
 		route: '/category',
 		template: 'category',
 		data: 'questions'
+	},
+	{
+		route: '/qaAnswer',
+		template: 'my-qa-answer',
+		data: 'questions'
+	},
+	{
+		route: '/questionDetail',
+		template: 'question-detail',
+		data: 'questions'
 	}];
 
 

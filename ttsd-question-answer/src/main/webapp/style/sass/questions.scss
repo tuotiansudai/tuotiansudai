@@ -33,6 +33,7 @@
     color: #808080;
     height: auto;
     overflow: auto;
+
     &:nth-last-child(1) {
       margin-bottom: 0px;
       border-bottom-width: 0;
@@ -63,6 +64,19 @@
       }
       &.answer-button {
         margin-top:15px;
+      }
+      &.answer-button {
+        span {
+          background: #f1f6fa;
+          border:1px solid #e6e6e6;
+          color: #333;
+          padding: 5px 10px;
+          &.accept {
+            background: #ff9d1a;
+            border:1px solid #ff9d1a;
+            color: #fff;
+          }
+        }
       }
     }
   }
@@ -234,7 +248,7 @@
   .other-title {
     padding:10px 10px 10px 40px;
     color: #666;
-    @include border-color(#e5e5e5);
+    border-bottom:1px solid #e5e5e5;
   }
 }
 
