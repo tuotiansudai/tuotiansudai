@@ -72,6 +72,12 @@ public class LoanDto extends BaseDataDto implements Serializable {
     private String descriptionHtml;
 
     /***
+     * 抵押物类型
+     */
+    @NotEmpty
+    private PledgeType pledgeType;
+
+    /***
      * 最小投资金额
      ***/
     @NotEmpty
@@ -293,6 +299,14 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setDescriptionHtml(String descriptionHtml) {
         this.descriptionHtml = descriptionHtml;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 
     public String getMinInvestAmount() {

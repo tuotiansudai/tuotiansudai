@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.*;
@@ -237,6 +236,7 @@ public class LoanMapperTest {
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         fakeLoanModel.setCreatedTime(new Date());
         return fakeLoanModel;
     }

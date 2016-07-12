@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PledgeVehicleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="AbstractPledgeDetailResultMap" type="AbstractPledgeDetail">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="pledge_location" property="pledgeLocation"/>
+        <result column="estimate_amount" property="estimateAmount"/>
+        <result column="loan_amount" property="loanAmount"/>
+    </resultMap>
+
+    <resultMap id="PledgeVehicleResultMapper" type="PledgeVehicleModel" extends="AbstractPledgeDetailResultMap">
+        <result column="brand" property="brand"/>
+        <result column="model" property="model"/>
+    </resultMap>
+
+    <insert id="create" parameterType="PledgeVehicleModel">
+        INSERT INTO `aa`.`pledge_vehicle`
+        (id, loan_id, pledge_location, estimate_amount, loan_amount, brand, model)
+        VALUES
+        (#{id}, #{loanId}, #{pledgeLocation}, #{estimateAmount}, #{loanAmount}, #{brand}, #{model})
+    </insert>
+
+    <select id="getPledgeVehicleDetailByLoanId" resultMap="PledgeVehicleResultMapper">
+        SELECT
+        id, loan_id, pledge_location, estimate_amount, loan_amount, brand, model
+        FROM
+        `aa`.`pledge_vehicle`
+        WHERE
+        loan_id = #{loanId}
+    </select>
+
+</mapper>
