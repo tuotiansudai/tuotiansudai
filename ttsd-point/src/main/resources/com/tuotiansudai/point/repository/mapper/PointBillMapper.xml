@@ -32,7 +32,7 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessTypes.size() > 0 ">
+            <if test="businessTypes != null and businessTypes.size() > 0 ">
                 and business_type IN
                 <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
                     #{businessType}
@@ -53,7 +53,7 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessTypes.size() > 0">
+            <if test="businessTypes != null and businessTypes.size() > 0">
                 and business_type IN
                 <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
                     #{businessType}

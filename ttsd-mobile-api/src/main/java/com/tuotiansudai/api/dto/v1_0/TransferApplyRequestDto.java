@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -14,6 +15,8 @@ public class TransferApplyRequestDto extends BaseParamDto {
     private String transferInvestId;
     @NotEmpty(message = "0023")
     private String transferAmount;
+
+    private Source source;
 
     public TransferApplyRequestDto() {
     }
@@ -34,10 +37,19 @@ public class TransferApplyRequestDto extends BaseParamDto {
         this.transferAmount = transferAmount;
     }
 
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
     public TransferApplicationDto convertToTransferApplicationDto() {
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(Long.parseLong(this.transferInvestId));
         transferApplicationDto.setTransferAmount(AmountConverter.convertStringToCent(this.transferAmount));
+        transferApplicationDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         return transferApplicationDto;
     }
 }
