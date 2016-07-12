@@ -44,6 +44,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 input[type='checkbox'] {
   border:0!important;
 }
+input,textarea,select {
+  @include border-color(#e5e5e5);
+  width:calc(100% - 20px);
+  padding: 6px 10px;
+  font-size:14px;
+
+}
+.input-short {
+  width:100px;
+}
 a{
   cursor: pointer;
   color:nth($linkColor,1);
@@ -86,13 +96,7 @@ p {
     margin-bottom: 0;
   }
 }
-input,textarea,select {
-  @include border-color(#e5e5e5);
-  width:calc(100% - 20px);
-  padding: 6px 10px;
-  font-size:14px;
 
-}
 //@extend
 .auto-height {
   overflow: auto;
@@ -122,13 +126,9 @@ input,textarea,select {
 .pad-m {
   padding: 30px;
 }
-.pad-m-tb{
-  padding:10px 0;
+.pad-l-r-40 {
+  padding:0 40px;
 }
-.pad-s-tb{
-  padding:10px 30px;
-}
-
 .margin-top-10 {
   clear: both;
   margin-top:10px;

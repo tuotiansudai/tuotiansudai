@@ -11,6 +11,15 @@
     color: #ff7200;
   }
 }
+.tag {
+  background: #f1f6fa;
+  border:1px solid #e5e5e5;
+  border-radius: 18px;
+  line-height: 15px;
+  border-radius: 18px;
+  padding: 5px 18px;
+
+}
 .answers-box {
   height: auto;
   overflow: auto;
@@ -56,17 +65,6 @@
         margin-top:15px;
       }
     }
-    .tag {
-      background: #f1f6fa;
-      border:1px solid #e5e5e5;
-      border-radius: 18px;
-      line-height: 15px;
-      border-radius: 18px;
-      padding: 5px 18px;
-
-    }
-
-
   }
 }
 
@@ -106,7 +104,15 @@
     .borderBox {
       padding:0;
     }
-
+  }
+  .category-title {
+    border:1px solid #e5e5e5;
+    border-bottom-width: 0;
+    padding:5px 40px;
+    background: #fff;
+    span {
+      color: #ff7200;
+    }
   }
   .aside-frame {
     width:288px;
@@ -172,7 +178,7 @@
           width: 40%;
           float: left;
           margin-left: 6%;
-          border: 1px solid #ccc;
+          border: 1px solid #e6e6e6;
           margin-top: 10px;
           text-align: center;
           a {
@@ -192,7 +198,7 @@
     background: #f1f6fa;
     @include border-color(#e5e5e5);
     border-top-width:0;
-    padding:20px 40px;
+    padding:10px 40px;
     margin-bottom:10px;
     .form-answer-in {
       .text-area-error {
@@ -225,11 +231,70 @@
       margin-bottom: 40px;
     }
   }
-
   .other-title {
     padding:10px 10px 10px 40px;
     color: #666;
     @include border-color(#e5e5e5);
   }
+}
+
+.ask-question-box {
+  @include border-color(#e5e5e5);
+  background: #fff;
+  padding-bottom: 30px;
+  .m-title {
+    padding-left:40px;
+    border-bottom:1px solid #e5e5e5;
+  }
+  .ask-question-con {
+    padding-top:10px;
+
+
+    color: #666666;
+    textarea {
+      height:100px;
+    }
+    dl.ask-question-list {
+      dt {
+        line-height: 40px;
+        margin-left: 40px;
+        margin-right: 40px;
+      }
+      dd {
+        margin-left: 40px;
+        margin-right: 40px;
+        line-height: 20px;
+        &.dd-captcha {
+          margin-left:0;
+          padding-left:40px;
+          padding-top:20px;
+          border-top:1px solid #e5e5e5;
+        }
+        &.tag-list {
+          padding-top:20px;
+          span {
+            margin-right: 32px;
+            margin-bottom: 18px;
+            display: inline-block;
+            padding: 5px 0;
+            width: 65px;
+            text-align: center;
+            &.checked {
+              background: #ff9d1a;
+              border:1px solid #ff9d1a;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .ask-button {
+    margin-top:40px;
+    .btn {
+      padding: 5px 32px;
+    }
+  }
 
 }
+

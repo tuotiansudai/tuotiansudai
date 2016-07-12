@@ -38,6 +38,11 @@ var config = [
 		route: '/askQuestion',
 		template: 'ask-question',
 		data: 'questions'
+	},
+	{
+		route: '/category',
+		template: 'category',
+		data: 'questions'
 	}];
 
 
