@@ -49,7 +49,7 @@ public class MessageServiceTest {
         userMapper.create(creator);
 
         MessageModel manualMessageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
@@ -94,7 +94,7 @@ public class MessageServiceTest {
         userMapper.create(testUserModel);
 
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.NORMAL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), userModel.getLoginName());
         messageMapper.create(messageModel);
@@ -123,7 +123,7 @@ public class MessageServiceTest {
         originMessageDto.setTitle("editTitle");
         originMessageDto.setTemplate("editTitle");
         originMessageDto.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
-        originMessageDto.setUserGroups(Lists.newArrayList(MessageUserGroup.CHANNEL_USER));
+        originMessageDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
 
         messageService.createAndEditManualMessage(originMessageDto, 0);
         messageDto = messageService.getMessageByMessageId(originMessageDto.getId());

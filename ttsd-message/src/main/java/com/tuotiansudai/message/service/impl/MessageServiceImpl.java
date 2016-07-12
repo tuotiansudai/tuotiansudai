@@ -33,7 +33,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private final static String redisMessageReceivers = "message:manual-message:receivers";
+    public final static String redisMessageReceivers = "message:manual-message:receivers";
 
     private final static int EXPIRED_PERIOD = 30;
 
