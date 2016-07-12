@@ -1,11 +1,9 @@
 package com.tuotiansudai.client;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.exceptions.JedisException;
 
 @Component
 public class AppTokenRedisWrapperClient extends AbstractRedisWrapperClient {
@@ -15,39 +13,13 @@ public class AppTokenRedisWrapperClient extends AbstractRedisWrapperClient {
     @Value("${common.token.cache.db}")
     private int tokenRedisDb;
 
-    private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+    private <T> T execute(JedisAction<T> jedisAction) {
         Jedis jedis = null;
-        boolean broken = false;
         try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(tokenRedisDb);
+            jedis = getJedis(this.tokenRedisDb);
             return jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
         } finally {
-            closeResource(jedis, broken);
-        }
-    }
-
-    private void execute(JedisActionNoResult jedisAction) throws JedisException {
-        Jedis jedis = null;
-        boolean broken = false;
-        try {
-            jedis = getJedisPool().getResource();
-            if (StringUtils.isNotEmpty(getRedisPassword())) {
-                jedis.auth(getRedisPassword());
-            }
-            jedis.select(tokenRedisDb);
-            jedisAction.action(jedis);
-        } catch (JedisException e) {
-            broken = handleJedisException(e);
-            throw e;
-        } finally {
-            closeResource(jedis, broken);
+            closeResource(jedis);
         }
     }
 
@@ -60,11 +32,11 @@ public class AppTokenRedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public void setex(final String key, final int seconds, final String value) {
-        execute(new JedisActionNoResult() {
+    public String setex(final String key, final int seconds, final String value) {
+        return execute(new JedisAction<String>() {
             @Override
-            public void action(Jedis jedis) {
-                jedis.setex(key, seconds, value);
+            public String action(Jedis jedis) {
+                return jedis.setex(key, seconds, value);
             }
         });
     }
