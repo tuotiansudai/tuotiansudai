@@ -85,7 +85,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 @Override
                 public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
                     LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
-                    item.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -151,20 +150,17 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,firstInvest.getLoginName(),6));
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
                 achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName,firstInvest.getLoginName()));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName,maxInvest.getLoginName(),6));
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
                 achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName,maxInvest.getLoginName()));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,lastInvest.getLoginName(),6));
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
                 achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName,lastInvest.getLoginName()));
             }

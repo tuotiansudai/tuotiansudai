@@ -78,33 +78,8 @@ public class RandomUtils {
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
         }
-        String encryptMobile = investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + investUserMobile.substring(7);
+        String encryptMobile = encryptMiddleMobile(investUserMobile);
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
-    }
-
-    public String encryptLoginName(String loginName, String investorLoginName, int showLength, long investId) {
-        if (investorLoginName.equalsIgnoreCase(loginName)) {
-            return investorLoginName;
-        }
-
-        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investorLoginName);
-
-        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, generateLowerString(3) + RandomUtils.showChar(showLength));
-        }
-
-        String encryptLoginName = investorLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
-
-        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) :encryptLoginName;
-    }
-
-    public String encryptLoginName(String loginName, String encryLoginName, int showLength) {
-        if (encryLoginName.equalsIgnoreCase(loginName)) {
-            return loginName;
-        }
-        String encryptLoginName = encryLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
-
-        return encryptLoginName;
     }
 
     public String encryptMobile(String loginName, String encryptLoginName) {
