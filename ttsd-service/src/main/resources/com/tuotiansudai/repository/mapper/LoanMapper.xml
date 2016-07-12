@@ -20,7 +20,6 @@
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
         <result column="loan_amount" property="loanAmount"></result>
-        <result column="invest_fee_rate" property="investFeeRate"></result>
         <result column="min_invest_amount" property="minInvestAmount"></result>
         <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
         <result column="max_invest_amount" property="maxInvestAmount"></result>
@@ -70,8 +69,17 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, duration, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time, recheck_login_name, status, update_time)
-        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{duration}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName}, #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
+        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type,
+        periods, duration, description_text, description_html, base_rate, loan_amount, min_invest_amount,
+        invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id,
+        fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time,
+        verify_login_name, recheck_time, recheck_login_name, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber},
+        #{type}, #{periods}, #{duration}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount},
+        #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType},
+        #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime},
+        #{createdLoginName}, #{verifyTime}, #{verifyLoginName}, #{recheckTime}, #{recheckLoginName}, #{status},
+        #{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -83,37 +91,47 @@
     </select>
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
-        select * from (
-        select * from loan t
-        where 1=1
+        SELECT
+        *
+        FROM
+        loan temp
+        WHERE
+        1 = 1
+        and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="name !=null and name!=''">
-            and t.name = #{name}
+            and temp.name = #{name}
         </if>
         <if test="status != null">
-            and t.status = #{status}
+            and temp.status = #{status}
         </if>
         <if test="status == null">
-            and t.status != 'WAITING_VERIFY' and t.status != 'CANCEL'
+            and temp.status != 'WAITING_VERIFY' and temp.status != 'CANCEL'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
-                <![CDATA[ and (t.base_rate + t.activity_rate) >=  #{rateStart} ]]>
+                <![CDATA[ and (temp.base_rate + temp.activity_rate) >=  #{rateStart} ]]>
             </if>
             <if test="rateEnd ==0">
-                <![CDATA[ and (t.base_rate + t.activity_rate) >  #{rateStart} ]]>
+                <![CDATA[ and (temp.base_rate + temp.activity_rate) >  #{rateStart} ]]>
             </if>
 
         </if>
         <if test="rateEnd != 0">
-            <![CDATA[ and (t.base_rate + t.activity_rate) <=  #{rateEnd} ]]>
+            <![CDATA[ and (temp.base_rate + temp.activity_rate) <=  #{rateEnd} ]]>
         </if>
 
         <if test="durationStart != 0 and durationEnd != 0">
-            and t.duration BETWEEN #{durationStart} and #{durationEnd}
+            and temp.duration BETWEEN #{durationStart} and #{durationEnd}
         </if>
-        ) temp
-        order by CASE temp.product_type WHEN 'EXPERIENCE' THEN '1' ELSE '2' END ,
-        case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,case temp.activity_type when 'NEWBIE' then '1' else '2' end,temp.verify_time desc,temp.created_time desc
+        ORDER BY CASE temp.status
+        WHEN 'RAISING' THEN '1'
+        WHEN 'PREHEAT' THEN '2'
+        ELSE 3 END,
+        CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
 
@@ -155,15 +173,12 @@
         loan temp
         WHERE
         1 = 1
-        and temp.status in ('PREHEAT','RAISING','COMPLETE','REPAYING')
+        and temp.status not in ('WAITING_VERIFY','CANCEL')
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
         <if test="status != null">
             and temp.status = #{status}
-        </if>
-        <if test="status == null">
-            and temp.status != 'WAITING_VERIFY'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
@@ -176,25 +191,15 @@
         <if test="rateEnd != 0">
             <![CDATA[ and (temp.base_rate + temp.activity_rate) <=  #{rateEnd}]]>
         </if>
-        <if test="loanIsDisplayExperience == false">
-            and temp.product_type != 'EXPERIENCE'
-        </if>
         ORDER BY CASE temp.status
         WHEN 'RAISING' THEN '1'
         WHEN 'PREHEAT' THEN '2'
-        WHEN 'REPAYING' THEN '3'
-        WHEN 'COMPLETE' THEN '4'
-        WHEN 'OVERDUE' THEN '5'
-        ELSE '6' END,
-        CASE temp.status WHEN 'RAISING' THEN duration END asc,
-        CASE temp.status WHEN 'RAISING' THEN verify_time END DESC,
-        CASE temp.status WHEN 'RAISING' THEN created_time END DESC,
-        CASE temp.status WHEN 'PREHEAT' THEN duration END,
-        CASE temp.status WHEN 'PREHEAT' THEN verify_time END DESC,
-        CASE temp.status WHEN 'PREHEAT' THEN created_time END DESC,
-        CASE temp.status WHEN 'REPAYING' THEN recheck_time END DESC,
-        CASE temp.status WHEN 'COMPLETE' THEN recheck_time END DESC,
-        CASE temp.status WHEN 'OVERDUE' THEN recheck_time END DESC
+        ELSE 3 END,
+        CASE  WHEN temp.activity_type = 'NEWBIE' and temp.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT') THEN duration END,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
+        CASE  WHEN temp.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN temp.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
         limit #{index} , 10
     </select>
 
@@ -332,9 +337,6 @@
             <if test="loanAmount !=null and loanAmount!=''">
                 loan_amount = #{loanAmount},
             </if>
-            <if test="investFeeRate !=null and investFeeRate!=''">
-                invest_fee_rate = #{investFeeRate},
-            </if>
             <if test="minInvestAmount !=null and minInvestAmount!=''">
                 min_invest_amount = #{minInvestAmount},
             </if>
@@ -385,6 +387,93 @@
             </if>
             <if test="status !=null">
                 status = #{status},
+            </if>
+            <if test="firstInvestAchievementId !=null">
+                first_invest_achievement_id = #{firstInvestAchievementId},
+            </if>
+            <if test="maxAmountAchievementId !=null">
+                max_amount_achievement_id = #{maxAmountAchievementId},
+            </if>
+            <if test="lastInvestAchievementId !=null">
+                last_invest_achievement_id = #{lastInvestAchievementId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateWithoutStatus" parameterType="com.tuotiansudai.repository.model.LoanModel">
+        update loan
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="agentLoginName !=null and agentLoginName!=''">
+                agent_login_name = #{agentLoginName},
+            </if>
+            <if test="loanerLoginName !=null and loanerLoginName!=''">
+                loaner_login_name = #{loanerLoginName},
+            </if>
+            <if test="loanerUserName !=null and loanerUserName!=''">
+                loaner_user_name = #{loanerUserName},
+            </if>
+            <if test="loanerIdentityNumber !=null and loanerIdentityNumber!=''">
+                loaner_identity_number= #{loanerIdentityNumber},
+            </if>
+            <if test="type !=null">
+                type = #{type},
+            </if>
+            <if test="periods !=null and periods!=''">
+                periods = #{periods},
+                duration = #{duration},
+            </if>
+            <if test="descriptionText !=null and descriptionText!=''">
+                description_text = #{descriptionText},
+            </if>
+            <if test="descriptionHtml !=null and descriptionHtml!=''">
+                description_html = #{descriptionHtml},
+            </if>
+            <if test="loanAmount !=null and loanAmount!=''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="minInvestAmount !=null and minInvestAmount!=''">
+                min_invest_amount = #{minInvestAmount},
+            </if>
+            <if test="investIncreasingAmount !=null and investIncreasingAmount!=''">
+                invest_increasing_amount = #{investIncreasingAmount},
+            </if>
+            <if test="maxInvestAmount !=null and maxInvestAmount!=''">
+                max_invest_amount = #{maxInvestAmount},
+            </if>
+            <if test="activityType !=null">
+                activity_type = #{activityType},
+            </if>
+            <if test="productType != null">
+                product_type = #{productType},
+            </if>
+            <if test="activityRate !=null">
+                activity_rate = #{activityRate},
+            </if>
+            <if test="baseRate != null and baseRate != ''">
+                base_rate = #{baseRate},
+            </if>
+            <if test="contractId !=null and contractId!=''">
+                contract_id = #{contractId},
+            </if>
+            <if test="fundraisingStartTime !=null">
+                fundraising_start_time = #{fundraisingStartTime},
+            </if>
+            <if test="fundraisingEndTime !=null">
+                fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="raisingCompleteTime !=null">
+                raising_complete_time = #{raisingCompleteTime},
+            </if>
+            <if test="showOnHome !=null">
+                show_on_home = #{showOnHome},
             </if>
             <if test="firstInvestAchievementId !=null">
                 first_invest_achievement_id = #{firstInvestAchievementId},
@@ -488,12 +577,12 @@
         *
         FROM
         loan
-        WHERE 1=1
+        WHERE 1=1 and loan.product_type != 'EXPERIENCE'
         <if test="loanStatus.name() == 'RAISING'">
             and loan.status in ('RAISING','PREHEAT')
         </if>
         <if test="loanStatus.name() == 'COMPLETE'">
-            and loan.status in ('COMPLETE','REPAYING')
+            and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
         </if>
 
         <if test="isShowNewbieLoan == false">
@@ -502,23 +591,20 @@
         <if test="isShowNewbieLoan == true">
             and  <![CDATA[ loan.activity_type = 'NEWBIE' ]]>
         </if>
-        <if test="isShowExperienceLoan == false">
-            and loan.product_type != 'EXPERIENCE'
+        <if test="productType != null">
+            and  loan.product_type = #{productType}
+        </if>
+        <if test="productType == null">
+            and  loan.product_type != 'EXPERIENCE'
         </if>
         ORDER BY CASE loan.status
         WHEN 'RAISING' THEN '1'
-        WHEN 'PREHEAT' THEN '2'
-        WHEN 'REPAYING' THEN '3'
-        WHEN 'COMPLETE' THEN '4'
-        ELSE '5' END,
-        CASE loan.status WHEN 'RAISING' THEN duration END asc,
-        CASE loan.status WHEN 'RAISING' THEN verify_time END DESC,
-        CASE loan.status WHEN 'RAISING' THEN created_time END DESC,
-        CASE loan.status WHEN 'PREHEAT' THEN duration END,
-        CASE loan.status WHEN 'PREHEAT' THEN verify_time END DESC,
-        CASE loan.status WHEN 'PREHEAT' THEN created_time END DESC,
-        CASE loan.status WHEN 'REPAYING' THEN recheck_time END DESC,
-        CASE loan.status WHEN 'COMPLETE' THEN recheck_time END DESC
+        WHEN 'PREHEAT' THEN '2' END,
+        CASE  WHEN loan.activity_type = 'NEWBIE' and loan.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT') THEN duration END,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
     </select>
 
     <select id="findLoanAchievement" resultMap="loanAchievementView" parameterType="map">
@@ -646,6 +732,31 @@
     </select>
 
     <select id="findByProductType" resultMap="loanResultMap">
-        select * from loan where product_type = #{productType}
+        select * from loan
+        <where>
+            <if test="productTypeList != null ">
+                and loan.product_type IN
+                <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                    #{productType}
+                </foreach>
+            </if>
+            <if test="loanStatus.name() == 'RAISING'">
+                and loan.status in ('RAISING','PREHEAT')
+            </if>
+            <if test="loanStatus.name() == 'COMPLETE'">
+                and loan.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE')
+            </if>
+            <if test="activityType !=null ">
+                and activity_type = #{activityType}
+            </if>
+        </where>
+        ORDER BY CASE loan.status
+        WHEN 'RAISING' THEN '1'
+        WHEN 'PREHEAT' THEN '2' END,
+        CASE  WHEN loan.activity_type = 'NEWBIE' and loan.status in ('RAISING','PREHEAT') THEN '1' ELSE 2 END,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT') THEN duration END,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN verify_time END DESC,
+        CASE  WHEN loan.status in ('RAISING','PREHEAT','RECHECK') THEN created_time END DESC,
+        CASE  WHEN loan.status in ('REPAYING','OVERDUE','COMPLETE') THEN recheck_time END DESC
     </select>
 </mapper>

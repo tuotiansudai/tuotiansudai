@@ -3,7 +3,7 @@ import ajax from 'utils/ajax';
 
 class Praise extends React.Component {
 	static defaultProps = {
-		id: '',
+		id: undefined,
 		likeCount: 0,
 		className: ''
 	};
@@ -24,6 +24,9 @@ class Praise extends React.Component {
 		}
 	}
 	tapHandler() {
+		if (this.props.id === undefined) {
+			return false;
+		}
 		if (this.state.isLike) {
 			return false;
 		}

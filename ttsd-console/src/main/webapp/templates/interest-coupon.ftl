@@ -51,9 +51,9 @@
             <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS'] />
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'EXCHANGER' && userGroup.name() != 'WINNER'
-                            && userGroup.name() != 'EXPERIENCE_INVEST_SUCCESS' && userGroup.name() != 'EXPERIENCE_REPAY_SUCCESS'>
+                        <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
                         </#if>
                     </#list>

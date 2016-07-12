@@ -8,7 +8,12 @@
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
-        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
+        <beans:property name="accessDeniedExceptionRedirect">
+            <beans:map>
+                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
+            </beans:map>
+        </beans:property>
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>
@@ -42,6 +47,7 @@
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
         <intercept-url pattern="/upload/**" access="permitAll()"/>
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
+        <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login/sign-in" access="isAnonymous()"/>
@@ -97,6 +103,7 @@
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
+                <beans:value>/activity/hero-ranking</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

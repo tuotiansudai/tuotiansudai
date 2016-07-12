@@ -22,6 +22,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="trading_time" property="tradingTime"/>
         <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
+        <result column="invest_fee_rate" property="investFeeRate"/>
     </resultMap>
     
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
@@ -46,6 +47,13 @@
         <result column="city" property="city"></result>
     </resultMap>
 
+    <resultMap id="heroRankingView" type="HeroRankingView">
+        <result column="login_name" property="loginName"/>
+        <result column="sumAmount" property="sumAmount"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+
     <resultMap id="investDataView" type="InvestDataView">
         <result column="productName" property="productName"></result>
         <result column="totalInvestAmount" property="totalInvestAmount"></result>
@@ -68,12 +76,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -89,7 +97,8 @@
         created_time = #{createdTime},
         updated_time = now(),
         trading_time = #{tradingTime},
-        achievements = #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}
+        achievements = #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler},
+        invest_fee_rate = #{investFeeRate}
         where id = #{id}
     </update>
 
@@ -257,7 +266,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -284,7 +293,13 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
@@ -304,7 +319,13 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
     </select>
@@ -329,7 +350,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -360,7 +381,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -383,7 +404,7 @@
 
     <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
-        from invest
+        from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
     </select>
@@ -464,6 +485,63 @@
         select * from invest where loan_id = #{loanId} and login_name = #{loginName} and status = 'SUCCESS'
     </select>
 
+    <select id="findHeroRankingByTradingTime" parameterType="map" resultMap="heroRankingView">
+        SELECT
+            invest.login_name,
+            SUM(invest.amount) sumAmount,
+            account.user_name,
+            user.mobile
+        FROM
+            invest
+        INNER JOIN
+            account ON invest.login_name = account.login_name
+        INNER JOIN
+            user ON invest.login_name = user.login_name
+        WHERE
+            invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+        AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
+        AND invest.trading_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+        AND NOT EXISTS
+            (   SELECT
+                  1
+                FROM
+                  transfer_application ta
+                WHERE
+                  ta.login_name = invest.login_name
+                AND ta.application_time between #{activityBeginTime} and #{tradingTime}
+            )
+        GROUP BY login_name , account.user_name , user.mobile
+        ORDER BY sumAmount DESC , MAX(invest.trading_time)
+        LIMIT 0 , 20;
+    </select>
+
+    <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
+        SELECT
+          rr.`referrer_login_name` AS login_name,
+          SUM(t.`amount`) AS sumAmount,
+          a.`user_name`,
+          u.`mobile`
+        FROM
+          referrer_relation rr
+          JOIN invest t
+            ON rr.`login_name` = t.`login_name`
+            AND t.`status` = 'SUCCESS'
+            AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
+            AND t.`trading_time` BETWEEN #{activityBeginTime}
+            AND #{activityEndTime}
+          JOIN account a
+            ON rr.`referrer_login_name` = a.`login_name`
+          JOIN user u
+            ON rr.`referrer_login_name` = u.`login_name`
+        WHERE rr.`level` = 1
+        GROUP BY rr.`referrer_login_name`,
+          a.`user_name`,
+          u.`mobile`
+        ORDER BY SUM(t.`amount`) DESC,
+          MAX(t.`trading_time`)
+        LIMIT #{index}, #{pageSize}
+    </select>
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>
@@ -473,13 +551,19 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
-            and loan.status = #{loanStatus}
+        <if test="loanStatus.name() == 'COMPLETE' ">
+            and (loan.status = #{loanStatus}
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and (loan.status in ('REPAYING','OVERDUE')
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
@@ -490,8 +574,11 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        <if test="loanStatus.name() != 'RAISING' ">
+        <if test="loanStatus.name() == 'COMPLETE' ">
             and loan.status = #{loanStatus}
+        </if>
+        <if test="loanStatus.name() == 'REPAYING' ">
+            and loan.status in ('REPAYING','OVERDUE')
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK')
@@ -727,6 +814,17 @@
                     AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
                     DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
                 )
+    </select>
+
+    <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
+        and i.status = 'SUCCESS'
+        <if test="productTypeList != null ">
+            and l.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
     </select>
 
 </mapper>

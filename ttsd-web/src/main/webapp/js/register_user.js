@@ -28,9 +28,8 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
-
-    $checkbox.on('click',function(event) {
-        if(event.target.tagName.toUpperCase()=='A') {
+    $checkbox.on('click', function (event) {
+        if (event.target.tagName.toUpperCase() == 'A') {
             return;
         }
         var $this=$(this),
@@ -49,7 +48,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             agreementValid=true;
         }
         checkInputValid();
-
     });
     $referrerOpen.on('click',function() {
         var $this=$(this),
@@ -59,14 +57,13 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         checkOption=$this.next('li').hasClass('hide');
         iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
         if($referrer.is(':hidden')) {
-            $referrer.val('');
-            $referrer.removeClass('error').addClass('valid');
-            referrerError.html('').hide();
             referrerValidBool=true;
-            checkInputValid();
         }
+        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+            referrerValidBool=false;
+        }
+        checkInputValid();
     });
-
     showAgreement.click(function () {
         layer.open({
             type: 1,
@@ -125,7 +122,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     if (data.status && !data.isRestricted) {
                         layer.closeAll();
                         var seconds = 60
-                         countTimer = setInterval(function () {
+                        countTimer = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('disabledButton').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(countTimer);
@@ -233,15 +230,27 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                     fetchCaptchaElement.prop('disabled', false);
                 }
             }
+        },
+        submitHandler: function (form) {
+
+            if($referrer.hasClass('error')) {
+                $referrerOpen.trigger('click');
+                referrerError.html('推荐人不存在').show();
+                return false;
+            }
+            else {
+                form.submit();
+            }
         }
     });
-
     function checkInputValid(event) {
         loginNameValid=$loginName.hasClass('valid');
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
-
-        if(loginNameValid && mobileValid && passwordValid && captchaValid && referrerValidBool && agreementValid) {
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        if(referrerValidBool && loginNameValid && mobileValid && passwordValid && captchaValid && agreementValid) {
             $registerSubmit.prop('disabled',false);
         }
         else {
@@ -316,8 +325,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             deferred.reject();
             loginNameValid=false;
         }
-        checkInputValid();
-
         return deferred.state() == "resolved" ? true : false;
     },'用户名已存在');
 
@@ -361,7 +368,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 type: 'GET',
                 dataType: 'json',
                 async:false,
-                contentType: 'application/json; charset=UTF-8',
+                contentType: 'application/json; charset=UTF-8'
             })
                 .done(function (res) {
                    var  checkValid=res.data.status;
@@ -391,6 +398,5 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             referrerValidBool=true;
         }
         checkInputValid();
-
     });
 });

@@ -11,14 +11,14 @@ import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-@Component
+@Service
 public class MobileAppTokenProvider {
 
     private int tokenExpiredSeconds = 3600;
@@ -51,11 +51,6 @@ public class MobileAppTokenProvider {
         try {
             BaseParamDto dto = objectMapper.readValue(inputStream, BaseParamDto.class);
             BaseParam baseParam = dto.getBaseParam();
-            log.debug(MessageFormat.format("[MobileAppTokenProvider][getToken] baseParam:(userId:{0} phoneNum:{1} token:{2} " +
-                            "platform:{3} appVersion:{4} osVersion:{5} deviceId:{6} deviceModel:{7} screenW:{8} screenH:{9} channel: {10})",
-                    baseParam.getUserId(), baseParam.getPhoneNum(), baseParam.getToken(), baseParam.getPlatform(),
-                    baseParam.getAppVersion(), baseParam.getOsVersion(), baseParam.getDeviceId(), baseParam.getDeviceModel(),
-                    baseParam.getScreenW(), baseParam.getScreenH(), baseParam.getChannel()));
             return baseParam.getToken();
         } catch (IOException e) {
             e.printStackTrace();

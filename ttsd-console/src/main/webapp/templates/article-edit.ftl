@@ -31,33 +31,43 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">缩略图: </label>
                 <div class="col-sm-4 ">
-                    <input type="text" name="thumbPicture" value="<#if dto??>${dto.thumbPicture!}</#if>" readonly class="form-control article-thumbPicture" placeholder="" datatype="*" errormsg="缩略图不能为空">
-                    <div class="thumbPictureImage">
-                        <#if dto??&&dto.thumbPicture??>
-                            <img style="width:100%" src="/upload/${dto.thumbPicture!}" alt="缩略图"/>
-                        </#if>
-                    </div>
+                    <input type="text" name="thumbPicture" value="<#if dto??>${dto.thumbPicture!}</#if>" readonly class="form-control article-thumbPicture"
+                           placeholder="" datatype="*" errormsg="缩略图不能为空" >
+
                 </div>
                 <div class="col-sm-4 thumbPicture">
-                    <input type="file" name="thumbPictureUrl"/>
+                    <input type="file" name="thumbPictureUrl" imageWidth="140" imageHeight="140"/>
+                </div>
+                <div class="col-sm-4 text-danger">
+                    (图片大小为:140px * 140px)
                 </div>
 
 
             </div>
 
+            <div class="thumbPictureImage">
+                <#if dto??&&dto.thumbPicture??>
+                    <img style="width:100%" src="/${dto.thumbPicture!}" alt="缩略图"/>
+                </#if>
+            </div>
+
             <div class="form-group">
                 <label class="col-sm-1 control-label">展示图: </label>
                 <div class="col-sm-4">
-                    <input type="text" name="showPicture" value="<#if dto??>${dto.showPicture!}</#if>" readonly class="form-control article-showPicture" placeholder="" datatype="*" errormsg="展示图不能为空">
-                    <div class="showPictureImage">
-                        <#if dto??&&dto.showPicture??>
-                            <img style="width:100%" src="/upload/${dto.showPicture!}" alt="展示图"/>
-                        </#if>
-                    </div>
+                    <input type="text" name="showPicture" value="<#if dto??>${dto.showPicture!}</#if>" readonly class="form-control article-showPicture"
+                           placeholder="" datatype="*" errormsg="展示图不能为空" imageWidth="750" imageHeight="340">
                 </div>
                 <div class="col-sm-4 showPicture">
-                    <input type="file" name="showPictureUrl"/>
+                    <input type="file" name="showPictureUrl" imageWidth="750" imageHeight="340"/>
                 </div>
+                <div class="col-sm-4 text-danger">
+                       (图片大小为:750px * 340px)
+                </div>
+            </div>
+            <div class="showPictureImage">
+                <#if dto??&&dto.showPicture??>
+                    <img style="width:100%" src="/${dto.showPicture!}" alt="展示图"/>
+                </#if>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">文章来源: </label>

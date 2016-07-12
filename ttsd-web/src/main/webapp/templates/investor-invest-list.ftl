@@ -72,6 +72,9 @@
                                 {{if $value.achievement=='MAX_AMOUNT'}}
                                 <i class="max-icon"></i>
                                 {{/if}}
+                                {{if $value.extraRate !== null}}
+                                <i class="extra-rate" data-benefit="{{$value.extraRate * 100}}"></i>
+                                {{/if}}
                             {{/if}}
                         </span>
                         <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
@@ -79,27 +82,27 @@
                     <td>
                         {{$value.amount}}
                         {{if $value.productType=='EXPERIENCE'}}
-                            体验金
+                        体验金
                         {{/if}}
                     </td>
                     <td>{{$value.createdTime}}</td>
                     <td>{{$value.status}}</td>
                     <td>
                         {{if $value.productType=='EXPERIENCE'}}
-                            {{$value.nextRepayAmount}}(现金红包)
+                        {{$value.nextRepayAmount}}(现金红包)
                         {{else}}
-                            {{if $value.nextRepayDate}}
-                            {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
-                            {{else}}
-                            --
-                            {{/if}}
+                        {{if $value.nextRepayDate}}
+                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                        {{else}}
+                        --
+                        {{/if}}
                         {{/if}}
                     </td>
                     <td>
                     {{if $value.investRepayExist}}
-                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a>
+                        <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a>
                         {{if $value.productType!='EXPERIENCE'}}
-                            <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank"> | 合同</a>
+                        <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank"> | 合同</a>
                         {{/if}}
                     {{else}}
                     --
@@ -113,8 +116,8 @@
             </tbody>
         </table>
     </script>
-        
-    
+
+
     <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
     </div>
 </div>

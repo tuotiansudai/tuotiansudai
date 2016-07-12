@@ -17,6 +17,7 @@ env.roledefs = {
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
+    'activity': ['sanya']
 }
 
 
@@ -31,6 +32,7 @@ def migrate():
 def mk_war():
     local('/usr/local/bin/paver jcversion')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
@@ -46,7 +48,7 @@ def mk_worker_zip():
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
-
+    local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
 
 def build():
     mk_war()
@@ -64,10 +66,12 @@ def compile():
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
         sudo('unzip static_api.zip -d static')
+        sudo('unzip static_activity.zip -d static')
         sudo('service nginx restart')
 
 
@@ -128,6 +132,15 @@ def deploy_web():
     sudo('service tomcat start')
 
 
+@roles('activity')
+@parallel
+def deploy_activity():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sms)
@@ -136,6 +149,7 @@ def deploy_all():
     execute(deploy_worker)
     execute(deploy_api)
     execute(deploy_web)
+    execute(deploy_activity)
 
 
 def pre_deploy():
@@ -152,6 +166,11 @@ def all():
 def web():
     pre_deploy()
     execute(deploy_web)
+    execute(deploy_static)
+
+def activity():
+    pre_deploy()
+    execute(deploy_activity)
     execute(deploy_static)
 
 
@@ -173,6 +192,10 @@ def sms():
 def worker():
     pre_deploy()
     execute(deploy_worker)
+
+def pay():
+    pre_deploy()
+    execute(deploy_pay)
 
 
 def get_30days_before(date_format="%Y-%m-%d"):
@@ -196,6 +219,13 @@ def remove_nginx_logs():
 @roles('portal')
 @parallel
 def remove_web_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
+@roles('activity')
+@parallel
+def remove_activity_logs():
     remove_tomcat_logs()
     remove_nginx_logs()
 
@@ -233,19 +263,79 @@ def remove_old_logs():
     Remove logs which was generated 30 days ago
     """
     execute(remove_web_logs)
+    execute(remove_activity_logs)
     execute(remove_pay_logs)
     execute(remove_api_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
 
 
-@roles('portal', 'pay', 'worker', 'api', 'cms')
+@roles('pay')
 @parallel
-def restart_logstash_service():
+def restart_logstash_service_for_pay():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
     run("service logstash restart")
+
+
+@roles('worker')
+@parallel
+def restart_logstash_service_for_worker():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('cms')
+@parallel
+def restart_logstash_service_for_cms():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('portal')
+@parallel
+def restart_logstash_service_for_portal():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('api')
+@parallel
+def restart_logstash_service_for_api():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+@roles('activity')
+@parallel
+def restart_logstash_service_for_activity():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
+def restart_logstash(service):
+    """
+    Usage: fab restart_logstash:web
+    """
+    def get_password():
+        with open('/workspace/ci/def', 'rb') as f:
+            return f.readline().strip()
+    env.password = get_password()
+    func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
+           'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
+           'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity}.get(service)
+    execute(func)
 
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
