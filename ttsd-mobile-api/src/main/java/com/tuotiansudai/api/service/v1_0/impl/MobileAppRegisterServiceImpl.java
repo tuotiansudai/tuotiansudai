@@ -108,8 +108,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     @Override
     public BaseResponseDto mobileNumberIsExist(MobileIsAvailableRequestDto requestDto) {
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
-        return mobileIsExist ? new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg()) :
-                new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        return mobileIsExist ? new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg()) :
+                new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
     }
 
 }

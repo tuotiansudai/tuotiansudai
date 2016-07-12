@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-public class ImageCaptchaRequestDto extends BaseParam {
+public class ImageCaptchaRequestDto extends BaseParamDto {
     private String type;
 
     public String getType() {

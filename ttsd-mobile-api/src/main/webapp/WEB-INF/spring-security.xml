@@ -69,7 +69,8 @@
         <intercept-url pattern="/api/js/**" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
-
+        <intercept-url pattern="/v1.0/get/mobile-is-available" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/show-image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />
