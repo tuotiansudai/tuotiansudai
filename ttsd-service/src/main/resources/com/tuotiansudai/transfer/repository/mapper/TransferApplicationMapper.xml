@@ -22,6 +22,7 @@
         <result column="transfer_time" property="transferTime"></result>
         <result column="application_time" property="applicationTime"></result>
         <result column="left_period" property="leftPeriod"></result>
+        <result column="source" property="source"></result>
     </resultMap>
 
     <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
@@ -57,8 +58,8 @@
     </resultMap>
 
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
-        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
-        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period,source)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod}, #{source})
     </insert>
 
     <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">

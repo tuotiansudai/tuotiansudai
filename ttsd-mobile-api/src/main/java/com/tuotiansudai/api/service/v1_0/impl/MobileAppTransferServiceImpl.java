@@ -77,6 +77,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
     public BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
+        investDto.setNoPassword(true);
         String code = "";
         String message = "";
         try {
