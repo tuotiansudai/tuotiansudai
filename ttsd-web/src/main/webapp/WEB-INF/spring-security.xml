@@ -49,9 +49,10 @@
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
         <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
-        <intercept-url pattern="/login/**" access="isAnonymous()"/>
+
         <intercept-url pattern="/login/sign-in" access="isAnonymous()"/>
         <intercept-url pattern="/login/sign-out" access="not isAnonymous()"/>
+        <intercept-url pattern="/login/**" access="isAnonymous()"/>
 
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 

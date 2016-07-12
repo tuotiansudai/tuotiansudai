@@ -67,7 +67,11 @@ public class SignInClient extends BaseClient {
     private final static String SIGN_OUT_URL = "/logout";
 
     public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
-        RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).add("source", dto.getSource()).add("deviceId", dto.getDeviceId()).build();
+        FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).add("source", dto.getSource());
+        if (StringUtils.isNotEmpty(dto.getDeviceId())) {
+            formEncodingBuilder.add("deviceId", dto.getDeviceId());
+        }
+        RequestBody requestBody = formEncodingBuilder.build();
         return send(oldSessionId, SIGN_IN_URL, requestBody);
     }
 

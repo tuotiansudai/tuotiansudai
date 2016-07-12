@@ -22,7 +22,7 @@
             </li>
         <@global.isNotAnonymous>
             <li><a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.username" /></a></li>
-            <li><a id="logout-link" href="/login/sign-out" class="logout">退出</a>
+            <li><a id="logout-link" href="javascript:void(0);" class="logout">退出</a>
                 <form id="logout-form" class="logout-form" action="/login/sign-out" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
