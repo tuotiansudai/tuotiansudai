@@ -80,7 +80,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
             long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask);
             userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
-            pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
+            pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
         }
 
         logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));

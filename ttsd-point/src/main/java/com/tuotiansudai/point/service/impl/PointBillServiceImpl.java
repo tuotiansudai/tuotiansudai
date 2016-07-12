@@ -68,31 +68,6 @@ public class PointBillServiceImpl implements PointBillService {
         accountMapper.update(accountModel);
     }
 
-    private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
-        switch (businessType) {
-            case SIGN_IN:
-                return MessageFormat.format("{0} 签到", new DateTime().toString("yyyy-MM-dd"));
-            case EXCHANGE:
-                CouponModel couponModel = couponMapper.findById(orderId);
-                switch (couponModel.getCouponType()) {
-                    case INTEREST_COUPON:
-                        double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-                        return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
-                    case INVEST_COUPON:
-                        return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
-                    default:
-                        return null;
-                }
-            case INVEST:
-                LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
-                return MessageFormat.format("投资项目：{0}", loanModel.getName());
-            case LOTTERY:
-                return PointBusinessType.LOTTERY.getDescription();
-        }
-
-        return null;
-    }
-
     @Override
     public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
                                                                                  int index,
@@ -147,6 +122,31 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     public long getPointBillCountByLoginName(String loginName){
         return pointBillMapper.findCountPointBillByLoginName(loginName);
+    }
+
+    private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
+        switch (businessType) {
+            case SIGN_IN:
+                return MessageFormat.format("{0} 签到", new DateTime().toString("yyyy-MM-dd"));
+            case EXCHANGE:
+                CouponModel couponModel = couponMapper.findById(orderId);
+                switch (couponModel.getCouponType()) {
+                    case INTEREST_COUPON:
+                        double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+                        return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
+                    case INVEST_COUPON:
+                        return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+                    default:
+                        return null;
+                }
+            case INVEST:
+                LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
+                return MessageFormat.format("投资项目：{0}", loanModel.getName());
+            case LOTTERY:
+                return PointBusinessType.LOTTERY.getDescription();
+        }
+
+        return null;
     }
 }
 

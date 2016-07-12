@@ -115,7 +115,7 @@ public class PointTaskAspect {
         AgreementBusinessType agreementBusinessType = (AgreementBusinessType) joinPoint.getArgs()[1];
 
         if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
-            pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+            pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
         }
 
         logger.debug("after returning agreement, point task aspect completed");
@@ -130,7 +130,7 @@ public class PointTaskAspect {
         boolean isTurn = (boolean) joinPoint.getArgs()[1];
 
         if (isTurn) {
-            pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
+            pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, loginName);
         }
 
         logger.debug("after returning turn on no password invest, point task aspect completed");
@@ -143,7 +143,7 @@ public class PointTaskAspect {
 
         String loginName = (String) joinPoint.getArgs()[0];
 
-        pointTaskService.completeNewbieTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
+        pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
 
         logger.debug("after returning turn on auto invest, point task aspect completed");
     }

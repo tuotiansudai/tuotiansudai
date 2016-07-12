@@ -99,7 +99,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
 
             $beanDetail.on('click', function (event) {
                 event.preventDefault();
-                $('.column-title .title-navli:eq(2)').trigger('click');
+                $('.column-title .title-navli:eq(3)').trigger('click');
             });
 
             var today = moment().format('YYYY-MM-DD'), // 今天
