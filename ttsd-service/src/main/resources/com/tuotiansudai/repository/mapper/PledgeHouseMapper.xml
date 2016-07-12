@@ -14,7 +14,7 @@
         <result column="loan_amount" property="loanAmount"/>
     </resultMap>
 
-    <resultMap id="PledgeHouseResultMapper" type="PledgeHouseModel" extends="AbstractPledgeDetailResultMap">
+    <resultMap id="PledgeHouseResultMap" type="PledgeHouseModel" extends="AbstractPledgeDetailResultMap">
         <result column="square" property="square"/>
         <result column="property_card_id" property="propertyCardId"/>
         <result column="estate_register_id" property="estateRegisterId"/>
@@ -29,9 +29,9 @@
         #{estateRegisterId}, #{authenticAct})
     </insert>
 
-    <select id="getPledgeHouseDetailByLoanId" resultMap="PledgeHouseResultMapper">
+    <select id="getPledgeHouseDetailByLoanId" resultMap="PledgeHouseResultMap">
         SELECT
-        id, loan_id, pledge_location, estimate_amount, loan_amount, square, property_card_id, estate_register_id, authentic_act
+        *
         FROM
         `aa`.`pledge_house`
         WHERE

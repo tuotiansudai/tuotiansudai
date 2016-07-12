@@ -14,7 +14,7 @@
         <result column="loan_amount" property="loanAmount"/>
     </resultMap>
 
-    <resultMap id="PledgeVehicleResultMapper" type="PledgeVehicleModel" extends="AbstractPledgeDetailResultMap">
+    <resultMap id="PledgeVehicleResultMap" type="PledgeVehicleModel" extends="AbstractPledgeDetailResultMap">
         <result column="brand" property="brand"/>
         <result column="model" property="model"/>
     </resultMap>
@@ -26,9 +26,9 @@
         (#{id}, #{loanId}, #{pledgeLocation}, #{estimateAmount}, #{loanAmount}, #{brand}, #{model})
     </insert>
 
-    <select id="getPledgeVehicleDetailByLoanId" resultMap="PledgeVehicleResultMapper">
+    <select id="getPledgeVehicleDetailByLoanId" resultMap="PledgeVehicleResultMap">
         SELECT
-        id, loan_id, pledge_location, estimate_amount, loan_amount, brand, model
+        *
         FROM
         `aa`.`pledge_vehicle`
         WHERE

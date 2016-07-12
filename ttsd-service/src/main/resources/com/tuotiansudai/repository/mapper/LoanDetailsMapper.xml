@@ -21,7 +21,7 @@
 
     <select id="getLoanDetailsByLoanId" resultMap="LoanDetailsResultMap">
         SELECT
-        id, loan_id, declaration
+        *
         FROM
         `aa`.`loan_details`
         WHERE

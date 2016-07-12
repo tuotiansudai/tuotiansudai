@@ -30,7 +30,7 @@
 
     <select id="getLoanerDetailByLoanId" resultMap="LoanerDetailsResultMap">
         SELECT
-        id, loan_id, login_name, user_name, gender, age, identify_number, marriage, region, income, employment_status
+        *
         FROM
         `aa`.`loaner_details`
         WHERE
