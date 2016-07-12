@@ -71,7 +71,7 @@ public class HeroRankingControllerTest {
         List<HeroRankingView> heroRankingViews = Lists.newArrayList(heroRankingView);
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt())).thenReturn(heroRankingView.getLoginName());
+        when(randomUtils.encryptMobile(anyString(),anyString())).thenReturn(heroRankingView.getLoginName());
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())

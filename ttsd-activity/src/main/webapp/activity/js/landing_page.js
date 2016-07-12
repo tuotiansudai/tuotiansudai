@@ -18,7 +18,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'placeholder', 'j
             $fetchCaptcha=$('.fetch-captcha'),
             $changecode=$('.img-change'),
             $registerBtn = $(".registered span"),
-            $loginName = $('#login-name'),
             $password = $('#password'),
             $appCaptcha = $('#appCaptcha'),
             countdown=60;
@@ -31,11 +30,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'placeholder', 'j
                 error.appendTo($('#'+ element.attr('id') + 'Err'));
             },
             rules: {
-                loginName: {
-                    required: true,
-                    regex: /(?!^\d+$)^\w{5,25}$/,
-                    isExist: "/register/user/login-name/{0}/is-exist"
-                },
                 mobile: {
                     required: true,
                     digits: true,
@@ -147,7 +141,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'placeholder', 'j
                 content: $('#agreementBox')
             });
         });
-        
+
         $fetchCaptcha.on('click', function(event) {
             event.preventDefault();
 
@@ -170,22 +164,22 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'placeholder', 'j
                  layer.msg('请求失败，请重试！');
 
              });
-            
+
         });
-        //timer 
-        function getCode() { 
+        //timer
+        function getCode() {
             if (countdown == 0) {
-                window.clearInterval(timer); 
-                $fetchCaptcha.prop('disabled',false).text('获取验证码');    
-                countdown = 60; 
-            } else { 
+                window.clearInterval(timer);
+                $fetchCaptcha.prop('disabled',false).text('获取验证码');
+                countdown = 60;
+            } else {
                 $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
-                countdown--; 
-            } 
+                countdown--;
+            }
         }
 
-        // phone validate   
-        jQuery.validator.addMethod("isPhone", function(value, element) {   
+        // phone validate
+        jQuery.validator.addMethod("isPhone", function(value, element) {
             var tel = /0?(13|14|15|18)[0-9]{9}/;
             return this.optional(element) || (tel.test(value));
         }, "请正确填写您的手机号码");

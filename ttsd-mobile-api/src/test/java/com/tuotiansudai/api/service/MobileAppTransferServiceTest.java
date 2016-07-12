@@ -88,7 +88,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         investModel.setLoginName("testTransferee");
         when(investMapper.findById(anyLong())).thenReturn(investModel);
 
-        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("test***");
+        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong())).thenReturn("test***");
 
         BaseResponseDto<TransferTransfereeResponseDataDto> baseResponseDto =  mobileAppTransferServiceImpl.getTransferee(transferTransfereeRequestDto);
         assertThat(baseResponseDto.getData().getTransferee().get(0).getTransferAmount(), is("10.00"));

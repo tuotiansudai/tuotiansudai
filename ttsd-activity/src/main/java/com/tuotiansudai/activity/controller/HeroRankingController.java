@@ -64,7 +64,7 @@ public class HeroRankingController {
             baseListDataDto.setRecords(Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {
                 @Override
                 public HeroRankingView apply(HeroRankingView heroRankingView) {
-                    heroRankingView.setLoginName(randomUtils.encryptLoginName(loginName, heroRankingView.getLoginName(), 6));
+                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
                     heroRankingView.setCentSumAmount(heroRankingView.getCentSumAmount());
                     return heroRankingView;
                 }

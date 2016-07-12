@@ -24,8 +24,8 @@
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
         select * from feedback
         <where>
-            <if test="loginName != null and loginName != ''">
-                login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                contact = #{mobile}
             </if>
             <if test="source != null">
                 and source = #{source}
@@ -51,8 +51,8 @@
     <select id="findAllCount" parameterType="map" resultType="long">
         select count(1) from feedback
         <where>
-            <if test="loginName != null and loginName != ''">
-                login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                contact = #{mobile}
             </if>
             <if test="source != null">
                 and source = #{source}

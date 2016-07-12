@@ -116,7 +116,7 @@ public interface InvestMapper {
                                     @Param(value = "afterTime") Date afterTime);
 
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
-                                   @Param(value = "investorLoginName") String investorLoginName,
+                                   @Param(value = "investorMobile") String investorMobile,
                                    @Param(value = "channel") String channel,
                                    @Param(value = "source") Source source,
                                    @Param(value = "role") String role,
@@ -126,7 +126,7 @@ public interface InvestMapper {
                                    @Param(value = "loanStatus") LoanStatus loanStatus);
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
-                                                        @Param(value = "investorLoginName") String investorLoginName,
+                                                        @Param(value = "investorMobile") String investorMobile,
                                                         @Param(value = "channel") String channel,
                                                         @Param(value = "source") Source source,
                                                         @Param(value = "role") String role,

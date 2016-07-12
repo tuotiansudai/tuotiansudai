@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -15,6 +12,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
@@ -52,6 +50,10 @@ public class ContractServiceImpl implements ContractService {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private TransferRuleMapper transferRuleMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Override
     public String getContract(String templateName, Map<String, Object> dataModel) {
@@ -192,9 +194,9 @@ public class ContractServiceImpl implements ContractService {
             AccountModel accountModel = accountMapper.findByLoginName(invest.getLoginName());
             String rowsString = insertRow(6);
             String deadLine = loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")";
-            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType))
-                    .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType))
-                    .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType))
+            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType,userMapper.findUsersMobileByLoginName(invest.getLoginName())))
+                    .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType,""))
+                    .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType,""))
                     .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))
                     .replace("#{4}", deadLine)
                     .replace("#{5}", format.format(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()));
@@ -204,7 +206,7 @@ public class ContractServiceImpl implements ContractService {
         return table.outerHtml();
     }
 
-    private String encryString(String sourceString, String type, String investId, String loginUserId, ContractType contractType) {
+    private String encryString(String sourceString, String type, String investId, String loginUserId, ContractType contractType,String mobile) {
 
         String encryString = sourceString;
 
@@ -214,7 +216,7 @@ public class ContractServiceImpl implements ContractService {
                 if ("platformAccount".equals(type)) {//平台账号
 
                     if (sourceString.length() >= 3) {
-                        encryString = sourceString.substring(0, 3) + "***";
+                        encryString = randomUtils.encryptMiddleMobile(mobile);
                     }
 
                 } else if ("realName".equals(type)) {//真实姓名
@@ -230,6 +232,8 @@ public class ContractServiceImpl implements ContractService {
                     }
                 }
 
+            }else{
+                encryString = "platformAccount".equals(type) ? mobile : sourceString;
             }
         }
 

@@ -332,7 +332,7 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName1");
         investModel1.setId(100000L);
-        assertEquals("log***", randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
@@ -341,7 +341,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
@@ -350,7 +350,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals("ttdblvjing", randomUtils.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("ttdblvjing", randomUtils.encryptMobile("ttdblvjing", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
@@ -359,7 +359,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
@@ -368,7 +368,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("loginName3");
         investModel1.setId(1000003L);
 
-        assertEquals("log***", randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId()));
     }
 
     private String getDefaultkey(){

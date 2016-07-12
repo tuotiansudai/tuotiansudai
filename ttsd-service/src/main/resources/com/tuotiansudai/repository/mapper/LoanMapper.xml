@@ -537,9 +537,9 @@
         l.last_invest_achievement_id,
         l.max_amount_achievement_id,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.first_invest_achievement_id) AS first_invest_login_name,
         (SELECT
         i.amount
@@ -547,9 +547,9 @@
         invest i
         WHERE i.id = l.first_invest_achievement_id) AS first_invest_amount,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.last_invest_achievement_id) AS last_invest_login_name,
         (SELECT
         i.amount
@@ -557,9 +557,9 @@
         invest i
         WHERE i.id = l.last_invest_achievement_id) AS last_invest_amount,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.max_amount_achievement_id) AS max_amount_login_name,
         (SELECT
         i.amount
@@ -574,10 +574,10 @@
         'REPAYING',
         'COMPLETE'
         )) temp
-        <if test="loginName != null and loginName != ''">
-        WHERE temp.max_amount_login_name = #{loginName}
-        OR temp.last_invest_login_name = #{loginName}
-        OR temp.first_invest_login_name = #{loginName}
+        <if test="mobile != null and mobile != ''">
+        WHERE temp.max_amount_login_name = #{mobile}
+        OR temp.last_invest_login_name = #{mobile}
+        OR temp.first_invest_login_name = #{mobile}
         </if>
         ORDER BY temp.created_time DESC
         limit #{index}, #{pageSize}
@@ -600,9 +600,9 @@
         l.last_invest_achievement_id,
         l.max_amount_achievement_id,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.first_invest_achievement_id) AS first_invest_login_name,
         (SELECT
         i.amount
@@ -610,9 +610,9 @@
         invest i
         WHERE i.id = l.first_invest_achievement_id) AS first_invest_amount,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.last_invest_achievement_id) AS last_invest_login_name,
         (SELECT
         i.amount
@@ -620,9 +620,9 @@
         invest i
         WHERE i.id = l.last_invest_achievement_id) AS last_invest_amount,
         (SELECT
-        i.login_name
+        u.mobile
         FROM
-        invest i
+        invest i join user u on i.login_name = u.login_name
         WHERE i.id = l.max_amount_achievement_id) AS max_amount_login_name,
         (SELECT
         i.amount
@@ -637,10 +637,10 @@
         'REPAYING',
         'COMPLETE'
         )) temp
-        <if test="loginName != null and loginName != ''">
-            WHERE temp.max_amount_login_name = #{loginName}
-            OR temp.last_invest_login_name = #{loginName}
-            OR temp.first_invest_login_name = #{loginName}
+        <if test="mobile != null and mobile != ''">
+            WHERE temp.max_amount_login_name = #{mobile}
+            OR temp.last_invest_login_name = #{mobile}
+            OR temp.first_invest_login_name = #{mobile}
         </if>
     </select>
 
