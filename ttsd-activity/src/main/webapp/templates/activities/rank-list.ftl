@@ -655,8 +655,8 @@
     <#if !isAppSource>
         <p class="bdsharebuttonbox">
             <span class="share-text">分享至：</span>
-            <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
-            <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
+            <a href="http://www.jiathis.com/send/?webid=tsina&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！" class="share-icon icon-weibo" target="_blank" onclick="sendShare()"></a>
+            <a href="http://www.jiathis.com/send/?webid=qzone&url=https://tuotiansudai.com/activity/rank-list&title=霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！" class="share-icon icon-zone" target="_blank" onclick="sendShare()"></a>
         </p>
     </#if>
     </div>
