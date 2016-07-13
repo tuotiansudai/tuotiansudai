@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;
@@ -38,11 +39,13 @@ public class TransferApplicationModel implements Serializable {
 
     private int leftPeriod;
 
+    private Source source;
+
     public TransferApplicationModel() {
 
     }
 
-    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline,int leftPeriod) {
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline, int leftPeriod, Source source) {
         this.loanId = transferInvestModel.getLoanId();
         this.name = name;
         this.transferInvestId = transferInvestModel.getId();
@@ -55,6 +58,7 @@ public class TransferApplicationModel implements Serializable {
         this.deadline = deadline;
         this.applicationTime = new Date();
         this.leftPeriod = leftPeriod;
+        this.source = source;
     }
 
     public long getId() {
@@ -175,5 +179,13 @@ public class TransferApplicationModel implements Serializable {
 
     public void setLeftPeriod(int leftPeriod) {
         this.leftPeriod = leftPeriod;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }

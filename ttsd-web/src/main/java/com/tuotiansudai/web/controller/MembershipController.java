@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +49,6 @@ public class MembershipController {
 
     @Autowired
     private HeroRankingService heroRankingService;
-
-    @Autowired
-    private AppTokenParser appTokenParser;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -161,7 +157,8 @@ public class MembershipController {
     public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
-            GivenMembership givenMembership = heroRankingService.receiveMembership(appTokenParser.getLoginName(httpServletRequest));
+            String loginName = LoginUserInfo.getLoginName();
+            GivenMembership givenMembership = heroRankingService.receiveMembership(loginName);
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {

@@ -95,6 +95,44 @@
                     color:#fc4a52;
                   }
                 }
+                .count-list{
+                  float:left;
+                  width:100%;
+                  span{
+                    float:left;
+                    &.count-btn{
+                      width:26px;
+                      height:24px;
+                      font-size:22px;
+                      text-align:center;
+                      line-height:24px;
+                      cursor:pointer;
+                      border:1px solid #d1d6de;
+                      &:active{
+                        background:#ccc;
+                      }
+                    }
+                    &.total-num{
+                      margin-left:20px;
+                      font-size:14px;
+                      color:#4c4c4c;
+                      i{
+                        color:#fc4a52;
+                      }
+                    }
+                  }
+                  .num-text{
+                    float:left;
+                    width: 50px;
+                    height: 24px;
+                    line-height: 25px;
+                    text-align: center;
+                    padding: 0;
+                    border: none;
+                    border-top: 1px solid #d1d1d1;
+                    border-bottom: 1px solid #d1d1d1;
+                  }
+                }
               }
             }
           }

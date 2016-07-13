@@ -39,8 +39,21 @@
 							数量：
 						</div>
 						<div class="info-content">
-							
+							<div class="count-list">
+								<span class="count-btn low-btn">-</span>
+								<input type="text" value="1" class="num-text">
+								<span class="count-btn add-btn">+</span>
+								<span class="total-num">
+									剩余<i>8938</i>件
+								</span>
+							</div>
 						</div>
+					</div>
+					<div class="info-text">
+						f
+					</div>
+					<div class="info-text">
+						f
 					</div>
 				</div>
 			</div>
