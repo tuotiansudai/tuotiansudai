@@ -110,12 +110,10 @@
                     <div class="progress-line">
                         <h3 class="total-money">累积投资：${totalInvest?float} 元</h3>
                         <dl class="gift-two">
-                            <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
+                            <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖池升级:</dt>
                             <dd>第一名：现金5万</dd>
                             <dd>第二名：现金3万</dd>
                             <dd>第三名：日韩双人游</dd>
-                            <dd>第四名：欧洲游</dd>
-                            <dd>第五名：海岛游</dd>
                         </dl>
                         <dl class="gift-one">
                             <dt>奖池累积中...</br>投资满<span>2,000万</span>则奖励:</dt>
@@ -669,12 +667,10 @@
             <div class="progress-line">
                 <h3 class="total-money">累积投资：${totalInvest?float} 元</h3>
                 <dl class="gift-two">
-                    <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
+                    <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖池升级:</dt>
                     <dd>第一名：现金5万</dd>
                     <dd>第二名：现金3万</dd>
                     <dd>第三名：日韩双人游</dd>
-                    <dd>第四名：欧洲游</dd>
-                    <dd>第五名：海岛游</dd>
                 </dl>
                 <dl class="gift-one">
                     <dt>奖池累积中...</br>投资满<span>2,000万</span>则奖励:</dt>
