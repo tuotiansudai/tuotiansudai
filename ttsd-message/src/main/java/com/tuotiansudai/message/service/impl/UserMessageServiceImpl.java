@@ -12,7 +12,6 @@ import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
