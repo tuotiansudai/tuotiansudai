@@ -435,12 +435,13 @@
     </select>
 
 
-    <select id="findInvestRepayByLoginNameAndRepayTime" parameterType="map" resultType="investRepayResultMap">
+    <select id="findInvestRepayByLoginNameAndRepayTime" parameterType="map" resultMap="investRepayResultMap">
         SELECT r.* FROM invest_repay r JOIN invest i ON r.invest_id = i.id
         WHERE i.login_name = #{loginName}
         <if test="year != null and year != ''">
           AND DATE_FORMAT(repay_date, '%Y') = #{year}
         </if>
+        ORDER BY  r.repay_date
     </select>
 
 </mapper>
