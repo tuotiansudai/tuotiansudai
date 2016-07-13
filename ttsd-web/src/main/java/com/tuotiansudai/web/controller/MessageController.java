@@ -36,13 +36,6 @@ public class MessageController {
         BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, pageSize);
         dto.setData(dataDto);
 
-        for (UserMessagePaginationItemDto record : dataDto.getRecords()) {
-            if (Strings.isNullOrEmpty(record.getContent()) && !record.isRead()) {
-                userMessageService.readMessage(record.getUserMessageId());
-                record.setRead(true);
-            }
-        }
-
         return dto;
     }
 

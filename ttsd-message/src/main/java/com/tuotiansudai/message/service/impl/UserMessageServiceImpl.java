@@ -68,15 +68,14 @@ public class UserMessageServiceImpl implements UserMessageService {
     public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
         if (userMessageModel != null && !userMessageModel.isRead()) {
-            userMessageModel.setRead(true);
-            userMessageModel.setReadTime(new Date());
-            userMessageMapper.update(userMessageModel);
-
-            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
-            if (messageModel.getType() == MessageType.MANUAL) {
+            if (messageMapper.findById(userMessageModel.getMessageId()).getType() == MessageType.MANUAL) {
+                MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
                 messageModel.setReadCount(messageModel.getReadCount() + 1);
                 messageMapper.update(messageModel);
             }
+            userMessageModel.setRead(true);
+            userMessageModel.setReadTime(new Date());
+            userMessageMapper.update(userMessageModel);
         }
 
         return userMessageModel;
@@ -104,7 +103,11 @@ public class UserMessageServiceImpl implements UserMessageService {
         userMapper.lockByLoginName(loginName);
         List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
         for (MessageModel message : unreadManualMessages) {
-            userMessageMapper.create(new UserMessageModel(message.getId(), loginName, message.getTitle(), message.getTemplate()));
+            userMessageMapper.create(new UserMessageModel(message.getId(),
+                    loginName,
+                    message.getTitle(),
+                    message.getTemplate(),
+                    message.getType() == MessageType.EVENT));
         }
     }
 

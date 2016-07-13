@@ -7,7 +7,7 @@
         <div class="global-message-list active">
 
         </div>
-        <div class="pagination" data-url="/message/user-message-list-data" data-page-index="1" data-page-size="1"></div>
+        <div class="pagination" data-url="/message/user-message-list-data" data-page-index="1" data-page-size="10"></div>
     </div>
 </div>
 
