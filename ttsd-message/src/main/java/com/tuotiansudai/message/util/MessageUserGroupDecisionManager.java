@@ -7,12 +7,7 @@ import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.impl.MessageServiceImpl;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserRoleModel;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +15,8 @@ import java.util.List;
 
 @Service
 public class MessageUserGroupDecisionManager {
+
+    static Logger logger = Logger.getLogger(MessageUserGroupDecisionManager.class);
 
     @Autowired
     private MessageMapper messageMapper;
@@ -45,8 +42,14 @@ public class MessageUserGroupDecisionManager {
             case ALL_USER:
                 return true;
             case IMPORT_USER:
-                List<String> loginNames = (List<String>) redisWrapperClient.hgetSeri(MessageServiceImpl.redisMessageReceivers, String.valueOf(messageId));
-                return loginNames.contains(loginName);
+                boolean contains = false;
+                try {
+                    List<String> loginNames = (List<String>) redisWrapperClient.hgetSeri(MessageServiceImpl.redisMessageReceivers, String.valueOf(messageId));
+                    contains = loginNames.contains(loginName);
+                } catch (Exception e) {
+                    logger.error("[MessageUserGroupDecisionManager][NameList contains loginName]" + e.getMessage());
+                }
+                return contains;
         }
         return false;
     }

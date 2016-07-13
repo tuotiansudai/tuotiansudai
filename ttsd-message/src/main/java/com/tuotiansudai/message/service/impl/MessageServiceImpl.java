@@ -151,7 +151,7 @@ public class MessageServiceImpl implements MessageService {
 
         if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             String messageId = String.valueOf(messageModel.getId());
-            String importUsers = redisWrapperClient.hget(redisMessageReceivers, String.valueOf(importUsersId));
+            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
