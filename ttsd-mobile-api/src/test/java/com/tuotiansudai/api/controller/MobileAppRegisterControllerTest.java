@@ -52,7 +52,7 @@ public class MobileAppRegisterControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldMobileNumberExist() throws Exception {
-        when(service.mobileNumberIsExist(new MobileIsAvailableRequestDto())).thenReturn(successResponseDto);
+        when(service.mobileNumberIsExist(any(MobileIsAvailableRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/mobile-is-available", new MobileIsAvailableRequestDto());
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
