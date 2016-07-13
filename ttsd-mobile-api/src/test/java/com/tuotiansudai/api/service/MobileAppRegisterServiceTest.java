@@ -127,6 +127,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
 
     public RegisterRequestDto getFakeRegisterRequestDto(){
         RegisterRequestDto registerRequestDto = new RegisterRequestDto();
+        registerRequestDto.setUserName("userName");
         registerRequestDto.setCaptcha("123456");
         registerRequestDto.setPassword("password");
         registerRequestDto.setPhoneNum("13900000000");

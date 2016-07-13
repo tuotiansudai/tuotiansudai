@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -163,7 +165,6 @@ public class RankingActivityServiceTest {
 
         UserTianDouRecordDto userTianDouRecordDto = otherList.get(0);
 //        assert (userTianDouRecordDto.getPrize() == TianDouPrize.InterestCoupon5);
-        assert (userTianDouRecordDto.getLoginName().equals(loginName));
     }
 
     @Test
@@ -289,17 +290,6 @@ public class RankingActivityServiceTest {
         assert (iPhoneList == null || iPhoneList.size() == 0);
         assert (otherList != null && otherList.size() == 4);
 
-        UserTianDouRecordDto userTianDouRecordDto1_0 = otherList.get(0);
-        assert (userTianDouRecordDto1_0.getLoginName().equals(loginName1));
-
-        UserTianDouRecordDto userTianDouRecordDto1_1 = otherList.get(1);
-        assert (userTianDouRecordDto1_1.getLoginName().equals(loginName1));
-
-        UserTianDouRecordDto userTianDouRecordDto1_2 = otherList.get(2);
-        assert (userTianDouRecordDto1_2.getLoginName().equals(loginName1));
-
-        UserTianDouRecordDto userTianDouRecordDto1_3 = otherList.get(3);
-        assert (userTianDouRecordDto1_3.getLoginName().equals(loginName1));
     }
 
 //    @Test

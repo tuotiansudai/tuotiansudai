@@ -329,46 +329,62 @@ public class LoanServiceTest {
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName1");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(100000L);
-        assertEquals("log***", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameSameAsInvestorLoginName() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
 
-        assertEquals("ttdblvjing", randomUtils.encryptMobile("ttdblvjing", investModel1.getLoginName(), investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile(fakeUser2.getLoginName(), investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile(fakeUser2.getLoginName(), investModel1.getLoginName(), investModel1.getId()));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName3");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName3");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000003L);
 
-        assertEquals("log***", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId()));
+        assertEquals(fakeUser.getMobile(), randomUtils.encryptMobile(fakeUser.getLoginName(), investModel1.getLoginName(), investModel1.getId()));
     }
 
     private String getDefaultkey(){

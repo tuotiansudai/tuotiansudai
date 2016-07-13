@@ -119,7 +119,6 @@ public class HeroRankingServiceTest {
 
         BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
         assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
-        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(randomUtils.encryptMobile(investor2.getLoginName(), investor1.getLoginName())));
     }
 
     @Test
