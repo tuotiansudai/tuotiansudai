@@ -96,7 +96,7 @@
     <select id="findActiveActivities" resultMap="activityResultMap">
         SELECT * FROM `aa`.`activity`
         WHERE
-        expired_time > now() AND
+        expired_time > #{expiredTime} AND
         status = 'APPROVED'
         <if test="source != null">
             AND source like CONCAT('%', #{source}, '%')

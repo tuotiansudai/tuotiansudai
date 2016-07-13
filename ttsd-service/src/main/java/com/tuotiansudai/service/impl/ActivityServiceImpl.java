@@ -33,7 +33,7 @@ public class ActivityServiceImpl implements ActivityService {
         final int fixedIndex = 1;
         final int fixedPageSize = 1000;
 
-        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, (fixedIndex - 1) * fixedPageSize, fixedPageSize);
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (fixedIndex - 1) * fixedPageSize, fixedPageSize);
 
         final List<ActivityDto> activityDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {
@@ -62,6 +62,7 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setShareContent(activityDto.getShareContent());
                     activityModelExist.setShareUrl(activityDto.getShareUrl());
                     activityModelExist.setUpdatedBy(loginName);
+                    activityModelExist.setExpiredTime(activityDto.getExpiredTime());
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
                     activityMapper.update(activityModelExist);
@@ -96,6 +97,7 @@ public class ActivityServiceImpl implements ActivityService {
                     activityMapper.update(activityModelExist);
                 }
                 return true;
+
 
         }
         return false;
