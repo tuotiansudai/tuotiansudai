@@ -6,7 +6,7 @@ import sys
 import time
 
 #
-# cron 添加执行任务 * 0 * * * ./monitor_redis.py -f redis-`date +%Y-%m-%d`.log
+# cron 添加执行任务 0 0 * * * ./monitor_redis.py -f redis-`date +%Y-%m-%d`.log
 #
 redis_keys = [
 #'pubsub_patterns',
