@@ -13,6 +13,6 @@ public abstract class MobileAppBaseController {
 
     protected String getLoginName() {
         Object objLoginName = httpServletRequest.getAttribute("currentLoginName");
-        return objLoginName == null ? "" : String.valueOf(objLoginName);
+        return objLoginName == null ? "" : String.valueOf(objLoginName); 
     }
 }
