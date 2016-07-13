@@ -35,7 +35,6 @@ $red: #eb4a3e;
 		$color: #c45927;
 		$bg: #fdf3e9;
 		width: 200px;
-		border: 1px solid $color;
 		height: 30px;
 		cursor: pointer;
 		position: relative;
@@ -43,6 +42,17 @@ $red: #eb4a3e;
 			height: 30px;
 			line-height: 30px;
 			background: $bg;
+			border: 1px solid #f9dabf;
+			&.disabled {
+				background: #f2f2f2;
+				border-color: #e6e6e6;
+				.text {
+					color: #909090;
+				}
+				.fa {
+					color: #909090;
+				}
+			}
 			.text {
 				position: absolute;
 				top: 0;
@@ -63,7 +73,61 @@ $red: #eb4a3e;
 			}
 		}
 		.dropdown-list {
+			display: none;
 			background: $bg;
+			border: 1px solid #f9dabf;
+			position: absolute;
+			top: 30px;
+			width: 100%;
+			.no-ticket {
+				padding: 3px 0;
+				cursor: pointer;
+			}
+			.item {
+				padding: 5px 0;
+				cursor: pointer;
+				color: $color;
+				.input {
+					width: 30px;
+					overflow: hidden;
+					text-align: center;
+				}
+				p {
+					color: $color;
+					margin: 0;
+					line-height: 1;
+					padding-left: .5em;
+				}
+				.type {
+					font-size: 12px;
+					width: 12px;
+					line-height: 1.3;
+					background: #ee7b2f;
+					color: #fff;
+					padding: 2px;
+				}
+				.text-t {
+					font-size: 14px;
+					margin-top: 1px;
+				}
+				.text-b {
+					font-size: 12px;
+					margin-top: 2px;
+				}
+				&.active {
+					background: #fbeada;
+				}
+				&.disabled {
+					background: #f2f2f2;
+					color: #909090;
+					p {
+						color: #909090;
+					}
+					.type {
+						background: #909090;
+					}
+				}
+			}
 		}
 	}
 	.container-block {
@@ -189,8 +253,9 @@ $red: #eb4a3e;
 		}
 		.usable {
 			padding: 10px 15px 0;
-			input {
+			input[type="text"] {
 				width: 188px;
+				text-align: right;
 			}
 			.w188 {
 				width: 188px + 6px *2;
@@ -358,4 +423,44 @@ $red: #eb4a3e;
 			}
 		}
 	}
+}
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  border: 1px solid #ffd4b2;
+  width: 200px;
+  text-align: center;
+  > div {
+    border-top: 1px solid #ffd4b2;
+    &:first-child {
+      border-top: none;
+      border-right: none;
+    }
+  }
+  .header {
+    color: #ff9d1a;
+  }
+  .td {
+    border-left: 1px solid #ffd4b2;
+    line-height: 28px;
+    text-align: center;
+    width: 49px;
+     &:first-child {
+      border-left: none;
+      width: 150px;
+    }
+  }
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 20px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("/images/sign/chevron-up.png") no-repeat;
+  }
 }

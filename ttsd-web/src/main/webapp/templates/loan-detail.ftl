@@ -7,14 +7,45 @@
                     <div class="container-block loan-info">
                         <div class="title-block clearfix">
                             <h2 class="fl title">房产抵押借款</h2>
-                            <div class="fl orange extra-rate">投资加息+0.4%~0.5% <i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                            <div class="fl orange extra-rate" id="extra-rate">投资加息+0.4%~0.5% <i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                            <script>
+                                var __extraRate = [
+                                       {
+                                           minInvestAmount: 100,
+                                           maxInvestAmount: 999,
+                                           rate: 0.3
+                                       }, {
+                                           minInvestAmount: 1000,
+                                           maxInvestAmount: 9999,
+                                           rate: 0.4
+                                       }, {
+                                           minInvestAmount: 10000,
+                                           maxInvestAmount: 0,
+                                           rate: 0.5
+                                       }
+                                   ];
+                            </script>
+                            <script type="text/template" id="extra-rate-popup-tpl">
+                               <div class="extra-rate-popup" id="extra-rate-popup">
+                                   <div class="header clearfix">
+                                       <div class="td fl">投资金额</div>
+                                       <div class="td fl">加息</div>
+                                   </div>
+                                   <% _.each(__extraRate, function(value){ %>
+                                       <div class="clearfix">
+                                           <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
+                                           <div class="td fl"><%= value.rate %>%</div>
+                                       </div>
+                                   <% }) %>
+                               </div>
+                            </script>
                             <span class="fr boilerplate">借款协议样本</span>
                         </div>
                         <div class="content">
                             <div class="row loan-number-detail">
                                 <div class="col-md-4">
                                     <div class="title">预期年化收益</div>
-                                    <div class="number red">11<span>%</span></div>
+                                    <div class="number red">11<i class="data-extra-rate"></i><span>%</span></div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="title">项目期限</div>
@@ -92,7 +123,8 @@
                                         投资金额：
                                     </div>
                                     <div class="fr">
-                                        <input type="text" />
+                                        <#-- data-loan-id -->
+                                        <input id="invest-input" type="text" data-loan-id="2121" />
                                     </div>
                                 </div>
                                 <div class="invest-amount clearfix mt10">
@@ -100,17 +132,53 @@
                                         优 惠 券：
                                     </div>
                                     <div class="fr">
-                                        <div class="dropdown">
+                                        <div class="dropdown" id="ttsd-dropdown">
                                             <div class="dropdown-main">
                                                 <span class="text">斯蒂芬斯拉夫</span>
                                                 <i class="fa fa-sort-desc" aria-hidden="true"></i>
                                             </div>
                                             <div class="dropdown-list">
-                                                <div class="item">
-                                                    sdf
+                                                <div class="item no-ticket clearfix" data-text="不使用优惠券" data-id="no">
+                                                    <div class="input fl">
+                                                        <input type="radio" />
+                                                    </div>
+                                                    <label class="fl">不使用优惠券</label>
                                                 </div>
-                                                <div class="item">
-                                                    sdf
+                                                <div class="item clearfix active" data-text="新手体验券1000元" data-id="11">
+                                                    <div class="input fl">
+                                                        <input type="radio" />
+                                                    </div>
+                                                    <div class="type fl">
+                                                        新手
+                                                    </div>
+                                                    <div class="fl text-inf">
+                                                        <p class="text-t">新手体验券1000元</p>
+                                                        <p class="text-b">[投资满1000元可用]</p>
+                                                    </div>
+                                                </div>
+                                                <div class="item clearfix disabled" data-text="新手体验券1000元" data-id="11">
+                                                    <div class="input fl">
+                                                        <input type="radio" />
+                                                    </div>
+                                                    <div class="type fl">
+                                                        新手
+                                                    </div>
+                                                    <div class="fl text-info">
+                                                        <p class="text-t">新手体验券1000元</p>
+                                                        <p class="text-b">[投资满1000元可用]</p>
+                                                    </div>
+                                                </div>
+                                                <div class="item clearfix" data-text="新手体验券1000元" data-id="11">
+                                                    <div class="input fl">
+                                                        <input type="radio" />
+                                                    </div>
+                                                    <div class="type fl">
+                                                        新手
+                                                    </div>
+                                                    <div class="fl text-info">
+                                                        <p class="text-t">新手体验券1000元</p>
+                                                        <p class="text-b">[投资满1000元可用]</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,7 +192,7 @@
                                         元
                                     </div>
                                 </div>
-                                <a href="#" class="btn-invest btn-normal mt15">马上投资</a>
+                                <button id="invest-submit-btn" class="btn-invest btn-normal mt15" data-user-role="INVESTOR" data-no-password-remind="true" data-no-password-invest="false">马上投资</button>
                              </div>
                         </div>
                     </div>
