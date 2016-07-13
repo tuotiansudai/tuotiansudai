@@ -8,5 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.RepayCalendarResponseDto;
 
 public interface MobileAppRepayCalendarService {
 
-    BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendarBy(RepayCalendarRequestDto repayCalendarRequestDto);
+    BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto);
+
+    BaseResponseDto<RepayCalendarListResponseDto> getMonthRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto);
 }

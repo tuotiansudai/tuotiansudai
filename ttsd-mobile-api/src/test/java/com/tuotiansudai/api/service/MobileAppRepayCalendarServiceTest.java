@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -60,13 +61,13 @@ public class MobileAppRepayCalendarServiceTest {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
 
     @Test
-    public void shouldGetYearRepayCalendarByIs(){
+    public void shouldGetYearRepayCalendarByIsOk(){
         String loginName = "testRepayCalender";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
         createLoanByUserId(loginName,loanId);
-        InvestModel investModel = createInvest(loginName,loanId);
+        InvestModel investModel1 = createInvest(loginName,loanId);
         InvestModel investModel2 = createInvest(loginName,loanId);
         InvestModel investModel3 = createInvest(loginName,loanId);
         InvestModel investModel4 = createInvest(loginName,loanId);
@@ -74,12 +75,13 @@ public class MobileAppRepayCalendarServiceTest {
         InvestModel investModel6 = createInvest(loginName,loanId);
 
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(createInvestRepay(investModel.getId(), DateUtils.addMonths(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel3.getId(), DateUtils.addMonths(DateTime.now().toDate(),-3)));
+        investRepayModels.add(createInvestRepay(investModel4.getId(), DateUtils.addMonths(DateTime.now().toDate(),-3)));
         investRepayModels.add(createInvestRepay(investModel2.getId(), DateUtils.addMonths(DateTime.now().toDate(),-2)));
         investRepayModels.add(createInvestRepay(investModel5.getId(), DateUtils.addMonths(DateTime.now().toDate(),-2)));
         investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addMonths(DateTime.now().toDate(),-2)));
-        investRepayModels.add(createInvestRepay(investModel3.getId(), DateUtils.addMonths(DateTime.now().toDate(),-3)));
-        investRepayModels.add(createInvestRepay(investModel4.getId(), DateUtils.addMonths(DateTime.now().toDate(),-3)));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateUtils.addMonths(DateTime.now().toDate(),-1)));
+
         investRepayMapper.create(investRepayModels);
 
         RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
@@ -87,9 +89,49 @@ public class MobileAppRepayCalendarServiceTest {
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
-        BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getYearRepayCalendarBy(repayCalendarRequestDto);
+        BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarResponseDto> repayCalendarResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarResponseDtos();
         assertThat(repayCalendarResponseDtoList.size(),is(3));
+        assertEquals(repayCalendarResponseDtoList.get(0).getExpectedRepayAmount(),"2");
+        assertEquals(repayCalendarResponseDtoList.get(1).getExpectedRepayAmount(),"3");
+        assertEquals(repayCalendarResponseDtoList.get(2).getExpectedRepayAmount(),"1");
+    }
+
+    @Test
+    public void shouldGetMonthRepayCalendarByIsOk(){
+        String loginName = "testRepayCalender";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createAccountByUserId(loginName);
+        createLoanByUserId(loginName,loanId);
+        InvestModel investModel1 = createInvest(loginName,loanId);
+        InvestModel investModel2 = createInvest(loginName,loanId);
+        InvestModel investModel3 = createInvest(loginName,loanId);
+        InvestModel investModel4 = createInvest(loginName,loanId);
+        InvestModel investModel5 = createInvest(loginName,loanId);
+        InvestModel investModel6 = createInvest(loginName,loanId);
+
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(createInvestRepay(investModel3.getId(), DateUtils.addDays(DateTime.now().toDate(),-3)));
+        investRepayModels.add(createInvestRepay(investModel4.getId(), DateUtils.addDays(DateTime.now().toDate(),-3)));
+        investRepayModels.add(createInvestRepay(investModel2.getId(), DateUtils.addDays(DateTime.now().toDate(),-2)));
+        investRepayModels.add(createInvestRepay(investModel5.getId(), DateUtils.addDays(DateTime.now().toDate(),-2)));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-2)));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+
+        investRepayMapper.create(investRepayModels);
+
+        RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
+        repayCalendarRequestDto.setYear(simpleDateFormat.format(DateTime.now().toDate()));
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId(loginName);
+        repayCalendarRequestDto.setBaseParam(baseParam);
+        BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
+        List<RepayCalendarResponseDto> repayCalendarResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarResponseDtos();
+        assertThat(repayCalendarResponseDtoList.size(),is(3));
+        assertEquals(repayCalendarResponseDtoList.get(0).getExpectedRepayAmount(),"2");
+        assertEquals(repayCalendarResponseDtoList.get(1).getExpectedRepayAmount(),"3");
+        assertEquals(repayCalendarResponseDtoList.get(2).getExpectedRepayAmount(),"1");
     }
 
     private InvestRepayModel createInvestRepay(long investId,Date time){
