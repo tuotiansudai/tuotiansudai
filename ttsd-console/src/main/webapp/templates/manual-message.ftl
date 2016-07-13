@@ -1,15 +1,12 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="manual-message.js" headLab="message-manage" sideLab="createManualMessage" title="编辑手动信息">
+<@global.main pageCss="" pageJavascript="manual-message.js" headLab="app-push-manage" sideLab="createManualMessage" title="编辑手动信息">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="/message-manage/manual-message/create" method="post" class="form-horizontal message-form">
         <div class="form-group">
-            <input type="hidden" name="messageId" class="messageId" value="]${(dto.id)!0}">
-
-            <input type="text" name="id" hidden="hidden" value="${(dto.id)!0}">
+            <input type="text" name="id" hidden="hidden" value="${(dto.id?c)!"0"}">
             <label class="col-sm-1 control-label">收件人: </label>
-
             <div class="col-sm-4 receiver-type">
                 <#list userGroups as userGroup>
                     <label>
