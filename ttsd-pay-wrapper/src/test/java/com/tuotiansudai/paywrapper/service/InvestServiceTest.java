@@ -308,6 +308,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
         return loanModel;
@@ -342,6 +343,7 @@ public class InvestServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -399,6 +401,7 @@ public class InvestServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -451,6 +454,7 @@ public class InvestServiceTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
@@ -512,6 +516,7 @@ public class InvestServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
