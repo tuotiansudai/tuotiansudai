@@ -3,6 +3,7 @@ package com.tuotiansudai.message.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
@@ -49,6 +50,13 @@ public class UserMessageServiceImpl implements UserMessageService {
         int totalPage = (int) (count > 0 && count % pageSize == 0 ? count / pageSize : count / pageSize + 1);
         index = index < 1 ? 1 : Ints.min(index, totalPage);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, (index - 1) * pageSize, pageSize);
+        for (UserMessageModel userMessageModel : userMessageModels) {
+            if (Strings.isNullOrEmpty(userMessageModel.getContent())) {
+                userMessageModel.setRead(true);
+                userMessageModel.setReadTime(new Date());
+                userMessageMapper.update(userMessageModel);
+            }
+        }
 
         List<UserMessagePaginationItemDto> records = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessagePaginationItemDto>() {
             @Override
@@ -68,11 +76,9 @@ public class UserMessageServiceImpl implements UserMessageService {
     public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
         if (userMessageModel != null && !userMessageModel.isRead()) {
-            if (messageMapper.findById(userMessageModel.getMessageId()).getType() == MessageType.MANUAL) {
-                MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
-                messageModel.setReadCount(messageModel.getReadCount() + 1);
-                messageMapper.update(messageModel);
-            }
+            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
+            messageModel.setReadCount(messageModel.getReadCount() + 1);
+            messageMapper.update(messageModel);
             userMessageModel.setRead(true);
             userMessageModel.setReadTime(new Date());
             userMessageMapper.update(userMessageModel);
@@ -106,8 +112,7 @@ public class UserMessageServiceImpl implements UserMessageService {
             userMessageMapper.create(new UserMessageModel(message.getId(),
                     loginName,
                     message.getTitle(),
-                    message.getTemplate(),
-                    message.getType() == MessageType.EVENT));
+                    message.getTemplate()));
         }
     }
 

@@ -44,7 +44,7 @@ public class UserMessageMapperTest {
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate(), false);
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
         userMessageMapper.create(userMessageModel);
 
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null, null);

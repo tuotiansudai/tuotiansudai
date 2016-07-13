@@ -8,6 +8,7 @@ import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.impl.MessageServiceImpl;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class MessageUserGroupDecisionManager {
             case IMPORT_USER:
                 try {
                     List<String> loginNameOrMobiles = (List<String>) redisWrapperClient.hgetSeri(MessageServiceImpl.redisMessageReceivers, String.valueOf(messageId));
-                    return loginNameOrMobiles.contains(loginName) || loginNameOrMobiles.contains(mobile);
+                    return CollectionUtils.isNotEmpty(loginNameOrMobiles) && (loginNameOrMobiles.contains(loginName) || loginNameOrMobiles.contains(mobile));
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);
                 }

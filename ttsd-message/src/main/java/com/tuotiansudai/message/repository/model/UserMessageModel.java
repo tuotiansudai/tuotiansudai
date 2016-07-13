@@ -16,15 +16,11 @@ public class UserMessageModel implements Serializable {
     public UserMessageModel() {
     }
 
-    public UserMessageModel(long messageId, String loginName, String title, String content, boolean isRead) {
+    public UserMessageModel(long messageId, String loginName, String title, String content) {
         this.messageId = messageId;
         this.loginName = loginName;
         this.title = title;
         this.content = content;
-        this.read = isRead;
-        if (isRead) {
-            readTime = new Date();
-        }
         this.createdTime = new Date();
     }
 
