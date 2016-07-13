@@ -75,7 +75,7 @@
         SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
         content, created_time, updated_time, deleted,timing_time
         FROM `aa`.`licaiquan_article`
-        WHERE deleted = FALSE
+        WHERE deleted = FALSE AND (timing_time > now() or timing_time is null)
         <if test="section != null  ">
             AND section = #{section}
         </if>
@@ -86,7 +86,7 @@
     <select id="findCountArticleByArticleSectionType" parameterType="map" resultType="int">
         SELECT count(1)
         FROM `aa`.`licaiquan_article`
-        WHERE deleted = FALSE
+        WHERE deleted = FALSE AND (timing_time > now() or timing_time is null)
         <if test="section != null ">
             AND section = #{section}
         </if>
