@@ -12,7 +12,7 @@
                     <input type="text" name="title"  class="form-control article-title" value="<#if dto??>${dto.title!}</#if>" placeholder="" datatype="*" errormsg="标题不能为空">
                 </div>
                 <div class="col-sm-4">
-                    最多17个中文字符
+                    最多25个中文字符
                 </div>
             </div>
 
@@ -76,6 +76,19 @@
                     <input type="text" name="source" value="<#if dto??>${dto.source!}</#if>" class="form-control article-source" placeholder="" datatype="*" errormsg="文章来源不能为空">
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">发布时间:</label>
+                <div class="col-sm-2" style="width:20%">
+                    <div class='input-group date' id='timingTime'>
+                        <input type='text' class="form-control" name="timingTime" <#if timingTime??>value="${(timingTime?string("yyyy-MM-dd HH:mm"))!}"</#if>/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label  class="col-sm-1 control-label">栏目: </label>
                 <div class="col-sm-2">
