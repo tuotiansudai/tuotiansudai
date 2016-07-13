@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --hot --inline & npm run server",
-    "server": "nodemon src/main/webapp/feDev/server.js"
+    "server": "nodemon src/main/webapp/feDev/server.js",
+    "build": "webpack --progress --profile --colors --config webpack.production.js"
   },
   "keywords": [
     "build",

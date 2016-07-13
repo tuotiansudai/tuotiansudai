@@ -1,6 +1,3 @@
-//var style2 = require('../style/sass/answer.scss');
-
-var $=require('jquery');
 
 var $answerContainer=$('.answer-container');
 var $answerButton=$('.answer-button',$answerContainer);
@@ -13,7 +10,11 @@ $answerButton.find('button').on('click',function(index) {
 
 $('#my-questions-tab').find('li').click(function(index) {
     var $this=$(this),
-     num =$this.index();
+        num =$this.index();
     $this.addClass('active').siblings('li').removeClass('active');
     $myQAnswer.find('.answers-box').eq(num).show().siblings('.answers-box').hide();
 });
+
+
+
+
