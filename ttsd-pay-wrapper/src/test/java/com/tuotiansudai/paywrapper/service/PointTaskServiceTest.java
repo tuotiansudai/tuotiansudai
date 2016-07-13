@@ -62,11 +62,18 @@ public class PointTaskServiceTest {
         String loginName = "investor";
         this.createFakeUser(loginName, null);
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
+
+        this.createFakeInvest(loginName, fakeLoan.getId(), 1);
+        pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
+
+        long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
+        assertThat(maxTaskLevel, is(0L));
+
         this.createFakeInvest(loginName, fakeLoan.getId(), 100000000);
 
         pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
 
-        long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
+        maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
         assertThat(maxTaskLevel, is(6L));
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

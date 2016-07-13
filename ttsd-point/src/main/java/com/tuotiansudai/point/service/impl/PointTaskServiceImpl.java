@@ -83,7 +83,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointTask.getDescription());
         }
 
-        logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));
+        logger.debug(MessageFormat.format("[Point Task] {0} has completed newbie task {1}", loginName, pointTask.name()));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             }
         }
 
-        logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));
+        logger.debug(MessageFormat.format("[Point Task]{0} has completed task {1}", loginName, pointTask.name()));
     }
 
     @Override
@@ -322,6 +322,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     return index;
                 }
             }
+            return 0;
         }
         return amount / 100000000 + 5;
     }
