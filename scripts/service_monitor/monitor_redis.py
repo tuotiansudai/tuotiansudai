@@ -5,6 +5,9 @@ import redis
 import sys
 import time
 
+#
+# cron 添加执行任务 * 0 * * * ./monitor_redis.py -f redis-`date +%Y-%m-%d`.log
+#
 redis_keys = [
 #'pubsub_patterns',
 #'connected_slaves',
@@ -46,10 +49,11 @@ def get_redis(options):
 
 def main(argv):
   p = optparse.OptionParser(conflict_handler="resolve", description="This Zabbix plugin checks the health of redis instance.")
-
   p.add_option('-h', '--host', action='store', type='string', dest='host', default="127.0.0.1", help='The hostname you want to connect to')
   p.add_option('-P', '--port', action='store', type='string', dest='port', default=6379, help='The port to connect on')
   p.add_option('-p', '--passwd', action='store', type='string', dest='password', default=None, help='The password to authenticate with')
+  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default=None, help='The out file path to authenticate with')
+
 
   options, arguments = p.parse_args()
 
@@ -58,17 +62,35 @@ def main(argv):
 
   r = get_redis(options)
 
-  return print_keys(r, options.host)
+  if options.file_path is not None:
+    origin_stdout = sys.stdout
+    f_handler = open(options.file_path, "a")
+    sys.stdout=f_handler
+
+    print_keys(r, options.host)
+    sys.stdout.close()
+    sys.stdout = origin_stdout
+    del origin_stdout
+    return
+  else:
+    return print_keys(r, options.host)
+
 
 def print_keys(r, host):
   res = r.info()
 
   for p in redis_keys:
     if p in res:
-        print '{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}' % { 'host': host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")}
+      print '{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}' % { 'host': host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")}
 
 #
 # main app
 #
 if __name__ == "__main__":
-  sys.exit(main(sys.argv[1:]))
+  start_time = time.strftime("%Y%m%d")
+  while True:
+    main(sys.argv[1:])
+    time.sleep(1)
+    run_time = time.strftime("%Y%m%d")
+    if start_time != run_time:
+        sys.exit()
