@@ -95,6 +95,7 @@ public class TransferServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._90);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
