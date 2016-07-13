@@ -1,5 +1,8 @@
 require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'jquery-ui'], function ($) {
     $(function () {
+        //渲染select表单
+        $('.selectpicker').selectpicker();
+
         $('.approve-btn').on('click', function () {
             if(confirm("确认审核？"))
             {
