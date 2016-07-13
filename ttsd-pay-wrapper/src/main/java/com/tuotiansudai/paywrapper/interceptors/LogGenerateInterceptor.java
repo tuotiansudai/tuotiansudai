@@ -14,7 +14,7 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
 
     private static final String USER_ID = "userId";
     private static final String REQUEST_ID = "requestId";
-    private static final String ANONYMOUS = "anonymous";
+    private static final String ANONYMOUS = "umPayAnonymous";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
