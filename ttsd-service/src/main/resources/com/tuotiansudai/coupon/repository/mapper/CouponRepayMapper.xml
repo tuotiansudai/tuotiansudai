@@ -15,6 +15,7 @@
         <result column="actual_interest" property="actualInterest"/>
         <result column="expected_fee" property="expectedFee"/>
         <result column="actual_fee" property="actualFee"/>
+        <result column="repay_amount" property="repayAmount"/>
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="is_transferred" property="isTransferred"/>
@@ -23,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="CouponRepayModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon_repay (login_name, coupon_id, user_coupon_id, invest_id, period, expected_interest, actual_interest, expected_fee, actual_fee, repay_date, actual_repay_date, is_transferred, status, created_time)
-        value(#{loginName}, #{couponId}, #{userCouponId}, #{investId}, #{period}, #{expectedInterest}, #{actualInterest}, #{expectedFee}, #{actualFee}, #{repayDate}, #{actualRepayDate}, #{isTransferred}, #{status}, now())
+        insert into coupon_repay (login_name, coupon_id, user_coupon_id, invest_id, period, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, repay_date, actual_repay_date, is_transferred, status, created_time)
+        value(#{loginName}, #{couponId}, #{userCouponId}, #{investId}, #{period}, #{expectedInterest}, #{actualInterest}, #{expectedFee}, #{actualFee}, #{repayAmount}, #{repayDate}, #{actualRepayDate}, #{isTransferred}, #{status}, now())
     </insert>
 
     <select id="findByUserCouponIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
@@ -42,6 +43,7 @@
         actual_interest = #{actualInterest},
         expected_fee = #{expectedFee},
         actual_fee = #{actualFee},
+        repay_amount = #{repayAmount},
         repay_date = #{repayDate},
         actual_repay_date = #{actualRepayDate},
         is_transferred = #{isTransferred},

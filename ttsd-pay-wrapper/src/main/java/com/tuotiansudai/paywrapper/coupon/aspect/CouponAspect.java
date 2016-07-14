@@ -1,16 +1,14 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
 import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
+import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -42,9 +40,6 @@ public class CouponAspect {
 
     @Autowired
     private JobManager jobManager;
-
-    @Autowired
-    private CouponActivationService couponActivationService;
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {

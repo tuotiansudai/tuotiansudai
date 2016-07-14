@@ -9,6 +9,7 @@ CREATE TABLE `aa`.`coupon_repay` (
   `actual_interest`   BIGINT UNSIGNED,
   `expected_fee`      BIGINT UNSIGNED NOT NULL,
   `actual_fee`        BIGINT UNSIGNED,
+  `repay_amount`      BIGINT UNSIGNED,
   `repay_date`        DATETIME        NOT NULL,
   `actual_repay_date` DATETIME,
   `is_transferred`    BOOLEAN         NOT NULL DEFAULT FALSE,
