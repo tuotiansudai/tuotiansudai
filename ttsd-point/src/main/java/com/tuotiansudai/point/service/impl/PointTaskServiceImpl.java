@@ -297,7 +297,8 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_REFERRER_INVEST:
                 return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
             case EACH_REFERRER_INVEST:
-                return accountMapper.findByLoginName(referrer) != null && investMapper.findLatestSuccessInvest(loginName).getAmount() >= 100000L;
+//                return accountMapper.findByLoginName(referrer) != null && investMapper.findLatestSuccessInvest(loginName).getAmount() >= 100000L;
+                return accountMapper.findByLoginName(referrer) != null && investMapper.findLatestSuccessInvest(loginName).getAmount() >= 2000L;
             case FIRST_INVEST_180:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._180;
@@ -313,28 +314,49 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
     private long getEachSumInvestTaskLevel(long amount) {
+//        if (amount <= 0) {
+//            return 0;
+//        }
+//        if (amount < 100000000) {
+//            for (int index = 5; index > 0; index--) {
+//                if (amount >= Lists.newArrayList(500000L, 1000000L, 5000000L, 10000000L, 50000000L).get(index - 1)) {
+//                    return index;
+//                }
+//            }
+//            return 0;
+//        }
+//        return amount / 100000000 + 5;
+
         if (amount <= 0) {
             return 0;
         }
-        if (amount < 100000000) {
+        if (amount < 3000) {
             for (int index = 5; index > 0; index--) {
-                if (amount >= Lists.newArrayList(500000L, 1000000L, 5000000L, 10000000L, 50000000L).get(index - 1)) {
+                if (amount >= Lists.newArrayList(500L, 1000L, 1500L, 2000L, 2500L).get(index - 1)) {
                     return index;
                 }
             }
             return 0;
         }
-        return amount / 100000000 + 5;
+        return amount / 3000L + 5;
     }
 
     private long getEachSumInvestTaskAmountByLevel(long level) {
+//        if (level <= 0) {
+//            return 0;
+//        }
+//        if (level <= 5) {
+//            return Lists.newArrayList(500000L, 1000000L, 5000000L, 10000000L, 50000000L).get((int) level - 1);
+//        }
+//        return 100000000 * (level - 5);
+
         if (level <= 0) {
             return 0;
         }
         if (level <= 5) {
-            return Lists.newArrayList(500000L, 1000000L, 5000000L, 10000000L, 50000000L).get((int) level - 1);
+            return Lists.newArrayList(500L, 1000L, 1500L, 2000L, 2500L).get((int) level - 1);
         }
-        return 100000000 * (level - 5);
+        return 3000 * (level - 5);
     }
 
 
@@ -349,11 +371,21 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
     private int getFirstSingleInvestTaskLevel(long amount) {
+//        if (amount <= 0) {
+//            return 0;
+//        }
+//        for (int index = 5; index > 0; index--) {
+//            if (amount >= Lists.newArrayList(1000000L, 5000000L, 10000000L, 20000000L, 50000000L).get(index - 1)) {
+//                return index;
+//            }
+//        }
+//        return 0;
+
         if (amount <= 0) {
             return 0;
         }
         for (int index = 5; index > 0; index--) {
-            if (amount >= Lists.newArrayList(1000000L, 5000000L, 10000000L, 20000000L, 50000000L).get(index - 1)) {
+            if (amount >= Lists.newArrayList(1000L, 1500L, 2000L, 2500L, 3000L).get(index - 1)) {
                 return index;
             }
         }
@@ -361,10 +393,15 @@ public class PointTaskServiceImpl implements PointTaskService {
     }
 
     private long getFirstSingleInvestTaskAmountByLevel(long level) {
+//        if (level < 1 || level > 5) {
+//            return 0;
+//        }
+//        return Lists.newArrayList(1000000L, 5000000L, 10000000L, 20000000L, 50000000L).get((int) level - 1);
+
         if (level < 1 || level > 5) {
             return 0;
         }
-        return Lists.newArrayList(1000000L, 5000000L, 10000000L, 20000000L, 50000000L).get((int) level - 1);
+        return Lists.newArrayList(1000L, 1500L, 2000L, 2500L, 3000L).get((int) level - 1);
     }
 
     private long getFirstSingleInvestTaskPointByLevel(long level) {
