@@ -444,8 +444,8 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb.png" width="50%"></p>
-                <p>奖金已发放到您的账户！</p>
+                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
+                <p>奖品已发放至"我的宝藏"当中 ！</p>
             </div>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
@@ -846,8 +846,8 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb.png" width="50%"></p>
-                <p>奖金已发放到您的账户！</p>
+                <p><img src="${staticServer}/activity/images/sign/actor/ranklist/2rmb-new.png" width="50%"></p>
+                <p>奖品已发放至"我的宝藏"当中 ！</p>
             </div>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
