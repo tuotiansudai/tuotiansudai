@@ -52,7 +52,162 @@ form label.error {
   padding: 0;
   vertical-align: middle;
 }
+.landing-top {
+  position: relative;
+  height: 500px;
+  background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat;
 
+  .landing-inner {
+    width: 1200px;
+    height: 30px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .register-box {
+    position: absolute;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    top: 18px;
+    height: auto;
+    overflow: auto;
+    margin-top: 13px;
+
+    .register-user-form {
+      width: 320px;
+      height: 420px;
+      padding: 20px 0 0 32px;
+    }
+    .register-step-one {
+      margin-top: 14px;
+    }
+    .register-step-two {
+      margin-top: 40px;
+    }
+    ul.reg-list {
+      font-size: 12px;
+      .height {
+        height: 20px;
+      }
+      .appCaptchaErr {
+        font-size: 10px;
+        color: #f71010;
+        padding: 0;
+        vertical-align: middle;
+      }
+      li {
+        clear: both;
+        position: relative;
+        .img-change {
+          cursor: pointer;
+        }
+        i {
+          display: inline-block;
+          position: absolute;
+          left: 10px;
+          top: 4px;
+          z-index: 20;
+          filter:alpha(opacity=80);
+          -moz-opacity:0.8;
+        }
+        .reg-title {
+          width: 60px;
+          padding-right: 3px;
+          font-size: 14px;
+          color: #333;
+          text-align: right;
+          display: none;
+        }
+        .captcha-tag {
+          position: relative;
+          display: inline-block;
+          width: 90%;
+
+          .fetch-captcha {
+            width: 100px;
+            height: 32px;
+            padding-left: 18px;
+            letter-spacing: 0;
+            position: absolute;
+            right: 0;
+            top: 2px;
+            font-size: 12px;
+            border-radius: 15px;
+            background: #ff0000;
+            &:hover {
+              color: #fff;
+            }
+          }
+        }
+        .long {
+          width: 230px;
+        }
+        input[type="text"], input[type="password"] {
+          color: #999;
+          border: #cecece 1px solid;
+          padding: 10px 2px 10px 47px;
+          background-color: #fff;
+          &.captcha,&.appCaptcha { width:100px;}
+
+        }
+        .agreement {
+          display: inline-block;
+          width: 361px;
+        }
+        input.valid + .agreement + label.error {
+          &:before {
+            content: "\f058";
+            color: nth($checkValid, 2);
+          }
+        }
+        &.agree-last {
+          position: relative;
+          margin-left: 0;
+
+          .check-label {
+            position: absolute;
+            top: 1px;
+            left: 20px;
+          }
+          .agreement-check {
+            margin-right: 300px;
+          }
+        }
+        &.mobile-agreement {
+          display: none;
+        }
+        &.error-box {
+          height: 20px;
+          overflow: hidden;
+        }
+        .register-user, .register-account {
+          width: 150px;
+          background: #ff0000;
+          border-radius: 3px;
+          text-align: center;
+          margin: 10px 0px 0px -20px;
+          font-size: 20px;
+          color: #fff;
+          border: 0;
+          cursor: pointer;
+        }
+      }
+      .register-account {
+        display: block;
+
+        &.loading {
+          background: url("/activity/images/icons/loading.gif") no-repeat center center;
+          cursor: default;
+          text-indent: -9999px;
+        }
+      }
+
+    }
+    label.error {
+      display: block;
+    }
+  }
+}
 .landing-container {
   min-height: 500px;
 
@@ -76,159 +231,7 @@ form label.error {
       background-color: #f1a03f;
     }
   }
-  .landing-top {
-    position: relative;
-    height: 500px;
-    background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat;
 
-    .landing-inner {
-      width: 1200px;
-      height: 30px;
-      margin: 0 auto;
-      position: relative;
-    }
-    .register-box {
-      position: absolute;
-      right: 0;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 5px;
-      top: 18px;
-      height: auto;
-      overflow: auto;
-      margin-top: 13px;
-
-      .register-user-form {
-        width: 320px;
-        height: 420px;
-        padding: 20px 0 0 32px;
-      }
-      .register-step-one {
-        margin-top: 14px;
-      }
-      .register-step-two {
-        margin-top: 40px;
-      }
-      ul.reg-list {
-        font-size: 12px;
-        .height {
-          height: 20px;
-        }
-        .appCaptchaErr {
-          font-size: 10px;
-          color: #f71010;
-          padding: 0;
-          vertical-align: middle;
-        }
-        li {
-          clear: both;
-          position: relative;
-          .img-change {
-            cursor: pointer;
-          }
-          i {
-            display: inline-block;
-            position: absolute;
-            left: 10px;
-            top: 4px;
-            z-index: 20;
-            filter:alpha(opacity=80);
-            -moz-opacity:0.8;
-          }
-          .reg-title {
-            width: 60px;
-            padding-right: 3px;
-            font-size: 14px;
-            color: #333;
-            text-align: right;
-            display: none;
-          }
-          .captcha-tag {
-            position: relative;
-            display: inline-block;
-            width: 90%;
-
-            .fetch-captcha {
-              width: 100px;
-              height: 34px;
-              padding-left: 18px;
-              letter-spacing: 0;
-              position: absolute;
-              right: 27px;
-              top: 2px;
-              font-size: 12px;
-              border-radius: 15px;
-              background: #ff0000;
-
-              &:hover {
-                color: #fff;
-              }
-            }
-          }
-          .long {
-            width: 230px;
-          }
-          input[type="text"], input[type="password"] {
-            color: #999;
-            border: #cecece 1px solid;
-            padding: 10px 2px 10px 47px;
-            background-color: #fff;
-            &.captcha,&.appCaptcha { width:100px;}
-
-          }
-          .agreement {
-            display: inline-block;
-            width: 361px;
-          }
-          input.valid + .agreement + label.error {
-            &:before {
-              content: "\f058";
-              color: nth($checkValid, 2);
-            }
-          }
-          &.agree-last {
-            position: relative;
-            margin-left: 0;
-
-            .check-label {
-              position: absolute;
-              top: 1px;
-              left: 20px;
-            }
-            .agreement-check {
-              margin-right: 300px;
-            }
-          }
-          &.error-box {
-            height: 20px;
-            overflow: hidden;
-          }
-        }
-        .register-account {
-          display: block;
-
-          &.loading {
-            background: url("/activity/images/icons/loading.gif") no-repeat center center;
-            cursor: default;
-            text-indent: -9999px;
-          }
-        }
-        .register-user, .register-account {
-          width: 150px;
-          background: #ff0000;
-          border-radius: 3px;
-          text-align: center;
-          margin: 10px 0px 0px 85px;
-          font-size: 20px;
-          color: #fff;
-          border: 0;
-          cursor: pointer;
-        }
-      }
-      label.error {
-        display: block;
-      }
-    }
-  }
   h3 {
     text-align: center;
     font-size: 20px;
@@ -855,11 +858,82 @@ form label.error {
 }
 
 @media screen and (max-width: 700px) {
+  body {
+    background: #d9edff;
+  }
   .landing-container {
     display: none;
   }
+  .mobile-page-register {
+    height:560px;
+  }
+  .landing-top {
+    background: none;
+    height:auto;
+    .landing-inner {
+      width:100%;
+      height: auto;
+    }
+    .register-box {
+      width: 90%;
+      right: auto;
+      left: 5%;
+      top:0;
+      border-radius: 0;
+      padding-bottom: 30px;
+      margin-top:0;
+      height: 440px;
+      .register-user-form {
+        box-sizing: border-box;
+        width:100%;
+        padding: 20px;
+      }
+      .register-step-one {
+        margin-top:0;
+      }
+      ul.reg-list li {
+        input[type="text"],input[type="password"] {
+          padding: 15px;
+          box-sizing: border-box;
+        }
+        .captcha-tag {
+          width:100%;
+        }
+        input.captcha,
+        input.appCaptcha
+        {
+          width: 40%!important;
+        }
+        .long {
+          width: 100%;
+        }
+        i {
+          display: none;
+        }
+        .fetch-captcha  {
+          height: 40px!important;
+          padding: 10px 26px!important;
+          border-radius: 25px!important;
+          font-size: 13px!important;
+          width:auto!important;
+          position: relative!important;
+        }
+        .register-user {
+          padding:10px;
+          margin:-10px auto 10px auto;
+        }
+        &.mobile-agreement {
+          display: block;
+        }
+        &.agree-last {
+          display: none;
+        }
+      }
+    }
+  }
   .landing-phone-container {
     display: block;
+
   }
   .footer-container {
     display: none;

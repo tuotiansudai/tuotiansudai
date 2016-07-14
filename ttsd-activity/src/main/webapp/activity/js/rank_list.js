@@ -16,8 +16,13 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         $tdgiftRecord = $('#tdChangeBtn li'),
         $cdgiftRecord = $('#cdChangeBtn li');
 
+    $('#linePro').attr('data-totalInvest')>=20000000?$('#linePro').parents('.progress-line').find('.gift-one').addClass('active'):false;
     $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest')) / 1000000 / 2800 * 60000);
+    
+    $('#lineProPhone').attr('data-totalInvest')>=20000000?$('#lineProPhone').parents('.progress-line').find('.gift-one').addClass('active'):false;
     $('#lineProPhone').height(Math.round($('#lineProPhone').attr('data-totalInvest')) / 1000000 / 2800 * 30000);
+
+
     //change rank list
     $beanBtn.on('click', function(event) {
         var $self = $(this),
