@@ -81,7 +81,7 @@
                 <label class="col-sm-1 control-label">发布时间:</label>
                 <div class="col-sm-2" style="width:20%">
                     <div class='input-group date' id='timingTime'>
-                        <input type='text' class="form-control" name="timingTime" <#if timingTime??>value="${(timingTime?string("yyyy-MM-dd HH:mm"))!}"</#if>/>
+                        <input type='text' class="form-control" name="timingTime" <#if dto??><#if dto.timingTime??>value="${(dto.timingTime?string("yyyy-MM-dd HH:mm"))!}"</#if></#if>/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
