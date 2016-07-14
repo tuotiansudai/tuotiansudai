@@ -7,7 +7,9 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +22,19 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
-    private SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     private SimpleDateFormat yearMonthSdf = new SimpleDateFormat("yyyy-MM");
 
-    private SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+    private SimpleDateFormat daySdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
@@ -63,8 +70,34 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     }
 
     @Override
-    public BaseResponseDto<RepayCalendarDateResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
+    public BaseResponseDto<RepayCalendarDateListResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
+        BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = new BaseResponseDto<>();
+        List<RepayCalendarDateResponseDto> repayCalendarDateResponseDtoList = Lists.newArrayList();
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(),null,null,repayCalendarRequestDto.getDate());
+        long repayExpectedInterest;
+        long repayActualInterest;
+        for(InvestRepayModel investRepayModel : investRepayModelList){
+            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),repayCalendarRequestDto.getDate(),null);
+            repayExpectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+            repayActualInterest = investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+            for(CouponRepayModel couponRepayModel: couponRepayModelList){
+                repayExpectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                repayActualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
+            }
+            repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getName(),
+                    String.valueOf(repayActualInterest),
+                    String.valueOf(repayExpectedInterest),
+                    String.valueOf(investRepayModel.getPeriod()),
+                    String.valueOf(couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),null,null).size()),
+                    investRepayModel.getStatus().name()));
+        }
 
+        RepayCalendarDateListResponseDto repayCalendarDateListResponseDto = new RepayCalendarDateListResponseDto();
+        repayCalendarDateListResponseDto.setRepayCalendarDateResponseDtoList(repayCalendarDateResponseDtoList);
+        baseResponseDto.setData(repayCalendarDateListResponseDto);
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return baseResponseDto;
     }
 
     private List<RepayCalendarYearResponseDto> getRepayCalendarResponseList(RepayCalendarRequestDto repayCalendarRequestDto,SimpleDateFormat sdf){

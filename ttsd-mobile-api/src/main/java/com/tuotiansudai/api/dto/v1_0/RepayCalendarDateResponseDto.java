@@ -10,6 +10,18 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto{
     private String periods;
     private String status;
 
+    public RepayCalendarDateResponseDto() {
+    }
+
+    public RepayCalendarDateResponseDto(String loanName, String repayAmount, String expectedRepayAmount, String period, String periods, String status) {
+        this.loanName = loanName;
+        this.repayAmount = repayAmount;
+        this.expectedRepayAmount = expectedRepayAmount;
+        this.period = period;
+        this.periods = periods;
+        this.status = status;
+    }
+
     public String getLoanName() {
         return loanName;
     }

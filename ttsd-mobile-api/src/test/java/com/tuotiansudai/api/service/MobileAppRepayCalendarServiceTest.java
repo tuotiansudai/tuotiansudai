@@ -75,6 +75,8 @@ public class MobileAppRepayCalendarServiceTest {
 
     private SimpleDateFormat monthSimpleDateFormat = new SimpleDateFormat("MM");
 
+    private SimpleDateFormat daySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     @Test
     public void shouldGetYearRepayCalendarByIsOk(){
         String loginName = "testRepayCalender";
@@ -169,6 +171,52 @@ public class MobileAppRepayCalendarServiceTest {
         assertEquals(baseResponseDto.getData().getExpectedRepayAmount(),"8");
     }
 
+    @Test
+    public void shouldGetDateRepayCalendarIsOk(){
+        String loginName = "testRepayCalender";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createAccountByUserId(loginName);
+        createLoanByUserId(loginName,loanId);
+        InvestModel investModel1 = createInvest(loginName,loanId);
+        InvestModel investModel2 = createInvest(loginName,loanId);
+        InvestModel investModel3 = createInvest(loginName,loanId);
+        InvestModel investModel4 = createInvest(loginName,loanId);
+        InvestModel investModel5 = createInvest(loginName,loanId);
+        InvestModel investModel6 = createInvest(loginName,loanId);
+
+        CouponModel couponModel = fakeCouponModel(loginName);
+        couponMapper.create(couponModel);
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(),loginName);
+        userCouponMapper.create(userCouponModel);
+        CouponRepayModel couponRepayModel = createCouponRepay(investModel6.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateUtils.addDays(DateTime.now().toDate(),6));
+        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateUtils.addDays(DateTime.now().toDate(),0));
+        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(couponRepayModel1);
+
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateUtils.addDays(DateTime.now().toDate(),-1)));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateUtils.addDays(DateTime.now().toDate(),-0)));
+
+        investRepayMapper.create(investRepayModels);
+
+        RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
+        repayCalendarRequestDto.setDate(daySimpleDateFormat.format(DateTime.now().toDate()));
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId(loginName);
+        repayCalendarRequestDto.setBaseParam(baseParam);
+        BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(),is(1));
+        assertEquals(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().get(0).getStatus(),RepayStatus.REPAYING.name());
+        repayCalendarRequestDto.setDate(daySimpleDateFormat.format(DateUtils.addDays(DateTime.now().toDate(),-1)));
+        baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(),is(5));
+    }
+
     private UserCouponModel fakeUserCouponModel(long couponId,String loginName) {
         return new UserCouponModel(loginName, couponId, new Date(), new Date());
     }
@@ -220,6 +268,7 @@ public class MobileAppRepayCalendarServiceTest {
         investRepayModel.setRepayDate(time);
         investRepayModel.setExpectedInterest(1);
         investRepayModel.setActualInterest(1);
+        investRepayModel.setPeriod(3);
         return investRepayModel;
     }
 

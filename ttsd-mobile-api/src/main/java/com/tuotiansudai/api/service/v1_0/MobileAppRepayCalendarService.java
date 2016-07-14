@@ -9,7 +9,7 @@ public interface MobileAppRepayCalendarService {
 
     BaseResponseDto<RepayCalendarMonthResponseDto> getMonthRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto);
 
-    BaseResponseDto<RepayCalendarDateResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto);
+    BaseResponseDto<RepayCalendarDateListResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto);
 
 
 }
