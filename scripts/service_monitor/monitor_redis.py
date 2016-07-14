@@ -41,18 +41,22 @@ redis_keys = [
 #'bytes_sent_per_sec'
 ]
 
-def main(host, passwd, port, log):
-  r = redis.StrictRedis(host=host, password=passwd, port=port, db=0)
+class MonitorRedis():
+  def __init__(self, host, passwd, port, log):
+    self.host = host
+    self.passwd = passwd
+    self.port = port
+    self.log = log
 
-  res = r.info()
+  def getRedis(self):
+    return redis.StrictRedis(host=self.host, password=self.passwd, port=self.port, db=0)
 
-  for p in redis_keys:
-    if p in res:
-      log.write('{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}\n' % { 'host': host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")})
-  if not log.isatty():      # tty is line buffer 
-      log.flush()
+  def logOut(self, res):
+    for p in redis_keys:
+      if p in res:
+        self.log.write('{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}\n' % { 'host': self.host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")})
+    self.log.flush()
 
-#
 # main app
 #
 if __name__ == "__main__":
@@ -67,11 +71,16 @@ if __name__ == "__main__":
      p.print_help()
      sys.exit(1)
 
-  log_out = sys.stdout 
-  if options.file_path is not None:
-    f_handler = open(options.file_path, "a")
-    log_out = f_handler
   start_time = time.strftime("%Y%m%d")
+  Monob = MonitorRedis(options.host, options.password, options.port, None)
+
+  if options.file_path is None:
+    Monob.log = open("/var/log/redis-%s.log" % (start_time), "a")
+  else:
+    Monob.log = open(options.file_path, "a")
+
   while start_time == time.strftime("%Y%m%d"):
-    main(options.host, options.password, options.port, log_out)
+    r = Monob.getRedis()
+    Monob.logOut(r.info())
     time.sleep(1)
+  Monob.log.close()
