@@ -710,4 +710,32 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return '';
         }
     });
+
+    (function() {
+        var maybe = function(value) {
+            return value ? value : 0;
+        };
+        var getElementBindData = function(key) {
+            return $investInput.data(key);
+        };
+        var $investInput = $('#investForm').find('.text-input-amount');
+        var maxInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('max-invest-amount');
+        var minInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('min-invest-amount');
+        var replace = function(str) {
+            return str.replace(/,/g, '');
+        };
+        var keyupHandler = _.debounce(function(event) {
+            var $this = $(this);
+            var value = _.compose(parseFloat, replace)($this.val());
+            layer.closeAll('tips');
+            if (value > maxInvestAmount) {
+                showInputErrorTips('该项目每人限投' + maxInvestAmount + '元');
+            } else if (value < minInvestAmount) {
+                showInputErrorTips('单笔最低投资' + minInvestAmount + '元');
+            }
+        }, 300);
+
+        $investInput.on('keyup', keyupHandler);
+    })();
+
 });
