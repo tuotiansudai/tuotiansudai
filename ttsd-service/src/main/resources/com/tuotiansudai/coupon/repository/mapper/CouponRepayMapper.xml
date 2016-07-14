@@ -48,4 +48,8 @@
         status = #{status}
         where id = #{id}
     </update>
+
+    <select id="findCouponRepayByInvestId" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where invest_id = #{investId}
+    </select>
 </mapper>

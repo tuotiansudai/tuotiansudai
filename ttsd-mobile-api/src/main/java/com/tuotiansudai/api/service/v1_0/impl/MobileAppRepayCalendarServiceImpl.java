@@ -4,6 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     private SimpleDateFormat monthSdf = new SimpleDateFormat("MM");
 
@@ -44,10 +47,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         return baseResponseDto;
     }
 
-    private String addMoney(String num1,long num2){
-        return String.valueOf(Long.parseLong(num1) + num2);
-    }
-
     private List<RepayCalendarResponseDto> getRepayCalendarResponseList(List<InvestRepayModel> investRepayModelList,SimpleDateFormat sdf){
         List<RepayCalendarResponseDto> repayCalendarResponseDtoList = Lists.newArrayList();
         RepayCalendarResponseDto repayCalendarResponseDto = null;
@@ -59,13 +58,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (sdf.toPattern().equals("MM") && repayCalendarResponseDto.getMonth().equals(sdf.format(investRepayModel.getRepayDate()))) {
-                repayCalendarResponseDto.setExpectedRepayAmount(addMoney(repayCalendarResponseDto.getExpectedRepayAmount(),investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee()));
-                repayCalendarResponseDto.setRepayAmount(addMoney(repayCalendarResponseDto.getRepayAmount(),investRepayModel.getActualInterest() - investRepayModel.getActualFee()));
-                continue;
-            }else if(sdf.toPattern().equals("dd") && repayCalendarResponseDto.getRepayDate().equals(sdf.format(investRepayModel.getRepayDate()))){
-                repayCalendarResponseDto.setExpectedRepayAmount(addMoney(repayCalendarResponseDto.getExpectedRepayAmount(),investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee()));
-                repayCalendarResponseDto.setRepayAmount(addMoney(repayCalendarResponseDto.getRepayAmount(),investRepayModel.getActualInterest() - investRepayModel.getActualFee()));
+            if (sdf.toPattern().equals("MM") && repayCalendarResponseDto.getMonth().equals(sdf.format(investRepayModel.getRepayDate())) ||
+                    sdf.toPattern().equals("dd") && repayCalendarResponseDto.getRepayDate().equals(sdf.format(investRepayModel.getRepayDate()))) {
+                setExpectedAndActualAmount(repayCalendarResponseDto,investRepayModel);
                 continue;
             }
 
@@ -73,5 +68,17 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             repayCalendarResponseDtoList.add(repayCalendarResponseDto);
         }
         return repayCalendarResponseDtoList;
+    }
+
+    private RepayCalendarResponseDto setExpectedAndActualAmount(RepayCalendarResponseDto repayCalendarResponseDto,InvestRepayModel investRepayModel){
+
+        long investRepay = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+        repayCalendarResponseDto.setExpectedRepayAmount(addMoney(repayCalendarResponseDto.getExpectedRepayAmount(),investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee()));
+        repayCalendarResponseDto.setRepayAmount(addMoney(repayCalendarResponseDto.getRepayAmount(),investRepayModel.getActualInterest() - investRepayModel.getActualFee()));
+        return repayCalendarResponseDto;
+    }
+
+    private String addMoney(String num1,long num2){
+        return String.valueOf(Long.parseLong(num1) + num2);
     }
 }
