@@ -83,6 +83,23 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                 alert("没有选择渠道");
                 return false;
             }
+            var selectReceiver = false;
+            if ($allGroups.get(0).checked) {
+                selectReceiver = true;
+            }
+            if ($importGroups.get(0).checked) {
+                selectReceiver = true;
+            }
+            for (var j = 0; j < $userGroups.length; ++j) {
+                if ($userGroups.get(j).checked) {
+                    selectReceiver = true;
+                    break;
+                }
+            }
+            if (!selectReceiver) {
+                alert("没有选择收件人");
+                return false;
+            }
             return true;
         }
 
