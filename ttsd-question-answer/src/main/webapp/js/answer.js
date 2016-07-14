@@ -15,6 +15,12 @@ $('#my-questions-tab').find('li').click(function(index) {
     $myQAnswer.find('.answers-box').eq(num).show().siblings('.answers-box').hide();
 });
 
+/* hot question */
+var $hotCategory=$('.hot-question-category');
+$hotCategory.find('.m-title').on('click',function() {
+    $hotCategory.find('.qa-list').toggle();
+});
+
 
 
 

@@ -1,8 +1,5 @@
 <#import "macro/global-dev.ftl" as global>
 <@global.main pageCss="${css.main}" pageJavascript="${js.main}">
-    <div class="borderBox tc">
-        <a href="#" class="btn-main">我要提问</a>
-    </div>
 <div class="question-container">
     <div class="article-content fl">
         <div class="ask-question-box clearfix">

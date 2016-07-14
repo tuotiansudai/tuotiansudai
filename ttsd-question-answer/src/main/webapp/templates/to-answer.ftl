@@ -1,8 +1,6 @@
 <#import "macro/global-dev.ftl" as global>
 <@global.main pageCss="${css.main}" pageJavascript="${js.main}">
-    <div class="borderBox tc">
-        <a href="#" class="btn-main">我要提问</a>
-    </div>
+
 <div class="question-container answer-container">
 
     <div class="article-content fl">
@@ -11,7 +9,7 @@
                 <dl class="answers-list">
                     <dt>拓天速贷靠谱吗？</dt>
                     <dd><span>miaojiahang</span>
-                        <span>回答：2</span>
+                        <span class="answerNum">回答：2</span>
                         <span class="datetime">2016-05-30 11:43</span> <br/>
 
                     </dd>
@@ -49,7 +47,7 @@
 
                     <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
                     <dd class="date-time-answer"><span>miaojiahang</span>
-                        <span>回答：2</span>
+                        <span class="answerNum">回答：2</span>
                         <span class="datetime">2016-05-30 11:43</span>
                         <span class="agree-ok active fr">10</span>
                     </dd>
@@ -67,7 +65,7 @@
 
                     <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
                     <dd class="date-time-answer"><span>miaojiahang</span>
-                        <span>回答：2</span>
+                        <span class="answerNum">回答：2</span>
                         <span class="datetime">2016-05-30 11:43</span>
                         <span class="agree-ok fr">10</span>
                     </dd>
@@ -77,7 +75,7 @@
 
                     <dd>这个平台活动好多啊！！！对拓天速贷近一年的经营数据进行了详细分析，平台房产抵押借贷表现如下：以房产作抵押标的项目达93个，占平台项目总数的67%。;涉及金额占平台总金额的87%。</dd>
                     <dd class="date-time-answer"><span>miaojiahang</span>
-                        <span>回答：2</span>
+                        <span class="answerNum">回答：2</span>
                         <span class="datetime">2016-05-30 11:43</span>
                         <span class="agree-ok fr">10</span>
                     </dd>

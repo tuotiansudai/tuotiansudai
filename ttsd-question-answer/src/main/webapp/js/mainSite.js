@@ -1,4 +1,4 @@
-var style = require('../style/sass/global.scss');
+require('../style/sass/global.scss');
 require('./answer');
 require('./questions');
 
