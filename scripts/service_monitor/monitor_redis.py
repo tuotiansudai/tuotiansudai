@@ -5,10 +5,6 @@ import redis
 import sys
 import time
 
-#
-# cron 添加执行任务 0 0 * * * ./monitor_redis.py -h host -f filename
-# redis-`date +%Y-%m-%d`.log
-#
 redis_keys = [
 #'pubsub_patterns',
 #'connected_slaves',
@@ -48,50 +44,37 @@ redis_keys = [
 def get_redis(options):
   return redis.StrictRedis(host=options.host, password=options.password, port=options.port, db=0)
 
-def main(argv):
-  p = optparse.OptionParser(conflict_handler="resolve", description="This Zabbix plugin checks the health of redis instance.")
-  p.add_option('-h', '--host', action='store', type='string', dest='host', default="127.0.0.1", help='The hostname you want to connect to')
-  p.add_option('-P', '--port', action='store', type='string', dest='port', default=6379, help='The port to connect on')
-  p.add_option('-p', '--passwd', action='store', type='string', dest='password', default=None, help='The password to authenticate with')
-  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default=None, help='The out file path to authenticate with')
+def main(host, passwd, port, log):
+  r = redis.StrictRedis(host=host, password=passwd, port=port, db=0)
 
-
-  options, arguments = p.parse_args()
-
-  if options.host is None :
-     return p.print_help()
-
-  r = get_redis(options)
-
-  if options.file_path is not None:
-    origin_stdout = sys.stdout
-    f_handler = open(options.file_path, "a")
-    sys.stdout=f_handler
-
-    print_keys(r, options.host)
-    sys.stdout.close()
-    sys.stdout = origin_stdout
-    del origin_stdout
-    return
-  else:
-    return print_keys(r, options.host)
-
-
-def print_keys(r, host):
   res = r.info()
 
   for p in redis_keys:
     if p in res:
-      print '{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}' % { 'host': host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")}
+      log.write('{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}\n' % { 'host': host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")})
+  if not log.isatty():      # tty is line buffer 
+      log.flush()
 
 #
 # main app
 #
 if __name__ == "__main__":
+  p = optparse.OptionParser(conflict_handler="resolve", description="This Zabbix plugin checks the health of redis instance.")
+  p.add_option('-h', '--host', action='store', type='string', dest='host', default="127.0.0.1", help='The hostname you want to connect to')
+  p.add_option('-P', '--port', action='store', type='string', dest='port', default=6379, help='The port to connect on')
+  p.add_option('-p', '--passwd', action='store', type='string', dest='password', default=None, help='The password to authenticate with')
+  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default=None, help='The out file path to authenticate with')
+  options, arguments = p.parse_args()
+
+  if options.host is None :
+     p.print_help()
+     sys.exit(1)
+
+  log_out = sys.stdout 
+  if options.file_path is not None:
+    f_handler = open(options.file_path, "a")
+    log_out = f_handler
   start_time = time.strftime("%Y%m%d")
-  while True:
-    main(sys.argv[1:])
+  while start_time == time.strftime("%Y%m%d"):
+    main(options.host, options.password, options.port, log_out)
     time.sleep(1)
-    run_time = time.strftime("%Y%m%d")
-    if start_time != run_time:
-        sys.exit()
