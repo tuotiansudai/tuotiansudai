@@ -1283,15 +1283,26 @@
     </select>
 
     <select id="queryLoanAmountDistribution" parameterType="map" resultMap="keyValueMap">
-        select
-            periods as `name`,
-            ROUND(SUM(loan_amount/100), 2) AS `value`
-        from
-            loan
-        where
-            created_time between #{startTime} and #{endTime}
-        group by periods
-        ORDER BY `name` ASC;
+        SELECT
+          loan.periods AS `name`,
+          ROUND(SUM(loan.loan_amount / 100), 2) AS `value`
+        FROM
+          loan
+          JOIN invest
+            ON loan.id = invest.loan_id
+            AND invest.`status` = 'SUCCESS'
+            AND invest.`transfer_invest_id` IS NULL
+            AND invest.`invest_time` BETWEEN #{startTime} and #{endTime}
+        WHERE loan.`status` IN (
+            'RAISING',
+            'RECHECK',
+            'REPAYING',
+            'COMPLETE',
+            'OVERDUE'
+          )
+          AND loan.`product_type` != 'EXPERIENCE'
+        GROUP BY loan.periods
+        ORDER BY `name` ;
     </select>
 
     <select id="queryLoanRaisingTimeCostingTrend" parameterType="map" resultMap="keyValueMap">
