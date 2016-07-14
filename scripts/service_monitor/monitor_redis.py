@@ -41,9 +41,6 @@ redis_keys = [
 #'bytes_sent_per_sec'
 ]
 
-def get_redis(options):
-  return redis.StrictRedis(host=options.host, password=options.password, port=options.port, db=0)
-
 def main(host, passwd, port, log):
   r = redis.StrictRedis(host=host, password=passwd, port=port, db=0)
 
