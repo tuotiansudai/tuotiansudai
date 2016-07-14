@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         long repayExpectedInterest;
         long repayActualInterest;
         for(InvestRepayModel investRepayModel : investRepayModelList){
-            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),repayCalendarRequestDto.getDate(),null);
+            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),null,repayCalendarRequestDto.getDate());
             repayExpectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
             repayActualInterest = investRepayModel.getActualInterest() - investRepayModel.getActualFee();
             for(CouponRepayModel couponRepayModel: couponRepayModelList){
@@ -88,7 +89,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     String.valueOf(repayActualInterest),
                     String.valueOf(repayExpectedInterest),
                     String.valueOf(investRepayModel.getPeriod()),
-                    String.valueOf(couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),null,null).size()),
+                    String.valueOf(investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size()),
                     investRepayModel.getStatus().name()));
         }
 
