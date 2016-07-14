@@ -118,15 +118,15 @@ public class MembershipController {
 
         return modelAndView;
     }
-    @RequestMapping(path = "/order-real", method = RequestMethod.GET)
-    public ModelAndView orderReal() {
-        ModelAndView modelAndView = new ModelAndView("/membership-order-real");
+    @RequestMapping(path = "/order", method = RequestMethod.GET)
+    public ModelAndView order() {
+        ModelAndView modelAndView = new ModelAndView("/membership-order");
 
         return modelAndView;
     }
-    @RequestMapping(path = "/order-web", method = RequestMethod.GET)
-    public ModelAndView orderWeb() {
-        ModelAndView modelAndView = new ModelAndView("/membership-order-web");
+    @RequestMapping(path = "/record", method = RequestMethod.GET)
+    public ModelAndView record() {
+        ModelAndView modelAndView = new ModelAndView("/membership-record");
 
         return modelAndView;
     }
