@@ -9,7 +9,7 @@
     <tbody>
         {{#records}}
         <tr {{^read}}class="unread"{{/read}}>
-            <td><span class="icon">【拓天速贷】</span></td>
+            <td><span class="icon">【{{#messageTypeHandler}}{{messageType}}{{/messageTypeHandler}}】</span></td>
             <td>
                 {{#content}}
                     <a href='/message/user-message/{{userMessageId}}#{{index}}'>{{title}}</a>

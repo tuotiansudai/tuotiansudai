@@ -60,7 +60,7 @@ public class UserMessageServiceImpl implements UserMessageService {
         List<UserMessagePaginationItemDto> records = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessagePaginationItemDto>() {
             @Override
             public UserMessagePaginationItemDto apply(UserMessageModel input) {
-                return new UserMessagePaginationItemDto(input);
+                return new UserMessagePaginationItemDto(input, messageMapper.findById(input.getMessageId()).getType());
             }
         });
 

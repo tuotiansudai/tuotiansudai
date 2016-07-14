@@ -1025,7 +1025,7 @@
             }
             .gift-two{
               position: absolute;
-              top:320px;
+              top:80px;
               left:80px;
               width:160px;
               padding:10px 20px;
@@ -1676,9 +1676,9 @@
         }
         .gift-two{
           position: absolute;
-          top:320px;
-          left:80px;
-          width:160px;
+          top:40px;
+          left:40px;
+          width:120px;
           padding:10px 20px;
           background:#e6e6e6;
           border-radius:10px;
@@ -1975,6 +1975,7 @@
         }
       }
       .share-icon{
+        display:inline-block;
         width:40px;
         height:40px;
         margin:0 5px;
