@@ -21,17 +21,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
-
-    $("#picListBox a").fancybox({
-        'titlePosition' : 'over',
-        'cyclic'        : false,
-        'showCloseButton':true,
-        'showNavArrows' : true,
-        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
-            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
-        }
-    });
-
     function showInputErrorTips(message) {
         layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
             tips: [1, '#ff7200'],
@@ -639,8 +628,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         var extraRateHeight = getSize('height');
         var css = _.compose(_.partial(function(offset, extraRateHeight) {
             return {
-                left: offset.left,
-                top: offset.top + extraRateHeight + 10
+                left: offset.left - 5,
+                top: offset.top + extraRateHeight - 10
             }
         }, _, extraRateHeight), getOffset);
         var createPopup = _.partial(function(tpl, css) {
@@ -658,7 +647,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
         var changeHTML = function() {
-            var $element = $('.chart-box').find('[data-extra-rate]');
+            var $element = $('[data-extra-rate]');
             return function(rate) {
                 $element.html(rate);
             }
@@ -674,4 +663,51 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 return $(this).val()
             })).trigger('change');
     })();
+
+    $.fn.carousel = function() {
+        return this.each(function() {
+            var $ele = $(this);
+            var $leftBtn = $ele.find('.left-button');
+            var $rightBtn = $ele.find('.right-button');
+            var $scrollEle = $ele.find('.scroll-content > .row');
+            var $col = $scrollEle.find('.col');
+            var len = $col.length;
+            var record = 0;
+            $rightBtn.on('click', function() {
+                if ($rightBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $rightBtn.add($leftBtn).removeClass('disabled');
+                record++;
+                if (record > len - 5) {
+                    $rightBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-200 - 10) * record
+                });
+            });
+            $leftBtn.on('click', function() {
+                if ($leftBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $leftBtn.add($rightBtn).removeClass('disabled');
+                record--;
+                if (record == 0) {
+                    $leftBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-200 - 10) * record
+                });
+            });
+        });
+    };
+    $('[scroll-carousel]').carousel().find('.col').fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '';
+        }
+    });
 });
