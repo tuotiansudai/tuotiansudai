@@ -567,7 +567,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="first"><span>拓荒先锋 >></span></h4>
+                                        <h4 class="first"><span><a href="#">拓荒先锋 >></a></span></h4>
                                         <p>恭喜yyh***2016-05-21 10:49:21 拔得头筹奖励0.2％加息券＋50元红包</p>
                                     </div>
                                 </div>
@@ -575,7 +575,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="king"><span>拓天标王 >></span></h4>
+                                        <h4 class="king"><span><a href="#">拓天标王 >></a></span></h4>
                                         <p>恭喜yyh****以累计投资 60000.00元 夺得标王奖励0.2％加息券＋50元红包</p>
                                     </div>
                                 </div>
@@ -583,7 +583,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="hammer"><span>一锤定音 >></span></h4>
+                                        <h4 class="hammer"><span><a href="#">一锤定音 >></a></span></h4>
                                         <p>恭喜yyh***2016-05-21 10:49:21 终结此标奖励0.2％加息券＋50元红包</p>
                                     </div>
                                 </div>

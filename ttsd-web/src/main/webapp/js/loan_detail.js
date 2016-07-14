@@ -50,16 +50,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         showLayer();
     }
 
-    var loanProgress = $loanDetail.data('loan-progress');
-    if (loanProgress <= 50) {
-        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
-        $('.chart-box .rount2').hide();
-    } else {
-        $('.chart-box .rount').css('transform', "rotate(180deg)");
-        $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
-    }
-
     var loadInvestData = function() {
         paginationElement.loadPagination({
             index: 1
@@ -673,13 +663,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var $col = $scrollEle.find('.col');
             var len = $col.length;
             var record = 0;
+            var eachShowAmount = $(window).width() > 700 ? 5 : 2;
             $rightBtn.on('click', function() {
                 if ($rightBtn.hasClass('disabled')) {
                     return false;
                 }
                 $rightBtn.add($leftBtn).removeClass('disabled');
                 record++;
-                if (record > len - 5) {
+                if (record > len - eachShowAmount) {
                     $rightBtn.addClass('disabled');
                 }
                 $scrollEle.stop().animate({

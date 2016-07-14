@@ -1934,6 +1934,12 @@ $red: #eb4a3e;
                 color: #808080;
                 span {
                   padding: 15px 0 15px 50px;
+                  a {
+                    color: #808080;
+                    &:hover {
+                      color: #ff752a;
+                    }
+                  }
                 }
                 &.hammer {
                   span {
