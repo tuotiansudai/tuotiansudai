@@ -16,5 +16,7 @@ public interface CouponRepayMapper {
 
     long update(CouponRepayModel couponRepayModel);
 
-    List<CouponRepayModel> findCouponRepayByInvestId(@Param(value = "investId") long investId);
+    List<CouponRepayModel> findCouponRepayByInvestIdAndRepayDate(@Param(value = "investId") long investId,
+                                                     @Param(value = "month") String month,
+                                                     @Param(value = "day") String day);
 }

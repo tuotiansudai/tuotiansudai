@@ -27,5 +27,8 @@ public class MobileAppRepayCalendarController extends MobileAppBaseController {
         return mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
     }
 
-
+    @RequestMapping(value="/get/date-repay-calendar",method = RequestMethod.POST)
+    public BaseResponseDto getDateRepayCalendar(@RequestBody RepayCalendarRequestDto repayCalendarRequestDto){
+        return mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
+    }
 }

@@ -63,7 +63,8 @@ public interface InvestRepayMapper {
 
     List<InvestRepayModel> findInvestRepayByLoginNameAndRepayTime(@Param(value = "loginName") String loginName,
                                                                   @Param(value = "year") String year,
-                                                                  @Param(value = "month") String month);
+                                                                  @Param(value = "month") String month,
+                                                                  @Param(value = "day") String day);
 
 
 }

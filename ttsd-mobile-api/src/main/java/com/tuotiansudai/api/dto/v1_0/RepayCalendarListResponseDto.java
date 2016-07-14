@@ -4,13 +4,13 @@ package com.tuotiansudai.api.dto.v1_0;
 import java.util.List;
 
 public class RepayCalendarListResponseDto extends BaseResponseDataDto{
-    List<RepayCalendarResponseDto> repayCalendarResponseDtos;
+    List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtos;
 
-    public List<RepayCalendarResponseDto> getRepayCalendarResponseDtos() {
-        return repayCalendarResponseDtos;
+    public List<RepayCalendarYearResponseDto> getRepayCalendarYearResponseDtos() {
+        return repayCalendarYearResponseDtos;
     }
 
-    public void setRepayCalendarResponseDtos(List<RepayCalendarResponseDto> repayCalendarResponseDtos) {
-        this.repayCalendarResponseDtos = repayCalendarResponseDtos;
+    public void setRepayCalendarYearResponseDtos(List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtos) {
+        this.repayCalendarYearResponseDtos = repayCalendarYearResponseDtos;
     }
 }

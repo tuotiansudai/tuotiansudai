@@ -49,7 +49,14 @@
         where id = #{id}
     </update>
 
-    <select id="findCouponRepayByInvestId" resultMap="couponRepayResultMap" parameterType="map">
+    <select id="findCouponRepayByInvestIdAndRepayDate" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay where invest_id = #{investId}
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(repay_date, '%Y-%m') = #{month}
+        </if>
+        <if test="day != null and day != ''">
+            AND DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day}
+        </if>
+        ORDER BY repay_date
     </select>
 </mapper>
