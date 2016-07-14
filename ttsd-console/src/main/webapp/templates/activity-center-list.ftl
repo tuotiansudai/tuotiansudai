@@ -31,9 +31,12 @@
             <select class="selectpicker" name="activityStatus">
                 <option value="" <#if !(activityStatus??)>selected</#if>>全部</option>
                 <#list activityStatusList as status>
-                    <option value="${status}" <#if activityStatus?? && status==activityStatus>selected</#if>>
-                    ${status.description}
-                    </option>
+                    <#if status != 'APPROVED' >
+                        <option value="${status}" <#if activityStatus?? && status==activityStatus>selected</#if>>
+                        ${status.description}
+                        </option>
+
+                    </#if>
                 </#list>
             </select>
         </div>

@@ -18,7 +18,7 @@
         <div class="hd">
             <ul class="scroll-num">
                 <#list bannerList as banner>
-                    <li class="on">
+                    <li <#if banner_index  == 0>class="on"</#if>>
                     </li>
                 </#list>
             </ul>
