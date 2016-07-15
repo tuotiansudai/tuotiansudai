@@ -4,7 +4,7 @@ SET @temp_time := '';
 SET @temp_count1 := 1;
 SET @temp_login1 := '';
 SET @temp_time1 := '';
-UPDATE USER
+UPDATE `user`
   u
   JOIN
     (SELECT
