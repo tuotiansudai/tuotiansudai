@@ -50,21 +50,17 @@ class MonitorRedis():
         self.host = options.host
         self.conn = redis.StrictRedis(host=options.host, password=options.password, port=options.port, db=0)
 
-
     def __enter__(self):
-	try:
-          self.log = open("%s/redis-%s.log" % (options.folder_path, datetime.today().strftime("%Y%m%d")), "a")
+        try:
+            self.log = open("%s/redis-%s.log" % (options.folder_path, datetime.today().strftime("%Y%m%d")), "a")
         except Exception, e:
-          with open('/var/log/monitor_redis.log','a') as f:
-            f.write('%s' % traceback.format_exc())
-            f.close()
-            sys.exit()
+            with open('/var/log/monitor_redis.log', 'a') as f:
+                f.write('%s' % traceback.format_exc())
+                sys.exit()
         return self
-
 
     def __exit__(self, *args):
         self.log.close()
-
 
     def logOut(self):
         res = self.conn.info()
@@ -76,10 +72,10 @@ class MonitorRedis():
         self.log.write(log_str + '],"date":%s}\n' % (time.strftime("%Y-%m-%d %H:%M:%S")))
         self.log.flush()
 
+
 # main app
 #
 if __name__ == "__main__":
-    now = datetime.now()
 
     p = optparse.OptionParser(conflict_handler="resolve",
                               description="This Zabbix plugin checks the health of redis instance.")
@@ -98,7 +94,6 @@ if __name__ == "__main__":
         except Exception, e:
             with open('/var/log/monitor_redis.log', 'a') as f:
                 f.write('%s' % traceback.format_exc())
-                f.close()
             exit(1)
 
     with MonitorRedis(options) as redis_monitor:
