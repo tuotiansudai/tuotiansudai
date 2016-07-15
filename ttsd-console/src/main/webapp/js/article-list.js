@@ -26,10 +26,6 @@ require(['jquery', 'csrf','bootstrap', 'bootstrapSelect','bootstrapDatetimepicke
                     alert(date.data.message);
                 }
             });
-
         });
     });
 })
-
-
-

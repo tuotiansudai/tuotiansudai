@@ -132,7 +132,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 String.valueOf(transferApplicationModel.getTransferAmount()));
 
         try {
-
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     ProjectTransferNopwdMapper.class,
                     requestModel,
@@ -510,6 +509,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 rate);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         investModel.setInvestFeeRate(membershipModel.getFee());
+        investModel.setNoPasswordInvest(investDto.isNoPassword());
         return investModel;
     }
 }

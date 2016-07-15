@@ -210,7 +210,6 @@ public class LoanServiceImpl implements LoanService {
                 payDataDto.setStatus(umPayReturn.isSuccess());
                 payDataDto.setCode(umPayReturn.getRetCode());
                 payDataDto.setMessage(umPayReturn.getRetMsg());
-
             } catch (PayException e) {
                 payDataDto.setStatus(false);
                 payDataDto.setMessage(e.getLocalizedMessage());
