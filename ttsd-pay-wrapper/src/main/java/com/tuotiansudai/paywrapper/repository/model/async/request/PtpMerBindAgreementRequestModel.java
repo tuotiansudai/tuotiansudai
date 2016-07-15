@@ -20,7 +20,7 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         super(dto.getSource(), "ptp_mer_bind_agreement");
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
-        if (dto.isAutoInvest() && dto.isNoPasswordInvest()) {
+        if (dto.isNoPasswordInvest()) {
             this.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "no_password_invest_notify"));
         }
         if (dto.isAutoInvest() && !dto.isNoPasswordInvest()) {
