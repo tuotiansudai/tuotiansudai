@@ -39,11 +39,20 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     private SimpleDateFormat querySdf = new SimpleDateFormat("yyyy-MM");
 
+    private static List<String> monthList = Lists.newArrayList("01","02","03","04","05","06","07","08","09","10","11","12");
+
     @Override
     public BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
         BaseResponseDto<RepayCalendarListResponseDto> baseResponseDto = new BaseResponseDto<>();
         RepayCalendarListResponseDto repayCalendarListResponseDto = new RepayCalendarListResponseDto();
-        repayCalendarListResponseDto.setRepayCalendarYearResponseDtos(getRepayCalendarResponseList(repayCalendarRequestDto,yearMonthSdf));
+        List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = getRepayCalendarResponseList(repayCalendarRequestDto,yearMonthSdf);
+        for(RepayCalendarYearResponseDto repayCalendarYearResponseDto : repayCalendarYearResponseDtoList){
+            monthList.remove(repayCalendarYearResponseDto.getMonth());
+        }
+        for(String month : monthList){
+            repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(month,"0","0"));
+        }
+        repayCalendarListResponseDto.setRepayCalendarYearResponseDtos(repayCalendarYearResponseDtoList);
         baseResponseDto.setData(repayCalendarListResponseDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
