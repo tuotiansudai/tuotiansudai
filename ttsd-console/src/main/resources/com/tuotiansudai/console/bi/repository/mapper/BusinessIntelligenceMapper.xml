@@ -1285,7 +1285,7 @@
     <select id="queryLoanAmountDistribution" parameterType="map" resultMap="keyValueMap">
         SELECT
           loan.periods AS `name`,
-          ROUND(SUM(loan.loan_amount / 100), 2) AS `value`
+          ROUND(SUM(invest.amount / 100), 2) AS `value`
         FROM
           loan
           JOIN invest
