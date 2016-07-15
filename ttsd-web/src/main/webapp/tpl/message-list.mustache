@@ -1,0 +1,32 @@
+<table class="table-striped transfer-list">
+    <thead>
+        <tr>
+            <th style="width: 120px">来源</th>
+            <th>标题</th>
+            <th style="width: 90px">时间</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+        <tr {{^read}}class="unread"{{/read}}>
+            <td><span class="icon">【{{#messageTypeHandler}}{{messageType}}{{/messageTypeHandler}}】</span></td>
+            <td>
+                {{#content}}
+                    <a href='/message/user-message/{{userMessageId}}#{{index}}'>{{title}}</a>
+                {{/content}}
+                {{^content}}
+                    {{{title}}}
+                {{/content}}
+            </td>
+            <td>{{createdTime}}</td>
+        </tr>
+        {{/records}}
+
+        {{^records}}
+            <tr>
+                <td colspan="3" class="no-data">暂时没有记录</td>
+            </tr>
+        {{/records}}
+    </tbody>
+</table>
+<p class="page-count-bottom"><button class="read-all-messages">全部标记为已读</button></p>
