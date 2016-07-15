@@ -74,10 +74,10 @@ public class SignInServiceImpl implements SignInService {
 
     private SignInPointDto obtainSignInPointDto(String loginName){
         SignInPointDto signInPointDto = null ;
-        PointBillModel pointBillModel = pointBillMapper.findSignInPointBillByLoginName(loginName);
+        PointBillModel pointBillModel = pointBillMapper.findLatestSignInPointBillByLoginName(loginName);
         UserModel userModel = userMapper.findByLoginName(loginName);
         if(pointBillModel != null){
-            signInPointDto = new SignInPointDto(pointBillModel,userModel);
+            signInPointDto = new SignInPointDto(pointBillModel,userModel.getSignInCount());
         }
         return signInPointDto;
     }

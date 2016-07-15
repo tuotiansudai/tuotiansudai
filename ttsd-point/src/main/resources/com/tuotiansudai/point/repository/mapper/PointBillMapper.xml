@@ -86,7 +86,7 @@
         </where>
     </select>
 
-    <select id="findSignInPointBillByLoginName" parameterType="map" resultMap="pointBillResultMap">
+    <select id="findLatestSignInPointBillByLoginName" parameterType="map" resultMap="pointBillResultMap">
         select * from point_bill where login_name = #{loginName} and business_type = 'SIGN_IN' order by created_time desc LIMIT 1
     </select>
 
