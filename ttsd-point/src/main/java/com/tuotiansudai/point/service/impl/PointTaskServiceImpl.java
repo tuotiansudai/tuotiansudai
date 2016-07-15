@@ -176,17 +176,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                                 String.valueOf(referrerRelationMapper.findByReferrerLoginNameAndLevel(loginName, 1).size()),
                                 String.valueOf(pointTaskModel.getPoint() * completedMaxTaskLevel)));
                         break;
-                    case EACH_REFERRER_INVEST:
-                        pointTaskDto.setTitle(pointTask.getTitle());
-                        pointTaskDto.setPoint(pointTaskModel.getPoint());
-                        String referrer = userMapper.findByLoginName(loginName).getReferrer();
-                        List<ReferrerRelationModel> referrerRelations = referrerRelationMapper.findByReferrerLoginNameAndLevel(referrer, 1);
-                        long amount = 0;
-                        for (ReferrerRelationModel referrerRelation : referrerRelations) {
-                            amount += investMapper.sumSuccessInvestAmountByLoginName(null, referrerRelation.getLoginName());
-                        }
-                        pointTaskDto.setDescription(MessageFormat.format("已邀请好友投资{0}元", AmountConverter.convertCentToString(amount)));
-                        break;
                     default:
                         pointTaskDto.setTitle(pointTask.getTitle());
                         pointTaskDto.setPoint(pointTaskModel.getPoint());
