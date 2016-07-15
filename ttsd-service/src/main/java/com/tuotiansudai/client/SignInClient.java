@@ -12,11 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class SignInClient extends BaseClient {
@@ -114,35 +110,6 @@ public class SignInClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
-    }
-
-    private static String cookiePath(HttpServletRequest request) {
-        return request.getContextPath() + "/";
-    }
-
-    public Cookie createSessionCookie(HttpServletRequest request,
-                                       Map<String, String> sessionIds) {
-        Cookie sessionCookie = new Cookie("SESSION","");
-        if(this.isServlet3()) {
-            sessionCookie.setHttpOnly(true);
-        }
-        sessionCookie.setSecure(request.isSecure());
-        sessionCookie.setPath(cookiePath(request));
-        if(sessionIds.isEmpty()) {
-            sessionCookie.setMaxAge(0);
-            return sessionCookie;
-        }
-        String cookieValue = sessionIds.values().iterator().next();
-        sessionCookie.setValue(cookieValue);
-        return sessionCookie;
-    }
-
-    private boolean isServlet3() {
-        try {
-            ServletRequest.class.getMethod("startAsync");
-            return true;
-        } catch(NoSuchMethodException e) {}
-        return false;
     }
 
 }

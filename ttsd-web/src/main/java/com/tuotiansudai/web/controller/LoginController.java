@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +54,7 @@ public class LoginController {
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         Map<String, String> sessionIds = new HashMap<>();
         sessionIds.put("SESSION", baseDto.getData().getNewSessionId());
-        Cookie cookie = signInClient.createSessionCookie(httpServletRequest, sessionIds);
+        Cookie cookie = createSessionCookie(httpServletRequest, sessionIds);
         httpServletResponse.addCookie(cookie);
         return baseDto;
     }
@@ -72,5 +73,34 @@ public class LoginController {
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         this.captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer());
+    }
+
+    private static String cookiePath(HttpServletRequest request) {
+        return request.getContextPath() + "/";
+    }
+
+    private Cookie createSessionCookie(HttpServletRequest request,
+                                      Map<String, String> sessionIds) {
+        Cookie sessionCookie = new Cookie("SESSION","");
+        if(this.isServlet3()) {
+            sessionCookie.setHttpOnly(true);
+        }
+        sessionCookie.setSecure(request.isSecure());
+        sessionCookie.setPath(cookiePath(request));
+        if(sessionIds.isEmpty()) {
+            sessionCookie.setMaxAge(0);
+            return sessionCookie;
+        }
+        String cookieValue = sessionIds.values().iterator().next();
+        sessionCookie.setValue(cookieValue);
+        return sessionCookie;
+    }
+
+    private boolean isServlet3() {
+        try {
+            ServletRequest.class.getMethod("startAsync");
+            return true;
+        } catch(NoSuchMethodException e) {}
+        return false;
     }
 }
