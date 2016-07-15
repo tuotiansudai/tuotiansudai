@@ -33,9 +33,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     @Autowired
     private InvestMapper investMapper;
 
-    private SimpleDateFormat yearMonthSdf = new SimpleDateFormat("yyyy-MM");
+    private SimpleDateFormat yearMonthSdf = new SimpleDateFormat("MM");
 
-    private SimpleDateFormat daySdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat daySdf = new SimpleDateFormat("dd");
+
+    private SimpleDateFormat querySdf = new SimpleDateFormat("yyyy-MM");
 
     @Override
     public BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
@@ -124,7 +126,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     }
 
     private RepayCalendarYearResponseDto setExpectedAndActualAmount(RepayCalendarYearResponseDto repayCalendarYearResponseDto, InvestRepayModel investRepayModel){
-        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),yearMonthSdf.format(investRepayModel.getRepayDate()),null);
+        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),querySdf.format(investRepayModel.getRepayDate()),null);
         long repayExpectedInterest = 0;
         long repayActualInterest = 0;
         for(CouponRepayModel couponRepayModel: couponRepayModelList){
