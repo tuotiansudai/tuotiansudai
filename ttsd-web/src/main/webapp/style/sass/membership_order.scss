@@ -98,7 +98,16 @@
             width:100%;
             font-size:18px;
             color:#4c4c4c;
+            margin-bottom:30px;
             border-bottom:1px solid #e6e6e6;
+          }
+          .orfer-table{
+            float:left;
+            width:100%;
+            .order-picture{
+              float:left;
+              width:190px;
+            }
           }
         }
       }

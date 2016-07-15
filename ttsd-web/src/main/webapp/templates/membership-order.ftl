@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership_order}" pageJavascript="${js.membership_order}" activeNav="商品详情" activeLeftNav="" title="商品详情" site="membership">
+<@global.main pageCss="${css.membership_order}" pageJavascript="${js.membership_order}" activeNav="订单确认" activeLeftNav="" title="订单确认" site="membership">
 
 <div class="global-member-order">
 	<div class="wp clearfix">
@@ -20,6 +20,21 @@
 			</div>
 			<div class="order-info">
 				<h3>订单确认</h3>
+				<div class="orfer-table">
+					<div class="order-picture">
+						<img src="http://dummyimage.com/140x114/d1e9fa/686a82.gif&text=商品" width="140" height="114">
+					</div>
+					<div class="order-name">
+						<h3></h3>
+						<p></p>
+						<p></p>
+						<p></p>
+					</div>
+					<div class="order-price">
+						<p></p>
+						<p></p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
