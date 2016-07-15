@@ -4,6 +4,8 @@ import optparse
 import redis
 import sys
 import time
+from datetime import datetime, timedelta
+
 
 redis_keys = [
 #'pubsub_patterns',
@@ -42,45 +44,53 @@ redis_keys = [
 ]
 
 class MonitorRedis():
-  def __init__(self, host, passwd, port, log):
-    self.host = host
-    self.passwd = passwd
-    self.port = port
-    self.log = log
+  def __init__(self, options):
+    self.host = options.host
+    self.passwd = options.password
+    self.port = options.port
+    self.log = open(options.file_path, "a")
 
   def getRedis(self):
     return redis.StrictRedis(host=self.host, password=self.passwd, port=self.port, db=0)
 
   def logOut(self, res):
+    log_str = '{"host":%s,[' % (self.host)
     for p in redis_keys:
       if p in res:
-        self.log.write('{"host":%(host)s,"key":redis.%(name)s,"value":%(val)s,"date":%(local_time)s}\n' % { 'host': self.host, 'name': p, 'val': res[p] ,'local_time':time.strftime("%Y-%m-%d %H:%M:%S")})
+        log_str += '{%(name)s:%(val)s},' % { 'name': p, 'val': res[p]}
+    log_str = log_str[0:-1]    
+    try:
+      self.log.write(log_str + '],"date":%s}\n' % (time.strftime("%Y-%m-%d %H:%M:%S")))
+    except Exception, e:
+      print e
+      self.log.close()
+      exit(1)
     self.log.flush()
+    
 
 # main app
 #
 if __name__ == "__main__":
+  now = datetime.now()
+  
   p = optparse.OptionParser(conflict_handler="resolve", description="This Zabbix plugin checks the health of redis instance.")
   p.add_option('-h', '--host', action='store', type='string', dest='host', default="127.0.0.1", help='The hostname you want to connect to')
   p.add_option('-P', '--port', action='store', type='string', dest='port', default=6379, help='The port to connect on')
   p.add_option('-p', '--passwd', action='store', type='string', dest='password', default=None, help='The password to authenticate with')
-  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default=None, help='The out file path to authenticate with')
+  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default="/var/log/redis-%s.log" % now.strftime("%Y%m%d"), help='The out file path to authenticate with')
   options, arguments = p.parse_args()
 
-  if options.host is None :
-     p.print_help()
-     sys.exit(1)
+  Monob = MonitorRedis(options)
+  remain_seconds = (timedelta(hours=24) - (now - now.replace(hour=0, minute=00, second=0, microsecond=0))).seconds
 
-  start_time = time.strftime("%Y%m%d")
-  Monob = MonitorRedis(options.host, options.password, options.port, None)
-
-  if options.file_path is None:
-    Monob.log = open("/var/log/redis-%s.log" % (start_time), "a")
-  else:
-    Monob.log = open(options.file_path, "a")
-
-  while start_time == time.strftime("%Y%m%d"):
+  for i in xrange(remain_seconds):
+  #while start_time == time.strftime("%Y%m%d"):
     r = Monob.getRedis()
-    Monob.logOut(r.info())
+    try:
+      Monob.logOut(r.info())
+    except Exception, e:
+      print e
+      Monob.log.close()
+      exit(1)
     time.sleep(1)
   Monob.log.close()
