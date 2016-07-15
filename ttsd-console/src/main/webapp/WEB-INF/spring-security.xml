@@ -65,6 +65,7 @@
                 <beans:value>/ueditor/**</beans:value>
                 <beans:value>/upload</beans:value>
                 <beans:value>/activity-manage/import-excel</beans:value>
+                <beans:value>/login/**</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

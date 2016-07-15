@@ -106,6 +106,8 @@
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
                 <beans:value>/activity/hero-ranking</beans:value>
+                <beans:value>/login/sign-in</beans:value>
+                <beans:value>/login/sign-out</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
