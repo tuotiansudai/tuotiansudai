@@ -12,7 +12,24 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $contentList=$('.content-list'),
                 $taskStatus=$('.task-status',$contentList),
                 $buttonMore=$('.button-more',$contentList);
+            var $taskBox=$('#taskFrame').find('.task-box'),
+                taskBoxLen=$taskBox.length;
+            var disabledBtnLen=$taskBox.find('a.btn-normal[disabled="disabled"]').length;
+            if(disabledBtnLen==taskBoxLen) {
+                $taskBox.hide();
+            }
 
+            $('.notice-tip').on('click',function() {
+                $taskBox.toggle();
+                var $this=$(this);
+                if($taskBox.is(':hidden')) {
+                    $this.find('i').addClass('fa-chevron-up').removeClass('fa-chevron-down');
+                }
+                else {
+                    $this.find('i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+                }
+
+            })
             //change model
             $navBtn.on('click', function (event) {
                 event.preventDefault();
@@ -37,6 +54,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
             });
             $taskStatus.find('.border-box').hide();
             $taskStatus.find('.border-box:lt(4)').show();
+
             $buttonMore.on('click',function(event) {
                 event.preventDefault();
                 var $this=$(this),

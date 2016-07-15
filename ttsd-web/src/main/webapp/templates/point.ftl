@@ -75,7 +75,9 @@
             </div>
         </div>
         <div class="choi-beans-list ">
-            <div class="title-task clearfix"><span class="active">新手任务</span></div>
+            <div class="title-task clearfix">
+                <span class="active">新手任务</span>
+            </div>
             <div class="notice-tip">
                 <#assign allNewbieTaskCompleted = true />
                 <#list newbiePointTasks as newbiePointTask>
@@ -88,8 +90,10 @@
                 <#if allNewbieTaskCompleted>
                     您已完成所有新手任务，快去完成进阶任务向高手进发吧！
                 </#if>
+
+                <i class="fr fa fa-chevron-down"></i>
             </div>
-            <div class="task-frame clearfix">
+            <div class="task-frame clearfix" id="taskFrame">
                 <#list newbiePointTasks as newbiePointTask>
                     <div class="task-box">
                         <span class="serial-number">${newbiePointTask_index + 1}</span>
@@ -98,7 +102,7 @@
                             <dd>说明：${newbiePointTask.name.getDescription()}</dd>
                             <dd class="reward">奖励：<span>${newbiePointTask.point?string.computer}财豆</span></dd>
                             <dd>
-                                <a class="btn-normal" href="${newbiePointTask.url}" <#if newbiePointTask.completed>disabled="disabled"</#if>>
+                                <a class="btn-normal"  <#if newbiePointTask.completed> href="javascript:void(0)"<#else> href="${newbiePointTask.url}"</#if> <#if newbiePointTask.completed>disabled="disabled"</#if>>
                                 ${newbiePointTask.completed?string('已完成', '立即去完成')}
                                 </a>
                             </dd>

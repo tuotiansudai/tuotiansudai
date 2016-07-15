@@ -997,6 +997,13 @@
     color:#ff7200;
     font-size:14px;
     padding: 4px 10px;
+    position: relative;
+    i {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: #666;
+    }
   }
   .task-frame {
     margin-left: -2%;
