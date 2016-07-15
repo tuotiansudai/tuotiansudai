@@ -3,6 +3,7 @@ package com.tuotiansudai.message.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
@@ -12,7 +13,6 @@ import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
@@ -49,11 +49,18 @@ public class UserMessageServiceImpl implements UserMessageService {
         int totalPage = (int) (count > 0 && count % pageSize == 0 ? count / pageSize : count / pageSize + 1);
         index = index < 1 ? 1 : Ints.min(index, totalPage);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, Lists.newArrayList(MessageChannel.WEBSITE), (index - 1) * pageSize, pageSize);
+        for (UserMessageModel userMessageModel : userMessageModels) {
+            if (Strings.isNullOrEmpty(userMessageModel.getContent())) {
+                userMessageModel.setRead(true);
+                userMessageModel.setReadTime(new Date());
+                userMessageMapper.update(userMessageModel);
+            }
+        }
 
         List<UserMessagePaginationItemDto> records = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessagePaginationItemDto>() {
             @Override
             public UserMessagePaginationItemDto apply(UserMessageModel input) {
-                return new UserMessagePaginationItemDto(input);
+                return new UserMessagePaginationItemDto(input, messageMapper.findById(input.getMessageId()).getType());
             }
         });
 
@@ -68,15 +75,12 @@ public class UserMessageServiceImpl implements UserMessageService {
     public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
         if (userMessageModel != null && !userMessageModel.isRead()) {
+            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
+            messageModel.setReadCount(messageModel.getReadCount() + 1);
+            messageMapper.update(messageModel);
             userMessageModel.setRead(true);
             userMessageModel.setReadTime(new Date());
             userMessageMapper.update(userMessageModel);
-
-            MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
-            if (messageModel.getType() == MessageType.MANUAL) {
-                messageModel.setReadCount(messageModel.getReadCount() + 1);
-                messageMapper.update(messageModel);
-            }
         }
 
         return userMessageModel;
@@ -106,7 +110,10 @@ public class UserMessageServiceImpl implements UserMessageService {
         userMapper.lockByLoginName(loginName);
         List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
         for (MessageModel message : unreadManualMessages) {
-            userMessageMapper.create(new UserMessageModel(message.getId(), loginName, message.getTitle(), message.getTemplate()));
+            userMessageMapper.create(new UserMessageModel(message.getId(),
+                    loginName,
+                    message.getTitle(),
+                    message.getTemplate()));
         }
     }
 

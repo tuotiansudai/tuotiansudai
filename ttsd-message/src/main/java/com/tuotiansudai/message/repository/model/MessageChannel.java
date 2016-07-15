@@ -2,9 +2,7 @@ package com.tuotiansudai.message.repository.model;
 
 public enum MessageChannel {
     WEBSITE("站内信"),
-    APP("APP")
-    ;
-
+    APP_MESSAGE("APP消息中心");
 
     private String description;
 

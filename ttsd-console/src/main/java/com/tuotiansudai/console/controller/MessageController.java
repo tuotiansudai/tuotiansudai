@@ -115,7 +115,7 @@ public class MessageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/manual-message", method = RequestMethod.POST)
+    @RequestMapping(value = "/manual-message/create", method = RequestMethod.POST)
     public ModelAndView createManualMessage(@Valid @ModelAttribute MessageDto messageDto,
                                             @RequestParam(value = "importUsersId") long importUsersId) {
         messageDto.setUpdatedBy(LoginUserInfo.getLoginName());
@@ -123,7 +123,7 @@ public class MessageController {
             messageDto.setCreatedBy(LoginUserInfo.getLoginName());
         }
         messageService.createAndEditManualMessage(messageDto, importUsersId);
-        return new ModelAndView("redirect: /manual-message-list");
+        return new ModelAndView("redirect:/message-manage/manual-message-list");
     }
 
     @RequestMapping(value = "/manual-message/import-users/{importUsersId}", method = RequestMethod.POST)
@@ -133,8 +133,8 @@ public class MessageController {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
         InputStream inputStream = null;
-        if (!multipartFile.getOriginalFilename().endsWith(".xls")) {
-            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是xls格式"));
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是csv格式"));
         }
         long newImportUsersId = importUsersId;
         try {
@@ -151,16 +151,19 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/approve", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> messageApprove(@PathVariable long messageId) {
         return messageService.approveManualMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/reject", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> messageReject(@PathVariable long messageId) {
         return messageService.rejectManualMessage(messageId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/delete", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> messageDelete(@PathVariable long messageId) {
         return messageService.deleteManualMessage(messageId, LoginUserInfo.getLoginName());
     }

@@ -4,7 +4,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
         var $selectDom = $('.selectpicker'); //select表单
         var $submitBtn = $('.message-save'); //提交按钮
         var $importBtn = $('.file-btn'); //导入用户按钮
-        var boolFlag = true; //校验布尔变量值
         var $messageForm = $('.message-form');
         var $userGroups = $('.userGroups');
         var $importGroups = $('.importGroups');
@@ -68,9 +67,46 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             }
         });
 
+        function check() {
+            if ($('.message-title').val().length > 40) {
+                alert("标题超过40字");
+                return false;
+            }
+            var selectChannel = false;
+            for (var i = 0; i < $('.channel').length; ++i) {
+                if ($('.channel').get(i).checked) {
+                    selectChannel = true;
+                    break;
+                }
+            }
+            if (!selectChannel) {
+                alert("没有选择渠道");
+                return false;
+            }
+            var selectReceiver = false;
+            if ($allGroups.get(0).checked) {
+                selectReceiver = true;
+            }
+            if ($importGroups.get(0).checked) {
+                selectReceiver = true;
+            }
+            for (var j = 0; j < $userGroups.length; ++j) {
+                if ($userGroups.get(j).checked) {
+                    selectReceiver = true;
+                    break;
+                }
+            }
+            if (!selectReceiver) {
+                alert("没有选择收件人");
+                return false;
+            }
+            return true;
+        }
+
         //提交表单
         $submitBtn.on('click', function(event) {
             event.preventDefault();
+            var boolFlag = check();
             var $self = $(this);
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {

@@ -38,7 +38,7 @@ public class MessageMapperTest {
 
         userMapper.create(creator);
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
 
@@ -64,13 +64,13 @@ public class MessageMapperTest {
         UserModel creator = getFakeUser("messageCreate");
         userMapper.create(creator);
         MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
         messageMapper.create(messageModelManual);
 
         MessageModel messageModelAuto = new MessageModel("title", "template", MessageType.EVENT,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModelAuto);
@@ -96,7 +96,7 @@ public class MessageMapperTest {
         userMapper.create(creator);
         MessageModel messageModel1 = new MessageModel("title", "template",
                 MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel1);
@@ -131,7 +131,7 @@ public class MessageMapperTest {
 
         userMapper.create(creator);
         MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
 
@@ -153,7 +153,7 @@ public class MessageMapperTest {
 
         userMapper.create(creator);
         MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModelManual);

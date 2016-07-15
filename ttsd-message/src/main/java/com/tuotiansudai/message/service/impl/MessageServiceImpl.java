@@ -1,5 +1,6 @@
 package com.tuotiansudai.message.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -12,17 +13,14 @@ import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.MessageService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private final static String redisMessageReceivers = "message:manual-message:receivers";
+    public final static String redisMessageReceivers = "message:manual-message:receivers";
 
     private final static int EXPIRED_PERIOD = 30;
 
@@ -69,16 +67,16 @@ public class MessageServiceImpl implements MessageService {
 
         List<String> importUsers = Lists.newArrayList();
 
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
-        HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
-        for (int rowIndex = hssfSheet.getFirstRowNum(); rowIndex <= hssfSheet.getLastRowNum(); ++rowIndex) {
-            HSSFRow hssfRow = hssfSheet.getRow(rowIndex);
-            for (int cellIndex = hssfRow.getFirstCellNum(); cellIndex < hssfRow.getLastCellNum(); ++cellIndex) {
-                HSSFCell hssfCell = hssfRow.getCell(cellIndex);
-                String loginName = getStringFromCell(hssfCell);
-                if (!StringUtils.isEmpty(loginName)) {
-                    importUsers.add(loginName);
-                }
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while (null != (line = bufferedReader.readLine())) {
+            stringBuilder.append(line);
+        }
+
+        for (String loginName : Splitter.on(',').splitToList(stringBuilder.toString())) {
+            if (!StringUtils.isEmpty(loginName)) {
+                importUsers.add(loginName);
             }
         }
         redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
@@ -113,6 +111,8 @@ public class MessageServiceImpl implements MessageService {
         }
         MessageModel messageModel = messageMapper.findById(messageId);
         if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
+            messageModel.setActivatedBy(checkerName);
+            messageModel.setActivatedTime(new Date());
             messageModel.setStatus(MessageStatus.APPROVED);
             messageModel.setUpdatedTime(new Date());
             messageModel.setUpdatedBy(checkerName);
@@ -151,14 +151,14 @@ public class MessageServiceImpl implements MessageService {
 
         if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             String messageId = String.valueOf(messageModel.getId());
-            String importUsers = redisWrapperClient.hget(redisMessageReceivers, String.valueOf(importUsersId));
+            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
     }
 
     private void editManualMessage(MessageDto messageDto, long importUsersId) {
-        String importUsers = redisWrapperClient.hget(redisMessageReceivers, String.valueOf(importUsersId));
+        List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
 
         MessageModel originMessageModel = messageMapper.findById(messageDto.getId());
@@ -180,18 +180,6 @@ public class MessageServiceImpl implements MessageService {
         if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             String messageId = String.valueOf(messageDto.getId());
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
-        }
-    }
-
-    private String getStringFromCell(HSSFCell hssfCell) {
-        switch (hssfCell.getCellType()) {
-            case Cell.CELL_TYPE_NUMERIC:
-                hssfCell.setCellType(Cell.CELL_TYPE_STRING);
-                return hssfCell.getStringCellValue();
-            case Cell.CELL_TYPE_STRING:
-                return hssfCell.getStringCellValue();
-            default:
-                return "";
         }
     }
 }

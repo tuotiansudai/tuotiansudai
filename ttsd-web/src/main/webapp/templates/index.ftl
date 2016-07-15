@@ -7,10 +7,7 @@
                 <#list bannerList as banner>
                     <li>
                         <a href="${banner.url}" data-name="${banner.url}" target="_blank"
-                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>
-                                rel="nofollow"
-                            </#if>
-                        >
+                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
                             <img src="${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
                             <img src="${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
                         </a>
@@ -37,8 +34,7 @@
 
                     <p class="welcome-text"></p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
-                    <i class="clearfix tr">已有账户？<a href="/login"
-                                                   onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
+                    <i class="clearfix tr">已有账户？<a href="/login" onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
                 </div>
             </@global.isAnonymous>
         </div>
@@ -204,7 +200,7 @@
                                 </div>
 
                                 <#if loan.status== 'RAISING'>
-                                    <div class="loan-process project-schedule now-active">  
+                                    <div class="loan-process project-schedule now-active">
                                         <div class="p-title">
                                             <span class="fl">项目进度</span>
                                             <span class="point fr">${loan.progress?string("0.00")} %</span>
@@ -510,7 +506,6 @@
                                                     ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
                                                 </#if>%</em>
                                         </div>
-
                                     </div>
                                     <dl class="pr-info">
                                         <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
@@ -564,12 +559,13 @@
                     </#list>
                 </div>
             </div>
+        </div>
 
-            <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
-                <h3 class="label-title">
-                    <span class="media-coverage-icon"></span>
-                    <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
-                </h3>
+        <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
+            <h3 class="label-title">
+                <span class="media-coverage-icon"></span>
+                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
+            </h3>
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
@@ -598,11 +594,12 @@
                 </ul>
                 <div class="media-logo-list fr"></div>
             </div>
+        </div>
 
-            <div class="page-width clearfix partner-box margin-top25 margin-bottom25 media-hide">
-                <h3 class="label-title">
-                    <span class="partner-icon"></span>
-                </h3>
+        <div class="page-width clearfix partner-box margin-top25 margin-bottom25 media-hide">
+            <h3 class="label-title">
+                <span class="partner-icon"></span>
+            </h3>
 
             <div class="box-radius clearfix friend-links">
                 <ul>
@@ -615,9 +612,10 @@
                 </ul>
             </div>
         </div>
-
-        <#include "coupon-alert.ftl" />
     </div>
+
+    <#include "coupon-alert.ftl" />
+</div>
 
     <#include "red-envelope-float.ftl" />
 </@global.main>

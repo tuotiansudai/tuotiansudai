@@ -2,14 +2,12 @@ package com.tuotiansudai.web.freemarker.directive;
 
 
 import com.tuotiansudai.message.service.UserMessageService;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.math.BigDecimal;
 import java.util.Map;
 
 public class UnreadMessageCountDirective implements TemplateDirectiveModel {
