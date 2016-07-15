@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -52,6 +54,13 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         for(String month : monthList){
             repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(month,"0","0"));
         }
+
+        Collections.sort(repayCalendarYearResponseDtoList, new Comparator<RepayCalendarYearResponseDto>() {
+            @Override
+            public int compare(RepayCalendarYearResponseDto o1, RepayCalendarYearResponseDto o2) {
+                return Integer.compare(Integer.parseInt(o1.getMonth()),Integer.parseInt(o2.getMonth()));
+            }
+        });
         repayCalendarListResponseDto.setRepayCalendarYearResponseDtos(repayCalendarYearResponseDtoList);
         baseResponseDto.setData(repayCalendarListResponseDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
