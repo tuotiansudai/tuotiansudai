@@ -1,0 +1,37 @@
+package com.tuotiansudai.api.controller;
+
+
+import com.tuotiansudai.api.controller.v1_0.MobileAppBookingLoanController;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BookingLoanListsDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.when;
+
+public class MobileAppBookingLoanControllerTest extends ControllerTestBase {
+
+    @InjectMocks
+    private MobileAppBookingLoanController controller;
+
+    @Mock
+    private MobileAppBookingLoanService mobileAppBookingLoanService;
+
+    @Override
+    protected Object getControllerObject() {
+        return controller;
+    }
+
+    @Test
+    public void shouldGetBookingLoanIsOk() throws Exception {
+        BaseResponseDto<BookingLoanListsDto> baseResponseDto = new  BaseResponseDto<>();
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        when(mobileAppBookingLoanService.getBookingLoan()).thenReturn(baseResponseDto);
+        doRequestWithServiceMockedTest("/get/booking-loan",new BaseParamDto());
+    }
+}

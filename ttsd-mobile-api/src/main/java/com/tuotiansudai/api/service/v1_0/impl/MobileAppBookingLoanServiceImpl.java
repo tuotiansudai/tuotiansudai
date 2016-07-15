@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BookingLoanDto;
 import com.tuotiansudai.api.dto.v1_0.BookingLoanListsDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
 import com.tuotiansudai.repository.model.ProductType;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
         }
         bookingLoanListsDto.setBookingLoanDtoList(bookingLoanDtoList);
         baseResponseDto.setData(bookingLoanListsDto);
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;
     }
 
