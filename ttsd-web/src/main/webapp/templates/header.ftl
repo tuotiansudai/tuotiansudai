@@ -1,8 +1,6 @@
 <div class="header-container">
     <div class="header-download">
-        <#--<img src="${staticServer}/images/icons/close-tip.png" class="icon-close" id="closeDownloadBox">-->
         <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
-        <#--<img src="${staticServer}/images/icons/logo-tip.png">-->
         <div class="img-logo-tip" ></div>
         <span>APP客户端重磅来袭<br/>更便捷更安全</span>
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
@@ -26,6 +24,9 @@
                 <form id="logout-form" class="logout-form" action="/logout" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
+            </li>
+            <li class="header-message">
+                <a href="/message/user-messages">消息<span class="message-badge"><@unreadMessageCount><@global.security.authentication property="principal.username"/></@unreadMessageCount></span></a>
             </li>
         </@global.isNotAnonymous>
 

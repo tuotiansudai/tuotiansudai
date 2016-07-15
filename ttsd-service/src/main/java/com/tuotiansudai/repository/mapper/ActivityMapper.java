@@ -23,6 +23,7 @@ public interface ActivityMapper {
                                           @Param(value = "source") Source source);
 
     List<ActivityModel> findActiveActivities(@Param(value = "source") Source source,
+                                             @Param(value = "expiredTime") Date expiredTime,
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
 

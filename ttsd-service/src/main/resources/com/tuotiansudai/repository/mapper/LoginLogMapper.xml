@@ -50,4 +50,11 @@
             </if>
         </where>
     </select>
+
+    <select id="countSuccessTimesOnDate" parameterType="map" resultType="long">
+        select count(1) from ${table}
+        where login_name = #{loginName}
+        and success is TRUE
+        and date_format(#{date},'%Y-%m-%d') = date_format(login_time,'%Y-%m-%d')
+    </select>
 </mapper>

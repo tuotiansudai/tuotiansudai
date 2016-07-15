@@ -5,10 +5,12 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface WithdrawMapper {
 
     void create(WithdrawModel withdrawModel);
