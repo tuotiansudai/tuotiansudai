@@ -21,17 +21,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
-
-    $("#picListBox a").fancybox({
-        'titlePosition' : 'over',
-        'cyclic'        : false,
-        'showCloseButton':true,
-        'showNavArrows' : true,
-        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
-            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
-        }
-    });
-
     function showInputErrorTips(message) {
         layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
             tips: [1, '#ff7200'],
@@ -59,16 +48,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
         showLayer();
-    }
-
-    var loanProgress = $loanDetail.data('loan-progress');
-    if (loanProgress <= 50) {
-        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
-        $('.chart-box .rount2').hide();
-    } else {
-        $('.chart-box .rount').css('transform', "rotate(180deg)");
-        $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
     var loadInvestData = function() {
@@ -597,4 +576,157 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investForm.submit();
     }
+
+    // 投资加息
+    (function() {
+        var $extraRate = $('#extra-rate');
+        if (!$extraRate.length) {
+            return false;
+        }
+
+        var utils = {
+            getSize: function(element, type) {
+                return element[type]();
+            },
+            getOffset: function(element) {
+                return element.offset();
+            },
+            removeElement: function(element) {
+                if (element.length) {
+                    element.remove();
+                }
+            },
+            getRelativeRate: function(arr, num) {
+                var index =  _.findLastIndex(__extraRate, function(value) {
+                    if (num >= value.minInvestAmount && (value.maxInvestAmount > num || value.maxInvestAmount === 0)) {
+                        return true;
+                    }
+                });
+                return index !== -1 ? arr[index].rate : '';
+            },
+            replace: function(str) {
+                return str.replace(/,/g, '');
+            }
+        };
+
+        var tplFn = _.compose(_.template, function() {
+            return $('#extra-rate-popup-tpl').html();
+        })();
+        var getOffset = _.partial(utils.getOffset, $extraRate);
+        var getSize = _.partial(utils.getSize, $extraRate);
+        var extraRateWidth = getSize('width');
+        var extraRateHeight = getSize('height');
+        var css = _.compose(_.partial(function(offset, extraRateHeight) {
+            return {
+                left: offset.left - 5,
+                top: offset.top + extraRateHeight - 10
+            }
+        }, _, extraRateHeight), getOffset);
+        var createPopup = _.partial(function(tpl, css) {
+            return $(tpl).css(css).appendTo('body');
+        }, _, css());
+        var showPopup = _.compose(createPopup, tplFn);
+        var removePopup = _.partial(_.compose(utils.removeElement, $), '#extra-rate-popup');
+
+        $extraRate.find('.fa').on({
+            mouseover: _.partial(showPopup, {__extraRate: __extraRate}),
+            mouseout: function() {
+                removePopup();
+            }
+        });
+
+        var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
+        var changeHTML = function() {
+            var $element = $('[data-extra-rate]');
+            return function(rate) {
+                $element.html(rate);
+            }
+        }();
+        var addSign = function(rate) {
+            if (!rate) {
+                return ''
+            }
+            return '+' + rate;
+        };
+
+        $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function() {
+                return $(this).val()
+            })).trigger('change');
+    })();
+
+    $.fn.carousel = function() {
+        return this.each(function() {
+            var $ele = $(this);
+            var $leftBtn = $ele.find('.left-button');
+            var $rightBtn = $ele.find('.right-button');
+            var $scrollEle = $ele.find('.scroll-content > .row');
+            var $col = $scrollEle.find('.col');
+            var len = $col.length;
+            var record = 0;
+            var eachShowAmount = $(window).width() > 700 ? 5 : 2;
+            $rightBtn.on('click', function() {
+                if ($rightBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $rightBtn.add($leftBtn).removeClass('disabled');
+                record++;
+                if (record > len - eachShowAmount) {
+                    $rightBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-200 - 10) * record
+                });
+            });
+            $leftBtn.on('click', function() {
+                if ($leftBtn.hasClass('disabled')) {
+                    return false;
+                }
+                $leftBtn.add($rightBtn).removeClass('disabled');
+                record--;
+                if (record == 0) {
+                    $leftBtn.addClass('disabled');
+                }
+                $scrollEle.stop().animate({
+                    marginLeft: (-200 - 10) * record
+                });
+            });
+        });
+    };
+    $('[scroll-carousel]').carousel().find('.col').fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '';
+        }
+    });
+
+    (function() {
+        var maybe = function(value) {
+            return value ? value : 0;
+        };
+        var getElementBindData = function(key) {
+            return $investInput.data(key);
+        };
+        var $investInput = $('#investForm').find('.text-input-amount');
+        var maxInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('max-invest-amount');
+        var minInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('min-invest-amount');
+        var replace = function(str) {
+            return str.replace(/,/g, '');
+        };
+        var keyupHandler = _.debounce(function(event) {
+            var $this = $(this);
+            var value = _.compose(parseFloat, replace)($this.val());
+            layer.closeAll('tips');
+            if (value > maxInvestAmount) {
+                showInputErrorTips('该项目每人限投' + maxInvestAmount + '元');
+            } else if (value < minInvestAmount) {
+                showInputErrorTips('单笔最低投资' + minInvestAmount + '元');
+            }
+        }, 300);
+
+        $investInput.on('keyup', keyupHandler);
+    })();
+
 });

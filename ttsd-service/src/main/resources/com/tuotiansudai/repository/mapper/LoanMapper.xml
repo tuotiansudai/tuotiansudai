@@ -398,6 +398,93 @@
         where id = #{id}
     </update>
 
+    <update id="updateWithoutStatus" parameterType="com.tuotiansudai.repository.model.LoanModel">
+        update loan
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="agentLoginName !=null and agentLoginName!=''">
+                agent_login_name = #{agentLoginName},
+            </if>
+            <if test="loanerLoginName !=null and loanerLoginName!=''">
+                loaner_login_name = #{loanerLoginName},
+            </if>
+            <if test="loanerUserName !=null and loanerUserName!=''">
+                loaner_user_name = #{loanerUserName},
+            </if>
+            <if test="loanerIdentityNumber !=null and loanerIdentityNumber!=''">
+                loaner_identity_number= #{loanerIdentityNumber},
+            </if>
+            <if test="type !=null">
+                type = #{type},
+            </if>
+            <if test="periods !=null and periods!=''">
+                periods = #{periods},
+                duration = #{duration},
+            </if>
+            <if test="descriptionText !=null and descriptionText!=''">
+                description_text = #{descriptionText},
+            </if>
+            <if test="descriptionHtml !=null and descriptionHtml!=''">
+                description_html = #{descriptionHtml},
+            </if>
+            <if test="loanAmount !=null and loanAmount!=''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="minInvestAmount !=null and minInvestAmount!=''">
+                min_invest_amount = #{minInvestAmount},
+            </if>
+            <if test="investIncreasingAmount !=null and investIncreasingAmount!=''">
+                invest_increasing_amount = #{investIncreasingAmount},
+            </if>
+            <if test="maxInvestAmount !=null and maxInvestAmount!=''">
+                max_invest_amount = #{maxInvestAmount},
+            </if>
+            <if test="activityType !=null">
+                activity_type = #{activityType},
+            </if>
+            <if test="productType != null">
+                product_type = #{productType},
+            </if>
+            <if test="activityRate !=null">
+                activity_rate = #{activityRate},
+            </if>
+            <if test="baseRate != null and baseRate != ''">
+                base_rate = #{baseRate},
+            </if>
+            <if test="contractId !=null and contractId!=''">
+                contract_id = #{contractId},
+            </if>
+            <if test="fundraisingStartTime !=null">
+                fundraising_start_time = #{fundraisingStartTime},
+            </if>
+            <if test="fundraisingEndTime !=null">
+                fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="raisingCompleteTime !=null">
+                raising_complete_time = #{raisingCompleteTime},
+            </if>
+            <if test="showOnHome !=null">
+                show_on_home = #{showOnHome},
+            </if>
+            <if test="firstInvestAchievementId !=null">
+                first_invest_achievement_id = #{firstInvestAchievementId},
+            </if>
+            <if test="maxAmountAchievementId !=null">
+                max_amount_achievement_id = #{maxAmountAchievementId},
+            </if>
+            <if test="lastInvestAchievementId !=null">
+                last_invest_achievement_id = #{lastInvestAchievementId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
     <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>

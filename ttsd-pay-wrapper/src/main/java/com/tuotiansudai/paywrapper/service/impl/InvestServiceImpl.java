@@ -49,9 +49,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-//import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-//import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-
 @Service
 public class InvestServiceImpl implements InvestService {
 

@@ -193,6 +193,31 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">阶梯加息: </label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra"><input type="checkbox" id="extra">选中后此标的采用阶梯式加息</label>
+                </div>
+            </div>
+
+            <div class="form-group extra-rate hidden">
+                <label class="col-sm-2 control-label"></label>
+
+                <div class="col-sm-4">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>投资金额范围（元）</th>
+                            <th>加息比例（%）</th>
+                        </tr>
+                        </thead>
+                        <tbody class="extra-rate-rule">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <h3><span>借款人基本信息</span></h3>
         <hr class="top-line">

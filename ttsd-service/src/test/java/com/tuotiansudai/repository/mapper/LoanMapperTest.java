@@ -330,7 +330,6 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
-
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);

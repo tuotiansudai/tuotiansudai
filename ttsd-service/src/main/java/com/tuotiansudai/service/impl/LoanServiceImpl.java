@@ -96,6 +96,13 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;
+
+
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -211,7 +218,33 @@ public class LoanServiceImpl implements LoanService {
         }
 
         baseDto.getData().setMessage(String.valueOf(loanId));
+        updateExtraRate(loanDto, loanId);
         return baseDto;
+    }
+
+    private void updateExtraRate(LoanDto loanDto, final long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel.getStatus() != LoanStatus.WAITING_VERIFY) {
+            return;
+        } else {
+            extraLoanRateMapper.deleteByLoanId(loanId);
+            List<Long> extraRateIds = loanDto.getExtraRateIds();
+            if (CollectionUtils.isNotEmpty(extraRateIds)) {
+                extraLoanRateMapper.create(Lists.transform(extraRateIds, new Function<Long, ExtraLoanRateModel>() {
+                    @Override
+                    public ExtraLoanRateModel apply(Long input) {
+                        ExtraLoanRateModel extraLoanRateModel = new ExtraLoanRateModel();
+                        ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(input);
+                        extraLoanRateModel.setLoanId(loanId);
+                        extraLoanRateModel.setExtraRateRuleId(input);
+                        extraLoanRateModel.setMaxInvestAmount(extraLoanRateRuleModel.getMaxInvestAmount());
+                        extraLoanRateModel.setMinInvestAmount(extraLoanRateRuleModel.getMinInvestAmount());
+                        extraLoanRateModel.setRate(extraLoanRateRuleModel.getRate());
+                        return extraLoanRateModel;
+                    }
+                }));
+            }
+        }
     }
 
     private String getLoginName(String loginName) {
@@ -244,7 +277,7 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     loanDto.setVerifyTime(new Date());
-                    updateLoanAndLoanTitleRelation(loanDto);
+                    updateAllLoan(loanDto);
 
                     // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
                     LoanModel loanModel = loanMapper.findById(loanDto.getId());
@@ -275,7 +308,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        updateLoanAndLoanTitleRelation(loanDto);
+        updateLoanWithoutStatus(loanDto);
         LoanModel loanModelAfter = loanMapper.findById(loanDto.getId());
         if (loanModelBefore.getFundraisingEndTime() != loanModelAfter.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(loanModelAfter);
@@ -394,10 +427,21 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
+    private void updateAllLoan(LoanDto loanDto) {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
+        updateLoanTitleAndExtraRate(loanDto, loanModel);
+    }
+
+    private void updateLoanWithoutStatus(LoanDto loanDto) {
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanDto.getLoanStatus());
+        loanMapper.updateWithoutStatus(loanModel);
+        updateLoanTitleAndExtraRate(loanDto, loanModel);
+    }
+
+    private void updateLoanTitleAndExtraRate(LoanDto loanDto, LoanModel loanModel) {
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
         if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.delete(loanDto.getId());
@@ -410,6 +454,7 @@ public class LoanServiceImpl implements LoanService {
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
+        updateExtraRate(loanDto, loanModel.getId());
     }
 
     @Override
@@ -484,7 +529,7 @@ public class LoanServiceImpl implements LoanService {
         baseDto = processLoanOutPayRequest(loanDto.getId());
         if (baseDto.getData().getStatus()) {
             loanDto.setLoanStatus(LoanStatus.REPAYING);
-            this.updateLoanAndLoanTitleRelation(loanDto);
+            this.updateAllLoan(loanDto);
             return baseDto;
         }
 
@@ -546,6 +591,10 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDto.setProductType(loanModel.getProductType());
+            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
+            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+                loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
+            }
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -615,7 +664,10 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setProgress(investCount);
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
-
+                double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
+                if(rate > 0){
+                    loanItemDto.setExtraRate(rate * 100);
+                }
                 return loanItemDto;
             }
         });
@@ -650,6 +702,15 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setMessage(MessageFormat.format("放款失败: {0}", "标的投资金额与募集金额不符"));
         }
         return dto;
+    }
+
+    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
     }
 
     @Override
