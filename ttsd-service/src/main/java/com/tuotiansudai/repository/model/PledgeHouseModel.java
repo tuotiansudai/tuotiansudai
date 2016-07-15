@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.PledgeHouseDto;
+
 public class PledgeHouseModel extends AbstractPledgeDetail {
     private String square;
     private String propertyCardId;
@@ -16,6 +18,17 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         this.propertyCardId = propertyCardId;
         this.estateRegisterId = estateRegisterId;
         this.authenticAct = authenticAct;
+    }
+
+    public PledgeHouseModel(PledgeHouseDto pledgeHouseDto) {
+        this.loanId = pledgeHouseDto.getLoanId();
+        this.pledgeLocation = pledgeHouseDto.getPledgeLocation();
+        this.estimateAmount = pledgeHouseDto.getEstimateAmount();
+        this.loanAmount = pledgeHouseDto.getLoanAmount();
+        this.square = pledgeHouseDto.getSquare();
+        this.propertyCardId = pledgeHouseDto.getPropertyCardId();
+        this.estateRegisterId = pledgeHouseDto.getEstateRegisterId();
+        this.authenticAct = pledgeHouseDto.getAuthenticAct();
     }
 
     public String getSquare() {

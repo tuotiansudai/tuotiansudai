@@ -13,7 +13,7 @@
         <result column="user_name" property="userName"/>
         <result column="gender" property="gender"/>
         <result column="age" property="age"/>
-        <result column="identify_number" property="identifyNumber"/>
+        <result column="identity_number" property="identityNumber"/>
         <result column="marriage" property="marriage"/>
         <result column="region" property="region"/>
         <result column="income" property="income"/>
@@ -22,9 +22,9 @@
 
     <insert id="create" parameterType="LoanerDetailsModel">
         INSERT INTO `aa`.`loaner_details`
-        (id, loan_id, login_name, user_name, gender, age, identify_number, marriage, region, income, employment_status)
+        (id, loan_id, login_name, user_name, gender, age, identity_number, marriage, region, income, employment_status)
         VALUES
-        (#{id}, #{loanId}, #{loginName}, #{userName}, #{gender}, #{age}, #{identifyNumber}, #{marriage}, #{region}, #{income},
+        (#{id}, #{loanId}, #{loginName}, #{userName}, #{gender}, #{age}, #{identityNumber}, #{marriage}, #{region}, #{income},
         #{employmentStatus})
     </insert>
 

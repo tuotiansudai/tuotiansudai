@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LoanDetailsDto;
+
 public class LoanDetailsModel {
     private long id;
     private long loanId;
@@ -11,6 +13,11 @@ public class LoanDetailsModel {
     public LoanDetailsModel(long loanId, String declaration) {
         this.loanId = loanId;
         this.declaration = declaration;
+    }
+
+    public LoanDetailsModel(LoanDetailsDto loanDetailsDto) {
+        this.loanId = loanDetailsDto.getLoanId();
+        this.declaration = loanDetailsDto.getDeclaration();
     }
 
     public long getId() {

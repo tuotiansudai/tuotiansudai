@@ -604,3 +604,8 @@ td.td {
     margin-left: 106px;
     margin-bottom: 10px;
 }
+
+.top-line {
+    border: 1px solid #000;
+    margin-top: 0px;
+}

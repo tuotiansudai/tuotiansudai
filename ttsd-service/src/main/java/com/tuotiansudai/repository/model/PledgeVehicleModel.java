@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.PledgeVehicleDto;
+
 public class PledgeVehicleModel extends AbstractPledgeDetail {
     private String brand;
     private String model;
@@ -12,6 +14,15 @@ public class PledgeVehicleModel extends AbstractPledgeDetail {
         super(loanId, pledgeLocation, estimateAmount, loanAmount);
         this.brand = brand;
         this.model = model;
+    }
+
+    public PledgeVehicleModel(PledgeVehicleDto pledgeVehicleDto) {
+        this.loanId = pledgeVehicleDto.getLoanId();
+        this.pledgeLocation = pledgeVehicleDto.getPledgeLocation();
+        this.estimateAmount = pledgeVehicleDto.getEstimateAmount();
+        this.loanAmount = pledgeVehicleDto.getLoanAmount();
+        this.brand = pledgeVehicleDto.getBrand();
+        this.model = pledgeVehicleDto.getModel();
     }
 
     public String getBrand() {

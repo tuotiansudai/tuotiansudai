@@ -19,7 +19,6 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -28,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -53,9 +53,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -87,6 +84,18 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
+
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -112,67 +121,96 @@ public class LoanServiceImpl implements LoanService {
         return loanTitleMapper.findAll();
     }
 
-    /**
-     * @param loanDto
-     * @return BaseDto<PayDataDto>
-     * @function 创建标的
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        baseDto.setData(dataDto);
+    private BaseDto<BaseDataDto> loanCheck(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
         long minInvestAmount = AmountConverter.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountConverter.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountConverter.convertStringToCent(loanDto.getLoanAmount());
         String agentLoginName = getLoginName(loanDto.getAgentLoginName());
         if (agentLoginName == null) {
-            dataDto.setMessage("代理用户不存在");
-            baseDto.setData(dataDto);
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         } else {
             if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
-                dataDto.setMessage("代理用户不具有借款人角色");
-                return baseDto;
+                return new BaseDto<>(new BaseDataDto(false, "代理用户不具有借款人角色"));
             }
         }
         if (loanDto.getPeriods() <= 0) {
-            dataDto.setMessage("借款期限最小为1");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "借款期限最小为1"));
         }
         if (loanAmount <= 0) {
-            dataDto.setMessage("预计出借金额应大于0");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "预计出借金额应大于0"));
         }
         if (minInvestAmount <= 0) {
-            dataDto.setMessage("最小投资金额应大于0");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最小投资金额应大于0"));
         }
         if (maxInvestAmount < minInvestAmount) {
-            dataDto.setMessage("最小投资金额不得大于最大投资金额");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最小投资金额不得大于最大投资金额"));
         }
         if (maxInvestAmount > loanAmount) {
-            dataDto.setMessage("最大投资金额不得大于预计出借金额");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最大投资金额不得大于预计出借金额"));
         }
         if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
+            return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
+        }
+        if (StringUtils.isEmpty(loanDetailsDto.getDeclaration())) {
+            return new BaseDto<>(new BaseDataDto(false, "声明为空"));
+        }
+        if (StringUtils.isEmpty(loanerDetailsDto.getLoanerLoginName()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerUserName()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerEmploymentStatus()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerIncome()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerRegion()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerIdentityNumber())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款人信息不完善"));
+        }
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            PledgeHouseDto pledgeHouseDto = (PledgeHouseDto) pledgeDetailsDto;
+            if (StringUtils.isEmpty(pledgeHouseDto.getPledgeLocation()) || StringUtils.isEmpty(pledgeHouseDto.getLoanAmount()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getEstimateAmount()) || StringUtils.isEmpty(pledgeHouseDto.getSquare()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getAuthenticAct()) || StringUtils.isEmpty(pledgeHouseDto.getEstateRegisterId()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getPropertyCardId())) {
+                return new BaseDto<>(new BaseDataDto(false, "房屋抵押物信息不完善"));
+            }
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            PledgeVehicleDto pledgeVehicleDto = (PledgeVehicleDto) pledgeDetailsDto;
+            if (StringUtils.isEmpty(pledgeVehicleDto.getPledgeLocation()) || StringUtils.isEmpty(pledgeVehicleDto.getLoanAmount()) ||
+                    StringUtils.isEmpty(pledgeVehicleDto.getEstimateAmount()) || StringUtils.isEmpty(pledgeVehicleDto.getBrand()) ||
+                    StringUtils.isEmpty(pledgeVehicleDto.getModel())) {
+                return new BaseDto<>(new BaseDataDto(false, "车辆抵押物信息不完善"));
+            }
+        }
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<BaseDataDto> createLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
+        BaseDto<BaseDataDto> baseDto = loanCheck(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
+        if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(projectId);
-        loanMapper.create(new LoanModel(loanDto));
-        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (loanTitleRelationModelList.size() > 0) {
-            for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
-                loanTitleRelationModel.setId(idGenerator.generate());
-                loanTitleRelationModel.setLoanId(projectId);
-            }
-            loanTitleRelationMapper.create(loanTitleRelationModelList);
+
+        long loanId = idGenerator.generate();/****标的号****/
+        loanDto.setId(loanId);
+        loanDetailsDto.setLoanId(loanId);
+        loanerDetailsDto.setLoanId(loanId);
+        pledgeDetailsDto.setLoanId(loanId);
+        for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(loanId);
         }
-        dataDto.setStatus(true);
+
+        loanMapper.create(new LoanModel(loanDto));
+        if (!CollectionUtils.isEmpty(loanDto.getLoanTitles())) {
+            loanTitleRelationMapper.create(loanDto.getLoanTitles());
+        }
+        loanDetailsMapper.create(new LoanDetailsModel(loanDetailsDto));
+        loanerDetailsMapper.create(new LoanerDetailsModel(loanerDetailsDto));
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            pledgeHouseMapper.create(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            pledgeVehicleMapper.create(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+        }
+
+        baseDto.getData().setMessage(String.valueOf(loanId));
         return baseDto;
     }
 

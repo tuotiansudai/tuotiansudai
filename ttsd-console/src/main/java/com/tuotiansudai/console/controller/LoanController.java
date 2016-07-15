@@ -2,16 +2,9 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.LoanTitleDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
@@ -59,11 +52,22 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/create/house", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
-        loanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        return loanService.createLoan(loanDto);
+    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
+        createLoanDto.getLoanDto().setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.getLoanDto().setPledgeType(PledgeType.HOUSE);
+        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
+    }
+
+    @RequestMapping(value = "/create/vehicle", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
+        createLoanDto.getLoanDto().setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.getLoanDto().setPledgeType(PledgeType.VEHICLE);
+        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)

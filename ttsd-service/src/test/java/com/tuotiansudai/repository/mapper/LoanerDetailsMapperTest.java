@@ -80,7 +80,7 @@ public class LoanerDetailsMapperTest {
         assertEquals(loanerDetailsModel.getAge(), findLoanDetailsModel.getAge());
         assertEquals(loanerDetailsModel.getEmploymentStatus(), findLoanDetailsModel.getEmploymentStatus());
         assertEquals(loanerDetailsModel.getGender(), findLoanDetailsModel.getGender());
-        assertEquals(loanerDetailsModel.getIdentifyNumber(), findLoanDetailsModel.getIdentifyNumber());
+        assertEquals(loanerDetailsModel.getIdentityNumber(), findLoanDetailsModel.getIdentityNumber());
         assertEquals(loanerDetailsModel.getIncome(), findLoanDetailsModel.getIncome());
         assertEquals(loanerDetailsModel.getMarriage(), findLoanDetailsModel.getMarriage());
         assertEquals(loanerDetailsModel.getUserName(), findLoanDetailsModel.getUserName());

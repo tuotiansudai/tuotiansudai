@@ -1,28 +1,16 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.dto;
 
-public abstract class AbstractPledgeDetail {
-    protected long id;
-    protected long loanId;
-    protected String pledgeLocation;
-    protected String estimateAmount;
-    protected String loanAmount;
+public abstract class AbstractPledgeDetailsDto {
+    private long loanId;
+    private String pledgeLocation;
+    private String estimateAmount;
+    private String loanAmount;
 
-    public AbstractPledgeDetail() {
-    }
-
-    public AbstractPledgeDetail(long loanId, String pledgeLocation, String estimateAmount, String loanAmount) {
+    public AbstractPledgeDetailsDto(long loanId, String pledgeLocation, String estimateAmount, String loanAmount) {
         this.loanId = loanId;
         this.pledgeLocation = pledgeLocation;
         this.estimateAmount = estimateAmount;
         this.loanAmount = loanAmount;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getLoanId() {
