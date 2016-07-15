@@ -88,7 +88,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         messageModel.setTemplate("测试模板猜猜猜");
         messageModel.setType(MessageType.MANUAL);
         messageModel.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageModel.setChannels(Lists.newArrayList(MessageChannel.APP));
+        messageModel.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
         messageModel.setStatus(MessageStatus.APPROVED);
         messageModel.setExpiredTime(new DateTime(new Date()).plusDays(1).toDate());
         messageModel.setCreatedBy(loginName);
@@ -104,7 +104,7 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         userMapper.create(creator);
 
         MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.STAFF),
+                Lists.newArrayList(MessageUserGroup.ALL_USER, MessageUserGroup.IMPORT_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);

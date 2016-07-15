@@ -97,7 +97,7 @@ public class MessageController {
         selectedUserGroups.remove(MessageUserGroup.IMPORT_USER);
         modelAndView.addObject("selectedUserGroups", selectedUserGroups);
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
-        modelAndView.addObject("selectedChannelTypes", Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP));
+        modelAndView.addObject("selectedChannelTypes", Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
         return modelAndView;
     }
 
