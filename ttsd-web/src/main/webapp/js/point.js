@@ -16,7 +16,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 taskBoxLen=$taskBox.length;
             var disabledBtnLen=$taskBox.find('a.btn-normal[disabled="disabled"]').length;
             if(disabledBtnLen==taskBoxLen) {
-                $('#taskFrame').hide();
+                $taskBox.hide();
             }
 
             $('.notice-tip').on('click',function() {
