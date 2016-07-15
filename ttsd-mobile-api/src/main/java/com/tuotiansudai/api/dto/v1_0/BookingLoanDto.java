@@ -7,6 +7,12 @@ public class BookingLoanDto {
     private String duration;
     private String rate;
 
+    public BookingLoanDto(String productType, String duration, String rate) {
+        this.productType = productType;
+        this.duration = duration;
+        this.rate = rate;
+    }
+
     public String getProductType() {
         return productType;
     }
