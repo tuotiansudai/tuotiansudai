@@ -54,9 +54,6 @@ public class PayCallbackController {
     @Autowired
     private SystemRechargeService systemRechargeService;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

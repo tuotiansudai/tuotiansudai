@@ -12,7 +12,12 @@
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
-        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
+        <beans:property name="accessDeniedExceptionRedirect">
+            <beans:map>
+                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
+            </beans:map>
+        </beans:property>
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>
@@ -77,6 +82,7 @@
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/message/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>

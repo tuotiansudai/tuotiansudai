@@ -76,6 +76,7 @@
         <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
         <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/activities" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loans" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loan" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/nodes" access="permitAll()" />
@@ -85,6 +86,7 @@
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
         <intercept-url pattern="/v2.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/transferee" access="permitAll()" />
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>

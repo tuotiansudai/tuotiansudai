@@ -4,97 +4,23 @@
     <div class="banner-box" id="bannerBox">
         <div class="banner-img-list bd">
             <ul>
-                <li>
-                    <a href="/activity/hero-ranking" target="_blank">
-                        <img src="${staticServer}/images/sign/actor/anniversary/anniversary.jpg" alt="" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-anniversary.jpg" alt=""
-                             class="iphone-img">
-                    </a>
-                </li>
-            <#--<li>-->
-            <#--<a href="/activity/loan-hike" target="_blank">-->
-            <#--<img src="${staticServer}/images/sign/actor/loanhike/loan-hike.jpg" alt="" class="pc-img">-->
-            <#--<img src="${staticServer}/images/app-banner/app-banner-loanhike.jpg" alt="" class="iphone-img">-->
-            <#--</a>-->
-            <#--</li>-->
-                <li>
-                    <a href="/activity/invest-achievement" target="_blank">
-                        <img src="${staticServer}/images/sign/actor/achievement/achievement.jpg" alt="" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-achievement.jpg" alt=""
-                             class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')"
-                       target="_blank">
-                        <img src="${staticServer}/images/sign/actor/landingpage/landingpage.jpg" alt="" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-landingpage.jpg" alt=""
-                             class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')"
-                       target="_blank">
-                        <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？"
-                             class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？"
-                             class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/birth-month" onclick="cnzzPush.trackClick('23首页','Banner模块','生日月')"
-                       target="_blank">
-                        <img src="${staticServer}/images/sign/actor/birth/birth-month-new.jpg" alt="生日月投资收益翻倍"
-                             class="pc-img">
-                        <img src="${staticServer}/images/sign/actor/birth/birth-month-phonenew.jpg" alt="生日月投资收益翻倍"
-                             class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')"
-                       target="_blank">
-                        <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png"
-                             alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金"
-                             class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1"
-                       onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
-                        <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                        <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/recruit" onclick="cnzzPush.trackClick('26首页','Banner模块','代理')" target="_blank">
-                        <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
-                        <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
-                    </a>
-                </li>
-                <li>
-                    <a href="/activity/app-download" onclick="cnzzPush.trackClick('83首页','Banner模块','app')"
-                       target="_blank">
-                        <img src="${staticServer}/images/sign/actor/download/download-bg-new.png" alt="App下载"
-                             class="pc-img">
-                        <img src="${staticServer}/images/app-banner/app-banner-downloadnew.png" alt="App下载"
-                             class="iphone-img">
-                    </a>
-                </li>
+                <#list bannerList as banner>
+                    <li>
+                        <a href="${banner.url}" data-name="${banner.url}" target="_blank"
+                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
+                            <img src="${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
+                            <img src="${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
+                        </a>
+                    </li>
+                </#list>
             </ul>
         </div>
         <div class="hd">
             <ul class="scroll-num">
-                <li class="on"></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            <#--<li></li>-->
+                <#list bannerList as banner>
+                    <li <#if banner_index  == 0>class="on"</#if>>
+                    </li>
+                </#list>
             </ul>
         </div>
         <div class="page-width">
@@ -108,8 +34,7 @@
 
                     <p class="welcome-text"></p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
-                    <i class="clearfix tr">已有账户？<a href="/login"
-                                                   onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
+                    <i class="clearfix tr">已有账户？<a href="/login" onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
                 </div>
             </@global.isAnonymous>
         </div>
@@ -275,7 +200,7 @@
                                 </div>
 
                                 <#if loan.status== 'RAISING'>
-                                    <div class="loan-process project-schedule now-active">  
+                                    <div class="loan-process project-schedule now-active">
                                         <div class="p-title">
                                             <span class="fl">项目进度</span>
                                             <span class="point fr">${loan.progress?string("0.00")} %</span>
