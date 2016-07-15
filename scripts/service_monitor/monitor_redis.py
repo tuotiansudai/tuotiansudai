@@ -5,8 +5,8 @@ import redis
 import sys
 import time
 import os
+import traceback
 from datetime import datetime, timedelta
-
 
 redis_keys = [
 #'pubsub_patterns',
@@ -63,7 +63,9 @@ class MonitorRedis():
     try:
       self.log.write(log_str + '],"date":%s}\n' % (time.strftime("%Y-%m-%d %H:%M:%S")))
     except Exception, e:
-      print e
+      with open('/var/log/monitor_redis.log','a') as f:
+        f.write('%s' % traceback.format_exc())
+	f.close()
       self.log.close()
       exit(1)
     self.log.flush()
@@ -84,18 +86,25 @@ if __name__ == "__main__":
     try:
       os.mkdir(options.folder_path)
     except Exception, e:
-      print e
+      with open('/var/log/monitor_redis.log','a') as f:
+        f.write('%s' % traceback.format_exc())
+	f.close()
       exit(1)      
   
 
   Monob = MonitorRedis(options)
+  #remain_seconds = (timedelta(hours=24) - (now - now.replace(hour=6, minute=30, second=0, microsecond=0))).seconds
 
+  #for i in xrange(remain_seconds):
   for i in xrange(60*60*24):
+  #while start_time == time.strftime("%Y%m%d"):
     r = Monob.getRedis()
     try:
       Monob.logOut(r.info())
     except Exception, e:
-      print e
+      with open('/var/log/monitor_redis.log','a') as f:
+        f.write('%s' % traceback.format_exc())
+	f.close()
       Monob.log.close()
       exit(1)
     time.sleep(1)
