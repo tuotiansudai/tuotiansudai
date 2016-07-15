@@ -57,20 +57,16 @@ class MonitorRedis():
             self.logExcption(e)
         return self
 
-    def logExcption(self, e):
+    def logExcption(self):
         with open('/var/log/monitor_redis.log', 'a') as f:
-            f.write('%s' % traceback.format_exc(e))
+            f.write('%s' % traceback.format_exc(self))
             sys.exit()
 
     def __exit__(self, *args):
         self.log.close()
 
     def logOut(self):
-        try:
-            res = self.conn.info()
-        except Exception, e:
-            self.logExcption(e)
-            
+        res = self.conn.info()
         log_str = '{"host":%s,[' % (self.host)
         for p in redis_keys:
             if p in res:
