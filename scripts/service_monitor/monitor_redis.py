@@ -4,6 +4,7 @@ import optparse
 import redis
 import sys
 import time
+import os
 from datetime import datetime, timedelta
 
 
@@ -48,7 +49,7 @@ class MonitorRedis():
     self.host = options.host
     self.passwd = options.password
     self.port = options.port
-    self.log = open(options.file_path, "a")
+    self.log = open("%s/redis-%s.log" % (options.folder_path, now.strftime("%Y%m%d")), "a")
 
   def getRedis(self):
     return redis.StrictRedis(host=self.host, password=self.passwd, port=self.port, db=0)
@@ -77,14 +78,19 @@ if __name__ == "__main__":
   p.add_option('-h', '--host', action='store', type='string', dest='host', default="127.0.0.1", help='The hostname you want to connect to')
   p.add_option('-P', '--port', action='store', type='string', dest='port', default=6379, help='The port to connect on')
   p.add_option('-p', '--passwd', action='store', type='string', dest='password', default=None, help='The password to authenticate with')
-  p.add_option('-f', '--file_path', action='store', type='string', dest='file_path', default="/var/log/redis-%s.log" % now.strftime("%Y%m%d"), help='The out file path to authenticate with')
+  p.add_option('-f', '--folder_path', action='store', type='string', dest='folder_path', default="/var/log/redis-monitor", help='The out file path to authenticate with')
   options, arguments = p.parse_args()
+  if not os.path.exists(options.folder_path):
+    try:
+      os.mkdir(options.folder_path)
+    except Exception, e:
+      print e
+      exit(1)      
+  
 
   Monob = MonitorRedis(options)
-  remain_seconds = (timedelta(hours=24) - (now - now.replace(hour=0, minute=00, second=0, microsecond=0))).seconds
 
-  for i in xrange(remain_seconds):
-  #while start_time == time.strftime("%Y%m%d"):
+  for i in xrange(60*60*24):
     r = Monob.getRedis()
     try:
       Monob.logOut(r.info())
