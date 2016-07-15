@@ -1,3 +1,4 @@
+begin;
 SET @temp_count := 1;
 SET @temp_login := '';
 SET @temp_time := '';
@@ -60,3 +61,5 @@ UPDATE `user`
         ON temp1.login_name = temp2.login_name
         AND temp1.id = temp2.id) temp4
     ON u.`login_name` = temp4.login_name SET u.`sign_in_count` = temp4.sign_count
+
+  COMMIT ;
