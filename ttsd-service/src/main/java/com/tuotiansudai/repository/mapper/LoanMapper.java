@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface LoanMapper {
 
+    //不再支持descriptionText, descriptionHtml创建
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
@@ -40,6 +41,7 @@ public interface LoanMapper {
                                    @Param(value = "rateStart") double rateStart,
                                    @Param(value = "rateEnd") double rateEnd);
 
+    //不再支持descriptionText, descriptionHtml创建
     void update(LoanModel loanModel);
 
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
