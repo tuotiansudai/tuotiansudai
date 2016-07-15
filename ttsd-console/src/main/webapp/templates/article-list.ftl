@@ -4,7 +4,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="" class="form-inline query-build">
+    <form action="" class="form-inline query-build" id="formArticleList">
         <div class="row">
             <div class="form-group">
                 <label for="control-label">标题</label>
@@ -21,6 +21,17 @@
                     </#list>
                 </select>
             </div>
+            <div class="form-group">
+                <label>状态：</label>
+                <select class="selectpicker" name="status">
+                    <option value="" <#if !(status??)>selected</#if>>全部</option>
+                    <#list articleStatus as item>
+                        <option value="${item}" <#if status?? && item==status>selected</#if>>
+                        ${item.description}
+                        </option>
+                    </#list>
+                </select>
+            </div>
             <button class="btn btn-primary search" type="button">查询</button>
             <button class="btn btn-default pull-right publishAD" type="button"> 添加信息</button>
         </div>
@@ -33,6 +44,7 @@
                 <th>栏目</th>
                 <th>标题</th>
                 <th>更新时间</th>
+                <th>定时发布时间</th>
                 <th>创建人</th>
                 <th>审核人</th>
                 <th>状态</th>
@@ -60,6 +72,7 @@
                         </#if>
                     </td>
                     <td>${(article.updateTime?string('yyyy-MM-dd'))!}</td>
+                    <td>${(article.timingTime?string('yyyy-MM-dd HH:mm'))!}</td>
                     <td>${article.creator!}</td>
                     <td>${article.checker!}</td>
                     <td>${article.articleStatus.description!}</td>
@@ -111,7 +124,7 @@
                     <span aria-hidden="true">&laquo; Prev</span>
                 </a>
                 </li>
-                <li><a>${data.index}</a></li>
+                <li><a id="pageIndex">${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
                     <a href="/announce-manage/article/list?title=${title!}&index=${data.index + 1}&pageSize=${data.pageSize}"
