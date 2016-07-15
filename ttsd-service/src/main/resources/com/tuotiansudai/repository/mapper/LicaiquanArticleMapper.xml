@@ -71,7 +71,7 @@
         LIMIT #{pageSize}
     </select>
 
-    <select id="findArticleByArticleSectionType" resultMap="licaiquanArticleModel" parameterType="map" >
+    <select id="findArticleByArticleSectionType" resultMap="licaiquanArticleModel" parameterType="map" useCache="false" >
         SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
         content, created_time, updated_time, deleted,timing_time
         FROM `aa`.`licaiquan_article`
@@ -83,7 +83,7 @@
         LIMIT #{index},#{pageSize}
     </select>
 
-    <select id="findCountArticleByArticleSectionType" parameterType="map" resultType="int">
+    <select id="findCountArticleByArticleSectionType" parameterType="map" resultType="int" useCache="false" >
         SELECT count(1)
         FROM `aa`.`licaiquan_article`
         WHERE deleted = FALSE AND (now() >= timing_time or timing_time is null)
