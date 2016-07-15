@@ -5,7 +5,6 @@ import com.tuotiansudai.util.UUIDGenerator;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
-import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

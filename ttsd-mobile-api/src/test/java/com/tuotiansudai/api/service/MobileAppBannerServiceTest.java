@@ -16,10 +16,11 @@ import org.mockito.Mock;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
-public class MobileAppBannerServiceTest extends ServiceTestBase{
+public class MobileAppBannerServiceTest extends ServiceTestBase {
 
     @InjectMocks
     private MobileAppBannerServiceImpl mobileAppBannerService;
@@ -31,7 +32,7 @@ public class MobileAppBannerServiceTest extends ServiceTestBase{
     public void shouldGetBanner() {
         List<BannerModel> bannerModelList = Lists.newArrayList();
         bannerModelList.add(new BannerModel());
-        when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(),any(Source.class))).thenReturn(bannerModelList);
+        when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(), any(Source.class))).thenReturn(bannerModelList);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("ceshi1");
         baseParam.setPlatform("android");

@@ -43,7 +43,7 @@ public class MessageServiceTest {
     private IdGenerator idGenerator;
 
     @Test
-    public void shouldFindMessageList() throws Exception{
+    public void shouldFindMessageList() throws Exception {
 
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
@@ -63,7 +63,7 @@ public class MessageServiceTest {
 
         List<MessageModel> manualMessageModelList = messageService.findMessageList("title", null, null, MessageType.MANUAL, 1, 10);
 
-        List<MessageModel> autoMessageModelList =messageService.findMessageList("title", null, null, MessageType.EVENT, 1, 10);
+        List<MessageModel> autoMessageModelList = messageService.findMessageList("title", null, null, MessageType.EVENT, 1, 10);
 
         long manualCount = messageService.findMessageCount("title", null, null, MessageType.MANUAL);
         long autoCount = messageService.findMessageCount("title", null, null, MessageType.EVENT);

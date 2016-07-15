@@ -330,7 +330,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         function getExtraRateIds() {
             var extraRateIds = [];
-            $('.extra-rate-id').each(function() {
+            $('.extra-rate-id').each(function () {
                 extraRateIds.push($(this).val());
             });
             return extraRateIds;
@@ -482,7 +482,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             $('.form-error').html('');
             var $loanName = $('.jq-user');
             var $productType = $('.jq-product-line');
-            if($loanName.val() == '') {
+            if ($loanName.val() == '') {
                 showErrorMessage('项目名称未选择，不能操作此选项');
                 $('#extra').prop('checked', false);
             } else if ($productType.val() == '' || $productType.val() == '_30') {
@@ -490,40 +490,40 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 $('#extra').prop('checked', false);
             } else {
                 $.ajax({
-                    url: '/project-manage/loan/extra-rate-rule?loanName='+$loanName.val()+'&productType='+$productType.val(),
+                    url: '/project-manage/loan/extra-rate-rule?loanName=' + $loanName.val() + '&productType=' + $productType.val(),
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 })
-                .done(function(res) {
-                    if (res.data.status) {
-                        $('.extra-rate-id').remove();
-                        $('.extra-rate').removeClass('hidden');
-                        var $extraRateRule = $('.extra-rate-rule');
-                        $extraRateRule.html('');
-                        var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
-                        for (var i=0;i<extraLoanRateRuleModels.length;i++) {
-                            var minInvestAmount = extraLoanRateRuleModels[i].minInvestAmount/100;
-                            var maxInvestAmount;
-                            if (extraLoanRateRuleModels[i].maxInvestAmount > 0) {
-                                maxInvestAmount = '<' + extraLoanRateRuleModels[i].maxInvestAmount / 100;
-                            } else {
-                                maxInvestAmount = '';
+                    .done(function (res) {
+                        if (res.data.status) {
+                            $('.extra-rate-id').remove();
+                            $('.extra-rate').removeClass('hidden');
+                            var $extraRateRule = $('.extra-rate-rule');
+                            $extraRateRule.html('');
+                            var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
+                            for (var i = 0; i < extraLoanRateRuleModels.length; i++) {
+                                var minInvestAmount = extraLoanRateRuleModels[i].minInvestAmount / 100;
+                                var maxInvestAmount;
+                                if (extraLoanRateRuleModels[i].maxInvestAmount > 0) {
+                                    maxInvestAmount = '<' + extraLoanRateRuleModels[i].maxInvestAmount / 100;
+                                } else {
+                                    maxInvestAmount = '';
+                                }
+                                $extraRateRule.append('<tr><td> ' + minInvestAmount + '≤投资额' + maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
+                                $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
                             }
-                            $extraRateRule.append('<tr><td> '+ minInvestAmount + '≤投资额'+ maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
-                            $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="'+ extraLoanRateRuleModels[i].id +'">');
+                        } else {
+                            showErrorMessage('服务端校验失败');
                         }
-                    } else {
-                        showErrorMessage('服务端校验失败');
-                    }
-                })
-                .fail(function() {
-                    showErrorMessage('服务端操作失败');
-                });
+                    })
+                    .fail(function () {
+                        showErrorMessage('服务端操作失败');
+                    });
             }
         }
 
-        $('#extra').on('click', function() {
+        $('#extra').on('click', function () {
             if (!$(this).is(':checked')) {
                 uncheckedExtraRate();
             } else {
@@ -531,7 +531,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        $('.jq-user').on('change', function() {
+        $('.jq-user').on('change', function () {
             var $productType = $('.jq-product-line');
             if ($(this).val() == '') {
                 uncheckedExtraRate();
@@ -541,11 +541,11 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        $('.jq-product-line').on('change', function() {
+        $('.jq-product-line').on('change', function () {
             if ($(this).val() == '' || $(this).val() == '_30') {
                 uncheckedExtraRate();
             }
-            if ( $('.jq-user').val() != '' && $('#extra').is(':checked')) {
+            if ($('.jq-user').val() != '' && $('#extra').is(':checked')) {
                 checkedExtraRate();
             }
         });

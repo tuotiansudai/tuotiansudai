@@ -96,7 +96,7 @@ public class ActivityServiceTest {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null,0.1);
+            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -153,7 +153,7 @@ public class ActivityServiceTest {
         assertEquals("activity3", activityDtoList.get(2).getTitle());
     }
 
-    private ActivityDto fakeActivityDto(String loginName,ActivityStatus activityStatus){
+    private ActivityDto fakeActivityDto(String loginName, ActivityStatus activityStatus) {
         ActivityDto activityDto = new ActivityDto();
         activityDto.setActivityId(idGenerator.generate());
         activityDto.setTitle("title");
@@ -171,9 +171,9 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void shouldCreateEditRecheckActivityByCreate(){
+    public void shouldCreateEditRecheckActivityByCreate() {
         UserModel userModel = createUserModel("testUser");
-        ActivityDto activityDto = fakeActivityDto(userModel.getLoginName(),ActivityStatus.TO_APPROVE);
+        ActivityDto activityDto = fakeActivityDto(userModel.getLoginName(), ActivityStatus.TO_APPROVE);
 
         activityService.saveOrUpdate(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName(), "");
 
@@ -191,47 +191,47 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void shouldCreateEditRecheckActivityByEdit(){
+    public void shouldCreateEditRecheckActivityByEdit() {
         UserModel userModel = createUserModel("testUser");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
 
         activityDto.setAppPictureUrl("AppPictureUrlEdit");
-        activityDto.setSource(Lists.newArrayList(Source.ANDROID,Source.IOS));
+        activityDto.setSource(Lists.newArrayList(Source.ANDROID, Source.IOS));
         activityService.saveOrUpdate(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName(), "");
 
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
-        assertEquals(activityDto.getActivityId(),activityModelCreate.getId());
-        assertEquals(activityDto.getAppActivityUrl(),activityModelCreate.getAppActivityUrl());
-        assertEquals(activityDto.getWebActivityUrl(),activityModelCreate.getWebActivityUrl());
-        assertEquals(activityDto.getAppPictureUrl(),activityModelCreate.getAppPictureUrl());
-        assertEquals(activityDto.getWebPictureUrl(),activityModelCreate.getWebPictureUrl());
-        assertEquals(activityDto.getDescription(),activityModelCreate.getDescription());
-        assertEquals(activityDto.getTitle(),activityModelCreate.getTitle());
-        assertEquals(ActivityStatus.TO_APPROVE,activityModelCreate.getStatus());
+        assertEquals(activityDto.getActivityId(), activityModelCreate.getId());
+        assertEquals(activityDto.getAppActivityUrl(), activityModelCreate.getAppActivityUrl());
+        assertEquals(activityDto.getWebActivityUrl(), activityModelCreate.getWebActivityUrl());
+        assertEquals(activityDto.getAppPictureUrl(), activityModelCreate.getAppPictureUrl());
+        assertEquals(activityDto.getWebPictureUrl(), activityModelCreate.getWebPictureUrl());
+        assertEquals(activityDto.getDescription(), activityModelCreate.getDescription());
+        assertEquals(activityDto.getTitle(), activityModelCreate.getTitle());
+        assertEquals(ActivityStatus.TO_APPROVE, activityModelCreate.getStatus());
 
     }
 
     @Test
-    public void shouldCreateEditRecheckActivityByRejection(){
+    public void shouldCreateEditRecheckActivityByRejection() {
         UserModel userModel = createUserModel("testUser");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.saveOrUpdate(activityDto, ActivityStatus.REJECTION, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
-        assertEquals(ActivityStatus.REJECTION,activityModelCreate.getStatus());
+        assertEquals(ActivityStatus.REJECTION, activityModelCreate.getStatus());
     }
 
     @Test
-    public void shouldCreateEditRecheckActivityByRecheck(){
+    public void shouldCreateEditRecheckActivityByRecheck() {
         UserModel userModel = createUserModel("testUser");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.saveOrUpdate(activityDto, ActivityStatus.APPROVED, userModel.getLoginName(), "");
         ActivityModel activityModelCreate = activityMapper.findById(activityDto.getActivityId());
 
-        assertEquals(ActivityStatus.APPROVED,activityModelCreate.getStatus());
+        assertEquals(ActivityStatus.APPROVED, activityModelCreate.getStatus());
     }
 }

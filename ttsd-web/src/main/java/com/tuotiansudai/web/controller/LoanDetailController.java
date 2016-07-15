@@ -14,7 +14,6 @@ import com.tuotiansudai.repository.model.ExtraLoanRateModel;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -53,20 +52,20 @@ public class LoanDetailController {
                 loanId,
                 AmountConverter.convertStringToCent(dto.getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
-        List<ExtraLoanRateModel> extraLoanRateModels =  extraLoanRateMapper.findByLoanIdOrderByRate(dto.getId());
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanIdOrderByRate(dto.getId());
         List<ExtraLoanRateDto> extraLoanRateDtoList = Lists.newArrayList();
         double minRate = 0;
         double maxRate = 0;
-        if(extraLoanRateModels.size() > 1){
+        if (extraLoanRateModels.size() > 1) {
             minRate = extraLoanRateModels.get(0).getRate();
             maxRate = extraLoanRateModels.get(extraLoanRateModels.size() - 1).getRate();
-            for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels){
+            for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
                 extraLoanRateDtoList.add(new ExtraLoanRateDto(extraLoanRateModel));
             }
         }
-        modelAndView.addObject("minRate",minRate);
-        modelAndView.addObject("maxRate",maxRate);
-        modelAndView.addObject("extraLoanRateModels",extraLoanRateDtoList);
+        modelAndView.addObject("minRate", minRate);
+        modelAndView.addObject("maxRate", maxRate);
+        modelAndView.addObject("extraLoanRateModels", extraLoanRateDtoList);
         return modelAndView;
     }
 

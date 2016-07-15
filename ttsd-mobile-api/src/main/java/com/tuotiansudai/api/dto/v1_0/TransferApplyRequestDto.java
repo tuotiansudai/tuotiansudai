@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.util.AmountConverter;

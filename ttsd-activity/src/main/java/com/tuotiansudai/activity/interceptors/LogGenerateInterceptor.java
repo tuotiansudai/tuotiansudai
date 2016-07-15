@@ -5,7 +5,6 @@ import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

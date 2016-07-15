@@ -98,7 +98,7 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                  int pageSize,
                                                                                  Date startTime,
                                                                                  Date endTime,
-                                                                                 List<PointBusinessType> businessTypes){
+                                                                                        List<PointBusinessType> businessTypes) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {

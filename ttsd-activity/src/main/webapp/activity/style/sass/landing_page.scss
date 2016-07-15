@@ -52,6 +52,7 @@ form label.error {
   padding: 0;
   vertical-align: middle;
 }
+
 .landing-top {
   position: relative;
   height: 500px;
@@ -107,8 +108,8 @@ form label.error {
           left: 10px;
           top: 4px;
           z-index: 20;
-          filter:alpha(opacity=80);
-          -moz-opacity:0.8;
+          filter: alpha(opacity=80);
+          -moz-opacity: 0.8;
         }
         .reg-title {
           width: 60px;
@@ -147,7 +148,9 @@ form label.error {
           border: #cecece 1px solid;
           padding: 10px 2px 10px 47px;
           background-color: #fff;
-          &.captcha,&.appCaptcha { width:100px;}
+          &.captcha, &.appCaptcha {
+            width: 100px;
+          }
 
         }
         .agreement {
@@ -208,6 +211,7 @@ form label.error {
     }
   }
 }
+
 .landing-container {
   min-height: 500px;
 
@@ -865,44 +869,43 @@ form label.error {
     display: none;
   }
   .mobile-page-register {
-    height:560px;
+    height: 560px;
   }
   .landing-top {
     background: none;
-    height:auto;
+    height: auto;
     .landing-inner {
-      width:100%;
+      width: 100%;
       height: auto;
     }
     .register-box {
       width: 90%;
       right: auto;
       left: 5%;
-      top:0;
+      top: 0;
       border-radius: 0;
       padding-bottom: 30px;
-      margin-top:0;
+      margin-top: 0;
       height: 440px;
       .register-user-form {
         box-sizing: border-box;
-        width:100%;
+        width: 100%;
         padding: 20px;
       }
       .register-step-one {
-        margin-top:0;
+        margin-top: 0;
       }
       ul.reg-list li {
-        input[type="text"],input[type="password"] {
+        input[type="text"], input[type="password"] {
           padding: 15px;
           box-sizing: border-box;
         }
         .captcha-tag {
-          width:100%;
+          width: 100%;
         }
         input.captcha,
-        input.appCaptcha
-        {
-          width: 40%!important;
+        input.appCaptcha {
+          width: 40% !important;
         }
         .long {
           width: 100%;
@@ -910,17 +913,17 @@ form label.error {
         i {
           display: none;
         }
-        .fetch-captcha  {
-          height: 40px!important;
-          padding: 10px 26px!important;
-          border-radius: 25px!important;
-          font-size: 13px!important;
-          width:auto!important;
-          position: relative!important;
+        .fetch-captcha {
+          height: 40px !important;
+          padding: 10px 26px !important;
+          border-radius: 25px !important;
+          font-size: 13px !important;
+          width: auto !important;
+          position: relative !important;
         }
         .register-user {
-          padding:10px;
-          margin:-10px auto 10px auto;
+          padding: 10px;
+          margin: -10px auto 10px auto;
         }
         &.mobile-agreement {
           display: block;

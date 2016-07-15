@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function(){
         var $registerForm=$('.register-user-form'),
             $phoneDom=$('#mobile'),
@@ -8,13 +8,13 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             $loginName = $('#login-name'),
             $password = $('#password'),
             $appCaptcha = $('#appCaptcha'),
-            $webRegister=$('.web-page-register'),
-            $mobileRegister=$('.mobile-page-register'),
-            $landingTop=$('.landing-top');
+            $webRegister = $('.web-page-register'),
+            $mobileRegister = $('.mobile-page-register'),
+            $landingTop = $('.landing-top');
 
-        var bCategory=commonFun.browserRedirect();
+        var bCategory = commonFun.browserRedirect();
 
-        if(bCategory=='mobile') {
+        if (bCategory == 'mobile') {
             $webRegister.empty();
             $mobileRegister.empty().append($landingTop);
         }
@@ -128,9 +128,9 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
         //show protocol info
         $('.show-agreement').on('click', function(event) {
             event.preventDefault();
-            var area=['950px', '600px'];
-             if(bCategory=='mobile') {
-                area=['100%', '100%'];
+            var area = ['950px', '600px'];
+            if (bCategory == 'mobile') {
+                area = ['100%', '100%'];
             }
             layer.open({
                 type: 1,
@@ -153,32 +153,32 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                  url: '/register/user/send-register-captcha',
                  type: 'POST',
                  dataType: 'json',
-                 data: {imageCaptcha: captchaVal,mobile:mobile}
+                 data: {imageCaptcha: captchaVal, mobile: mobile}
              })
              .done(function(data) {
-                 var countdown=60;
-                 if(data.data.status && !data.data.isRestricted){
-                     timer=setInterval(function() {
-                         $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
-                         countdown--;
-                         if(countdown==0) {
-                             clearInterval(timer);
-                             $fetchCaptcha.prop('disabled',false).text('重新发送');
-                         }
-                     }, 1000);
-                    return;
-                 }
-                 if(!data.data.status && data.data.isRestricted) {
-                     $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
-                 }
+                     var countdown = 60;
+                     if (data.data.status && !data.data.isRestricted) {
+                         timer = setInterval(function () {
+                             $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
+                             countdown--;
+                             if (countdown == 0) {
+                                 clearInterval(timer);
+                                 $fetchCaptcha.prop('disabled', false).text('重新发送');
+                             }
+                         }, 1000);
+                         return;
+                     }
+                     if (!data.data.status && data.data.isRestricted) {
+                         $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+                     }
 
-                 if(!data.data.status && !data.data.isRestricted) {
+                     if (!data.data.status && !data.data.isRestricted) {
                      $('#appCaptchaErr').html('图形验证码错误');
                  }
-                 refreshCaptcha();
+                     refreshCaptcha();
              })
              .fail(function() {
-                 refreshCaptcha();
+                     refreshCaptcha();
                  layer.msg('请求失败，请重试！');
 
              });

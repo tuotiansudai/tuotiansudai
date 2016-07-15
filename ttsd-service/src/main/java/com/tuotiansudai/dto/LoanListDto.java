@@ -134,7 +134,7 @@ public class LoanListDto{
     }
 
     public List<ExtraLoanRateDto> getExtraLoanRateModels() {
-        if (CollectionUtils.isEmpty(extraLoanRateModels)){
+        if (CollectionUtils.isEmpty(extraLoanRateModels)) {
             return new ArrayList<>();
         }
         return extraLoanRateModels;

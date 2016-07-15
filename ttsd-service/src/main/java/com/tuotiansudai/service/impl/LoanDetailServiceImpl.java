@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -149,18 +148,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,firstInvest.getLoginName(),6));
+                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, firstInvest.getLoginName(), 6));
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName,maxInvest.getLoginName(),6));
+                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName, maxInvest.getLoginName(), 6));
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,lastInvest.getLoginName(),6));
+                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, lastInvest.getLoginName(), 6));
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
             }
             achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));

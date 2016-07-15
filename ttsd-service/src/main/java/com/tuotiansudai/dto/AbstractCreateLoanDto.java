@@ -43,6 +43,7 @@ public abstract class AbstractCreateLoanDto {
     protected String verifyLoginName;
     protected String recheckLoginName;
     protected int duration;
+    private List<Long> extraRateIds;
 
     //LoanDetailsDto
     protected String declaration;
@@ -107,6 +108,7 @@ public abstract class AbstractCreateLoanDto {
         loanDto.setVerifyLoginName(verifyLoginName);
         loanDto.setRecheckLoginName(recheckLoginName);
         loanDto.setDuration(duration);
+        loanDto.setExtraRateIds(extraRateIds);
 
         return loanDto;
     }
@@ -518,5 +520,13 @@ public abstract class AbstractCreateLoanDto {
 
     public void setPledgeLoanAmount(String pledgeLoanAmount) {
         this.pledgeLoanAmount = pledgeLoanAmount;
+    }
+
+    public List<Long> getExtraRateIds() {
+        return extraRateIds;
+    }
+
+    public void setExtraRateIds(List<Long> extraRateIds) {
+        this.extraRateIds = extraRateIds;
     }
 }

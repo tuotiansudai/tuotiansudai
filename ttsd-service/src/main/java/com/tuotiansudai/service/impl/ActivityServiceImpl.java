@@ -47,9 +47,9 @@ public class ActivityServiceImpl implements ActivityService {
     public boolean saveOrUpdate(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
         ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
 
-        switch(activityStatus){
+        switch (activityStatus) {
             case TO_APPROVE:
-                if(activityModelExist != null){
+                if (activityModelExist != null) {
                     activityModelExist.setDescription(activityDto.getDescription());
                     activityModelExist.setTitle(activityDto.getTitle());
                     activityModelExist.setWebActivityUrl(activityDto.getWebActivityUrl());
@@ -63,7 +63,7 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
                     activityMapper.update(activityModelExist);
-                }else{
+                } else {
                     ActivityModel activityModel = new ActivityModel(activityDto);
                     activityModel.setCreatedBy(loginName);
                     activityModel.setCreatedTime(new Date());
@@ -75,7 +75,7 @@ public class ActivityServiceImpl implements ActivityService {
                 }
                 return true;
             case REJECTION:
-                if(activityModelExist != null){
+                if (activityModelExist != null) {
                     activityModelExist.setStatus(ActivityStatus.REJECTION);
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setUpdatedBy(loginName);
@@ -83,8 +83,8 @@ public class ActivityServiceImpl implements ActivityService {
                 }
                 return true;
             case APPROVED:
-                if(activityModelExist != null){
-                    if(activityModelExist.getActivatedTime() == null){
+                if (activityModelExist != null) {
+                    if (activityModelExist.getActivatedTime() == null) {
                         activityModelExist.setActivatedTime(new Date());
                         activityModelExist.setActivatedBy(loginName);
                     }
@@ -110,7 +110,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
-        if(endTime != null){
+        if (endTime != null) {
             endTime = new DateTime(endTime).plusDays(1).minusSeconds(1).toDate();
         }
         List<ActivityModel> activityModels = activityMapper.findAllActivities(startTime, endTime, activityStatus, source);

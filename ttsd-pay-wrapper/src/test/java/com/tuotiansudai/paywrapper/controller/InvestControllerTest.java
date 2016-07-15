@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
@@ -40,10 +38,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

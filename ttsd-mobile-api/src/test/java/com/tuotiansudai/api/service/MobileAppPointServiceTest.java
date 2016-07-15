@@ -12,7 +12,6 @@ import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;

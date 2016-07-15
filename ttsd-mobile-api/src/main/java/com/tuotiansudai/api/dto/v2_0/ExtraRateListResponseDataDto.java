@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v2_0;
 
 import java.io.Serializable;
 
-public class ExtraRateListResponseDataDto implements Serializable{
+public class ExtraRateListResponseDataDto implements Serializable {
 
     private String rate;
 

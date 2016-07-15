@@ -249,16 +249,18 @@
             <label class="col-sm-2 control-label">阶梯加息: </label>
 
             <div class="col-sm-4 checkbox">
-                <label for="extra"><input type="checkbox" id="extra" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if> <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
+                <label for="extra"><input type="checkbox" id="extra"
+                                          <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>
+                                          <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
                     选中后此标的采用阶梯式加息
                 </label>
             </div>
         </div>
         <#if extraLoanRates?? && extraLoanRates?size gt 0>
             <div class="form-group extra-rate">
-            <#list extraLoanRates as extraLoanRate>
-                <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
-            </#list>
+                <#list extraLoanRates as extraLoanRate>
+                    <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+                </#list>
                 <label class="col-sm-2 control-label"></label>
 
                 <div class="col-sm-4">
@@ -270,12 +272,14 @@
                         </tr>
                         </thead>
                         <tbody class="extra-rate-rule">
-                        <#list extraLoanRates as extraLoanRate>
+                            <#list extraLoanRates as extraLoanRate>
                             <tr>
-                                <td>${(extraLoanRate.minInvestAmount/100)?string('0')}≤投资额<#if extraLoanRate.maxInvestAmount gt 0><${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
+                                <td>${(extraLoanRate.minInvestAmount/100)?string('0')}
+                                    ≤投资额<#if extraLoanRate.maxInvestAmount gt 0>
+                                        <${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
                                 <td>${extraLoanRate.rate * 100}</td>
                             </tr>
-                        </#list>
+                            </#list>
                         </tbody>
                     </table>
                 </div>

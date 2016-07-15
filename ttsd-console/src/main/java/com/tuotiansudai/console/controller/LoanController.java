@@ -5,8 +5,8 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
@@ -136,7 +136,7 @@ public class LoanController {
 
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType){
+    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
 

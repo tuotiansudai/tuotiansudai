@@ -665,7 +665,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
-                if(rate > 0){
+                if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
                 }
                 return loanItemDto;
@@ -675,7 +675,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd) {
-        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
@@ -704,7 +704,7 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
-    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
             @Override
             public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
