@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanDetailsMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="LoanDetailsResultMap" type="LoanDetailsModel">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="declaration" property="declaration"/>
+    </resultMap>
+
+    <insert id="create" parameterType="LoanDetailsModel">
+        INSERT INTO `aa`.`loan_details`
+        (id, loan_id, declaration)
+        VALUES
+        (#{id}, #{loanId}, #{declaration})
+    </insert>
+
+    <select id="getLoanDetailsByLoanId" resultMap="LoanDetailsResultMap">
+        SELECT
+        *
+        FROM
+        `aa`.`loan_details`
+        WHERE
+        loan_id = #{loanId}
+    </select>
+
+</mapper>

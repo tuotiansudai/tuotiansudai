@@ -144,6 +144,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setProductType(productType);
         fakeLoanModel.setActivityType(activityType);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 
