@@ -127,16 +127,12 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     private RepayCalendarYearResponseDto setExpectedAndActualAmount(RepayCalendarYearResponseDto repayCalendarYearResponseDto, InvestRepayModel investRepayModel){
         List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(investRepayModel.getInvestId(),querySdf.format(investRepayModel.getRepayDate()),null);
-        long repayExpectedInterest = 0;
-        long repayActualInterest = 0;
         for(CouponRepayModel couponRepayModel: couponRepayModelList){
-            repayExpectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-            repayActualInterest += couponRepayModel.getActualInterest() - couponRepayModel.getActualFee();
+            repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee()));
+            repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
         }
-        long investExpectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-        long investActualInterest = investRepayModel.getActualInterest() - investRepayModel.getActualFee();
-        repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),repayExpectedInterest + investExpectedInterest));
-        repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),repayActualInterest + investActualInterest));
+        repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee()));
+        repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),investRepayModel.getActualInterest() - investRepayModel.getActualFee()));
         return repayCalendarYearResponseDto;
     }
 
