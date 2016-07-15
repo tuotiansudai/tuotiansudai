@@ -72,7 +72,6 @@ class MonitorRedis():
         self.log.write(log_str + '],"date":%s}\n' % (time.strftime("%Y-%m-%d %H:%M:%S")))
         self.log.flush()
 
-
 # main app
 #
 if __name__ == "__main__":
