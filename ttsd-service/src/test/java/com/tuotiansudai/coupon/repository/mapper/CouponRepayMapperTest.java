@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
@@ -26,7 +27,7 @@ public class CouponRepayMapperTest extends BaseMapperTest {
         CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1);
         UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(investor.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeInvest.getId());
 
-        couponRepayMapper.create(new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate()));
+        couponRepayMapper.create(Lists.newArrayList(new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate())));
 
         CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
 
@@ -42,7 +43,7 @@ public class CouponRepayMapperTest extends BaseMapperTest {
         UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(investor.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeInvest.getId());
 
         CouponRepayModel couponRepayModel = new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate());
-        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
 
         couponRepayModel.setActualInterest(200);
         couponRepayModel.setActualFee(20);
