@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BookingLoanMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="bookingLoanMap" type="BookingLoanModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="source" property="source"/>
+        <result column="booking_time" property="bookingTime"/>
+        <result column="product_type" property="productType"/>
+        <result column="amount" property="amount"/>
+        <result column="notice_time" property="noticeTime"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <insert id="create" parameterType="BookingLoanModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`booking_loan`
+        (login_name,user_name,mobile,source,booking_time,product_type,amount,notice_time,status,create_time,update_time,deleted)
+        VALUES
+        (#{loginName},#{userName},#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime},#{deleted})
+    </insert>
+
+</mapper>

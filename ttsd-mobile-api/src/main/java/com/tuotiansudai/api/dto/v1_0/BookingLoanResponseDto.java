@@ -1,13 +1,13 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-public class BookingLoanDto {
+public class BookingLoanResponseDto {
 
     private String productType;
     private String duration;
     private String rate;
 
-    public BookingLoanDto(String productType, String duration, String rate) {
+    public BookingLoanResponseDto(String productType, String duration, String rate) {
         this.productType = productType;
         this.duration = duration;
         this.rate = rate;
