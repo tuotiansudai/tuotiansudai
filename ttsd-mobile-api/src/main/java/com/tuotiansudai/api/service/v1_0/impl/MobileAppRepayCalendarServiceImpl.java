@@ -41,10 +41,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     private SimpleDateFormat querySdf = new SimpleDateFormat("yyyy-MM");
 
-    private static List<String> monthList = Lists.newArrayList("01","02","03","04","05","06","07","08","09","10","11","12");
-
     @Override
     public BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto){
+        List<String> monthList = Lists.newArrayList("01","02","03","04","05","06","07","08","09","10","11","12");
         BaseResponseDto<RepayCalendarListResponseDto> baseResponseDto = new BaseResponseDto<>();
         RepayCalendarListResponseDto repayCalendarListResponseDto = new RepayCalendarListResponseDto();
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = getRepayCalendarResponseList(repayCalendarRequestDto,yearMonthSdf);
