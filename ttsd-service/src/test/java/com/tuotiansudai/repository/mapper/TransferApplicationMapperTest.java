@@ -252,6 +252,7 @@ public class TransferApplicationMapperTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._180);
         loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         return loanModel;

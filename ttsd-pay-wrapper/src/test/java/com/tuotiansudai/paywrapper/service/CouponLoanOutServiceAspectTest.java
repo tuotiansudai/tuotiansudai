@@ -220,6 +220,7 @@ public class CouponLoanOutServiceAspectTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RECHECK);
+        lm.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(lm);
     }
 

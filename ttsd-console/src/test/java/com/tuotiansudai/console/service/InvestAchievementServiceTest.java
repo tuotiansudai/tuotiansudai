@@ -94,6 +94,7 @@ public class InvestAchievementServiceTest {
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
