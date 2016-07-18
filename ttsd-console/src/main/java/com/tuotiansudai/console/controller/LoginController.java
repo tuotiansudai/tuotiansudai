@@ -50,7 +50,7 @@ public class LoginController {
         SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         Map<String, String> sessionIds = new HashMap<>();
-        sessionIds.put("SESSION", baseDto.getData().getNewSessionId());
+        sessionIds.put("SESSION", baseDto.getData().getNewSessionId() != null ? baseDto.getData().getNewSessionId() : httpServletRequest.getSession().getId());
         Cookie cookie = createSessionCookie(httpServletRequest, sessionIds);
         httpServletResponse.addCookie(cookie);
         return baseDto;
