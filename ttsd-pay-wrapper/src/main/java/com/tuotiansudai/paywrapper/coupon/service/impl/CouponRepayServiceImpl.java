@@ -2,8 +2,10 @@ package com.tuotiansudai.paywrapper.coupon.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
@@ -68,6 +70,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private SystemBillService systemBillService;
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public void repay(long loanRepayId) {
@@ -84,6 +88,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 logger.error(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
                         String.valueOf(loanRepayId),
                         investModel == null ? "null" : String.valueOf(investModel.getId())));
+                continue;
+            }
+            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
+
+            if(couponRepayModel == null){
+                logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
+                                currentLoanRepayModel.getLoanId(),
+                                userCouponModel.getId(),
+                                currentLoanRepayModel.getPeriod()));
                 continue;
             }
 
@@ -128,6 +141,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
+
+                    couponRepayModel.setActualInterest(actualInterest);
+                    couponRepayModel.setActualFee(actualFee);
+                    couponRepayModel.setActualRepayDate(currentLoanRepayModel.getActualRepayDate());
+                    couponRepayModel.setStatus(couponRepayModel.getStatus());
 
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
