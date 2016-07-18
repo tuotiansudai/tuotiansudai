@@ -149,6 +149,12 @@ def only_api():
     """
     fab_command("api")
 
+@task
+def only_pay():
+    """
+    Deploy pay component to PROD from CI
+    """
+    fab_command("pay")
 
 @task
 def only_sms():
@@ -156,6 +162,13 @@ def only_sms():
     Deploy sms component to PROD from CI
     """
     fab_command("sms")
+
+@task
+def only_activity():
+    """
+    Deploy activity component to PROD from CI
+    """
+    fab_command("activity")
 
 
 @task

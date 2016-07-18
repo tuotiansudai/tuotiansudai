@@ -36,7 +36,7 @@ public class MobileAppPointExchangeListServiceImpl implements MobileAppPointExch
         if (pageSize == null || pageSize.intValue() <= 0) {
             pageSize = 10;
         }
-        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList((index-1)*pageSize, pageSize);
+        List<CouponModel> couponModels = couponMapper.findExchangeableCoupons((index-1)*pageSize, pageSize);
 
         List<PointExchangeRecordResponseDataDto> pointExchangeRecordResponseDataDto = null;
         if (CollectionUtils.isNotEmpty(couponModels)) {

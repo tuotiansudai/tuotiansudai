@@ -43,6 +43,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
 
     private String productNewType;
 
+    private String extraRate;
+
     public String getLoanId() {
         return loanId;
     }
@@ -166,6 +168,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     public String getProductNewType() { return productNewType; }
 
     public void setProductNewType(String productNewType) { this.productNewType = productNewType; }
+
+    public String getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(String extraRate) {
+        this.extraRate = extraRate;
+    }
 
     public UserInvestRecordResponseDataDto() {
 

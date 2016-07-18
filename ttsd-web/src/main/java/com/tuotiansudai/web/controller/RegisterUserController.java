@@ -123,7 +123,7 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
     public void registerImageCaptcha(HttpServletResponse response) {
-        int captchaWidth = 70;
+        int captchaWidth = 80;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());

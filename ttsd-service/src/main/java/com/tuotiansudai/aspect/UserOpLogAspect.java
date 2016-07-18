@@ -175,11 +175,12 @@ public class UserOpLogAspect {
      */
     @AfterReturning(value = "execution(* com.tuotiansudai.service.InvestService.turnOnAutoInvest(..))")
     public void afterTurnOnAutoInvest(JoinPoint joinPoint) {
-        AutoInvestPlanModel model = (AutoInvestPlanModel) joinPoint.getArgs()[0];
+        String loginName = (String) joinPoint.getArgs()[0];
+        String ip = (String) joinPoint.getArgs()[2];
 
         UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setLoginName(model.getLoginName());
-        logModel.setIp(model.getIp());
+        logModel.setLoginName(loginName);
+        logModel.setIp(ip);
         logModel.setDeviceId("");
         logModel.setSource(Source.WEB);
         logModel.setOpType(UserOpType.AUTO_INVEST);
