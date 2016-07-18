@@ -58,7 +58,7 @@ class Article extends React.Component {
 				<article>
 					<h1>{this.state.data.title}</h1>
 					<section className="meta">
-						<span>作者: </span><span>{this.state.data.author}</span>
+						<span>来源: </span><span>{this.state.data.source}</span>
 						<time>{this.state.data.createTime}</time>
 					</section>
 					<section className="show-picture">

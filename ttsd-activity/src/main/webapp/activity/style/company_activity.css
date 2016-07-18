@@ -851,7 +851,7 @@
                   color: #a6000e; }
             .rank-list-container .wp .leader-container .leader-list .bean-rank-money .progress-line .gift-two {
               position: absolute;
-              top: 320px;
+              top: 80px;
               left: 80px;
               width: 160px;
               padding: 10px 20px;
@@ -1396,9 +1396,9 @@
               color: #a6000e; }
         .rank-list-phone .bean-rank-list .money-online .progress-line .gift-two {
           position: absolute;
-          top: 320px;
-          left: 80px;
-          width: 160px;
+          top: 40px;
+          left: 40px;
+          width: 120px;
           padding: 10px 20px;
           background: #e6e6e6;
           border-radius: 10px;
@@ -1640,6 +1640,7 @@
           font-size: 14px;
           line-height: 40px; }
       .rank-list-phone .share-list p .share-icon {
+        display: inline-block;
         width: 40px;
         height: 40px;
         margin: 0 5px;

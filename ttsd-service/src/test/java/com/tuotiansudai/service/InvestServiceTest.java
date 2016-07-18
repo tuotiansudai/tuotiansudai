@@ -1,8 +1,12 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
@@ -21,7 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -108,23 +111,20 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldCreateAutoInvestPlanAndTurnOff(){
+    public void shouldCreateAutoInvestPlanAndTurnOff() {
         String loginName = "testuser";
 
         AutoInvestPlanModel model = investService.findAutoInvestPlan(loginName);
         assert model == null;
 
-        AutoInvestPlanModel newModel = new AutoInvestPlanModel();
-        newModel.setLoginName(loginName);
-        newModel.setId(idGenerator.generate());
-        newModel.setMaxInvestAmount(1000000);
-        newModel.setMinInvestAmount(10000);
-        newModel.setRetentionAmount(1000000);
-        newModel.setCreatedTime(new Date());
-        newModel.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
-        newModel.setEnabled(true);
+        AutoInvestPlanDto dto = new AutoInvestPlanDto();
+        dto.setMaxInvestAmount("10000.00");
+        dto.setMinInvestAmount("100.00");
+        dto.setRetentionAmount("10000.00");
+        dto.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
+        dto.setEnabled(true);
 
-        investService.turnOnAutoInvest(newModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         AutoInvestPlanModel dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
@@ -138,7 +138,7 @@ public class InvestServiceTest {
         assert dbModel.getLoginName().equals(loginName);
         assert !dbModel.isEnabled();
 
-        investService.turnOnAutoInvest(dbModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;

@@ -32,4 +32,6 @@ public interface PointBillMapper {
     List<PointBillModel> findPointBillByLoginName(@Param(value = "loginName") String loginName,
                                                   @Param(value = "index") int index,
                                                   @Param(value = "pageSize") int pageSize);
+
+    PointBillModel findLatestSignInPointBillByLoginName(@Param(value = "loginName") String loginName);
 }
