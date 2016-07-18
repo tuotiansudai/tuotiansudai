@@ -2,7 +2,9 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDetailsDto;
 
-public class LoanDetailsModel {
+import java.io.Serializable;
+
+public class LoanDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String declaration;

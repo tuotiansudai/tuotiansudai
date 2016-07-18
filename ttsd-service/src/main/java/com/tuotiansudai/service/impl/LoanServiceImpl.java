@@ -162,9 +162,9 @@ public class LoanServiceImpl implements LoanService {
         if (StringUtils.isEmpty(loanDetailsDto.getDeclaration())) {
             return new BaseDto<>(new BaseDataDto(false, "声明为空"));
         }
-        if (StringUtils.isEmpty(loanerDetailsDto.getLoanerLoginName()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerUserName()) ||
-                StringUtils.isEmpty(loanerDetailsDto.getLoanerEmploymentStatus()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerIncome()) ||
-                StringUtils.isEmpty(loanerDetailsDto.getLoanerRegion()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerIdentityNumber())) {
+        if (StringUtils.isEmpty(loanerDetailsDto.getLoanerUserName()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerEmploymentStatus()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerIncome()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerRegion()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerIdentityNumber())) {
             return new BaseDto<>(new BaseDataDto(false, "借款人信息不完善"));
         }
         if (pledgeDetailsDto instanceof PledgeHouseDto) {
@@ -182,6 +182,8 @@ public class LoanServiceImpl implements LoanService {
                     StringUtils.isEmpty(pledgeVehicleDto.getModel())) {
                 return new BaseDto<>(new BaseDataDto(false, "车辆抵押物信息不完善"));
             }
+        } else {
+            return new BaseDto<>(new BaseDataDto(false, "抵押物类型错误"));
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -296,26 +298,32 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
-        PayDataDto payDataDto = new PayDataDto();
+    public BaseDto<BaseDataDto> updateLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
+        BaseDto<BaseDataDto> baseDto = loanCheck(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
         LoanModel loanModelBefore = loanMapper.findById(loanDto.getId());
-        if (loanModelBefore == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
+        if (null == loanModelBefore) {
+            baseDto.getData().setStatus(false);
+            baseDto.getData().setMessage("标的不存在");
             return baseDto;
         }
-        updateLoanWithoutStatus(loanDto);
+
+        //修改抵押物类型的标的需要删除原有的抵押物类型
+        if (PledgeType.HOUSE == loanDto.getPledgeType()) {
+            pledgeVehicleMapper.deleteByLoanId(loanDto.getId());
+        } else if (PledgeType.VEHICLE == loanDto.getPledgeType()) {
+            pledgeHouseMapper.deleteByLoanId(loanDto.getId());
+        }
+
+        updateLoanWithoutStatus(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
         LoanModel loanModelAfter = loanMapper.findById(loanDto.getId());
         if (loanModelBefore.getFundraisingEndTime() != loanModelAfter.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(loanModelAfter);
         }
         createFundraisingStartJob(loanModelAfter);
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
         return baseDto;
     }
 
@@ -385,6 +393,24 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public AbstractCreateLoanDto findCreateLoanDto(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
+        loanModel.setLoanTitles(loanTitleRelationModelList);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        AbstractCreateLoanDto createLoanDto = null;
+        if (PledgeType.HOUSE == loanModel.getPledgeType()) {
+            AbstractPledgeDetail pledgeDetail = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+            createLoanDto = new CreateHouseLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeHouseModel) pledgeDetail);
+        } else if (PledgeType.VEHICLE == loanModel.getPledgeType()) {
+            AbstractPledgeDetail pledgeDetail = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+            createLoanDto = new CreateVehicleLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeVehicleModel) pledgeDetail);
+        }
+        return createLoanDto;
+    }
+
+    @Override
     public boolean loanIsExist(long loanId) {
         return findLoanById(loanId) != null;
     }
@@ -434,10 +460,28 @@ public class LoanServiceImpl implements LoanService {
         updateLoanTitleAndExtraRate(loanDto, loanModel);
     }
 
-    private void updateLoanWithoutStatus(LoanDto loanDto) {
+    private void updateLoanWithoutStatus(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                         AbstractPledgeDetailsDto pledgeDetailsDto) {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.updateWithoutStatus(loanModel);
+
+        loanDetailsMapper.updateByLoanId(new LoanDetailsModel(loanDetailsDto));
+        loanerDetailsMapper.updateByLoanId(new LoanerDetailsModel(loanerDetailsDto));
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            if (null == pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanDto.getId())) {
+                pledgeHouseMapper.create(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+            } else {
+                pledgeHouseMapper.updateByLoanId(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+            }
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            if (null == pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanDto.getId())) {
+                pledgeVehicleMapper.create(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+            } else {
+                pledgeVehicleMapper.updateByLoanId(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+            }
+        }
+
         updateLoanTitleAndExtraRate(loanDto, loanModel);
     }
 

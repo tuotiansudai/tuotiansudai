@@ -360,7 +360,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     var dataDto = {
                         "projectName": $('.jq-name').val(),
                         "agentLoginName": $('.jq-agent').val(),
-                        "loanerLoginName": $('.jq-loaner-login-name').val(),
+                        "loanerLoginName": "",
                         "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
                         "loanerUserName": $('.jq-loaner-user-name').val(),
                         "type": $('.jq-mark-type').val(),
@@ -383,6 +383,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
                         "declaration": $('.jq-loan-declaration').val(),
 
+                        "loanerLoginName": "",
                         "loanerUserName": $('.jq-loaner-user-name').val(),
                         "loanerGender": $('.jq-loaner-gender').val(),
                         "loanerAge": $('.jq-loaner-age').val(),
@@ -394,7 +395,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
                         "pledgeLocation": $('.jq-pledge-location').val(),
                         "estimateAmount": $('.jq-pledge-estimate-amount').val(),
-                        "loanAmount": $('.jq-pledge-loan-amount').val(),
+                        "pledgeLoanAmount": $('.jq-pledge-loan-amount').val(),
                         "square": $('.jq-pledge-square').val(),
                         "propertyCardId": $('.jq-pledge-property-card-id').val(),
                         "estateRegisterId": $('.jq-pledge-estate-register-id').val(),
@@ -439,7 +440,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
                         "pledgeLocation": $('.jq-pledge-location').val(),
                         "estimateAmount": $('.jq-pledge-estimate-amount').val(),
-                        "loanAmount": $('.jq-pledge-loan-amount').val(),
+                        "pledgeLoanAmount": $('.jq-pledge-loan-amount').val(),
                         "brand": $('.jq-pledge-brand').val(),
                         "model": $('.jq-pledge-model').val()
                     };

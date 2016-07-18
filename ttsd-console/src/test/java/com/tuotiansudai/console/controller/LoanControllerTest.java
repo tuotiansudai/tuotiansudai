@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -68,7 +66,7 @@ public class LoanControllerTest {
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
-        when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
+//        when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
         this.mockMvc.perform(post("/project-manage/loan/save").contentType("application/json; charset=UTF-8").content(json))

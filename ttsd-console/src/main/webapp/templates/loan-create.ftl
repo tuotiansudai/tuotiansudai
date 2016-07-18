@@ -311,6 +311,24 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">借款抵押物估值: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款抵押物估值不能为空">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">抵押物借款金额: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="抵押物借款金额不能为空">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">不动产登记证明:编号: </label>
 
                 <div class="col-sm-4">
@@ -344,24 +362,6 @@
                     <input type="text" class="form-control ui-autocomplete-input jq-pledge-authentic-act" datatype="*"
                            autocomplete="off"
                            placeholder="" errormsg="公证书不能为空">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">借款抵押物估值: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*"
-                           autocomplete="off"
-                           placeholder="" errormsg="借款抵押物估值不能为空">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">抵押物借款金额: </label>
-
-                <div class="col-sm-4">
-                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*"
-                           autocomplete="off"
-                           placeholder="" errormsg="抵押物借款金额不能为空">
                 </div>
             </div>
         </div>

@@ -9,4 +9,6 @@ public interface LoanDetailsMapper {
     void create(LoanDetailsModel loanDetailsModel);
 
     LoanDetailsModel getLoanDetailsByLoanId(@Param(value = "loanId") long loanId);
+
+    void updateByLoanId(LoanDetailsModel loanDetailsModel);
 }

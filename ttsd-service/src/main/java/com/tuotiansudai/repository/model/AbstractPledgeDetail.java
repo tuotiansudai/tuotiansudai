@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
-public abstract class AbstractPledgeDetail {
+import java.io.Serializable;
+
+public abstract class AbstractPledgeDetail implements Serializable {
     protected long id;
     protected long loanId;
     protected String pledgeLocation;

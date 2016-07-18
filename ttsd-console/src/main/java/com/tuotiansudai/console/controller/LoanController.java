@@ -63,8 +63,8 @@ public class LoanController {
     @RequestMapping(value = "/create/house", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
-        createLoanDto.getLoanDto().setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.getLoanDto().setPledgeType(PledgeType.HOUSE);
+        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.setPledgeType(PledgeType.HOUSE);
         return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
                 createLoanDto.getPledgeDetailsDto());
     }
@@ -72,8 +72,8 @@ public class LoanController {
     @RequestMapping(value = "/create/vehicle", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
-        createLoanDto.getLoanDto().setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.getLoanDto().setPledgeType(PledgeType.VEHICLE);
+        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.setPledgeType(PledgeType.VEHICLE);
         return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
                 createLoanDto.getPledgeDetailsDto());
     }
@@ -89,16 +89,26 @@ public class LoanController {
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
-        modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
+        modelAndView.addObject("loanInfo", loanService.findCreateLoanDto(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save-house", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto) {
-        return loanService.updateLoan(loanDto);
+    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
+        createLoanDto.setPledgeType(PledgeType.HOUSE);
+        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
+    }
+
+    @RequestMapping(value = "/save-vehicle", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
+        createLoanDto.setPledgeType(PledgeType.VEHICLE);
+        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
     }
 
     @RequestMapping(value = "/ok", method = RequestMethod.POST)

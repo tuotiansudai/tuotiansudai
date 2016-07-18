@@ -54,267 +54,443 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal jq-form">
-        <input type="hidden" class="jq-loanId" value="${loanInfo.id}">
-        <input type="hidden" class="jq-status" value="${loanInfo.status}">
+        <input type="hidden" class="jq-loanId" value="${loanInfo.id?c}">
+        <input type="hidden" class="jq-status" value="${loanInfo.loanStatus}">
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">借款项目名称: </label>
-
-            <div class="col-sm-4">
-
-                <select class="selectpicker jq-user">
-                    <option value="">请选择</option>
-                    <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
-                    <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">代理用户: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName!('')}"
-                       <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">借款人姓名: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-loaner-user-name" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="借款人姓名不能为空" value="${loanInfo.loanerUserName}"
-                       <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">借款人身份证号: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number" datatype="idcard" autocomplete="off"
-                       placeholder="" errormsg="借款人身份证号填写有误" value="${loanInfo.loanerIdentityNumber}"
-                       <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">借款人平台ID: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-loaner-login-name" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="借款人平台ID不能为空" value="${loanInfo.loanerLoginName}"
-                       <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">标的类型: </label>
-
-            <div class="col-sm-4">
-                <select class="selectpicker jq-b-type b-width"
-                        <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                    <#list loanTypes as loanType>
-                        <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getLoanPeriodUnit()}"
-                                data-repayTimePeriod="1" <#if loanType.name()==loanInfo.type>selected</#if>>
-                        ${loanType.getName()}
-                        </option>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-mark-type" value="${loanInfo.type}"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">借款期限: </label>
-
-            <div class="col-sm-4 product-line-period">
-
-                <select class="selectpicker b-width" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                    <option value="">请选择</option>
-                    <#list productTypes as productType>
-                        <#if productType.name() != 'EXPERIENCE'>
-                        <option value="${productType.getDuration()}"
-                                <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
-                                data-duration="${productType.getDuration()}" data-period="${productType.getPeriods()}" data-product-line="${productType.name()}">
-                        ${productType.getDuration()}
-                        </option>
-                        </#if>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-duration" value="${loanInfo.duration}"/>
-                <input type="hidden" class="jq-product-line" value="${loanInfo.productType.name()}" >
-                <input type="hidden" class="jq-timer" value="${loanInfo.periods}" >
-
-            </div>
-            <div class="col-sm-3">
-                <div class="form-control-static">(单位：
-                    <label>天</label>)
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">项目描述: </label>
-
-            <div class="col-sm-10">
-                <script id="editor"
-                        type="text/plain"><#if loanInfo.descriptionHtml??>${loanInfo.descriptionHtml}</#if></script>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">申请材料: </label>
-
-            <div class="col-sm-10">
-                <button type="button" class="btn-upload btn btn-info">＋</button>
-            </div>
-        </div>
-        <div class="upload-box"></div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">预计出借金额（元）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl"
-                       errormsg="预计出借金额需要正确填写" value="${(loanInfo.loanAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">最小投资金额（元）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写"
-                       value="${(loanInfo.minInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK"&& loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">投资递增金额（元）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl" errormsg="投资递增金额需要正确填写"
-                       value="${(loanInfo.investIncreasingAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE" >disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl"
-                       errormsg="单笔最大投资金额需要正确填写" value="${(loanInfo.maxInvestAmount/100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="COMPLETE">disabled="disabled"</#if>>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">活动类型: </label>
-
-            <div class="col-sm-4">
-                <select class="selectpicker "
-                        <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                    <#list activityTypes as activityType>
-                        <#if activityType.name() != 'PROMOTION'>
-                            <option value="${activityType.name()}"
-                                    <#if activityType.name() == loanInfo.activityType>selected</#if>>
-                            ${activityType.getActivityTypeName()}
-                            </option>
-                        </#if>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-impact-type" value="${loanInfo.activityType}"/>
-            </div>
-        </div>
-
-
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">活动利率（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="活动利率需要正确填写" value="${(loanInfo.activityRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">基本利率（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">阶梯加息: </label>
-
-            <div class="col-sm-4 checkbox">
-                <label for="extra"><input type="checkbox" id="extra"
-                                          <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>
-                                          <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
-                    选中后此标的采用阶梯式加息
-                </label>
-            </div>
-        </div>
-        <#if extraLoanRates?? && extraLoanRates?size gt 0>
-            <div class="form-group extra-rate">
-                <#list extraLoanRates as extraLoanRate>
-                    <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
-                </#list>
-                <label class="col-sm-2 control-label"></label>
+        <h3><span>项目信息</span></h3>
+        <hr class="top-line">
+        <div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款项目名称: </label>
 
                 <div class="col-sm-4">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>投资金额范围（元）</th>
-                            <th>加息比例（%）</th>
-                        </tr>
-                        </thead>
-                        <tbody class="extra-rate-rule">
-                            <#list extraLoanRates as extraLoanRate>
+                    <select class="selectpicker b-width jq-name">
+                        <option value="房产抵押借款" <#if loanInfo.projectName == "房产抵押借款">selected</#if>>房产抵押借款</option>
+                        <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">代理用户: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName!('')}"
+                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标的类型: </label>
+
+                <div class="col-sm-4">
+                    <select class="selectpicker jq-b-type b-width"
+                            <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        <#list loanTypes as loanType>
+                            <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getLoanPeriodUnit()}"
+                                    data-repayTimePeriod="1" <#if loanType.name()==loanInfo.type>selected</#if>>
+                            ${loanType.getName()}
+                            </option>
+                        </#list>
+                    </select>
+                    <input type="hidden" class="jq-mark-type" value="${loanInfo.type}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款期限: </label>
+
+                <div class="col-sm-4 product-line-period">
+                    <select class="selectpicker b-width"
+                            <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        <option value="">请选择</option>
+                        <#list productTypes as productType>
+                            <#if productType.name() != 'EXPERIENCE'>
+                                <option value="${productType.getDuration()}"
+                                        <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
+                                        data-duration="${productType.getDuration()}"
+                                        data-period="${productType.getPeriods()}"
+                                        data-product-line="${productType.name()}">
+                                ${productType.getDuration()}
+                                </option>
+                            </#if>
+                        </#list>
+                    </select>
+                    <input type="hidden" class="jq-duration" value="${loanInfo.duration}"/>
+                    <input type="hidden" class="jq-product-line" value="${loanInfo.productType.name()}">
+                    <input type="hidden" class="jq-timer" value="${loanInfo.periods}">
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-control-static">(单位：<label>天</label>)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">预计出借金额（元）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl"
+                           errormsg="预计出借金额需要正确填写" value="${loanInfo.loanAmount?string}"
+                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">最小投资金额（元）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl"
+                           errormsg="最小投资金额需要正确填写"
+                           value="${loanInfo.minInvestAmount?string}"
+                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING" && loanInfo.loanStatus!="RECHECK"&& loanInfo.loanStatus!="COMPLETE" >disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">投资递增金额（元）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl"
+                           errormsg="投资递增金额需要正确填写"
+                           value="${loanInfo.investIncreasingAmount?string}"
+                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING" && loanInfo.loanStatus!="COMPLETE" >disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl"
+                           errormsg="单笔最大投资金额需要正确填写" value="${loanInfo.maxInvestAmount?string}"
+                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING" && loanInfo.loanStatus!="COMPLETE">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">活动类型: </label>
+
+                <div class="col-sm-4">
+                    <select class="selectpicker "
+                            <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        <#list activityTypes as activityType>
+                            <#if activityType.name() != 'PROMOTION'>
+                                <option value="${activityType.name()}"
+                                        <#if activityType.name() == loanInfo.activityType>selected</#if>>
+                                ${activityType.getActivityTypeName()}
+                                </option>
+                            </#if>
+                        </#list>
+                    </select>
+                    <input type="hidden" class="jq-impact-type" value="${loanInfo.activityType}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">活动利率（%）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl"
+                           errormsg="活动利率需要正确填写" value="${((loanInfo.activityRate?number)*100)?string('0.00')}"
+                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanloanStatus!= "RAISING">disabled="disabled"</#if>>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">基本利率（%）: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
+                           errormsg="请选择产品线类型" value="${((loanInfo.basicRate?number)*100)?string('0.00')}">
+                </div>
+            </div>
+            <div class="form-group input-append">
+                <label class="col-sm-2 control-label">筹款启动时间: </label>
+
+                <div class="col-sm-4">
+                    <div class='input-group date' id='datetimepicker6'>
+                        <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写"
+                               value="${(loanInfo.fundraisingStartTime?string('yyyy-MM-dd HH:mm'))!}"
+                               <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group input-append">
+                <label class="col-sm-2 control-label">筹款截止时间: </label>
+
+                <div class="col-sm-4">
+                    <div class='input-group date' id='datetimepicker7'>
+                        <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写"
+                               value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
+                               <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING" && loanInfo.loanStatus!="RECHECK">disabled="disabled"</#if>/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">阶梯加息: </label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra"><input type="checkbox" id="extra"
+                                              <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>
+                                              <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
+                        选中后此标的采用阶梯式加息
+                    </label>
+                </div>
+            </div>
+            <#if extraLoanRates?? && extraLoanRates?size gt 0>
+                <div class="form-group extra-rate">
+                    <#list extraLoanRates as extraLoanRate>
+                        <input type="hidden" class="extra-rate-id"
+                               value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+                    </#list>
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
                             <tr>
-                                <td>${(extraLoanRate.minInvestAmount/100)?string('0')}
-                                    ≤投资额<#if extraLoanRate.maxInvestAmount gt 0>
-                                        <${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
-                                <td>${extraLoanRate.rate * 100}</td>
+                                <th>投资金额范围（元）</th>
+                                <th>加息比例（%）</th>
                             </tr>
-                            </#list>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="extra-rate-rule">
+                                <#list extraLoanRates as extraLoanRate>
+                                <tr>
+                                    <td>${(extraLoanRate.minInvestAmount/100)?string('0')}
+                                        ≤投资额<#if extraLoanRate.maxInvestAmount gt 0>
+                                            <${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
+                                    <td>${extraLoanRate.rate * 100}</td>
+                                </tr>
+                                </#list>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </#if>
+        </div>
+        <h3><span>借款人基本信息</span></h3>
+        <hr class="top-line">
+        <div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人姓名: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-user-name" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款人姓名不能为空" value="${loanInfo.loanerUserName}"
+                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
                 </div>
             </div>
-        </#if>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人性别: </label>
 
-        <div class="form-group input-append">
-            <label class="col-sm-2 control-label">筹款启动时间: </label>
+                <div class="col-sm-4">
+                    <select class="selectpicker b-width jq-loaner-gender"
+                            <#if loanInfo.loanStatus!="WAITING_VERIFY">disabled="disabled"</#if>>
+                        <option value="MALE" <#if loanInfo.loanerGender == 'MALE'>selected</#if>>男</option>
+                        <option value="FEMALE" <#if loanInfo.loanerGender == 'FEMAIL'>selected</#if>>女</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人年龄: </label>
 
-            <div class="col-sm-4">
-                <div class='input-group date' id='datetimepicker6'>
-                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写"
-                           value="${(loanInfo.fundraisingStartTime?string('yyyy-MM-dd HH:mm'))!}"
-                           <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>/>
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-age" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款人年龄填写有误" value="${loanInfo.loanerAge}"
+                           <#if loanInfo.loanStatus!="WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人身份证号: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number"
+                           datatype="idcard" autocomplete="off"
+                           placeholder="" errormsg="借款人身份证号填写有误" value="${loanInfo.loanerIdentityNumber}"
+                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人婚姻情况: </label>
+
+                <div class="col-sm-4">
+                    <select class="selectpicker b-width jq-loaner-marriage"
+                            <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                        <option value="UNMARRIED" <#if loanInfo.loanerMarriage == 'UNMARRIED'>selected</#if>>未婚</option>
+                        <option value="MARRIED" <#if loanInfo.loanerMarriage == 'MARRIED'>selected</#if>>已婚</option>
+                        <option value="DIVORCE" <#if loanInfo.loanerMarriage == 'DIVORCE'>selected</#if>>离异</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人所在地区: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-region" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款人所在地区不能为空" value="${loanInfo.loanerRegion}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人年收入: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-income" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款人年收入不能为空" value="${loanInfo.loanerIncome}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款人从业情况: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loaner-employment" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款人从业情况不能为空" value="${loanInfo.loanerEmploymentStatus}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
                 </div>
             </div>
         </div>
-        <div class="form-group input-append">
-            <label class="col-sm-2 control-label">筹款截止时间: </label>
+        <h3><span>抵押物信息</span></h3>
+        <hr class="top-line">
+        <div id="pledge-details">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">抵押物所在地: </label>
 
-            <div class="col-sm-4">
-                <div class='input-group date' id='datetimepicker7'>
-                    <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写"
-                           value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                           <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>/>
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-location" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="抵押物所在地不能为空" value="${loanInfo.pledgeLocation}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">借款抵押物估值: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="借款抵押物估值不能为空" value="${loanInfo.estimateAmount}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">抵押物借款金额: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="抵押物借款金额不能为空" value="${loanInfo.pledgeLoanAmount}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                </div>
+            </div>
+            <#if loanInfo.pledgeType == 'HOUSE'>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">不动产登记证明:编号: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-estate-register-id"
+                               datatype="*" autocomplete="off"
+                               placeholder="" errormsg="不动产登记证明不能为空" value="${loanInfo.estateRegisterId}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">房本编号: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-property-card-id"
+                               datatype="*" autocomplete="off"
+                               placeholder="" errormsg="房本编号不能为空" value="${loanInfo.propertyCardId}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款抵押房产面积: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-square" datatype="*"
+                               autocomplete="off"
+                               placeholder="" errormsg="借款抵押房产面积不能为空" value="${loanInfo.square}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">公证书: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-authentic-act"
+                               datatype="*" autocomplete="off"
+                               placeholder="" errormsg="公证书不能为空" value="${loanInfo.authenticAct}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+            </#if>
+            <#if loanInfo.pledgeType == 'VEHICLE'>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款抵押车辆型号: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-model" datatype="*"
+                               autocomplete="off"
+                               placeholder="" errormsg="抵押车辆型号不能为空" value="${loanInfo.model}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款抵押车辆品牌: </label>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control ui-autocomplete-input jq-pledge-brand" datatype="*"
+                               autocomplete="off"
+                               placeholder="" errormsg="抵押车辆品牌不能为空" value="${loanInfo.brand}"
+                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+            </#if>
+        </div>
+        <h3><span>声明</span></h3>
+        <hr class="top-line"/>
+        <div>
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ui-autocomplete-input jq-loan-declaration" datatype="*"
+                           autocomplete="off"
+                           placeholder="" errormsg="声明不能为空" value="${loanInfo.declaration}"
+                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
                 </div>
             </div>
         </div>
+        <h3><span>审核材料</span></h3>
+        <hr class="top-line"/>
+        <div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">申请材料: </label>
 
+                <div class="col-sm-10">
+                    <button type="button" class="btn-upload btn btn-info">＋</button>
+                </div>
+            </div>
+            <div class="upload-box"></div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">属性: </label>
+
+            <div class="col-sm-4">
+                <div class="checkbox jq-checkbox">
+                    <label>
+                        <input type="checkbox" class="jq-index" value="1" <#if loanInfo.showOnHome>checked</#if>
+                               <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        首页
+                    </label>
+                </div>
+            </div>
+        </div>
         <#if loanInfo.verifyTime??>
         <div class="form-group">
             <label class="col-sm-2 control-label">
@@ -325,7 +501,6 @@
             </div>
         </div>
         </#if>
-
         <#if loanInfo.verifyLoginName??>
         <div class="form-group">
             <label class="col-sm-2 control-label">
@@ -336,7 +511,6 @@
             </div>
         </div>
         </#if>
-
         <#if loanInfo.recheckTime??>
         <div class="form-group">
             <label class="col-sm-2 control-label">
@@ -347,7 +521,6 @@
             </div>
         </div>
         </#if>
-
         <#if loanInfo.recheckLoginName??>
         <div class="form-group">
             <label class="col-sm-2 control-label">
@@ -358,58 +531,30 @@
             </div>
         </div>
         </#if>
-
         <input type="hidden" class="jq-creator" value="${loanInfo.createdLoginName}"/><!-- 创建者 -->
 
-
-        <!--<div class="form-group">-->
-        <!--<label  class="col-sm-2 control-label">初审是否通过: </label>-->
-
-        <!--<div class="col-sm-4">-->
-        <!--<span class="label label-success "> 是</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <div class="form-group">
-            <label class="col-sm-2 control-label">属性: </label>
-
-            <div class="col-sm-4">
-                <div class="checkbox jq-checkbox">
-                    <label>
-                        <input type="checkbox" class="jq-index" value="1" <#if loanInfo.showOnHome>checked</#if>
-                               <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                        首页
-                    </label>
-                </div>
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label"></label>
-
             <div class="col-sm-4 form-error">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
-
             <div class="col-sm-4">
                 <input type="hidden" class="jq-pact" value="${contractId}"/><!-- 默认合同ID -->
-
                 <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
                     <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="save">保存</button>
                 </@security.authorize>
-
-                <#if loanInfo.status == "WAITING_VERIFY">
+                <#if loanInfo.loanStatus == "WAITING_VERIFY">
                     <@security.authorize access="hasAnyAuthority('OPERATOR')">
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="apply-audit">提交审核</button>
                     </@security.authorize>
-
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
                         <button TYPE="button" class="btn jq-btn-refuse btn-danger" data-loanId="${loanInfo.id?c}">审核拒绝</button>
                     </@security.authorize>
                 </#if>
-
-                <#if loanInfo.status == "RECHECK">
+                <#if loanInfo.loanStatus == "RECHECK">
                     <#if loanInfo.raisingCompleteTime??>
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="recheck">放款</button>
                     <#else>

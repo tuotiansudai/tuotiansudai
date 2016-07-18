@@ -37,7 +37,8 @@ public interface LoanService {
      * @return
      * @function 标的编辑
      */
-    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
+    BaseDto<BaseDataDto> updateLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                    AbstractPledgeDetailsDto pledgeDetailsDto);
 
     BaseDto<PayDataDto> delayLoan(LoanDto loanDto);
 
@@ -52,6 +53,8 @@ public interface LoanService {
     int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd);
 
     LoanModel findLoanById(long loanId);
+
+    AbstractCreateLoanDto findCreateLoanDto(long loanId);
 
     boolean loanIsExist(long loanId);
 

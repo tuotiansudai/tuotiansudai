@@ -10,4 +10,8 @@ public interface PledgeHouseMapper {
     void create(PledgeHouseModel pledgeHouseModel);
 
     AbstractPledgeDetail getPledgeHouseDetailByLoanId(@Param(value = "loanId") long loanId);
+
+    void updateByLoanId(PledgeHouseModel pledgeHouseModel);
+
+    void deleteByLoanId(long loanId);
 }

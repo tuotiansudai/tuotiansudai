@@ -2,11 +2,12 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class AbstractCreateLoanDto {
+public abstract class AbstractCreateLoanDto implements Serializable {
     //LoanDto
     protected long id;
     protected String projectName;
@@ -43,7 +44,7 @@ public abstract class AbstractCreateLoanDto {
     protected String verifyLoginName;
     protected String recheckLoginName;
     protected int duration;
-    private List<Long> extraRateIds;
+    protected List<Long> extraRateIds;
 
     //LoanDetailsDto
     protected String declaration;
@@ -79,6 +80,7 @@ public abstract class AbstractCreateLoanDto {
         loanDto.setPeriods(periods);
         loanDto.setDescriptionText("");
         loanDto.setDescriptionHtml("");
+        loanDto.setPledgeType(pledgeType);
         loanDto.setMinInvestAmount(minInvestAmount);
         loanDto.setInvestIncreasingAmount(investIncreasingAmount);
         loanDto.setMaxInvestAmount(maxInvestAmount);
