@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -38,7 +39,7 @@ public class MobileAppLoginController{
         BaseResponseDto<LoginResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
         if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
-            loginResponseDataDto.setToken(mobileAppTokenProvider.refreshToken(username, null));
+            loginResponseDataDto.setToken(mobileAppTokenProvider.refreshToken(username));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         } else {
@@ -58,9 +59,9 @@ public class MobileAppLoginController{
 
     @RequestMapping(value = "/usermember/logout", method = RequestMethod.GET)
     @ResponseBody
-    public BaseResponseDto logout(@RequestParam(value = "token") String token) {
+    public BaseResponseDto logout(@RequestParam(value = "token") String token, HttpServletRequest httpServletRequest) {
         if (!Strings.isNullOrEmpty(token)) {
-            mobileAppTokenProvider.deleteToken(token);
+            mobileAppTokenProvider.deleteToken(httpServletRequest);
         }
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

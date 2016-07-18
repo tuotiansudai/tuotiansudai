@@ -41,7 +41,7 @@ public interface InvestService {
                                                 InvestStatus investStatus,
                                                 LoanStatus loanStatus);
 
-    void turnOnAutoInvest(AutoInvestPlanModel model);
+    boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
 
     boolean turnOffAutoInvest(String loginName, String ip);
 

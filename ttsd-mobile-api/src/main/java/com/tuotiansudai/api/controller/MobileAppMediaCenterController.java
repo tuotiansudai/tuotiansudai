@@ -23,9 +23,8 @@ public class MobileAppMediaCenterController {
     private LiCaiQuanArticleService liCaiQuanArticleService;
 
     @RequestMapping(method = RequestMethod.GET)
-
     public ModelAndView mediaCenter() {
-        return new ModelAndView("/media-center");
+        return new ModelAndView("/api-template");
     }
 
     @RequestMapping(value = "/article-list", method = RequestMethod.GET)

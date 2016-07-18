@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
+import java.util.Set;
+
 @Component
 public class AppTokenRedisWrapperClient extends AbstractRedisWrapperClient {
 
@@ -48,6 +50,16 @@ public class AppTokenRedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.del(keys) == keys.length ? true : false;
             }
         });
+    }
+
+    public boolean delPattern(final String pattern) {
+        Set<String> keys = execute(new JedisAction<Set<String>>() {
+            @Override
+            public Set<String> action(Jedis jedis) {
+                return jedis.keys(pattern);
+            }
+        });
+        return keys.size() == 0 || this.del(keys.toArray(new String[]{}));
     }
 
 }
