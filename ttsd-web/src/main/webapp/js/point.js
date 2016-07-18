@@ -23,10 +23,10 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $taskBox.toggle();
                 var $this=$(this);
                 if($taskBox.is(':hidden')) {
-                    $this.find('i').addClass('fa-chevron-up').removeClass('fa-chevron-down');
+                    $this.find('i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
                 }
                 else {
-                    $this.find('i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+                    $this.find('i').addClass('fa-chevron-up').removeClass('fa-chevron-down');
                 }
 
             })
