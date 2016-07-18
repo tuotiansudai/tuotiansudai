@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.repository.mapper;
 
-import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -19,6 +18,7 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -40,7 +40,7 @@ public class UserPointTaskMapperTest {
 
         List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination(0, 10);
         for (PointTaskModel pointTaskModel : pointTaskModels) {
-            userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModel.getId()));
+            userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModel.getId(), 1000, 1));
         }
 
         assertThat(userPointTaskMapper.findByLoginName(fakeUserModel.getLoginName()).size(), is(pointTaskModels.size()));
@@ -58,5 +58,4 @@ public class UserPointTaskMapperTest {
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
-
 }

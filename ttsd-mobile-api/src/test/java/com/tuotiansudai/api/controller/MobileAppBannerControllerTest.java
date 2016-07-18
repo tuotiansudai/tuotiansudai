@@ -4,11 +4,13 @@ import com.tuotiansudai.api.controller.v1_0.MobileAppBannerController;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
+import com.tuotiansudai.repository.model.Source;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppBannerControllerTest extends ControllerTestBase {
@@ -25,7 +27,7 @@ public class MobileAppBannerControllerTest extends ControllerTestBase {
 
     @Test
     public void getBannerTest() throws Exception {
-        when(service.generateBannerList(any(BaseParam.class))).thenReturn(successResponseDto);
+        when(service.generateBannerList(anyString(), any(Source.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/banner", new BaseParamDto());
     }
 }

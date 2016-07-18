@@ -37,7 +37,7 @@ public class MobileAppAuthenticationSuccessHandler extends SimpleUrlAuthenticati
             String username = request.getParameter("j_username");
             clearFailHistory(username);
 
-            String token = mobileAppTokenProvider.refreshToken(authentication.getName(), null);
+            String token = mobileAppTokenProvider.refreshToken(authentication.getName());
             BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(token);
             String jsonBody = objectMapper.writeValueAsString(dto);
 
