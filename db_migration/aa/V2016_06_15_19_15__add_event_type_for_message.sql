@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`message` ADD COLUMN `event_type` VARCHAR(50) AFTER `type`;

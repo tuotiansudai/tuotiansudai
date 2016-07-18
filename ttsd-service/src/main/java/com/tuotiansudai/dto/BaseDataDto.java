@@ -8,6 +8,14 @@ public class BaseDataDto implements Serializable {
 
     protected String message;
 
+    public BaseDataDto() {
+    }
+
+    public BaseDataDto(boolean status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
     public boolean getStatus() {
         return status;
     }
