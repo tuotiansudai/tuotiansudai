@@ -126,7 +126,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         RepayCalendarYearResponseDto repayCalendarYearResponseDto = null;
         for(InvestRepayModel investRepayModel : investRepayModelList){
             if(repayCalendarYearResponseDto == null){
-                repayCalendarYearResponseDto = new RepayCalendarYearResponseDto(investRepayModel,sdf);
+                repayCalendarYearResponseDto = new RepayCalendarYearResponseDto(sdf.format(investRepayModel.getRepayDate()));
                 repayCalendarYearResponseDtoList.add(setExpectedAndActualAmount(repayCalendarYearResponseDto,investRepayModel));
                 continue;
             }
@@ -136,7 +136,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            repayCalendarYearResponseDto = new RepayCalendarYearResponseDto(investRepayModel,sdf);
+            repayCalendarYearResponseDto = new RepayCalendarYearResponseDto(sdf.format(investRepayModel.getRepayDate()));
             repayCalendarYearResponseDtoList.add(setExpectedAndActualAmount(repayCalendarYearResponseDto,investRepayModel));
         }
         return repayCalendarYearResponseDtoList;

@@ -11,8 +11,8 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
     private String repayAmount;
     private String expectedRepayAmount;
 
-    public RepayCalendarYearResponseDto(InvestRepayModel investRepayModel, SimpleDateFormat simpleDateFormat){
-        this.month = simpleDateFormat.format(investRepayModel.getRepayDate());
+    public RepayCalendarYearResponseDto(String month){
+        this.month = month;
     }
 
     public RepayCalendarYearResponseDto(String month, String repayAmount, String expectedRepayAmount) {
