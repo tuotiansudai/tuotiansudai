@@ -154,7 +154,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         List<PointTaskRecordResponseDataDto> pointTaskRecords = Lists.newArrayList();
         for (PointTaskModel pointTaskModel : pointTaskList) {
             PointTaskRecordResponseDataDto pointTaskRecordResponseDataDto = new PointTaskRecordResponseDataDto();
-            UserPointTaskModel userPointTaskModel = userPointTaskMapper.findByLoginNameAndId(pointTaskModel.getId(), loginName);
+            List<UserPointTaskModel> userPointTaskModel = userPointTaskMapper.findByLoginNameAndTask(loginName, pointTaskModel.getName());
             pointTaskRecordResponseDataDto.setPointTaskId("" + pointTaskModel.getId());
             pointTaskRecordResponseDataDto.setPointTaskTitle(pointTaskModel.getName().getTitle());
             pointTaskRecordResponseDataDto.setPointTaskType(pointTaskModel.getName());

@@ -106,7 +106,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
-        when(mobileAppTokenProvider.refreshToken(anyString(), anyString())).thenReturn("");
+        when(mobileAppTokenProvider.refreshToken(anyString())).thenReturn("");
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
         assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());

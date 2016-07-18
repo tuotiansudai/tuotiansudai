@@ -95,7 +95,7 @@ module.exports = function(grunt) {
         watch: {
             sass: {
                 files: [
-                    '<%= meta.baseSassPath %>/*.scss'
+                    '<%= meta.baseSassPath %>/**/*.scss'
                 ],
                 tasks: ['clean:css', 'sass']
             },
