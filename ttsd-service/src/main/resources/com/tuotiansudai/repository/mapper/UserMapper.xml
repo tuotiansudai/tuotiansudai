@@ -7,25 +7,26 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="userResultMap" type="UserModel">
-        <id column="id" property="id"/>
-        <result column="login_name" property="loginName"/>
-        <result column="password" property="password"/>
-        <result column="email" property="email"/>
-        <result column="mobile" property="mobile"/>
-        <result column="register_time" property="registerTime"/>
-        <result column="last_login_time" property="lastLoginTime"/>
-        <result column="last_modified_time" property="lastModifiedTime"/>
-        <result column="last_modified_user" property="lastModifiedUser"/>
-        <result column="avatar" property="avatar"/>
-        <result column="referrer" property="referrer"/>
-        <result column="status" property="status"/>
-        <result column="salt" property="salt"/>
-        <result column="channel" property="channel"/>
-        <result column="source" property="source"/>
-        <result column="province" property="province"/>
-        <result column="city" property="city"/>
-        <result column="auto_invest_status" property="autoInvestStatus"/>
-        <result column="last_bill_time" property="lastBillTime"/>
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="register_time" property="registerTime"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+        <result column="last_modified_time" property="lastModifiedTime"></result>
+        <result column="last_modified_user" property="lastModifiedUser"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="referrer" property="referrer"></result>
+        <result column="status" property="status"></result>
+        <result column="salt" property="salt"></result>
+        <result column="channel" property="channel"></result>
+        <result column="source" property="source"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="auto_invest_status" property="autoInvestStatus"></result>
+        <result column="last_bill_time" property="lastBillTime"></result>
+        <result column="sign_in_count" property="signInCount"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"/>
             <result column="login_name" property="loginName"/>
@@ -101,8 +102,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source,sign_in_count)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source},#{signInCount})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -117,7 +118,8 @@
                         status = #{status},
                         referrer = #{referrer},
                         province = #{province},
-                        city = #{city}
+                        city = #{city},
+                        sign_in_count = #{signInCount}
                         where id = #{id}
     </update>
 

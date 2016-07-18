@@ -27,6 +27,8 @@ public class LiCaiQuanArticleDto implements Serializable{
     private long readCount;
     private String creator;
     private boolean original = false;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date timingTime;
 
     public LiCaiQuanArticleDto(){}
 
@@ -45,6 +47,7 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.updateTime = model.getUpdatedTime();
         this.checker = model.getCheckerLoginName();
         this.creator = model.getCreatorLoginName();
+        this.timingTime = model.getTimingTime();
     }
 
     public Long getArticleId() {
@@ -177,5 +180,13 @@ public class LiCaiQuanArticleDto implements Serializable{
 
     public void setOriginal(boolean original) {
         this.original = original;
+    }
+
+    public Date getTimingTime() {
+        return timingTime;
+    }
+
+    public void setTimingTime(Date timingTime) {
+        this.timingTime = timingTime;
     }
 }
