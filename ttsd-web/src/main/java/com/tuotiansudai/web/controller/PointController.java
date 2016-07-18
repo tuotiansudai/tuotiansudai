@@ -1,47 +1,37 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.dto.PointTaskDto;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.service.PointExchangeService;
-import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.point.service.PointTaskService;
-import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/point")
 public class PointController {
 
-    static Logger logger = Logger.getLogger(PointController.class);
+    private final static Logger logger = Logger.getLogger(PointController.class);
 
     @Autowired
     private SignInService signInService;
 
     @Autowired
     private PointService pointService;
-
-    @Autowired
-    private PointBillMapper pointBillMapper;
 
     @Autowired
     private PointTaskService pointTaskService;
@@ -53,26 +43,16 @@ public class PointController {
     private CouponService couponService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView myPoint(){
+    public ModelAndView myPoint() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/point");
-        long myPoint = pointService.getAvailablePoint(loginName);
-        List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
-        if(pointBillModels != null){
-            pointBillModels =  pointBillModels.size() > 3 ?pointBillModels.subList(0,3):pointBillModels;
-            List<Map<String,Date>> obtainedPoints = Lists.newArrayList();
-            for(PointBillModel pointBillModel : pointBillModels){
-                obtainedPoints.add(Maps.newHashMap(ImmutableMap.<String,Date>builder().put("" + pointBillModel.getPoint(),pointBillModel.getCreatedTime()).build()));
-            }
-            modelAndView.addObject("obtainedPoints",obtainedPoints);
-        }
-        boolean signedIn = signInService.signInIsSuccess(loginName);
-        List<PointTaskDto> pointTaskDtos = pointTaskService.displayPointTask(1,10,loginName);
-        modelAndView.addObject("pointTaskDtos",pointTaskDtos);
-        modelAndView.addObject("signedIn",signedIn);
-        modelAndView.addObject("myPoint",myPoint);
-        List<ExchangeCouponDto> exchangeCouponDtos = pointExchangeService.findExchangeableCouponList();
-        modelAndView.addObject("exchangeCouponDtos", exchangeCouponDtos);
+        modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
+        modelAndView.addObject("latestThreePointBills", pointBillService.getPointBillPagination(loginName, 1, 3, new Date(0), new Date(), Lists.<PointBusinessType>newArrayList()));
+        modelAndView.addObject("signedIn", signInService.signInIsSuccess(loginName));
+        modelAndView.addObject("newbiePointTasks", pointTaskService.getNewbiePointTasks(loginName));
+        modelAndView.addObject("advancedPointTasks", pointTaskService.getAdvancedPointTasks(loginName));
+        modelAndView.addObject("completedAdvancedPointTasks", pointTaskService.getCompletedAdvancedPointTasks(loginName));
+        modelAndView.addObject("exchangeCoupons", pointExchangeService.findExchangeableCouponList());
         return modelAndView;
     }
 
@@ -101,14 +81,37 @@ public class PointController {
         } else {
             baseDataDto.setStatus(false);
             if (!sufficient) {
-                if(!couponExchangeable){
+                if (!couponExchangeable) {
                     baseDataDto.setMessage("coupon exchangeable insufficient");
-                }
-                else{
+                } else {
                     baseDataDto.setMessage("point insufficient");
                 }
             }
         }
         return baseDataDto;
+    }
+
+    @Autowired
+    private PointBillService pointBillService;
+
+    @RequestMapping(value = "/point-list", method = RequestMethod.GET)
+    public ModelAndView investList() {
+        return new ModelAndView("/point-bill-list");
+    }
+
+    @RequestMapping(value = "/point-bill-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                                            @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                            @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                                            @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                                            @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
+        String loginName = LoginUserInfo.getLoginName();
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(loginName, index, pageSize, startTime, endTime, businessType);
+        dataDto.setStatus(true);
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        dto.setData(dataDto);
+
+        return dto;
     }
 }
