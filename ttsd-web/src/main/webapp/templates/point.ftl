@@ -91,7 +91,7 @@
                     您已完成所有新手任务，快去完成进阶任务向高手进发吧！
                 </#if>
 
-                <i class="fr fa fa-chevron-down"></i>
+                <i class="fr fa fa-chevron-up"></i>
             </div>
             <div class="task-frame clearfix" id="taskFrame">
                 <#list newbiePointTasks as newbiePointTask>
