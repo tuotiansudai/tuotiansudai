@@ -193,7 +193,7 @@ public class InterestCalculator {
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels) {
+    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels){
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
@@ -204,7 +204,7 @@ public class InterestCalculator {
     public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
         DateTime startTime;
         if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-            startTime = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+            startTime =new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
         } else {
             startTime = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         }
@@ -212,24 +212,5 @@ public class InterestCalculator {
         return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
-
-    public static long calculateCouponInterest(LoanModel loanModel, InvestModel investModel, UserCouponModel userCouponModel, CouponModel couponModel) {
-        ProductType productType = loanModel.getProductType();
-        CouponType couponType = couponModel.getCouponType();
-
-        switch (couponType) {
-            case NEWBIE_COUPON:
-                return new BigDecimal();
-            case INVEST_COUPON:
-                return new BigDecimal();
-            case INTEREST_COUPON:
-                return new BigDecimal();
-            case BIRTHDAY_COUPON:
-                return new BigDecimal();
-
-        }
-        return 0;
-    }
-
 
 }
