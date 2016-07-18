@@ -15,6 +15,7 @@
         <result column="actual_interest" property="actualInterest"/>
         <result column="expected_fee" property="expectedFee"/>
         <result column="actual_fee" property="actualFee"/>
+        <result column="repay_amount" property="repayAmount"/>
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="is_transferred" property="isTransferred"/>
@@ -47,6 +48,7 @@
         actual_interest = #{actualInterest},
         expected_fee = #{expectedFee},
         actual_fee = #{actualFee},
+        repay_amount = #{repayAmount},
         repay_date = #{repayDate},
         actual_repay_date = #{actualRepayDate},
         is_transferred = #{isTransferred},
