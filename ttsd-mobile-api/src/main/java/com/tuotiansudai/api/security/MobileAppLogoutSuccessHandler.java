@@ -22,10 +22,7 @@ public class MobileAppLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String token = request.getParameter("token");
-        if (!Strings.isNullOrEmpty(token)) {
-            mobileAppTokenProvider.deleteToken(token);
-        }
+        mobileAppTokenProvider.deleteToken(request);
 
         BaseResponseDto dto = new BaseResponseDto();
         dto.setCode(ReturnMessage.SUCCESS.getCode());

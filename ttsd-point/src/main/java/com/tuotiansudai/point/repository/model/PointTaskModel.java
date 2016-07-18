@@ -11,6 +11,12 @@ public class PointTaskModel implements Serializable {
 
     private long point;
 
+    private boolean active;
+
+    private boolean multiple;
+
+    private long maxLevel;
+
     private Date createdTime;
 
     public long getId() {
@@ -35,6 +41,30 @@ public class PointTaskModel implements Serializable {
 
     public void setPoint(long point) {
         this.point = point;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
+
+    public long getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(long maxLevel) {
+        this.maxLevel = maxLevel;
     }
 
     public Date getCreatedTime() {

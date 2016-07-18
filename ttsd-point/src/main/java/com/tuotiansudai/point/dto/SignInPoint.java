@@ -1,4 +1,5 @@
 package com.tuotiansudai.point.dto;
+
 public enum SignInPoint {
     FIRST_SIGN_IN(1,5),
     SECOND_SIGN_IN(2,10),

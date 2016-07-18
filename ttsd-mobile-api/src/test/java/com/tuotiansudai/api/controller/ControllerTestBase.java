@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -31,20 +32,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public abstract class ControllerTestBase {
     protected ObjectMapper objectMapper = new ObjectMapper();
+
     protected BaseResponseDto successResponseDto;
 
     protected MockMvc mockMvc;
 
     protected abstract Object getControllerObject();
+
     @Mock
     protected HttpServletRequest httpServletRequest;
 
+    @Mock
+    protected MobileAppTokenProvider mobileAppTokenProvider;
 
     @Before
-    public void baseSetup() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(getControllerObject()).build();
-        when(httpServletRequest.getAttribute(anyString())).thenReturn("loginName");
+        when(mobileAppTokenProvider.getLoginName(httpServletRequest)).thenReturn("loginName");
         successResponseDto = new BaseResponseDto();
         successResponseDto.setCode("0000");
     }
