@@ -77,7 +77,6 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
                 layer.open({
                     type: 1,
                     title: false,
-                    offset: '80px',
                     area: ['1000px'],
                     shadeClose: true,
                     content: html
