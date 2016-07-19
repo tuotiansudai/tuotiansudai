@@ -57,7 +57,7 @@ CREATE TABLE `pledge_house` (
   `property_card_id`   VARCHAR(20)                  DEFAULT NULL
   COMMENT '房产证编号',
   `estate_register_id` VARCHAR(30)                  DEFAULT NULL
-  COMMENT '不动产登记z证明',
+  COMMENT '不动产登记证明',
   `authentic_act`      VARCHAR(50)                  DEFAULT NULL
   COMMENT '公证书编号',
   `loan_amount`        VARCHAR(30)                  DEFAULT NULL

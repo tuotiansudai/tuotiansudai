@@ -33,12 +33,8 @@ public class RandomUtils {
         return sb.toString();
     }
 
-    public  String generateLowerString(int length) {
+    private String generateLowerString(int length) {
         return generateMixString(length).toLowerCase();
-    }
-
-    public  String generateUpperString(int length) {
-        return generateMixString(length).toUpperCase();
     }
 
     public static String showChar(int showLength) {
