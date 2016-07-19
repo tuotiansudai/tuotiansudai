@@ -71,43 +71,57 @@ SET @task_level := 0;
 SET @temp_login_name := '';
 INSERT INTO `user_point_task` (`point_task_id`, `task_level`, `point`, `created_time`, `login_name`)
   SELECT
-    10,
+    `t`.`point_task_id`,
     CASE
-    WHEN @temp_login_name = `referrer_relation`.`referrer_login_name`
+    WHEN @temp_login_name = `t`.`login_name`
       THEN @task_level := @task_level + 1
     ELSE @task_level := 1
     END AS task_level,
-    1000,
-    now(),
-    @temp_login_name := `referrer_relation`.`referrer_login_name`
-  FROM `referrer_relation`
-    JOIN `invest` ON `invest`.`login_name` = `referrer_relation`.`login_name` AND `invest`.`status` = 'SUCCESS' AND `invest`.`amount` >= 100000 AND `invest`.`transfer_invest_id` IS NULL
-  WHERE `referrer_relation`.`level` = 1
-        AND EXISTS(SELECT 1
-                   FROM `account`
-                   WHERE `account`.`login_name` = `referrer_relation`.`referrer_login_name`)
-  ORDER BY `referrer_relation`.`referrer_login_name`;
+    `t`.`point`,
+    `t`.`created_time`,
+    @temp_login_name := `t`.`login_name`
+  FROM (
+         SELECT
+           10                                        AS `point_task_id`,
+           1000                                      AS `point`,
+           now()                                     AS `created_time`,
+           `referrer_relation`.`referrer_login_name` AS `login_name`
+         FROM `referrer_relation`
+           JOIN `invest` ON `invest`.`login_name` = `referrer_relation`.`login_name` AND `invest`.`status` = 'SUCCESS' AND `invest`.`amount` >= 100000 AND `invest`.`transfer_invest_id` IS NULL
+         WHERE `referrer_relation`.`level` = 1
+               AND EXISTS(SELECT 1
+                          FROM `account`
+                          WHERE `account`.`login_name` = `referrer_relation`.`referrer_login_name`)
+         ORDER BY `referrer_relation`.`referrer_login_name`
+       ) t;
 
 # 每邀请1名好友注册奖励200财豆
 SET @task_level := 0;
 SET @temp_login_name := '';
 INSERT INTO `user_point_task` (`point_task_id`, `task_level`, `point`, `created_time`, `login_name`)
   SELECT
-    9,
+    `t`.`point_task_id`,
     CASE
-    WHEN @temp_login_name = `referrer_relation`.`referrer_login_name`
+    WHEN @temp_login_name = `t`.`login_name`
       THEN @task_level := @task_level + 1
     ELSE @task_level := 1
     END AS task_level,
-    200,
-    now(),
-    @temp_login_name := `referrer_relation`.`referrer_login_name`
-  FROM `referrer_relation`
-  WHERE `referrer_relation`.`level` = 1
-        AND EXISTS(SELECT 1
-                   FROM `account`
-                   WHERE `account`.`login_name` = `referrer_relation`.`referrer_login_name`)
-  ORDER BY `referrer_relation`.`referrer_login_name`;
+    `t`.`point`,
+    `t`.`created_time`,
+    @temp_login_name := `t`.`login_name`
+  FROM (
+         SELECT
+           9                                         AS `point_task_id`,
+           200                                       AS `point`,
+           now()                                     AS `created_time`,
+           `referrer_relation`.`referrer_login_name` AS `login_name`
+         FROM `referrer_relation`
+         WHERE `referrer_relation`.`level` = 1
+               AND EXISTS(SELECT 1
+                          FROM `account`
+                          WHERE `account`.`login_name` = `referrer_relation`.`referrer_login_name`)
+         ORDER BY `referrer_relation`.`referrer_login_name`
+       ) t;
 
 # 单笔投资满10000元奖励2000财豆
 INSERT INTO `user_point_task` (`login_name`, `point_task_id`, `task_level`, `point`, `created_time`)
