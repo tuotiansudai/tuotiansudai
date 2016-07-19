@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.bi.service.impl;
 
-import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
@@ -8,6 +9,7 @@ import com.tuotiansudai.console.bi.repository.mapper.BusinessIntelligenceMapper;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableView;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
+import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.collections4.ListUtils;
@@ -16,8 +18,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
@@ -47,7 +48,33 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
+    }
+
+    private List<KeyValueModel> getHourKeyValueModels(List<KeyValueModel> keyValueModelList) {
+        Map<Integer, KeyValueModel> modelMap = new HashMap<>();
+        for (int i = 0; i<24; i++) {
+            KeyValueModel keyValueModel = new KeyValueModel();
+            keyValueModel.setName(String.valueOf(i));
+            keyValueModel.setGroup("");
+            keyValueModel.setValue("");
+            modelMap.put(i, keyValueModel);
+        }
+        for (KeyValueModel keyValueModel : keyValueModelList) {
+            modelMap.put(Integer.parseInt(keyValueModel.getName()), keyValueModel);
+        }
+        List<KeyValueModel> keyValueModels = Lists.newArrayList(modelMap.values());
+        return Lists.transform(keyValueModels, new Function<KeyValueModel, KeyValueModel>() {
+            @Override
+            public KeyValueModel apply(KeyValueModel input) {
+                input.setName(String.format("%02d", Integer.parseInt(input.getName())));
+                return input;
+            }
+        });
     }
 
     @Override
@@ -57,7 +84,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
@@ -67,7 +98,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
