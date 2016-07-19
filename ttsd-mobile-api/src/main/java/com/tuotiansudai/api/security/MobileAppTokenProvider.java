@@ -41,6 +41,7 @@ public class MobileAppTokenProvider {
 
     @Value("${web.login.max.failed.times}")
     private int times;
+    @Autowired
     private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName) {
@@ -102,11 +103,15 @@ public class MobileAppTokenProvider {
             if (ReturnMessage.LOGIN_FAILED.getCode().equals(returnMessage.getCode())) {
                 if (redisWrapperClient.exists(redisKey)) {
                     int failTimes = Integer.parseInt(redisWrapperClient.get(redisKey));
-                    message = MessageFormat.format(returnMessage.getMsg(), times - failTimes);
+                    if(failTimes == times){
+                        message = MessageFormat.format(ReturnMessage.USER_IS_DISABLED.getMsg(), calculateLeftLockedMinute(redisKey));
+                    }else {
+                        message = MessageFormat.format(returnMessage.getMsg(), times - failTimes);
+                    }
                 }
             } else if (ReturnMessage.USER_IS_DISABLED.getCode().equals(returnMessage.getCode())) {
-                Long leftSeconds = redisWrapperClient.ttl(redisKey);
-                message = MessageFormat.format(returnMessage.getMsg(), leftSeconds % 60 == 0 ? leftSeconds / 60 : leftSeconds / 60 + 1);
+
+                message = MessageFormat.format(returnMessage.getMsg(), calculateLeftLockedMinute(redisKey));
             }
         }
 
@@ -119,6 +124,17 @@ public class MobileAppTokenProvider {
         dto.setCode(returnMessage.getCode());
         dto.setMessage(message);
         return dto;
+    }
+
+    public long calculateLeftLockedMinute(String redisKey){
+        if(redisWrapperClient.exists(redisKey)){
+            Long leftSeconds = redisWrapperClient.ttl(redisKey);
+            if(leftSeconds < 0){
+                return 0L;
+            }
+            return leftSeconds % 60 == 0 ? leftSeconds / 60 : leftSeconds / 60 + 1;
+        }
+        return 0L;
     }
 
 

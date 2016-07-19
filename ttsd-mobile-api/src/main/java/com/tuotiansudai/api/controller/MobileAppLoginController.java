@@ -29,11 +29,11 @@ public class MobileAppLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto<LoginResponseDataDto> login(@Valid @ModelAttribute LoginRequestDto loginRequestDto) {
-        String username = loginRequestDto.getJ_username();
+        String username = loginRequestDto.getJ_username() == null ? loginRequestDto.getMobile():loginRequestDto.getJ_username();
         String password = loginRequestDto.getJ_password();
         String captcha = loginRequestDto.getCaptcha();
         String source = loginRequestDto.getJ_source();
-        String deviceId = loginRequestDto.getJ_deviceId();
+        String deviceId = loginRequestDto.getJ_deviceId() == null ? loginRequestDto.getDeviceId():loginRequestDto.getJ_deviceId();
         SignInDto signInDto = new SignInDto(username, password, captcha, source, deviceId);
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(null, signInDto);
         BaseResponseDto<LoginResponseDataDto> baseResponseDto = new BaseResponseDto<>();
@@ -42,18 +42,20 @@ public class MobileAppLoginController {
             loginResponseDataDto.setToken(mobileAppTokenProvider.refreshToken(username));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            baseResponseDto.setData(loginResponseDataDto);
         } else {
-            loginResponseDataDto.setToken("");
+
             ReturnMessage errorMsg = ReturnMessage.LOGIN_FAILED;
             if (baseDto.getData().isLocked()) {
                 errorMsg = ReturnMessage.USER_IS_DISABLED;
             } else if (baseDto.getData().isCaptchaNotMatch()) {
                 errorMsg = ReturnMessage.IMAGE_CAPTCHA_IS_WRONG;
+            }else if(baseDto.getData().isNeedImageCaptcha()){
+                errorMsg = ReturnMessage.NEED_IMAGE_CAPTCHA;
             }
-            baseResponseDto.setCode(errorMsg.getCode());
-            baseResponseDto.setMessage(errorMsg.getMsg());
+            baseResponseDto = mobileAppTokenProvider.generateResponseDto(errorMsg,username);
         }
-        baseResponseDto.setData(loginResponseDataDto);
+
         return baseResponseDto;
     }
 

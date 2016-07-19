@@ -14,6 +14,10 @@ public class LoginRequestDto implements Serializable{
 
     private String captcha;
 
+    private String mobile;
+
+    private String deviceId;
+
     public String getJ_username() {
         return j_username;
     }
@@ -52,5 +56,21 @@ public class LoginRequestDto implements Serializable{
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }
