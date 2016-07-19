@@ -11,6 +11,8 @@ public class LoginDto extends BaseDataDto {
 
     private boolean isCaptchaNotMatch;
 
+    private String newSessionId;
+
     private List<Role> roles;
 
     @JsonProperty(value = "isLocked")
@@ -38,5 +40,13 @@ public class LoginDto extends BaseDataDto {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getNewSessionId() {
+        return newSessionId;
+    }
+
+    public void setNewSessionId(String newSessionId) {
+        this.newSessionId = newSessionId;
     }
 }

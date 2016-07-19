@@ -1,10 +1,11 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.signin;
 
 import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.CaptchaHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 
 public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
+
+    static Logger logger = Logger.getLogger(MyDaoAuthenticationProvider.class);
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -33,7 +36,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
         super.additionalAuthenticationChecks(userDetails, authentication);
-
         String loginName = userDetails.getUsername();
         UserModel userModel = userMapper.findByLoginName(loginName);
         boolean enabled = userModel.isActive();
@@ -46,14 +48,20 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
-
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
-            boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
-
-            if (!result) {
-                logger.debug("Authentication failed: captcha does not match actual value");
-                throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+            if(StringUtils.isNotEmpty(captcha)) {
+                String deviceId = httpServletRequest.getParameter("deviceId");
+                boolean result;
+                if (StringUtils.isNotEmpty(deviceId)) {
+                    result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
+                } else {
+                    result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
+                }
+                if (!result) {
+                    logger.debug("Authentication failed: captcha does not match actual value");
+                    throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+                }
             }
         }
         return super.authenticate(authentication);
