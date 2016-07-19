@@ -3,7 +3,12 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -36,12 +41,13 @@ public class MobileAppTokenProvider {
 
     @Value("${web.login.max.failed.times}")
     private int times;
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName) {
-        redisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
 
         String token = MessageFormat.format(TOKEN_TEMPLATE, loginName, UUID.randomUUID().toString());
-        redisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
         log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", loginName, token));
         return token;
     }
@@ -49,7 +55,7 @@ public class MobileAppTokenProvider {
     public void deleteToken(HttpServletRequest httpServletRequest) {
         String loginName = this.getLoginName(httpServletRequest);
         if (!Strings.isNullOrEmpty(loginName)) {
-            redisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+            appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
         }
     }
 
@@ -58,7 +64,7 @@ public class MobileAppTokenProvider {
         if (Strings.isNullOrEmpty(token)) {
             return null;
         }
-        return redisWrapperClient.get(token);
+        return appTokenRedisWrapperClient.get(token);
     }
 
     public BaseResponseDto generateResponseDto(String token) {
@@ -85,20 +91,20 @@ public class MobileAppTokenProvider {
         return dto;
     }
 
-    public BaseResponseDto generateResponseDto(ReturnMessage returnMessage,String loginName) {
+    public BaseResponseDto generateResponseDto(ReturnMessage returnMessage, String loginName) {
         String message = returnMessage.getMsg();
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-        if(userModel != null){
+        if (userModel != null) {
             String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
 
-            if(ReturnMessage.LOGIN_FAILED.getCode().equals(returnMessage.getCode())){
-                if(redisWrapperClient.exists(redisKey)){
+            if (ReturnMessage.LOGIN_FAILED.getCode().equals(returnMessage.getCode())) {
+                if (redisWrapperClient.exists(redisKey)) {
                     int failTimes = Integer.parseInt(redisWrapperClient.get(redisKey));
-                    message = MessageFormat.format(returnMessage.getMsg(),times - failTimes);
+                    message = MessageFormat.format(returnMessage.getMsg(), times - failTimes);
                 }
-            }else if(ReturnMessage.USER_IS_DISABLED.getCode().equals(returnMessage.getCode())){
+            } else if (ReturnMessage.USER_IS_DISABLED.getCode().equals(returnMessage.getCode())) {
                 Long leftSeconds = redisWrapperClient.ttl(redisKey);
-                message = MessageFormat.format(returnMessage.getMsg(),leftSeconds % 60 == 0? leftSeconds/60 : leftSeconds/60 + 1);
+                message = MessageFormat.format(returnMessage.getMsg(), leftSeconds % 60 == 0 ? leftSeconds / 60 : leftSeconds / 60 + 1);
             }
         }
 
