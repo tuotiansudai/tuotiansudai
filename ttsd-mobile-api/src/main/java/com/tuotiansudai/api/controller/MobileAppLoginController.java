@@ -30,9 +30,9 @@ public class MobileAppLoginController {
     @ResponseBody
     public BaseResponseDto<LoginResponseDataDto> login(@Valid @ModelAttribute LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getJ_username() == null ? loginRequestDto.getMobile():loginRequestDto.getJ_username();
-        String password = loginRequestDto.getJ_password();
+        String password = loginRequestDto.getJ_password() == null ? loginRequestDto.getPassword():loginRequestDto.getJ_password();
         String captcha = loginRequestDto.getCaptcha();
-        String source = loginRequestDto.getJ_source();
+        String source = loginRequestDto.getJ_source() == null?loginRequestDto.getSource():loginRequestDto.getJ_source();
         String deviceId = loginRequestDto.getJ_deviceId() == null ? loginRequestDto.getDeviceId():loginRequestDto.getJ_deviceId();
         SignInDto signInDto = new SignInDto(username, password, captcha, source, deviceId);
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(null, signInDto);
