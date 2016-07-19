@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
+
 public class ImageCaptchaResponseDataDto extends BaseResponseDataDto {
     private String imageCaptcha;
 

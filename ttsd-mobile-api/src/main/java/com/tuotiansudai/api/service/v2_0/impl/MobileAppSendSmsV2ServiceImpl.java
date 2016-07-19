@@ -2,7 +2,7 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;

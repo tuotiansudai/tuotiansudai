@@ -1,10 +1,9 @@
 package com.tuotiansudai.api.service;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
-import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppSendSmsV2ServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
@@ -15,7 +14,6 @@ import com.tuotiansudai.util.CaptchaHelper;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Matchers.anyString;

@@ -2,8 +2,8 @@ package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v2_0.MobileAppSendSmsV2Controller;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;
 import com.tuotiansudai.repository.model.CaptchaType;
