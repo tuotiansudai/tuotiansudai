@@ -13,6 +13,8 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
 
     public RepayCalendarYearResponseDto(String month){
         this.month = month;
+        this.repayAmount = "0";
+        this.expectedRepayAmount = "0";
     }
 
     public RepayCalendarYearResponseDto(String month, String repayAmount, String expectedRepayAmount) {

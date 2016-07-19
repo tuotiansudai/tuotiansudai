@@ -122,9 +122,9 @@ public class MobileAppRepayCalendarServiceTest {
         BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarYearResponseDtos();
         assertThat(repayCalendarYearResponseDtoList.size(),is(12));
-        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(),"3");
-        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(),"5");
-        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(),"2");
+        assertEquals(repayCalendarYearResponseDtoList.get(10).getRepayAmount(),"3");
+        assertEquals(repayCalendarYearResponseDtoList.get(9).getRepayAmount(),"5");
+        assertEquals(repayCalendarYearResponseDtoList.get(8).getRepayAmount(),"2");
     }
 
     @Test
@@ -168,7 +168,7 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayDate().size(),is(3));
-        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(),"8");
+        assertEquals(baseResponseDto.getData().getRepayAmount(),"8");
     }
 
     @Test
