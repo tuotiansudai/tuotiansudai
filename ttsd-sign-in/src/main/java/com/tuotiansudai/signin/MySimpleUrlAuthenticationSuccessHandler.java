@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -9,6 +9,8 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,8 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -40,25 +44,24 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int times;
 
-    // 授权成功后处理
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String loginName = userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
-
-        loginLogService.generateLoginLog(loginName, Source.WEB, RequestIPParser.parse(request), null, true);
-
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
-        redisWrapperClient.del(redisKey);
+        String loginName =  userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
+        String strSource = request.getParameter("source");
+        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
 
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
-        baseDto.setData(loginDto);
         loginDto.setStatus(true);
         loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
+        loginDto.setNewSessionId(request.getSession().getId());
+        baseDto.setData(loginDto);
+
+        clearFailHistory(loginName);
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -70,7 +73,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
                 writer.close();
             }
         }
-
         clearAuthenticationAttributes(request);
     }
+
+    private void clearFailHistory(String username){
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", username);
+        redisWrapperClient.del(redisKey);
+    }
+
 }

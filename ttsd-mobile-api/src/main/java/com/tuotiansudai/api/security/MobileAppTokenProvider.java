@@ -3,8 +3,12 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -27,13 +31,13 @@ public class MobileAppTokenProvider {
     private final static String TOKEN_TEMPLATE = "app-token:{0}:{1}";
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName) {
-        redisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
 
         String token = MessageFormat.format(TOKEN_TEMPLATE, loginName, UUID.randomUUID().toString());
-        redisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
         log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", loginName, token));
         return token;
     }
@@ -41,7 +45,7 @@ public class MobileAppTokenProvider {
     public void deleteToken(HttpServletRequest httpServletRequest) {
         String loginName = this.getLoginName(httpServletRequest);
         if (!Strings.isNullOrEmpty(loginName)) {
-            redisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+            appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
         }
     }
 
@@ -50,7 +54,7 @@ public class MobileAppTokenProvider {
         if (Strings.isNullOrEmpty(token)) {
             return null;
         }
-        return redisWrapperClient.get(token);
+        return appTokenRedisWrapperClient.get(token);
     }
 
     public BaseResponseDto generateResponseDto(String token) {
