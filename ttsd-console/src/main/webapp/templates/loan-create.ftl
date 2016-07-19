@@ -267,6 +267,7 @@
                         <option value="UNMARRIED" selected="selected">未婚</option>
                         <option value="MARRIED">已婚</option>
                         <option value="DIVORCE">离异</option>
+                        <option value="NONE">不明</option>
                     </select>
                 </div>
             </div>

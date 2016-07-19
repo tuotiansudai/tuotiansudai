@@ -322,6 +322,7 @@
                         <option value="UNMARRIED" <#if loanInfo.loanerMarriage == 'UNMARRIED'>selected</#if>>未婚</option>
                         <option value="MARRIED" <#if loanInfo.loanerMarriage == 'MARRIED'>selected</#if>>已婚</option>
                         <option value="DIVORCE" <#if loanInfo.loanerMarriage == 'DIVORCE'>selected</#if>>离异</option>
+                        <option value="NONE" <#if loanInfo.loanerMarriage == 'NONE'>selected</#if>>不明</option>
                     </select>
                 </div>
             </div>
