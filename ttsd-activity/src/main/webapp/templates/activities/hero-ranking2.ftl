@@ -2,29 +2,9 @@
 <@global.main pageCss="${css.hero_ranking}" pageJavascript="${js.hero_ranking}" activeNav="" activeLeftNav="" title="周年庆活动_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 <div class="anniversary-container">
     <div class="container clearfix">
-        <img src="${staticServer}/activity/images/sign/actor/anniver/anniversary-top.jpg" width="100%" class="responsive-pc">
+        <img src="${staticServer}/activity/images/sign/actor/anniversary/anniversary-top.png" width="100%" class="responsive-pc">
         <img src="${staticServer}/activity/images/app-banner/app-banner-anniversary.jpg" width="100%" class="responsive-phone">
         <div class="wp actor-bg clearfix">
-
-            <div class="box-square-out">
-                <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
-                <p class="description clearfix">活动期间，每日根据用户当日的累计投资金额进行排名。第一名可得当日神秘大奖，前十名获得丰厚奖励</p>
-
-                <div class="clearfix">
-                    <div class="fl">
-                        ddd
-                    </div>
-                    <div class="fr">
-                        ddgg
-                    </div>
-                </div>
-
-            </div>
-
-
-
-
-
             <div class="model-list">
                 <div class="img-vip">
                     <img src="${staticServer}/activity/images/sign/actor/anniversary/vip-img.png" width="100%">

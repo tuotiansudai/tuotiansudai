@@ -8,6 +8,35 @@
 .anniversary-container{
   .container{
     width:100%;
+    background: #ffcb5b;
+    //background: url('/activity/images/sign/actor/anniver/bg-body.png') center top repeat-y;
+    .box-square-out {
+      height:auto;
+      border:1px solid #e62e2e;
+      border-radius:10px;
+      margin-top:30px;
+      position: relative;
+      padding-bottom:50px;
+      .square-title {
+        display: inline-block;
+        position: absolute;
+        top: -30px;
+        left: 28%;
+      }
+      .description {
+        text-align: center;
+        margin-top: 50px;
+        color: #806120;
+      }
+      .dotted-normal-box {
+        border:1px dotted #e6ae5c;
+        outline: 5px solid #fff0d3;
+        background: #fff0d3;
+        width:450px;
+        height:auto;
+        overflow: auto;
+      }
+    }
     .responsive-pc{
       display:block;
     }
@@ -15,19 +44,14 @@
       display:none;
     }
     .wp{
-      width:1120px;
+      width: 1090px;
       margin:0 auto;
       min-height:800px;
-      padding:0 40px;
       &:after{
         clear:both;
         display:block;
       }
-      &.actor-bg{
-        background:#ffe385;
-        margin-top: -100px;
-        padding-top: 100px;
-      }
+
       .model-list{
         float:left;
         width:100%;
