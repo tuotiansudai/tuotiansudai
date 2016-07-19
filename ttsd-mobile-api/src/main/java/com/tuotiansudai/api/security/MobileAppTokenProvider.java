@@ -44,11 +44,13 @@ public class MobileAppTokenProvider {
     private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName) {
-        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
 
-        String token = MessageFormat.format(TOKEN_TEMPLATE, loginName, UUID.randomUUID().toString());
-        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
-        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", loginName, token));
+        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), "*"));
+
+        String token = MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), UUID.randomUUID().toString());
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, userModel.getLoginName());
+        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", userModel.getLoginName(), token));
         return token;
     }
 
