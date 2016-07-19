@@ -9,6 +9,8 @@ import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -33,12 +35,17 @@ public class MobileAppTokenProvider {
     @Autowired
     private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
-    public String refreshToken(String loginName) {
-        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
+    @Autowired
+    private UserMapper userMapper;
 
-        String token = MessageFormat.format(TOKEN_TEMPLATE, loginName, UUID.randomUUID().toString());
-        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
-        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", loginName, token));
+    public String refreshToken(String loginName) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+
+        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), "*"));
+
+        String token = MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), UUID.randomUUID().toString());
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, userModel.getLoginName());
+        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", userModel.getLoginName(), token));
         return token;
     }
 
