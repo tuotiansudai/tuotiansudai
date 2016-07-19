@@ -4,6 +4,14 @@ public class LoanDetailsDto {
     private long loanId;
     private String declaration;
 
+    public LoanDetailsDto() {
+    }
+
+    public LoanDetailsDto(long loanId, String declaration) {
+        this.loanId = loanId;
+        this.declaration = declaration;
+    }
+
     public long getLoanId() {
         return loanId;
     }

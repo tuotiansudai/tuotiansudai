@@ -5,6 +5,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -104,10 +105,10 @@ public class LoanServiceTest {
         loanDto.setPeriods(3);
         loanDto.setDuration(90);
         loanDto.setPledgeType(PledgeType.HOUSE);
-        loanDto.setLoanAmount("1000000");
-        loanDto.setMinInvestAmount(String.valueOf(minAmount));
+        loanDto.setLoanAmount("100000");
+        loanDto.setMinInvestAmount(AmountConverter.convertCentToString(minAmount));
         loanDto.setInvestIncreasingAmount("1000");
-        loanDto.setMaxInvestAmount(String.valueOf(maxAmount));
+        loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(maxAmount));
         loanDto.setActivityType(ActivityType.NORMAL);
         loanDto.setProductType(ProductType._90);
         loanDto.setActivityRate("0.1");
@@ -228,7 +229,7 @@ public class LoanServiceTest {
         assertEquals(false, baseDto.getData().getStatus());
         assertEquals("最小投资金额不得大于最大投资金额", baseDto.getData().getMessage());
         //投资金额小于投资最大金额
-        baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-2-1").toDate(), DateTime.parse("2011-1-1").toDate(),
+        baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-2-1").toDate(), DateTime.parse("2011-3-1").toDate(),
                 9999999, 99999999);
         assertEquals(false, baseDto.getData().getStatus());
         assertEquals("最大投资金额不得大于预计出借金额", baseDto.getData().getMessage());
@@ -247,19 +248,101 @@ public class LoanServiceTest {
         assertThat(loanListDtos.size(), is(loanListCount));
     }
 
-    public void updateLoanTest() {
-        BaseDto<BaseDataDto> baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-1-1").toDate(), DateTime.parse("2011-1-2").toDate(), 100, 10000);
+    @Test
+    public void testUpdateLoanAnd() {
+        BaseDto<BaseDataDto> baseDto = createLoan(PledgeType.VEHICLE, DateTime.parse("2011-1-1").toDate(), DateTime.parse("2011-1-2").toDate(),
+                100, 10000);
+        assertEquals(true, baseDto.getData().getStatus());
         long loanId = Long.valueOf(baseDto.getData().getMessage());
 
         LoanDto loanDto = getFakeLoanDto("creator", "agent", DateTime.parse("2012-1-1").toDate(),
                 DateTime.parse("2012-2-1").toDate(), 1000, 20000);
         loanDto.setId(loanId);
-//        loanService.updateLoan(loanDto);
-        LoanModel findLoanModel = loanMapper.findById(loanId);
-        assertEquals(DateTime.parse("2012-1-1").toDate(), findLoanModel.getFundraisingStartTime());
-        assertEquals(DateTime.parse("2012-2-1").toDate(), findLoanModel.getFundraisingEndTime());
-        assertEquals(1000, findLoanModel.getMinInvestAmount());
-        assertEquals(20000, findLoanModel.getMaxInvestAmount());
+        loanDto.setPledgeType(PledgeType.VEHICLE);
+        LoanDetailsDto loanDetailsDto = new LoanDetailsDto(loanId, "updateDeclaration");
+        LoanerDetailsDto loanerDetailsDto = new LoanerDetailsDto(loanId, "updateLoginName", "updateLoanerUser", Gender.FEMALE,
+                334, "updateId", Marriage.MARRIED, "updateRegion", "updateIncome", "updateStatus");
+        PledgeVehicleDto vehicleDto = new PledgeVehicleDto(loanId, "updateLocation", "updateValue", "updateAmount", "updateBrand",
+                "updateModel");
+
+        //success
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, vehicleDto);
+        assertTrue(baseDto.getData().getStatus());
+        CreateVehicleLoanDto vehicleLoanDto = (CreateVehicleLoanDto) loanService.findCreateLoanDto(loanId);
+        assertEquals(loanDto.getPledgeType(), vehicleLoanDto.getPledgeType());
+        assertEquals(loanDto.getCreatedLoginName(), vehicleLoanDto.getCreatedLoginName());
+        assertEquals(loanDto.getAgentLoginName(), vehicleLoanDto.getAgentLoginName());
+        assertEquals(loanDto.getFundraisingStartTime(), vehicleLoanDto.getFundraisingStartTime());
+        assertEquals(loanDto.getFundraisingEndTime(), vehicleLoanDto.getFundraisingEndTime());
+        assertEquals(loanDto.getMinInvestAmount(), vehicleLoanDto.getMinInvestAmount());
+        assertEquals(loanDto.getMaxInvestAmount(), vehicleLoanDto.getMaxInvestAmount());
+        assertEquals(loanDetailsDto.getDeclaration(), vehicleLoanDto.getDeclaration());
+        assertEquals(loanerDetailsDto.getLoanerUserName(), vehicleLoanDto.getLoanerUserName());
+        assertEquals(loanerDetailsDto.getLoanerEmploymentStatus(), vehicleLoanDto.getLoanerEmploymentStatus());
+        assertEquals(loanerDetailsDto.getLoanerIdentityNumber(), vehicleLoanDto.getLoanerIdentityNumber());
+        assertEquals(loanerDetailsDto.getLoanerRegion(), vehicleLoanDto.getLoanerRegion());
+        assertEquals(loanerDetailsDto.getLoanerMarriage(), vehicleLoanDto.getLoanerMarriage());
+        assertEquals(loanerDetailsDto.getLoanerGender(), vehicleLoanDto.getLoanerGender());
+        assertEquals(loanerDetailsDto.getLoanerAge(), vehicleLoanDto.getLoanerAge());
+        assertEquals(vehicleDto.getPledgeLocation(), vehicleLoanDto.getPledgeLocation());
+        assertEquals(vehicleDto.getEstimateAmount(), vehicleLoanDto.getEstimateAmount());
+        assertEquals(vehicleDto.getLoanAmount(), vehicleLoanDto.getPledgeLoanAmount());
+        assertEquals(vehicleDto.getBrand(), vehicleLoanDto.getBrand());
+        assertEquals(vehicleDto.getModel(), vehicleLoanDto.getModel());
+
+        //标的不存在
+        loanDto.setId(loanId + 1);
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, vehicleDto);
+        assertEquals(false, baseDto.getData().getStatus());
+        assertEquals("标的不存在", baseDto.getData().getMessage());
+        loanDto.setId(loanId);
+
+        //loanID不一致
+        vehicleDto.setLoanId(loanId + 1);
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, vehicleDto);
+        assertEquals(false, baseDto.getData().getStatus());
+        assertEquals("loanID不一致", baseDto.getData().getMessage());
+        loanerDetailsDto.setLoanId(loanId + 1);
+        vehicleDto.setLoanId(loanId);
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, vehicleDto);
+        assertEquals(false, baseDto.getData().getStatus());
+        assertEquals("loanID不一致", baseDto.getData().getMessage());
+        loanerDetailsDto.setLoanId(loanId);
+        loanDetailsDto.setLoanId(loanId + 1);
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, vehicleDto);
+        assertEquals(false, baseDto.getData().getStatus());
+        assertEquals("loanID不一致", baseDto.getData().getMessage());
+        loanDetailsDto.setLoanId(loanId);
+
+        //修改标的类型
+        PledgeHouseDto pledgeHouseDto = new PledgeHouseDto(loanId, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
+                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+        loanDto.setPledgeType(PledgeType.HOUSE);
+        baseDto = loanService.updateLoan(loanDto, loanDetailsDto, loanerDetailsDto, pledgeHouseDto);
+        assertTrue(baseDto.getData().getStatus());
+        CreateHouseLoanDto houseLoanDto = (CreateHouseLoanDto) loanService.findCreateLoanDto(loanId);
+        assertEquals(loanDto.getPledgeType(), houseLoanDto.getPledgeType());
+        assertEquals(loanDto.getCreatedLoginName(), houseLoanDto.getCreatedLoginName());
+        assertEquals(loanDto.getAgentLoginName(), houseLoanDto.getAgentLoginName());
+        assertEquals(loanDto.getFundraisingStartTime(), houseLoanDto.getFundraisingStartTime());
+        assertEquals(loanDto.getFundraisingEndTime(), houseLoanDto.getFundraisingEndTime());
+        assertEquals(loanDto.getMinInvestAmount(), houseLoanDto.getMinInvestAmount());
+        assertEquals(loanDto.getMaxInvestAmount(), houseLoanDto.getMaxInvestAmount());
+        assertEquals(loanDetailsDto.getDeclaration(), houseLoanDto.getDeclaration());
+        assertEquals(loanerDetailsDto.getLoanerUserName(), houseLoanDto.getLoanerUserName());
+        assertEquals(loanerDetailsDto.getLoanerEmploymentStatus(), houseLoanDto.getLoanerEmploymentStatus());
+        assertEquals(loanerDetailsDto.getLoanerIdentityNumber(), houseLoanDto.getLoanerIdentityNumber());
+        assertEquals(loanerDetailsDto.getLoanerRegion(), houseLoanDto.getLoanerRegion());
+        assertEquals(loanerDetailsDto.getLoanerMarriage(), houseLoanDto.getLoanerMarriage());
+        assertEquals(loanerDetailsDto.getLoanerGender(), houseLoanDto.getLoanerGender());
+        assertEquals(loanerDetailsDto.getLoanerAge(), houseLoanDto.getLoanerAge());
+        assertEquals(pledgeHouseDto.getPledgeLocation(), houseLoanDto.getPledgeLocation());
+        assertEquals(pledgeHouseDto.getEstimateAmount(), houseLoanDto.getEstimateAmount());
+        assertEquals(pledgeHouseDto.getLoanAmount(), houseLoanDto.getPledgeLoanAmount());
+        assertEquals(pledgeHouseDto.getSquare(), houseLoanDto.getSquare());
+        assertEquals(pledgeHouseDto.getAuthenticAct(), houseLoanDto.getAuthenticAct());
+        assertEquals(pledgeHouseDto.getEstateRegisterId(), houseLoanDto.getEstateRegisterId());
+        assertEquals(pledgeHouseDto.getPropertyCardId(), houseLoanDto.getPropertyCardId());
     }
 
     @Test

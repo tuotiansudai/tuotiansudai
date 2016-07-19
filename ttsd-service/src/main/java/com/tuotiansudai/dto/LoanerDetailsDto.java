@@ -15,6 +15,22 @@ public class LoanerDetailsDto {
     private String loanerIncome;
     private String loanerEmploymentStatus;
 
+    public LoanerDetailsDto() {
+    }
+
+    public LoanerDetailsDto(long loanId, String loanerLoginName, String loanerUserName, Gender loanerGender, int loanerAge, String loanerIdentityNumber, Marriage loanerMarriage, String loanerRegion, String loanerIncome, String loanerEmploymentStatus) {
+        this.loanId = loanId;
+        this.loanerLoginName = loanerLoginName;
+        this.loanerUserName = loanerUserName;
+        this.loanerGender = loanerGender;
+        this.loanerAge = loanerAge;
+        this.loanerIdentityNumber = loanerIdentityNumber;
+        this.loanerMarriage = loanerMarriage;
+        this.loanerRegion = loanerRegion;
+        this.loanerIncome = loanerIncome;
+        this.loanerEmploymentStatus = loanerEmploymentStatus;
+    }
+
     public long getLoanId() {
         return loanId;
     }
