@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
-public class MobileAppLoginController {
+public class MobileAppLoginController{
 
     @Autowired
     private SignInClient signInClient;
