@@ -1,7 +1,7 @@
 package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
 
 public class AppTokenInterceptor extends HandlerInterceptorAdapter {
+
     static Logger logger = Logger.getLogger(AppTokenInterceptor.class);
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
+
+    @Autowired
+    private AppTokenRedisWrapperClient AppTokenRedisWrapperClient;
 
     private final static String APP_SOURCE_FLAG = "app";
 
@@ -32,7 +35,7 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        String loginName = redisWrapperClient.get(token);
+        String loginName = AppTokenRedisWrapperClient.get(token);
 
         if (Strings.isNullOrEmpty(loginName)) {
             myAuthenticationManager.removeAuthentication();
