@@ -4,4 +4,5 @@ public interface CouponRepayService {
 
     void repay(long loanRepayId);
 
+    void generateCouponPayment(long loanId);
 }
