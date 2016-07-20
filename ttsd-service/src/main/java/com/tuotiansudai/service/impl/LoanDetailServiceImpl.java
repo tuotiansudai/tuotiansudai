@@ -15,7 +15,6 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private RandomUtils randomUtils;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -99,7 +97,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
@@ -151,18 +149,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(firstInvest.getLoginName());
+                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,firstInvest.getLoginName(),6));
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(maxInvest.getLoginName());
+                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName,maxInvest.getLoginName(),6));
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(lastInvest.getLoginName());
+                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName,lastInvest.getLoginName(),6));
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
             }
             achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
@@ -182,4 +180,5 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         }
         return maxAvailableInvestAmount - (maxAvailableInvestAmount - loanModel.getMinInvestAmount()) % loanModel.getInvestIncreasingAmount();
     }
+
 }

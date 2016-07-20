@@ -36,7 +36,7 @@ public class RetrievePasswordController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/retrieve").addObject("mobile", "");
+        return new ModelAndView("/retrieve", "responsive", true);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)

@@ -43,6 +43,24 @@
         li {
           float: left;
           margin-right: 10px;
+          &.header-message {
+            position: relative;
+            .message-badge {
+              position: absolute;
+              background: #ea3622;
+              color: #fff;
+              top: 0;
+              right: 0;
+              transform: translate(50%, 0);
+              -webkit-transform: translate(50%, 0);
+              -moz-transform: translate(50%, 0);
+              font-size: 12px;
+              border-radius: 5px;
+              height: 15px;
+              line-height: 15px;
+              padding: 0 5px;
+            }
+          }
           &.login-pop-app {
             position: relative;
             z-index: 90;
@@ -61,6 +79,10 @@
           }
         }
       }
+  }
+  .header-membership {
+    padding-right: 19px;
+    background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%;
   }
 }
 
@@ -258,6 +280,9 @@
             border-top: #ff7200 3px solid;
           }
         }
+        &.top-membership,&.top-activity {
+          display: none;
+        }
       }
     }
   }
@@ -306,6 +331,9 @@
     padding-right:10px;
     .header-download {
       display: block;
+    }
+    .header-membership,.header-activity-center {
+      display: none;
     }
     .header {
       width:100%;
@@ -359,6 +387,9 @@
               border-bottom: #ff7200 1px solid;
               border-top:3px solid #fff;
             }
+          }
+          &.top-membership,&.top-activity {
+            display: block;
           }
         }
       }

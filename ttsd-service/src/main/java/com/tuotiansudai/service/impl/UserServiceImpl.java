@@ -9,6 +9,11 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -22,6 +27,7 @@ import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,9 +38,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-//import com.tuotiansudai.task.OperationType;
-//import com.tuotiansudai.task.aspect.ApplicationAspect;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -80,6 +83,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     @Value("${web.login.max.failed.times}")
     private int times;
 
@@ -117,6 +126,7 @@ public class UserServiceImpl implements UserService {
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
+
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
         userModel.setMobile(dto.getMobile());
@@ -144,6 +154,10 @@ public class UserServiceImpl implements UserService {
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
         }
+
+        MembershipModel membershipModel = membershipMapper.findByLevel(0);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
+        userMembershipMapper.create(userMembershipModel);
 
         myAuthenticationManager.createAuthentication(loginName);
 

@@ -21,3 +21,6 @@ ttsd-web/src/main/webapp/style/*.css.map
 ttsd-web/src/main/webapp/style/*.css
 SignVerProp.properties
 cs/.env
+ttsd-mobile-api/src/main/webapp/api/js/
+ttsd-activity/src/main/webapp/activity/style/*.css
+ttsd-activity/src/main/webapp/activity/style/*.css.map

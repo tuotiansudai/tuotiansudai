@@ -3,62 +3,65 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
+import com.tuotiansudai.client.AppTokenRedisWrapperClient;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+@Service
 public class MobileAppTokenProvider {
+
+    private final static Logger log = Logger.getLogger(MobileAppTokenProvider.class);
 
     private int tokenExpiredSeconds = 3600;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    static Logger log = Logger.getLogger(MobileAppTokenProvider.class);
+    private final static String TOKEN_TEMPLATE = "app-token:{0}:{1}";
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
-    public String refreshToken(String loginName, String oldToken) {
-        if (!Strings.isNullOrEmpty(oldToken)) {
-            redisWrapperClient.del(oldToken);
-        }
-        String tokenTemplate = "app-token:{0}:{1}";
-        String token = MessageFormat.format(tokenTemplate, loginName, UUID.randomUUID().toString());
-        redisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
-        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} oldToken: {1} newToken: {2}",
-                loginName, oldToken, token));
+    @Autowired
+    private UserMapper userMapper;
+
+    public String refreshToken(String loginName) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+
+        appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), "*"));
+
+        String token = MessageFormat.format(TOKEN_TEMPLATE, userModel.getLoginName(), UUID.randomUUID().toString());
+        appTokenRedisWrapperClient.setex(token, this.tokenExpiredSeconds, userModel.getLoginName());
+        log.debug(MessageFormat.format("[MobileAppTokenProvider][refreshToken] loginName: {0} newToken: {1}", userModel.getLoginName(), token));
         return token;
     }
 
-    public void deleteToken(String token) {
-        redisWrapperClient.del(token);
-    }
-
-    public String getToken(InputStream inputStream) {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        try {
-            BaseParamDto dto = objectMapper.readValue(inputStream, BaseParamDto.class);
-            BaseParam baseParam = dto.getBaseParam();
-            log.debug(MessageFormat.format("[MobileAppTokenProvider][getToken] baseParam:(userId:{0} phoneNum:{1} token:{2} " +
-                            "platform:{3} appVersion:{4} osVersion:{5} deviceId:{6} deviceModel:{7} screenW:{8} screenH:{9} channel: {10})",
-                    baseParam.getUserId(), baseParam.getPhoneNum(), baseParam.getToken(), baseParam.getPlatform(),
-                    baseParam.getAppVersion(), baseParam.getOsVersion(), baseParam.getDeviceId(), baseParam.getDeviceModel(),
-                    baseParam.getScreenW(), baseParam.getScreenH(), baseParam.getChannel()));
-            return baseParam.getToken();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void deleteToken(HttpServletRequest httpServletRequest) {
+        String loginName = this.getLoginName(httpServletRequest);
+        if (!Strings.isNullOrEmpty(loginName)) {
+            appTokenRedisWrapperClient.delPattern(MessageFormat.format(TOKEN_TEMPLATE, loginName, "*"));
         }
-        return null;
     }
 
-    public String getUserNameByToken(String token) {
-        return redisWrapperClient.get(token);
+    public String getLoginName(HttpServletRequest httpServletRequest) {
+        String token = this.getToken(httpServletRequest);
+        if (Strings.isNullOrEmpty(token)) {
+            return null;
+        }
+        return appTokenRedisWrapperClient.get(token);
     }
 
     public BaseResponseDto generateResponseDto(String token) {
@@ -87,5 +90,29 @@ public class MobileAppTokenProvider {
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;
+    }
+
+    private String getToken(HttpServletRequest httpServletRequest) {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            // 访问H5页面时token在header里
+            if (!Strings.isNullOrEmpty(httpServletRequest.getHeader("token"))) {
+                return httpServletRequest.getHeader("token");
+            }
+            // logout时token在query里
+            if (!Strings.isNullOrEmpty(httpServletRequest.getParameter("token"))) {
+                return httpServletRequest.getParameter("token");
+            }
+            // API token在baseParam里
+            if (httpServletRequest.getMethod().equalsIgnoreCase(HttpMethod.POST.name())) {
+                BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
+                BaseParamDto dto = objectMapper.readValue(bufferedRequest.getInputStream(), BaseParamDto.class);
+                BaseParam baseParam = dto.getBaseParam();
+                return baseParam.getToken();
+            }
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

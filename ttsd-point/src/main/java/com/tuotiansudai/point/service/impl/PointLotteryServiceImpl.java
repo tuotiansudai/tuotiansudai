@@ -3,8 +3,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
@@ -58,7 +57,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     private PointBillService pointBillService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private UserMapper userMapper;
@@ -116,7 +115,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
 
             if (winPointPrize.getCouponId() != null) {
-                couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.WINNER), winPointPrize.getCouponId(), null);
+                couponAssignmentService.assignUserCoupon(loginName, winPointPrize.getCouponId());
             }
 
             return winPointPrize.getName();

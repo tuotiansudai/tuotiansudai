@@ -1,10 +1,8 @@
 package com.tuotiansudai.util;
 
-import org.joda.time.DateTime;
-
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateUtil {
 

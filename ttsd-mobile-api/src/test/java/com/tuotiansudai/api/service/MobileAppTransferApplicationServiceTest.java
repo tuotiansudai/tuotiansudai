@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -60,6 +61,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private TransferRuleMapper transferRuleMapper;
     @Mock
     private InvestRepayMapper investRepayMapper;
+    @Mock
+    private InvestService investService;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -149,6 +152,9 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setPlatform("Android");
+        transferApplyRequestDto.setBaseParam(baseParam);
         transferApplyRequestDto.setTransferInvestId("123");
         transferApplyRequestDto.setTransferAmount("99.50");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
@@ -344,7 +350,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
@@ -420,7 +426,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);

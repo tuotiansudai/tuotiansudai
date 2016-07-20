@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -31,20 +32,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public abstract class ControllerTestBase {
     protected ObjectMapper objectMapper = new ObjectMapper();
+
     protected BaseResponseDto successResponseDto;
 
     protected MockMvc mockMvc;
 
     protected abstract Object getControllerObject();
+
     @Mock
     protected HttpServletRequest httpServletRequest;
 
+    @Mock
+    protected MobileAppTokenProvider mobileAppTokenProvider;
 
     @Before
-    public void baseSetup() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(getControllerObject()).build();
-        when(httpServletRequest.getAttribute(anyString())).thenReturn("loginName");
+        when(mobileAppTokenProvider.getLoginName(httpServletRequest)).thenReturn("loginName");
         successResponseDto = new BaseResponseDto();
         successResponseDto.setCode("0000");
     }
@@ -73,9 +78,23 @@ public abstract class ControllerTestBase {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
     }
+    protected ResultActions doRequestWithServiceV2IsOkMockedTest(String url, BaseParamDto requestDto) throws Exception {
+        url = "/v2.0" + url;
+        String requestJson = generateRequestJson(requestDto);
 
+        return mockMvc.perform(post(url).
+                contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
     protected ResultActions doRequestWithServiceMockedTest(String url, BaseParamDto requestDto) throws Exception {
         return doRequestWithServiceIsOkMockedTest(url, requestDto)
                 .andExpect(jsonPath("$.code").value("0000"));
     }
+    protected ResultActions doRequestWithV2ServiceMockedTest(String url, BaseParamDto requestDto) throws Exception {
+        return doRequestWithServiceV2IsOkMockedTest(url, requestDto)
+                .andExpect(jsonPath("$.code").value("0000"));
+    }
+
 }

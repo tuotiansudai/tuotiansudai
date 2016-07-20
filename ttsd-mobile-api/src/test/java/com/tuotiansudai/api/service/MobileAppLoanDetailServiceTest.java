@@ -1,13 +1,14 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.LoanDetailRequestDto;
-import com.tuotiansudai.api.dto.v1_0.LoanDetailResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanDetailServiceImpl;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,6 +46,11 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     private InvestMapper investMapper;
     @Mock
     private LoanTitleMapper loanTitleMapper;
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Mock
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Test
     public void shouldGenerateLoanDetailIsOk(){
@@ -62,7 +69,6 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -87,10 +93,13 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanTitleRelationModels.add(idCardModel);
         loanTitleRelationModels.add(houseCardModel);
 
+        MembershipModel membershipModel = new MembershipModel(3,2,50000,0.09);
+
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.countSuccessInvest(anyLong())).thenReturn(6L);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         when(loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(anyLong())).thenReturn(loanTitleRelationModels);
+        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
         InvestModel investModel1 = getFakeInvestModel(id, "loginName1");
         investModel1.setStatus(InvestStatus.SUCCESS);
         InvestModel investModel2 = getFakeInvestModel(id, "loginName2");
@@ -113,6 +122,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         investModels.add(investModel6);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
+        when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
 
@@ -125,13 +135,15 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         LoanDetailRequestDto loanDetailRequestDto = new LoanDetailRequestDto();
         loanDetailRequestDto.setLoanId("300140750356480");
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("");
+        loanDetailRequestDto.setBaseParam(baseParam);
         BaseResponseDto<LoanDetailResponseDataDto> baseResponseDto = mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
 
 
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(6L, baseResponseDto.getData().getInvestedCount().longValue());
         assertEquals("100.00",baseResponseDto.getData().getInvestedMoney());
-        assertEquals(5,baseResponseDto.getData().getInvestRecord().size());
         assertEquals(idCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(0).getTitle());
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());

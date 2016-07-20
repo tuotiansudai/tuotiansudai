@@ -48,7 +48,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: false,
             title: '新手体验特权',
             btn: ['确认'],
-            area: ['500px', '180px'],
+            type: 1,
+            area: ['500px', 'auto'],
             content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
             btn1: function () {
                 layer.closeAll();
@@ -62,12 +63,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     var loanProgress = $loanDetail.data('loan-progress');
     if (loanProgress <= 50) {
-        $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * loanProgress + "deg)");
+        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
         $('.chart-box .rount2').hide();
     } else {
-        $('.chart-box .rount').css('webkitTransform', "rotate(180deg)");
+        $('.chart-box .rount').css('transform', "rotate(180deg)");
         $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
+        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
     var loadInvestData = function() {
@@ -596,4 +597,81 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investForm.submit();
     }
+
+    // 投资加息
+    (function() {
+        var $extraRate = $('#extra-rate');
+        if (!$extraRate.length) {
+            return false;
+        }
+
+        var utils = {
+            getSize: function(element, type) {
+                return element[type]();
+            },
+            getOffset: function(element) {
+                return element.offset();
+            },
+            removeElement: function(element) {
+                if (element.length) {
+                    element.remove();
+                }
+            },
+            getRelativeRate: function(arr, num) {
+                var index =  _.findLastIndex(__extraRate, function(value) {
+                    if (num >= value.minInvestAmount && (value.maxInvestAmount > num || value.maxInvestAmount === 0)) {
+                        return true;
+                    }
+                });
+                return index !== -1 ? arr[index].rate : '';
+            },
+            replace: function(str) {
+                return str.replace(/,/g, '');
+            }
+        };
+
+        var tplFn = _.compose(_.template, function() {
+            return $('#extra-rate-popup-tpl').html();
+        })();
+        var getOffset = _.partial(utils.getOffset, $extraRate);
+        var getSize = _.partial(utils.getSize, $extraRate);
+        var extraRateWidth = getSize('width');
+        var extraRateHeight = getSize('height');
+        var css = _.compose(_.partial(function(offset, extraRateHeight) {
+            return {
+                left: offset.left,
+                top: offset.top + extraRateHeight + 10
+            }
+        }, _, extraRateHeight), getOffset);
+        var createPopup = _.partial(function(tpl, css) {
+            return $(tpl).css(css).appendTo('body');
+        }, _, css());
+        var showPopup = _.compose(createPopup, tplFn);
+        var removePopup = _.partial(_.compose(utils.removeElement, $), '#extra-rate-popup');
+
+        $extraRate.find('.fa').on({
+            mouseover: _.partial(showPopup, {__extraRate: __extraRate}),
+            mouseout: function() {
+                removePopup();
+            }
+        });
+
+        var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
+        var changeHTML = function() {
+            var $element = $('.chart-box').find('[data-extra-rate]');
+            return function(rate) {
+                $element.html(rate);
+            }
+        }();
+        var addSign = function(rate) {
+            if (!rate) {
+                return ''
+            }
+            return '+' + rate;
+        };
+
+        $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function() {
+                return $(this).val()
+            })).trigger('change');
+    })();
 });

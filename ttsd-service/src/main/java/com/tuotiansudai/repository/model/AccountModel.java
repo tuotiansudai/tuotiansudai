@@ -33,6 +33,8 @@ public class AccountModel implements Serializable{
 
     private boolean noPasswordInvest;
 
+    private long membershipPoint;
+
     public AccountModel() {
     }
 
@@ -117,6 +119,14 @@ public class AccountModel implements Serializable{
 
     public void setNoPasswordInvest(boolean noPasswordInvest) {
         this.noPasswordInvest = noPasswordInvest;
+    }
+
+    public long getMembershipPoint() {
+        return membershipPoint;
+    }
+
+    public void setMembershipPoint(long membershipPoint) {
+        this.membershipPoint = membershipPoint;
     }
 
     @Override

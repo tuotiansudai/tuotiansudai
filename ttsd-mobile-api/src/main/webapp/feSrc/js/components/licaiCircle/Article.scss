@@ -1,0 +1,52 @@
+.main {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	:global {
+		article {
+			padding: 40px 30px;
+			font-size: 28px;/*px*/
+		}
+		h1 {
+			font-weight: 100;
+			font-size: 36px;/*px*/
+		}
+		.meta {
+			margin-top: 25px;
+			color: #5c5f66;
+			time {
+				margin-left: 2em;
+			}
+		}
+		.show-picture {
+			margin-top: 40px;
+			img {
+				width: 10rem;
+			}
+		}
+		.content {
+			margin-top: 40px;
+			p:first-child {
+				margin-top: 0;
+			}
+			img:first-child {
+				margin-top: 0;
+			}
+			img {
+				margin: 40px auto;
+				display: block;
+			}
+			p, div, section {
+				margin-top: .5em;
+				text-indent: 2em;
+			}
+		}
+		.info {
+			padding-top: 50px;
+			.readed {
+				color: #103d70;
+			}
+		}
+	}
+}

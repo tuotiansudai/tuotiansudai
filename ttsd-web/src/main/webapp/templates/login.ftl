@@ -6,7 +6,7 @@
         <div class="login-box">
             <h3>欢迎登录拓天速贷</h3>
 
-            <form class="form-login" action="/login-handler" method="post" data-redirect-url="${redirect}">
+            <form class="form-login" action="/login/sign-in" method="post" data-redirect-url="${redirect}">
                 <label>
                     <em class="name">账<i></i>号:</em>
                     <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>

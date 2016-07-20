@@ -69,7 +69,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             createImitateLotteryJob();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
-            createNewbieExperienceRepayJos();
+            createNewbieExperienceRepayJob();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
@@ -199,7 +199,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createNewbieExperienceRepayJos() {
+    private void createNewbieExperienceRepayJob() {
         try {
             jobManager.newJob(JobType.ExperienceRepay, ExperienceRepayJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 16 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
@@ -218,4 +218,5 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
 }
