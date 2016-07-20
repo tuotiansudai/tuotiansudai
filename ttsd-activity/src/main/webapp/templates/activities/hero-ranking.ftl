@@ -6,24 +6,121 @@
         <img src="${staticServer}/activity/images/app-banner/app-banner-anniversary.jpg" width="100%" class="responsive-phone">
         <div class="wp actor-bg clearfix">
 
-            <div class="box-square-out">
-                <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
-                <p class="description clearfix">活动期间，每日根据用户当日的累计投资金额进行排名。第一名可得当日神秘大奖，前十名获得丰厚奖励</p>
+            <div class="step-section-one">
+                <div class="box-square-out">
+                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                    <p class="description clearfix">活动期间，每日根据用户当日的累计投资金额进行排名。第一名可得当日神秘大奖，前十名获得丰厚奖励</p>
 
-                <div class="clearfix">
-                    <div class="fl">
-                        ddd
+                    <div class="clearfix">
+                        <div class="fl tc">
+                            <div class="dotted-normal-box">
+                                <h2>今日大奖</h2>
+                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward.png">
+                                <span class="reward-name"><em>华为R8</em></span>
+                            </div>
+                            <div class="tc">
+                                <span class="button-big">我要上榜</span>
+                            </div>
+
+                        </div>
+                        <div class="fr">
+                            <div class="dotted-normal-box">
+                                <div class="date-head">
+                                    <i class="date-icon"></i>
+                                    <span class="date-text">2016-07-17</span>
+                           <span class="my-order fr">
+                               我的排名：<a href="/login" target="_blank" class="get-rank">登录</a>
+                           </span>
+                                </div>
+                                <table class="table-sort-border">
+                                    <caption>今日投资排行</caption>
+                                    <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>用户名</th>
+                                        <th>投资金额（元）</th>
+                                        <th>奖励</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>sas****</td>
+                                        <td>1,000,000.00</td>
+                                        <td>神秘大奖＋1%加息券</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <span class="button-small">前一天</span>
+                        </div>
                     </div>
-                    <div class="fr">
-                        ddgg
-                    </div>
+
                 </div>
-
             </div>
 
-
-
-
+            <div class="step-section-two">
+                <div class="step-two-title">
+                    <img src="${staticServer}/activity/images/sign/actor/anniver/step02.png">
+                </div>
+                <div class="box-square-out">
+                    <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
+                </div>
+            </div>
 
             <div class="model-list">
                 <div class="img-vip">
