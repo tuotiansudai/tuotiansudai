@@ -105,7 +105,7 @@
                     <td>${(financeReportDto.actualInterest)!}</td>
                     <td>${(financeReportDto.fee)!}</td>
                     <td>${(financeReportDto.actualRepayAmount)!}</td>
-                    <td>${(financeReportDto.recommandAmount)!}</td>
+                    <td>${(financeReportDto.recommendAmount)!}</td>
                 </tr>
                 </#list>
             </tbody>
