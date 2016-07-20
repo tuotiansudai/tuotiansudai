@@ -44,9 +44,12 @@
 						${deadline?string('yyyy-MM-dd')!} 0点
 					</div>
 				</li>
-				<li class="info-list tc">
+				<li class="info-list ">
+					<em class="agreement checked">
 					<i class="fa fa-check-square" aria-hidden="true"></i>
 					<span>我已阅读并同意<a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a></span>
+                    </em>
+					<span class="error agree-tip" style="display: none;">请勾选债权转让协议</span>
 				</li>
 				<li class="info-list tc">
 					<button class="btn btn-normal" type="submit">确定</button>

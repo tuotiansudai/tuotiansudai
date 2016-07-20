@@ -7,9 +7,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -17,10 +18,8 @@ import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @Aspect
@@ -56,6 +54,7 @@ public class CouponAspect {
 
         if (returnValue) {
             couponRepayService.repay(loanRepayId);
+            createSendCouponIncomeJob(loanRepayId);
         }
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
@@ -76,7 +75,6 @@ public class CouponAspect {
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-
         }
     }
 
@@ -100,14 +98,6 @@ public class CouponAspect {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         try {
             couponInvestService.investCallback(investModel.getId());
-            couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
-                    UserGroup.INVESTED_USER,
-                    UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER,
-                    UserGroup.AGENT,
-                    UserGroup.CHANNEL,
-                    UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE), null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -134,6 +124,7 @@ public class CouponAspect {
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
@@ -149,9 +140,24 @@ public class CouponAspect {
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    private void createSendCouponIncomeJob(long loanRepayId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.SEND_COUPON_INCOME_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.SendCouponIncome, SendCouponIncomeJob.class)
+                    .addJobData(SendCouponIncomeJob.LOAN_REPAY_ID_KEY, loanRepayId)
+                    .withIdentity(JobType.SendCouponIncome.name(), "LoanRepayId-" + loanRepayId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
         }
     }
 }

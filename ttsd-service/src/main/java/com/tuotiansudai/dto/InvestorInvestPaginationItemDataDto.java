@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.repository.model.InvestAchievement;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -38,10 +36,14 @@ public class InvestorInvestPaginationItemDataDto {
 
     private boolean investRepayExist;
 
-    public InvestorInvestPaginationItemDataDto(String loanName, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist) {
+    private ProductType productType;
+
+    private Double extraRate;
+
+    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
-        this.loanName = loanName;
+        this.loanName = loanModel.getName();
         this.amount = AmountConverter.convertCentToString(investModel.getAmount());
         this.createdTime = investModel.getCreatedTime();
         this.status = investModel.getStatus().getDescription();
@@ -58,6 +60,8 @@ public class InvestorInvestPaginationItemDataDto {
             }.min(investModel.getAchievements());
         }
         this.investRepayExist = investRepayExist;
+        this.productType = loanModel.getProductType();
+        this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
     }
 
     public long getInvestId() {
@@ -103,5 +107,21 @@ public class InvestorInvestPaginationItemDataDto {
     public boolean isInvestRepayExist() {
 
         return investRepayExist;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
+    public Double getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(Double extraRate) {
+        this.extraRate = extraRate;
     }
 }

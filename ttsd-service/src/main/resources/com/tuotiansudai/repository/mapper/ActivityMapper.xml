@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ActivityMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="activityResultMap" type="ActivityModel">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="web_activity_url" property="webActivityUrl"/>
+        <result column="app_activity_url" property="appActivityUrl"/>
+        <result column="description" property="description"/>
+        <result column="web_picture_url" property="webPictureUrl"/>
+        <result column="app_picture_url" property="appPictureUrl"/>
+        <result column="activated_time" property="activatedTime"/>
+        <result column="expired_time" property="expiredTime"/>
+        <result column="source" property="source"
+                typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
+        <result column="status" property="status"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="activated_by" property="activatedBy"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`activity`
+        (title, web_activity_url, app_activity_url, description, web_picture_url, app_picture_url, activated_time,
+        expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by)
+        VALUES
+        (#{title}, #{webActivityUrl}, #{appActivityUrl}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
+        #{expiredTime}, #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{activatedBy})
+    </insert>
+
+    <update id="update" parameterType="ActivityModel">
+        UPDATE `aa`.`activity`
+        SET
+        title = #{title},
+        web_activity_url = #{webActivityUrl},
+        app_activity_url = #{appActivityUrl},
+        description = #{description},
+        web_picture_url = #{webPictureUrl},
+        app_picture_url = #{appPictureUrl},
+        activated_time = #{activatedTime},
+        expired_time = #{expiredTime},
+        source = #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},
+        status = #{status},
+        created_by = #{createdBy},
+        created_time = #{createdTime},
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime},
+        activated_by = #{activatedBy}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`activity` WHERE id = #{id}
+    </select>
+
+    <select id="findAllActivities" resultMap="activityResultMap" parameterType="map">
+        SELECT * FROM `aa`.`activity`
+        <where>
+            <if test="startTime != null">
+                AND activated_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND activated_time &lt;= #{endTime}
+            </if>
+            <if test="activityStatus != null and activityStatus.name() == 'OPERATING'">
+                AND status = 'APPROVED' AND  expired_time &gt; now()
+            </if>
+            <if test="activityStatus != null and activityStatus.name() == 'EXPIRED'">
+                AND  expired_time  &lt; now()
+            </if>
+            <if test="activityStatus != null and activityStatus.name() != 'OPERATING' and activityStatus.name() != 'EXPIRED'">
+                AND  status = #{activityStatus}
+            </if>
+            <if test="source != null">
+                AND source like CONCAT('%', #{source}, '%')
+            </if>
+        </where>
+        order by activated_time desc
+    </select>
+
+    <select id="findActiveActivities" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`activity`
+        WHERE
+        expired_time > #{expiredTime} AND
+        status = 'APPROVED'
+        <if test="source != null">
+            AND source like CONCAT('%', #{source}, '%')
+        </if>
+        ORDER BY activated_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="countActiveActivities" resultType="java.lang.Integer">
+        SELECT count(1) FROM `aa`.`activity`
+        WHERE
+        expired_time > now() AND
+        status = 'APPROVED'
+        <if test="source != null">
+            AND source like CONCAT('%', #{source}, '%')
+        </if>
+    </select>
+
+</mapper>

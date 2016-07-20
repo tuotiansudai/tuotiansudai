@@ -19,7 +19,7 @@
         </div>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label ">活动日期: </label>
+            <label  class="col-sm-2 control-label ">活动期限: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control coupon-start" name="startTime" datatype="date" errormsg="请选择活动开始时间" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>/>
@@ -38,13 +38,19 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
+            <div class="col-sm-8">
+                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
             <div class="col-sm-2">
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS'] />
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'EXCHANGER' && userGroup.name() != 'WINNER'>
+                        <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}"
                                     <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
                         </#if>
@@ -99,10 +105,12 @@
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>
+                    <#if productType.name() != 'EXPERIENCE'>
                     <label><input type="checkbox" name="productTypes" class="productType"
                                   <#if coupon?? && coupon.productTypes?seq_contains(productType.name())>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
+                    </#if>
                 </#list>
             </div>
         </div>

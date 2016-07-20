@@ -299,6 +299,7 @@ public class LoanControllerTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
+        couponModel.setDeadline(5);
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);
@@ -368,7 +369,7 @@ public class LoanControllerTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 

@@ -26,6 +26,7 @@
         <result column="city" property="city"></result>
         <result column="auto_invest_status" property="autoInvestStatus"></result>
         <result column="last_bill_time" property="lastBillTime"></result>
+        <result column="sign_in_count" property="signInCount"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -67,8 +68,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source,sign_in_count)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source},#{signInCount})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -83,7 +84,8 @@
                         status = #{status},
                         referrer = #{referrer},
                         province = #{province},
-                        city = #{city}
+                        city = #{city},
+                        sign_in_count = #{signInCount}
                         where id = #{id}
     </update>
 
@@ -458,6 +460,10 @@
 
     <select id="findUsersCount" resultType="java.lang.Long">
         SELECT count(1) FROM user
+    </select>
+
+    <select id="findLoginNames" resultType="java.lang.String">
+        select login_name from user group by login_name
     </select>
 
 </mapper>

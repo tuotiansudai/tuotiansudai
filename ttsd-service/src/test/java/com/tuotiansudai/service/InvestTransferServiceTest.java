@@ -31,7 +31,6 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -85,7 +84,6 @@ public class InvestTransferServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -138,7 +136,7 @@ public class InvestTransferServiceTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -150,7 +148,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(), 3, Source.WEB);
         transferApplicationMapper.create(transferApplicationModel);
 
         assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
@@ -164,7 +162,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3, Source.WEB);
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -197,6 +195,34 @@ public class InvestTransferServiceTest {
 
         assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), String.format("%03d", Integer.parseInt(redisWrapperClient.get(MessageFormat.format(redisTransferApplicationNumber, new DateTime().toString("yyyyMMdd"))))))));
         assertThat(transferApplicationModels.get(0).getPeriod(), is(1));
+    }
+
+    @Test
+    public void shouldInvestTransferApplyFail() throws Exception{
+        long loanId = idGenerator.generate();
+        UserModel userModel = createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        loanModel.setStatus(LoanStatus.REPAYING);
+        loanMapper.update(loanModel);
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), null, 0, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), null, 1, 1, 0, 0);
+
+
+        loanRepayMapper.create(Lists.newArrayList(repayingLoan1Repay1, repayingLoan1Repay2));
+
+        TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
+        transferApplicationDto.setTransferInvestId(investModel.getId());
+        transferApplicationDto.setTransferAmount(1L);
+        investTransferService.investTransferApply(transferApplicationDto);
+
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+
+        assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), String.format("%03d", Integer.parseInt(redisWrapperClient.get(MessageFormat.format(redisTransferApplicationNumber, new DateTime().toString("yyyyMMdd"))))))));
+        assertThat(transferApplicationModels.get(0).getPeriod(), is(1));
+
+        assertFalse(investTransferService.investTransferApply(transferApplicationDto));
     }
 
     @Test
@@ -259,7 +285,7 @@ public class InvestTransferServiceTest {
         loanMapper.update(loanModel);
         InvestModel investModel = createInvest("testuser", loanId);
 
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR", loanModel.getPeriods(), investModel.getAmount(), 0l, new Date(), loanModel.getPeriods());
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR", loanModel.getPeriods(), investModel.getAmount(), 0l, new Date(), loanModel.getPeriods(), Source.WEB);
         transferApplicationModel.setStatus(TransferStatus.CANCEL);
         transferApplicationMapper.create(transferApplicationModel);
 

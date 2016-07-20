@@ -15,6 +15,7 @@
                         <div class="pr-square-in">
                             <em>
                                 <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
+                                <span data-extra-rate></span>
                                 <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                             </em>
                             <i>预期年化收益</i>
@@ -29,17 +30,43 @@
                     募集期限：${loan.raisingPeriod}天<br/>
                     还款方式：${loan.type.getName()}<br/>
                     投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
-                    <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
+                    <#if loan.productType != 'EXPERIENCE'>
+                        <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
+                    </#if>
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
                     <#if loan.newbieInterestCouponRate gt 0>
                         <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
                     </#if>
-                <#else>
-                    <#if loan.productType??>
-                        <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div>
-                    </#if>
                 </#if>
+                <#if extraLoanRateModels?size != 0 >
+                     <div class="extra-rate" id="extra-rate">投资加息+${minRate*100}%~${maxRate*100}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                     <script>
+                         var __extraRate = [
+                            <#list extraLoanRateModels as extraLoanRate>
+                                {
+                                    minInvestAmount: ${extraLoanRate.amountLower},
+                                    maxInvestAmount: ${extraLoanRate.amountUpper},
+                                    rate: ${extraLoanRate.rate}
+                                },
+                            </#list>
+                            ];
+                     </script>
+                </#if>
+                 <script type="text/template" id="extra-rate-popup-tpl">
+                    <div class="extra-rate-popup" id="extra-rate-popup">
+                        <div class="header clearfix">
+                            <div class="td fl">投资金额</div>
+                            <div class="td fl">加息</div>
+                        </div>
+                        <% _.each(__extraRate, function(value){ %>
+                            <div class="clearfix">
+                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
+                                <div class="td fl"><%= value.rate %>%</div>
+                            </div>
+                        <% }) %>
+                    </div>
+                 </script>
             </div>
             <div class="account-info fl">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
@@ -136,7 +163,7 @@
                                                             <#else>
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
-                                                                    <i class="ticket-term lower-limit" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
+                                                                    <i class="ticket-term lower-limit" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元即可使用]</i>
                                                                 </#if>
                                                                 <#if coupon.investLowerLimit==0>
                                                                     <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>

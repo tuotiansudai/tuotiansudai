@@ -57,4 +57,15 @@ public class PointBillMapperTest {
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
+
+    @Test
+    public void shouldFindPointBillPaginationIsOk(){
+        UserModel fakeUserModel = this.createFakeUserModel();
+        PointBillModel pointBillModel = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.LOTTERY, "note");
+        pointBillMapper.create(pointBillModel);
+        PointBillModel pointBillModel1 = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.EXCHANGE, "note");
+        pointBillMapper.create(pointBillModel1);
+        List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeUserModel.getLoginName(),0,10,null,null,Lists.newArrayList(PointBusinessType.EXCHANGE,PointBusinessType.LOTTERY));
+        assertThat(pointBillModelList.size(), is(2));
+    }
 }

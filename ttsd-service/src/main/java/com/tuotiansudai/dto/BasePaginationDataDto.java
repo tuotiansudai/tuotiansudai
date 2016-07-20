@@ -11,7 +11,7 @@ public class BasePaginationDataDto<T> extends BaseListDataDto<T> {
     private boolean hasNextPage;
 
     public BasePaginationDataDto(int index, int pageSize, long count, List<T> records) {
-        long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
         this.index = index;
         this.pageSize = pageSize;
         this.count = count;

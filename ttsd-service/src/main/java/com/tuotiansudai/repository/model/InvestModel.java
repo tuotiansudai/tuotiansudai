@@ -73,11 +73,15 @@ public class InvestModel implements Serializable {
      */
     private List<InvestAchievement> achievements = Lists.newArrayList();
 
+    /**
+     * 手续费费率
+     * */
+    private double investFeeRate;
 
     public InvestModel() {
     }
 
-    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel) {
+    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel, double investFeeRate) {
         this.id = id;
         this.transferInvestId = transferInvestId;
         this.loginName = loginName;
@@ -90,6 +94,7 @@ public class InvestModel implements Serializable {
         this.investTime = investTime;
         this.createdTime = new Date();
         this.transferStatus = TransferStatus.TRANSFERABLE;
+        this.investFeeRate = investFeeRate;
     }
 
     public long getId() {
@@ -210,5 +215,13 @@ public class InvestModel implements Serializable {
 
     public void setAchievements(List<InvestAchievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public double getInvestFeeRate() {
+        return investFeeRate;
+    }
+
+    public void setInvestFeeRate(double investFeeRate) {
+        this.investFeeRate = investFeeRate;
     }
 }

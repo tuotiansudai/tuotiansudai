@@ -1,24 +1,19 @@
 <#import "macro/global.ftl" as global>
-<#switch productType!"">
-    <#case 'SYL'>
-        <#assign title="速盈利_拓天产品_拓天速贷">
-        <#assign keywords="拓天速贷,拓天速盈利,拓天理财">
-        <#assign description="拓天速贷金融精英为您推荐拓天速贷快速理财产品“速盈利”先付利息后还本金,按天计息,放款后生息.">
+<#switch name!"">
+    <#case '房产抵押借款'>
+        <#assign title="房产抵押借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,资金周转">
+        <#assign description="拓天速贷P2P金融信息服务平台为您提供优质房产抵押借款,让您获得稳定收益的投资理财产品.">
         <#break>
-    <#case 'WYX'>
-        <#assign title="稳盈绣_个人资金周转_拓天速贷">
-        <#assign keywords="拓天速贷,拓天稳盈绣,资金周转,稳定收益">
-        <#assign description="拓天速贷P2P金融信息服务平台为您提供个人资金周转,让您获得稳定收益的投资理财产品.">
-        <#break>
-    <#case 'JYF'>
-        <#assign title="久盈富_个人资金借款_拓天速贷">
-        <#assign keywords="拓天速贷,拓天久盈富,拓天高收益,个人借款">
-        <#assign description="拓天速贷个人借款投资产品,年化利率13%起,高收益,高效率,低风险.">
+    <#case '车辆抵押借款'>
+        <#assign title="车辆抵押借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆抵押借款">
+        <#assign description="拓天速贷优质车辆抵押借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
         <#break>
     <#default>
-        <#assign title="投资列表_拓天投资_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,速盈利,稳盈绣,久盈富">
-        <#assign description="拓天速贷为您提供准确及时的P2P投资项目.投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您的收益速、稳、高.">
+        <#assign title="投资列表_投资产品_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆抵押借款">
+        <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
@@ -86,12 +81,15 @@
         <ul>
             <#list loanItemList as loanItem>
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
-                    <#if loanItem.activityType == 'NEWBIE'>
+                    <#if loanItem.productType == 'EXPERIENCE'>
+                        <span class="new-free"></span>
+                    <#elseif loanItem.activityType == 'NEWBIE'>
                         <span class="new-user"></span>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
-                            <span class="l-title fl">${loanItem.name}</span>
+                            <span class="l-title fl">${loanItem.name}<#if loanItem.productType == 'EXPERIENCE'><i
+                                    class="new-tip">仅限使用体验金投资</i></#if></span>
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">
@@ -108,6 +106,9 @@
                                     <#else>
                                         <em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
                                         <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
+                                            <#if (loanItem.extraRate > 0)>
+                                                ~ <@percentInteger>${loanItem.baseRate + loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.extraRate}</@percentFraction>
+                                            </#if>
                                             <#if (loanItem.activityRate > 0)>
                                                 +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
                                             </#if>%
@@ -123,7 +124,9 @@
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
-                                <dd><em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元</dd>
+                                <dd>
+                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
+                                    (体验金)</#if></dd>
                             </dl>
                         </div>
                     </div>
@@ -164,7 +167,7 @@
                                 <div class="percent" style="width:${loanItem.progress}%"></div>
                             </div>
                             <div class="rest-amount">
-                                <span>可投额度：<i>${loanItem.alert}</i></span>
+                                <span>可投额度：<i>${loanItem.alert}</i><#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></span>
                                 <i class="btn-invest btn-normal">马上投资</i>
                             </div>
                         </#if>

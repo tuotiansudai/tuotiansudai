@@ -26,10 +26,10 @@
             总投资金额(元)
         </th>
         <th>
-            起始日期
+            活动期限
         </th>
         <th>
-            截止日期
+            有效天数
         </th>
         <th>
             已发放(张)
@@ -75,10 +75,10 @@
             ${coupon.totalInvestAmount/100}
         </td>
         <td>
-            ${coupon.startTime?string('yyyy-MM-dd')}
+            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
-            ${coupon.endTime?string('yyyy-MM-dd')}
+            ${coupon.deadline?string('0')}天
         </td>
         <td>
         ${coupon.issuedCount?string('0')}

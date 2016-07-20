@@ -35,7 +35,7 @@ public class AgentController {
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
         modelAndView.addObject("loginName",loginName);
-        long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);

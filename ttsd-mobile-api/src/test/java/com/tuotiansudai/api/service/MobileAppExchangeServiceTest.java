@@ -1,14 +1,14 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppExchangeServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppExchangeServiceImpl;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -23,9 +23,7 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.*;
 
 
 public class MobileAppExchangeServiceTest extends ServiceTestBase{
@@ -37,7 +35,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
     @Mock
     private CouponMapper couponMapper;
     @Mock
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
     @Mock
     private RedisWrapperClient redisWrapperClient;
     @Mock
@@ -84,8 +82,8 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         when(exchangeCodeService.checkExchangeCodeExpire(any(CouponModel.class))).thenReturn(false);
         when(exchangeCodeService.checkExchangeCodeUsed(anyLong(), anyString())).thenReturn(false);
         when(exchangeCodeService.checkExchangeCodeDailyCount(anyString())).thenReturn(false);
-        doNothing().when(couponActivationService).assignUserCoupon(anyString(), any(List.class), anyLong(), anyString());
-        doNothing().when(redisWrapperClient).hset(anyString(), anyString(), anyString());
+        doNothing().when(couponAssignmentService).assignUserCoupon(anyString(), anyString());
+        when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(userCouponMapper.findByLoginName(anyString(),any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));

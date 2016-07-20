@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -123,5 +122,23 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
         }
 
         return dto;
+    }
+
+    @Override
+    public Map<String, String> getUserBalance(String loginName) {
+        AccountModel model = accountMapper.findByLoginName(loginName);
+        if (model == null) {
+            return null;
+        }
+
+        try {
+            UserSearchResponseModel responseModel = paySyncClient.send(UserSearchMapper.class, new UserSearchRequestModel(model.getPayUserId()), UserSearchResponseModel.class);
+            if (responseModel.isSuccess()) {
+                return responseModel.generateHumanReadableBalanceInfo();
+            }
+        } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

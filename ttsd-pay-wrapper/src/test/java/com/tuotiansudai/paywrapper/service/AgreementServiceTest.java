@@ -154,12 +154,13 @@ public class AgreementServiceTest {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
         agreementDto.setFastPay(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZKJP0700.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZKJP0700), "", null);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZKJP0700), "", AgreementBusinessType.FAST_PAY);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertFalse(accountModel.isAutoInvest());
@@ -178,12 +179,13 @@ public class AgreementServiceTest {
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
         agreementDto.setAutoInvest(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", null);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", AgreementBusinessType.AUTO_INVEST);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertTrue(accountModel.isAutoInvest());
@@ -200,6 +202,7 @@ public class AgreementServiceTest {
         agreementDto.setLoginName(userId);
         agreementDto.setAutoInvest(true);
         agreementDto.setNoPasswordInvest(true);
+        agreementDto.setIp("127.0.0.1");
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
         assertTrue(baseDto.getData().getStatus());
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
@@ -226,7 +229,7 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZHKB0H01.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZHKB0H01), "", null);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZHKB0H01), "", AgreementBusinessType.AUTO_REPAY);
 
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         assertFalse(accountModel.isAutoInvest());

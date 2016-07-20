@@ -1,4 +1,4 @@
-define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], function ($) {
+define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension','drag'], function ($,layer) {
     var $closeBtn=$('.count-form .close-count'),
         $countForm=$('.count-form'),
         $calBtn=$('.cal-btn');
@@ -83,6 +83,132 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
         randomPosition : false,
         hander: '.hander'
     });
+
+    //feedback click
+    $('.type-list dt,.type-list i').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $list=$self.siblings('dd');
+        $list.slideToggle('fast');
+    });
+
+    //give dt value by dd
+    $('.type-list dd').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $parent=$self.parent('.type-list'),
+            $dt=$parent.find('dt'),
+            $dd=$parent.find('dd');
+        $dt.text($self.text()).attr('data-type',$self.attr('data-type'));
+        $dd.hide();
+    });
+    //close tip
+    $('.feed-close').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $showFeed=$('.fix-nav-list .show-feed'),
+            $tipDom=$self.closest('.feedback-model');
+        $tipDom.hide();
+        $showFeed.removeClass('active');
+    });
+
+    //show feedback
+    $('.fix-nav-list .show-feed').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $feedBack=$('.feedback-container');
+        $self.addClass('active');
+        $feedBack.show();
+    });
+    //change captcha images
+    $('#captcha').on('click', function(event) {
+        event.preventDefault();
+        $(this).attr('src', '/feedback/captcha?' + new Date().getTime().toString());
+    });
+
+    //hide captcha error
+    $('#captchaText').on('focusin', function(event) {
+        event.preventDefault();
+        $('#captchaError').hide();
+    });
+
+    $("#feedForm").validate({
+        debug:true,
+        ignore: ".ignore",
+        rules: {
+            content: {
+                required: true,
+                minlength:14,
+                maxlength:200
+            },
+            captcha: {
+                required: true,
+                maxlength:5
+            }
+        },
+        messages: {
+            content: {
+                required: '内容不能为空！',
+                minlength:'文字限制最小为14',
+                maxlength:'文字限制最大为200'
+            },
+            captcha: {
+                required: '验证码不能为空！',
+                maxlength:'请输入5位验证码！'
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: '/feedback/submit',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'contact': $('#phoneText').val(),
+                    'type': $('.type-list').find('dt').attr('data-type'),
+                    'content': $('#textArea').val(),
+                    'captcha': $('#captchaText').val()
+                }
+            })
+            .done(function(data) {
+                if(data.success==true){
+                    $('#feedbackConatiner').hide();
+                    $('#feedForm').find('.int-text').val('');
+                    $('#captcha').trigger('click');
+                    $('#feedbackModel').show();
+                }else{
+                    $('#captchaError').text('验证码错误！').show();
+                    $('#captcha').trigger('click');
+                }
+            })
+            .fail(function() {
+                layer.msg('请求失败，请重试！');
+            });
+        },
+        errorPlacement: function(error, element) {
+            element.parent().append(error);
+        }
+    });
+    //support placeholder
+    function placeholder(nodes, pcolor) {
+      if (nodes.length && !("placeholder" in document_createElement_x("input"))) {
+        for (i = 0; i<nodes.length;i++){
+          var self = nodes[i],
+            placeholder = self.getAttribute('placeholder') || ''; self.onfocus = function() {
+            if (self.value == placeholder) {
+              self.value = '';
+              self.style.color = "";
+            }
+          }
+          self.onblur = function() {
+            if (self.value == '') {
+              self.value = placeholder;
+              self.style.color = pcolor;
+            }
+          }
+          self.value = placeholder; self.style.color = pcolor;
+        }
+      }
+    }
 });
 
 

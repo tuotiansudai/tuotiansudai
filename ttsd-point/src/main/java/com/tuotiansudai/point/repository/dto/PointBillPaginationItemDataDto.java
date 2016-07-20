@@ -6,9 +6,6 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by gengbeijun on 16/2/27.
- */
 public class PointBillPaginationItemDataDto implements Serializable{
     private long id;
 
@@ -24,14 +21,14 @@ public class PointBillPaginationItemDataDto implements Serializable{
 
     private Date createdTime;
 
-    public PointBillPaginationItemDataDto(PointBillModel view){
-        this.id = view.getId();
-        this.loginName = view.getLoginName();
-        this.orderId = view.getOrderId();
-        this.point = view.getPoint();
-        this.businessType = view.getBusinessType();
-        this.note = view.getNote();
-        this.createdTime = view.getCreatedTime();
+    public PointBillPaginationItemDataDto(PointBillModel pointBillModel){
+        this.id = pointBillModel.getId();
+        this.loginName = pointBillModel.getLoginName();
+        this.orderId = pointBillModel.getOrderId();
+        this.point = pointBillModel.getPoint();
+        this.businessType = pointBillModel.getBusinessType();
+        this.note = pointBillModel.getNote();
+        this.createdTime = pointBillModel.getCreatedTime();
     }
 
     public long getId() {

@@ -2,12 +2,9 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -263,5 +260,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public int getDuration() {
         return duration;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 }

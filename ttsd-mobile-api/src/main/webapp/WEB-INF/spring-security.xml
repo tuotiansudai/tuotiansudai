@@ -16,45 +16,20 @@
 
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.api.security.MobileAppDaoAuthenticationProvider">
-        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
-        <beans:property name="saltSource" ref="saltSource"/>
-        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-        <beans:property name="enableCaptchaVerify" value="true"/>
-    </beans:bean>
-
     <beans:bean id="mobileAppTokenProvider" class="com.tuotiansudai.api.security.MobileAppTokenProvider">
         <beans:property name="tokenExpiredSeconds" value="${mobile.app.token.expire.seconds}"/>
     </beans:bean>
 
-    <beans:bean id="mobileAppAuthenticationSuccessHandler"
-                class="com.tuotiansudai.api.security.MobileAppAuthenticationSuccessHandler"/>
-    <beans:bean id="mobileAppAuthenticationFailureHandler"
-                class="com.tuotiansudai.api.security.MobileAppAuthenticationFailureHandler"/>
-    <beans:bean id="mobileAppLogoutSuccessHandler" class="com.tuotiansudai.api.security.MobileAppLogoutSuccessHandler"/>
-
     <beans:bean id="tokenFilter" class="com.tuotiansudai.api.security.MobileAppAuthenticationTokenProcessingFilter">
-        <beans:property name="ignoreUrls" value="/login"/>
-        <beans:property name="refreshTokenUrl" value="/refresh-token"/>
-    </beans:bean>
-
-    <beans:bean id="loginFilter" class="com.tuotiansudai.api.security.MobileAppUsernamePasswordAuthenticationFilter">
-        <beans:property name="authenticationManager" ref="authenticationManager"/>
-        <beans:property name="usernameParameter" value="j_username"/>
-        <beans:property name="passwordParameter" value="j_password"/>
-        <beans:property name="authenticationSuccessHandler" ref="mobileAppAuthenticationSuccessHandler"/>
-        <beans:property name="authenticationFailureHandler" ref="mobileAppAuthenticationFailureHandler"/>
-    </beans:bean>
-
-    <beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-        <beans:constructor-arg ref="mobileAppLogoutSuccessHandler"/>
-        <beans:constructor-arg>
+        <beans:property name="ignoreUrls">
             <beans:list>
-                <beans:bean
-                        class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+                <beans:value>/login</beans:value>
+                <beans:value>/api/**</beans:value>
+                <beans:value>/media-center/**</beans:value>
+                <beans:value>/usermember/logout</beans:value>
             </beans:list>
-        </beans:constructor-arg>
-        <beans:property name="filterProcessesUrl" value="/usermember/logout"/>
+        </beans:property>
+        <beans:property name="refreshTokenUrl" value="/refresh-token"/>
     </beans:bean>
 
     <http auto-config="true" use-expressions="true" disable-url-rewriting="true"
@@ -62,12 +37,14 @@
         <csrf disabled="true"/>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
-        <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
-        <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
-        <intercept-url pattern="/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
-        <intercept-url pattern="/js/**" access="permitAll()"/>
+        <form-login login-processing-url="/deny-login"/>
 
+        <intercept-url pattern="/login" access="permitAll()" />
+        <intercept-url pattern="/usermember/logout" access="permitAll()" />
+
+        <intercept-url pattern="/api/**" access="permitAll()"/>
+        <intercept-url pattern="/api-template" access="permitAll()"/>
+        <intercept-url pattern="/media-center/**" access="permitAll()"/>
 
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
@@ -75,6 +52,7 @@
         <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
         <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
+        <intercept-url pattern="/v1.0/get/activities" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loans" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/loan" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/nodes" access="permitAll()" />
@@ -82,20 +60,18 @@
         <intercept-url pattern="/v1.0/get/version" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()" />
+        <intercept-url pattern="/v2.0/get/index" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()" />
-
+        <intercept-url pattern="/v1.0/get/transferee" access="permitAll()" />
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/install-notify" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/get/banner" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/register" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/install-notify" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/get/banner" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/register" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/get/advertisement" access="permitAll()"/>
         <intercept-url pattern="/share-callback" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/image-captcha" access="permitAll()"/>
+        <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="myDaoAuthenticationProvider"/>
-    </authentication-manager>
 
 </beans:beans>

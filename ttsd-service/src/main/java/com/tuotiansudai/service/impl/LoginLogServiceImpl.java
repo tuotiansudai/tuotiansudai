@@ -16,19 +16,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
 
-    private static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}";
+    private final static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}";
 
     @Autowired
     private LoginLogMapper loginLogMapper;
 
     @Autowired
     private UserMapper userMapper;
-
 
     @Transactional
     @Override
@@ -38,17 +38,17 @@ public class LoginLogServiceImpl implements LoginLogService {
             return;
         LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
 
-        loginLogMapper.create(model, this.getLoginLogTableName());
+        loginLogMapper.create(model, this.getLoginLogTableName(new Date()));
 
     }
 
     @Override
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month) {
-        String loginLogTableName = this.getLoginLogTableName();
+        String loginLogTableName = this.getLoginLogTableName(new Date());
         long count = loginLogMapper.count(loginName, success, loginLogTableName);
 
         List<LoginLogModel> data = Lists.newArrayList();
-        if (count > 0 ) {
+        if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             data = loginLogMapper.getPaginationData(loginName, success, (index - 1) * pageSize, pageSize, loginLogTableName);
@@ -64,7 +64,13 @@ public class LoginLogServiceImpl implements LoginLogService {
         return new BasePaginationDataDto<>(index, pageSize, count, records);
     }
 
-    private String getLoginLogTableName() {
-        return MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, new DateTime().toString("yyyyMM"));
+    @Override
+    public long countSuccessTimesOnDate(String loginName, Date date) {
+        String loginLogTableName = this.getLoginLogTableName(date);
+        return loginLogMapper.countSuccessTimesOnDate(loginName, date, loginLogTableName);
+    }
+
+    private String getLoginLogTableName(Date date) {
+        return MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, new DateTime(date).toString("yyyyMM"));
     }
 }

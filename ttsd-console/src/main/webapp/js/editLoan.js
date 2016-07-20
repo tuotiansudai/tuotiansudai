@@ -151,10 +151,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                             $('.jq-timer').val(_options.eq(i).data('period'));
                             $('.jq-duration').val(_options.eq(i).data('duration'));
                             $('.jq-product-line').val(_options.eq(i).data('product-line'));
+                            $('.jq-product-line').change();
                         } else {
                             $('.jq-timer').val('');
                             $('.jq-duration').val('');
                             $('.jq-product-line').val('');
+                            $('.jq-product-line').change();
                         }
                     }
                 }
@@ -215,8 +217,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
 
         });
-
-
 
         // 充值金额保留小数点后2位
         var rep = /^\d+$/;
@@ -308,6 +308,15 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             $('.jq-btn-form').removeAttr('disabled');
             if(!!currentErrorObj){currentErrorObj.focus();}
         });
+
+        function getExtraRateIds() {
+            var extraRateIds = [];
+            $('.extra-rate-id').each(function() {
+                extraRateIds.push($(this).val());
+            });
+            return extraRateIds;
+        }
+
         //提交表单
         $('.jq-btn-form').click(function () {
             //$(".jq-form").Validform({
@@ -340,7 +349,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "duration": $('.jq-duration').val(),
                     "descriptionText": getContentTxt(),
                     "descriptionHtml": getContent(),
-                    "investFeeRate": $('.jq-fee').val(),
                     "minInvestAmount": $('.jq-min-pay').val(),
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
@@ -354,7 +362,8 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "showOnHome": showOnHome,
                     "loanAmount": $('.jq-pay').val(),
                     "loanTitles": uploadFile,
-                    "createdLoginName": $('.jq-creator').val()
+                    "createdLoginName": $('.jq-creator').val(),
+                    "extraRateIds": getExtraRateIds()
                 });
                 $.ajax({
                     url: API_FORM + operate,
@@ -377,6 +386,85 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 }).always(function () {
                     console.log("complete");
                 });
+            }
+        });
+
+        function uncheckedExtraRate() {
+            $('.extra-rate').addClass('hidden');
+            $('.extra-rate-rule').html('');
+            $('.extra-rate-id').remove();
+            $('#extra').prop('checked', false);
+        }
+
+        function checkedExtraRate() {
+            $('.form-error').html('');
+            var $loanName = $('.jq-user');
+            var $productType = $('.jq-product-line');
+            if($loanName.val() == '') {
+                showErrorMessage('项目名称未选择，不能操作此选项');
+                $('#extra').prop('checked', false);
+            } else if ($productType.val() == '' || $productType.val() == '_30') {
+                showErrorMessage('借款期限未选择或选择为30天，不能操作此选项');
+                $('#extra').prop('checked', false);
+            } else {
+                $.ajax({
+                    url: '/project-manage/loan/extra-rate-rule?loanName='+$loanName.val()+'&productType='+$productType.val(),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                .done(function(res) {
+                    if (res.data.status) {
+                        $('.extra-rate-id').remove();
+                        $('.extra-rate').removeClass('hidden');
+                        var $extraRateRule = $('.extra-rate-rule');
+                        $extraRateRule.html('');
+                        var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
+                        for (var i=0;i<extraLoanRateRuleModels.length;i++) {
+                            var minInvestAmount = extraLoanRateRuleModels[i].minInvestAmount/100;
+                            var maxInvestAmount;
+                            if (extraLoanRateRuleModels[i].maxInvestAmount > 0) {
+                                maxInvestAmount = '<' + extraLoanRateRuleModels[i].maxInvestAmount / 100;
+                            } else {
+                                maxInvestAmount = '';
+                            }
+                            $extraRateRule.append('<tr><td> '+ minInvestAmount + '≤投资额'+ maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
+                            $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="'+ extraLoanRateRuleModels[i].id +'">');
+                        }
+                    } else {
+                        showErrorMessage('服务端校验失败');
+                    }
+                })
+                .fail(function() {
+                    showErrorMessage('服务端操作失败');
+                });
+            }
+        }
+
+        $('#extra').on('click', function() {
+            if (!$(this).is(':checked')) {
+                uncheckedExtraRate();
+            } else {
+                checkedExtraRate();
+            }
+        });
+
+        $('.jq-user').on('change', function() {
+            var $productType = $('.jq-product-line');
+            if ($(this).val() == '') {
+                uncheckedExtraRate();
+            }
+            if ($productType.val() != '' && $productType.val() != '_30' && $('#extra').is(':checked')) {
+                checkedExtraRate();
+            }
+        });
+
+        $('.jq-product-line').on('change', function() {
+            if ($(this).val() == '' || $(this).val() == '_30') {
+                uncheckedExtraRate();
+            }
+            if ( $('.jq-user').val() != '' && $('#extra').is(':checked')) {
+                checkedExtraRate();
             }
         });
 

@@ -7,10 +7,18 @@
             <span class="text-unit">元</span>
         </div>
         <div class="coupon-name">${couponAlert.couponType.getName()}</div>
-        <div class="coupon-time">
-            请在${couponAlert.expiredDate?string('yyyy-MM-dd')}前使用
+        <div class="coupon-tip">
+            已经放到您的口袋了<br/>快来投资吧
         </div>
-        <a href="/my-treasure" class="coupon-link"></a>
+        <div class="coupon-place">
+            亲可以在“我的帐户－我的宝藏”中找到哦！
+        </div>
+        <#if (couponAlert.couponType == 'NEWBIE_COUPON')>
+            <a href="javascript:void(0)" class="coupon-link" id="getFree">开始体验</a>
+        <#else>
+            <a href="/my-treasure" class="coupon-link">立即使用</a>
+        </#if>
+
     </div>
 </div>
 </#if>

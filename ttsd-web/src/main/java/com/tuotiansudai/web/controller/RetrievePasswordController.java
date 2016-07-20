@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RetrievePasswordDto;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -38,7 +36,7 @@ public class RetrievePasswordController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/retrieve").addObject("mobile", "");
+        return new ModelAndView("/retrieve", "responsive", true);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)

@@ -37,6 +37,7 @@ public interface TransferApplicationMapper {
 
     int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName") String loginName);
 
+
     List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
                                                                              @Param("startTime") Date startTime,
                                                                              @Param("endTime") Date endTime,
@@ -79,5 +80,8 @@ public interface TransferApplicationMapper {
     int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
+
+    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
+
 
 }

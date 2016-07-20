@@ -1,6 +1,9 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -18,7 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -39,6 +46,9 @@ public class InvestServiceTest {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
@@ -57,7 +67,6 @@ public class InvestServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -87,7 +96,7 @@ public class InvestServiceTest {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null);
+            InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -102,41 +111,86 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldCreateAutoInvestPlanAndTurnOff(){
+    public void shouldCreateAutoInvestPlanAndTurnOff() {
         String loginName = "testuser";
 
         AutoInvestPlanModel model = investService.findAutoInvestPlan(loginName);
         assert model == null;
 
-        AutoInvestPlanModel newModel = new AutoInvestPlanModel();
-        newModel.setLoginName(loginName);
-        newModel.setId(idGenerator.generate());
-        newModel.setMaxInvestAmount(1000000);
-        newModel.setMinInvestAmount(10000);
-        newModel.setRetentionAmount(1000000);
-        newModel.setCreatedTime(new Date());
-        newModel.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
-        newModel.setEnabled(true);
+        AutoInvestPlanDto dto = new AutoInvestPlanDto();
+        dto.setMaxInvestAmount("10000.00");
+        dto.setMinInvestAmount("100.00");
+        dto.setRetentionAmount("10000.00");
+        dto.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_2.getPeriodValue());
+        dto.setEnabled(true);
 
-        investService.turnOnAutoInvest(newModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         AutoInvestPlanModel dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.getLoginName().equals(loginName);
         assert dbModel.isEnabled();
 
-        investService.turnOffAutoInvest(loginName);
+        investService.turnOffAutoInvest(loginName, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.getLoginName().equals(loginName);
         assert !dbModel.isEnabled();
 
-        investService.turnOnAutoInvest(dbModel);
+        investService.turnOnAutoInvest(loginName, dto, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.isEnabled();
+    }
+
+    @Test
+    public void shouldEstimateInvestIncomeIsOk(){
+        String loginName = "testExtraRate";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createLoanByUserId(loginName,loanId);
+        List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
+        extraLoanRateMapper.create(extraLoanRateModels);
+        long amount = investService.estimateInvestIncome(loanId,loginName,100000);
+        assertNotNull(amount);
+        assertTrue(amount == 2810);
+        amount = investService.estimateInvestIncome(loanId,loginName,1000000);
+        assertNotNull(amount);
+        assertTrue(amount == 42904);
+        amount = investService.estimateInvestIncome(loanId,loginName,5000000);
+        assertNotNull(amount);
+        assertTrue(amount == 288494);
+    }
+
+    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId){
+        ExtraLoanRateModel model = new ExtraLoanRateModel();
+        model.setLoanId(loanId);
+        model.setExtraRateRuleId(100001);
+        model.setCreatedTime(new Date());
+        model.setMinInvestAmount(100000);
+        model.setMaxInvestAmount(1000000);
+        model.setRate(0.1);
+        ExtraLoanRateModel model2 = new ExtraLoanRateModel();
+        model2.setLoanId(loanId);
+        model2.setExtraRateRuleId(100001);
+        model2.setCreatedTime(new Date());
+        model2.setMinInvestAmount(1000000);
+        model2.setMaxInvestAmount(5000000);
+        model2.setRate(0.3);
+        ExtraLoanRateModel model3 = new ExtraLoanRateModel();
+        model3.setLoanId(loanId);
+        model3.setExtraRateRuleId(100001);
+        model3.setCreatedTime(new Date());
+        model3.setMinInvestAmount(5000000);
+        model3.setMaxInvestAmount(0);
+        model3.setRate(0.5);
+        List<ExtraLoanRateModel> list = Lists.newArrayList();
+        list.add(model);
+        list.add(model2);
+        list.add(model3);
+        return list;
     }
 
 }

@@ -19,6 +19,7 @@
         <result column="amount" property="investAmount"></result>
         <result column="repay_amount" property="repayAmount"></result>
         <result column="status" property="status"></result>
+        <result column="product_type" property="productType"></result>
     </resultMap>
 
     <resultMap id="investRepayResultMap" type="InvestRepayModel">
@@ -65,7 +66,6 @@
             <result column="description_html" property="descriptionHtml"></result>
             <result column="base_rate" property="baseRate"></result>
             <result column="loan_amount" property="loanAmount"></result>
-            <result column="invest_fee_rate" property="investFeeRate"></result>
             <result column="min_invest_amount" property="minInvestAmount"></result>
             <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
             <result column="max_invest_amount" property="maxInvestAmount"></result>
@@ -81,18 +81,19 @@
             <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
             <result column="duration" property="duration"></result>
+            <result column="product_type" property="productType"></result>
         </association>
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime})
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime}, now())
         </foreach>
     </insert>
 
@@ -136,7 +137,8 @@
             default_interest = #{defaultInterest},
             is_transferred = #{isTransferred},
             repay_amount = #{repayAmount},
-            status = #{status}
+            status = #{status},
+            updated_time = now()
         where id = #{id}
     </update>
 
@@ -201,7 +203,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type
+        t.type,
+        t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -213,13 +216,16 @@
               l.`periods`,
               l.`duration`,
               l.`id` as loan_id,
-              l.`type`
+        l.`type`,
+        l.product_type
             FROM
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+        AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) -
+        TO_DAYS(invest_time) &gt; l.duration)
+        WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+        ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` = 'COMPLETE'
           AND ir.`actual_repay_date` BETWEEN #{startTime}
@@ -237,7 +243,8 @@
           t.periods,
           t.duration,
           t.`loan_id`,
-          t.type
+        t.type,
+        t.product_type
         FROM
           invest_repay ir
           JOIN
@@ -249,13 +256,16 @@
               l.`periods`,
               l.`duration`,
               l.`id` as `loan_id`,
-              l.type
+        l.type,
+        l.product_type
             FROM
               invest i
               JOIN loan l
                 ON i.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
-            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+        AND l.`status` IN ('COMPLETE', 'REPAYING') or (l.product_type='EXPERIENCE' and TO_DAYS(now()) -
+        TO_DAYS(invest_time) &lt;= l.duration)
+        WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS'
+        ) t
             ON ir.`invest_id` = t.investId
         WHERE ir.`status` != 'COMPLETE'
           AND ir.`repay_date` BETWEEN #{startTime}
@@ -276,14 +286,16 @@
           temp2.`default_interest`,
           temp2.`expected_fee`,
           temp.`amount`,
-          temp2.`status`
+        temp2.`status`,
+        product_type
         FROM
           (SELECT
             i.`id`,
             i.`created_time`,
             i.`amount`,
             l.`name`,
-            l.`id` AS loanId
+        l.`id` AS loanId,
+        l.product_type
           FROM
             invest i
             JOIN loan l
@@ -329,7 +341,7 @@
             ON ir.`invest_id` = i.`id`
             AND i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}
-        WHERE ir.`status` = 'COMPLETE'
+        WHERE ir.`status` = 'COMPLETE' and loan_id != 1
     </select>
 
     <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
@@ -343,7 +355,7 @@
             ON ir.`invest_id` = i.`id`
             AND i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}
-        WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and i.loan_id != 1
     </select>
 
     <select id="findSumRepayingCorpusByLoginName" parameterType="map" resultType="long">
@@ -355,7 +367,7 @@
             ON ir.`invest_id` = i.`id`
             AND i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}
-        WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE') and i.loan_id != 1
     </select>
 
     <select id="findSumRepaidCorpusByLoginName" parameterType="map" resultType="long">
@@ -421,4 +433,5 @@
         select count(1) from invest_repay where invest_id = #{transferInvestId} and period >= #{period}
 
     </select>
+
 </mapper>

@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -25,13 +23,9 @@ import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -89,7 +83,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel lastLoanRepayModel = this.getLastLoanRepayModel(currentLoanRepayModel, loanRepayModels);
 
         for (UserCouponModel userCouponModel : userCouponModels) {
-            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS));
+            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(), Lists.newArrayList(TransferStatus.SUCCESS));
             if(CollectionUtils.isNotEmpty(transferApplicationModels)){
                 logger.info(MessageFormat.format("ID:{0},LOAN_ID:{1},LOAN_REPAY_ID:{2},INVEST_ID:{3} has transferred",
                         String.valueOf(userCouponModel.getId()),
@@ -99,11 +93,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                continue;
             }
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            long actualInterest = this.calculateActualInterest(couponModel, userCouponModel, loanModel, currentLoanRepayModel, lastLoanRepayModel, loanRepayModels);
+            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
+            long investAmount = investModel.getAmount();
+            long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             if (actualInterest < 0) {
                 continue;
             }
-            long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
             long transferAmount = actualInterest - actualFee;
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) is {2}, repay amount is  {3}({4} - {5})",
                     String.valueOf(currentLoanRepayModel.getId()),
@@ -168,55 +164,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is done", String.valueOf(loanRepayId)));
-    }
-
-    private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, LoanRepayModel lastLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
-        DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate().before(currentLoanRepayModel.getRepayDate()) ? currentLoanRepayModel.getActualRepayDate() : currentLoanRepayModel.getRepayDate());
-
-        DateTime lastRepayDate = new DateTime(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ? userCouponModel.getUsedTime() : loanModel.getRecheckTime()).minusDays(1);
-        boolean isNotLoanFirstRepay = lastLoanRepayModel != null;
-
-        if (isNotLoanFirstRepay) {
-            lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
-        }
-
-        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
-
-        long actualInterest = 0;
-        switch (couponModel.getCouponType()) {
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                actualInterest = new BigDecimal(periodDuration * couponModel.getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case INTEREST_COUPON:
-                actualInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case BIRTHDAY_COUPON:
-                if (isNotLoanFirstRepay) {
-                    return -1;
-                }
-
-                DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-                    @Override
-                    public boolean apply(LoanRepayModel input) {
-                        return input.getPeriod() == 1;
-                    }
-                }).get().getRepayDate());
-
-                periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
-
-                actualInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-        }
-
-        return actualInterest;
     }
 
     private LoanRepayModel getLastLoanRepayModel(LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {

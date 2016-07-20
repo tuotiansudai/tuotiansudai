@@ -39,10 +39,7 @@ public interface CouponMapper {
 
     int findCouponExchangeCount();
 
-    List<CouponModel> findCouponExchangeableList(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<CouponModel> findExchangeableCoupons(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
 
     int findCouponExchangeableCount();
-
-    void updateByLoginName(@Param(value="id") String id);
-
 }
