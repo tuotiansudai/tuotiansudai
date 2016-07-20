@@ -26,22 +26,14 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
     @Autowired
     private BookingLoanMapper bookingLoanMapper;
 
-    private static String[] booKingLoanList = new String[]{
-            ProductType._90.toString() + "," + ProductType._90.getDuration() + ",11",
-            ProductType._180.toString() + "," + ProductType._180.getDuration() + ",12",
-            ProductType._360.toString() + "," + ProductType._360.getDuration() + ",13",
-    };
-
     @Override
     public BaseResponseDto<BookingLoanResponseListsDto> getBookingLoan() {
         BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new BaseResponseDto();
         BookingLoanResponseListsDto bookingLoanListsDto = new BookingLoanResponseListsDto();
         List<BookingLoanResponseDto> bookingLoanResponseDtoList = Lists.newArrayList();
-        String[] splitBookLoan;
-        for(String bookingLoan : booKingLoanList){
-            splitBookLoan = bookingLoan.split(",");
-            bookingLoanResponseDtoList.add(new BookingLoanResponseDto(splitBookLoan[0],splitBookLoan[1],splitBookLoan[2]));
-        }
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._90.toString(),String.valueOf(ProductType._90.getDuration()),"11"));
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._180.toString(),String.valueOf(ProductType._180.getDuration()),"12"));
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._360.toString(),String.valueOf(ProductType._360.getDuration()),"13"));
         bookingLoanListsDto.setBookingLoanResponseDtoList(bookingLoanResponseDtoList);
         baseResponseDto.setData(bookingLoanListsDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -51,15 +43,14 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
 
     @Override
     public BaseResponseDto bookingLoan(BookingLoanRequestDto bookingLoanRequestDto){
-        UserModel userModel = userMapper.findByLoginName(bookingLoanRequestDto.getBaseParam().getUserId());
-        BookingLoanModel bookingLoanModel = new BookingLoanModel(userModel,
-                accountMapper.findByLoginName(bookingLoanRequestDto.getBaseParam().getUserId()).getUserName(),
-                bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH),
+        BookingLoanModel bookingLoanModel = new BookingLoanModel(bookingLoanRequestDto.getBaseParam().getPhoneNum(),
+                Source.valueOf(bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)),
                 DateTime.now().toDate(),
                 bookingLoanRequestDto.getProductType(),
                 !Strings.isNullOrEmpty(bookingLoanRequestDto.getBookingAmount()) ? Long.parseLong(bookingLoanRequestDto.getBookingAmount()) : 0,
                 DateTime.now().toDate(),
-                false);
+                false,
+                DateTime.now().toDate());
         bookingLoanMapper.create(bookingLoanModel);
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

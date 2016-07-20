@@ -39,10 +39,11 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase{
         String loginName = "testBookingLoanUser";
         BookingLoanRequestDto bookingLoanRequestDto = new BookingLoanRequestDto();
         bookingLoanRequestDto.setBookingAmount("100");
-        bookingLoanRequestDto.setProductType(ProductType._90.name());
+        bookingLoanRequestDto.setProductType(ProductType._90);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
         baseParam.setPlatform("WEB");
+        baseParam.setPhoneNum("13900000000");
         bookingLoanRequestDto.setBaseParam(baseParam);
         getUserModelTest(loginName);
         getAccountModel(loginName);

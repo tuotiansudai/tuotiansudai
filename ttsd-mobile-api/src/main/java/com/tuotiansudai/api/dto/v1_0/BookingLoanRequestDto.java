@@ -1,23 +1,25 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.repository.model.ProductType;
+
 public class BookingLoanRequestDto extends BaseParamDto {
 
-    private String productType;
+    private ProductType productType;
     private String bookingAmount;
 
     public BookingLoanRequestDto(){}
 
-    public BookingLoanRequestDto(String productType, String bookingAmount) {
+    public BookingLoanRequestDto(ProductType productType, String bookingAmount) {
         this.productType = productType;
         this.bookingAmount = bookingAmount;
     }
 
-    public String getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(String productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 

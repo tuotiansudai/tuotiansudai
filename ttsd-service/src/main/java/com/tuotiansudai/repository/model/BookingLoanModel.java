@@ -6,29 +6,25 @@ import java.util.Date;
 
 public class BookingLoanModel implements Serializable{
     private long id;
-    private String loginName;
-    private String userName;
     private String mobile;
     private Source source;
     private Date bookingTime;
     private ProductType productType;
     private long amount;
     private Date noticeTime;
-    private String status;
+    private boolean status;
     private Date createTime;
     private Date updateTime;
-    private boolean deleted;
 
-    public BookingLoanModel(UserModel userModel,String userName,String source,Date bookingTime,String productType,long amount,Date createTime,boolean deleted){
-        this.loginName = userModel.getLoginName();
-        this.mobile = userModel.getMobile();
-        this.userName = userName;
-        this.source = Source.valueOf(source.toUpperCase());
+    public BookingLoanModel(String mobile, Source source, Date bookingTime, ProductType productType, long amount, Date noticeTime, boolean status, Date createTime) {
+        this.mobile = mobile;
+        this.source = source;
         this.bookingTime = bookingTime;
-        this.productType = ProductType.valueOf(productType);
+        this.productType = productType;
         this.amount = amount;
+        this.noticeTime = noticeTime;
+        this.status = status;
         this.createTime = createTime;
-        this.deleted = deleted;
     }
 
     public long getId() {
@@ -37,22 +33,6 @@ public class BookingLoanModel implements Serializable{
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getMobile() {
@@ -103,11 +83,11 @@ public class BookingLoanModel implements Serializable{
         this.noticeTime = noticeTime;
     }
 
-    public String getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -125,13 +105,5 @@ public class BookingLoanModel implements Serializable{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 }
