@@ -2,6 +2,7 @@ package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,20 +79,27 @@ public class RandomUtils {
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
         }
-        String encryptMobile = encryptMiddleMobile(investUserMobile);
+        String encryptMobile = encryptAppMiddleMobile(investUserMobile);
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
-    public String encryptMobile(String loginName, String encryptLoginName) {
+    public String encryptMobile(String loginName, String encryptLoginName,Source source) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return userMapper.findByLoginName(loginName).getMobile();
         }
 
-        return encryptMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        if(source.equals(Source.WEB)){
+            return encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        }
+        return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
-    public String encryptMiddleMobile(String mobile) {
+    public String encryptWebMiddleMobile(String mobile) {
         return mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(7);
+    }
+
+    public String encryptAppMiddleMobile(String mobile) {
+        return mobile.substring(0, 3) + RandomUtils.showChar(2) + mobile.substring(9);
     }
 
 }
