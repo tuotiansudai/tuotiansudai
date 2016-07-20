@@ -32,7 +32,7 @@
     </insert>
 
     <select id="getPaginationData" parameterType="map" resultMap="auditLogViewResultMap">
-        select id, u1.mobile as auditor_mobile, u2.mobile as operator_mobile, target_id, operation_type, ip,
+        select audit_log.id, u1.mobile as auditor_mobile, u2.mobile as operator_mobile, target_id, operation_type, ip,
         operation_time, description
         from audit_log join user u1 join user u2
         on audit_log.auditor_login_name = u1.login_name and audit_log.operator_login_name = u2.login_name
