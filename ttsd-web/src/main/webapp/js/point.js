@@ -6,11 +6,30 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $signTip = $('#signLayer'),
                 $closeSign = $('#closeSign'),
                 $taskBtn = $('#taskBtn'),
-                $taskTip = $('#taskLayer'),
-                $closeTask = $('#closeTask'),
                 $beanDetail=$('#beansDetail'),
-                $beansNum=$('.beans-coupon .bean-use');
+                $beansNum=$('.beans-coupon .bean-use'),
+                $taskStatusMenu=$('#taskStatusMenu'),
+                $contentList=$('.content-list'),
+                $taskStatus=$('.task-status',$contentList),
+                $buttonMore=$('.button-more',$contentList);
+            var $taskBox=$('#taskFrame').find('.task-box'),
+                taskBoxLen=$taskBox.length;
+            var disabledBtnLen=$taskBox.find('a.btn-normal[disabled="disabled"]').length;
+            if(disabledBtnLen==taskBoxLen) {
+                $taskBox.hide();
+            }
 
+            $('.notice-tip').on('click',function() {
+                $taskBox.toggle();
+                var $this=$(this);
+                if($taskBox.is(':hidden')) {
+                    $this.find('i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+                }
+                else {
+                    $this.find('i').addClass('fa-chevron-up').removeClass('fa-chevron-down');
+                }
+
+            })
             //change model
             $navBtn.on('click', function (event) {
                 event.preventDefault();
@@ -23,6 +42,38 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                     $('.content-list .choi-beans-list:eq(' + index + ')').show().siblings().hide();
                 }
             });
+
+            //taskStatusMenu
+            $taskStatusMenu.find('span').click(function(event) {
+                event.preventDefault();
+                var $this=$(this),
+                    index=$this.index();
+                console.log(index);
+                $this.addClass('active').siblings('span').removeClass('active');
+                $('.task-status').eq(index).show().siblings('.task-status').hide();
+            });
+            $taskStatus.find('.border-box').hide();
+            $taskStatus.find('.border-box:lt(4)').show();
+
+            $buttonMore.on('click',function(event) {
+                event.preventDefault();
+                var $this=$(this),
+                    $parentBox=$this.parents('.task-status');
+                $this.toggleClass('open');
+                if($this.hasClass('open')) {
+                    $parentBox.find('.border-box').show();
+                    $this.find('span').text('收起');
+                    $this.find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down');
+                }
+                else {
+                    $parentBox.find('.border-box').hide();
+                    $parentBox.find('.border-box:lt(4)').show();
+                    $this.find('span').text('点击查看更多任务')
+                    $this.find('i').addClass('fa-chevron-circle-down').removeClass('fa-chevron-circle-up');
+                }
+
+            });
+
             //show sign tip
             $signBtn.on('click', function (event) {
                 event.preventDefault();
@@ -60,16 +111,13 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
             //show task tip
             $taskBtn.on('click', function (event) {
                 event.preventDefault();
-                $taskTip.fadeIn('fast');
+                $navBtn.eq(1).trigger('click');
+
             });
-            //hide task tip
-            $closeTask.on('click', function (event) {
-                event.preventDefault();
-                $taskTip.fadeOut('fast');
-            });
+
             $beanDetail.on('click', function (event) {
                 event.preventDefault();
-                $('.column-title .title-navli:eq(2)').trigger('click');
+                $('.column-title .title-navli:eq(3)').trigger('click');
             });
 
             var today = moment().format('YYYY-MM-DD'), // 今天
