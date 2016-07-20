@@ -83,6 +83,14 @@ public class RandomUtils {
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
+    public String encryptMobile(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+
+        return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+    }
+
     public String encryptMobile(String loginName, String encryptLoginName,Source source) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return userMapper.findByLoginName(loginName).getMobile();

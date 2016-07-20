@@ -134,7 +134,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
                 baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
                     @Override
                     public HeroRankingView apply(HeroRankingView input) {
-                        input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName(), Source.MOBILE));
+                        input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName()));
                         input.setCentSumAmount(input.getCentSumAmount());
                         return input;
                     }
