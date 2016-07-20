@@ -4,10 +4,8 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.repository.mapper.FinanceReportMapper;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
-import com.tuotiansudai.repository.model.FinanceReportItemView;
-import com.tuotiansudai.repository.model.InvestReferrerRewardModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.FinanceReportService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -32,36 +30,10 @@ public class FinanceReportServiceImpl implements FinanceReportService {
     @Autowired
     InvestReferrerRewardMapper investReferrerRewardMapper;
 
-    private FinanceReportItemView getBeforeFinanceReportModel(List<FinanceReportItemView> financeReportItemViews, int index,
-                                                              List<FinanceReportItemView> beforeFinanceReportItemViews) {
-        FinanceReportItemView currentFinanceReportItemView = financeReportItemViews.get(index);
-        if (1 == currentFinanceReportItemView.getPeriod()) {
-            return currentFinanceReportItemView;
-        }
-        for (int i = index - 1; i >= 0; --i) {
-            FinanceReportItemView financeReportItemView = financeReportItemViews.get(i);
-            if ((financeReportItemView.getInvestId() == currentFinanceReportItemView.getInvestId()) &&
-                    financeReportItemView.getPeriod() == currentFinanceReportItemView.getPeriod() - 1) {
-                return financeReportItemView;
-            }
-        }
-        for (int i = index + 1; i < financeReportItemViews.size(); ++i) {
-            FinanceReportItemView financeReportItemView = financeReportItemViews.get(i);
-            if ((financeReportItemView.getInvestId() == currentFinanceReportItemView.getInvestId()) &&
-                    financeReportItemView.getPeriod() == currentFinanceReportItemView.getPeriod() - 1) {
-                return financeReportItemView;
-            }
-        }
-        for (FinanceReportItemView financeReportItemView : beforeFinanceReportItemViews) {
-            if ((financeReportItemView.getInvestId() == currentFinanceReportItemView.getInvestId()) &&
-                    financeReportItemView.getPeriod() == currentFinanceReportItemView.getPeriod() - 1) {
-                return financeReportItemView;
-            }
-        }
-        return null;
-    }
+    @Autowired
+    InvestRepayMapper investRepayMapper;
 
-    private List<FinanceReportDto> combineFinanceReportDtos(List<FinanceReportItemView> financeReportItemViews, List<FinanceReportItemView> beforeFinanceReportItemViews) {
+    private List<FinanceReportDto> combineFinanceReportDtos(List<FinanceReportItemView> financeReportItemViews) {
         List<FinanceReportDto> financeReportDtos = new ArrayList<>();
 
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
@@ -79,12 +51,12 @@ public class FinanceReportServiceImpl implements FinanceReportService {
                             new LocalDate(financeReportDto.getRepayTime())).getDays() + 1);
                 }
             } else {
-                FinanceReportItemView beforeFinanceReportItemView = getBeforeFinanceReportModel(financeReportItemViews,
-                        financeReportItemViews.indexOf(financeReportItemView), beforeFinanceReportItemViews);
-                if (null == beforeFinanceReportItemView) {
+                InvestRepayModel beforeInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(financeReportItemView.getInvestId(),
+                        financeReportItemView.getPeriod() - 1);
+                if (null == beforeInvestRepayModel) {
                     financeReportDto.setBenefitDays(-1);
                 } else {
-                    financeReportDto.setBenefitDays(Days.daysBetween(new LocalDate(beforeFinanceReportItemView.getRepayTime()),
+                    financeReportDto.setBenefitDays(Days.daysBetween(new LocalDate(beforeInvestRepayModel.getRepayDate()),
                             new LocalDate(financeReportItemView.getRepayTime())).getDays());
                 }
             }
@@ -110,36 +82,20 @@ public class FinanceReportServiceImpl implements FinanceReportService {
     @Override
     public BasePaginationDataDto<FinanceReportDto> getFinanceReportDtos(Long loanId, Integer period, String investLoginName,
                                                                         Date investStartTime, Date investEndTime, int index, int pageSize) {
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime);
-        List<FinanceReportDto> financeReportDtos;
-        if (null == period || 1 == period) {
-            financeReportDtos = combineFinanceReportDtos(financeReportItemViews, null);
-        } else {
-            List<FinanceReportItemView> beforeFinanceReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period - 1, investLoginName, investStartTime, investEndTime);
-            financeReportDtos = combineFinanceReportDtos(financeReportItemViews, beforeFinanceReportItemViews);
-        }
-
-        List<FinanceReportDto> results = new ArrayList<>();
-        for (int startIndex = (index - 1) * pageSize,
-             endIndex = index * pageSize <= financeReportDtos.size() ? index * pageSize : financeReportDtos.size();
-             startIndex < endIndex; ++startIndex) {
-            results.add(financeReportDtos.get(startIndex));
-        }
-
-        return new BasePaginationDataDto<>(index, pageSize, financeReportDtos.size(), results);
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, (index - 1) * pageSize, pageSize);
+        List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
+        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime);
+        return new BasePaginationDataDto<>(index, pageSize, count, financeReportDtos);
     }
 
     @Override
     public List<List<String>> getFinanceReportCsvData(Long loanId, Integer period, String investLoginName,
                                                       Date investStartTime, Date investEndTime) {
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime);
-        List<FinanceReportDto> financeReportDtos;
-        if (null == period || 1 == period) {
-            financeReportDtos = combineFinanceReportDtos(financeReportItemViews, null);
-        } else {
-            List<FinanceReportItemView> beforeFinanceReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period - 1, investLoginName, investStartTime, investEndTime);
-            financeReportDtos = combineFinanceReportDtos(financeReportItemViews, beforeFinanceReportItemViews);
-        }
+        //直接导出所有内容，所以index = 1, pageSize = 9999999
+        final int index = 1;
+        final int pageSize = 9999999;
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, (index - 1) * pageSize, pageSize);
+        List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
         List<List<String>> csvData = new ArrayList<>();
         for (FinanceReportDto financeReportDto : financeReportDtos) {
             List<String> dtoStrings = ExportCsvUtil.dtoToStringList(financeReportDto);
