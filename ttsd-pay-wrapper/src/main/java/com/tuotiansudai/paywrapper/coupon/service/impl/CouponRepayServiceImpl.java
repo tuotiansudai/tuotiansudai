@@ -189,14 +189,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             Date currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration).toDate();
             for (InvestModel successInvestModel : successInvestModels) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(successInvestModel.getId(), COUPON_TYPE_LIST);
-                if (CollectionUtils.isEmpty(userCouponModels)) {
-                    logger.error(MessageFormat.format("(user coupon is exist (investId = {0}))", String.valueOf(successInvestModel.getId())));
-                    continue;
-                }
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), period);
                     if (couponRepayModel != null) {
-                        logger.error(MessageFormat.format("coupon repay is exist (user coupon id = {0})", userCouponModel.getId()));
+                        logger.debug(MessageFormat.format("coupon repay is exist (user coupon id = {0})", userCouponModel.getId()));
+                        continue;
                     }
                     CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                     if (couponModel == null) {
