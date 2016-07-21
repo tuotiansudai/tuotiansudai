@@ -215,6 +215,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
+            and loan_id != 1
         </where>
         and status = 'SUCCESS'
     </select>
@@ -542,6 +543,7 @@
           MAX(t.`trading_time`)
         LIMIT #{index}, #{pageSize}
     </select>
+
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>
@@ -584,18 +586,6 @@
             and loan.status in ('RAISING','RECHECK')
         </if>
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
-    </select>
-
-    <select id="countInvestSuccessExperienceToday" resultType="long">
-        SELECT
-          COUNT(*)
-        FROM
-          invest t
-          JOIN loan l
-            ON t.loan_id = l.id
-            AND l.product_type = 'EXPERIENCE'
-        WHERE t.status = 'SUCCESS'
-          AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
     </select>
 
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">

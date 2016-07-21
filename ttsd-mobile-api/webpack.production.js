@@ -10,7 +10,7 @@ module.exports = objectAssign(commonOptions, {
 	output: {
 		filename: "index.[hash:8].min.js",
 		path: path.join(basePath, '../api/js'),
-		publicPath: '/assets/'
+		publicPath: '/api/js/'
 	},
 	plugins: [
 		new webpack.DefinePlugin({
