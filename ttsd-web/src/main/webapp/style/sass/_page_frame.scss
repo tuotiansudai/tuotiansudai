@@ -46,6 +46,9 @@
           &.header-message {
             position: relative;
             .message-badge {
+              &.zero {
+                display: none;
+              }
               position: absolute;
               background: #ea3622;
               color: #fff;
