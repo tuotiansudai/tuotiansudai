@@ -157,8 +157,11 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
         if (callbackRequest.isSuccess()) {
-            bankCardModel.setStatus(BankCardStatus.APPLY);
-            bankCardMapper.update(bankCardModel);
+            if(bankCardModel.getStatus() != BankCardStatus.PASSED){
+                bankCardModel.setStatus(BankCardStatus.APPLY);
+                bankCardMapper.update(bankCardModel);
+
+            }
         }
         return callbackRequest.getResponseData();
     }

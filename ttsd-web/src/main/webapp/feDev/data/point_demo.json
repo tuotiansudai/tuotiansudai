@@ -1,9 +1,9 @@
 {
 	"css": {
-		"login": "full_screen.css"
+		"account_mybean": "account_mybean.css"
 	},
 	"js": {
-		"login": "index.js"
+		"point": "point.js"
 	},
 	"linkExchangeList": [{
 		"linkUrl": 1212,

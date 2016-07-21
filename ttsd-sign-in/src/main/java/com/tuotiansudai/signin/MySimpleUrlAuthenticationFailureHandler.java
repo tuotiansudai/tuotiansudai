@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -11,12 +11,13 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,8 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationFailureHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -47,7 +50,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     // 授权失败后处理
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);
+        String strSource = request.getParameter("source");
+        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        loginLogService.generateLoginLog(request.getParameter("username"), source, RequestIPParser.parse(request), request.getParameter("deviceId"), false);
 
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
@@ -59,6 +64,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
+
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -81,11 +87,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
         if (redisWrapperClient.exists(redisKey)) {
             int loginFailedTime = Integer.parseInt(redisWrapperClient.get(redisKey)) + 1;
-
             if (loginFailedTime < loginMaxTimes) {
                 redisWrapperClient.set(redisKey, String.valueOf(loginFailedTime));
             }
-
             if (loginFailedTime >= loginMaxTimes) {
                 redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
                 userModel.setStatus(UserStatus.INACTIVE);
@@ -95,4 +99,5 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             redisWrapperClient.set(redisKey, "1");
         }
     }
+
 }
