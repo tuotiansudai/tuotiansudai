@@ -9,6 +9,9 @@
              <p>
         <span id="author">作者：${articleContent.getAuthor()}</span>
         <span id="createTime" style="margin-left: 30px">${articleContent.getCreateTime()?date}</span>
+        <#if articleContent.getTimingTime()??>
+            <span id="timingTime" style="margin-left: 30px">定时发布时间:${articleContent.getTimingTime()?string('yyyy-MM-dd HH:mm')}</span>
+        </#if>
     </p>
              <p id="content">${articleContent.getContent()}</p>
     </div>

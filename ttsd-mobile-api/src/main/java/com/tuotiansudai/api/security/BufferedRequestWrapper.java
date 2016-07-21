@@ -1,11 +1,16 @@
 package com.tuotiansudai.api.security;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class BufferedRequestWrapper extends HttpServletRequestWrapper {
+
+    private static Logger logger = Logger.getLogger(BufferedRequestWrapper.class);
 
     ByteArrayInputStream byteArrayInputStream;
     ByteArrayOutputStream byteArrayOutputStream;
@@ -28,6 +33,7 @@ public class BufferedRequestWrapper extends HttpServletRequestWrapper {
         return super.getParameter(name);
     }
 
+    @Override
     public ServletInputStream getInputStream() {
         try {
             // Generate a new InputStream by stored buffer
@@ -36,38 +42,27 @@ public class BufferedRequestWrapper extends HttpServletRequestWrapper {
             // (Only ServletInputStream or subclasses of it are accepted by the servlet engine!)
             bufferedServletInputStream = new BufferedServletInputStream(byteArrayInputStream);
         } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            return bufferedServletInputStream;
+            logger.error(ex.getLocalizedMessage(), ex);
         }
+
+        return bufferedServletInputStream;
     }
 
     public String getInputStreamString() throws IOException {
-        InputStreamReader input = null;
+        InputStreamReader input = new InputStreamReader(this.getInputStream(), StandardCharsets.UTF_8);
+        BufferedReader bf = new BufferedReader(input);
 
-        BufferedReader bf = null;
         try {
-            input = new InputStreamReader(this.getInputStream(), "UTF-8");
-            bf = new BufferedReader(input);
-            String line = null;
-            StringBuffer sb = new StringBuffer();
+            String line;
+            StringBuilder sb = new StringBuilder();
             while ((line = bf.readLine()) != null) {
                 sb.append(line);
-
             }
             return sb.toString();
-        } catch (IOException e) {
-            throw e;
         } finally {
-            if (bf != null) {
-                bf.close();
-            }
-            if (input != null) {
-                input.close();
-            }
+            bf.close();
+            input.close();
         }
-
-
     }
 
 }
