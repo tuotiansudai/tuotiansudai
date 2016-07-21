@@ -1,6 +1,8 @@
 package com.tuotiansudai.point.dto;
 
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.repository.model.UserModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -52,6 +54,13 @@ public class SignInPointDto extends BaseDataDto implements Serializable {
         this.signInDate = signInDate;
         this.nextSignInPoint = nextSignInPoint;
         this.signInPoint = signInPoint;
+    }
+
+    public SignInPointDto(PointBillModel pointBillModel,int signInCount){
+        this.signInCount = signInCount;
+        this.signInDate = pointBillModel.getCreatedTime();
+        this.nextSignInPoint = SignInPoint.getPointByTimes(signInCount + 1);
+        this.signInPoint = (int)pointBillModel.getPoint();
     }
 
     public SignInPointDto() {

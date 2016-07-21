@@ -7,7 +7,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-security.xml</param-value>
+        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-session.xml, WEB-INF/spring-security.xml</param-value>
     </context-param>
 
     <listener>
@@ -17,6 +17,12 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+
+    <filter>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
 
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
@@ -30,6 +36,14 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+
+    <filter-mapping>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
     <filter>
         <filter-name>appClientStatisticsFilter</filter-name>

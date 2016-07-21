@@ -1,0 +1,270 @@
+.main {
+    margin: 0;
+    background-color: #0f3d70;
+    height: auto;
+    overflow: auto;
+    :global { 
+        .clearfix:after,.clearfix:before,
+        .clear:after,.clear:before{
+          content: ".";
+          display: block;
+          clear: both;
+          visibility: hidden;
+          line-height: 0;
+          height: 0;
+          font-size:0;
+        }
+        
+        .loading {
+            text-align:center;
+            font-size:30px;
+            i { color:#fff;}
+        }
+        div {
+            font-size: 20px; /*px*/
+            color: #0f3d70;
+            text-align: center;
+        }
+        p {
+            font-size: 13px;
+            color: #0f3d70;
+            text-indent: 2em;
+            line-height: 20px;
+            text-align: left;
+        }
+
+        .MenuBox {
+            width: 100%;
+            height:414px;         
+            background:url('task_banner.png') no-repeat;
+            background-size: cover;
+            position:relative;
+        }
+
+        .MenuBox ul {
+            position:absolute;
+            line-height: 30px;
+            border-radius: 5px;
+            border: 1px solid #ff5959;
+            height: 50px;
+            left: 3rem;
+            bottom: 20px;
+            width:302px;
+        }
+        .MenuBoxItemNormal {
+            float: left;
+            display: block;
+            width: 50%;
+            height:100%;
+            text-align: center;
+            color: #ff5959;
+            background-color: transparent;
+            font-size: 28px;  /*px*/
+            font-style: normal;
+            line-height: 43px;
+            &.active {
+                color: #ffffff;
+            background-color: #ff5959;  
+            }
+        }
+
+        .ContentBox {
+            height: auto;
+            overflow: auto;
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        .HeaderGroup {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            font-style: normal;
+        }
+
+        .HeaderTitle {
+            color: #ffffff;
+            font-size: 28px; /*px*/
+            background-color: #ff5959;
+            margin-bottom: 30px;
+            padding: 15px 18px;
+            border-radius: 0.5rem;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        .TaskItemNewbie {
+            float: left;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: #ffe9b9;
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 16px;
+            -moz-box-shadow:0px 8px 0px #ecd4a3; 
+            -webkit-box-shadow:0px 8px 0px #ecd4a3; 
+            box-shadow:0px 8px 0px #ecd4a3;
+            position:relative;
+            .TaskItemLine {
+                border: 0.5px solid #ff5959;
+                margin-top: -3px;
+            }
+            
+            .SerialNum {
+                width: 10%;
+                float: left;
+                display: inline-block;
+                color: #ff5959;
+                font-size: 70px; /*px*/
+                margin-left: 2%;
+                margin-top: 0.75rem;
+            }
+            &.completed-tasks {
+                .SerialNum {
+                    color: #989898;
+                }
+                .TaskItemLine {
+                    border: 0.5px solid #989898;
+                }
+            }
+
+             .TaskItemBtn,.TaskItemCompleteBtn {
+                float: right;
+                margin-right:20px;
+                display: inline-block;
+                width: 132px;
+                height: 72px;
+                line-height: 72px;
+                background-color: #ff5959;
+                border-radius: 0.15rem;
+                font-size: 28px;  /*px*/
+                color: #fff;
+                font-style: normal;
+                margin-top: 40px;
+                -moz-box-shadow:0px 5px 0px #e45050; 
+                -webkit-box-shadow:0px 5px 0px #e45050; 
+                box-shadow:0px 5px 0px #e45050;
+                &.column-one {
+                    margin-top: 20px;
+                }
+            }
+
+        .TaskItemCompleteBtn {
+        
+            background-color: #cccccc;
+            -moz-box-shadow:0px 5px 0px #989898; 
+            -webkit-box-shadow:0px 5px 0px #989898; 
+            box-shadow:0px 5px 0px #989898;
+        }
+
+        }
+
+        .TaskContent {
+            width: 64%;
+            float: left;
+            display: block;
+        }
+
+        .TaskItemTitle {
+            text-align: left;
+            font-size: 30px; /*px*/
+            margin-top: 5%;
+            margin-bottom: 3%;
+            margin-left: 10px;
+        }
+
+        .TaskItemDes {
+            text-align: left;
+            font-size: 26px; /*px*/
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+        .TaskRewardGroup {
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .TaskReward {
+            float: left;
+            display: inline-block;
+            color: #ff5959;
+            font-size: 26px; /*px*/
+            text-align: left;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+        .TaskBeanImg {
+            width: 30px;
+            height: 26px;
+            margin-top: 3px;
+            margin-left: 5px;
+        }
+
+        .AdvanceTaskGroup {
+            float: left;
+            display: block;
+        }
+
+        .TaskAdvanceRewardGroup {
+            float: left;
+            display: block;
+            margin-left: 5%;
+        }
+
+        .TaskAdvanceContent {
+            width: 76%;
+            float: left;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .TaskAdvanceItemTitle {
+            float: left;
+            display: inline-block;
+            text-align: left;
+            font-size: 30px; /*px*/
+            margin-top: 5%;
+            margin-bottom: 3%;
+            color: #000;
+        }
+
+        .TaskAdvanceReward {
+            float: left;
+            display: inline-block;
+            color: #ff5959;
+            font-size: 30px; /*px*/
+            text-align: left;
+            margin-top: 5%;
+            margin-bottom: 10px;
+        }
+
+        .TaskAdvanceBeanImg {
+            float: left;
+            display: inline-block;
+            width: 40px;
+            height: 34px;
+            margin-top: 5%;
+            margin-left: 6px;
+        }
+
+        .TaskAdvanceItemDes {
+            float: left;
+            width: 100%;
+            text-align: left;
+            font-size: 26px;  /*px*/
+            margin-top: 5px;
+            margin-bottom: 15px;
+            margin-left: 5%;
+            color: #34312b;
+        }
+    }
+
+
+}
+
+        
