@@ -111,11 +111,19 @@ public class CaptchaHelper {
 
     public boolean isNeedImageCaptcha(String attributeKey, String ip) {
         String ipRedisKey = MOBILE_APP_IMAGE_CAPTCHA_IP_KEY.replace("{ip}", ip).replace("{type}", attributeKey);
-        if (redisWrapperClient.exists(ipRedisKey)) {
+        if(checkImageCaptcha(attributeKey,ip)){
             redisWrapperClient.setex(ipRedisKey, ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             return true;
         }
         redisWrapperClient.setex(ipRedisKey, ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        return false;
+    }
+
+    public boolean checkImageCaptcha(String attributeKey,String ip){
+        String ipRedisKey = MOBILE_APP_IMAGE_CAPTCHA_IP_KEY.replace("{ip}", ip).replace("{type}", attributeKey);
+        if (redisWrapperClient.exists(ipRedisKey)) {
+            return true;
+        }
         return false;
     }
 }

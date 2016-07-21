@@ -42,16 +42,11 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/show-image-captcha", method = RequestMethod.POST)
     public BaseResponseDto isShowImageCaptcha(@RequestBody ImageCaptchaRequestDto requestDto) {
-        boolean isNeedImageCaptcha = captchaHelper.isNeedImageCaptcha(requestDto.getType(), httpServletRequest.getRemoteAddr());
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        boolean isNeedImageCaptcha = captchaHelper.checkImageCaptcha(requestDto.getType(), httpServletRequest.getRemoteAddr());
         if (isNeedImageCaptcha) {
-            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            return baseResponseDto;
-        } else {
-            baseResponseDto.setCode(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode());
-            baseResponseDto.setMessage(ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
-            return baseResponseDto;
+            return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
+
+        return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
     }
 }
