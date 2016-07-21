@@ -23,7 +23,7 @@
 
     <select id="findByLoginName" parameterType="string" resultMap="pointBillResultMap">
         select * from point_bill where login_name = #{loginName}
-        order by created_time desc;
+        order by created_time desc, id desc;
     </select>
 
     <select id="findPointBillPagination" parameterType="map" resultMap="pointBillResultMap">
@@ -32,7 +32,7 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessTypes.size() > 0 ">
+            <if test="businessTypes != null and businessTypes.size() > 0 ">
                 and business_type IN
                 <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
                     #{businessType}
@@ -53,7 +53,7 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessTypes.size() > 0">
+            <if test="businessTypes != null and businessTypes.size() > 0">
                 and business_type IN
                 <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
                     #{businessType}
@@ -84,6 +84,10 @@
                 and login_name = #{loginName}
             </if>
         </where>
+    </select>
+
+    <select id="findLatestSignInPointBillByLoginName" parameterType="map" resultMap="pointBillResultMap">
+        select * from point_bill where login_name = #{loginName} and business_type = 'SIGN_IN' order by created_time desc LIMIT 1
     </select>
 
 </mapper>
