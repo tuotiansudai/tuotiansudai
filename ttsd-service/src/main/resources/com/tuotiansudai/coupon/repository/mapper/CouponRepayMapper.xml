@@ -52,6 +52,7 @@
     <select id="findCouponRepayByInvestIdAndRepayDate" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay
         WHERE login_name = #{loginName}
+        AND status IN ('REPAYING','COMPLETE')
         <if test="year != null and year != ''">
             AND DATE_FORMAT(repay_date, '%Y') = #{year}
         </if>

@@ -145,10 +145,14 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         }else{
             sdf = new SimpleDateFormat("dd");
         }
-        List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),repayCalendarRequestDto.getMonth(),null);
+
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),replenishMonth(repayCalendarRequestDto.getMonth()),null);
         RepayCalendarYearResponseDto repayCalendarYearResponseDto;
         Map<String,RepayCalendarYearResponseDto> repayCalendarResponseDtoMaps = Maps.newConcurrentMap();
         for(InvestRepayModel investRepayModel : investRepayModelList){
+            if(sdf.format(investRepayModel.getRepayDate()) == "10"){
+                System.out.print(1);
+            }
             if(repayCalendarResponseDtoMaps.get(sdf.format(investRepayModel.getRepayDate())) == null){
                 repayCalendarResponseDtoMaps.put(sdf.format(investRepayModel.getRepayDate()),new RepayCalendarYearResponseDto(sdf.format(investRepayModel.getRepayDate()),investRepayModel));
                 continue;
@@ -163,7 +167,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
         Map<String,RepayCalendarYearResponseDto> couponRepayCalendarResponseDtoMaps = Maps.newConcurrentMap();
         RepayCalendarYearResponseDto couponRepayCalendarYearResponseDto;
-        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),repayCalendarRequestDto.getMonth(),null);
+        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),replenishMonth(repayCalendarRequestDto.getMonth()),null);
         for(CouponRepayModel couponRepayModel : couponRepayModelList){
             if(couponRepayCalendarResponseDtoMaps.get(sdf.format(couponRepayModel.getRepayDate())) == null){
                 couponRepayCalendarResponseDtoMaps.put(sdf.format(couponRepayModel.getRepayDate()),new RepayCalendarYearResponseDto(sdf.format(couponRepayModel.getRepayDate()),couponRepayModel));
@@ -196,6 +200,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     }
 
     private String addMoney(String num1,String num2){
-        return String.valueOf(Long.parseLong((Strings.isNullOrEmpty(num1) ? "0" : num1)) + Long.parseLong(Strings.isNullOrEmpty(num2) ? "0" : num2));
+        return String.valueOf(Long.parseLong(num1)) + Long.parseLong(num2);
+    }
+
+    private String replenishMonth(String month){
+        if(Strings.isNullOrEmpty(month)) return null;
+        return month.length() == 1 ? "0" + month : month;
     }
 }
