@@ -164,8 +164,12 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
             @Override
             public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                return userPointPrizeDto;
+                if (input.isReality()) {
+                    UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+                    return userPointPrizeDto;
+                } else {
+                    return new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+                }
             }
         });
     }
