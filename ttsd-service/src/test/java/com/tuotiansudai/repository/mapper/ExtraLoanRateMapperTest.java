@@ -115,6 +115,7 @@ public class ExtraLoanRateMapperTest {
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
     }
 

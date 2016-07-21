@@ -87,6 +87,7 @@ public class MobileAppActivityServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
