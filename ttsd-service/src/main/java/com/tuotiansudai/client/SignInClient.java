@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component
 public class SignInClient extends BaseClient {
@@ -63,17 +64,21 @@ public class SignInClient extends BaseClient {
     private final static String SIGN_OUT_URL = "/logout";
 
     public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
-        FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).add("source", dto.getSource());
+        FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder()
+                .add("username", dto.getUsername())
+                .add("password", dto.getPassword())
+                .add("captcha", dto.getCaptcha())
+                .add("source", dto.getSource());
         if (StringUtils.isNotEmpty(dto.getDeviceId())) {
             formEncodingBuilder.add("deviceId", dto.getDeviceId());
         }
+
         RequestBody requestBody = formEncodingBuilder.build();
-        return send(oldSessionId, SIGN_IN_URL, requestBody);
+        return this.send(oldSessionId, SIGN_IN_URL, requestBody);
     }
 
     public BaseDto<LoginDto> sendSignOut(String oldSessionId) {
-        RequestBody requestBody = new FormEncodingBuilder().add("Cookie", "SESSION=" + oldSessionId).build();
-        return send(oldSessionId, SIGN_OUT_URL, requestBody);
+        return send(oldSessionId, SIGN_OUT_URL, new FormEncodingBuilder().build());
     }
 
     private BaseDto<LoginDto> send(String oldSessionId, String requestPath, RequestBody requestBody) {
@@ -86,10 +91,7 @@ public class SignInClient extends BaseClient {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        BaseDto<LoginDto> resultDto = new BaseDto<>();
-        LoginDto dataDto = new LoginDto();
-        resultDto.setData(dataDto);
-        return resultDto;
+        return new BaseDto<>(new LoginDto());
     }
 
     protected String execute(String oldSessionId, String path, RequestBody requestBody) {
@@ -99,7 +101,7 @@ public class SignInClient extends BaseClient {
                 .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         if (StringUtils.isNotEmpty(oldSessionId)) {
-            request.addHeader("Cookie", "SESSION=" + oldSessionId);
+            request.addHeader("Cookie", MessageFormat.format("SESSION={0}", oldSessionId));
         }
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
@@ -111,5 +113,4 @@ public class SignInClient extends BaseClient {
         }
         return null;
     }
-
 }
