@@ -16,11 +16,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class MobileAppReferrerInvestServiceTest extends ServiceTestBase {
@@ -53,12 +50,12 @@ public class MobileAppReferrerInvestServiceTest extends ServiceTestBase {
             ReferrerManageView referrerManageView = new ReferrerManageView();
             referrerManageView.setLevel(1);
             referrerManageView.setInvestAmount(1000l);
-            referrerManageView.setInvestLoginName("loginName" + i);
+            referrerManageView.setInvestMobile("mobile" + i);
             referrerManageView.setInvestName("用户" + i);
             referrerManageView.setInvestTime(new Date());
             referrerManageView.setLoanName("标的" + i);
             referrerManageView.setPeriods(i);
-            referrerManageView.setReferrerLoginName("admin" + i);
+            referrerManageView.setReferrerMobile("refMobile" + i);
             referrerManageView.setReferrerName("推荐人" + i);
             referrerManageView.setInvestAmount(2000l);
             referrerManageView.setRewardAmount(5000l);

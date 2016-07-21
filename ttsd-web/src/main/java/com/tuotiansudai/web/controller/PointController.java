@@ -42,6 +42,9 @@ public class PointController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private PointBillService pointBillService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView myPoint() {
         String loginName = LoginUserInfo.getLoginName();
@@ -90,9 +93,6 @@ public class PointController {
         }
         return baseDataDto;
     }
-
-    @Autowired
-    private PointBillService pointBillService;
 
     @RequestMapping(value = "/point-list", method = RequestMethod.GET)
     public ModelAndView investList() {
