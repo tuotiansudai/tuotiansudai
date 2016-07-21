@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendarService {
@@ -136,7 +138,14 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),repayCalendarRequestDto.getMonth(),null);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = Lists.newArrayList();
         RepayCalendarYearResponseDto repayCalendarYearResponseDto = null;
+        Map<String,RepayCalendarYearResponseDto> repayCalendarYearResponseDtoMaps = Maps.newConcurrentMap();
         for(InvestRepayModel investRepayModel : investRepayModelList){
+            if(repayCalendarYearResponseDtoMaps.get(investRepayModel.getInvestId() + sdf.format(investRepayModel.getRepayDate())) == null){
+                repayCalendarYearResponseDtoMaps.put(investRepayModel.getInvestId() + sdf.format(investRepayModel.getRepayDate()),new RepayCalendarYearResponseDto(sdf.format(investRepayModel.getRepayDate()),investRepayModel));
+                continue;
+            }
+
+
             if(repayCalendarYearResponseDto == null){
                 repayCalendarYearResponseDto = new RepayCalendarYearResponseDto(sdf.format(investRepayModel.getRepayDate()));
                 repayCalendarYearResponseDtoList.add(setExpectedOrActualAmount(repayCalendarYearResponseDto,investRepayModel));

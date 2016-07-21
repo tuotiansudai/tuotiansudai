@@ -23,6 +23,13 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
         this.expectedRepayAmount = expectedRepayAmount;
     }
 
+    public RepayCalendarYearResponseDto(String month,InvestRepayModel investRepayModel){
+        this.month = month;
+        if(investRepayModel.getActualInterest() > 0){
+
+        }
+    }
+
     public String getMonth() {
         return month;
     }
