@@ -29,4 +29,5 @@ public interface TransferService {
 
     List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId);
 
+    void clearCouponRepay(String loginName,String loanId);
 }

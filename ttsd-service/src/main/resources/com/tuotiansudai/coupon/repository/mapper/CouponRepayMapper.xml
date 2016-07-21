@@ -50,4 +50,9 @@
         status = #{status}
         where id = #{id}
     </update>
+
+    <update id="clearCouponRepayByLoginNameAndInvestId" parameterType="map">
+      update coupon_repay set actual_fee = 0,actual_interest = 0,is_transferred = true,status = 'COMPLETE'
+      where login_name = #{loginName} and invest_id = #{investId}
+    </update>
 </mapper>

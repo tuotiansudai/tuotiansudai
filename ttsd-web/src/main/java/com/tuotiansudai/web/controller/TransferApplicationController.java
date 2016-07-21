@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -77,6 +78,7 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
+                    transferService.clearCouponRepay(LoginUserInfo.getLoginName(),investDto.getLoanId());
                     httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
                     return new ModelAndView("redirect:/transfer/transfer-invest-success");
                 }
@@ -95,6 +97,7 @@ public class TransferApplicationController {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayFormDataDto> baseDto = transferService.transferPurchase(investDto);
                 if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
+                    transferService.clearCouponRepay(LoginUserInfo.getLoginName(),investDto.getLoanId());
                     return new ModelAndView("/pay", "pay", baseDto);
                 }
                 if (baseDto.getData() != null) {
