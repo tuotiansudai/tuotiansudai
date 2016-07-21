@@ -175,10 +175,10 @@ public class InvestTransferServiceTest {
     public void shouldInvestTransferApply() throws Exception{
         long loanId = idGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
-        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        LoanModel loanModel = createLoanByUserId(userModel.getLoginName(), loanId);
         loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.update(loanModel);
-        InvestModel investModel = createInvest("testuser", loanId);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanId);
 
         LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), null, 0, 1, 0, 0);
         LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), null, 1, 1, 0, 0);
@@ -198,13 +198,13 @@ public class InvestTransferServiceTest {
     }
 
     @Test
-    public void shouldInvestTransferApplyFail() throws Exception{
+    public void shouldInvestTransferApplyFailWhenInvestIsApplied() throws Exception{
         long loanId = idGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");
-        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        LoanModel loanModel = createLoanByUserId(userModel.getLoginName(), loanId);
         loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.update(loanModel);
-        InvestModel investModel = createInvest("testuser", loanId);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanId);
 
         LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), null, 0, 1, 0, 0);
         LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), null, 1, 1, 0, 0);

@@ -112,6 +112,12 @@
         where id = #{id}
     </select>
 
+    <select id="lockById" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where id = #{id} for update
+    </select>
+
     <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
