@@ -12,15 +12,15 @@ import java.util.List;
 public interface UserMessageMapper {
 
     List<UserMessageModel> findMessagesByLoginName(@Param(value = "loginName") String loginName,
-                                                   @Param(value = "channels") List<MessageChannel> channels,
+                                                   @Param(value = "channels") MessageChannel channels,
                                                    @Param(value = "index") Integer index,
                                                    @Param(value = "pageSize") Integer pageSize);
 
     long countMessagesByLoginName(@Param(value = "loginName") String loginName,
-                                  @Param(value = "channels") List<MessageChannel> channels);
+                                  @Param(value = "channels") MessageChannel channels);
 
     long countUnreadMessagesByLoginName(@Param("loginName") String loginName,
-                                        @Param("channels") List<MessageChannel> channels);
+                                        @Param("channels") MessageChannel channels);
 
     void create(UserMessageModel model);
 
