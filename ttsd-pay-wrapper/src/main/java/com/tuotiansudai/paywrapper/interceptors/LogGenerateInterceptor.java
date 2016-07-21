@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.interceptors;
 
 
-import com.google.common.base.Strings;
+import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,21 +15,25 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
 
     private static final String USER_ID = "userId";
     private static final String REQUEST_ID = "requestId";
+    private static final String ANONYMOUS = "umPayAnonymous";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestIdHeader = request.getHeader(REQUEST_ID);
         String userIdHeader = request.getHeader(USER_ID);
-        if (!Strings.isNullOrEmpty(requestIdHeader)) {
+        if (StringUtils.isNotEmpty(requestIdHeader) && StringUtils.isNotEmpty(userIdHeader)) {
             MDC.put(REQUEST_ID, requestIdHeader);
-        }
-
-        if (!Strings.isNullOrEmpty(userIdHeader)) {
             MDC.put(USER_ID, userIdHeader);
+        } else {
+            MDC.put(REQUEST_ID, UUIDGenerator.generate());
+            MDC.put(USER_ID, ANONYMOUS);
         }
-
         return true;
     }
 
-
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        super.postHandle(request, response, handler, modelAndView);
+        MDC.clear();
+    }
 }
