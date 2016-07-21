@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper">
+
+    <resultMap id="couponRepayResultMap" type="CouponRepayModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="user_coupon_id" property="userCouponId"/>
+        <result column="invest_id" property="investId"/>
+        <result column="period" property="period"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="actual_fee" property="actualFee"/>
+        <result column="repay_amount" property="repayAmount"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="actual_repay_date" property="actualRepayDate"/>
+        <result column="is_transferred" property="isTransferred"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="CouponRepayModel" useGeneratedKeys="true" keyProperty="id">
+        insert into coupon_repay (login_name, coupon_id, user_coupon_id, invest_id, period, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, repay_date, actual_repay_date, is_transferred, status, created_time)
+        value(#{loginName}, #{couponId}, #{userCouponId}, #{investId}, #{period}, #{expectedInterest}, #{actualInterest}, #{expectedFee}, #{actualFee}, #{repayAmount}, #{repayDate}, #{actualRepayDate}, #{isTransferred}, #{status}, now())
+    </insert>
+
+    <select id="findByUserCouponIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where user_coupon_id = #{userCouponId} and period = #{period}
+    </select>
+
+    <update id="update" parameterType="CouponRepayModel">
+        update coupon_repay set
+        login_name = #{loginName},
+        coupon_id = #{couponId},
+        user_coupon_id = #{userCouponId},
+        invest_id = #{investId},
+        period = #{period},
+        expected_interest = #{expectedInterest},
+        actual_interest = #{actualInterest},
+        expected_fee = #{expectedFee},
+        actual_fee = #{actualFee},
+        repay_amount = #{repayAmount},
+        repay_date = #{repayDate},
+        actual_repay_date = #{actualRepayDate},
+        is_transferred = #{isTransferred},
+        status = #{status}
+        where id = #{id}
+    </update>
+</mapper>
