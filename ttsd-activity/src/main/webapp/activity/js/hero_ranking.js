@@ -49,8 +49,11 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			}
 		});
 
+
+
 		$getVip.on('click', function(event) {
 			event.preventDefault();
+
 			$.ajax({
 				url: '/membership/receive',
 				type: 'GET',
@@ -129,7 +132,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 					data.type='referrer';
 					$('#referRanking-tbody').html(ListRender(data));
 				}
-
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');

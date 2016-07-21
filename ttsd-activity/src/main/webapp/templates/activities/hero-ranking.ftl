@@ -84,8 +84,8 @@
                                         %>
                                         <tr>
                                             <td><%=i+1%></td>
-                                            <td><%=item.centSumAmount%></td>
                                             <td><%=item.loginName%></td>
+                                            <td><%=item.centSumAmount%></td>
                                             <td><%=reward%></td>
                                         </tr>
                                         <% } %>
@@ -219,7 +219,8 @@
             content='<a href="javascript:void(0)" class="btn" id="closeTip">返回</a>';
           }
         else {
-        content=' <a href="{{data.url}}" class="btn">{{data.btnName}}</a>';
+
+        content='<a href="'+data.url+'" class="btn">'+data.btnName+'</a>';
         }
         %>
         <p class="btn-text"><%=content%></p>
