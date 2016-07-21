@@ -23,10 +23,12 @@ public class ActivityModel implements Serializable {
     private String updatedBy;
     private Date updatedTime;
     private String activatedBy;
-    public ActivityModel(){
+
+    public ActivityModel() {
 
     }
-    public ActivityModel(ActivityDto activityDto){
+
+    public ActivityModel(ActivityDto activityDto) {
         this.title = activityDto.getTitle();
         this.webActivityUrl = activityDto.getWebActivityUrl();
         this.appActivityUrl = activityDto.getAppActivityUrl();

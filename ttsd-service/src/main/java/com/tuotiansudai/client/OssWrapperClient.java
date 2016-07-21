@@ -160,8 +160,8 @@ public class OssWrapperClient {
                 jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
                 jpegParams.setCompressionQuality(0.35f);
                 IIOMetadata data = imageWriter.getDefaultImageMetadata(new ImageTypeSpecifier(image), jpegParams);
-                IIOMetadataNode tree = (IIOMetadataNode)data.getAsTree("javax_imageio_jpeg_image_1.0");
-                IIOMetadataNode jfif = (IIOMetadataNode)tree.getElementsByTagName("app0JFIF").item(0);
+                IIOMetadataNode tree = (IIOMetadataNode) data.getAsTree("javax_imageio_jpeg_image_1.0");
+                IIOMetadataNode jfif = (IIOMetadataNode) tree.getElementsByTagName("app0JFIF").item(0);
                 jfif.setAttribute("Xdensity", Integer.toString(96));
                 jfif.setAttribute("Ydensity", Integer.toString(96));
                 jfif.setAttribute("resUnits", "1");

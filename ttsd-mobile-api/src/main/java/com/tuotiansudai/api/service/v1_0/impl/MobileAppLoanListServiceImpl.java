@@ -7,9 +7,9 @@ import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -154,7 +154,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return loanDtoList;
     }
 
-    private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
             @Override
             public ExtraLoanRateDto apply(ExtraLoanRateModel model) {

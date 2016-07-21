@@ -38,4 +38,38 @@
         loan_id = #{loanId}
     </select>
 
+    <update id="updateByLoanId" parameterType="PledgeHouseModel">
+        UPDATE
+          `aa`.`pledge_house`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pledgeLocation != null and pledgeLocation != ''">
+                pledge_location = #{pledgeLocation},
+            </if>
+            <if test="estimateAmount != null and estimateAmount != ''">
+                estimate_amount = #{estimateAmount},
+            </if>
+            <if test="loanAmount != null and loanAmount != ''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="square != null and square != ''">
+                square = #{square},
+            </if>
+            <if test="propertyCardId != null and propertyCardId !=''">
+                property_card_id = #{propertyCardId},
+            </if>
+            <if test="estateRegisterId != null and estateRegisterId != ''">
+                estate_register_id = #{estateRegisterId},
+            </if>
+            <if test="authenticAct != null and authenticAct != ''">
+                authentic_act = #{authenticAct}
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteByLoanId">
+        DELETE FROM
+          `aa`.`pledge_house`
+        WHERE
+          loan_id = #{loanId}
+    </delete>
 </mapper>

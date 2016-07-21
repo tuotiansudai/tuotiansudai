@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

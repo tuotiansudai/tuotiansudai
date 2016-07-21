@@ -28,4 +28,14 @@
         loan_id = #{loanId}
     </select>
 
+    <update id="updateByLoanId" parameterType="LoanDetailsModel">
+        UPDATE
+          `aa`.`loan_details`
+        <trim prefix="set" suffixOverrides=",">
+            declaration = #{declaration}
+        </trim>
+        WHERE
+          loan_id = #{loanId}
+    </update>
+
 </mapper>

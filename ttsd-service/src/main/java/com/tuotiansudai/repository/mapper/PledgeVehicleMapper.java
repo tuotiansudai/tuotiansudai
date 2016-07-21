@@ -9,4 +9,8 @@ public interface PledgeVehicleMapper {
     void create(PledgeVehicleModel pledgeVehicleModel);
 
     PledgeVehicleModel getPledgeVehicleDetailByLoanId(@Param(value = "loanId") long loanId);
+
+    void updateByLoanId(PledgeVehicleModel pledgeVehicleModel);
+
+    void deleteByLoanId(long loanId);
 }

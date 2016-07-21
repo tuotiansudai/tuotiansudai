@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class MessageDto implements Serializable{
+public class MessageDto implements Serializable {
     private long id;
     private String title;
     private String template;

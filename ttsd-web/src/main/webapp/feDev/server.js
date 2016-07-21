@@ -31,6 +31,7 @@ var config = [
         data: 'activity_demo'
     }];
 
+
 config.forEach(function (val) {
     app.get(val.route, function (req, res) {
         fm.render(val.template + '.ftl', getData(val.data), function (err, html, output) {
@@ -42,6 +43,7 @@ config.forEach(function (val) {
             res.send(html);
         });
     });
+
 });
 
 app.listen(8087, function () {

@@ -1483,7 +1483,7 @@ $red: #eb4a3e;
           .title {
             color: $gray2;
           }
-          >div {
+          > div {
             margin-top: 20px;
             line-height: 1;
           }
@@ -1887,7 +1887,7 @@ $red: #eb4a3e;
           .list-block {
             padding: 15px 0 15px 25px;
             color: #808080;
-            .row>div {
+            .row > div {
               height: 35px;
               line-height: 35px;
             }
@@ -1961,7 +1961,7 @@ $red: #eb4a3e;
                   }
                 }
               }
-              p{
+              p {
                 font-size: 14px;
                 margin-bottom: 10px;
                 margin-top: 10px;
@@ -1978,8 +1978,8 @@ $red: #eb4a3e;
           height: 100%;
           background: #fafafa url("/images/icons/left-arrow.png") no-repeat 50% 50%;
           position: absolute;
-            top: 0;
-            left: 0;
+          top: 0;
+          left: 0;
           &.disabled {
             background: #fafafa url("/images/icons/left-arrow-disabled.png") no-repeat 50% 50%;
           }
@@ -1989,15 +1989,15 @@ $red: #eb4a3e;
           height: 100%;
           background: #fafafa url("/images/icons/right-arrow.png") no-repeat 50% 50%;
           position: absolute;
-            top: 0;
-            right: 0;
+          top: 0;
+          right: 0;
           &.disabled {
             background: #fafafa url("/images/icons/right-arrow-disabled.png") no-repeat 50% 50%;
           }
         }
         .scroll-content {
           overflow: hidden;
-          >.row {
+          > .row {
             width: 1000%;
           }
           .col {
@@ -2411,6 +2411,7 @@ $red: #eb4a3e;
     }
   }
 }
+
 .extra-rate-popup {
   background: #fff;
   position: absolute;
@@ -2433,7 +2434,7 @@ $red: #eb4a3e;
     line-height: 28px;
     text-align: center;
     width: 49px;
-     &:first-child {
+    &:first-child {
       border-left: none;
       width: 150px;
     }

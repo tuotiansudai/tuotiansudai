@@ -26,7 +26,7 @@ CREATE TABLE `loaner_details` (
   COMMENT '借款人性别',
   `age`               INT(11)                      DEFAULT NULL
   COMMENT '借款人年龄',
-  `identify_number`   VARCHAR(18)                  DEFAULT NULL
+  `identity_number`   VARCHAR(18)                  DEFAULT NULL
   COMMENT '借款人身份证号',
   `marriage`          VARCHAR(30)                  DEFAULT NULL
   COMMENT '借款人婚姻情况',

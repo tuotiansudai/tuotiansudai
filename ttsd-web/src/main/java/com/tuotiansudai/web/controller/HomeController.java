@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.web.util.LoginUserInfo;
-import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +65,7 @@ public class HomeController {
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
-        List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB), new Function<BannerModel,BannerModel>(){
+        List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB), new Function<BannerModel, BannerModel>() {
             @Override
             public BannerModel apply(BannerModel input) {
                 input.setAppImageUrl(bannerServer + "/" + input.getAppImageUrl());
@@ -74,7 +73,7 @@ public class HomeController {
                 return input;
             }
         });
-        modelAndView.addObject("bannerList",bannerModelList);
+        modelAndView.addObject("bannerList", bannerModelList);
         return modelAndView;
     }
 }

@@ -39,11 +39,10 @@ public class UserMessageServiceTest {
     private UserMessageService userMessageService;
 
     @Test
-    public void shouldFindMessageDetail() throws Exception{
+    public void shouldFindMessageDetail() throws Exception {
 
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
-
 
 
         MessageModel messageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
@@ -68,8 +67,8 @@ public class UserMessageServiceTest {
         assertThat(11L, is(messageMapper.findById(userMessageModel1.getMessageId()).getReadCount()));
 
 
-
     }
+
     private UserModel getFakeUser(String loginName) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);

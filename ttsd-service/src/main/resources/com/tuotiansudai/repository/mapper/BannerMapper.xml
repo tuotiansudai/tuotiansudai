@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.BannerMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="bannerResultMap" type="BannerModel">
         <id column="id" property="id"></id>
@@ -15,7 +15,8 @@
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
         <result column="shared_url" property="sharedUrl"></result>
-        <result column="source" property="source" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"></result>
+        <result column="source" property="source"
+                typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"></result>
         <result column="authenticated" property="authenticated"></result>
         <result column="order" property="order"></result>
         <result column="active" property="active"></result>
@@ -36,13 +37,13 @@
     <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
         select * from banner
         where active = '1' and deleted = '0'
-            <if test="authenticated != null and !authenticated">
-                and authenticated = #{authenticated}
-            </if>
+        <if test="authenticated != null and !authenticated">
+            and authenticated = #{authenticated}
+        </if>
 
-            <if test="source != null">
-                and source like CONCAT(CONCAT('%', #{source}), '%')
-            </if>
+        <if test="source != null">
+            and source like CONCAT(CONCAT('%', #{source}), '%')
+        </if>
         order by banner.order
     </select>
 

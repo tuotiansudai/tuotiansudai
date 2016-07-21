@@ -157,7 +157,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("性别", loanerDetail.getGender().getDescription())
                     .put("年龄", String.valueOf(loanerDetail.getAge()))
                     .put("婚姻状况", loanerDetail.getMarriage().getDescription())
-                    .put("身份证号", loanerDetail.getIdentifyNumber())
+                    .put("身份证号", loanerDetail.getIdentityNumber())
                     .put("申请地区", loanerDetail.getRegion())
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
@@ -201,7 +201,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
             loanDto.setNewbieInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
         }
-
 
         if (loanModel.getActivityType() != ActivityType.NEWBIE && loanModel.getFundraisingStartTime().after(achievementStartTime)) {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();

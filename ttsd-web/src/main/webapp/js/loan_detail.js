@@ -578,51 +578,51 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
 
     // 投资加息
-    (function() {
+    (function () {
         var $extraRate = $('#extra-rate');
         if (!$extraRate.length) {
             return false;
         }
 
         var utils = {
-            getSize: function(element, type) {
+            getSize: function (element, type) {
                 return element[type]();
             },
-            getOffset: function(element) {
+            getOffset: function (element) {
                 return element.offset();
             },
-            removeElement: function(element) {
+            removeElement: function (element) {
                 if (element.length) {
                     element.remove();
                 }
             },
-            getRelativeRate: function(arr, num) {
-                var index =  _.findLastIndex(__extraRate, function(value) {
+            getRelativeRate: function (arr, num) {
+                var index = _.findLastIndex(__extraRate, function (value) {
                     if (num >= value.minInvestAmount && (value.maxInvestAmount > num || value.maxInvestAmount === 0)) {
                         return true;
                     }
                 });
                 return index !== -1 ? arr[index].rate : '';
             },
-            replace: function(str) {
+            replace: function (str) {
                 return str.replace(/,/g, '');
             }
         };
 
-        var tplFn = _.compose(_.template, function() {
+        var tplFn = _.compose(_.template, function () {
             return $('#extra-rate-popup-tpl').html();
         })();
         var getOffset = _.partial(utils.getOffset, $extraRate);
         var getSize = _.partial(utils.getSize, $extraRate);
         var extraRateWidth = getSize('width');
         var extraRateHeight = getSize('height');
-        var css = _.compose(_.partial(function(offset, extraRateHeight) {
+        var css = _.compose(_.partial(function (offset, extraRateHeight) {
             return {
                 left: offset.left - 5,
                 top: offset.top + extraRateHeight - 10
             }
         }, _, extraRateHeight), getOffset);
-        var createPopup = _.partial(function(tpl, css) {
+        var createPopup = _.partial(function (tpl, css) {
             return $(tpl).css(css).appendTo('body');
         }, _, css());
         var showPopup = _.compose(createPopup, tplFn);
@@ -630,32 +630,32 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $extraRate.find('.fa').on({
             mouseover: _.partial(showPopup, {__extraRate: __extraRate}),
-            mouseout: function() {
+            mouseout: function () {
                 removePopup();
             }
         });
 
         var getRelativeRate = _.partial(utils.getRelativeRate, __extraRate);
-        var changeHTML = function() {
+        var changeHTML = function () {
             var $element = $('[data-extra-rate]');
-            return function(rate) {
+            return function (rate) {
                 $element.html(rate);
             }
         }();
-        var addSign = function(rate) {
+        var addSign = function (rate) {
             if (!rate) {
                 return ''
             }
             return '+' + rate;
         };
 
-        $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function() {
-                return $(this).val()
-            })).trigger('change');
+        $('#investForm').find('.text-input-amount').on('change', _.compose(changeHTML, addSign, getRelativeRate, parseInt, utils.replace, function () {
+            return $(this).val()
+        })).trigger('change');
     })();
 
-    $.fn.carousel = function() {
-        return this.each(function() {
+    $.fn.carousel = function () {
+        return this.each(function () {
             var $ele = $(this);
             var $leftBtn = $ele.find('.left-button');
             var $rightBtn = $ele.find('.right-button');
@@ -664,7 +664,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var len = $col.length;
             var record = 0;
             var eachShowAmount = $(window).width() > 700 ? 5 : 2;
-            $rightBtn.on('click', function() {
+            $rightBtn.on('click', function () {
                 if ($rightBtn.hasClass('disabled')) {
                     return false;
                 }
@@ -677,7 +677,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     marginLeft: (-200 - 10) * record
                 });
             });
-            $leftBtn.on('click', function() {
+            $leftBtn.on('click', function () {
                 if ($leftBtn.hasClass('disabled')) {
                     return false;
                 }
@@ -693,29 +693,29 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     };
     $('[scroll-carousel]').carousel().find('.col').fancybox({
-        'titlePosition' : 'over',
-        'cyclic'        : false,
-        'showCloseButton':true,
-        'showNavArrows' : true,
-        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+        'titlePosition': 'over',
+        'cyclic': false,
+        'showCloseButton': true,
+        'showNavArrows': true,
+        'titleFormat': function (title, currentArray, currentIndex, currentOpts) {
             return '';
         }
     });
 
-    (function() {
-        var maybe = function(value) {
+    (function () {
+        var maybe = function (value) {
             return value ? value : 0;
         };
-        var getElementBindData = function(key) {
+        var getElementBindData = function (key) {
             return $investInput.data(key);
         };
         var $investInput = $('#investForm').find('.text-input-amount');
         var maxInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('max-invest-amount');
         var minInvestAmount = _.compose(parseFloat, maybe, getElementBindData)('min-invest-amount');
-        var replace = function(str) {
+        var replace = function (str) {
             return str.replace(/,/g, '');
         };
-        var keyupHandler = _.debounce(function(event) {
+        var keyupHandler = _.debounce(function (event) {
             var $this = $(this);
             var value = _.compose(parseFloat, replace)($this.val());
             layer.closeAll('tips');

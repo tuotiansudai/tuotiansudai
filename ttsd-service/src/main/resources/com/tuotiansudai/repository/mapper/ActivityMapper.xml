@@ -71,13 +71,13 @@
                 AND activated_time &lt;= #{endTime}
             </if>
             <if test="activityStatus != null and activityStatus.name() == 'OPERATING'">
-                AND status = 'APPROVED' AND  expired_time &gt; now()
+                AND status = 'APPROVED' AND expired_time &gt; now()
             </if>
             <if test="activityStatus != null and activityStatus.name() == 'EXPIRED'">
-                AND  expired_time  &lt; now()
+                AND expired_time &lt; now()
             </if>
             <if test="activityStatus != null and activityStatus.name() != 'OPERATING' and activityStatus.name() != 'EXPIRED'">
-                AND  status = #{activityStatus}
+                AND status = #{activityStatus}
             </if>
             <if test="source != null">
                 AND source like CONCAT('%', #{source}, '%')

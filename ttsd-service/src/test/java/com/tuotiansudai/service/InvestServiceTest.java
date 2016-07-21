@@ -147,25 +147,25 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldEstimateInvestIncomeIsOk(){
+    public void shouldEstimateInvestIncomeIsOk() {
         String loginName = "testExtraRate";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
         extraLoanRateMapper.create(extraLoanRateModels);
-        long amount = investService.estimateInvestIncome(loanId,loginName,100000);
+        long amount = investService.estimateInvestIncome(loanId, loginName, 100000);
         assertNotNull(amount);
         assertTrue(amount == 2810);
-        amount = investService.estimateInvestIncome(loanId,loginName,1000000);
+        amount = investService.estimateInvestIncome(loanId, loginName, 1000000);
         assertNotNull(amount);
         assertTrue(amount == 42904);
-        amount = investService.estimateInvestIncome(loanId,loginName,5000000);
+        amount = investService.estimateInvestIncome(loanId, loginName, 5000000);
         assertNotNull(amount);
         assertTrue(amount == 288494);
     }
 
-    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId){
+    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
         ExtraLoanRateModel model = new ExtraLoanRateModel();
         model.setLoanId(loanId);
         model.setExtraRateRuleId(100001);

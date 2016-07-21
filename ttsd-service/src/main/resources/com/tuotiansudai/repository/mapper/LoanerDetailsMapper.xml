@@ -13,7 +13,7 @@
         <result column="user_name" property="userName"/>
         <result column="gender" property="gender"/>
         <result column="age" property="age"/>
-        <result column="identify_number" property="identifyNumber"/>
+        <result column="identity_number" property="identityNumber"/>
         <result column="marriage" property="marriage"/>
         <result column="region" property="region"/>
         <result column="income" property="income"/>
@@ -22,9 +22,9 @@
 
     <insert id="create" parameterType="LoanerDetailsModel">
         INSERT INTO `aa`.`loaner_details`
-        (id, loan_id, login_name, user_name, gender, age, identify_number, marriage, region, income, employment_status)
+        (id, loan_id, login_name, user_name, gender, age, identity_number, marriage, region, income, employment_status)
         VALUES
-        (#{id}, #{loanId}, #{loginName}, #{userName}, #{gender}, #{age}, #{identifyNumber}, #{marriage}, #{region}, #{income},
+        (#{id}, #{loanId}, #{loginName}, #{userName}, #{gender}, #{age}, #{identityNumber}, #{marriage}, #{region}, #{income},
         #{employmentStatus})
     </insert>
 
@@ -37,4 +37,37 @@
         loan_id = #{loanId}
     </select>
 
+    <update id="updateByLoanId" parameterType="LoanerDetailsModel">
+        UPDATE
+          `aa`.`loaner_details`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="loginName != null and loginName != ''">
+                login_name = #{loginName},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            age = #{age},
+            <if test="identityNumber != null and identityNumber != ''">
+                identity_number = #{identityNumber},
+            </if>
+            <if test="marriage != null">
+                marriage = #{marriage},
+            </if>
+            <if test="region != null and region != ''">
+                region = #{region},
+            </if>
+            <if test="income != null and income != ''">
+                income = #{income},
+            </if>
+            <if test="employmentStatus != null and employmentStatus != ''">
+                employment_status = #{employmentStatus}
+            </if>
+        </trim>
+        WHERE
+          loan_id = #{loanId}
+    </update>
 </mapper>
