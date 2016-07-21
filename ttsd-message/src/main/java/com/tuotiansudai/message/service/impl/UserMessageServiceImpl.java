@@ -16,6 +16,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,6 +117,8 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     private List<MessageModel> getUnreadManualMessages(String loginName) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+        loginName = userModel.getLoginName();
         List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null);
 
