@@ -4,9 +4,14 @@
   width: 100%!important;
   margin: 0;
   background:#ffba00;
+  padding-bottom:30px;
+
 }
 .anniversary-container{
 
+  .nodata-refer,.nodata-invest {
+    margin-top: 80px;
+  }
   .container{
     width:100%;
     background: #ffcb5b;
@@ -30,8 +35,8 @@
       font-size: 18px;
       display: inline-block;
       margin-top: 20px;
-      margin-left:45px;
       line-height: 40px;
+      cursor: pointer;
     }
     .box-square-out {
       height:auto;
@@ -42,6 +47,10 @@
       padding-bottom:50px;
       color: #e62e2e;
       font-size:16px;
+      .date-button {
+        margin-left:45px;
+        margin-right:45px;
+      }
       .table-sort-border {
         caption {
           font-size:16px;
@@ -49,6 +58,7 @@
           border:1px solid #e62e2e;
           border-bottom-width: 0;
           text-align: center;
+          padding: 10px;
         }
         th,td {
           border:1px solid #e62e2e;
@@ -69,11 +79,12 @@
         position: absolute;
         top: -30px;
         left: 28%;
+        text-align: center;
       }
       .description {
         text-align: center;
         margin-top: 70px;
-        margin-bottom: 20px;
+        margin-bottom: 35px;
         color: #806120;
       }
       .dotted-normal-box {
@@ -86,6 +97,8 @@
         overflow: auto;
         margin-left: 45px;
         margin-right: 45px;
+        min-height: 258px;
+
         h2 {
           text-align: center;
           color: #e62e2e;
@@ -113,6 +126,7 @@
           }
         }
         .date-head {
+          text-align: left;
           padding-bottom: 10px;
           .date-icon {
             display: inline-block;
@@ -138,454 +152,39 @@
         }
       }
     }
+
     .responsive-pc{
       display:block;
     }
     .responsive-phone{
       display:none;
     }
-    .wp{
+    .wp {
       width: 1090px;
-      margin:0 auto;
-      min-height:800px;
-      &:after{
-        clear:both;
-        display:block;
+      margin: 0 auto;
+      min-height: 800px;
+    }
+    .step-section-two {
+      margin-top:25px;
+      .step-two-title {
+        margin-left: 50px;
       }
+    }
+    .step-section-three {
+      .button-big {
+        line-height: 20px;
+        font-size: 18px;
+        padding-top: 5px;
+        height: 53px;
+      }
+    }
+    .step-section-four {
+      margin-top:60px;
+      .dotted-normal-box {
+        margin-top:82px;
+        width:89%;
+        font-size:12px;
 
-      .model-list{
-        float:left;
-        width:100%;
-        &.text-c{
-          text-align:center;
-        }
-        &.mt-40{
-          margin-top:40px;
-        }
-        .intro-text{
-          font-size:16px;
-          color:#362e2b;
-          margin-bottom:0;
-          strong{
-            font-size:28px;
-            color:#ff0000;
-          }
-        }
-        .img-vip{
-          float:left;
-          width:370px;
-          margin-left:220px;
-        }
-        .img-one{
-          float:left;
-          width:300px;
-          padding-top:140px;
-        }
-        .img-rank{
-          float:right;
-          width:565px;
-        }
-        .img-two{
-          float:left;
-          width:300px;
-          margin-left:220px;
-          padding-top:90px;
-        }
-        .img-bag{
-          float:left;
-          width:580px;
-          margin-left:20px;
-        }
-        .img-three{
-          float:left;
-          width:450px;
-          padding-top:120px;
-        }
-        .text-info{
-          float:left;
-          width:790px;
-          margin:50px 0 50px 140px;
-        }
-        h3{
-          font-size:28px;
-          color:#362e2b;
-        }
-        .content-text{
-          font-size:16px;
-          color:#362e2b;
-          margin-bottom:0;
-          &.font-20{
-            font-size:20px;
-          }
-          .vip-icon{
-            display:inline-block;
-            width:124px;
-            height:86px;
-            background:url("/activity/images/sign/actor/anniversary/vip-icon.png") no-repeat center;
-            position: relative;
-            top: 5px;
-          }
-        }
-        .feature-list{
-          float:left;
-          width:100%;
-          margin-top:20px;
-          li{
-            float:left;
-            width:180px;
-            text-align:center;
-            margin:0 45px;
-            i.icon-type{
-              display: inline-block;
-              width:110px;
-              height:125px;
-            }
-            p{
-              width:100%;
-              font-size:18px;
-              color:#4d4d4d;
-              margin-bottom:0;
-            }
-          }
-        }
-        .get-vip{
-          display: inline-block;
-          width: 125px;
-          height: 58px;
-          line-height: 25px;
-          font-size: 18px;
-          color: #000;
-          margin-top: 30px;
-          background: url("/activity/images/sign/actor/anniversary/get-bg.png") no-repeat center;
-          padding: 0 60px;
-          padding-top: 10px;
-        }
-        .title-line{
-          float:left;
-          width:100%;
-          text-align:center;
-          margin:50px 0;
-          span{
-            display:inline-block;
-            width:210px;
-            height:50px;
-            line-height:50px;
-            background:#fff5c1;
-            text-align:center;
-            font-size:24px;
-            color:#c23c33;
-            border:1px solid #e5004f;
-            border-radius:50px;
-            position: relative;
-          }
-          .left-line{
-            width:380px;
-            height:50px;
-            position: absolute;
-            top:0;
-            right:210px;
-            background:url("/activity/images/sign/actor/anniversary/left-line.png") no-repeat center;
-            background-size: 100%;
-          }
-          .right-line{
-            width:380px;
-            height:50px;
-            position: absolute;
-            top:0;
-            left:210px;
-            background:url("/activity/images/sign/actor/anniversary/right-line.png") no-repeat center;
-            background-size: 100%;
-          }
-        }
-        .title-model{
-          float:left;
-          width:100%;
-          border-radius:5px;
-          height:70px;
-          background:#f39800;
-          position: relative;
-          text-align:center;
-          margin-bottom:30px;
-          .date-icon{
-            position: absolute;
-            top:10px;
-            left:15px;
-            width:44px;
-            height:47px;
-            background:url("/activity/images/sign/actor/anniversary/rank-icon.png") no-repeat center;
-          }
-          .date-text{
-            position: absolute;
-            top:0;
-            left:70px;
-            line-height:70px;
-            color:#fff;
-            font-size:28px;
-          }
-          .rank-number{
-            font-size:28px;
-            color:#fff;
-            line-height:70px;
-          }
-          .get-rank{
-            position: absolute;
-            top:20px;
-            right:30px;
-            width:130px;
-            height:30px;
-            border-radius:10px;
-            background:#ffd84f;
-            color:#a6020f;
-            font-size:16px;
-            text-align:center;
-            cursor:pointer;
-          }
-        }
-        .rank-name{
-          float:left;
-          width:100%;
-          li{
-            float:left;
-            width:230px;
-            height:60px;
-            text-align:center;
-            color:#fff;
-            font-size:22px;
-            line-height:60px;
-            background:#ff9231;
-            border-top-left-radius: 10px;
-            border-top-right-radius:10px;
-          }
-        }
-        .rank-content{
-          float:left;
-          width:100%;
-          background:#ff9231;
-          padding:20px 0;
-          border-top-right-radius:10px;
-          border-bottom-left-radius: 10px;
-          border-bottom-right-radius: 10px;
-          .rank-model{
-            float:left;
-            width:455px;
-            margin:0 50px;
-            &.active{
-              .title-name,.show-btn{
-                display:none;
-              }
-              .list-title,.back-btn{
-                display:block;
-              }
-              .tip-text{
-                .show-btn{
-                  display:none;
-                }
-                .back-btn{
-                  display:block;
-                }
-              }
-            }
-            h3{
-              font-size:22px;
-              color:#fff;
-              text-align:center;
-              margin-bottom:20px;
-              span{
-                font-size:14px;
-              }
-              &.list-title{
-                position: relative;
-                display:none;
-                span{
-                  font-size:16px;
-                  text-align:center;
-                  &.pre-btn{
-                    position: absolute;
-                    top:8px;
-                    left:0;
-                    width:80px;
-                    height:30px;
-                    line-height:30px;
-                    background:#ffd84f;
-                    color:#a6020f;
-                    border-radius:10px;
-                    cursor:pointer;
-                  }
-                  &.next-btn{
-                    position: absolute;
-                    top:8px;
-                    right:0;
-                    width:80px;
-                    height:30px;
-                    line-height:30px;
-                    background:#ffd84f;
-                    color:#a6020f;
-                    border-radius:10px;
-                    cursor:pointer;
-                  }
-                  &.date-info{
-                    position: absolute;
-                    top:8px;
-                    left:90px;
-                    color:#fff;
-                  }
-                }
-              }
-            }
-            .data-list{
-              float:left;
-              width:100%;
-              height:450px;
-              background:#ffedb6;
-              &.other-type{
-                height:170px;
-                .empty-text{
-                  line-height:125px;
-                }
-              }
-              dt{
-                float:left;
-                width:100%;
-                line-height:45px;
-                background:#ffd84f;
-              }
-              dd{
-                float:left;
-                width:100%;
-                line-height:40px;
-                &.empty-text{
-                  line-height:405px;
-                  text-align: center;
-                  font-size:16px;
-                  color:#333;
-                }
-              }
-              span{
-                float:left;
-                font-size:18px;
-                color:#b60000;
-                text-align:center;
-                &.title-text{
-                  width:60px;
-                }
-                &.data-text{
-                  width:190px;
-                }
-                &.user-text{
-                  width:80px;
-                }
-                &.reward-text{
-                  width:125px;
-                }
-                i{
-                  display:inline-block;
-                  width:25px;
-                  height:25px;
-                  line-height:25px;
-                  text-align:center;
-                  border-radius:25px;
-                  background:#e12354;
-                  color:#fff;
-                }
-              }
-            }
-            .tip-text{
-              float:left;
-              width:100%;
-              font-size:16px;
-              color:#fbeece;
-              margin-top:10px;
-              margin-bottom:0;
-              span{
-                float:right;
-                width:130px;
-                height:30px;
-                line-height:30px;
-                background:#ffd84f;
-                color:#a6020f;
-                text-align:center;
-                font-size:16px;
-                border-radius:10px;
-                cursor:pointer;
-                &.show-text{
-                  display:block;
-                }
-                &.back-btn{
-                  display:none;
-                }
-              }
-            }
-          }
-        }
-        .today-gift{
-          float:left;
-          width:250px;
-          margin:0 435px;
-          text-align:center;
-          .today-title{
-            float:left;
-            width:100%;
-            height:60px;
-            background: url("/activity/images/sign/actor/anniversary/today-title.png") no-repeat center;
-            background-size:100%;
-            margin-top:40px;
-          }
-          .gift-img{
-            float:left;
-            width:100%;
-            height:250px;
-          }
-          .gift-name{
-            float:left;
-            width:100%;
-            font-size:20px;
-            color:#000;
-            margin-bottom:20px;
-          }
-          .get-rank{
-            display: inline-block;
-            width: 125px;
-            height: 68px;
-            line-height: 68px;
-            font-size: 22px;
-            color: #000;
-            background: url("/activity/images/sign/actor/anniversary/get-bg.png") no-repeat center;
-            padding: 0 60px;
-          }
-        }
-        .rule-list{
-          float:left;
-          width:870px;
-          margin:0 125px;
-          li{
-            float:left;
-            width:100%;
-            font-size:14px;
-            color:#362e2b;
-            &.tip-info{
-              margin-top:100px;
-              margin-bottom:60px;
-              text-align:center;
-            }
-            span{
-              color:#ff0000;
-            }
-          }
-        }
-      }
-      .tip-vip-model{
-        .des-text{
-          padding:20px 0;
-          text-align:center;
-        }
-        .btn-text{
-          text-align:center;
-          a{
-            background:#ff752a;
-            border: 1px solid #f46916;
-            color:#fff;
-          }
-        }
       }
     }
   }
@@ -593,286 +192,98 @@
 
 @media screen and (max-width: 700px) {
   .anniversary-container{
+    .nodata-refer,.nodata-invest {
+      margin-top: 10px;
+    }
     .container{
+      .step-two-title {
+        display: none;
+      }
+      .step-section-three {
+        margin-top:45px;
+      }
+      .button-big {
+        width:130px;
+        height:35px;
+        line-height: 30px;
+        font-size:12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .button-small {
+        font-size: 12px;
+        width: 70px;
+        height: 23px;
+        line-height: 23px;
+        margin-top: 6px;
+        margin-bottom: 20px;
+
+      }
       .responsive-pc{
         display:none;
       }
       .responsive-phone{
         display:block;
       }
-      .wp{
-        width:100%!important;
-        margin:0!important;
-        padding:0!important;
-        .model-list{
-          .img-vip{
-            float:left;
-            width:100%;
-            margin-left:0;
-            margin-top:20px;
-            text-align:center;
-            img{
-              width:60%;
-            }
-          }
-          .img-one{
-            padding-top: 0;
-            text-align: center;
-            width: 100%;
-            .intro-text{
-              font-size:12px;
-              strong{
-                font-size:20px;
-              }
-            }
-          }
-          .img-rank{
-            float:left;
-            width:100%;
-            text-align:center;
-            img{
-              width:60%;
-            }
-          }
-          .img-two{
-            padding-top:0;
-            width:100%;
-            margin-left:0;
-            text-align: center;
-            .intro-text{
-              font-size:12px;
-              strong{
-                font-size:20px;
-              }
-            }
-          }
-          .img-bag{
-            width:100%;
-            text-align:center;
-            margin-left:0;
-            img{
-              width:80%;
-            }
-          }
-          .img-three{
-            width: 100%;
-            padding-top: 0;
-            text-align: center;
-            strong{
-              font-size:20px;
-            }
-          }
-          .text-info{
-            width:60%;
-            margin:20px 20%;
-          }
-          h3{
-            font-size:16px;
-            width: 90%;
-            margin: 0 5%;
-          }
-          .content-text{
-            font-size:12px;
-            width: 90%;
-            margin: 0 5%;
-            .vip-icon{
-              width:62px;
-              height:43px;
-              background-size:100%;
-            }
-          }
-          .feature-list{
-            width:80%;
-            padding:0 10%;
-            li{
-              width:50%;
-              margin:0;
-              i.icon-type{
-                width:55px;
-                height:62px;
-              }
-              p{
-                font-size:12px;
-              }
-            }
-          }
-          .get-vip{
+      .wp {
+        width: 90%;
+      }
+      .box-square-out {
+        font-size:12px;
+        padding-bottom:20px;
+        .table-sort-border {
+          caption,th,td {
             font-size: 12px;
-            width: 85px;
-            line-height: 18px;
-            background-size: 100%;
-            padding: 0 30px;
-            height: 45px;
-            padding-top: 6px;
+            padding: 5px 1px;
+            font-weight: normal;
           }
-          .title-line{
-            margin:25px 0;
-            span{
-              width: 105px;
+
+        }
+        .dotted-normal-box {
+          padding: 10px;
+          margin: 20px;
+          width: calc(100% - 40px);
+          min-height:100px;
+          text-align: center;
+          box-sizing: border-box;
+          img {
+            width: 90%;
+          }
+          .date-head {
+            .date-icon {
+              background-size: 70%;
+              width: 30px;
               height: 25px;
-              line-height: 25px;
-              font-size: 12px;
             }
-            .left-line{
-              right: 105px;
-              height: 25px;
-              width: 130px;
-            }
-            .right-line{
-              left: 105px;
-              height: 25px;
-              width: 130px;
+            .date-text {
+              padding-left: 0px;
             }
           }
-          .title-model{
-            width:90%;
-            margin:0 5%;
-            height:40px;
-            margin-bottom:15px;
-            .date-icon{
-              background-size: 100%;
-              width: 22px;
-              height: 23px;
-              left: 10px;
-            }
-            .date-text{
-              line-height: 40px;
-              font-size: 12px;
-              left: 35px;
-            }
-            .rank-number{
-              line-height: 40px;
-              font-size: 12px;
-            }
-            .get-rank{
-              width: 80px;
-              font-size: 12px;
-              height: 25px;
-              line-height: 25px;
-              right:8px;
-              top: 8px;
-            }
+        }
+        .description {
+          margin-top:20px;
+          margin-bottom: 0px;
+        }
+        .fl,.fr {
+          float: none;
+        }
+        .date-button
+        {
+          .fl {
+            float: left;
           }
-          .rank-name{
-            width:90%;
-            margin:0 5%;
-            li{
-              width:115px;
-              height:30px;
-              line-height:30px;
-              font-size:14px;
-            }
+          .fr {
+            float: right;
           }
-          .rank-content{
-            width:90%;
-            margin:0 5%;
-            padding:10px 0;
-            margin-top: -1px;
-            .rank-model{
-              width: 90%;
-              margin: 0 5%;
-              h3{
-                width:100%;
-                font-size: 14px;
-                margin: 10px 0;
-                span{
-                  font-size:12px;
-                }
-                &.list-title{
-                  width:100%;
-                  margin:10px 0;
-                  span{
-                    font-size:12px!important;
-                    &.pre-btn{
-                      top:3px;
-                      width:50px;
-                      height:20px;
-                      line-height:20px;
-                      border-radius:5px;
-                    }
-                    &.next-btn{
-                      top:3px;
-                      right:0;
-                      width:50px;
-                      height:20px;
-                      line-height:20px;
-                      border-radius:5px;
-                    }
-                    &.date-info{
-                      position: absolute;
-                      top:3px;
-                      left:55px;
-                      color:#fff;
-                    }
-                  }
-                }
-              }
-              .data-list{
-                height: auto;
-                dt{
-                  line-height:25px;
-                }
-                dd{
-                  line-height:25px;
-                  &.empty-text{
-                    line-height:255px;
-                    font-size:12px;
-                  }
-                }
-                span{
-                  font-size:12px;
-                  &.title-text{
-                    width:20%;
-                  }
-                  &.data-text{
-                    width:30%;
-                  }
-                  &.user-text{
-                    width:25%;
-                  }
-                  &.reward-text{
-                    width:25%;
-                  }
-                  i{
-                    width:16px;
-                    height:16px;
-                    line-height:16px;
-                  }
-                }
-              }
-              .tip-text{
-                font-size:12px;
-                span{
-                  width:100px;
-                  height:25px;
-                  line-height:25px;
-                  font-size:12px;
-                }
-              }
-            }
+        }
+        .square-title {
+          left:auto;
+          img {
+            width:70%;
           }
-          .today-gift{
-            width:60%;
-            margin:0 20%;
-            .gift-img{
-              height:auto;
-            }
-            .get-rank{
-              background-size: 100%;
-              font-size: 16px;
-              padding: 0 20px;
-            }
-          }
-          .rule-list{
-            width: 96%;
-            margin: 0 2%;
-            li{
-              font-size:12px;
-              &.tip-info{
-                margin:20px 0;
-              }
-            }
-          }
+        }
+        .my-order {
+          float: right;
         }
       }
     }
