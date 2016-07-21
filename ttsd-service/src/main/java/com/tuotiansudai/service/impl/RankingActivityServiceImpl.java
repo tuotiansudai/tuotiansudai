@@ -198,7 +198,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         Set<Tuple> top10 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
         for (Tuple tuple : top10) {
-            userScoreDtoTop10.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement()), (long) tuple.getScore()));
+            userScoreDtoTop10.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
         }
         return userScoreDtoTop10;
     }

@@ -66,7 +66,7 @@ public class RandomUtils {
         return sb.toString();
     }
 
-    public String encryptMobile(String loginName, String investorLoginName, long investId) {
+    public String encryptMobile(String loginName, String investorLoginName, long investId,Source source) {
         String userMobile;
         String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
         if (StringUtils.isNotEmpty(loginName)) {
@@ -79,7 +79,12 @@ public class RandomUtils {
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
         }
-        String encryptMobile = encryptAppMiddleMobile(investUserMobile);
+        String encryptMobile;
+        if(source.equals(Source.WEB)){
+            encryptMobile = encryptWebMiddleMobile(investUserMobile);
+        }else{
+            encryptMobile = encryptAppMiddleMobile(investUserMobile);
+        }
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
