@@ -4,6 +4,7 @@ apply from: 'db_migration.gradle'
 dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             project(':ttsd-service'),
+            project(':ttsd-message'),
             project(':ttsd-point'),
             project(':ttsd-jpush'),
             project(':ttsd-membership')

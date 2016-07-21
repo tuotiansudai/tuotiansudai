@@ -15,5 +15,5 @@ public interface AuditLogService {
 
     String clearMybatisCache();
 
-    BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorLoginName, String auditorLoginName, Date startTime, Date endTime, int index, int pageSize);
+    BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize);
 }

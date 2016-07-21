@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -65,14 +66,17 @@ public class LiCaiQuanArticleController {
     public ModelAndView findArticle(@RequestParam(value = "title", required = false) String title,
                                     @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
                                     @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                    @RequestParam(value = "status", required = false) ArticleStatus status,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView mv = new ModelAndView("/article-list");
-        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType, pageSize, index);
+        ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
         mv.addObject("data", dto);
         mv.addObject("title", title);
         mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
         mv.addObject("articleSectionTypeList", ArticleSectionType.values());
         mv.addObject("userName",LoginUserInfo.getLoginName());
+        mv.addObject("articleStatus",ArticleStatus.values());
+        mv.addObject("status",status);
         return mv;
     }
 
@@ -98,13 +102,21 @@ public class LiCaiQuanArticleController {
     }
 
     @RequestMapping(value = "/article/{articleId}/check-view", method = RequestMethod.GET)
-    public ModelAndView checkViewArticle(@PathVariable long articleId) {
+    public ModelAndView checkViewArticle(@PathVariable long articleId,
+                                         @RequestParam(value = "title", required = false) String title,
+                                         @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
+                                         @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                         @RequestParam(value = "status", required = false) ArticleStatus status) {
         LiCaiQuanArticleDto liCaiQuanArticleDto = liCaiQuanArticleService.getArticleContent(articleId);
         if (null == liCaiQuanArticleDto) {
             return new ModelAndView("redirect:/error/404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/article-check-view");
             modelAndView.addObject("articleContent", liCaiQuanArticleDto);
+            modelAndView.addObject("title", title);
+            modelAndView.addObject("articleSectionType", articleSectionType);
+            modelAndView.addObject("status",status);
+            modelAndView.addObject("index",index);
             return modelAndView;
         }
     }
@@ -116,11 +128,11 @@ public class LiCaiQuanArticleController {
         return new BaseDto<>();
     }
 
-    @RequestMapping(value = "/article/{articleId}/checkPass/", method = RequestMethod.GET)
-    public ModelAndView checkPass(@PathVariable long articleId) {
+    @RequestMapping(value = "/article/{articleId}/checkPass", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> checkPass(@PathVariable long articleId) {
         liCaiQuanArticleService.checkPassAndCreateArticle(articleId, LoginUserInfo.getLoginName());
-        ModelAndView mv = new ModelAndView("redirect:/announce-manage/article/list");
-        return mv;
+        return new BaseDto<>();
     }
 
     @RequestMapping(value = "/article/{articleId}/deleteArticle", method = RequestMethod.GET)

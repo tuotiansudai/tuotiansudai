@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -12,4 +13,6 @@ public interface AgreementService {
     BaseDto<PayFormDataDto> agreement(AgreementDto dto);
 
     String agreementCallback(Map<String, String> paramsMap, String queryString,AgreementBusinessType agreementBusinessType);
+
+    void postAgreementCallback(String loginName, AgreementBusinessType agreementBusinessType);
 }

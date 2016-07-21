@@ -5,9 +5,9 @@
 <div class="col-md-10">
     <form action="/" class="form-inline query-build">
         <div class="form-group">
-            <label for="loginName">用户名</label>
-            <input type="text" id="login-name" name="loginName" class="form-control ui-autocomplete-input" datatype="*"
-                   autocomplete="off" value="${loginName!}"/>
+            <label for="mobile">手机号</label>
+            <input type="text" id="login-mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${mobile!}"/>
         </div>
 
         <div class="form-group">
@@ -44,7 +44,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>用户名</th>
+                <th>手机号</th>
                 <th>来源</th>
                 <th>IP</th>
                 <th>设备</th>
@@ -55,7 +55,7 @@
             <tbody>
                 <#list data.records as record>
                 <tr>
-                    <td>${record.loginName}</td>
+                    <td>${record.mobile}</td>
                     <td>${record.source}</td>
                     <td>${record.ip!}</td>
                     <td>${record.device!}</td>

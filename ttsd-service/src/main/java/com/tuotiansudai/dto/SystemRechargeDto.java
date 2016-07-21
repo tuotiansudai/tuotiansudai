@@ -10,18 +10,18 @@ public class SystemRechargeDto implements Serializable {
     private String operatorLoginName;
 
     @NotEmpty
-    private String loginName;
+    private String mobile;
 
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
-    public String getLoginName() {
-        return loginName;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getAmount() {

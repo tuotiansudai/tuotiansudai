@@ -20,6 +20,8 @@ public class LoanDetailInvestPaginationItemDto {
 
     private boolean autoInvest;
 
+    private String mobile;
+
     private List<InvestAchievement> achievements;
 
     public String getLoginName() {
@@ -76,5 +78,13 @@ public class LoanDetailInvestPaginationItemDto {
 
     public void setAchievements(List<InvestAchievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

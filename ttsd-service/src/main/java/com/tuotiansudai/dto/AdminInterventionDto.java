@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class AdminInterventionDto implements Serializable {
 
     @NotNull
-    private String loginName;
+    private String mobile;
 
     @NotNull
     private UserBillOperationType operationType;
@@ -20,12 +20,12 @@ public class AdminInterventionDto implements Serializable {
     @NotNull
     private String description;
 
-    public String getLoginName() {
-        return loginName;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public UserBillOperationType getOperationType() {
