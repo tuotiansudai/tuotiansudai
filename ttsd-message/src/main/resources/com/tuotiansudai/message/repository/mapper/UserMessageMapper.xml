@@ -80,7 +80,6 @@
                 #{item}
             </foreach>
         </if>
-        and `read` = FALSE
     </select>
 
 </mapper>
