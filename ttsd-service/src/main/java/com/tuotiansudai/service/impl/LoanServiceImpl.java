@@ -757,11 +757,11 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
-    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
-            @Override
-            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateDto(model);
+    private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateItemDto>() {
+    @Override
+            public ExtraLoanRateItemDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateItemDto(model);
             }
         });
     }

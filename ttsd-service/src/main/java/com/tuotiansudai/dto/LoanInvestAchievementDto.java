@@ -17,8 +17,6 @@ public class LoanInvestAchievementDto implements Serializable {
 
     private Date lastInvestAchievementDate;
 
-    private String loanRemainingAmount;
-
     public String getFirstInvestAchievementLoginName() {
         return firstInvestAchievementLoginName;
     }
@@ -65,13 +63,5 @@ public class LoanInvestAchievementDto implements Serializable {
 
     public void setLastInvestAchievementDate(Date lastInvestAchievementDate) {
         this.lastInvestAchievementDate = lastInvestAchievementDate;
-    }
-
-    public String getLoanRemainingAmount() {
-        return loanRemainingAmount;
-    }
-
-    public void setLoanRemainingAmount(String loanRemainingAmount) {
-        this.loanRemainingAmount = loanRemainingAmount;
     }
 }

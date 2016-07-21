@@ -1,6 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -32,6 +34,15 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanMapper loanMapper;
 
     @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -53,6 +64,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private CouponMapper couponMapper;
 
     @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
@@ -69,8 +83,15 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         }
 
         LoanDetailDto loanDto = this.convertModelToDto(loanModel, loginName);
+
         loanDto.setStatus(true);
         return loanDto;
+    }
+
+    @Override
+    public ExtraLoanRateDto getExtraLoanRate(long loanId) {
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
+        return CollectionUtils.isEmpty(extraLoanRateModels) ? null : new ExtraLoanRateDto(extraLoanRateModels);
     }
 
     @Override
@@ -114,20 +135,57 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     }
 
     private boolean isRemindNoPassword(String loginName) {
-        return redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
+        return !Strings.isNullOrEmpty(loginName) && redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
     }
 
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
-        LoanDetailDto loanDto = new LoanDetailDto(loanModel, investedAmount, loanTitleMapper.findAll(), loanTitleRelationMapper.findByLoanId(loanModel.getId()));
+        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel != null) {
-            loanDto.setHasRemindInvestNoPassword(this.isRemindNoPassword(loginName));
-            loanDto.setAutoInvest(accountModel.isAutoInvest());
-            loanDto.setInvestNoPassword(accountModel.isNoPasswordInvest());
-            loanDto.setUserBalance(accountModel.getBalance());
-            loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount)));
+
+        LoanDetailDto loanDto = new LoanDetailDto(loanModel,
+                investedAmount,
+                loanTitleMapper.findAll(),
+                loanTitleRelationMapper.findByLoanId(loanModel.getId()),
+                investorDto);
+
+        LoanerDetailsModel loanerDetail = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        if (loanerDetail != null) {
+            loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
+                    .put("借款人", loanerDetail.getUserName())
+                    .put("平台ID", loanerDetail.getLoginName())
+                    .put("性别", loanerDetail.getGender().getDescription())
+                    .put("年龄", String.valueOf(loanerDetail.getAge()))
+                    .put("婚姻状况", loanerDetail.getMarriage().getDescription())
+                    .put("身份证号", loanerDetail.getIdentityNumber())
+                    .put("申请地区", loanerDetail.getRegion())
+                    .put("收入水平", loanerDetail.getIncome())
+                    .put("就业情况", loanerDetail.getEmploymentStatus())
+                    .build());
+        }
+
+        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+        if (pledgeHouseDetail != null) {
+            loanDto.setPledgeHouseDetail(ImmutableMap.<String, String>builder()
+                    .put("抵押物所在地", pledgeHouseDetail.getPledgeLocation())
+                    .put("抵押物估值", pledgeHouseDetail.getEstimateAmount())
+                    .put("房屋面积", pledgeHouseDetail.getSquare())
+                    .put("房产证编号", pledgeHouseDetail.getPropertyCardId())
+                    .put("不动产登记证明", pledgeHouseDetail.getEstateRegisterId())
+                    .put("公证书编号", pledgeHouseDetail.getAuthenticAct())
+                    .put("抵押物借款金额", pledgeHouseDetail.getLoanAmount())
+                    .build());
+        }
+
+        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+        if (pledgeVehicleModel != null) {
+            loanDto.setPledgeVehicleDetail(ImmutableMap.<String, String>builder()
+                    .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
+                    .put("车辆品牌", pledgeVehicleModel.getBrand())
+                    .put("车辆型号", pledgeVehicleModel.getModel())
+                    .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())
+                    .put("抵押物借款金额", pledgeVehicleModel.getLoanAmount())
+                    .build());
         }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
@@ -148,36 +206,35 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, firstInvest.getLoginName(), 6));
+                achievementDto.setFirstInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, firstInvest.getLoginName(), 3));
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName, maxInvest.getLoginName(), 6));
+                achievementDto.setMaxAmountAchievementLoginName(randomUtils.encryptLoginName(loginName, maxInvest.getLoginName(), 3));
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, lastInvest.getLoginName(), 6));
+                achievementDto.setLastInvestAchievementLoginName(randomUtils.encryptLoginName(loginName, lastInvest.getLoginName(), 3));
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
             }
-            achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
-
             loanDto.setAchievement(achievementDto);
         }
+
         return loanDto;
     }
 
     private long calculateMaxAvailableInvestAmount(String loginName, LoanModel loanModel, long investedAmount) {
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        long maxAvailableInvestAmount = NumberUtils.min(accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);
+        long balance = Strings.isNullOrEmpty(loginName) || accountMapper.findByLoginName(loginName) == null ? 0 : accountMapper.findByLoginName(loginName).getBalance();
+
+        long maxAvailableInvestAmount = NumberUtils.min(balance, loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);
 
         if (maxAvailableInvestAmount < loanModel.getMinInvestAmount()) {
             return 0L;
         }
         return maxAvailableInvestAmount - (maxAvailableInvestAmount - loanModel.getMinInvestAmount()) % loanModel.getInvestIncreasingAmount();
     }
-
 }
