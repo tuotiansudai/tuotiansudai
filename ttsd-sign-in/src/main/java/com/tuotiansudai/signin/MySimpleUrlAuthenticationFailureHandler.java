@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -57,9 +58,12 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         baseDto.setData(loginDto);
-        this.updateUserStatus(request.getParameter("username"));
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
+
+        if(exception instanceof BadCredentialsException){
+            this.updateUserStatus(request.getParameter("username"));
+        }
 
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
