@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
         bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._90.toString(),String.valueOf(ProductType._90.getDuration()),"11"));
         bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._180.toString(),String.valueOf(ProductType._180.getDuration()),"12"));
         bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._360.toString(),String.valueOf(ProductType._360.getDuration()),"13"));
-        bookingLoanListsDto.setBookingLoanResponseDtoList(bookingLoanResponseDtoList);
+        bookingLoanListsDto.setBookingLoans(bookingLoanResponseDtoList);
         baseResponseDto.setData(bookingLoanListsDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -47,7 +48,7 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
                 Source.valueOf(bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)),
                 DateTime.now().toDate(),
                 bookingLoanRequestDto.getProductType(),
-                !Strings.isNullOrEmpty(bookingLoanRequestDto.getBookingAmount()) ? Long.parseLong(bookingLoanRequestDto.getBookingAmount()) : 0,
+                AmountConverter.convertStringToCent(bookingLoanRequestDto.getBookingAmount()),
                 DateTime.now().toDate(),
                 false,
                 DateTime.now().toDate());
@@ -57,5 +58,4 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;
     }
-
 }

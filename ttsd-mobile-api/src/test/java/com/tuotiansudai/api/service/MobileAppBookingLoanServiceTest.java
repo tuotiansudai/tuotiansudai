@@ -31,7 +31,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase{
     @Test
     public void shouldGetBookingLoanIsOk(){
         BaseResponseDto<BookingLoanResponseListsDto> bookingLoan = mobileAppBookingLoanService.getBookingLoan();
-        assertThat(bookingLoan.getData().getBookingLoanResponseDtoList().size(),is(3));
+        assertThat(bookingLoan.getData().getBookingLoans().size(),is(3));
     }
 
     @Test
