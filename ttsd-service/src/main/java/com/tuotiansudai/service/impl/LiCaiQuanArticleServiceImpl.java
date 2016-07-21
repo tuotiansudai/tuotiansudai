@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleCommentMapper;
@@ -86,7 +87,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         return list;
     }
 
-    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType) {
+    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType,ArticleStatus articleStatus) {
         List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
         Map<byte[], byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
         for (byte[] key : articleDtoListHkey.keySet()) {
@@ -95,7 +96,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 continue;
             }
 
-            if(articleSectionType == null){
+            if(articleSectionType == null && articleStatus == null){
                 articleDtoList.add(liCaiQuanArticleDto);
                 continue;
             }
@@ -109,24 +110,35 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
 
     @Override
     public ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,
+                                                            ArticleStatus articleStatus,
                                                             int pageSize, int index) {
         int count = 0;
         List<LiCaiQuanArticleDto> list;
-        List<LiCaiQuanArticleDto> articleDtoList = findRedisArticleDto(title, articleSectionType);
+        List<LiCaiQuanArticleDto> articleDtoList;
+        if(articleStatus != null && articleStatus.equals(ArticleStatus.PUBLISH)){
+            articleDtoList = Lists.newArrayList();
+        }else{
+            articleDtoList = findRedisArticleDto(title, articleSectionType,articleStatus);
+        }
+
         if (CollectionUtils.isNotEmpty(articleDtoList)) {
             count += articleDtoList.size();
         }
 
-        List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title, articleSectionType, 1, 10000);
-        if (CollectionUtils.isNotEmpty(articleListItemModelList)) {
-            count += articleListItemModelList.size();
-            for (LicaiquanArticleModel model : articleListItemModelList) {
-                articleDtoList.add(new LiCaiQuanArticleDto(model));
+        if(articleStatus == null || articleStatus.equals(ArticleStatus.PUBLISH)){
+            List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title, articleSectionType, 1, 10000);
+            if (CollectionUtils.isNotEmpty(articleListItemModelList)) {
+                count += articleListItemModelList.size();
+                for (LicaiquanArticleModel model : articleListItemModelList) {
+                    articleDtoList.add(new LiCaiQuanArticleDto(model));
+                }
             }
         }
+
         Collections.sort(articleDtoList, new Comparator<LiCaiQuanArticleDto>() {
             @Override
             public int compare(LiCaiQuanArticleDto o1, LiCaiQuanArticleDto o2) {
+
                 return o2.getCreateTime().after(o1.getCreateTime()) ? 1 : -1;
             }
         });
@@ -161,8 +173,6 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                    redis.setOriginal(true);
                }
             }
-
-
         }
         return list;
     }

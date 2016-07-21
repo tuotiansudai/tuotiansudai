@@ -23,7 +23,7 @@
 
     <select id="findByLoginName" parameterType="string" resultMap="pointBillResultMap">
         select * from point_bill where login_name = #{loginName}
-        order by created_time desc;
+        order by created_time desc, id desc;
     </select>
 
     <select id="findPointBillPagination" parameterType="map" resultMap="pointBillResultMap">
@@ -84,6 +84,10 @@
                 and login_name = #{loginName}
             </if>
         </where>
+    </select>
+
+    <select id="findLatestSignInPointBillByLoginName" parameterType="map" resultMap="pointBillResultMap">
+        select * from point_bill where login_name = #{loginName} and business_type = 'SIGN_IN' order by created_time desc LIMIT 1
     </select>
 
 </mapper>

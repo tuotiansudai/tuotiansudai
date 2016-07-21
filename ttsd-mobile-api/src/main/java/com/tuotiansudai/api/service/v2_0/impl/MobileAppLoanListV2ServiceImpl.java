@@ -2,7 +2,11 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v2_0.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -19,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,7 +80,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     }
 
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
-        List<LoanResponseDataDto> loanDtoList = new ArrayList<>();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

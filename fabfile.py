@@ -17,7 +17,8 @@ env.roledefs = {
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
-    'activity': ['sanya']
+    'activity': ['sanya'],
+    'signin' : ['xian']
 }
 
 
@@ -37,6 +38,7 @@ def mk_war():
     local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_worker_zip():
@@ -140,9 +142,17 @@ def deploy_activity():
     upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
+@roles('signin')
+@parallel
+def deploy_sign_in():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-sign-in/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
 
 def deploy_all():
     execute(deploy_static)
+    execute(deploy_sign_in)
     execute(deploy_sms)
     execute(deploy_console)
     execute(deploy_pay)
@@ -198,6 +208,9 @@ def pay():
     pre_deploy()
     execute(deploy_pay)
 
+def signin():
+    pre_deploy()
+    execute(deploy_sign_in)
 
 def get_30days_before(date_format="%Y-%m-%d"):
     from datetime import timedelta, date
@@ -258,6 +271,11 @@ def remove_worker_logs():
 def remove_static_logs():
     remove_nginx_logs()
 
+@roles('signin')
+@parallel
+def remove_sign_in_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
 
 def remove_old_logs():
     """
@@ -269,6 +287,7 @@ def remove_old_logs():
     execute(remove_api_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
+    execute(remove_sign_in_logs)
 
 
 @roles('pay')
@@ -324,6 +343,15 @@ def restart_logstash_service_for_activity():
     """
     run("service logstash restart")
 
+@roles('signin')
+@parallel
+def restart_logstash_service_for_sign_in():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
 
 def restart_logstash(service):
     """
@@ -335,7 +363,8 @@ def restart_logstash(service):
     env.password = get_password()
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
-           'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity}.get(service)
+           'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
+           'signin': restart_logstash_service_for_sign_in}.get(service)
     execute(func)
 
 
