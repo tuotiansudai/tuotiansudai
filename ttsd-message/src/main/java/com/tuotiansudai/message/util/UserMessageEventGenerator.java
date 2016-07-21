@@ -79,7 +79,7 @@ public class UserMessageEventGenerator {
             //您推荐的好友 {0} 成功注册，若该好友进行投资，您即可获取现金奖励哦
             String titleTemplate = recommendSuccessMessage.getTitle();
             String title = MessageFormat.format(titleTemplate, loginName);
-            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getReferrer(), title, null);
+            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getMobile(), title, null);
             userMessageMapper.create(userMessageModel);
         }
     }
@@ -192,7 +192,7 @@ public class UserMessageEventGenerator {
             List<InvestReferrerRewardModel> investReferrerRewardModels = investReferrerRewardMapper.findByInvestId(successInvest.getId());
             for (InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModels) {
                 if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
-                    String title = MessageFormat.format(titleTemplate, successInvest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()));
+                    String title = MessageFormat.format(titleTemplate, userMapper.findByLoginName(successInvest.getLoginName()).getMobile(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()));
                     UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), investReferrerRewardModel.getReferrerLoginName(), title, null);
                     userMessageMapper.create(userMessageModel);
                 }
