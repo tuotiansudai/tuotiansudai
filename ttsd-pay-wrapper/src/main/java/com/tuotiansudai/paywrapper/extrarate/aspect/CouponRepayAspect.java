@@ -25,7 +25,7 @@ public class CouponRepayAspect {
         final long loanId = (long) joinPoint.getArgs()[0];
         logger.debug(MessageFormat.format("loan out : generate coupon payment , (loanId : {0}) ", String.valueOf(loanId)));
         try {
-            couponRepayService.generateCouponPayment(loanId);
+            couponRepayService.generateCouponRepay(loanId);
         } catch (Exception e) {
             logger.error(MessageFormat.format("loan out : generate coupon payment faild, (loanId : {0})", String.valueOf(loanId)), e);
         }

@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -170,7 +169,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void generateCouponPayment(long loanId) {
+    public void generateCouponRepay(long loanId) {
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         if (CollectionUtils.isEmpty(successInvestModels)) {
             logger.error(MessageFormat.format("(invest record is exist (loanId = {0}))", String.valueOf(loanId)));
