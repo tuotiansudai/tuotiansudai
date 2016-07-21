@@ -1,12 +1,13 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.dto;
 
-import com.tuotiansudai.dto.BankDto;
-import com.tuotiansudai.util.AmountConverter;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BankModel implements Serializable {
+public class BankDto extends BaseDataDto implements Serializable {
 
     private long id;
 
@@ -16,33 +17,21 @@ public class BankModel implements Serializable {
 
     private String imageUrl;
 
-    private long singleAmount;
+    @NotEmpty
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
+    private String singleAmount;
 
-    private long singleDayAmount;
+    @NotEmpty
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
+    private String singleDayAmount;
 
     private String createdBy;
 
-    private Date createdTime = new Date();
+    private Date createdTime;
 
     private String updatedBy;
 
     private Date updatedTime;
-
-    public BankModel() {
-    }
-
-    public BankModel(BankDto bankDto) {
-        this.id = bankDto.getId();
-        this.name = bankDto.getName();
-        this.shorterName = bankDto.getShorterName();
-        this.imageUrl = bankDto.getImageUrl();
-        this.singleAmount = AmountConverter.convertStringToCent(bankDto.getSingleAmount());
-        this.singleDayAmount = AmountConverter.convertStringToCent(bankDto.getSingleDayAmount());
-        this.createdBy = bankDto.getCreatedBy();
-        this.createdTime = bankDto.getCreatedTime();
-        this.updatedBy = bankDto.getUpdatedBy();
-        this.updatedTime = bankDto.getUpdatedTime();
-    }
 
     public long getId() {
         return id;
@@ -76,19 +65,19 @@ public class BankModel implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public long getSingleAmount() {
+    public String getSingleAmount() {
         return singleAmount;
     }
 
-    public void setSingleAmount(long singleAmount) {
+    public void setSingleAmount(String singleAmount) {
         this.singleAmount = singleAmount;
     }
 
-    public long getSingleDayAmount() {
+    public String getSingleDayAmount() {
         return singleDayAmount;
     }
 
-    public void setSingleDayAmount(long singleDayAmount) {
+    public void setSingleDayAmount(String singleDayAmount) {
         this.singleDayAmount = singleDayAmount;
     }
 

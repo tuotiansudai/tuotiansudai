@@ -19,19 +19,21 @@
         <result column="updated_time" property="updatedTime"></result>
     </resultMap>
 
-    <select id="findById" parameterType="java.lang.long" resultMap="bankResultMap">
+    <select id="findById" parameterType="map" resultMap="bankResultMap">
         select * from bank where id = #{id}
     </select>
 
     <update id="update" parameterType="BankModel">
         update bank set
           single_amount = #{singleAmount},
-          single_day_amount = #{singleDayAmount}
+          single_day_amount = #{singleDayAmount},
+          updated_by = #{updatedBy},
+          updated_time = #{updatedTime}
         where id = #{id}
     </update>
 
     <select id="findBankList" resultMap="bankResultMap">
-        select * from bank
+        select * from bank order by single_day_amount desc, single_amount desc
     </select>
 
 </mapper>
