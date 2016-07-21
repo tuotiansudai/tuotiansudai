@@ -10,7 +10,18 @@ body {
 
 }
 .anniversary-container{
-
+  .des-text {
+    padding: 20px 0;
+    text-align: center;
+  }
+  .btn-text {
+    text-align: center;
+    a {
+      background: #ff752a;
+      border: 1px solid #f46916;
+      color: #fff;
+    }
+  }
   .nodata-refer,.nodata-invest {
     margin-top: 80px;
   }
@@ -99,7 +110,7 @@ body {
         margin-left: 45px;
         margin-right: 45px;
         min-height: 258px;
-
+        overflow: hidden;
         h2 {
           text-align: center;
           color: #e62e2e;

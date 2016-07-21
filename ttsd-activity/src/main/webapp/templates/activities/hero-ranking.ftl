@@ -160,7 +160,7 @@
 
                         </div>
                     <div class="tc clearfix">
-                        <a class="button-big" href="#">立即推荐</a>
+                        <a class="button-big" href="/referrer/refer-list">立即推荐</a>
                     </div>
                 </div>
             </div>
@@ -209,5 +209,21 @@
                 </div>
         </div>
     </div>
+
+    <div class="tip-vip-model" id="vipTipModel"></div>
+    <script type="text/html" id="vipTipModelTpl">
+
+        <p class="des-text"><%=data.description%></p>
+        <%  var content;
+        if(data.url=='')  {
+            content='<a href="javascript:void(0)" class="btn" id="closeTip">返回</a>';
+          }
+        else {
+        content=' <a href="{{data.url}}" class="btn">{{data.btnName}}</a>';
+        }
+        %>
+        <p class="btn-text"><%=content%></p>
+    </script>
+
 </div>
 </@global.main>

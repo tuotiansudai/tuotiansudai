@@ -57,8 +57,10 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				dataType: 'json'
 			})
 			.done(function(data) {
-				console.log(data);
-				$('#vipTipModel').html(tpl('vipTipModelTpl', data));
+					var tipTpl=$('#vipTipModelTpl').html();
+					var TipRender = _.template(tipTpl);
+					$('#vipTipModel').html(TipRender(data));
+
 				layer.open({
 				  type: 1,
 				  move:false,
@@ -86,11 +88,16 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			})
 			.done(function(data) {
 				if(data.status) {
+					var $nodataInvest=$('.nodata-invest'),
+						$contentRanking=$('#investRanking-tbody').parents('table');
+
 					if(_.isNull(data.records) || data.records.length==0) {
-						$('.nodata-invest').show();
+						$nodataInvest.show();
+						$contentRanking.hide();
 						return;
 					}
-					$('#investRanking-tbody').parents('table').show();
+					$contentRanking.show();
+					$nodataInvest.hide();
 					data.type='invest';
 					$('#investRanking-tbody').html(ListRender(data));
 				}
@@ -110,11 +117,15 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			})
 			.done(function(data) {
 				if(data.status) {
+					var $nodataInvest=$('.nodata-refer'),
+						$contentRefer=$('#referRanking-tbody').parents('table');
 					if(_.isNull(data.records) || data.records.length==0) {
-						$('.nodata-refer').show();
+						$nodataInvest.show();
+						$contentRefer.hide();
 						return;
 					}
-					$('#referRanking-tbody').parents('table').show();
+					$contentRefer.show();
+					$nodataInvest.hide();
 					data.type='referrer';
 					$('#referRanking-tbody').html(ListRender(data));
 				}
