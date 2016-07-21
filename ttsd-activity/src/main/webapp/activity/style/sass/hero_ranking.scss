@@ -191,7 +191,7 @@ body {
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .anniversary-container{
     .nodata-refer,.nodata-invest {
       margin-top: 10px;
@@ -199,6 +199,9 @@ body {
     .container{
       .step-section-four {
         margin-top:45px;
+        .dotted-normal-box {
+          margin-top:40px!important;
+        }
       }
       .step-two-title {
         display: none;
@@ -245,7 +248,7 @@ body {
         }
         .dotted-normal-box {
           padding: 10px;
-          margin: 20px;
+          margin: 20px 20px 20px 20px;
           width: calc(100% - 40px);
           min-height:100px;
           text-align: center;
@@ -265,7 +268,7 @@ body {
           }
         }
         .description {
-          margin-top:20px;
+          margin-top: 30px;
           margin-bottom: 0px;
           padding: 0 20px;
           text-align: left;
