@@ -85,13 +85,14 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				dataType: 'json'
 			})
 			.done(function(data) {
-					var data={"status":true,"message":null,"records":[{"loginName":"hey******","sumAmount":2289444,"userName":"赫媛媛","mobile":"18600749459","centSumAmount":"22894.44"},{"loginName":"yan******","sumAmount":2000000,"userName":"冯华容","mobile":"13932711604","centSumAmount":"20000.00"},{"loginName":"lin******","sumAmount":1628327,"userName":"王美娟","mobile":"15998504411","centSumAmount":"16283.27"},{"loginName":"che******","sumAmount":230000,"userName":"陈放","mobile":"18903240495","centSumAmount":"2300.00"},{"loginName":"lia******","sumAmount":200000,"userName":"梁晔","mobile":"13651133128","centSumAmount":"2000.00"},{"loginName":"lia******","sumAmount":100000,"userName":"梁金花","mobile":"13522923770","centSumAmount":"1000.00"},{"loginName":"wad******","sumAmount":60000,"userName":"吴冬","mobile":"13911552934","centSumAmount":"600.00"},{"loginName":"gai******","sumAmount":52663,"userName":"盖薇","mobile":"13731441374","centSumAmount":"526.63"},{"loginName":"wux******","sumAmount":50000,"userName":"王英霄","mobile":"15890187610","centSumAmount":"500.00"},{"loginName":"dou******","sumAmount":50000,"userName":"马豆","mobile":"15137180297","centSumAmount":"500.00"}]};
+					//var data={"status":true,"message":null,"records":[{"loginName":"hey******","sumAmount":2289444,"userName":"赫媛媛","mobile":"18600749459","centSumAmount":"22894.44"},{"loginName":"yan******","sumAmount":2000000,"userName":"冯华容","mobile":"13932711604","centSumAmount":"20000.00"},{"loginName":"lin******","sumAmount":1628327,"userName":"王美娟","mobile":"15998504411","centSumAmount":"16283.27"},{"loginName":"che******","sumAmount":230000,"userName":"陈放","mobile":"18903240495","centSumAmount":"2300.00"},{"loginName":"lia******","sumAmount":200000,"userName":"梁晔","mobile":"13651133128","centSumAmount":"2000.00"},{"loginName":"lia******","sumAmount":100000,"userName":"梁金花","mobile":"13522923770","centSumAmount":"1000.00"},{"loginName":"wad******","sumAmount":60000,"userName":"吴冬","mobile":"13911552934","centSumAmount":"600.00"},{"loginName":"gai******","sumAmount":52663,"userName":"盖薇","mobile":"13731441374","centSumAmount":"526.63"},{"loginName":"wux******","sumAmount":50000,"userName":"王英霄","mobile":"15890187610","centSumAmount":"500.00"},{"loginName":"dou******","sumAmount":50000,"userName":"马豆","mobile":"15137180297","centSumAmount":"500.00"}]};
 				if(data.status) {
 					if(_.isNull(data.records) || data.records.length==0) {
 						$('.nodata-invest').show();
 						return;
 					}
 					$('#investRanking-tbody').parents('table').show();
+					data.type='invest';
 					$('#investRanking-tbody').html(ListRender(data));
 				}
 
@@ -109,14 +110,15 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				dataType: 'json'
 			})
 			.done(function(data) {
-				var data={"status":true,"message":null,"records":[{"loginName":"tts******","sumAmount":2289444,"userName":"刘守艳","mobile":"13901255493","centSumAmount":"22894.44"},{"loginName":"278******","sumAmount":2000000,"userName":"冯华梅","mobile":"13623271373","centSumAmount":"20000.00"},{"loginName":"aul******","sumAmount":300000,"userName":"梁海燕","mobile":"15910636139","centSumAmount":"3000.00"}]};
+				//var data={"status":true,"message":null,"records":[{"loginName":"tts******","sumAmount":2289444,"userName":"刘守艳","mobile":"13901255493","centSumAmount":"22894.44"},{"loginName":"278******","sumAmount":2000000,"userName":"冯华梅","mobile":"13623271373","centSumAmount":"20000.00"},{"loginName":"aul******","sumAmount":300000,"userName":"梁海燕","mobile":"15910636139","centSumAmount":"3000.00"}]};
 				if(data.status) {
 					if(_.isNull(data.records) || data.records.length==0) {
 						$('.nodata-refer').show();
 						return;
 					}
 					$('#referRanking-tbody').parents('table').show();
-						$('#referRanking-tbody').html(ListRender(data));
+					data.type='referrer';
+					$('#referRanking-tbody').html(ListRender(data));
 				}
 
 			})

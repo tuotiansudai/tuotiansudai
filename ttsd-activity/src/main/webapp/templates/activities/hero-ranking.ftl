@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.hero_ranking}" pageJavascript="${js.hero_ranking}" activeNav="" activeLeftNav="" title="周年庆活动_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
 <div class="anniversary-container">
     <div class="container clearfix">
-        <img src="${staticServer}/activity/images/sign/actor/anniver/anniversary-top.jpg" width="100%" class="responsive-pc">
+        <img src="${staticServer}/activity/images/sign/actor/anniver/top.jpg" width="100%" class="responsive-pc">
         <img src="${staticServer}/activity/images/app-banner/anniversary-mobile.jpg" width="100%" class="responsive-phone">
         <div class="wp actor-bg clearfix">
             <div class="step-section-one">
@@ -58,15 +58,29 @@
                                         <% for(var i = 0; i < records.length; i++) { %>
                                         <% var item = records[i];
                                            var reward;
-                                            if(i==0) {
-                                            reward='神秘大奖';
+                                            if(type=='invest') {
+                                                if(i==0) {
+                                                reward='神秘大奖';
+                                                }
+                                                else if(i>0 && i<5) {
+                                                reward='200元红包';
+                                                }
+                                                else {
+                                                reward='100元红包';
+                                                }
                                             }
-                                            else if(i>0 && i<5) {
-                                            reward='200元红包';
+                                            else if(type=='referrer') {
+                                                if(i==0) {
+                                                reward='100元红包';
+                                                }
+                                                else if(i==1) {
+                                                reward='50元红包';
+                                                }
+                                                else if(i==2) {
+                                                reward='30元红包';
+                                                }
                                             }
-                                            else {
-                                            reward='100元红包';
-                                            }
+
                                         %>
                                         <tr>
                                             <td><%=i+1%></td>

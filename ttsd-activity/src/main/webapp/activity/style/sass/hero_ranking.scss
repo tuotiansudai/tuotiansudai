@@ -1,9 +1,11 @@
 @import 'variables';
 
+body {
+  background:#ffc13c url("/activity/images/sign/actor/anniver/bg-body.png") center top no-repeat;
+}
 .full-screen{
   width: 100%!important;
   margin: 0;
-  background:#ffba00;
   padding-bottom:30px;
 
 }
@@ -14,7 +16,6 @@
   }
   .container{
     width:100%;
-    background: #ffcb5b;
     .button-big {
       background: #e62e2e;
       width:242px;
@@ -196,6 +197,9 @@
       margin-top: 10px;
     }
     .container{
+      .step-section-four {
+        margin-top:45px;
+      }
       .step-two-title {
         display: none;
       }
@@ -263,6 +267,9 @@
         .description {
           margin-top:20px;
           margin-bottom: 0px;
+          padding: 0 20px;
+          text-align: left;
+          line-height: 20px;
         }
         .fl,.fr {
           float: none;
@@ -278,6 +285,7 @@
         }
         .square-title {
           left:auto;
+          top: -23px;
           img {
             width:70%;
           }
@@ -285,6 +293,14 @@
         .my-order {
           float: right;
         }
+
+      }
+      .step-section-three .button-big {
+        font-size: 12px;
+        height: 35px;
+        line-height: 14px;
+        margin-top: 0px;
+        margin-bottom: 0px;
       }
     }
   }
