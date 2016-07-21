@@ -10,6 +10,9 @@ import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
+import com.tuotiansudai.util.CaptchaHelper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +22,27 @@ import javax.validation.Valid;
 
 @Controller
 public class MobileAppLoginController{
+    static Logger logger = Logger.getLogger(MobileAppLoginController.class);
 
     @Autowired
     private SignInClient signInClient;
-
+    @Autowired
+    private CaptchaHelper captchaHelper;
     @Autowired
     private MobileAppTokenProvider mobileAppTokenProvider;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto<LoginResponseDataDto> login(@Valid @ModelAttribute LoginRequestDto loginRequestDto) {
+    public BaseResponseDto<LoginResponseDataDto> login(@Valid @ModelAttribute LoginRequestDto loginRequestDto,HttpServletRequest httpServletRequest) {
         String username = loginRequestDto.getJ_username() == null ? loginRequestDto.getMobile():loginRequestDto.getJ_username();
         String password = loginRequestDto.getJ_password() == null ? loginRequestDto.getPassword():loginRequestDto.getJ_password();
         String captcha = loginRequestDto.getCaptcha();
         String source = loginRequestDto.getJ_source() == null?loginRequestDto.getSource():loginRequestDto.getJ_source();
         String deviceId = loginRequestDto.getJ_deviceId() == null ? loginRequestDto.getDeviceId():loginRequestDto.getJ_deviceId();
+        if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getRemoteAddr()) && StringUtils.isEmpty(captcha) ){
+            logger.debug("Authentication failed: need image captcha but image captcha is null");
+           return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
+        }
         SignInDto signInDto = new SignInDto(username, password, captcha, source, deviceId);
         BaseDto<LoginDto> baseDto = signInClient.sendSignIn(null, signInDto);
         BaseResponseDto<LoginResponseDataDto> baseResponseDto = new BaseResponseDto<>();
@@ -50,8 +59,6 @@ public class MobileAppLoginController{
                 errorMsg = ReturnMessage.USER_IS_DISABLED;
             } else if (baseDto.getData().isCaptchaNotMatch()) {
                 errorMsg = ReturnMessage.IMAGE_CAPTCHA_IS_WRONG;
-            }else if(baseDto.getData().isNeedImageCaptcha()){
-                errorMsg = ReturnMessage.NEED_IMAGE_CAPTCHA;
             }
             baseResponseDto = mobileAppTokenProvider.generateResponseDto(errorMsg,username);
         }

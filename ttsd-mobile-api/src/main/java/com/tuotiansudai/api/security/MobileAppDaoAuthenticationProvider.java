@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.security;
 
 import com.tuotiansudai.exception.CaptchaNotMatchException;
-import com.tuotiansudai.exception.ImageCaptchaException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.CaptchaHelper;
@@ -52,10 +51,7 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
             if(StringUtils.isEmpty(deviceId)){
                 deviceId = httpServletRequest.getParameter("deviceId");
             }
-            if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getRemoteAddr()) && StringUtils.isEmpty(captcha) ){
-                logger.debug("Authentication failed: need image captcha but image captcha is null");
-                throw new ImageCaptchaException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.needImageCaptcha", "need image captcha"));
-            }
+
             if(StringUtils.isNotEmpty(captcha)){
                 boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
 

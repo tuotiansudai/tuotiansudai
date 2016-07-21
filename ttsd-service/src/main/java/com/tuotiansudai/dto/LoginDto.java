@@ -11,8 +11,6 @@ public class LoginDto extends BaseDataDto {
 
     private boolean isCaptchaNotMatch;
 
-    private boolean isNeedImageCaptcha;
-
     private String newSessionId;
 
     private List<Role> roles;
@@ -34,14 +32,7 @@ public class LoginDto extends BaseDataDto {
     public void setCaptchaNotMatch(boolean captchaNotMatch) {
         isCaptchaNotMatch = captchaNotMatch;
     }
-    @JsonProperty(value = "isNeedImageCaptcha")
-    public boolean isNeedImageCaptcha() {
-        return isNeedImageCaptcha;
-    }
 
-    public void setIsNeedImageCaptcha(boolean isNeedImageCaptcha) {
-        this.isNeedImageCaptcha = isNeedImageCaptcha;
-    }
 
     @JsonProperty(value = "roles")
     public List<Role> getRoles() {

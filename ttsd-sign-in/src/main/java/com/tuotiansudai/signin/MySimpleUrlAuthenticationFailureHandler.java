@@ -5,7 +5,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.exception.CaptchaNotMatchException;
-import com.tuotiansudai.exception.ImageCaptchaException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -61,7 +60,6 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         this.updateUserStatus(request.getParameter("username"));
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
-        loginDto.setIsNeedImageCaptcha(exception instanceof ImageCaptchaException);
 
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
