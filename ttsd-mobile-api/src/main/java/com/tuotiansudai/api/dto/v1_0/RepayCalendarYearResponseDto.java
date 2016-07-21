@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +27,18 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
     public RepayCalendarYearResponseDto(String month,InvestRepayModel investRepayModel){
         this.month = month;
         if(investRepayModel.getActualInterest() > 0){
+            this.repayAmount = String.valueOf(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest());
+        }else if(investRepayModel.getExpectedInterest() > 0){
+            this.expectedRepayAmount = String.valueOf(investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest());
+        }
+    }
 
+    public RepayCalendarYearResponseDto(String month,CouponRepayModel couponRepayModel){
+        this.month = month;
+        if(couponRepayModel.getActualInterest() > 0){
+            this.repayAmount = String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee());
+        }else if(couponRepayModel.getExpectedInterest() > 0){
+            this.expectedRepayAmount = String.valueOf(couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee());
         }
     }
 

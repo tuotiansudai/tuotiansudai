@@ -50,9 +50,13 @@
     </update>
 
     <select id="findCouponRepayByInvestIdAndRepayDate" resultMap="couponRepayResultMap" parameterType="map">
-        select * from coupon_repay where 1=1
+        select * from coupon_repay
+        WHERE login_name = #{loginName}
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(repay_date, '%Y') = #{year}
+        </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(repay_date, '%Y-%m') = #{month}
+            AND DATE_FORMAT(repay_date, '%m') = #{month}
         </if>
         <if test="day != null and day != ''">
             AND DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day}

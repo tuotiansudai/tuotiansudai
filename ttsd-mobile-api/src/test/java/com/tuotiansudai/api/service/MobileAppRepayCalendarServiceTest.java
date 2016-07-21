@@ -71,12 +71,6 @@ public class MobileAppRepayCalendarServiceTest {
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
-
-    private SimpleDateFormat monthSimpleDateFormat = new SimpleDateFormat("MM");
-
-    private SimpleDateFormat daySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     @Test
     public void shouldGetYearRepayCalendarByIsOk(){
         String loginName = "testRepayCalender";
