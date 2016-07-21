@@ -344,15 +344,16 @@
                                         <div class="scroll-wrap" scroll-carousel>
                                             <div class="scroll-content">
                                                 <div class="row">
-                                                    <a class="col" href="${title}" rel="example_group">
-                                                        <img class="img" layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
-                                                    </a>
+                                                    <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
+                                                        <a class="col" href="${title}" rel="example_group">
+                                                            <img class="img" layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
+                                                        </a>
+                                                    </#list>
+
                                                 </div>
                                             </div>
-                                            <div class="left-button disabled">
-                                            </div>
-                                            <div class="right-button">
-                                            </div>
+                                            <div class="left-button disabled"></div>
+                                            <div class="right-button"></div>
                                         </div>
                                     </#if>
                                 </#list>
