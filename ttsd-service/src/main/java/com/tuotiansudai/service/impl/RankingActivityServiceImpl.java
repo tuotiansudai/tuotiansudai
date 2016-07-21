@@ -193,12 +193,12 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     @Override
-    public List<UserScoreDto> getTianDouTop15() {
+    public List<UserScoreDto> getTianDouTop15(String loginName) {
         List<UserScoreDto> userScoreDtoTop10 = new ArrayList<>();
 
         Set<Tuple> top10 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
         for (Tuple tuple : top10) {
-            userScoreDtoTop10.add(new UserScoreDto(randomUtils.encryptMobile(null, tuple.getElement(), Source.WEB), (long) tuple.getScore()));
+            userScoreDtoTop10.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement()), (long) tuple.getScore()));
         }
         return userScoreDtoTop10;
     }
