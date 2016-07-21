@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
@@ -45,6 +46,7 @@ public interface TransferApplicationMapper {
                                                                              @Param("transferrerLoginName") String transferrerLoginName,
                                                                              @Param("transfereeLoginName") String transfereeLoginName,
                                                                              @Param("loanId") Long loanId,
+                                                                             @Param("source") Source source,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
 
@@ -54,7 +56,8 @@ public interface TransferApplicationMapper {
                                                @Param("status") TransferStatus status,
                                                @Param("transferrerLoginName") String transferrerLoginName,
                                                @Param("transfereeLoginName") String transfereeLoginName,
-                                               @Param("loanId") Long loanId);
+                                               @Param("loanId") Long loanId,
+                                               @Param("source") Source source);
 
 
     List<TransferInvestDetailDto> findTransferInvestList(@Param(value = "investorLoginName") String investorLoginName,

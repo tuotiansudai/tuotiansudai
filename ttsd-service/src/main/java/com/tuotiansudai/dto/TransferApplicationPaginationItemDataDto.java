@@ -160,8 +160,4 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     public double getActivityRate() { return activityRate; }
 
     public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
-
-
-
-
 }

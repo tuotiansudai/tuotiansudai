@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private int leftPeriod;
     private Date deadLine;
     private Date applicationTime;
+    private Source source;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
@@ -164,7 +166,4 @@ public class TransferApplicationRecordDto implements Serializable {
     public Date getDeadLine() { return deadLine; }
 
     public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
-
-
-
 }

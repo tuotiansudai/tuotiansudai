@@ -63,7 +63,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, null, loanId, 0, 10);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, null, loanId, null, 0, 10);
 
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());
@@ -74,6 +74,7 @@ public class TransferApplicationMapperTest {
         assertEquals(transfereeInvestModel.getLoginName(),transferApplicationRecordDto.get(0).getTransfereeLoginName());
         assertEquals(transferrerInvestModel.getLoginName(),transferApplicationRecordDto.get(0).getTransferrerLoginName());
     }
+
     @Test
     public void shouldFindTransferApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
@@ -106,7 +107,6 @@ public class TransferApplicationMapperTest {
 
     }
 
-
     @Test
     public void shouldFindCountTransferApplicationPaginationIsSuccess(){
         long loanId = idGenerator.generate();
@@ -130,7 +130,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setTransferFee(1300l);
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName(), null, 0, 1);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName(), null, null, 0, 1);
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());
         assertEquals(1000, transferApplicationRecordDto.get(0).getTransferAmount());
