@@ -3,25 +3,19 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.dto.ContractInvestDto;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
-import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
@@ -51,7 +45,7 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
-    private TransferRuleMapper transferRuleMapper;
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public String getContract(String templateName, Map<String, Object> dataModel) {
@@ -136,7 +130,8 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentUserName", Strings.nullToEmpty(agentAccountModel.getUserName()));
         dataModel.put("agentLoginName", Strings.nullToEmpty(loanModel.getAgentLoginName()));
         dataModel.put("agentIdentityNumber", Strings.nullToEmpty(agentAccountModel.getIdentityNumber()));
-        dataModel.put("investList", getInvestListTable(loginName, loanId, loanModel, contractType));
+        dataModel.put("investList", getContractInvestList(loginName, loanId, loanModel, contractType));
+        //dataModel.put("investList", getInvestListTable(loginName, loanId, loanModel, contractType));
         dataModel.put("actualMoney", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
 
         dataModel.put("fen", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 0));
@@ -147,6 +142,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("thousand", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 5));
         dataModel.put("tenThousand", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 6));
         dataModel.put("hundredThousand", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 7));
+        dataModel.put("million", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 8));
 
         dataModel.put("deadline", "" + loanModel.getPeriods());
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {
@@ -171,7 +167,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("interestBeginTime", format.format(loanModel.getRecheckTime()));
         dataModel.put("interestEndTime", format.format(endDate));
         //TODO:罚息比例修改为系统配置或者数据库配置
-        Double overdueRepayInvestor = 0.0005;
+        Double overdueRepayInvestor = 0.0002;
         NumberFormat nt = NumberFormat.getPercentInstance();
         nt.setMinimumFractionDigits(2);
         dataModel.put("overdue_repay_investor", nt.format(overdueRepayInvestor));
@@ -180,75 +176,51 @@ public class ContractServiceImpl implements ContractService {
         return dataModel;
     }
 
+    enum EncryptType {
+        LOGIN_NAME,
+        REAL_NAME,
+        ID_CARD
+    }
 
-    private String getInvestListTable(String loginName, long loanId, LoanModel loanModel, ContractType contractType) {
-
-        Element table = Jsoup
-                .parseBodyFragment("<table border='1' style='margin: 0px auto; border-collapse: collapse; border: 1px solid rgb(0, 0, 0); width: 80%; '><tbody><tr class='firstRow'><td style='text-align:center;'>平台账号</td><td style='text-align:center;'>真实姓名</td><td style='text-align:center;'>身份证号</td><td style='text-align:center;'>出借金额</td><td style='text-align:center;'>借款期限</td><td style='text-align:center;'>投资确认日期</td></tr></tbody></table>");
-        Element tbody = table.getElementsByTag("tbody").first();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private List<ContractInvestDto> getContractInvestList(String loginName, long loanId, LoanModel loanModel, ContractType contractType) {
         List<InvestModel> invests = investMapper.findSuccessInvestsByLoanId(loanId);
+        List<ContractInvestDto> contractInvestDtos = new ArrayList<>();
         for (InvestModel invest : invests) {
             AccountModel accountModel = accountMapper.findByLoginName(invest.getLoginName());
-            String rowsString = insertRow(6);
-            String deadLine = loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")";
-            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType))
-                    .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType))
-                    .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType))
-                    .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))
-                    .replace("#{4}", deadLine)
-                    .replace("#{5}", format.format(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()));
-
-            tbody.append(rowsString);
-        }
-        return table.outerHtml();
-    }
-
-    private String encryString(String sourceString, String type, String investId, String loginUserId, ContractType contractType) {
-
-        String encryString = sourceString;
-
-        if (ContractType.INVEST.equals(contractType)) {
-            if (!investId.equals(loginUserId)) {
-
-                if ("platformAccount".equals(type)) {//平台账号
-
-                    if (sourceString.length() >= 3) {
-                        encryString = sourceString.substring(0, 3) + "***";
-                    }
-
-                } else if ("realName".equals(type)) {//真实姓名
-
-                    if (sourceString.length() >= 1) {
-                        encryString = sourceString.substring(0, 1) + "*";
-                    }
-
-                } else if ("IdCard".equals(type)) {//身份证
-
-                    if (sourceString.length() >= 4) {
-                        encryString = sourceString.substring(0, 4) + "**************";
-                    }
-                }
-
+            if (!invest.getLoginName().equals(loginName) && ContractType.INVEST == contractType) {
+                contractInvestDtos.add(new ContractInvestDto(encryptData(accountModel.getLoginName(), EncryptType.LOGIN_NAME),
+                        encryptData(accountModel.getUserName(), EncryptType.REAL_NAME), encryptData(accountModel.getIdentityNumber(), EncryptType.ID_CARD),
+                        AmountConverter.convertCentToString(invest.getAmount()), loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")",
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(null == invest.getTradingTime() ? invest.getCreatedTime() : invest.getTradingTime())));
+            } else {
+                contractInvestDtos.add(new ContractInvestDto(accountModel.getLoginName(), accountModel.getUserName(),
+                        accountModel.getIdentityNumber(), AmountConverter.convertCentToString(invest.getAmount()),
+                        loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")",
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(null == invest.getTradingTime() ? invest.getCreatedTime() : invest.getTradingTime())));
             }
         }
-
-        return encryString;
-
+        return contractInvestDtos;
     }
 
-    private String insertRow(int tdNum) {
-        String rowsString = "";
-        String rowsHead = "<tr style='text-align:center;'>";
-        String rowsFoot = "</tr>";
-        String rowsBody = "";
-        for (int i = 0; i < tdNum; i++) {
-            rowsBody += "<td>";
-            rowsBody += "#{" + i + "}";
-            rowsBody += "</td>";
+    private String encryptData(String source, EncryptType encryptType) {
+        switch (encryptType) {
+            case LOGIN_NAME:
+                if (source.length() > 3) {
+                    source = source.substring(0, 3) + "***";
+                }
+                break;
+            case REAL_NAME:
+                if (source.length() >= 1) {
+                    source = source.substring(0, 1) + "*";
+                }
+                break;
+            case ID_CARD:
+                if (source.length() >= 4) {
+                    source = source.substring(0, 4) + "**************";
+                }
+                break;
         }
-        rowsString = rowsHead + rowsBody + rowsFoot;
-        return rowsString;
+        return source;
     }
 
     private String getDigitBySerialNo(String dou, int serialNo) {
@@ -274,9 +246,14 @@ public class ContractServiceImpl implements ContractService {
         Map<String, Object> dataModel = new HashMap<>();
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (transferApplicationModel == null) {
+        if (null == transferApplicationModel) {
             return dataModel;
         }
+
+        dataModel.put("period", transferApplicationModel.getPeriod());
+        dataModel.put("investAmount", transferApplicationModel.getInvestAmount());
+        dataModel.put("transferTime", transferApplicationModel.getTransferTime());
+        dataModel.put("leftPeriod", transferApplicationModel.getLeftPeriod());
 
         dataModel.put("loanId", String.valueOf(transferApplicationModel.getLoanId()));
         AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
@@ -294,15 +271,27 @@ public class ContractServiceImpl implements ContractService {
             dataModel.put("transfereeIdentityNumber", investAccountModel.getIdentityNumber());
         }
 
-        TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        if (transferRuleModel != null) {
-            int dayLimit = transferRuleModel.getDaysLimit();
-            dataModel.put("daysLimit", dayLimit);
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        if (null != loanModel) {
+            dataModel.put("loanerLoginName", loanModel.getLoanerLoginName());
+            dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
+            dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+            dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
         }
 
-        double fee = TransferRuleUtil.getTransferFeeRate(investModel, transferRuleModel, loanMapper.findById(transferApplicationModel.getLoanId()));
-        dataModel.put("percent", fee > 0 ? (fee * 100) : "0");
+        if (transferApplicationModel.getLeftPeriod() != transferApplicationModel.getLeftPeriod()) {
+            InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod() - transferApplicationModel.getLeftPeriod());
+            dataModel.put("transferStartTime", new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate());
+        } else {
+            if (loanModel.getType().equals(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY) || loanModel.getType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY) {
+                dataModel.put("transferStartTime", investModel.getInvestTime());
+            } else if (loanModel.getType().equals(LoanType.LOAN_INTEREST_MONTHLY_REPAY) || loanModel.getType().equals(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY)) {
+                dataModel.put("transferStartTime", loanModel.getRecheckTime());
+            }
+        }
 
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod());
+        dataModel.put("transferEndTime", investRepayModel.getRepayDate());
 
         return dataModel;
     }
