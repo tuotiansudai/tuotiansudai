@@ -60,13 +60,13 @@
                                            var reward;
                                             if(type=='invest') {
                                                 if(i==0) {
-                                                reward='神秘大奖';
+                                                reward='神秘大奖＋1%加息券';
                                                 }
                                                 else if(i>0 && i<5) {
-                                                reward='200元红包';
+                                                reward='200元红包＋1%加息券';
                                                 }
                                                 else {
-                                                reward='100元红包';
+                                                reward='100元红包＋1%加息券';
                                                 }
                                             }
                                             else if(type=='referrer') {
