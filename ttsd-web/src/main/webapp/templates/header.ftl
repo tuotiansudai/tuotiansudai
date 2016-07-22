@@ -26,7 +26,11 @@
                 </form>
             </li>
             <li class="header-message">
-                <a href="/message/user-messages">消息<span class="message-badge"><@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount></span></a>
+                <a href="/message/user-messages">消息
+                    <span class="message-badge <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>">
+                        <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>
+                    </span>
+                </a>
             </li>
         </@global.isNotAnonymous>
 
