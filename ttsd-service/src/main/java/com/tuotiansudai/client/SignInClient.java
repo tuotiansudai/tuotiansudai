@@ -111,5 +111,4 @@ public class SignInClient extends BaseClient {
         }
         return null;
     }
-
 }
