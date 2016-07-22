@@ -4,7 +4,7 @@ package com.tuotiansudai.api.controller.v2_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailRequestDto;
 import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
-import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailService;
+import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
 
     @Autowired
-    private MobileAppLoanDetailService mobileAppLoanDetailV2Service;
+    private MobileAppLoanDetailV2Service mobileAppLoanDetailV2Service;
 
     @RequestMapping(value = "/get/loan", method = RequestMethod.POST)
     public BaseResponseDto queryLoanDetail(@Valid LoanDetailRequestDto requestDto, BindingResult bindingResult) {

@@ -11,6 +11,7 @@ import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailRequestDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
+import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2ServiceImpl {
+public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Service {
 
     private static final Logger logger = Logger.getLogger(MobileAppLoanDetailV2ServiceImpl.class);
 
