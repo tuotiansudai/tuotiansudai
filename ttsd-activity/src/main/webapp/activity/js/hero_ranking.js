@@ -3,7 +3,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 		var $getVip=$('#getVip'),
 			$getRank=$('.get-rank'),
 			$TodayAwards=$('#TodayAwards'),
-			$ReferRankingDate=$('#ReferRankingDate'),
 			$investRankingButton=$('#investRanking-button'),
 			$referRankingButton=$('#referRanking-button');
 
@@ -12,7 +11,8 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 		var ListRender = _.template(ListTpl);
 
 		$investRankingButton.find('.button-small').on('click',function(event) {
-			var dateSpilt=$TodayAwards.text().split('-'),
+			var $HistoryAwards=$('#HistoryAwards');
+			var dateSpilt=$HistoryAwards.find('em').show().text().split('-'),
 				year=dateSpilt[0],
 				month=dateSpilt[1],
 				day=dateSpilt[2],
@@ -25,13 +25,22 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			}
 			if(day>0 && day<=31) {
 				currDate=year+'-'+month+'-'+day;
-				$TodayAwards.text(currDate);
+				$HistoryAwards.find('em').text(currDate);
+				if(currDate==todayDate) {
+					$HistoryAwards.find('i').show();
+					$HistoryAwards.find('em').hide();
+				}
+				else {
+					$HistoryAwards.find('i').hide();
+					$HistoryAwards.find('em').show();
+				}
 				heroRank(currDate);
 			}
 		});
 
 		$referRankingButton.find('.button-small').on('click',function(event) {
-			var dateSpilt=$ReferRankingDate.text().split('-'),
+			var $ReferRankingDate=$('#ReferRankingDate');
+			var dateSpilt=$ReferRankingDate.find('em').text().split('-'),
 				year=dateSpilt[0],
 				month=dateSpilt[1],
 				day=dateSpilt[2],
@@ -44,7 +53,17 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			}
 			if(day>0 && day<=31) {
 				currDate=year+'-'+month+'-'+day;
-				$ReferRankingDate.text(currDate);
+				$ReferRankingDate.find('em').text(currDate);
+
+				if(currDate==todayDate) {
+					$ReferRankingDate.find('i').show();
+					$ReferRankingDate.find('em').hide();
+				}
+				else {
+					$ReferRankingDate.find('i').hide();
+					$ReferRankingDate.find('em').show();
+				}
+
 				refeInvest(currDate);
 			}
 		});
