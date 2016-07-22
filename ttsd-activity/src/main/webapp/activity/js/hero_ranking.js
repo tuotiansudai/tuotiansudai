@@ -91,7 +91,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			})
 			.done(function(data) {
 				if(data.status) {
-					var data={"status":true,"message":null,"records":[{"loginName":"158**32","sumAmount":6010023,"userName":"王林","mobile":"15810802032","centSumAmount":"60100.23"},{"loginName":"157**97","sumAmount":3000000,"userName":"齐银河","mobile":"15720311797","centSumAmount":"30000.00"},{"loginName":"139**10","sumAmount":2093113,"userName":"刘桂清","mobile":"13932754010","centSumAmount":"20931.13"},{"loginName":"137**81","sumAmount":2005000,"userName":"杨文萍","mobile":"13731738181","centSumAmount":"20050.00"},{"loginName":"135**82","sumAmount":2000000,"userName":"王淑颖","mobile":"13585010482","centSumAmount":"20000.00"},{"loginName":"158**01","sumAmount":500492,"userName":"李艳菊","mobile":"15810919401","centSumAmount":"5004.92"},{"loginName":"189**89","sumAmount":429155,"userName":"安桥芬","mobile":"18931772989","centSumAmount":"4291.55"},{"loginName":"189**96","sumAmount":215000,"userName":"王会青","mobile":"18911343396","centSumAmount":"2150.00"},{"loginName":"151**48","sumAmount":200000,"userName":"仲国苓","mobile":"15133898548","centSumAmount":"2000.00"},{"loginName":"138**19","sumAmount":155000,"userName":"张晨","mobile":"13810668619","centSumAmount":"1550.00"}]};
 					var $nodataInvest=$('.nodata-invest'),
 						$contentRanking=$('#investRanking-tbody').parents('table');
 
