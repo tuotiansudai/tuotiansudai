@@ -39,7 +39,6 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
 
     @Override
     public BaseResponseDto queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
-        String loginName = requestDto.getBaseParam().getUserId();
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
 
@@ -49,8 +48,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        long count = withdrawMapper.findWithdrawCount(null, loginName, null, null, null, null);
-        List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, loginName, null, null, (index - 1) * pageSize, pageSize, null, null);
+        long count = withdrawMapper.findWithdrawCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null);
+        List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, (index - 1) * pageSize, pageSize, null, null);
 
         List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = Lists.transform(withdrawModels, new Function<WithdrawModel, WithdrawDetailResponseDataDto>() {
             @Override
@@ -71,8 +70,6 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         dto.setData(listDataDto);
 
         return dto;
-
-
     }
 
     @Override
