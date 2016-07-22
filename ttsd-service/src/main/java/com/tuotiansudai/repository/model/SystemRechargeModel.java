@@ -22,8 +22,8 @@ public class SystemRechargeModel implements Serializable {
 
     private String remark;
 
-    public SystemRechargeModel(SystemRechargeDto dto){
-        this.loginName = dto.getLoginName();
+    public SystemRechargeModel(SystemRechargeDto dto, String loginName){
+        this.loginName = loginName;
         this.time = new Date();
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.status = RechargeStatus.WAIT_PAY;

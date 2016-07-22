@@ -140,7 +140,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        List<PointTaskRecordResponseDataDto> pointTaskRecords = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination((index - 1) * pageSize, pageSize), loginName);
+        List<PointTaskRecordResponseDataDto> pointTaskRecords = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination(0, 100), loginName);
         sortPointTaskRecord(pointTaskRecords);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

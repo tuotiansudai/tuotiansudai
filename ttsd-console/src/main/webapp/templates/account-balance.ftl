@@ -5,8 +5,8 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="control-label">用户名：</label>
-            <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
+            <label for="control-label">电话号码：</label>
+            <input type="text" class="form-control jq-loginName" name="mobile" value="${mobile!}">
         </div>
         <div class="form-group">
             <label for="control-label">余额：</label>
@@ -56,7 +56,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -65,7 +65,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

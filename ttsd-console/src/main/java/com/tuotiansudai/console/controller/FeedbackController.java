@@ -1,15 +1,14 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.FeedbackModel;
+import com.tuotiansudai.repository.model.FeedbackType;
+import com.tuotiansudai.repository.model.ProcessStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,7 +33,7 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
-    public ModelAndView announceManage(@RequestParam(value = "loginName", required = false) String loginName,
+    public ModelAndView announceManage(@RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "source", required = false) Source source,
                                        @RequestParam(value = "type", required = false) FeedbackType type,
                                        @RequestParam(value = "status", required = false) ProcessStatus status,
@@ -52,7 +51,7 @@ public class FeedbackController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            BasePaginationDataDto<FeedbackModel> feedbackModel = feedbackService.getFeedbackPagination(loginName, source, type, status, startTime, endTime, 1, Integer.MAX_VALUE);
+            BasePaginationDataDto<FeedbackModel> feedbackModel = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, 1, Integer.MAX_VALUE);
             List<List<String>> data = Lists.newArrayList();
             List<FeedbackModel> feedbackModelList = feedbackModel.getRecords();
             for (int i = 0; i < feedbackModelList.size(); i++) {
@@ -70,9 +69,9 @@ public class FeedbackController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback, data, response.getOutputStream());
             return null;
         } else {
-            BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(loginName, source, type, status, startTime, endTime, index, pageSize);
+            BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
             ModelAndView mv = new ModelAndView("feedback-list");
-            mv.addObject("loginName", loginName);
+            mv.addObject("mobile", mobile);
             mv.addObject("source", source);
             mv.addObject("type", type);
             mv.addObject("status", status);
