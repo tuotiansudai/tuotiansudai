@@ -3,6 +3,8 @@ package com.tuotiansudai.coupon.aspect;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SignInDto;
 import org.apache.log4j.Logger;
@@ -65,13 +67,15 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()")
-    public void afterReturningUserLogin(JoinPoint joinPoint) {
-        logger.debug("assign coupon after user login success");
+    @AfterReturning(value = "loginSuccessPointcut()", returning = "returnValue")
+    public void afterReturningUserLogin(JoinPoint joinPoint, BaseDto<LoginDto> returnValue) {
+        logger.debug("assign coupon after user login");
         try {
-            SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
-            String loginName = signInDto.getUsername();
-            couponAssignmentService.assignUserCoupon(loginName, userGroups);
+            if(returnValue.getData().getStatus()) {
+                SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
+                String loginName = signInDto.getUsername();
+                couponAssignmentService.assignUserCoupon(loginName, userGroups);
+            }
         } catch (Exception e) {
             logger.error("assign coupon after user login is failed ", e);
         }
@@ -87,5 +91,4 @@ public class CouponAspect {
             logger.error("assign coupon after refresh token is failed", e);
         }
     }
-
 }

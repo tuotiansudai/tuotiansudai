@@ -264,6 +264,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             // 返款成功
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
+            investModel.setTradingTime(new Date());
             investMapper.update(investModel);
         } else {
             // 返款失败，发报警短信，手动干预
@@ -285,6 +286,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         // update transferee invest status
         investModel.setStatus(InvestStatus.SUCCESS);
+        // update trading time
+        investModel.setTradingTime(new Date());
+
         investMapper.update(investModel);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
 
@@ -440,7 +444,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
-                this.overInvestPaybackProcess(transferApplicationModel, investModel);
+                this.overInvestPaybackProcess(investId);
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
@@ -457,11 +461,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     /**
      * 超投处理：返款、更新投资状态为失败
      *
-     * @param investModel
+     * @param investId
      */
-    private void overInvestPaybackProcess(TransferApplicationModel transferApplicationModel, InvestModel investModel) {
+    private void overInvestPaybackProcess(long investId) {
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
         long transferAmount = transferApplicationModel.getTransferAmount();
-        long investId = investModel.getId();
+        InvestModel investModel = investMapper.findById(investId);
 
         try {
             String overInvestPaybackOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis()));
