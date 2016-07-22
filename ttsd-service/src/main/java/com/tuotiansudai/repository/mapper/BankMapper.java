@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.BankModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface BankMapper {
     void update(BankModel model);
 
     List<BankModel> findBankList();
+
+    BankModel findByShorterName(@Param(value = "shorterName") String shorterName);
 }

@@ -5,17 +5,16 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +26,9 @@ public class BindBankCardController {
 
     @Autowired
     private BindBankCardService bindBankCardService;
+
+    @Autowired
+    private BankService bankService;
 
     @Autowired
     private AccountService accountService;
@@ -96,6 +98,21 @@ public class BindBankCardController {
             return false;
         }
         return bindBankCardService.isManual(loginName);
+    }
+
+    @RequestMapping(value = "/limit-tips", method = RequestMethod.GET)
+    @ResponseBody
+    public String getLimitTips(String bankCode) {
+
+        if(bankCode == null){
+
+        }
+
+        BankModel bankModel = bankService.findByShorterName(bankCode);
+        if(bankModel == null){
+            return "";
+        }
+        return bankModel.getName() + "快捷支付限额:" + "单笔" + bankModel.getSingleAmount()/100 + "元/单日"+ bankModel.getSingleDayAmount()/100 + "元";
     }
 
 }

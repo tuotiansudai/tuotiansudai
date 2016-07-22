@@ -16,6 +16,10 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             }
         });
 
+
+
+
+
         /*开通快捷支付*/
         $btnOpenFastPay.click(function () {
             $FormOpenFastPay.submit();
@@ -41,3 +45,19 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
         });
 
     });
+
+    function selectBank(obj){
+        $.ajax({
+            url: '/bind-card/limit-tips',
+            data: {"bankCode":obj},
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).done(function (data) {
+            $('.limit-tips').text('');
+            $('.limit-tips').append(data);
+        }).fail(function (data) {
+            console.log(data);
+        });
+
+    }

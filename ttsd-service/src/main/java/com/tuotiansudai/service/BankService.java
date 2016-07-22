@@ -11,4 +11,6 @@ public interface BankService {
     boolean updateBank(BankModel bankModel);
 
     List<BankModel> findBankList();
+
+    BankModel findByShorterName(String shorterName);
 }

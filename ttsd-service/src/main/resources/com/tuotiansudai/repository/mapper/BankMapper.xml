@@ -36,4 +36,8 @@
         select * from bank order by single_day_amount desc, single_amount desc
     </select>
 
+    <select id="findByShorterName" parameterType="java.lang.String" resultMap="bankResultMap">
+        select * from bank where shorter_name = #{shorterName} and single_amount >0
+    </select>
+
 </mapper>

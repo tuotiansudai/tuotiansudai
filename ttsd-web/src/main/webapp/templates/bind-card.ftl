@@ -8,19 +8,20 @@
             <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <#if userName??>
                     真实姓名：${userName}
-                </#if>
+                </#if>fdfdsfsdfdfdfd
                 <div class="clear-blank"></div>
                 <div class="e-bank-recharge">
                     <b class="title">选择银行:</b>
                     <ol class="select-bank">
                         <#list banks as bank>
                             <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                                <input id="bank-${bank}" data-name="${bank}" type="radio" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
+                                <input id="bank-${bank}" data-name="${bank}" class="bank-checked" value="${bank}" type="radio" onclick="selectBank(this.value)" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
                                 <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                             </li>
                         </#list>
                     </ol>
                     <div class="recharge-form pad-m">
+                        <div class="limit-tips"></div>
                         <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
 
                             银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
