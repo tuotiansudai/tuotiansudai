@@ -221,7 +221,6 @@ class taskCenter extends React.Component {
             if (!this.myScroll) {
 
                 this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
                 this.myScroll = new IScroll(this.refs.scrollWrap);
             }
             else {
