@@ -74,6 +74,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                     public UserMessageDto apply(UserMessageModel model) {
                         UserMessageDto userMessageDto = new UserMessageDto(model);
                         userMessageDto.setTitle(model.getAppTitle());
+                        userMessageDto.setContent(StringUtils.isEmpty(model.getContent()) ? model.getAppTitle() : model.getContent());
                         return userMessageDto;
                     }
                 });
