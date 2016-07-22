@@ -89,7 +89,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     public boolean readAll(String loginName) {
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, null, null);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (!userMessageModel.isRead()) {
                 ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
@@ -114,13 +114,14 @@ public class UserMessageServiceImpl implements UserMessageService {
             userMessageMapper.create(new UserMessageModel(message.getId(),
                     loginName,
                     message.getTitle(),
+                    message.getTitle(),
                     message.getTemplate()));
         }
     }
 
     private List<MessageModel> getUnreadManualMessages(String loginName) {
         List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, null, null);
 
         List<MessageModel> unreadManualMessages = Lists.newArrayList();
         for (final MessageModel message : messages) {
