@@ -78,8 +78,8 @@ public class UserMessageEventGenerator {
             MessageModel recommendSuccessMessage = messageMapper.findActiveByEventType(MessageEventType.RECOMMEND_SUCCESS);
             //您推荐的好友 {0} 成功注册，若该好友进行投资，您即可获取现金奖励哦
             String titleTemplate = recommendSuccessMessage.getTitle();
-            String title = MessageFormat.format(titleTemplate, loginName);
-            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getMobile(), title, null);
+            String title = MessageFormat.format(titleTemplate, userModel.getMobile());
+            UserMessageModel userMessageModel = new UserMessageModel(recommendSuccessMessage.getId(), userModel.getReferrer(), title, null);
             userMessageMapper.create(userMessageModel);
         }
     }
