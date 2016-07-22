@@ -21,14 +21,6 @@ public class RegisterRequestDto extends BaseParamDto {
 
     private String referrer;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -59,6 +51,14 @@ public class RegisterRequestDto extends BaseParamDto {
 
     public void setReferrer(String referrer) {
         this.referrer = referrer;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public RegisterUserDto convertToRegisterUserDto(){

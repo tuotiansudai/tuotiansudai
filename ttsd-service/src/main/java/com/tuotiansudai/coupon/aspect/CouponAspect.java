@@ -59,7 +59,7 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponAssignmentService.assignUserCoupon(registerUserDto.getLoginName(),
+                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(),
                         Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
             }
         } catch (Exception e) {

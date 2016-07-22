@@ -178,6 +178,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
              });
 
         });
+
         //timer
         function getCode() {
             if (countdown == 0) {
