@@ -142,7 +142,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
-                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
+                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(),Source.MOBILE);
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() == LoanStatus.RAISING) {
                     marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loan.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");

@@ -18,13 +18,13 @@ public interface LoginLogMapper {
                @Param("success") Boolean success,
                @Param("table") String table);
 
-    long countSuccessTimesOnDate(@Param("loginName") String loginName,
-                                 @Param("date") Date date,
-                                 @Param("table") String table);
-
     List<LoginLogView> getPaginationData(@Param("mobile") String mobile,
                                           @Param("success") Boolean success,
                                           @Param("index") long index,
                                           @Param("pageSize") long pageSize,
                                           @Param("table") String table);
+
+    long countSuccessTimesOnDate(@Param("loginName") String loginName,
+                                 @Param("date") Date date,
+                                 @Param("table") String table);
 }

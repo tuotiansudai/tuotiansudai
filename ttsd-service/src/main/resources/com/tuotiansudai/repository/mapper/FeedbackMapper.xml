@@ -22,38 +22,38 @@
     </insert>
 
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
-        select * from feedback
+        select * from feedback join user on feedback.login_name = user.login_name
+        <if test="mobile != null and mobile != ''">
+            and user.mobile = #{mobile}
+        </if>
         <where>
-            <if test="mobile != null and mobile != ''">
-                contact = #{mobile}
-            </if>
             <if test="source != null">
-                and source = #{source}
+                and feedback.source = #{source}
             </if>
             <if test="type != null">
-                and type = #{type}
+                and feedback.type = #{type}
             </if>
             <if test="status != null">
-                and status = #{status}
+                and feedback.status = #{status}
             </if>
             <if test="startTime != null">
-                and created_time > #{startTime}
+                and feedback.created_time > #{startTime}
             </if>
             <if test="endTime != null">
-                and created_time &lt; #{endTime}
+                and feedback.created_time &lt; #{endTime}
             </if>
         </where>
-        order by created_time desc
+        order by feedback.created_time desc
         limit #{rowLimit}
         offset #{rowIndex}
     </select>
 
     <select id="findAllCount" parameterType="map" resultType="long">
-        select count(1) from feedback
+        select count(1) from feedback join user on feedback.login_name = user.login_name
+        <if test="mobile != null and mobile != ''">
+            and user.mobile = #{mobile}
+        </if>
         <where>
-            <if test="mobile != null and mobile != ''">
-                contact = #{mobile}
-            </if>
             <if test="source != null">
                 and source = #{source}
             </if>

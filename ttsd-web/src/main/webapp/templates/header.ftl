@@ -12,7 +12,7 @@
                 <a href="/membership">会员中心</a>
             </li>
             <li class="header-activity-center">
-                <a href="/web-activity-center">活动中心</a>
+                <a href="activity-center">活动中心</a>
             </li>
             <li class="login-pop-app" id="iphone-app-pop">
                 <a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
@@ -26,7 +26,7 @@
                 </form>
             </li>
             <li class="header-message">
-                <a href="/message/user-messages">消息<span class="message-badge"><@unreadMessageCount><@global.security.authentication property="principal.username"/></@unreadMessageCount></span></a>
+                <a href="/message/user-messages">消息<span class="message-badge"><@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount></span></a>
             </li>
         </@global.isNotAnonymous>
 

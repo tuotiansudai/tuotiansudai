@@ -15,6 +15,7 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -163,8 +164,12 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
             @Override
             public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName()), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                return userPointPrizeDto;
+                if (input.isReality()) {
+                    UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+                    return userPointPrizeDto;
+                } else {
+                    return new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+                }
             }
         });
     }

@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.RandomUtils;

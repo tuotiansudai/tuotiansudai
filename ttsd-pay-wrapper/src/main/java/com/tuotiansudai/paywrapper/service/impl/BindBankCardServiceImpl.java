@@ -157,8 +157,11 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
         if (callbackRequest.isSuccess()) {
-            bankCardModel.setStatus(BankCardStatus.APPLY);
-            bankCardMapper.update(bankCardModel);
+            if(bankCardModel.getStatus() != BankCardStatus.PASSED){
+                bankCardModel.setStatus(BankCardStatus.APPLY);
+                bankCardMapper.update(bankCardModel);
+
+            }
         }
         return callbackRequest.getResponseData();
     }
@@ -179,13 +182,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 BankCardModel previousBankCard = bankCardMapper.findPassedBankCardByLoginName(bankCardModel.getLoginName());
                 previousBankCard.setStatus(BankCardStatus.REMOVED);
                 bankCardMapper.update(previousBankCard);
-                if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.REPLACE_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
-                            bankCardModel.getLoginName(),
-                            BankCardUtil.getBankName(bankCode),
-                            bankCardModel.getCardNumber());
-                    systemBillService.transferOut(orderId, 1L, SystemBillBusinessType.REPLACE_BANK_CARD, detail);
-                }
             } else {
                 bankCardModel.setStatus(BankCardStatus.FAILED);
             }
@@ -209,13 +205,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 String bankCode = callbackRequestModel.getGateId();
                 bankCardModel.setBankCode(bankCode);
                 bankCardModel.setIsFastPayOn(callbackRequestModel.isOpenPay());
-                if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.BIND_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
-                            bankCardModel.getLoginName(),
-                            BankCardUtil.getBankName(bankCode),
-                            bankCardModel.getCardNumber());
-                    systemBillService.transferOut(orderId, 1L, SystemBillBusinessType.BIND_BANK_CARD, detail);
-                }
             } else {
                 bankCardModel.setStatus(BankCardStatus.FAILED);
             }

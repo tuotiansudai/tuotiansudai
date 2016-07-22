@@ -46,7 +46,7 @@
                 and created_time between #{startTime} and #{endTime}
             </if>
         </where>
-        order by created_time desc, id asc
+        order by created_time desc, user_op_log.id asc
         limit #{index}, #{pageSize}
     </select>
 
