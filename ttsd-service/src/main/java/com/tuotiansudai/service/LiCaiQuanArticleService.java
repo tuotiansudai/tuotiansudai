@@ -20,7 +20,7 @@ public interface LiCaiQuanArticleService {
 
     Map<String, String> getAllComments(long articleId);
 
-    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType, int size, int index);
+    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,ArticleStatus articleStatus, int size, int index);
 
     long getLikeCount(long articleId);
 

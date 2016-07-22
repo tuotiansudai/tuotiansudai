@@ -7,6 +7,9 @@
                     <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
                 </#list>
                 <li class="top-membership"><a href="/membership">会员中心</a> </li>
+                <li class="top-activity">
+                    <a href="/activity-center">活动中心</a>
+                </li>
             </ul>
         </#if>
     </div>

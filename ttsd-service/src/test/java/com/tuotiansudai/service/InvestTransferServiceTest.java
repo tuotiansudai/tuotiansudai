@@ -148,7 +148,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(), 3, Source.WEB);
         transferApplicationMapper.create(transferApplicationModel);
 
         assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
@@ -162,7 +162,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3, Source.WEB);
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -257,6 +257,7 @@ public class InvestTransferServiceTest {
 
         assertFalse(result);
     }
+
     @Test
     public void shouldIsTransferableByOverDaysLimit(){
         UserModel userModel = createUserByUserId("testuser");
@@ -285,7 +286,7 @@ public class InvestTransferServiceTest {
         loanMapper.update(loanModel);
         InvestModel investModel = createInvest("testuser", loanId);
 
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR", loanModel.getPeriods(), investModel.getAmount(), 0l, new Date(), loanModel.getPeriods());
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR", loanModel.getPeriods(), investModel.getAmount(), 0l, new Date(), loanModel.getPeriods(), Source.WEB);
         transferApplicationModel.setStatus(TransferStatus.CANCEL);
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -316,7 +317,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findTransferApplicationPaginationList(null, null, null,null,null,transfereeModel.getLoginName(),null,1,10);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(null, null, null, null, null, transfereeModel.getMobile(), null, 1, 10);
 
         assertTrue(basePaginationDataDto.getStatus());
         assertNotNull(basePaginationDataDto.getRecords().get(0));
@@ -327,9 +328,10 @@ public class InvestTransferServiceTest {
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
         assertEquals("TRANSFERRING", basePaginationDataDto.getRecords().get(0).getTransferStatus());
-        assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
-        assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
+        assertEquals(transfereeModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransfereeMobile());
+        assertEquals(transferrerModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransferrerMobile());
     }
+
     @Test
     public void shouldFindWebTransferApplicationPaginationListIsSuccess(){
         long loanId = idGenerator.generate();
@@ -365,5 +367,4 @@ public class InvestTransferServiceTest {
         assertEquals(new DateTime("2016-01-07").toDate(), basePaginationDataDto.getRecords().get(0).getDeadLine());
         assertEquals(TransferStatus.TRANSFERRING.getDescription(), basePaginationDataDto.getRecords().get(0).getTransferStatus());
     }
-
 }

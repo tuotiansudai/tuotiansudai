@@ -2,10 +2,10 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.util.AppTokenParser;
 import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -33,12 +33,9 @@ public class HeroRankingController {
     @Autowired
     private RandomUtils randomUtils;
 
-    @Autowired
-    private AppTokenParser appTokenParser;
-
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
-        String loginName = appTokenParser.getLoginName(httpServletRequest);
+    public ModelAndView loadPageData() {
+        String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime",new DateTime().withTimeAtStartOfDay().toDate());
@@ -61,7 +58,7 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime, HttpServletRequest httpServletRequest) {
         final String loginName = LoginUserInfo.getLoginName();
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
         List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
@@ -69,7 +66,7 @@ public class HeroRankingController {
             baseListDataDto.setRecords(Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {
                 @Override
                 public HeroRankingView apply(HeroRankingView heroRankingView) {
-                    heroRankingView.setLoginName(randomUtils.encryptLoginName(loginName, heroRankingView.getLoginName(), 6));
+                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
                     heroRankingView.setCentSumAmount(heroRankingView.getCentSumAmount());
                     return heroRankingView;
                 }

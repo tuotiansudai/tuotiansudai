@@ -19,7 +19,7 @@
                     <input name="repeatPassword" type="password" maxlength="20" placeholder="再次输入密码"/>
                 </li>
 
-                <li class="clear-blank-m">
+                <li class="clear-blank-m tc">
                     <input type="submit" class="btn-send-form-second btn-success" value="确认" >
                 </li>
                 </ul>

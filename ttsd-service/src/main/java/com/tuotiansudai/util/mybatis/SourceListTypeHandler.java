@@ -1,6 +1,5 @@
 package com.tuotiansudai.util.mybatis;
 
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.Source;
@@ -14,6 +13,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class SourceListTypeHandler extends BaseTypeHandler<List<Source>> {
+
+    public SourceListTypeHandler() {
+        super();
+    }
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<Source> parameter, JdbcType jdbcType) throws SQLException {

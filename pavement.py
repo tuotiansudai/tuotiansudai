@@ -163,6 +163,13 @@ def only_sms():
     """
     fab_command("sms")
 
+@task
+def only_activity():
+    """
+    Deploy activity component to PROD from CI
+    """
+    fab_command("activity")
+
 
 @task
 def only_worker():

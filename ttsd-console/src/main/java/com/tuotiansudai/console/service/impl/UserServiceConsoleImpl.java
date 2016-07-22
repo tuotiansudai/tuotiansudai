@@ -12,8 +12,8 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.UserView;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -38,32 +38,31 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
 
     @Override
     public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
-                                                      Source source,
-                                                      RoleStage roleStage, String referrer, String channel, Integer index, Integer pageSize) {
+                                                      Source source, RoleStage roleStage, String referrerMobile,
+                                                      String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        List<UserModel> userModels = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime,
-                source,
-                roleStage, referrer, channel, (index - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source,
+                roleStage, referrerMobile, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
-        for (UserModel userModel : userModels) {
+        for (UserView userView : userViews) {
 
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userView.getLoginName());
             userItemDataDto.setUserRoles(userRoleModels);
 
-            List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            List<UserRoleModel> referrerRoleModels = userRoleMapper.findByMobile(userView.getReferrerMobile());
             for (UserRoleModel referrerRoleModel : referrerRoleModels) {
                 if (referrerRoleModel.getRole() == Role.STAFF) {
                     userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
-            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
-            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userView.getLoginName()) != null);
+            String taskId = OperationType.USER + "-" + userView.getLoginName();
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
+        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);

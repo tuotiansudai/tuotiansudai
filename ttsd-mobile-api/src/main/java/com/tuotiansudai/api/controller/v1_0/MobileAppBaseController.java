@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.controller.v1_0;
 
+import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,8 +12,10 @@ public abstract class MobileAppBaseController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    @Autowired
+    private MobileAppTokenProvider mobileAppTokenProvider;
+
     protected String getLoginName() {
-        Object objLoginName = httpServletRequest.getAttribute("currentLoginName");
-        return objLoginName == null ? "" : String.valueOf(objLoginName);
+        return mobileAppTokenProvider.getLoginName(httpServletRequest);
     }
 }
