@@ -24,7 +24,7 @@ public class ActivitiesController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|landing-page-app|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = httpServletRequest.getParameter("loginName");
