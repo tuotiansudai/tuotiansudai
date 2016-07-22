@@ -6,7 +6,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerInvestService;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
     @Autowired
     private ReferrerManageService referrerManageService;
 
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public BaseResponseDto generateReferrerInvestList(ReferrerInvestListRequestDto referrerInvestListRequestDto) {
@@ -41,6 +45,8 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
         List<ReferrerInvestResponseDataDto> referrerInvestResponseDataDtos = Lists.transform(referrerManageViewList, new Function<ReferrerManageView, ReferrerInvestResponseDataDto>() {
             @Override
             public ReferrerInvestResponseDataDto apply(ReferrerManageView input) {
+                UserModel userModel = userMapper.findByLoginName(input.getInvestName());
+                input.setInvestName(userModel.getMobile());
                 return new ReferrerInvestResponseDataDto(input);
             }
         });

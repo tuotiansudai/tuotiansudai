@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.RandomUtils;
@@ -133,7 +134,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
                 baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
                     @Override
                     public HeroRankingView apply(HeroRankingView input) {
-                        input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6));
+                        input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName()));
                         input.setCentSumAmount(input.getCentSumAmount());
                         return input;
                     }

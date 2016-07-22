@@ -2,25 +2,21 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.CustWithdrawalsMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRequestModel;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.paywrapper.service.SystemRechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -49,11 +45,14 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
     @Autowired
     private SystemBillService systemBillService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> systemRecharge(SystemRechargeDto dto) {
-
-        SystemRechargeModel systemRechargeModel = new SystemRechargeModel(dto);
+        UserModel userModel = userMapper.findByMobile(dto.getMobile());
+        SystemRechargeModel systemRechargeModel = new SystemRechargeModel(dto, userModel.getLoginName());
         systemRechargeModel.setId(idGenerator.generate());
 
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
@@ -63,7 +62,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         TransferAsynRequestModel requestModel = new TransferAsynRequestModel(String.valueOf(systemRechargeModel.getId()),
                 accountModel.getPayUserId(),""+systemRechargeModel.getAmount());
         String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元",dto.getOperatorLoginName(),
-                dto.getLoginName(),dto.getAmount());
+                dto.getMobile(),dto.getAmount());
         systemRechargeModel.setRemark(remark);
 
         try {

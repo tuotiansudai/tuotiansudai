@@ -35,7 +35,7 @@ public class WithdrawController {
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
     public ModelAndView getWithdrawList(@RequestParam(value = "withdrawId", required = false) String withdrawId,
-                                        @RequestParam(value = "loginName", required = false) String loginName,
+                                        @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
@@ -53,8 +53,8 @@ public class WithdrawController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = withdrawService.findWithdrawCount(withdrawId, loginName, status, source, startTime, endTime);
-            BaseDto<BasePaginationDataDto> baseDto = withdrawService.findWithdrawPagination(withdrawId, loginName, status, source, 1, count, startTime, endTime);
+            int count = withdrawService.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
+            BaseDto<BasePaginationDataDto> baseDto = withdrawService.findWithdrawPagination(withdrawId, mobile, status, source, 1, count, startTime, endTime);
             List<List<String>> data = Lists.newArrayList();
             List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0; i < withdrawPaginationItemDataDtos.size(); i++) {
@@ -78,11 +78,11 @@ public class WithdrawController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/withdraw");
-            BaseDto<BasePaginationDataDto> baseDto = withdrawService.findWithdrawPagination(withdrawId, loginName, status, source, index, pageSize, startTime, endTime);
+            BaseDto<BasePaginationDataDto> baseDto = withdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
 
-            long sumAmount = withdrawService.findSumWithdrawAmount(withdrawId, loginName, status, source, startTime, endTime);
+            long sumAmount = withdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
 
-            long sumFee = withdrawService.findSumWithdrawFee(withdrawId, loginName, status, source, startTime, endTime);
+            long sumFee = withdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
 
             modelAndView.addObject("baseDto", baseDto);
             modelAndView.addObject("sumAmount", sumAmount);
@@ -91,7 +91,7 @@ public class WithdrawController {
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("withdrawId", withdrawId);
-            modelAndView.addObject("loginName", loginName);
+            modelAndView.addObject("mobile", mobile);
             modelAndView.addObject("startTime", startTime);
             modelAndView.addObject("endTime", endTime);
             modelAndView.addObject("status", status);

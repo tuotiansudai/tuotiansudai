@@ -9,7 +9,7 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         var autoValue = '';
         $(".jq-loginName").autocomplete({
             source: function (query, process) {
-                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
