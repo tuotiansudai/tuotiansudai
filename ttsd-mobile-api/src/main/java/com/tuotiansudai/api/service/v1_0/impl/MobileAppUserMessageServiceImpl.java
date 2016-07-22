@@ -72,7 +72,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                 Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
                     @Override
                     public UserMessageDto apply(UserMessageModel model) {
-                        return new UserMessageDto(model);
+                        UserMessageDto userMessageDto = new UserMessageDto(model);
+                        userMessageDto.setTitle(model.getAppTitle());
+                        return userMessageDto;
                     }
                 });
         responseDataDto.setIndex(index);
