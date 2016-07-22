@@ -7,6 +7,7 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -23,10 +24,13 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
+import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -90,6 +94,9 @@ public class InvestServiceImpl implements InvestService {
     private InvestAchievementService investAchievementService;
 
     @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
     private JobManager jobManager;
 
     @Value("${common.environment}")
@@ -109,7 +116,10 @@ public class InvestServiceImpl implements InvestService {
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel());
+        String loginName = dto.getLoginName();
+        double rate = userMembershipMapper.findRateByLoginName(loginName);
+
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
 
         try {
@@ -135,7 +145,9 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, null);
+        double rate = userMembershipMapper.findRateByLoginName(loginName);
+
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, null, rate);
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);

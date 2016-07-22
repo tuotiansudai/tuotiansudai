@@ -76,7 +76,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
+                    input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(),Source.MOBILE));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
@@ -166,7 +166,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

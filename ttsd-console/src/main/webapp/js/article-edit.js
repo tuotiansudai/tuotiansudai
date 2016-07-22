@@ -1,14 +1,19 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelect','ueditor','jquery-ui','csrf'], function ($) {
+require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelect','ueditor','jquery-ui','csrf','bootstrapDatetimepicker'], function ($) {
     $(function () {
         var $selectDom = $('.selectpicker'), //select表单
             $submitBtn = $('.article-save'), //提交按钮
             $previewBtn = $('.preview'), //按钮
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'), //错误提示节点
+            $timingDate = $('#timingTime'), //开始时间
             $articleForm = $('.article-form');
         //渲染select表单
         $selectDom.selectpicker();
+
+        $timingDate.datetimepicker({
+            format: 'YYYY-MM-DD HH:mm'
+        })
 
         /**
          * @msg  {[string]} //文字信息
@@ -26,36 +31,73 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             html += '</div>';
             $errorDom.append(html);
         }
-
+        var _URL = window.URL || window.webkitURL;
         $('.thumbPicture,.showPicture').on('change',function(){
-            var $self = $(this);
+            var $self = $(this),
+                imageWidth,
+                imageHeight;
             var file = $self.find('input').get(0).files[0];
             var formData = new FormData();
             formData.append('upfile',file);
-            $.ajax({
-                url:'/ueditor?action=uploadimage',
-                type:'POST',
-                data:formData,
-                dataType:'JSON',
-                contentType: false,
-                processData: false
-            })
-            .done(function(data){
-                if(data.state){
-                    if($self.hasClass('thumbPicture')){
-                        $('.article-thumbPicture').val(data.title);
-                        $('.thumbPictureImage').html('');
-                        $('.thumbPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+            imageWidth = $self.find('input').attr("imageWidth");
+            imageHeight = $self.find('input').attr("imageHeight");
+            checkImage(file,imageWidth,imageHeight).done(function(){
+                var formData = new FormData();
+                formData.append('upfile',file);
+                $.ajax({
+                    url:'/ueditor?action=uploadimage',
+                    type:'POST',
+                    data:formData,
+                    dataType:'JSON',
+                    contentType: false,
+                    processData: false
+                }).done(function(data){
+                        if(data.state){
+                            if($self.hasClass('thumbPicture')){
+                                $('.article-thumbPicture').val(data.title);
+                                $('.thumbPictureImage').html('');
+                                $('.thumbPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
-                    }
-                    if($self.hasClass('showPicture')){
-                        $('.article-showPicture').val(data.title)
-                        $('.showPictureImage').html('');
-                        $('.showPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
-                    }
+                            }
+                            if($self.hasClass('showPicture')){
+                                $('.article-showPicture').val(data.title)
+                                $('.showPictureImage').html('');
+                                $('.showPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                            }
+                        }
+                    });
+            }).fail(function(message){
+                if($self.hasClass('thumbPicture')){
+                    showErrorMessage(message, $('.article-thumbPicture', $articleForm));
                 }
+                if($self.hasClass('showPicture')){
+
+                    showErrorMessage(message, $('.article-showPicture', $articleForm));
+                }
+
             });
+
         });
+
+        var checkImage = function(file,width,height){
+            var defer = $.Deferred(),
+                img = new Image();
+            img.src = _URL.createObjectURL(file);
+            img.onload = function(){
+                if(this.width != width){
+                    defer.reject('图片长宽应为'+width);
+                    return;
+
+                }
+                if(this.height != height){
+                    defer.reject('图片长宽应为' + height);
+                    return;
+                }
+                defer.resolve(file);
+            }
+            return defer.promise();
+
+        };
 
         //表单校验初始化参数
         $(".article-form").Validform({
@@ -74,11 +116,11 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                 var $articleTitle = $('.article-title').val(),
                     $articleSource = $('.article-source').val();
 
-                if ($articleTitle.length > 17) {
-                    showErrorMessage('标题最多17个中文字符', $('.article-title', curform));
+                if ($articleTitle.length > 25) {
+                    showErrorMessage('标题最多25个中文字符', $('.article-title', curform));
                     return false;
                 }
-                if ($articleSource.length > 17) {
+                if ($articleSource.length > 25) {
                     showErrorMessage('文章来源最多17个中文字符', $('.article-source', curform));
                     return false;
                 }

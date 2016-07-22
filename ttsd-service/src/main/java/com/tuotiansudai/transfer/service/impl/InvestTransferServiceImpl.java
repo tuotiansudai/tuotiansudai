@@ -119,7 +119,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(),loanRepayModel.getPeriod());
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(),leftPeriod);
+                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(), leftPeriod, transferApplicationDto.getSource());
 
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -228,7 +228,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId, Date startTime,
                                                                                     Date endTime, TransferStatus status,
-                                                                                    String transferrerLoginName, String transfereeLoginName, Long loanId, Integer index, Integer pageSize) {
+                                                                                                                 String transferrerMobile, String transfereeMobile, Long loanId, Integer index, Integer pageSize) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -241,12 +241,12 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId,startTime,endTime,status,transferrerLoginName,transfereeLoginName,loanId);
+        int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if(count > 0){
-            int totalPages = count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize;
+            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
-            items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId,startTime,endTime,status,transferrerLoginName,transfereeLoginName,loanId,(index - 1) * pageSize,pageSize);
+            items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, (index - 1) * pageSize, pageSize);
 
         }
         List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
@@ -268,7 +268,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize;
+            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
@@ -315,7 +315,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
 
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0? count / pageSize + 1 : count / pageSize);
+                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
             }

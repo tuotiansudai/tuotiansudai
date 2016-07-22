@@ -42,6 +42,8 @@ public interface LoanMapper {
 
     void update(LoanModel loanModel);
 
+    void updateWithoutStatus(LoanModel loanModel);
+
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
@@ -87,13 +89,12 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByIsContainNewbie(@Param(value = "loanStatus") LoanStatus loanStatus,
-                                                  @Param(value = "isShowNewbieLoan") boolean isShowNewbieLoan);
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "mobile") String mobile);
 
-    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
+    long findLoanAchievementCount(@Param(value = "mobile") String mobile);
 
-    long findLoanAchievementCount(@Param(value = "loginName") String loginName);
-
-    List<LoanModel> findByProductType(@Param(value = "productType") ProductType productType);
+    List<LoanModel> findByProductType(@Param(value = "loanStatus") LoanStatus loanStatus,
+                                      @Param("productTypeList") List<ProductType> productTypeList,
+                                      @Param(value = "activityType") ActivityType activityType);
 
 }

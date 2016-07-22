@@ -11,9 +11,10 @@
     <div class="bRadiusBox spad bg-w clearfix">
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
         <div class="profile-box">
-            <span><em>您好：${loginName!}</em></span>
+            <span><em>您好：${mobile!}</em></span>
+            <span class="vip vip${userMembershipLevel!}"></span>
+            <a href="/personal-info" class="user-info"></a>
             <ul class="proList">
-                <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
                 <#if signedIn?? && signedIn>
                     <li class="fl sign-top no-click"><span class="btn-sign finish-sign">已签到</span></li>
                 <#else >
@@ -34,11 +35,13 @@
         <div class="assets-detail bRadiusBox fr bg-w">
             <ul class="detail-list">
                 <li><b>我的余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
-                <li><b>累计预期收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收预期收益：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest+collectedBirthdayAndInterest+collectedRedEnvelopeInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收投资收益：</b><span>${((collectedInterest+collectedBirthdayAndInterest)/100)?string('0.00')!}</span>元</li>
+                <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收推荐奖励：</b><span>${((collectedReward/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收红包奖励：</b><span>${((collectedRedEnvelopeInterest/100)?string('0.00'))!}</span>元</li>
             </ul>
         </div>
     </div>
@@ -193,9 +196,9 @@
                     <tr>
                         <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                         <td>
-                        <#if latestInvest.productType != 'EXPERIENCE'>
+                            <#if latestInvest.productType != 'EXPERIENCE'>
                             <i <#if latestInvest.birthdayCoupon>class="birth-icon" data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
-                        </#if>
+                            </#if>
 
                             <a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a>
                         </td>
@@ -204,7 +207,7 @@
                         ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>
                         <td>
-                                ￥${((latestInvest.investAmount/100)?string('0.00'))!}
+                            ￥${((latestInvest.investAmount/100)?string('0.00'))!}
                             <#if latestInvest.productType == 'EXPERIENCE'>
                                 (体验金)
                             </#if>

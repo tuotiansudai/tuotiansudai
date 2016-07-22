@@ -1,6 +1,5 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
-import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -43,8 +42,8 @@ public interface TransferApplicationMapper {
                                                                              @Param("startTime") Date startTime,
                                                                              @Param("endTime") Date endTime,
                                                                              @Param("status") TransferStatus status,
-                                                                             @Param("transferrerLoginName") String transferrerLoginName,
-                                                                             @Param("transfereeLoginName") String transfereeLoginName,
+                                                                             @Param("transferrerMobile") String transferrerMobile,
+                                                                             @Param("transfereeMobile") String transfereeMobile,
                                                                              @Param("loanId") Long loanId,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
@@ -53,8 +52,8 @@ public interface TransferApplicationMapper {
                                                @Param("startTime") Date startTime,
                                                @Param("endTime") Date endTime,
                                                @Param("status") TransferStatus status,
-                                               @Param("transferrerLoginName") String transferrerLoginName,
-                                               @Param("transfereeLoginName") String transfereeLoginName,
+                                               @Param("transferrerMobile") String transferrerMobile,
+                                               @Param("transfereeMobile") String transfereeMobile,
                                                @Param("loanId") Long loanId);
 
 
@@ -82,6 +81,7 @@ public interface TransferApplicationMapper {
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 
+    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
 
 
 }

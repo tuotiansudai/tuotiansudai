@@ -7,7 +7,9 @@ import com.tuotiansudai.api.dto.v1_0.ReferrerListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerListServiceImpl;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.impl.ReferrerManageServiceImpl;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,6 +35,9 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
     @Mock
     private ReferrerManageServiceImpl referrerManageService;
 
+    @Mock
+    private UserMapper userMapper;
+
     @Test
     public void shouldGenerateReferrerListIsOk(){
         ReflectionTestUtils.setField(referrerManageService, "userReward", "0.1|0.2|0.3");
@@ -53,6 +58,9 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
         referrerRelationDtos.add(referrerRelationView2);
         when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class),anyString(),anyInt(), anyInt())).thenReturn(referrerRelationDtos);
         when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class),anyString())).thenReturn(2);
+        UserModel userModel = new UserModel();
+        userModel.setMobile("13333333333");
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
         ReferrerListRequestDto referrerListRequestDto = new ReferrerListRequestDto();
         referrerListRequestDto.setIndex(1);
         referrerListRequestDto.setPageSize(10);

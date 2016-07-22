@@ -15,7 +15,6 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private RandomUtils randomUtils;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -87,10 +85,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 @Override
                 public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
                     LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
-                    item.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
+                    item.setMobile(randomUtils.encryptMobile(loginName,input.getLoginName(),Source.WEB));
+
 
                     long amount = 0;
                     List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
@@ -99,7 +98,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     }
 
                     if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
                     }
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
@@ -151,19 +150,19 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanInvestAchievementDto achievementDto = new LoanInvestAchievementDto();
             if (loanModel.getFirstInvestAchievementId() != null) {
                 InvestModel firstInvest = investMapper.findById(loanModel.getFirstInvestAchievementId());
-                achievementDto.setFirstInvestAchievementLoginName(firstInvest.getLoginName());
                 achievementDto.setFirstInvestAchievementDate(firstInvest.getTradingTime());
+                achievementDto.setFirstInvestAchievementMobile(randomUtils.encryptMobile(loginName,firstInvest.getLoginName(),Source.WEB));
             }
             if (loanModel.getMaxAmountAchievementId() != null) {
                 InvestModel maxInvest = investMapper.findById(loanModel.getMaxAmountAchievementId());
-                achievementDto.setMaxAmountAchievementLoginName(maxInvest.getLoginName());
                 long amount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), maxInvest.getLoginName());
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(amount));
+                achievementDto.setMaxAmountAchievementMobile(randomUtils.encryptMobile(loginName,maxInvest.getLoginName(),Source.WEB));
             }
             if (loanModel.getLastInvestAchievementId() != null) {
                 InvestModel lastInvest = investMapper.findById(loanModel.getLastInvestAchievementId());
-                achievementDto.setLastInvestAchievementLoginName(lastInvest.getLoginName());
                 achievementDto.setLastInvestAchievementDate(lastInvest.getTradingTime());
+                achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName,lastInvest.getLoginName(),Source.WEB));
             }
             achievementDto.setLoanRemainingAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
 

@@ -2,31 +2,20 @@ package com.tuotiansudai.point.dto;
 
 
 import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
 
 public class PointTaskDto {
-    private long id;
+
     private PointTask name;
+
+    private String title;
+
+    private String description;
+
     private long point;
+
     private boolean completed;
 
-    public PointTaskDto(){
-
-    }
-    public PointTaskDto(PointTaskModel pointTaskModel){
-        this.id = pointTaskModel.getId();
-        this.point = pointTaskModel.getPoint();
-        this.name = pointTaskModel.getName();
-    }
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private String url;
 
     public PointTask getName() {
         return name;
@@ -34,6 +23,22 @@ public class PointTaskDto {
 
     public void setName(PointTask name) {
         this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public long getPoint() {
@@ -50,5 +55,13 @@ public class PointTaskDto {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

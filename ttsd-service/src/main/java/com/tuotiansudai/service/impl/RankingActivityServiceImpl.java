@@ -4,8 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
@@ -15,9 +14,11 @@ import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -37,7 +38,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private AccountService accountService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -74,6 +75,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
     private static final long DRAW_SCORE = 1000;
 
+    @Autowired
+    private RandomUtils randomUtils;
 
     public BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName, String mobile) {
         logger.debug(loginName + " is drawing the tiandou prize.");
@@ -177,9 +180,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     private void sendInterestCoupon5(String loginName) {
-        List<UserGroup> userGroups = new ArrayList<>();
-        userGroups.add(UserGroup.WINNER);
-        couponActivationService.assignUserCoupon(loginName, userGroups, 300L, null);
+        couponAssignmentService.assignUserCoupon(loginName, 300L);
     }
 
     // reutrn null if not exists
@@ -192,12 +193,12 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     @Override
-    public List<UserScoreDto> getTianDouTop15() {
+    public List<UserScoreDto> getTianDouTop15(String loginName) {
         List<UserScoreDto> userScoreDtoTop10 = new ArrayList<>();
 
         Set<Tuple> top10 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
         for (Tuple tuple : top10) {
-            userScoreDtoTop10.add(new UserScoreDto(tuple.getElement(), (long) tuple.getScore()));
+            userScoreDtoTop10.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
         }
         return userScoreDtoTop10;
     }
@@ -216,7 +217,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.MacBook);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.MacBook);
             }
         });
 
@@ -224,7 +225,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.Iphone6s);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.Iphone6s);
             }
         });
 
@@ -246,7 +247,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
                 String prize = input.split("\\+")[1];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.valueOf(prize));
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.valueOf(prize));
             }
         });
 

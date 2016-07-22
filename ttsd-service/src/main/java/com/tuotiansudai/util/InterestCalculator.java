@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class InterestCalculator {
@@ -144,11 +145,11 @@ public class InterestCalculator {
         return expectedInterest;
     }
 
-    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount) {
+    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {
         long estimateCouponExpectedInterest = estimateCouponExpectedInterest(amount, loanModel, couponModel);
         long expectedFee = 0;
         if (Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponModel.getCouponType())) {
-            expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
         return expectedFee;
     }
@@ -198,6 +199,18 @@ public class InterestCalculator {
             totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
         }
         return totalExpectedInterestAmount;
+    }
+
+    public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
+        DateTime startTime;
+        if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
+            startTime =new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+        } else {
+            startTime = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+        }
+        int periodDuration = Days.daysBetween(startTime, new DateTime(endTime).withTimeAtStartOfDay()).getDays();
+        return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
+                divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
 }

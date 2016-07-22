@@ -18,9 +18,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})

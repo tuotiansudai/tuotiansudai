@@ -36,7 +36,7 @@ public class FeedbackServiceTest {
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 
-        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getLoginName(), null, null, null, null, null, 1, 3);
+        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getMobile(), null, null, null, null, null, 1, 3);
 
         long findCount = paginationDataDto.getCount();
         assertEquals(1, findCount);
