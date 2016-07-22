@@ -11,7 +11,6 @@ import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailRequestDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
-import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -38,9 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailService {
+public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2ServiceImpl {
 
-    private static final Logger logger = Logger.getLogger(MobileAppLoanDetailServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MobileAppLoanDetailV2ServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -185,7 +184,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
                 marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
             } else {
                 for (InvestModel investModel : investAchievements) {
-                    String investorLoginName = randomUtils.encryptLoginName(loginName, investModel.getLoginName(), 3, investModel.getId());
+                    String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE);
                     if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
                         marqueeTitle.append(investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
                         marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");

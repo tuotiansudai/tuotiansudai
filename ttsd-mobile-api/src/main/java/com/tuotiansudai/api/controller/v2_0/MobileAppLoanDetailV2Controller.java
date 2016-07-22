@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-public class MobileAppLoanDetailController extends MobileAppBaseController {
+public class MobileAppLoanDetailV2Controller extends MobileAppBaseController {
 
     @Autowired
     private MobileAppLoanDetailService mobileAppLoanDetailV2Service;
