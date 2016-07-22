@@ -7,7 +7,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'autoNumeric', 'bootstrapSelect', 'boots
         minLength: 3,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
         },
@@ -20,7 +20,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'autoNumeric', 'bootstrapSelect', 'boots
 
     $('form input[type="submit"]').click(function () {
         if (!$('#login-name').val()) {
-            $('.alert', errorMessage).html('用户名不能为空');
+            $('.alert', errorMessage).html('电话号码不能为空');
             errorMessage.show();
             return false;
         }

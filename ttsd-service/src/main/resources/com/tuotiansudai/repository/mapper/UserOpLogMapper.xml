@@ -5,14 +5,25 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.UserOpLogMapper">
 
     <resultMap id="userOpLogModelResultMap" type="UserOpLogModel">
-        <id column="id" property="id"></id>
-        <result column="login_name" property="loginName"></result>
-        <result column="op_type" property="opType"></result>
-        <result column="ip" property="ip"></result>
-        <result column="device_id" property="deviceId"></result>
-        <result column="source" property="source"></result>
-        <result column="description" property="description"></result>
-        <result column="created_time" property="createdTime"></result>
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="op_type" property="opType"/>
+        <result column="ip" property="ip"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="source" property="source"/>
+        <result column="description" property="description"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="userOpLogViewResultMap" type="UserOpLogView">
+        <id column="id" property="id"/>
+        <result column="mobile" property="mobile"/>
+        <result column="op_type" property="opType"/>
+        <result column="ip" property="ip"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="source" property="source"/>
+        <result column="description" property="description"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="UserOpLogModel">
@@ -20,11 +31,13 @@
         value(#{loginName}, #{opType}, #{ip}, #{deviceId}, #{source}, #{description}, #{createdTime})
     </insert>
 
-    <select id="getPaginationData" parameterType="map" resultMap="userOpLogModelResultMap">
-        select * from user_op_log
+    <select id="getPaginationData" parameterType="map" resultMap="userOpLogViewResultMap">
+        select user.mobile, op_type, ip, device_id, user_op_log.source as source, description, created_time from
+        user_op_log join user
+        on user_op_log.login_name = user.login_name
         <where>
-            <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="opType != null">
                 and op_type = #{opType}
@@ -33,15 +46,16 @@
                 and created_time between #{startTime} and #{endTime}
             </if>
         </where>
-        order by created_time desc, id asc
+        order by created_time desc, user_op_log.id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="count" parameterType="map" resultType="long">
-        select count(1) from user_op_log
+        select count(1) from user_op_log join user
+        on user_op_log.login_name = user.login_name
         <where>
-            <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="opType != null">
                 and op_type = #{opType}

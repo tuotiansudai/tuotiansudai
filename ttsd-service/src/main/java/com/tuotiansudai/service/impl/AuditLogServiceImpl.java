@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.repository.model.AuditLogModel;
+import com.tuotiansudai.repository.model.AuditLogView;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
@@ -66,7 +67,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorLoginName, String auditorLoginName, Date startTime, Date endTime, int index, int pageSize) {
+    public BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(OperationType operationType, String targetId, String operatorMobile, String auditorMobile, Date startTime, Date endTime, int index, int pageSize) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -79,19 +80,19 @@ public class AuditLogServiceImpl implements AuditLogService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        long count = auditLogMapper.count(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime);
+        long count = auditLogMapper.count(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime);
 
-        List<AuditLogModel> data = Lists.newArrayList();
+        List<AuditLogView> data = Lists.newArrayList();
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            data = auditLogMapper.getPaginationData(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime, (index - 1) * pageSize, pageSize);
+            data = auditLogMapper.getPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, (index - 1) * pageSize, pageSize);
         }
 
-        List<AuditLogPaginationItemDataDto> records = Lists.transform(data, new Function<AuditLogModel, AuditLogPaginationItemDataDto>() {
+        List<AuditLogPaginationItemDataDto> records = Lists.transform(data, new Function<AuditLogView, AuditLogPaginationItemDataDto>() {
             @Override
-            public AuditLogPaginationItemDataDto apply(AuditLogModel input) {
-                return new AuditLogPaginationItemDataDto(input.getAuditorLoginName(), input.getOperatorLoginName(), input.getTargetId(), input.getOperationType(), input.getIp(), input.getDescription(), input.getOperationTime());
+            public AuditLogPaginationItemDataDto apply(AuditLogView input) {
+                return new AuditLogPaginationItemDataDto(input.getAuditorMobile(), input.getOperatorMobile(), input.getTargetId(), input.getOperationType(), input.getIp(), input.getDescription(), input.getOperationTime());
             }
         });
 

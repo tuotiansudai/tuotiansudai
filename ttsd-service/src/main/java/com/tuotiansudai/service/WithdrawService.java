@@ -14,7 +14,7 @@ public interface WithdrawService {
     BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto);
 
     BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId,
-                                                          String loginName,
+                                                          String mobile,
                                                           WithdrawStatus status,
                                                           Source source,
                                                           int index,
@@ -23,14 +23,14 @@ public interface WithdrawService {
                                                           Date endTime);
 
     long findSumWithdrawAmount(String withdrawId,
-                               String loginName,
+                               String mobile,
                                WithdrawStatus status,
                                Source source,
                                Date startTime,
                                Date endTime);
 
     long findSumWithdrawFee(String withdrawId,
-                            String loginName,
+                            String mobile,
                             WithdrawStatus status,
                             Source source,
                             Date startTime,
@@ -40,7 +40,7 @@ public interface WithdrawService {
 
 
     int findWithdrawCount(String withdrawId,
-                          String loginName,
+                          String mobile,
                           WithdrawStatus status,
                           Source source,
                           Date startTime,
