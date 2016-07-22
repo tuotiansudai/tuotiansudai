@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
             loginName = dto.getLoginName();
             loginNameIsExist = this.loginNameIsExist(loginName);
         } else {
-            loginName = MessageFormat.format(LOGIN_NAME, idGenerator.generate());
+            loginName = MessageFormat.format(LOGIN_NAME, String.valueOf(idGenerator.generate()));
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());

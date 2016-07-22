@@ -16,7 +16,7 @@ public interface RankingActivityService {
 
     Long getUserRank(String loginName);
 
-    List<UserScoreDto> getTianDouTop15();
+    List<UserScoreDto> getTianDouTop15(String loginName);
 
     Map<String, List<UserTianDouRecordDto>> getTianDouWinnerList();
 

@@ -178,6 +178,19 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
              });
 
         });
+
+        //timer
+        function getCode() {
+            if (countdown == 0) {
+                window.clearInterval(timer);
+                $fetchCaptcha.prop('disabled',false).text('获取验证码');
+                countdown = 60;
+            } else {
+                $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
+                countdown--;
+            }
+        }
+
         // phone validate
         jQuery.validator.addMethod("isPhone", function(value, element) {
             var tel = /0?(13|14|15|18)[0-9]{9}/;

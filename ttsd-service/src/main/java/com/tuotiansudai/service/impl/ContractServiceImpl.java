@@ -216,7 +216,7 @@ public class ContractServiceImpl implements ContractService {
                 if ("platformAccount".equals(type)) {//平台账号
 
                     if (sourceString.length() >= 3) {
-                        encryString = randomUtils.encryptMiddleMobile(mobile);
+                        encryString = randomUtils.encryptWebMiddleMobile(mobile);
                     }
 
                 } else if ("realName".equals(type)) {//真实姓名
