@@ -136,7 +136,7 @@ public class UserMessageEventGenerator {
 
         //投标成功：您在{0}项目成功投资{1}元，即将放款生息。
         String appTitleTemplate = messageModel.getAppTitle();
-        String appTitle = MessageFormat.format(appTitleTemplate, String.valueOf(loanId), loanModel.getName(), AmountConverter.convertCentToString(amount));
+        String appTitle = MessageFormat.format(appTitleTemplate, loanModel.getName(), AmountConverter.convertCentToString(amount));
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, null);
         userMessageMapper.create(userMessageModel);
     }
@@ -204,7 +204,7 @@ public class UserMessageEventGenerator {
 
         //您投资的{0}项目还款啦，赶快查看收益吧。
         String appTitleTemplate = messageModel.getAppTitle();
-        String appTitle = MessageFormat.format(appTitleTemplate, String.valueOf(loanModel.getId()), loanModel.getName());
+        String appTitle = MessageFormat.format(appTitleTemplate, loanModel.getName());
 
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
         Set<String> investorLoginNames = Sets.newHashSet();
