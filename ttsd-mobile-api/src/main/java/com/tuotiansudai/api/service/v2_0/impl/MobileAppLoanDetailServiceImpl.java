@@ -1,28 +1,38 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailRequestDto;
 import com.tuotiansudai.api.dto.v2_0.LoanDetailResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailService;
+import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanerDetailsMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.PledgeType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +53,40 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
+    private ContractService contractService;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private LoanTitleRelationMapper loanTitleRelationMapper;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
+
+    @Value("${web.server}")
+    private String domainName;
+
+    private String title = "拓天速贷引领投资热，开启互金新概念";
+
+    private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto<LoanDetailResponseDataDto> findLoanDetail(LoanDetailRequestDto requestDto) {
@@ -65,7 +109,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto dataDto = new LoanDetailResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
-        dataDto.setLoanType();
+        dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
         dataDto.setLoanName(loanModel.getName());
         dataDto.setRepayTypeCode("");
 
@@ -92,25 +136,192 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             dataDto.setLoanStatus(loanModel.getStatus().name().toLowerCase());
             dataDto.setLoanStatusDesc(loanModel.getStatus().getDescription());
         }
-        long investedAmount = 0;
+        long investedAmount;
         if (loanModel.getProductType() == ProductType.EXPERIENCE) {
             Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
             Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
             List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
             investedAmount = couponService.findExperienceInvestAmount(investModelList);
-            dataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
+            dataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toDate());
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         }
         dataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         dataDto.setBaseRatePercent(decimalFormat.format(loanModel.getBaseRate() * 100));
         dataDto.setActivityRatePercent(decimalFormat.format(loanModel.getActivityRate() * 100));
-        dataDto.setDeclaration();
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        dataDto.setDeclaration(loanDetailsModel.getDeclaration());
+        dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
+        if (loanModel.getFundraisingEndTime() != null) {
+            dataDto.setFundRaisingEndTime(new DateTime(loanModel.getFundraisingEndTime()).toDate());
+        }
 
+        dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
+        if (loanModel.getFundraisingStartTime() != null) {
+            dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
+            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
+        }
+        dataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loanModel.getFundraisingStartTime()));
+        dataDto.setMinInvestMoney(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
+        dataDto.setCardinalNumber(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
+        dataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
+        dataDto.setInvestedCount(investMapper.countSuccessInvest(loanModel.getId()));
+        if (loanModel.getRaisingCompleteTime() != null) {
+            dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
+        }
+        dataDto.setLoanDetail(obtainLoanDetail(loanModel.getId()));
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
+            investFeeRate = this.defaultFee;
+        }
+        dataDto.setInvestFeeRate(String.valueOf(investFeeRate));
+        List<EvidenceResponseDataDto> evidence = getEvidenceByLoanId(loanModel.getId());
+        dataDto.setEvidence(evidence);
+        List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loanModel.getId());
+        if (loanModel.getActivityType() != ActivityType.NEWBIE) {
+            StringBuffer marqueeTitle = new StringBuffer();
+            if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(com.tuotiansudai.repository.model.LoanStatus.RAISING, com.tuotiansudai.repository.model.LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
+                marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+            } else {
+                for (InvestModel investModel : investAchievements) {
+                    String investorLoginName = randomUtils.encryptLoginName(loginName, investModel.getLoginName(), 3, investModel.getId());
+                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
+                        marqueeTitle.append(investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
+                        marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
+                    }
+                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
+                        marqueeTitle.append("恭喜" + investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                    }
+                    if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
+                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
+                    }
+                    if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)) {
+                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
+                    }
+                }
+            }
+            dataDto.setMarqueeTitle(marqueeTitle.toString());
+            dataDto.setTitle(title);
+            dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney(), dataDto.getDeadline(), dataDto.getRepayUnit(), dataDto.getRatePercent()));
+            dataDto.setDuration(loanModel.getDuration());
+            dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");
+            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
+            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+                List<ExtraLoanRateDto> extraLoanRateDtos = fillExtraLoanRateDto(extraLoanRateModels);
+                dataDto.setExtraRates(extraLoanRateDtos);
+            }
+        }
         return dataDto;
     }
 
-    private Map<String,Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
-        
+    private String calculateRemainTime(Date fundraisingEndTime, com.tuotiansudai.repository.model.LoanStatus status) {
+
+        Long time = (fundraisingEndTime.getTime() - System
+                .currentTimeMillis()) / 1000;
+
+        if (time < 0 || !status.equals(com.tuotiansudai.repository.model.LoanStatus.RAISING)) {
+            return "已到期";
+        }
+        long days = time / 3600 / 24;
+        long hours = (time / 3600) % 24;
+        long minutes = (time / 60) % 60;
+        if (minutes < 1) {
+            minutes = 1L;
+        }
+
+        return days + "天" + hours + "时" + minutes + "分";
+    }
+
+    public String obtainLoanDetail(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel != null) {
+            Map<String, Object> dateModel = collectLoanDetailDateModel(loanId, loanModel.getPledgeType());
+            switch (loanModel.getPledgeType()) {
+                case HOUSE:
+                    return contractService.getContract("pledgeHouse", dateModel);
+                case VEHICLE:
+                    return contractService.getContract("pledgeVehicle", dateModel);
+                default:
+                    return loanModel.getDescriptionHtml();
+
+            }
+        }
+        return null;
+
+    }
+
+    private Map<String, Object> collectLoanDetailDateModel(long loanId, PledgeType pledgeType) {
+        Map<String, Object> dataModel = Maps.newHashMap();
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        if (loanerDetailsModel != null) {
+            dataModel.put("loaner", loanerDetailsModel.getUserName());
+            dataModel.put("marriage", loanerDetailsModel.getMarriage());
+
+        }
+        if (loanDetailsModel != null) {
+            dataModel.put("declaration", loanDetailsModel.getDeclaration());
+
+        }
+        switch (pledgeType) {
+            case HOUSE:
+                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+                if (pledgeHouseModel != null) {
+                    dataModel.put("loanAmount", pledgeHouseModel.getLoanAmount());
+                    dataModel.put("estimateAmount", pledgeHouseModel.getEstimateAmount());
+                    dataModel.put("pledgeLocation", pledgeHouseModel.getPledgeLocation());
+                    dataModel.put("square", pledgeHouseModel.getSquare());
+                    dataModel.put("propertyCardId", pledgeHouseModel.getPropertyCardId());
+                    dataModel.put("estateRegisterId", pledgeHouseModel.getEstateRegisterId());
+                    dataModel.put("authenticAct", pledgeHouseModel.getAuthenticAct());
+
+                }
+                break;
+            case VEHICLE:
+                PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+                if (pledgeVehicleModel != null) {
+                    dataModel.put("loanAmount", pledgeVehicleModel.getLoanAmount());
+                    dataModel.put("estimateAmount", pledgeVehicleModel.getEstimateAmount());
+                    dataModel.put("model", pledgeVehicleModel.getModel());
+                }
+                break;
+
+        }
+
+        return dataModel;
+
+    }
+
+    private List<EvidenceResponseDataDto> getEvidenceByLoanId(long loanId) {
+        EvidenceResponseDataDto evidenceResponseDataDto;
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(loanId);
+        List<String> imageUrlList;
+        List<EvidenceResponseDataDto> evidenceResponseDataDtos = Lists.newArrayList();
+        for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModels) {
+            imageUrlList = Lists.newArrayList();
+            evidenceResponseDataDto = new EvidenceResponseDataDto();
+            String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
+            if (StringUtils.isNotEmpty(materialUrl)) {
+                for (String url : materialUrl.split(",")) {
+                    String tempUrl = domainName + "/" + url;
+                    imageUrlList.add(tempUrl);
+                }
+            }
+            evidenceResponseDataDto.setTitle(loanTitleRelationModel.getTitle());
+            evidenceResponseDataDto.setImageUrl(imageUrlList);
+            evidenceResponseDataDtos.add(evidenceResponseDataDto);
+        }
+
+        return evidenceResponseDataDtos;
+    }
+
+    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels) {
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
+            @Override
+            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateDto(model);
+            }
+        });
     }
 }

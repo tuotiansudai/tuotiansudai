@@ -2,7 +2,8 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.LoanStatus;
+import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 
 import java.util.Date;
 import java.util.List;
@@ -43,11 +44,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     private String declaration;//声明
 
-    private String verifyTime;//发布日期
+    private Date verifyTime;//发布日期
 
     private Date fundRaisingEndTime;//募集截至日期
 
-    private Date remainTime;//剩余时间
+    private String remainTime;//剩余时间
 
     private Date investBeginTime;//起投时间
 
@@ -59,19 +60,29 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     private String maxInvestMoney;//投资上限
 
-    private String investedCount;//已投人数
+    private Long investedCount;//已投人数
 
-    private Date raiseCompletedTime;//募集完成时间
+    private String raiseCompletedTime;//募集完成时间
 
     private String loanDetail;//借款详情
 
     private String investFeeRate;//手续费比例
 
-    private List<LoanerDto> loaner;
+    private String marqueeTitle;
 
-    private List<PledgeHouseDto> pledgeHouse;
+    private String title;
 
-    private List<PledgeVehicleDto> pledgeVehicle;
+    private String content;
+
+    private Integer duration;
+
+    private String productNewType;
+
+    private String deadline;
+
+    private List<ExtraLoanRateDto> extraRates;
+
+    private List<EvidenceResponseDataDto> evidence;
 
     public Long getLoanId() {
         return loanId;
@@ -209,11 +220,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.declaration = declaration;
     }
 
-    public String getVerifyTime() {
+    public Date getVerifyTime() {
         return verifyTime;
     }
 
-    public void setVerifyTime(String verifyTime) {
+    public void setVerifyTime(Date verifyTime) {
         this.verifyTime = verifyTime;
     }
 
@@ -225,11 +236,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.fundRaisingEndTime = fundRaisingEndTime;
     }
 
-    public Date getRemainTime() {
+    public String getRemainTime() {
         return remainTime;
     }
 
-    public void setRemainTime(Date remainTime) {
+    public void setRemainTime(String remainTime) {
         this.remainTime = remainTime;
     }
 
@@ -273,19 +284,19 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.maxInvestMoney = maxInvestMoney;
     }
 
-    public String getInvestedCount() {
+    public Long getInvestedCount() {
         return investedCount;
     }
 
-    public void setInvestedCount(String investedCount) {
+    public void setInvestedCount(Long investedCount) {
         this.investedCount = investedCount;
     }
 
-    public Date getRaiseCompletedTime() {
+    public String getRaiseCompletedTime() {
         return raiseCompletedTime;
     }
 
-    public void setRaiseCompletedTime(Date raiseCompletedTime) {
+    public void setRaiseCompletedTime(String raiseCompletedTime) {
         this.raiseCompletedTime = raiseCompletedTime;
     }
 
@@ -305,27 +316,67 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.investFeeRate = investFeeRate;
     }
 
-    public List<LoanerDto> getLoaner() {
-        return loaner;
+    public List<EvidenceResponseDataDto> getEvidence() {
+        return evidence;
     }
 
-    public void setLoaner(List<LoanerDto> loaner) {
-        this.loaner = loaner;
+    public void setEvidence(List<EvidenceResponseDataDto> evidence) {
+        this.evidence = evidence;
     }
 
-    public List<PledgeHouseDto> getPledgeHouse() {
-        return pledgeHouse;
+    public String getMarqueeTitle() {
+        return marqueeTitle;
     }
 
-    public void setPledgeHouse(List<PledgeHouseDto> pledgeHouse) {
-        this.pledgeHouse = pledgeHouse;
+    public void setMarqueeTitle(String marqueeTitle) {
+        this.marqueeTitle = marqueeTitle;
     }
 
-    public List<PledgeVehicleDto> getPledgeVehicle() {
-        return pledgeVehicle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPledgeVehicle(List<PledgeVehicleDto> pledgeVehicle) {
-        this.pledgeVehicle = pledgeVehicle;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public String getProductNewType() {
+        return productNewType;
+    }
+
+    public void setProductNewType(String productNewType) {
+        this.productNewType = productNewType;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public List<ExtraLoanRateDto> getExtraRates() {
+        return extraRates;
+    }
+
+    public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }
