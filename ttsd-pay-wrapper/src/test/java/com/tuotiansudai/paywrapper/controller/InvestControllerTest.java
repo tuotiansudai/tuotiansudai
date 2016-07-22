@@ -591,7 +591,7 @@ public class InvestControllerTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RAISING);
-//        lm.setUpdateTime(new Date());
+        lm.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(lm);
     }
 
@@ -599,20 +599,6 @@ public class InvestControllerTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
-    }
-
-    private Map<String, String> getFakeCallbackParamsMap(String orderId) {
-        return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("service", "project_transfer_notify")
-                .put("sign_type", "RSA")
-                .put("sign", "sign")
-                .put("mer_id", "mer_id")
-                .put("version", "1.0")
-                .put("trade_no", "trade_no")
-                .put("order_id", orderId)
-                .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
-                .put("ret_code", "0000")
-                .build());
     }
 
     private void generateMockResponse_success(int times) {

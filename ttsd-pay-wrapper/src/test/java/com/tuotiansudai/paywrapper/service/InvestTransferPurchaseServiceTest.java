@@ -461,6 +461,7 @@ public class InvestTransferPurchaseServiceTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(recheckTime);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
