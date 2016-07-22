@@ -257,6 +257,7 @@ public class InvestTransferServiceTest {
 
         assertFalse(result);
     }
+
     @Test
     public void shouldIsTransferableByOverDaysLimit(){
         UserModel userModel = createUserByUserId("testuser");
@@ -316,7 +317,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findTransferApplicationPaginationList(null, null, null,null,null,transfereeModel.getLoginName(),null,1,10);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(null, null, null, null, null, transfereeModel.getMobile(), null, 1, 10);
 
         assertTrue(basePaginationDataDto.getStatus());
         assertNotNull(basePaginationDataDto.getRecords().get(0));
@@ -327,9 +328,10 @@ public class InvestTransferServiceTest {
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
         assertEquals("TRANSFERRING", basePaginationDataDto.getRecords().get(0).getTransferStatus());
-        assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
-        assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
+        assertEquals(transfereeModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransfereeMobile());
+        assertEquals(transferrerModel.getMobile(), basePaginationDataDto.getRecords().get(0).getTransferrerMobile());
     }
+
     @Test
     public void shouldFindWebTransferApplicationPaginationListIsSuccess(){
         long loanId = idGenerator.generate();
@@ -365,5 +367,4 @@ public class InvestTransferServiceTest {
         assertEquals(new DateTime("2016-01-07").toDate(), basePaginationDataDto.getRecords().get(0).getDeadLine());
         assertEquals(TransferStatus.TRANSFERRING.getDescription(), basePaginationDataDto.getRecords().get(0).getTransferStatus());
     }
-
 }

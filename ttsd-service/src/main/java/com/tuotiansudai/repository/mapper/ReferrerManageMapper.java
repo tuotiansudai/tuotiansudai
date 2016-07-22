@@ -13,22 +13,22 @@ import java.util.List;
 @Repository
 public interface ReferrerManageMapper {
 
-    int findReferrerManageCount(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+    int findReferrerManageCount(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
 
-    long findReferrerManageInvestAmountSum(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+    long findReferrerManageInvestAmountSum(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
 
-    long findReferrerManageRewardAmountSum(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+    long findReferrerManageRewardAmountSum(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
 
-    List<ReferrerManageView> findReferrerManage(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+    List<ReferrerManageView> findReferrerManage(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source,

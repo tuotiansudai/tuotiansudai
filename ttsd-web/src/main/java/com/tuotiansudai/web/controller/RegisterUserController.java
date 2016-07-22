@@ -3,11 +3,13 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -34,11 +36,15 @@ public class RegisterUserController {
     @Autowired
     private CaptchaHelper captchaHelper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", referrer);
+        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }

@@ -33,7 +33,7 @@ public class UserFundsController {
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
     public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
                                   @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
-                                  @RequestParam(value = "loginName", required = false) String loginName,
+                                  @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index,
@@ -48,8 +48,8 @@ public class UserFundsController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
-            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, 1, userFundsCount);
+            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
+            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, 1, userFundsCount);
             List<List<String>> data = Lists.newArrayList();
             for (UserBillPaginationView userBillView : userBillModels) {
                 List<String> dataModel = Lists.newArrayList();
@@ -71,9 +71,9 @@ public class UserFundsController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/user-funds");
-            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, index, pageSize);
-            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
-            modelAndView.addObject("loginName", loginName);
+            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
+            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
+            modelAndView.addObject("mobile", mobile);
             modelAndView.addObject("startTime", startTime);
             modelAndView.addObject("endTime", endTime);
             modelAndView.addObject("userBillBusinessType", userBillBusinessType);
