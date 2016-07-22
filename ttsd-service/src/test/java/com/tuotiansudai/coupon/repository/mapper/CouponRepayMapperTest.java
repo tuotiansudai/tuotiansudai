@@ -44,19 +44,19 @@ public class CouponRepayMapperTest extends BaseMapperTest {
 
         CouponRepayModel couponRepayModel = new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate());
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
+        CouponRepayModel repayModel = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
+        repayModel.setActualInterest(200);
+        repayModel.setActualFee(20);
+        repayModel.setActualRepayDate(new DateTime().withDate(2016, 12, 31).withTimeAtStartOfDay().toDate());
+        repayModel.setStatus(RepayStatus.COMPLETE);
 
-        couponRepayModel.setActualInterest(200);
-        couponRepayModel.setActualFee(20);
-        couponRepayModel.setActualRepayDate(new DateTime().withDate(2016, 12, 31).withTimeAtStartOfDay().toDate());
-        couponRepayModel.setStatus(RepayStatus.COMPLETE);
-
-        couponRepayMapper.update(couponRepayModel);
+        couponRepayMapper.update(repayModel);
 
         CouponRepayModel updatedCouponRepay = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
 
-        assertThat(updatedCouponRepay.getActualInterest(), is(couponRepayModel.getActualInterest()));
-        assertThat(updatedCouponRepay.getActualFee(), is(couponRepayModel.getActualFee()));
-        assertThat(updatedCouponRepay.getStatus(), is(couponRepayModel.getStatus()));
-        assertThat(updatedCouponRepay.getActualRepayDate(), is(couponRepayModel.getActualRepayDate()));
+        assertThat(updatedCouponRepay.getActualInterest(), is(repayModel.getActualInterest()));
+        assertThat(updatedCouponRepay.getActualFee(), is(repayModel.getActualFee()));
+        assertThat(updatedCouponRepay.getStatus(), is(repayModel.getStatus()));
+        assertThat(updatedCouponRepay.getActualRepayDate(), is(repayModel.getActualRepayDate()));
     }
 }
