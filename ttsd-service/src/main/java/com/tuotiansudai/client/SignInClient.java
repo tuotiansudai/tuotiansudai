@@ -78,7 +78,8 @@ public class SignInClient extends BaseClient {
     }
 
     public BaseDto<LoginDto> sendSignOut(String oldSessionId) {
-        return send(oldSessionId, SIGN_OUT_URL, new FormEncodingBuilder().build());
+        RequestBody requestBody = new FormEncodingBuilder().add("Cookie", "SESSION=" + oldSessionId).build();
+        return send(oldSessionId, SIGN_OUT_URL, requestBody);
     }
 
     private BaseDto<LoginDto> send(String oldSessionId, String requestPath, RequestBody requestBody) {
