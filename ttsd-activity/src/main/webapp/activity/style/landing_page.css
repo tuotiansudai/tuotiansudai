@@ -895,6 +895,26 @@ form label.error {
       .landing-phone-container .tuotian-register .tuotian-register-container .agree-last {
         text-align: center; }
 
+.landing-container-app {
+  background: #fdd901 url("/activity/images/landing-app/bg-app.png") no-repeat left top;
+  background-size: 100%;
+  height: auto;
+  overflow: auto;
+  padding-top: 245px; }
+  .landing-container-app .register-box {
+    margin: 0 45px; }
+    .landing-container-app .register-box ul li {
+      height: 20px; }
+    .landing-container-app .register-box ul li.bg-col {
+      background: #fff;
+      height: 42px;
+      border-radius: 22px;
+      border: 1px solid #ccc; }
+      .landing-container-app .register-box ul li.bg-col input {
+        width: 100%;
+        padding: 0;
+        height: 40px; }
+
 @media screen and (max-width: 700px) {
   body {
     background: #d9edff; }
