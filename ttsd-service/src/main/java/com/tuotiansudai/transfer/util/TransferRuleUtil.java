@@ -26,7 +26,7 @@ public class TransferRuleUtil {
 
         double fee = transferRuleModel.getLevelThreeFee();
         if (investHoldDays <= transferRuleModel.getLevelTwoUpper()) {
-            fee = transferRuleModel.getLevelThreeFee();
+            fee = transferRuleModel.getLevelTwoFee();
         }
 
         if (investHoldDays <= transferRuleModel.getLevelOneUpper()) {

@@ -93,7 +93,7 @@ public class TransferRuleUtilTest {
         long loanId = idGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(90).toDate());
-        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(22).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(32).toDate());
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         long fee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
         assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelTwoFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
@@ -104,7 +104,7 @@ public class TransferRuleUtilTest {
         long loanId = idGenerator.generate();
         createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(300).toDate());
-        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(30).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(91).toDate());
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         long fee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
         assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelThreeFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
