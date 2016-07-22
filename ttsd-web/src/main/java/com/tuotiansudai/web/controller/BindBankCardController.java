@@ -103,11 +103,12 @@ public class BindBankCardController {
     @RequestMapping(value = "/limit-tips", method = RequestMethod.GET)
     @ResponseBody
     public String getLimitTips(String bankCode) {
-
         if(bankCode == null){
-
+            BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+            if(bankCardModel != null && bankCardModel.isFastPayOn()){
+                bankCode = bankCardModel.getBankCode();
+            }
         }
-
         BankModel bankModel = bankService.findByShorterName(bankCode);
         if(bankModel == null){
             return "";

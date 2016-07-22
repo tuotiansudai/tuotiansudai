@@ -51,6 +51,7 @@
                                 <input type="hidden" name="fastPay" value="true"/>
                                 <input type="hidden" name="publicPay" value="false"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <div>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</div>
                                 <div class="tc pad-m">
                                     <button type="submit" class="btn" disabled="disabled">确认充值</button>
                                 </div>
@@ -90,6 +91,7 @@
             <div class="clear-blank"></div>
             <div class="borderBox">
                 <b>温馨提示:</b> <br/>
+
                 1、为了您的账户安全，请在充值前进行实名认证。<br/>
                 2、您的账户资金将通过第三方资金托管平台联动优势进行充值。<br/>
                 3、请注意您的银行卡充值限制，以免造成不便。<br/>
