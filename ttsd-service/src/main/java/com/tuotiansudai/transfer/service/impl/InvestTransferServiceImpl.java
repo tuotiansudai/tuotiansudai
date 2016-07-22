@@ -141,8 +141,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        boolean isApplied  = CollectionUtils.isNotEmpty(transferApplicationMapper.findByTransferInvestId(investModel.getId(),
-                Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING))) ;
+        boolean isApplied = CollectionUtils.isNotEmpty(transferApplicationMapper.findByTransferInvestId(investModel.getId(),
+                Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING)));
         if (isApplied) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest was applied", String.valueOf(investModel.getId())));
             return false;
@@ -272,9 +272,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId, Date startTime,
-                                                                                                                 Date endTime, TransferStatus status,
-                                                                                                                 String transferrerLoginName, String transfereeLoginName, Long loanId, Integer index, Integer pageSize) {
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId, Date startTime, Date endTime, TransferStatus status,
+                                                                                                                 String transferrerMobile, String transfereeMobile, Long loanId, Integer index, Integer pageSize) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -287,12 +286,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerLoginName, transfereeLoginName, loanId);
+        int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
             int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
-            items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerLoginName, transfereeLoginName, loanId, (index - 1) * pageSize, pageSize);
+            items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, (index - 1) * pageSize, pageSize);
 
         }
         List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {

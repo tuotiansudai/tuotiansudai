@@ -253,6 +253,9 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and u.mobile = #{investorMobile}
+        </if>
         left join account a on a.login_name = u.login_name
         left join user ru on ru.login_name = u.referrer
         left join account ra on ra.login_name = u.referrer
@@ -260,9 +263,6 @@
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -339,14 +339,14 @@
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
         select count(1)
-        from invest join loan on invest.loan_id = loan.id
+        from invest join loan on invest.loan_id = loan.id join user on invest.login_name = user.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and user.mobile = #{investorMobile}
+        </if>
         <where>
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}

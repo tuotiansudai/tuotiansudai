@@ -26,7 +26,7 @@ public interface UserBillMapper {
 
     List<UserBillPaginationView> findUserFunds(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
                                                @Param("userBillOperationType") UserBillOperationType userBillOperationType,
-                                               @Param("loginName") String loginName,
+                                               @Param("mobile") String mobile,
                                                @Param("startTime") Date startTime,
                                                @Param("endTime") Date endTime,
                                                @Param("startLimit") int startLimit,
@@ -34,7 +34,7 @@ public interface UserBillMapper {
 
     int findUserFundsCount(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
                            @Param("userBillOperationType") UserBillOperationType userBillOperationType,
-                           @Param("loginName") String loginName,
+                           @Param("mobile") String mobile,
                            @Param("startTime") Date startTime,
                            @Param("endTime") Date endTime);
 }

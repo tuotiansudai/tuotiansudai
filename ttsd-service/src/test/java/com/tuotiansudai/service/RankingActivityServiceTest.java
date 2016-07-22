@@ -2,7 +2,6 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
@@ -10,15 +9,16 @@ import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class RankingActivityServiceTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private RandomUtils randomUtils;
 
     private void createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
@@ -163,7 +163,7 @@ public class RankingActivityServiceTest {
 
         UserTianDouRecordDto userTianDouRecordDto = otherList.get(0);
 //        assert (userTianDouRecordDto.getPrize() == TianDouPrize.InterestCoupon5);
-        assert (userTianDouRecordDto.getLoginName().equals(loginName));
+        assert (userTianDouRecordDto.getLoginName().equals(randomUtils.encryptMobile("", loginName, Source.WEB)));
     }
 
     @Test
@@ -290,16 +290,16 @@ public class RankingActivityServiceTest {
         assert (otherList != null && otherList.size() == 4);
 
         UserTianDouRecordDto userTianDouRecordDto1_0 = otherList.get(0);
-        assert (userTianDouRecordDto1_0.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_0.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_1 = otherList.get(1);
-        assert (userTianDouRecordDto1_1.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_1.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_2 = otherList.get(2);
-        assert (userTianDouRecordDto1_2.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_2.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_3 = otherList.get(3);
-        assert (userTianDouRecordDto1_3.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_3.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
     }
 
 //    @Test

@@ -5,7 +5,6 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargePaginationView;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.service.RechargeService;
@@ -40,7 +39,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findRechargePagination(String rechargeId, String loginName, RechargeSource source,
+    public BaseDto<BasePaginationDataDto> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
                                                                  RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
         if (index < 1) {
             index = 1;
@@ -52,9 +51,9 @@ public class RechargeServiceImpl implements RechargeService {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = Lists.newArrayList();
 
-        int count = rechargeMapper.findRechargeCount(rechargeId, loginName, source, status, channel, startTime, endTime);
+        int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);
 
-        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, loginName, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
+        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
 
         for (RechargeModel model : rechargeModelList) {
             RechargePaginationItemDataDto rechargeDto = new RechargePaginationItemDataDto(model);
@@ -70,12 +69,12 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Override
     public long findSumRechargeAmount(String rechargeId,
-                                      String loginName,
+                                      String mobile,
                                       RechargeSource source,
                                       RechargeStatus status,
                                       String channel,
                                       Date startTime,
                                       Date endTime) {
-        return rechargeMapper.findSumRechargeAmount(rechargeId, loginName, source, status, channel, null, startTime, endTime);
+        return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, null, startTime, endTime);
     }
 }
