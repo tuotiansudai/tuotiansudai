@@ -42,8 +42,8 @@ public interface TransferApplicationMapper {
                                                                              @Param("startTime") Date startTime,
                                                                              @Param("endTime") Date endTime,
                                                                              @Param("status") TransferStatus status,
-                                                                             @Param("transferrerLoginName") String transferrerLoginName,
-                                                                             @Param("transfereeLoginName") String transfereeLoginName,
+                                                                             @Param("transferrerMobile") String transferrerMobile,
+                                                                             @Param("transfereeMobile") String transfereeMobile,
                                                                              @Param("loanId") Long loanId,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
@@ -52,8 +52,8 @@ public interface TransferApplicationMapper {
                                                @Param("startTime") Date startTime,
                                                @Param("endTime") Date endTime,
                                                @Param("status") TransferStatus status,
-                                               @Param("transferrerLoginName") String transferrerLoginName,
-                                               @Param("transfereeLoginName") String transfereeLoginName,
+                                               @Param("transferrerMobile") String transferrerMobile,
+                                               @Param("transfereeMobile") String transfereeMobile,
                                                @Param("loanId") Long loanId);
 
 

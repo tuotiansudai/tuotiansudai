@@ -332,7 +332,8 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName1");
         investModel1.setId(100000L);
-        assertEquals("log***", randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
+        assertEquals("133****3333", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
@@ -340,8 +341,8 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
-
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
+        assertEquals(this.getDefaultkey().substring(0,3) + "****", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
@@ -349,8 +350,9 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
+        UserModel userModel = this.createUserByUserId(investModel1.getLoginName(), "13333333333");
 
-        assertEquals("ttdblvjing", randomUtils.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(userModel.getMobile(), randomUtils.encryptMobile("ttdblvjing", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
@@ -358,8 +360,9 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
-
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
+        this.createUserByUserId("loginName2", "15555555555");
+        assertEquals(this.getDefaultkey().substring(0,3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
@@ -367,12 +370,26 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName3");
         investModel1.setId(1000003L);
-
-        assertEquals("log***", randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        UserModel userModel1 = createUserByUserId(investModel1.getLoginName(), "13333333333");
+        UserModel userModel2 = createUserByUserId("loginName2", "13444444444");
+        assertEquals("133****3333", randomUtils.encryptMobile(userModel2.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     private String getDefaultkey(){
-        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
+        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","13333333333");
         return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
+    }
+
+    private UserModel createUserByUserId(String userId, String mobile) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(userId);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile(mobile);
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
     }
 }

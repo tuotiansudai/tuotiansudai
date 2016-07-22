@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class AuditLogPaginationItemDataDto {
 
-    private String auditorLoginName;
+    private String auditorMobile;
 
-    private String operatorLoginName;
+    private String operatorMobile;
 
     private String targetId;
 
@@ -20,9 +20,9 @@ public class AuditLogPaginationItemDataDto {
 
     private Date operationTime;
 
-    public AuditLogPaginationItemDataDto(String auditorLoginName, String operatorLoginName, String targetId, OperationType operationType, String ip, String description, Date operationTime) {
-        this.auditorLoginName = auditorLoginName;
-        this.operatorLoginName = operatorLoginName;
+    public AuditLogPaginationItemDataDto(String auditorMobile, String operatorMobile, String targetId, OperationType operationType, String ip, String description, Date operationTime) {
+        this.auditorMobile = auditorMobile;
+        this.operatorMobile = operatorMobile;
         this.targetId = targetId;
         this.operationType = operationType;
         this.ip = ip;
@@ -30,20 +30,20 @@ public class AuditLogPaginationItemDataDto {
         this.operationTime = operationTime;
     }
 
-    public String getAuditorLoginName() {
-        return auditorLoginName;
+    public String getAuditorMobile() {
+        return auditorMobile;
     }
 
-    public void setAuditorLoginName(String auditorLoginName) {
-        this.auditorLoginName = auditorLoginName;
+    public void setAuditorMobile(String auditorMobile) {
+        this.auditorMobile = auditorMobile;
     }
 
-    public String getOperatorLoginName() {
-        return operatorLoginName;
+    public String getOperatorMobile() {
+        return operatorMobile;
     }
 
-    public void setOperatorLoginName(String operatorLoginName) {
-        this.operatorLoginName = operatorLoginName;
+    public void setOperatorMobile(String operatorMobile) {
+        this.operatorMobile = operatorMobile;
     }
 
     public String getTargetId() {

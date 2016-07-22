@@ -46,13 +46,13 @@
         IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role='STAFF'),0) as is_staff
         from recharge r
         JOIN `user` u on r.login_name = u.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and u.mobile = #{mobile}
+        </if>
         JOIN account a on r.login_name = a.login_name
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
                 r.id = #{rechargeId}
-            </if>
-            <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and r.login_name like '${loginName}%']]>
             </if>
             <if test="startTime !=null" >
                 and r.created_time >= #{startTime}
@@ -75,28 +75,28 @@
     </select>
 
     <select id="findRechargeCount" parameterType="map" resultType="int">
-        select count(1) from recharge
+        select count(1) from recharge join user on recharge.login_name = user.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and user.mobile = #{mobile}
+        </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
-                id = #{rechargeId}
-            </if>
-            <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and login_name like '${loginName}%']]>
+                recharge.id = #{rechargeId}
             </if>
             <if test="startTime !=null" >
-                and created_time >= #{startTime}
+                and recharge.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
-                and created_time &lt;= #{endTime}
+                and recharge.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
-                and status  = #{status}
+                and recharge.status  = #{status}
             </if>
             <if test="source !=null">
-                and source  = #{source}
+                and recharge.source  = #{source}
             </if>
             <if test="channel !=null and channel != ''">
-                and channel  = #{channel}
+                and recharge.channel  = #{channel}
             </if>
         </where>
     </select>
@@ -106,16 +106,16 @@
     </select>
 
     <select id="findSumRechargeAmount" parameterType="map" resultType="long">
-        select IFNULL(sum(re.amount),0) as amount from recharge re
+        select IFNULL(sum(re.amount),0) as amount from recharge re join user u on re.login_name = u.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and u.mobile = #{mobile}
+        </if>
         <if test="role !=null">
             join user_role ur on re.login_name = ur.login_name and ur.role= #{role}
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
-                id = #{rechargeId}
-            </if>
-            <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and re.login_name like '${loginName}%']]>
+                re.id = #{rechargeId}
             </if>
             <if test="startTime !=null" >
                 and re.created_time >= #{startTime}
@@ -124,13 +124,13 @@
                 and re.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
-                and status  = #{status}
+                and re.status  = #{status}
             </if>
             <if test="source !=null">
-                and source  = #{source}
+                and re.source  = #{source}
             </if>
             <if test="channel !=null and channel != ''">
-                and channel  = #{channel}
+                and re.channel  = #{channel}
             </if>
         </where>
     </select>

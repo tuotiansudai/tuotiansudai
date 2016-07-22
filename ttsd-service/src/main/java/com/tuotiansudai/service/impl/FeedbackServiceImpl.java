@@ -35,11 +35,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String loginName, Source source, FeedbackType type, ProcessStatus status, Date startTime, Date endTime, int index, int pageSize) {
+    public BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String mobile, Source source, FeedbackType type, ProcessStatus status, Date startTime, Date endTime, int index, int pageSize) {
         int rowIndex = (index - 1) * pageSize;
         int rowLimit = pageSize;
-        List<FeedbackModel> feedbackModelList = feedbackMapper.findAll(loginName, source, type, status, startTime, new DateTime(endTime).plusDays(1).toDate(), rowIndex, rowLimit);
-        long feedbackCount = feedbackMapper.findAllCount(loginName, source, type, status, startTime, endTime);
+        List<FeedbackModel> feedbackModelList = feedbackMapper.findAll(mobile, source, type, status, startTime, new DateTime(endTime).plusDays(1).toDate(), rowIndex, rowLimit);
+        long feedbackCount = feedbackMapper.findAllCount(mobile, source, type, status, startTime, endTime);
         BasePaginationDataDto<FeedbackModel> feedbackPagination = new BasePaginationDataDto<>(index, pageSize, feedbackCount, feedbackModelList);
         return feedbackPagination;
     }

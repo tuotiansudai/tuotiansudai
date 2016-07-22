@@ -7,13 +7,17 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
     <resultMap id="userRoleResultMap" type="UserRoleModel">
-        <result column="login_name" property="loginName"></result>
-        <result column="role" property="role"></result>
-        <result column="created_time" property="createdTime"></result>
+        <result column="login_name" property="loginName"/>
+        <result column="role" property="role"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userRoleResultMap">
         select * from user_role where login_name = #{loginName}
+    </select>
+
+    <select id="findByMobile" parameterType="java.lang.String" resultMap="userRoleResultMap">
+        select role.* from user_role role join user u on role.login_name = u.login_name where mobile = #{mobile}
     </select>
 
     <select id="findByLoginNameAndRole" parameterType="map" resultMap="userRoleResultMap">

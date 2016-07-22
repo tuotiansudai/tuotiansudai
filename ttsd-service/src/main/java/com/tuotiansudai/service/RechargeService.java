@@ -16,7 +16,7 @@ public interface RechargeService {
 
 
     BaseDto<BasePaginationDataDto> findRechargePagination(String rechargeId,
-                                                          String loginName,
+                                                          String mobile,
                                                           RechargeSource source,
                                                           RechargeStatus status,
                                                           String channel,
@@ -27,7 +27,7 @@ public interface RechargeService {
 
 
     long findSumRechargeAmount(String rechargeId,
-                               String loginName,
+                               String mobile,
                                RechargeSource source,
                                RechargeStatus status,
                                String channel,

@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,16 @@ public class ActivitiesController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = httpServletRequest.getParameter("loginName");
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
-            modelAndView.addObject("referrer", loginName.trim());
+            modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(loginName));
         }
 
         return modelAndView;
