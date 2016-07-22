@@ -559,6 +559,26 @@ body {
       }
       .loan-list-index {
         width: 100%;
+        cursor: pointer;
+        .web-book-box {
+          background: #fff;
+          border: 1px solid #e5e5e5;
+          margin-bottom: 20px;
+          padding: 10px 20px;
+          color: #999;
+          font-size: 14px;
+          height: auto;
+          overflow: auto;
+          line-height: 36px;
+          i {
+            margin-right: 13px;
+            float: right;
+            padding: 7px 0;
+            width: 242px;
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
         .loan-box-inner {
           border: 1px solid #e5e5e5;
           box-sizing: border-box;
@@ -776,6 +796,17 @@ body {
               -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
               -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
               box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+            }
+            &.book-text-tip {
+              padding:10px;
+              .pad-m {
+                width: 68%;
+                line-height: 20px;
+                padding: 2px 0px;
+              }
+              .btn-normal {
+                top:15px!important;
+              }
             }
             .new-user{
               position: absolute;

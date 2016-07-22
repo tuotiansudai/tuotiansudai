@@ -100,6 +100,11 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
                 }).find("li:first").appendTo($self);
             })
         }
+
+        $('.web-book-box').on('click',function(event) {
+            event.preventDefault();
+            window.location.href=$(this).attr('data-url');
+        })
         $('.loan-btn li').on('click', function(event) {
             event.preventDefault();
             window.location.href=$(this).attr('data-url');

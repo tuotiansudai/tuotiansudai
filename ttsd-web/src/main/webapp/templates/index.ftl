@@ -280,6 +280,12 @@
             </h3>
 
             <div class="loan-list-index fl">
+
+                <div class="web-book-box" data-url="/loan/1">
+                    <span>预约后当有相应项目我们会及时通知您</span>
+                    <i class="btn-invest btn-normal">我要预约</i>
+                </div>
+
                 <ul class="loan-box-inner loan-btn">
                     <#list loans as loan>
                         <#if loan.activityType != "NEWBIE">
@@ -421,6 +427,14 @@
                             <span class="guide-btn"></span>
                         </div>
                     </div>
+
+                    <div class="product-box tc product-type book-text-tip" >
+                        <div class="pad-m" title="BLQ001" data-url="/loan/1">
+                            <i>预约后当有相应项目我们会及时通知您</i>
+                        </div>
+                        <a href="/loan/1" class="btn-normal">我要预约</a>
+                    </div>
+
                     <#list loans as loan>
                         <#if loan.activityType == "NEWBIE">
                             <div class="product-box tc product-type">
