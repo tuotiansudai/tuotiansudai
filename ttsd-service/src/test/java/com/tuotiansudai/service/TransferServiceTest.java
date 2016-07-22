@@ -96,6 +96,7 @@ public class TransferServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._90);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
@@ -240,7 +241,7 @@ public class TransferServiceTest {
 
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
-        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser",Source.MOBILE)));
+        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser",Source.WEB)));
         assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));

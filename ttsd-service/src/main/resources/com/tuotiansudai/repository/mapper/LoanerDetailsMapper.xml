@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanerDetailsMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="LoanerDetailsResultMap" type="LoanerDetailsModel">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="gender" property="gender"/>
+        <result column="age" property="age"/>
+        <result column="identify_number" property="identifyNumber"/>
+        <result column="marriage" property="marriage"/>
+        <result column="region" property="region"/>
+        <result column="income" property="income"/>
+        <result column="employment_status" property="employmentStatus"/>
+    </resultMap>
+
+    <insert id="create" parameterType="LoanerDetailsModel">
+        INSERT INTO `aa`.`loaner_details`
+        (id, loan_id, login_name, user_name, gender, age, identify_number, marriage, region, income, employment_status)
+        VALUES
+        (#{id}, #{loanId}, #{loginName}, #{userName}, #{gender}, #{age}, #{identifyNumber}, #{marriage}, #{region}, #{income},
+        #{employmentStatus})
+    </insert>
+
+    <select id="getLoanerDetailByLoanId" resultMap="LoanerDetailsResultMap">
+        SELECT
+        *
+        FROM
+        `aa`.`loaner_details`
+        WHERE
+        loan_id = #{loanId}
+    </select>
+
+</mapper>

@@ -232,6 +232,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();

@@ -16,7 +16,6 @@ public abstract class MobileAppBaseController {
     private MobileAppTokenProvider mobileAppTokenProvider;
 
     protected String getLoginName() {
-        Object objLoginName = httpServletRequest.getAttribute("currentLoginName");
-        return objLoginName == null ? "" : String.valueOf(objLoginName);
+        return mobileAppTokenProvider.getLoginName(httpServletRequest);
     }
 }
