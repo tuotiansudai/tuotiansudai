@@ -14,7 +14,7 @@
                         <div class="fl tc">
                             <div class="dotted-normal-box">
                                 <h2>今日大奖</h2>
-                                <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" width="100%">
+                                <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" class="mysterious-img" >
                                 <span class="reward-name"><em><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></em></span>
                             </div>
                             <div class="tc">
