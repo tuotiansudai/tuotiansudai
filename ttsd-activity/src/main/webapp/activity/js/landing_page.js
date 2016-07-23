@@ -11,6 +11,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             $mobileRegister=$('.mobile-page-register'),
             $landingTop=$('.landing-top');
 
+        var $popWinBox=$('#popWinBox');
+
         var bCategory=commonFun.browserRedirect();
 
         if(bCategory=='mobile') {
@@ -90,10 +92,37 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                 }
             },
             submitHandler:function(form){
+                if($('#landingAppTag').length) {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: '80%',
+                        skin: 'layui-layer-nobg',
+                        shadeClose: true,
+                        content: $('#popWinBox')
+                    });
+                }
                 form.submit();
             }
         });
+        if($popWinBox.length) {
+            $popWinBox.find('.app-close,.app-button').on('click',function() {
+                layer.closeAll();
+            });
+        }
 
+
+
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '80%',
+            skin: 'layui-layer-nobg',
+            shadeClose: true,
+            content: $('#popWinBox')
+        });
         var refreshCaptcha = function () {
             $('.image-captcha img').each(function(index, el) {
                 $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());

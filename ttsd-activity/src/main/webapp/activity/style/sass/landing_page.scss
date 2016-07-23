@@ -863,30 +863,137 @@ form label.error {
   .register-box {
     margin: 0 45px;
     ul {
+      position: relative;
       li {
-        min-height:17px;
-      }
-      li.bg-col {
-        background: #fff;
-        height:42px;
-        border-radius: 22px;
-        border:1px solid #ccc;
-        input {
-          width: calc(98% - 20px);
-          padding: 0;
-          height: 38px;
-          background: transparent;
-          border: 0;
-          border-radius: 20px;
-          padding-left:20px;
-          &.appCaptcha {
-
+        min-height:20px;
+        &.bg-col {
+          input,em.image-captcha {
+            background: #fff;
+            height:40px;
+            border:1px solid #ccc;
+            width: calc(100% - 15px);
+            border-radius: 24px;
+            padding:0 0 0 15px;
+            &.appCaptcha {
+              width: calc(60% - 15px);
+            }
+          }
+          em.image-captcha {
+            width:30%;
+            height:40px;
+            text-align: center;
+            display: inline-block;
+            float: right;
+            vertical-align: middle;
           }
         }
+        &.bg-col-captcha {
+          background: #fff;
+          height:40px;
+          border:1px solid #ccc;
+          border-radius: 24px;
+          position: relative;
+          input {
+            width: 140px;
+            height: 40px;
+            padding: 0 0 0 15px;
+            border: 0;
+            border-radius: 20px;
+          }
+          button {
+            padding: 0;
+            background: transparent;
+            border: 0;
+            float: right;
+            width: 110px;
+            height: 36px;
+            font-size: 15px;
+            color: #ff6400;
+            border-left: 1px solid #a09385;
+            margin-top: 2px;
+          }
+          .decorate-icon {
+            position: absolute;
+            display: inline-block;
+            width:40px;
+            height:35px;
+            right: -16px;
+            bottom: -15px;
+            background: url(/activity/images/landing-app/hb.png) left top no-repeat;
+            background-size: 100%;
+          }
+        }
+        &.agree-last {
+          display: none;
+        }
+        &.mobile-agreement {
+          color: #de3936;
+        }
+      .register-user {
+        width:100%;
+        height:44px;
+        background: url(/activity/images/landing-app/button.png) left top no-repeat;
+        background-size: 100%;
+        border:0;
       }
+      }
+
+    }
+  }
+  .my-advantage {
+    margin-top:50px;
+    text-align: center;
+    .adv-title img {
+      width:100%;
+    }
+    img.advantage {
+      width:94%;
+      margin:20px auto;
+    }
+    .info-text {
+      background: #fff4b5;
+      padding: 15px 10px;
+      color: #726767;
+      font-size: 13px;
+      margin: 15px;
+      border-radius: 8px;
+      text-align: left;
+    }
+    .contact-tel {
+      background: #de3936;
+      color: #fff;
+      font-size:17px;
+      text-align: center;
+      padding:5px;
     }
   }
 
+}
+.pop-win-app {
+  position: relative;
+  img {
+    width:100%;
+  }
+  .app-close {
+    position: absolute;
+    right: 10px;
+    top: -2px;
+    width:30px;
+    height:30px;
+    cursor: pointer;
+  }
+  .app-button {
+    position: absolute;
+    width: 190px;
+    height: 40px;
+    bottom: 33px;
+    left: 50px;
+    cursor: pointer;
+
+  }
+}
+.layui-layer-nobg {
+  box-shadow:none!important;
 }
 
 @media screen and (max-width: 700px) {

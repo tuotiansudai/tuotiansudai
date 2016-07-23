@@ -903,21 +903,112 @@ form label.error {
   padding-top: 245px; }
   .landing-container-app .register-box {
     margin: 0 45px; }
-    .landing-container-app .register-box ul li {
-      min-height: 17px; }
-    .landing-container-app .register-box ul li.bg-col {
-      background: #fff;
-      height: 42px;
-      border-radius: 22px;
-      border: 1px solid #ccc; }
-      .landing-container-app .register-box ul li.bg-col input {
-        width: calc(98% - 20px);
-        padding: 0;
-        height: 38px;
-        background: transparent;
-        border: 0;
-        border-radius: 20px;
-        padding-left: 20px; }
+    .landing-container-app .register-box ul {
+      position: relative; }
+      .landing-container-app .register-box ul li {
+        min-height: 20px; }
+        .landing-container-app .register-box ul li.bg-col input, .landing-container-app .register-box ul li.bg-col em.image-captcha {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          width: calc(100% - 15px);
+          border-radius: 24px;
+          padding: 0 0 0 15px; }
+          .landing-container-app .register-box ul li.bg-col input.appCaptcha, .landing-container-app .register-box ul li.bg-col em.image-captcha.appCaptcha {
+            width: calc(60% - 15px); }
+        .landing-container-app .register-box ul li.bg-col em.image-captcha {
+          width: 30%;
+          height: 40px;
+          text-align: center;
+          display: inline-block;
+          float: right;
+          vertical-align: middle; }
+        .landing-container-app .register-box ul li.bg-col-captcha {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          border-radius: 24px;
+          position: relative; }
+          .landing-container-app .register-box ul li.bg-col-captcha input {
+            width: 140px;
+            height: 40px;
+            padding: 0 0 0 15px;
+            border: 0;
+            border-radius: 20px; }
+          .landing-container-app .register-box ul li.bg-col-captcha button {
+            padding: 0;
+            background: transparent;
+            border: 0;
+            float: right;
+            width: 110px;
+            height: 36px;
+            font-size: 15px;
+            color: #ff6400;
+            border-left: 1px solid #a09385;
+            margin-top: 2px; }
+          .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
+            position: absolute;
+            display: inline-block;
+            width: 40px;
+            height: 35px;
+            right: -16px;
+            bottom: -15px;
+            background: url(/activity/images/landing-app/hb.png) left top no-repeat;
+            background-size: 100%; }
+        .landing-container-app .register-box ul li.agree-last {
+          display: none; }
+        .landing-container-app .register-box ul li.mobile-agreement {
+          color: #de3936; }
+        .landing-container-app .register-box ul li .register-user {
+          width: 100%;
+          height: 44px;
+          background: url(/activity/images/landing-app/button.png) left top no-repeat;
+          background-size: 100%;
+          border: 0; }
+  .landing-container-app .my-advantage {
+    margin-top: 50px;
+    text-align: center; }
+    .landing-container-app .my-advantage .adv-title img {
+      width: 100%; }
+    .landing-container-app .my-advantage img.advantage {
+      width: 94%;
+      margin: 20px auto; }
+    .landing-container-app .my-advantage .info-text {
+      background: #fff4b5;
+      padding: 15px 10px;
+      color: #726767;
+      font-size: 13px;
+      margin: 15px;
+      border-radius: 8px;
+      text-align: left; }
+    .landing-container-app .my-advantage .contact-tel {
+      background: #de3936;
+      color: #fff;
+      font-size: 17px;
+      text-align: center;
+      padding: 5px; }
+
+.pop-win-app {
+  position: relative; }
+  .pop-win-app img {
+    width: 100%; }
+  .pop-win-app .app-close {
+    position: absolute;
+    right: 10px;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer; }
+  .pop-win-app .app-button {
+    position: absolute;
+    width: 190px;
+    height: 40px;
+    bottom: 33px;
+    left: 50px;
+    cursor: pointer; }
+
+.layui-layer-nobg {
+  box-shadow: none !important; }
 
 @media screen and (max-width: 700px) {
   body {

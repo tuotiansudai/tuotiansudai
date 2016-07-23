@@ -168,6 +168,7 @@
         </div>
     </div>
 </div>
+    </div>
 <div class="landing-phone-container">
     <div class="landing-phone-logo">
         <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
