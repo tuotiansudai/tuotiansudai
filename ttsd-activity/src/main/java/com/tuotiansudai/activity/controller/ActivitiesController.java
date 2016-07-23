@@ -48,7 +48,7 @@ public class ActivitiesController {
     public ModelAndView promoteNewbie() {
         ModelAndView modelAndView = new ModelAndView("/activities/landing-page-app", "responsive", true);
         CouponAlertDto couponAlert = couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
-        boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 1;
+        boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
     }
