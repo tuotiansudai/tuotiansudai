@@ -6,6 +6,8 @@ public class ReferrerRelationView extends ReferrerRelationModel {
 
     private Date registerTime;
 
+    private String mobile;
+
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -13,4 +15,8 @@ public class ReferrerRelationView extends ReferrerRelationModel {
     public void setRegisterTime(Date registerTime) {
         this.registerTime = registerTime;
     }
+
+    public String getMobile() { return mobile; }
+
+    public void setMobile(String mobile) { this.mobile = mobile; }
 }

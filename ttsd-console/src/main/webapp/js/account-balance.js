@@ -3,7 +3,7 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
     var autoValue = '';
     $(".jq-loginName").autocomplete({
         source: function (query, process) {
-            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });
@@ -27,8 +27,8 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
     });
 
     $('.down-load').click(function(){
-        var loginName = $('.jq-loginName').val();
-        window.location.href = "/finance-manage/account-balance?loginName="+loginName+"&export=csv";
+        var mobile = $('.jq-loginName').val();
+        window.location.href = "/finance-manage/account-balance?mobile="+mobile+"&export=csv";
     });
 
 })
