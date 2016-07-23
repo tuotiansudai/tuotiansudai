@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -51,15 +52,18 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String strSource = request.getParameter("source");
-        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(request.getParameter("username"), source, RequestIPParser.parse(request), request.getParameter("deviceId"), false);
 
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         baseDto.setData(loginDto);
-        this.updateUserStatus(request.getParameter("username"));
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
+
+        if(exception instanceof BadCredentialsException){
+            this.updateUserStatus(request.getParameter("username"));
+        }
 
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         response.setContentType("application/json; charset=UTF-8");
@@ -91,9 +95,12 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                 redisWrapperClient.set(redisKey, String.valueOf(loginFailedTime));
             }
             if (loginFailedTime >= loginMaxTimes) {
-                redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
-                userModel.setStatus(UserStatus.INACTIVE);
-                userMapper.updateUser(userModel);
+                Long leftSeconds = redisWrapperClient.ttl(redisKey);
+                if(leftSeconds <= 0){
+                    redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
+                    userModel.setStatus(UserStatus.INACTIVE);
+                    userMapper.updateUser(userModel);
+                }
             }
         } else {
             redisWrapperClient.set(redisKey, "1");

@@ -58,6 +58,9 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setAppPictureUrl(activityDto.getAppPictureUrl());
                     activityModelExist.setActivatedTime(activityDto.getActivatedTime());
                     activityModelExist.setSource(activityDto.getSource());
+                    activityModelExist.setShareTitle(activityDto.getShareTitle());
+                    activityModelExist.setShareContent(activityDto.getShareContent());
+                    activityModelExist.setShareUrl(activityDto.getShareUrl());
                     activityModelExist.setUpdatedBy(loginName);
                     activityModelExist.setExpiredTime(activityDto.getExpiredTime());
                     activityModelExist.setUpdatedTime(new Date());

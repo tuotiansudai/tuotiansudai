@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 
 
 @Service
-public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService{
+public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService {
 
     static Logger logger = Logger.getLogger(MobileAppSendSmsServiceImpl.class);
     @Autowired
@@ -30,18 +30,18 @@ public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService{
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
         ReturnMessage returnMessage = checkSendSms(sendSmsCompositeRequestDto);
-        if(!returnMessage.equals(ReturnMessage.SUCCESS)){
-            return new BaseResponseDto(returnMessage.getCode(),returnMessage.getMsg());
+        if (!returnMessage.equals(ReturnMessage.SUCCESS)) {
+            return new BaseResponseDto(returnMessage.getCode(), returnMessage.getMsg());
         }
         BaseResponseDto dto = new BaseResponseDto();
         BaseDto<SmsDataDto> smsDto = null;
 
-        switch (sendSmsCompositeRequestDto.getType()){
-            case REGISTER_CAPTCHA :
+        switch (sendSmsCompositeRequestDto.getType()) {
+            case REGISTER_CAPTCHA:
                 smsDto = smsCaptchaService.sendRegisterCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
                 break;
-            case RETRIEVE_PASSWORD_CAPTCHA :
-                smsDto = smsCaptchaService.sendRetrievePasswordCaptcha(sendSmsCompositeRequestDto.getPhoneNum(),remoteIp);
+            case RETRIEVE_PASSWORD_CAPTCHA:
+                smsDto = smsCaptchaService.sendRetrievePasswordCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
                 break;
             case TURN_OFF_NO_PASSWORD_INVEST:
                 smsDto = smsCaptchaService.sendNoPasswordInvestCaptcha(sendSmsCompositeRequestDto.getPhoneNum(), remoteIp);
@@ -53,7 +53,7 @@ public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService{
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         } else {
-            logger.error(MessageFormat.format("{0}send sms fail , error message{1} ",sendSmsCompositeRequestDto.getType().name(),smsDto.getData().getMessage()));
+            logger.error(MessageFormat.format("{0}send sms fail , error message{1} ", sendSmsCompositeRequestDto.getType().name(), smsDto.getData().getMessage()));
             dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
             dto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
         }
@@ -79,17 +79,17 @@ public class MobileAppSendSmsServiceImpl implements MobileAppSendSmsService{
         return dto;
     }
 
-    private ReturnMessage checkSendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto){
+    private ReturnMessage checkSendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto) {
 
         boolean mobileIsExist = userService.mobileIsExist(sendSmsCompositeRequestDto.getPhoneNum());
-        switch (sendSmsCompositeRequestDto.getType()){
-            case REGISTER_CAPTCHA :
-                if(mobileIsExist){
+        switch (sendSmsCompositeRequestDto.getType()) {
+            case REGISTER_CAPTCHA:
+                if (mobileIsExist) {
                     return ReturnMessage.MOBILE_NUMBER_IS_EXIST;
                 }
                 break;
             default:
-                if(!mobileIsExist){
+                if (!mobileIsExist) {
                     return ReturnMessage.MOBILE_NUMBER_NOT_EXIST;
                 }
         }

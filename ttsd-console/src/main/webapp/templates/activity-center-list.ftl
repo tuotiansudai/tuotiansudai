@@ -71,6 +71,9 @@
                 <th>目标地址</th>
                 <th>活动介绍</th>
                 <th>渠道</th>
+                <th>分享标题</th>
+                <th>分享内容</th>
+                <th>分享链接</th>
                 <th>活动状态</th>
                 <th>操作</th>
             </tr>
@@ -91,6 +94,9 @@
                                 ${source.name()}<#sep>, </#sep>
                                 </#list>
                             </td>
+                            <td>${activity.shareTitle!}</td>
+                            <td>${activity.shareContent!}</td>
+                            <td>${activity.shareUrl!}</td>
                             <#if activity.expiredTime??>
                                 <#assign expiredTime = activity.expiredTime?string('yyyy-MM-dd HH:mm')>
                                 <#assign currentTime = .now?string('yyyy-MM-dd HH:mm')>

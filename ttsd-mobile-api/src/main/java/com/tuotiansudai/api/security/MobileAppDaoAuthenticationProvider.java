@@ -48,6 +48,10 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = httpServletRequest.getParameter("j_deviceId");
+            if(StringUtils.isEmpty(deviceId)){
+                deviceId = httpServletRequest.getParameter("deviceId");
+            }
+
             if(StringUtils.isNotEmpty(captcha)){
                 boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
 
