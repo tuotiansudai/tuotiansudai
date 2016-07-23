@@ -905,9 +905,9 @@ form label.error {
           border-radius: 24px;
           position: relative;
           input {
-            width: 140px;
+            width: 50%;
             height: 40px;
-            padding: 0 0 0 15px;
+            padding: 0 0 0 7%;
             border: 0;
             border-radius: 20px;
           }
@@ -916,12 +916,15 @@ form label.error {
             background: transparent;
             border: 0;
             float: right;
-            width: 110px;
+            width: 36%;
             height: 36px;
             font-size: 15px;
             color: #ff6400;
             border-left: 1px solid #a09385;
             margin-top: 2px;
+            &[disabled="disabled"] {
+              color: #666;
+            }
           }
           .decorate-icon {
             position: absolute;

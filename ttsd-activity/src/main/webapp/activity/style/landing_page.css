@@ -942,9 +942,9 @@ form label.error {
           border-radius: 24px;
           position: relative; }
           .landing-container-app .register-box ul li.bg-col-captcha input {
-            width: 140px;
+            width: 50%;
             height: 40px;
-            padding: 0 0 0 15px;
+            padding: 0 0 0 7%;
             border: 0;
             border-radius: 20px; }
           .landing-container-app .register-box ul li.bg-col-captcha button {
@@ -952,12 +952,14 @@ form label.error {
             background: transparent;
             border: 0;
             float: right;
-            width: 110px;
+            width: 36%;
             height: 36px;
             font-size: 15px;
             color: #ff6400;
             border-left: 1px solid #a09385;
             margin-top: 2px; }
+            .landing-container-app .register-box ul li.bg-col-captcha button[disabled="disabled"] {
+              color: #666; }
           .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
             position: absolute;
             display: inline-block;
