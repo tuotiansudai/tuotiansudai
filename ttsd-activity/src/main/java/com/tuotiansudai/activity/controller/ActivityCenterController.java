@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.controller;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
-import com.tuotiansudai.activity.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

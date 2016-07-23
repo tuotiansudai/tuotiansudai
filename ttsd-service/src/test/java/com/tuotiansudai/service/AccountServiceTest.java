@@ -27,7 +27,7 @@ import static junit.framework.TestCase.assertEquals;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @WebAppConfiguration
 @Transactional
 public class AccountServiceTest {

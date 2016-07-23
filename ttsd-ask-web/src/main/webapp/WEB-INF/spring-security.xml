@@ -10,11 +10,11 @@
         <beans:property name="userPropertyToUse" value="salt"/>
     </beans:bean>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.web.config.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="accessDeniedExceptionRedirect">
             <beans:map>
-                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="com.tuotiansudai.web.config.UserRoleAccessDeniedException" value="/register/account"/>
                 <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
             </beans:map>
         </beans:property>
@@ -42,14 +42,9 @@
         <logout logout-url="/logout" logout-success-url="/"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
-        <intercept-url pattern="/html/**" access="permitAll()"/>
-        <intercept-url pattern="/style/**" access="permitAll()"/>
-        <intercept-url pattern="/images/**" access="permitAll()"/>
-        <intercept-url pattern="/js/**" access="permitAll()"/>
-        <intercept-url pattern="/tpl/**" access="permitAll()"/>
-        <intercept-url pattern="/upload/**" access="permitAll()"/>
-        <intercept-url pattern="/robots.txt" access="permitAll()"/>
-        <intercept-url pattern="/favicon.ico" access="permitAll()"/>
+        <intercept-url pattern="/ask/style/**" access="permitAll()"/>
+        <intercept-url pattern="/ask/images/**" access="permitAll()"/>
+        <intercept-url pattern="/ask/js/**" access="permitAll()"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
 

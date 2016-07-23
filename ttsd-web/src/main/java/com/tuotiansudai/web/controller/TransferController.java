@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;

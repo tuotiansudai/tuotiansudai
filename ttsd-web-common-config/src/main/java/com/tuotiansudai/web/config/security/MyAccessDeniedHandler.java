@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.web.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 
-    static Logger logger = Logger.getLogger(MyAccessDeniedHandler.class);
+    private final static Logger logger = Logger.getLogger(MyAccessDeniedHandler.class);
 
     private Map<String, String> errorPageMapping = Maps.newHashMap();
 

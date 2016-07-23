@@ -1,9 +1,8 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
@@ -15,9 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
 
 @Controller

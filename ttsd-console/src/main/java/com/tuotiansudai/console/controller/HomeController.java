@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.Role;

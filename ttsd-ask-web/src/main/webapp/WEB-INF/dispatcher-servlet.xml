@@ -38,21 +38,15 @@
 
     <context:component-scan base-package="com.tuotiansudai.ask"/>
 
-    <mvc:resources mapping="/html/**" location="/html/"/>
-    <mvc:resources mapping="/style/**" location="/style/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/pdf/**" location="/pdf/"/>
-    <mvc:resources mapping="/tpl/**" location="/tpl/"/>
-    <mvc:resources mapping="/upload/**" location="/upload/"/>
-    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
-    <mvc:resources mapping="/favicon.ico" location="/favicon.ico"/>
+    <mvc:resources mapping="/ask/style/**" location="/ask/style/"/>
+    <mvc:resources mapping="/ask/images/**" location="/ask/images/"/>
+    <mvc:resources mapping="/ask/js/**" location="/ask/js/"/>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${web.static.server}"/>
-        <property name="javascriptLocation" value="${web.js.path}"/>
-        <property name="cssLocation" value="${web.css.path}"/>
+        <property name="staticServer" value="${ask.static.server}"/>
+        <property name="javascriptLocation" value="${ask.js.path}"/>
+        <property name="cssLocation" value="${ask.css.path}"/>
     </bean>
 
     <!-- freemarker config -->

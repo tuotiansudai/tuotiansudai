@@ -16,7 +16,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

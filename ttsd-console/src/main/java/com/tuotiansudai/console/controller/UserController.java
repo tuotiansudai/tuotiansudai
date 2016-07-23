@@ -7,7 +7,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.service.UserServiceConsole;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;

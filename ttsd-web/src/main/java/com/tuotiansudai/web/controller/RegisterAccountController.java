@@ -7,7 +7,7 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.web.util.IdentityNumberValidator;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

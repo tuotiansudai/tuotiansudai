@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.web.config.security;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;

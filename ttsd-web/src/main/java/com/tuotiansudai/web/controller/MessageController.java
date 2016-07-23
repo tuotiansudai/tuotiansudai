@@ -7,7 +7,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

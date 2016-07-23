@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.LoanItemDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -14,7 +14,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

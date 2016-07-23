@@ -6,7 +6,7 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.web.config.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
         <beans:property name="errorPageMapping">
             <beans:map>
@@ -59,7 +59,7 @@
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
 
-    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.web.config.security.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/ueditor/**</beans:value>

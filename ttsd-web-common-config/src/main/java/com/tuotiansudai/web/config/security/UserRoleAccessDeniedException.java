@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.web.config.security;
 
 
 import org.springframework.security.access.AccessDeniedException;
@@ -9,7 +9,4 @@ public class UserRoleAccessDeniedException extends AccessDeniedException {
         super(msg);
     }
 
-    public UserRoleAccessDeniedException(String msg, Throwable t) {
-        super(msg, t);
-    }
 }

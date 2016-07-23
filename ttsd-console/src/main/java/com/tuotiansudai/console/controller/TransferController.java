@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferRuleDto;

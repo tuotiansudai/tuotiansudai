@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.List;
 
 public class MyUser extends User {
+
     private String salt;
 
     private String mobile;

@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.web.config.security;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -11,7 +11,6 @@ import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
