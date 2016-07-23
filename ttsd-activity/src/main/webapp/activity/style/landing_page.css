@@ -247,6 +247,25 @@ form label.error:before {
   display: none;
   font-size: 16px; }
 
+.header-title {
+  padding: 0 80px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #F8F8F8;
+  border-radius: 2px 2px 0 0;
+  position: relative; }
+  .header-title .close-tip {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    font-size: 18px; }
+
 .header-container {
   display: none; }
 
@@ -906,23 +925,16 @@ form label.error {
     .landing-container-app .register-box ul {
       position: relative; }
       .landing-container-app .register-box ul li {
-        min-height: 20px; }
-        .landing-container-app .register-box ul li.bg-col input, .landing-container-app .register-box ul li.bg-col em.image-captcha {
+        min-height: 16px; }
+        .landing-container-app .register-box ul li.bg-col input {
           background: #fff;
           height: 40px;
           border: 1px solid #ccc;
-          width: calc(100% - 15px);
+          width: 93%;
           border-radius: 24px;
-          padding: 0 0 0 15px; }
-          .landing-container-app .register-box ul li.bg-col input.appCaptcha, .landing-container-app .register-box ul li.bg-col em.image-captcha.appCaptcha {
-            width: calc(60% - 15px); }
-        .landing-container-app .register-box ul li.bg-col em.image-captcha {
-          width: 30%;
-          height: 40px;
-          text-align: center;
-          display: inline-block;
-          float: right;
-          vertical-align: middle; }
+          padding: 0 0 0 7%; }
+          .landing-container-app .register-box ul li.bg-col input.appCaptcha {
+            width: 58%; }
         .landing-container-app .register-box ul li.bg-col-captcha {
           background: #fff;
           height: 40px;
@@ -1073,5 +1085,16 @@ form label.error {
 
   .footer-container {
     display: none; } }
+@media screen and (max-width: 350px) {
+  .landing-container-app {
+    padding-top: 200px; }
+    .landing-container-app .register-box {
+      margin: 0 35px; }
+      .landing-container-app .register-box ul li.bg-col-captcha input {
+        width: 125px; }
+      .landing-container-app .register-box ul li.bg-col-captcha button {
+        width: 100px; }
+    .landing-container-app .my-advantage {
+      margin-top: 30px; } }
 
 /*# sourceMappingURL=landing_page.css.map */

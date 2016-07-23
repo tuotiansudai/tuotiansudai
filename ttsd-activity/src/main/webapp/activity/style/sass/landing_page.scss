@@ -21,7 +21,26 @@ form label.error:before {
   display: none;
   font-size: 16px;
 }
-
+.header-title {
+  padding: 0 80px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #F8F8F8;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  .close-tip {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    font-size: 18px;
+  }
+}
 .header-container {
   display: none;
 }
@@ -865,26 +884,18 @@ form label.error {
     ul {
       position: relative;
       li {
-        min-height:20px;
+        min-height:16px;
         &.bg-col {
-          input,em.image-captcha {
+          input {
             background: #fff;
             height:40px;
             border:1px solid #ccc;
-            width: calc(100% - 15px);
+            width: 93%;
             border-radius: 24px;
-            padding:0 0 0 15px;
+            padding:0 0 0 7%;
             &.appCaptcha {
-              width: calc(60% - 15px);
+              width: 58%;
             }
-          }
-          em.image-captcha {
-            width:30%;
-            height:40px;
-            text-align: center;
-            display: inline-block;
-            float: right;
-            vertical-align: middle;
           }
         }
         &.bg-col-captcha {
@@ -1077,4 +1088,21 @@ form label.error {
   .footer-container {
     display: none;
   }
+}
+
+@media screen and (max-width: 350px) {
+  .landing-container-app {
+    padding-top:200px;
+    .register-box {
+      margin: 0 35px;
+      ul li.bg-col-captcha {
+        input {  width:125px;  }
+        button {  width:100px;  }
+      }
+    }
+    .my-advantage {
+      margin-top:30px;
+    }
+  }
+
 }
