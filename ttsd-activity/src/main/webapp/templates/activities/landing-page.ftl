@@ -5,7 +5,6 @@
     <div class="landing-header">
         <a href="/">访问首页</a>
     </div>
-
     <div class="web-page-register">
         <div class="landing-top">
             <div class="landing-inner">
@@ -167,6 +166,7 @@
             <div class="registered"><span>注册领取5888体验金</span></div>
         </div>
     </div>
+</div>
 </div>
 <div class="landing-phone-container">
     <div class="landing-phone-logo">
