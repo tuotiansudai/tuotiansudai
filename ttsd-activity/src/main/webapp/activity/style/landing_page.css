@@ -904,16 +904,20 @@ form label.error {
   .landing-container-app .register-box {
     margin: 0 45px; }
     .landing-container-app .register-box ul li {
-      height: 20px; }
+      min-height: 17px; }
     .landing-container-app .register-box ul li.bg-col {
       background: #fff;
       height: 42px;
       border-radius: 22px;
       border: 1px solid #ccc; }
       .landing-container-app .register-box ul li.bg-col input {
-        width: 100%;
+        width: calc(98% - 20px);
         padding: 0;
-        height: 40px; }
+        height: 38px;
+        background: transparent;
+        border: 0;
+        border-radius: 20px;
+        padding-left: 20px; }
 
 @media screen and (max-width: 700px) {
   body {

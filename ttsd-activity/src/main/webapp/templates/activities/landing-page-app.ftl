@@ -7,17 +7,17 @@
               novalidate="novalidate">
             <ul class="reg-list tl register-step-one">
                 <li class="bg-col">
-                    <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
+                    <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="请输入手机号"
                            maxlength="11" value="">
                 </li>
                 <li id="mobileErr" class="height"></li>
                 <li class="bg-col">
-                    <input type="password" id="password" name="password" placeholder="密码" maxlength="20"
+                    <input type="password" id="password" name="password" placeholder="请输入密码（6～20位字母数字组合）" maxlength="20"
                            class="password long" value="">
                 </li>
                 <li id="passwordErr" class="height"></li>
-                <li class="code bg-col">
-                    <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="5"
+                <li class="code bg-col-captcha">
+                    <input type="text" id="appCaptcha" name="" placeholder="请输入右侧图形验证码" maxlength="5"
                            class="appCaptcha" value="">
                     <em class="image-captcha">
                         <img src="" alt=""/>
