@@ -20,4 +20,6 @@
             s.parentNode.insertBefore(hm, s);
         })();
     </script>
+
+    <img src="${staticServer}/activity/images/landing-app/icon-wx.png" >
 </div>
