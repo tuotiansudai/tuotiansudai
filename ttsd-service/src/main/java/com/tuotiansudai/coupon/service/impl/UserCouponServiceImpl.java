@@ -224,7 +224,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     public void createUserCouponModel(Long investId,final UserGroup userGroup,long loanId){
         if(investId == null){
-            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.getDescription()));
+            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
             return;
         }
 
