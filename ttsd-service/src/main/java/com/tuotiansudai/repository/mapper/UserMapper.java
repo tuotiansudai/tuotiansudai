@@ -47,20 +47,19 @@ public interface UserMapper {
     List<UserModel> findUserByProvince();
 
     List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
-                                            @Param(value = "balanceMin") int balanceMin,
-                                            @Param(value = "balanceMax") int balanceMax,
-                                            @Param(value = "startLimit") int startLimit,
-                                            @Param(value = "endLimit") int endLimit);
-
+                                           @Param(value = "balanceMin") long balanceMin,
+                                           @Param(value = "balanceMax") long balanceMax,
+                                           @Param(value = "startLimit") int startLimit,
+                                           @Param(value = "endLimit") int endLimit);
 
 
     long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
-                                    @Param(value = "balanceMin") int balanceMin,
-                                    @Param(value = "balanceMax") int balanceMax);
+                                    @Param(value = "balanceMin") long balanceMin,
+                                    @Param(value = "balanceMax") long balanceMax);
 
-    int findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
-                                     @Param(value = "balanceMin") int balanceMin,
-                                     @Param(value = "balanceMax") int balanceMax);
+    long findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
+                                      @Param(value = "balanceMin") long balanceMin,
+                                      @Param(value = "balanceMax") long balanceMax);
 
     List<String> findAllUsers(Map<String, Object> params);
 
