@@ -4,7 +4,8 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             $btnBindCard = $('.bind-card-submit', $bindCardBox),
             $btnReplaceCard = $('.replace-card-submit', $bindCardBox),
             $FormOpenFastPay = $('.open-fast-pay-form', $bindCardBox),
-            $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay);
+            $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay),
+            $bankList=$('#bankList');
 
         $inputBankcard.keyup(function () {
             if (/^\d+$/.test($(this).val())) {
@@ -44,6 +45,11 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             });
         });
 
+        $bankList.on('click', function(event) {
+            event.preventDefault();
+            $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
+        });
+
     });
 
     function selectBank(obj){
@@ -54,8 +60,11 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
         }).done(function (data) {
-            $('.limit-tips').text('');
-            $('.limit-tips').append(data);
+            if(data!=''){
+                $('.limit-tips').html('<span>'+data+'</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i>');
+            }else{
+               $('.limit-tips').html(''); 
+            }
         }).fail(function (data) {
             console.log(data);
         });
