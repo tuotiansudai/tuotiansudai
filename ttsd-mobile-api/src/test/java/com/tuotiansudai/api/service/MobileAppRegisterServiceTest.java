@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
@@ -127,7 +127,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
 
     public RegisterRequestDto getFakeRegisterRequestDto(){
         RegisterRequestDto registerRequestDto = new RegisterRequestDto();
-        registerRequestDto.setUserName("loginName");
+        registerRequestDto.setUserName("userName");
         registerRequestDto.setCaptcha("123456");
         registerRequestDto.setPassword("password");
         registerRequestDto.setPhoneNum("13900000000");

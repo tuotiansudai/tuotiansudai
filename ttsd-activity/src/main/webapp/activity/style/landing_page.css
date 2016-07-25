@@ -247,6 +247,25 @@ form label.error:before {
   display: none;
   font-size: 16px; }
 
+.header-title {
+  padding: 0 80px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #F8F8F8;
+  border-radius: 2px 2px 0 0;
+  position: relative; }
+  .header-title .close-tip {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    font-size: 18px; }
+
 .header-container {
   display: none; }
 
@@ -895,6 +914,116 @@ form label.error {
       .landing-phone-container .tuotian-register .tuotian-register-container .agree-last {
         text-align: center; }
 
+.landing-container-app {
+  background: #fdd901 url("/activity/images/landing-app/bg-app.png") no-repeat left top;
+  background-size: 100%;
+  height: auto;
+  overflow: auto;
+  padding-top: 245px; }
+  .landing-container-app .register-box {
+    margin: 0 45px; }
+    .landing-container-app .register-box ul {
+      position: relative; }
+      .landing-container-app .register-box ul li {
+        min-height: 16px; }
+        .landing-container-app .register-box ul li.bg-col input {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          width: 93%;
+          border-radius: 24px;
+          padding: 0 0 0 7%; }
+          .landing-container-app .register-box ul li.bg-col input.appCaptcha {
+            width: 58%; }
+        .landing-container-app .register-box ul li.bg-col-captcha {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          border-radius: 24px;
+          position: relative; }
+          .landing-container-app .register-box ul li.bg-col-captcha input {
+            width: 50%;
+            height: 40px;
+            padding: 0 0 0 7%;
+            border: 0;
+            border-radius: 20px; }
+          .landing-container-app .register-box ul li.bg-col-captcha button {
+            padding: 0;
+            background: transparent;
+            border: 0;
+            float: right;
+            width: 36%;
+            height: 36px;
+            font-size: 15px;
+            color: #ff6400;
+            border-left: 1px solid #a09385;
+            margin-top: 2px; }
+            .landing-container-app .register-box ul li.bg-col-captcha button[disabled="disabled"] {
+              color: #666; }
+          .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
+            position: absolute;
+            display: inline-block;
+            width: 40px;
+            height: 35px;
+            right: -16px;
+            bottom: -15px;
+            background: url(/activity/images/landing-app/hb.png) left top no-repeat;
+            background-size: 100%; }
+        .landing-container-app .register-box ul li.agree-last {
+          display: none; }
+        .landing-container-app .register-box ul li.mobile-agreement {
+          color: #de3936; }
+        .landing-container-app .register-box ul li .register-user {
+          width: 100%;
+          height: 44px;
+          background: url(/activity/images/landing-app/button.png) left top no-repeat;
+          background-size: 100%;
+          border: 0; }
+  .landing-container-app .my-advantage {
+    margin-top: 50px;
+    text-align: center; }
+    .landing-container-app .my-advantage .adv-title img {
+      width: 100%; }
+    .landing-container-app .my-advantage img.advantage {
+      width: 94%;
+      margin: 20px auto; }
+    .landing-container-app .my-advantage .info-text {
+      background: #fff4b5;
+      padding: 15px 10px;
+      color: #726767;
+      font-size: 13px;
+      margin: 15px;
+      border-radius: 8px;
+      text-align: left; }
+    .landing-container-app .my-advantage .contact-tel {
+      background: #de3936;
+      color: #fff;
+      font-size: 17px;
+      text-align: center;
+      padding: 5px; }
+
+.pop-win-app {
+  position: relative; }
+  .pop-win-app img {
+    width: 100%; }
+  .pop-win-app .app-close {
+    position: absolute;
+    right: 10px;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer; }
+  .pop-win-app .app-button {
+    position: absolute;
+    width: 190px;
+    height: 40px;
+    bottom: 33px;
+    left: 50px;
+    cursor: pointer; }
+
+.layui-layer-nobg {
+  box-shadow: none !important; }
+
 @media screen and (max-width: 700px) {
   body {
     background: #d9edff; }
@@ -958,5 +1087,16 @@ form label.error {
 
   .footer-container {
     display: none; } }
+@media screen and (max-width: 350px) {
+  .landing-container-app {
+    padding-top: 200px; }
+    .landing-container-app .register-box {
+      margin: 0 35px; }
+      .landing-container-app .register-box ul li.bg-col-captcha input {
+        width: 125px; }
+      .landing-container-app .register-box ul li.bg-col-captcha button {
+        width: 100px; }
+    .landing-container-app .my-advantage {
+      margin-top: 30px; } }
 
 /*# sourceMappingURL=landing_page.css.map */

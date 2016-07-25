@@ -69,28 +69,6 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),baseResponseDto.getCode());
     }
 
-    @Test
-    public void shouldSendSMS() {
-        String mobileNumber = "13800138000";
-        String remoteIp = "114.114.114.114";
-        RetrievePasswordRequestDto requestDto = new RetrievePasswordRequestDto();
-        requestDto.setAuthType("find_login_password_by_mobile");
-        requestDto.setPassword(mobileNumber);
-
-        BaseDto<SmsDataDto> smsDto = new BaseDto<>();
-        SmsDataDto successSmsDataDto = new SmsDataDto();
-        smsDto.setData(successSmsDataDto);
-        successSmsDataDto.setStatus(true);
-
-        when(smsCaptchaService.sendRetrievePasswordCaptcha(anyString(), anyString())).thenReturn(smsDto);
-        when(userService.mobileIsExist(anyString())).thenReturn(true);
-
-        BaseResponseDto responseDto = mobileAppRetrievePasswordService.sendSMS(requestDto, remoteIp);
-
-        assert responseDto.isSuccess();
-    }
-
-
     private UserModel getFakeUser(){
         UserModel user1 = new UserModel();
         user1.setId(idGenerator.generate());
