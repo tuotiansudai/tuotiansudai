@@ -219,6 +219,7 @@ class taskCenter extends React.Component {
         imagesLoaded(this.refs.scrollWrap).on('always', () => {
             setTimeout(() => {
             if (!this.myScroll) {
+
                 this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
                 this.myScroll = new IScroll(this.refs.scrollWrap);
             }

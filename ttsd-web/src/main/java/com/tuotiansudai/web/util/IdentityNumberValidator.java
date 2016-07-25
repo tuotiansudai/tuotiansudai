@@ -66,7 +66,7 @@ public class IdentityNumberValidator {
 
     private static boolean compareIdCard(String idCard, String countIdCard) {
         if (idCard.length() == 18) {
-            if (!countIdCard.equals(idCard)) {
+            if (!countIdCard.equalsIgnoreCase(idCard)) {
                 return false;
             }
         }

@@ -26,6 +26,9 @@ public class BookingLoanModel implements Serializable{
         this.status = status;
         this.createTime = createTime;
     }
+    public BookingLoanModel(){
+
+    }
 
     public long getId() {
         return id;

@@ -329,50 +329,63 @@ public class LoanServiceTest {
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName1");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(100000L);
-        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
-        assertEquals("133****3333", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****"+fakeUser.getMobile().substring(7), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
-        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
-        assertEquals(this.getDefaultkey().substring(0,3) + "****", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
+
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameSameAsInvestorLoginName() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
-        UserModel userModel = this.createUserByUserId(investModel1.getLoginName(), "13333333333");
+        UserModel userModel = this.createUserByUserId("ttdblvjing", "13333333333");
 
-        assertEquals(userModel.getMobile(), randomUtils.encryptMobile("ttdblvjing", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****"+fakeUser.getMobile().substring(7), randomUtils.encryptMobile(userModel.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
-        this.createUserByUserId(investModel1.getLoginName(), "13333333333");
-        this.createUserByUserId("loginName2", "15555555555");
-        assertEquals(this.getDefaultkey().substring(0,3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
+        assertEquals(fakeUser.getMobile().substring(0, 3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName3");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName3");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000003L);
-        UserModel userModel1 = createUserByUserId(investModel1.getLoginName(), "13333333333");
+
         UserModel userModel2 = createUserByUserId("loginName2", "13444444444");
-        assertEquals("133****3333", randomUtils.encryptMobile(userModel2.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile(userModel2.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     private String getDefaultkey(){

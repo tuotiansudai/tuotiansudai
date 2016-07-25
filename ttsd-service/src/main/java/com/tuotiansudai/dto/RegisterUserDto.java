@@ -31,6 +31,8 @@ public class RegisterUserDto implements Serializable {
 
     private Source source = Source.WEB;
 
+    private String redirectToAfterRegisterSuccess = "/";
+
     @AssertTrue
     private boolean agreement;
 
@@ -102,5 +104,13 @@ public class RegisterUserDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getRedirectToAfterRegisterSuccess() {
+        return redirectToAfterRegisterSuccess;
+    }
+
+    public void setRedirectToAfterRegisterSuccess(String redirectToAfterRegisterSuccess) {
+        this.redirectToAfterRegisterSuccess = redirectToAfterRegisterSuccess;
     }
 }

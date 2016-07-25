@@ -122,6 +122,9 @@ public class MobileAppActivityServiceTest {
         activityModel.setUpdatedBy(userModel.getLoginName());
         activityModel.setUpdatedTime(DateTime.parse("2016-05-30T01:20").toDate());
         activityModel.setActivatedBy(userModel.getLoginName());
+        activityModel.setShareUrl("shareUrl");
+        activityModel.setShareContent("content");
+        activityModel.setShareTitle("title");
 
         activityMapper.create(activityModel);
 

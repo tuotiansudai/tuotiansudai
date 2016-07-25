@@ -121,7 +121,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-
         boolean loginNameIsExist = false;
         String loginName;
         if (StringUtils.isNotEmpty(dto.getLoginName())) {
