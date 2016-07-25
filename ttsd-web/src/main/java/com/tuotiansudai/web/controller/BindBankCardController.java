@@ -42,6 +42,7 @@ public class BindBankCardController {
             view.addObject("userName", accountModel.getUserName());
         }
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
+        view.addObject("bankList", bankService.findBankList());
 
         return view;
     }

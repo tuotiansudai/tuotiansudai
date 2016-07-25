@@ -8,7 +8,12 @@
             <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                 <#if userName??>
                     真实姓名：${userName}
-                </#if>fdfdsfsdfdfdfd
+                </#if>
+                <#if bankList??>
+                    <#list bankList as bank>
+                        <span>${bank.name}:单笔${(bank.singleAmount/100)}元,单日${(bank.singleDayAmount/100)}元</span>
+                    </#list>
+                </#if>
                 <div class="clear-blank"></div>
                 <div class="e-bank-recharge">
                     <b class="title">选择银行:</b>
