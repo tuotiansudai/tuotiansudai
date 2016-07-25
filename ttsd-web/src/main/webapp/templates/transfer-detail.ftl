@@ -39,10 +39,10 @@
                         <span>下次回款：${transferApplication.nextRefundDate?string("yyyy-MM-dd")}/${transferApplication.nextExpecedInterest!}元</span>
                     </li>
                     <li>
-                        <span>还款方式：按期还收益，到期付本金！</span>
+                        <span>出让人：${transferApplication.transferrerMobile}</span>
                     </li>
                     <li>
-                        <span>转让截止时间：${transferApplication.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
+                        <span>距下架时间：${transferApplication.beforeDeadLine}</span>
                     </li>
                     <li>
                         <span><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>

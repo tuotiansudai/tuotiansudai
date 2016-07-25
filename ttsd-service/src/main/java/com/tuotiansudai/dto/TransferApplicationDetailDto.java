@@ -1,9 +1,9 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.util.Date;
-import java.util.List;
 
 public class TransferApplicationDetailDto extends BaseDataDto {
 
@@ -16,6 +16,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     private String loanName;
 
     private String transferrer;
+
+    private String transferrerMobile;
 
     private long investId;
 
@@ -42,6 +44,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     private String loanType;
 
     private Date deadLine;
+
+    private String beforeDeadLine;
 
     private String expecedInterest;
 
@@ -91,6 +95,14 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     public String getTransferrer() { return transferrer; }
 
     public void setTransferrer(String transferrer) { this.transferrer = transferrer; }
+
+    public String getTransferrerMobile() {
+        return transferrerMobile;
+    }
+
+    public void setTransferrerMobile(String transferrerMobile) {
+        this.transferrerMobile = transferrerMobile;
+    }
 
     public long getInvestId() {
         return investId;
@@ -186,6 +198,14 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     public void setDeadLine(Date deadLine) {
         this.deadLine = deadLine;
+    }
+
+    public String getBeforeDeadLine() {
+        return beforeDeadLine;
+    }
+
+    public void setBeforeDeadLine(String beforeDeadLine) {
+        this.beforeDeadLine = beforeDeadLine;
     }
 
     public String getExpecedInterest() {

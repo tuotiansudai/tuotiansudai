@@ -74,4 +74,12 @@ public class RandomUtils {
         return encryptLoginName;
     }
 
+    public String encryptMobile(String mobile) {
+        final int mobileLength = 11;
+        if (mobile.length() != mobileLength) {
+            return mobile;
+        } else {
+            return mobile.substring(0, 3) + RandomUtils.showChar(6) + mobile.substring(9, 11);
+        }
+    }
 }

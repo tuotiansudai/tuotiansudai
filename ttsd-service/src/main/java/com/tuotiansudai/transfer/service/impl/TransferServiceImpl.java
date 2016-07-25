@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,6 +58,8 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private TransferRuleMapper transferRuleMapper;
 
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
@@ -197,7 +201,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
 
-    private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginNme, int showLoginNameLength) {
+    private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginName, int showLoginNameLength) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
 
@@ -213,24 +217,43 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
-        transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(),loanModel.getPeriods()).getRepayDate());
+        transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
         transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
+        String beforeDeadLine;
+        Date now = new Date();
+        if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
+            beforeDeadLine = "已转让";
+        } else if (transferApplicationModel.getStatus() == TransferStatus.CANCEL) {
+            beforeDeadLine = "已取消";
+        } else {
+            if (now.before(transferApplicationModel.getDeadline())) {
+                long seconds = (transferApplicationModel.getDeadline().getTime() - now.getTime()) / 1000;
+                int days = (int)(seconds / (60 * 60 * 24));
+                int hours = (int)((seconds % (60 * 60 * 24)) / (60 * 60));
+                int minutes = (int)((seconds % (60 * 60 * 24 * 60)) / 60);
+                beforeDeadLine = MessageFormat.format("{}天{}小时{}分", days, hours, minutes);
+            } else {
+                beforeDeadLine = "已过期";
+            }
+        }
+        transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
-        transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginNme, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
+        transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginName, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
+        transferApplicationDetailDto.setTransferrerMobile(randomUtils.encryptMobile(userMapper.findByLoginName(loginName).getMobile()));
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
-            AccountModel accountModel = accountMapper.findByLoginName(loginNme);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginNme, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginName, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
             transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
         }
         else if(transferApplicationModel.getStatus() == TransferStatus.SUCCESS){
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginNme, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginName, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
             transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }
