@@ -1,8 +1,10 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.web.config.security.LoginUserInfo;
@@ -32,7 +34,7 @@ public class ExperienceLoanDetailController {
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("coupon", userCouponService.getExperienceInvestUserCoupon(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("couponAlert", couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("couponAlert", couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON)));
         return modelAndView;
     }
 
