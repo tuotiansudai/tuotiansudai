@@ -3,6 +3,7 @@ package com.tuotiansudai.activity;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
@@ -71,7 +72,7 @@ public class HeroRankingControllerTest {
         List<HeroRankingView> heroRankingViews = Lists.newArrayList(heroRankingView);
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt())).thenReturn(heroRankingView.getLoginName());
+        when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())

@@ -12,6 +12,7 @@ public class TransferApplyRequestDto extends BaseParamDto {
     @NotEmpty(message = "0023")
     @Pattern(regexp = "^\\d+$", message = "0023")
     private String transferInvestId;
+
     @NotEmpty(message = "0023")
     private String transferAmount;
 

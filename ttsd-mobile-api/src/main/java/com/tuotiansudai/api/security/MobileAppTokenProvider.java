@@ -9,10 +9,12 @@ import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +35,14 @@ public class MobileAppTokenProvider {
     private final static String TOKEN_TEMPLATE = "app-token:{0}:{1}";
 
     @Autowired
-    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
-
+    private RedisWrapperClient redisWrapperClient;
     @Autowired
     private UserMapper userMapper;
+
+    @Value("${web.login.max.failed.times}")
+    private int times;
+    @Autowired
+    private AppTokenRedisWrapperClient appTokenRedisWrapperClient;
 
     public String refreshToken(String loginName) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
@@ -87,6 +93,50 @@ public class MobileAppTokenProvider {
         dto.setMessage(returnMessage.getMsg());
         return dto;
     }
+
+    public BaseResponseDto generateResponseDto(ReturnMessage returnMessage, String loginName) {
+        String message = returnMessage.getMsg();
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+        if (userModel != null) {
+            String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
+
+            if (ReturnMessage.LOGIN_FAILED.getCode().equals(returnMessage.getCode())) {
+                if (redisWrapperClient.exists(redisKey)) {
+                    int failTimes = Integer.parseInt(redisWrapperClient.get(redisKey));
+                    if(failTimes == times){
+                        message = MessageFormat.format(ReturnMessage.USER_IS_DISABLED.getMsg(), calculateLeftLockedMinute(redisKey));
+                    }else {
+                        message = MessageFormat.format(returnMessage.getMsg(), times - failTimes);
+                    }
+                }
+            } else if (ReturnMessage.USER_IS_DISABLED.getCode().equals(returnMessage.getCode())) {
+
+                message = MessageFormat.format(returnMessage.getMsg(), calculateLeftLockedMinute(redisKey));
+            }
+        }
+
+        LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
+        loginResponseDataDto.setToken("");
+
+        BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>();
+        dto.setData(loginResponseDataDto);
+
+        dto.setCode(returnMessage.getCode());
+        dto.setMessage(message);
+        return dto;
+    }
+
+    public long calculateLeftLockedMinute(String redisKey){
+        if(redisWrapperClient.exists(redisKey)){
+            Long leftSeconds = redisWrapperClient.ttl(redisKey);
+            if(leftSeconds < 0){
+                return 0L;
+            }
+            return leftSeconds % 60 == 0 ? leftSeconds / 60 : leftSeconds / 60 + 1;
+        }
+        return 0L;
+    }
+
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;

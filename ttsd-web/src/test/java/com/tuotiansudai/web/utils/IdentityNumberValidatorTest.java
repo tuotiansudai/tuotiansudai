@@ -13,5 +13,7 @@ public class IdentityNumberValidatorTest {
         assertFalse(IdentityNumberValidator.validateIdentity("370405199112286015"));
         assertFalse(IdentityNumberValidator.validateIdentity("370405189112286015"));
         assertFalse(IdentityNumberValidator.validateIdentity("370405199212286015"));
+        assertTrue(IdentityNumberValidator.validateIdentity("31011319750816616x"));
+        assertTrue(IdentityNumberValidator.validateIdentity("31011319750816616X"));
     }
 }

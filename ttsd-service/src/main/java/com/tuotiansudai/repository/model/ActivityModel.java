@@ -23,8 +23,11 @@ public class ActivityModel implements Serializable {
     private String updatedBy;
     private Date updatedTime;
     private String activatedBy;
+    private String shareTitle;
+    private String shareContent;
+    private String shareUrl;
 
-    public ActivityModel() {
+    public ActivityModel(){
 
     }
 
@@ -37,6 +40,9 @@ public class ActivityModel implements Serializable {
         this.appPictureUrl = activityDto.getAppPictureUrl();
         this.expiredTime = activityDto.getExpiredTime();
         this.source = activityDto.getSource();
+        this.shareTitle = activityDto.getShareTitle();
+        this.shareContent = activityDto.getShareContent();
+        this.shareUrl = activityDto.getShareUrl();
     }
 
     public Long getId() {
@@ -165,5 +171,29 @@ public class ActivityModel implements Serializable {
 
     public void setActivatedBy(String activatedBy) {
         this.activatedBy = activatedBy;
+    }
+
+    public String getShareTitle() {
+        return shareTitle;
+    }
+
+    public void setShareTitle(String shareTitle) {
+        this.shareTitle = shareTitle;
+    }
+
+    public String getShareContent() {
+        return shareContent;
+    }
+
+    public void setShareContent(String shareContent) {
+        this.shareContent = shareContent;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
     }
 }

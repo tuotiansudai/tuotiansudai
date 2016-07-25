@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.ExtraLoanRateItemDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ExtraLoanRateModel;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
@@ -47,7 +48,7 @@ public class LoanDetailController {
         modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), loanId));
         modelAndView.addObject("maxBenefitUserCoupon",
                 this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
-        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
         return modelAndView;
     }

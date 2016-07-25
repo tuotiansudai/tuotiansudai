@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员中心" activeLeftNav="" title="会员中心" site="membership">
 
 <div class="global-member-ship">
-    <#if loginName??>
+    <#if mobile??>
         <div class="user-info-block page-width">
             <div class="info clearfix">
                 <div class="avatar fl">
@@ -10,7 +10,7 @@
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
-                    <p><span class="orange font20">您好！${loginName!}</span>
+                    <p><span class="orange font20">您好！${mobile!}</span>
                         <#if membershipType == 'GIVEN'>
                             <span class="font14">会员有效期还有：<strong class="font22">${leftDays?string('0')}</strong>天</span>
                         </#if>

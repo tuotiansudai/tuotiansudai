@@ -96,7 +96,9 @@ public class LoginController {
         try {
             ServletRequest.class.getMethod("startAsync");
             return true;
-        } catch(NoSuchMethodException e) {}
+        } catch(NoSuchMethodException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
         return false;
     }
 }

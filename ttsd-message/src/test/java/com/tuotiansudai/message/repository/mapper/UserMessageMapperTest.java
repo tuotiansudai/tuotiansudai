@@ -45,10 +45,10 @@ public class UserMessageMapperTest {
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
         userMessageMapper.create(userMessageModel);
 
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null, null);
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null,null, null);
         assertThat(userMessageModels.size(), is(1));
 
         UserMessageModel actualUserMessageModel = userMessageModels.get(0);
@@ -70,4 +70,5 @@ public class UserMessageMapperTest {
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return fakeUser;
     }
+
 }

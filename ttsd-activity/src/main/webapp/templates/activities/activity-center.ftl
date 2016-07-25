@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.activity_center}" >
+<@global.main pageCss="${css.activity_center}" title="活动中心">
 
 <div class="activity-frame">
     <div class="ac-title">

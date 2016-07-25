@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppFundManagementServiceImpl;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
@@ -32,7 +34,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class MobileAppFundManagementServiceTest extends ServiceTestBase{
+public class MobileAppFundManagementServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppFundManagementServiceImpl mobileAppFundManagementService;
     @Mock
@@ -51,8 +53,12 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
     private UserCouponService userCouponService;
     @Mock
     private ReferrerManageMapper referrerManageMapper;
+
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
+
     @Test
-    public void shouldQueryFundByUserIdIsOk(){
+    public void shouldQueryFundByUserIdIsOk() {
         AccountModel accountModel = fakeUserModel();
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(rechargeService.sumSuccessRechargeAmount(anyString())).thenReturn(1100l);
@@ -64,6 +70,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         when(userBillService.findSumRewardByLoginName(anyString())).thenReturn(1700l);
         when(pointService.getAvailablePoint(anyString())).thenReturn(1700l);
         when(referrerManageMapper.findReferInvestTotalAmount("", null, null, null, null)).thenReturn(1700l);
+        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(new MembershipModel());
         List<UserCouponView> userCouponViews = new ArrayList<>();
         userCouponViews.add(new UserCouponView());
         when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(userCouponViews);
@@ -71,7 +78,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
 
         BaseResponseDto<FundManagementResponseDataDto> baseResponseDto = mobileAppFundManagementService.queryFundByUserId("admin");
 
-        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(baseResponseDto.getData().getAccountBalance(), "10.00");
         assertEquals(baseResponseDto.getData().getFrozenMoney(), "20.00");
         assertEquals(baseResponseDto.getData().getAvailableMoney(), "10.00");
@@ -89,7 +96,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         assertEquals(baseResponseDto.getData().getUsableUserCouponCount(), "1");
     }
 
-    private AccountModel fakeUserModel(){
+    private AccountModel fakeUserModel() {
         AccountModel accountModel = new AccountModel();
         accountModel.setBalance(1000l);
         accountModel.setFreeze(2000l);

@@ -132,6 +132,45 @@
             </div>
 
             <div class="form-group">
+                <label class="col-sm-2 control-label">分享标题(移动端): </label>
+                <div class="col-sm-4">
+                    <input type="text" name="shareTitle"  class="form-control activity-description"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                           value="<#if dto??>${dto.shareTitle!}</#if>" placeholder="" datatype="*" errormsg="分享标题(移动端)不能为空">
+                </div>
+                <div class="col-sm-7">
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分享内容(移动端): </label>
+                <div class="col-sm-4">
+                    <input type="text" name="shareContent"  class="form-control activity-description"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                           value="<#if dto??>${dto.shareContent!}</#if>" placeholder="" datatype="*" errormsg="分享内容(移动端)不能为空">
+                </div>
+                <div class="col-sm-7">
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分享链接(移动端): </label>
+                <div class="col-sm-4">
+                    <input type="text" name="shareUrl"  class="form-control activity-description"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                           value="<#if dto??>${dto.shareUrl!}</#if>" placeholder="" datatype="*" errormsg="分享链接(移动端)不能为空">
+                </div>
+                <div class="col-sm-7">
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
                 <label class="col-sm-2 control-label">结束时间: </label>
 
                 <div class="date col-sm-4">

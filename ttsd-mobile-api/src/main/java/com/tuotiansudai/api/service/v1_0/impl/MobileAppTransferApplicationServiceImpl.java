@@ -105,24 +105,16 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Override
     public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
-        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
         BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
-        BigDecimal discountBig = new BigDecimal(transferRuleModel.getDiscount());
+        BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
-        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0,BigDecimal.ROUND_DOWN).longValue();
-        long discountUpper = investModel.getAmount();
-        if(transferAmount > discountUpper || transferAmount < discountLower){
-            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(),ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
+        long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
+            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
         }
 
-        try {
-            boolean result = investTransferService.investTransferApply(transferApplicationDto);
-            if (!result) {
-                return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+        if (!investTransferService.investTransferApply(transferApplicationDto)) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
         }
 
@@ -151,7 +143,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
-        transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel)));
+        transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel)));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -206,14 +198,14 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto){
+    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto) {
         BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId():transferApplicationModel.getTransferInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -265,11 +257,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         return dto;
     }
 
-    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto){
+    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
         BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
         String transferApplicationId = requestDto.getTransferApplicationId();
         String loginName = requestDto.getBaseParam().getUserId();
-        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId),loginName, 3);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId), loginName, 3);
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

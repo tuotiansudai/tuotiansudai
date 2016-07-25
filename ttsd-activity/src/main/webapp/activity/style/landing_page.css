@@ -247,6 +247,25 @@ form label.error:before {
   display: none;
   font-size: 16px; }
 
+.header-title {
+  padding: 0 80px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: #F8F8F8;
+  border-radius: 2px 2px 0 0;
+  position: relative; }
+  .header-title .close-tip {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    font-size: 18px; }
+
 .header-container {
   display: none; }
 
@@ -273,181 +292,122 @@ form label.error {
 .landing-top {
   position: relative;
   height: 500px;
-  background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat;
-}
-
-.landing-top .landing-inner {
-  width: 1200px;
-  height: 30px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.landing-top .register-box {
-  position: absolute;
-  right: 0;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 5px;
-  top: 18px;
-  height: auto;
-  overflow: auto;
-  margin-top: 13px;
-}
-
-.landing-top .register-box .register-user-form {
-  width: 320px;
-  height: 420px;
-  padding: 20px 0 0 32px;
-}
-
-.landing-top .register-box .register-step-one {
-  margin-top: 14px;
-}
-
-.landing-top .register-box .register-step-two {
-  margin-top: 40px;
-}
-
-.landing-top .register-box ul.reg-list {
-  font-size: 12px;
-}
-
-.landing-top .register-box ul.reg-list .height {
-  height: 20px;
-}
-
-.landing-top .register-box ul.reg-list .appCaptchaErr {
-  font-size: 10px;
-  color: #f71010;
-  padding: 0;
-  vertical-align: middle;
-}
-
-.landing-top .register-box ul.reg-list li {
-  clear: both;
-  position: relative;
-}
-
-.landing-top .register-box ul.reg-list li .img-change {
-  cursor: pointer;
-}
-
-.landing-top .register-box ul.reg-list li i {
-  display: inline-block;
-  position: absolute;
-  left: 10px;
-  top: 4px;
-  z-index: 20;
-  filter: alpha(opacity=80);
-  -moz-opacity: 0.8;
-}
-
-.landing-top .register-box ul.reg-list li .reg-title {
-  width: 60px;
-  padding-right: 3px;
-  font-size: 14px;
-  color: #333;
-  text-align: right;
-  display: none;
-}
-
-.landing-top .register-box ul.reg-list li .captcha-tag {
-  position: relative;
-  display: inline-block;
-  width: 90%;
-}
-
-.landing-top .register-box ul.reg-list li .captcha-tag .fetch-captcha {
-  width: 100px;
-  height: 32px;
-  padding-left: 18px;
-  letter-spacing: 0;
-  position: absolute;
-  right: 0;
-  top: 2px;
-  font-size: 12px;
-  border-radius: 15px;
-  background: #ff0000;
-}
-
-.landing-top .register-box ul.reg-list li .captcha-tag .fetch-captcha:hover {
-  color: #fff;
-}
-
-.landing-top .register-box ul.reg-list li .long {
-  width: 230px;
-}
-
-.landing-top .register-box ul.reg-list li input[type="text"], .landing-top .register-box ul.reg-list li input[type="password"] {
-  color: #999;
-  border: #cecece 1px solid;
-  padding: 10px 2px 10px 47px;
-  background-color: #fff;
-}
-
-.landing-top .register-box ul.reg-list li input[type="text"].captcha, .landing-top .register-box ul.reg-list li input[type="text"].appCaptcha, .landing-top .register-box ul.reg-list li input[type="password"].captcha, .landing-top .register-box ul.reg-list li input[type="password"].appCaptcha {
-  width: 100px;
-}
-
-.landing-top .register-box ul.reg-list li .agreement {
-  display: inline-block;
-  width: 361px;
-}
-
-.landing-top .register-box ul.reg-list li input.valid + .agreement + label.error:before {
-  content: "\f058";
-  color: #6bc21e;
-}
-
-.landing-top .register-box ul.reg-list li.agree-last {
-  position: relative;
-  margin-left: 0;
-}
-
-.landing-top .register-box ul.reg-list li.agree-last .check-label {
-  position: absolute;
-  top: 1px;
-  left: 20px;
-}
-
-.landing-top .register-box ul.reg-list li.agree-last .agreement-check {
-  margin-right: 300px;
-}
-
-.landing-top .register-box ul.reg-list li.mobile-agreement {
-  display: none;
-}
-
-.landing-top .register-box ul.reg-list li.error-box {
-  height: 20px;
-  overflow: hidden;
-}
-
-.landing-top .register-box ul.reg-list li .register-user, .landing-top .register-box ul.reg-list li .register-account {
-  width: 150px;
-  background: #ff0000;
-  border-radius: 3px;
-  text-align: center;
-  margin: 10px 0px 0px -20px;
-  font-size: 20px;
-  color: #fff;
-  border: 0;
-  cursor: pointer;
-}
-
-.landing-top .register-box ul.reg-list .register-account {
-  display: block;
-}
-
-.landing-top .register-box ul.reg-list .register-account.loading {
-  background: url("/activity/images/icons/loading.gif") no-repeat center center;
-  cursor: default;
-  text-indent: -9999px;
-}
-
-.landing-top .register-box label.error {
-  display: block;
-}
+  background: url("/activity/images/sign/actor/landingpage/landing-top.jpg") center top no-repeat; }
+  .landing-top .landing-inner {
+    width: 1200px;
+    height: 30px;
+    margin: 0 auto;
+    position: relative; }
+  .landing-top .register-box {
+    position: absolute;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    top: 18px;
+    height: auto;
+    overflow: auto;
+    margin-top: 13px; }
+    .landing-top .register-box .register-user-form {
+      width: 320px;
+      height: 420px;
+      padding: 20px 0 0 32px; }
+    .landing-top .register-box .register-step-one {
+      margin-top: 14px; }
+    .landing-top .register-box .register-step-two {
+      margin-top: 40px; }
+    .landing-top .register-box ul.reg-list {
+      font-size: 12px; }
+      .landing-top .register-box ul.reg-list .height {
+        height: 20px; }
+      .landing-top .register-box ul.reg-list .appCaptchaErr {
+        font-size: 10px;
+        color: #f71010;
+        padding: 0;
+        vertical-align: middle; }
+      .landing-top .register-box ul.reg-list li {
+        clear: both;
+        position: relative; }
+        .landing-top .register-box ul.reg-list li .img-change {
+          cursor: pointer; }
+        .landing-top .register-box ul.reg-list li i {
+          display: inline-block;
+          position: absolute;
+          left: 10px;
+          top: 4px;
+          z-index: 20;
+          filter: alpha(opacity=80);
+          -moz-opacity: 0.8; }
+        .landing-top .register-box ul.reg-list li .reg-title {
+          width: 60px;
+          padding-right: 3px;
+          font-size: 14px;
+          color: #333;
+          text-align: right;
+          display: none; }
+        .landing-top .register-box ul.reg-list li .captcha-tag {
+          position: relative;
+          display: inline-block;
+          width: 90%; }
+          .landing-top .register-box ul.reg-list li .captcha-tag .fetch-captcha {
+            width: 100px;
+            height: 32px;
+            padding-left: 18px;
+            letter-spacing: 0;
+            position: absolute;
+            right: 0;
+            top: 2px;
+            font-size: 12px;
+            border-radius: 15px;
+            background: #ff0000; }
+            .landing-top .register-box ul.reg-list li .captcha-tag .fetch-captcha:hover {
+              color: #fff; }
+        .landing-top .register-box ul.reg-list li .long {
+          width: 230px; }
+        .landing-top .register-box ul.reg-list li input[type="text"], .landing-top .register-box ul.reg-list li input[type="password"] {
+          color: #999;
+          border: #cecece 1px solid;
+          padding: 10px 2px 10px 47px;
+          background-color: #fff; }
+          .landing-top .register-box ul.reg-list li input[type="text"].captcha, .landing-top .register-box ul.reg-list li input[type="text"].appCaptcha, .landing-top .register-box ul.reg-list li input[type="password"].captcha, .landing-top .register-box ul.reg-list li input[type="password"].appCaptcha {
+            width: 100px; }
+        .landing-top .register-box ul.reg-list li .agreement {
+          display: inline-block;
+          width: 361px; }
+        .landing-top .register-box ul.reg-list li input.valid + .agreement + label.error:before {
+          content: "\f058";
+          color: #6bc21e; }
+        .landing-top .register-box ul.reg-list li.agree-last {
+          position: relative;
+          margin-left: 0; }
+          .landing-top .register-box ul.reg-list li.agree-last .check-label {
+            position: absolute;
+            top: 1px;
+            left: 20px; }
+          .landing-top .register-box ul.reg-list li.agree-last .agreement-check {
+            margin-right: 300px; }
+        .landing-top .register-box ul.reg-list li.mobile-agreement {
+          display: none; }
+        .landing-top .register-box ul.reg-list li.error-box {
+          height: 20px;
+          overflow: hidden; }
+        .landing-top .register-box ul.reg-list li .register-user, .landing-top .register-box ul.reg-list li .register-account {
+          width: 150px;
+          background: #ff0000;
+          border-radius: 3px;
+          text-align: center;
+          margin: 10px 0px 0px -20px;
+          font-size: 20px;
+          color: #fff;
+          border: 0;
+          cursor: pointer; }
+      .landing-top .register-box ul.reg-list .register-account {
+        display: block; }
+        .landing-top .register-box ul.reg-list .register-account.loading {
+          background: url("/activity/images/icons/loading.gif") no-repeat center center;
+          cursor: default;
+          text-indent: -9999px; }
+    .landing-top .register-box label.error {
+      display: block; }
 
 .landing-container {
   min-height: 500px; }
@@ -642,8 +602,7 @@ form label.error {
           display: block;
           width: 526px;
           height: 302px;
-          background: url("/activity/images/sign/actor/landingpage/five-media-new.png") no-repeat center;
-        }
+          background: url("/activity/images/sign/actor/landingpage/five-media-new.png") no-repeat center; }
       .landing-container .content-five .content-wp .right {
         float: right;
         width: 520px;
@@ -955,97 +914,189 @@ form label.error {
       .landing-phone-container .tuotian-register .tuotian-register-container .agree-last {
         text-align: center; }
 
+.landing-container-app {
+  background: #fdd901 url("/activity/images/landing-app/bg-app.png") no-repeat left top;
+  background-size: 100%;
+  height: auto;
+  overflow: auto;
+  padding-top: 245px; }
+  .landing-container-app .register-box {
+    margin: 0 45px; }
+    .landing-container-app .register-box ul {
+      position: relative; }
+      .landing-container-app .register-box ul li {
+        min-height: 16px; }
+        .landing-container-app .register-box ul li.bg-col input {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          width: 93%;
+          border-radius: 24px;
+          padding: 0 0 0 7%; }
+          .landing-container-app .register-box ul li.bg-col input.appCaptcha {
+            width: 58%; }
+        .landing-container-app .register-box ul li.bg-col-captcha {
+          background: #fff;
+          height: 40px;
+          border: 1px solid #ccc;
+          border-radius: 24px;
+          position: relative; }
+          .landing-container-app .register-box ul li.bg-col-captcha input {
+            width: 50%;
+            height: 40px;
+            padding: 0 0 0 7%;
+            border: 0;
+            border-radius: 20px; }
+          .landing-container-app .register-box ul li.bg-col-captcha button {
+            padding: 0;
+            background: transparent;
+            border: 0;
+            float: right;
+            width: 36%;
+            height: 36px;
+            font-size: 15px;
+            color: #ff6400;
+            border-left: 1px solid #a09385;
+            margin-top: 2px; }
+            .landing-container-app .register-box ul li.bg-col-captcha button[disabled="disabled"] {
+              color: #666; }
+          .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
+            position: absolute;
+            display: inline-block;
+            width: 40px;
+            height: 35px;
+            right: -16px;
+            bottom: -15px;
+            background: url(/activity/images/landing-app/hb.png) left top no-repeat;
+            background-size: 100%; }
+        .landing-container-app .register-box ul li.agree-last {
+          display: none; }
+        .landing-container-app .register-box ul li.mobile-agreement {
+          color: #de3936; }
+        .landing-container-app .register-box ul li .register-user {
+          width: 100%;
+          height: 44px;
+          background: url(/activity/images/landing-app/button.png) left top no-repeat;
+          background-size: 100%;
+          border: 0; }
+  .landing-container-app .my-advantage {
+    margin-top: 50px;
+    text-align: center; }
+    .landing-container-app .my-advantage .adv-title img {
+      width: 100%; }
+    .landing-container-app .my-advantage img.advantage {
+      width: 94%;
+      margin: 20px auto; }
+    .landing-container-app .my-advantage .info-text {
+      background: #fff4b5;
+      padding: 15px 10px;
+      color: #726767;
+      font-size: 13px;
+      margin: 15px;
+      border-radius: 8px;
+      text-align: left; }
+    .landing-container-app .my-advantage .contact-tel {
+      background: #de3936;
+      color: #fff;
+      font-size: 17px;
+      text-align: center;
+      padding: 5px; }
+
+.pop-win-app {
+  position: relative; }
+  .pop-win-app img {
+    width: 100%; }
+  .pop-win-app .app-close {
+    position: absolute;
+    right: 10px;
+    top: -2px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer; }
+  .pop-win-app .app-button {
+    position: absolute;
+    width: 190px;
+    height: 40px;
+    bottom: 33px;
+    left: 50px;
+    cursor: pointer; }
+
+.layui-layer-nobg {
+  box-shadow: none !important; }
+
 @media screen and (max-width: 700px) {
   body {
-    background: #d9edff;
-  }
+    background: #d9edff; }
 
   .landing-container {
     display: none; }
 
   .mobile-page-register {
-    height: 560px;
-  }
+    height: 560px; }
 
   .landing-top {
     background: none;
-    height: auto;
-  }
-
-  .landing-top .landing-inner {
-    width: 100%;
-    height: auto;
-  }
-
-  .landing-top .register-box {
-    width: 90%;
-    right: auto;
-    left: 5%;
-    top: 0;
-    border-radius: 0;
-    padding-bottom: 30px;
-    margin-top: 0;
-    height: 440px;
-  }
-
-  .landing-top .register-box .register-user-form {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 20px;
-  }
-
-  .landing-top .register-box .register-step-one {
-    margin-top: 0;
-  }
-
-  .landing-top .register-box ul.reg-list li input[type="text"], .landing-top .register-box ul.reg-list li input[type="password"] {
-    padding: 15px;
-    box-sizing: border-box;
-  }
-
-  .landing-top .register-box ul.reg-list li .captcha-tag {
-    width: 100%;
-  }
-
-  .landing-top .register-box ul.reg-list li input.captcha,
-  .landing-top .register-box ul.reg-list li input.appCaptcha {
-    width: 40% !important;
-  }
-
-  .landing-top .register-box ul.reg-list li .long {
-    width: 100%;
-  }
-
-  .landing-top .register-box ul.reg-list li i {
-    display: none;
-  }
-
-  .landing-top .register-box ul.reg-list li .fetch-captcha {
-    height: 40px !important;
-    padding: 10px 26px !important;
-    border-radius: 25px !important;
-    font-size: 13px !important;
-    width: auto !important;
-    position: relative !important;
-  }
-
-  .landing-top .register-box ul.reg-list li .register-user {
-    padding: 10px;
-    margin: -10px auto 10px auto;
-  }
-
-  .landing-top .register-box ul.reg-list li.mobile-agreement {
-    display: block;
-  }
-
-  .landing-top .register-box ul.reg-list li.agree-last {
-    display: none;
-  }
+    height: auto; }
+    .landing-top .landing-inner {
+      width: 100%;
+      height: auto; }
+    .landing-top .register-box {
+      width: 90%;
+      right: auto;
+      left: 5%;
+      top: 0;
+      border-radius: 0;
+      padding-bottom: 30px;
+      margin-top: 0;
+      height: 440px; }
+      .landing-top .register-box .register-user-form {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 20px; }
+      .landing-top .register-box .register-step-one {
+        margin-top: 0; }
+      .landing-top .register-box ul.reg-list li input[type="text"], .landing-top .register-box ul.reg-list li input[type="password"] {
+        padding: 15px;
+        box-sizing: border-box; }
+      .landing-top .register-box ul.reg-list li .captcha-tag {
+        width: 100%; }
+      .landing-top .register-box ul.reg-list li input.captcha,
+      .landing-top .register-box ul.reg-list li input.appCaptcha {
+        width: 40% !important; }
+      .landing-top .register-box ul.reg-list li .long {
+        width: 100%; }
+      .landing-top .register-box ul.reg-list li i {
+        display: none; }
+      .landing-top .register-box ul.reg-list li .fetch-captcha {
+        height: 40px !important;
+        padding: 10px 26px !important;
+        border-radius: 25px !important;
+        font-size: 13px !important;
+        width: auto !important;
+        position: relative !important; }
+      .landing-top .register-box ul.reg-list li .register-user {
+        padding: 10px;
+        margin: -10px auto 10px auto; }
+      .landing-top .register-box ul.reg-list li.mobile-agreement {
+        display: block; }
+      .landing-top .register-box ul.reg-list li.agree-last {
+        display: none; }
 
   .landing-phone-container {
     display: block; }
 
   .footer-container {
     display: none; } }
+@media screen and (max-width: 350px) {
+  .landing-container-app {
+    padding-top: 200px; }
+    .landing-container-app .register-box {
+      margin: 0 35px; }
+      .landing-container-app .register-box ul li.bg-col-captcha input {
+        width: 125px; }
+      .landing-container-app .register-box ul li.bg-col-captcha button {
+        width: 100px; }
+    .landing-container-app .my-advantage {
+      margin-top: 30px; } }
 
 /*# sourceMappingURL=landing_page.css.map */

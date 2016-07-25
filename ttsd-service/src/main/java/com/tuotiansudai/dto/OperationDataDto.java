@@ -3,9 +3,6 @@ package com.tuotiansudai.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by huoxuanbo on 16/5/10.
- */
 public class OperationDataDto {
     private int operationDays;
     private long usersCount;

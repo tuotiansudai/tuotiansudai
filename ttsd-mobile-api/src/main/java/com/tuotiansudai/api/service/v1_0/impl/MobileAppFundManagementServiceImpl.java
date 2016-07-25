@@ -2,6 +2,10 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
@@ -39,6 +43,10 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private UserCouponService userCouponService;
     @Autowired
     private ReferrerManageMapper referrerManageMapper;
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+    @Autowired
+    private UserMembershipService userMembershipService;
 
     public BaseResponseDto queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
@@ -66,6 +74,11 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long expectedTotalInterest = receivedReward + receivedInterest;
         //待收本息 = 应收利息 ＋ 应收本金
         long receivableCorpusInterest = receivableInterest + receivableCorpus;
+        int level = 0;
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(userId);
+        if(membershipModel != null){
+            level = membershipModel.getLevel();
+        }
 
         FundManagementResponseDataDto fundManagementResponseDataDto = new FundManagementResponseDataDto();
         fundManagementResponseDataDto.setAccountBalance(AmountConverter.convertCentToString(accountBalance));
@@ -84,6 +97,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setUsableUserCouponCount(CollectionUtils.isNotEmpty(unusedUserCoupons) ? String.valueOf(unusedUserCoupons.size()) : "0");
         fundManagementResponseDataDto.setPoint(String.valueOf(myPoint));
         fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
+        fundManagementResponseDataDto.setMembershipLevel(String.valueOf(level));
+        fundManagementResponseDataDto.setMembershipPoint(String.valueOf(accountModel == null ? 0 : accountModel.getMembershipPoint()));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);

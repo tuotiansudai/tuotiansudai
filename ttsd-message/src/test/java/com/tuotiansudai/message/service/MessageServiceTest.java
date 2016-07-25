@@ -124,7 +124,6 @@ public class MessageServiceTest {
         originMessageDto.setTemplate("editTitle");
         originMessageDto.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
         originMessageDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-
         messageService.createAndEditManualMessage(originMessageDto, 0);
         messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
         assertEquals(originMessageDto.getId(), messageDto.getId());

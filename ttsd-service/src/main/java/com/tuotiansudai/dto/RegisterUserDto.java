@@ -10,7 +10,6 @@ import java.io.Serializable;
 
 public class RegisterUserDto implements Serializable {
 
-    @NotEmpty
     @Pattern(regexp = "(?!^\\d+$)^\\w{5,25}$")
     private String loginName;
 
@@ -31,6 +30,8 @@ public class RegisterUserDto implements Serializable {
     private String channel;
 
     private Source source = Source.WEB;
+
+    private String redirectToAfterRegisterSuccess = "/";
 
     @AssertTrue
     private boolean agreement;
@@ -103,5 +104,13 @@ public class RegisterUserDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getRedirectToAfterRegisterSuccess() {
+        return redirectToAfterRegisterSuccess;
+    }
+
+    public void setRedirectToAfterRegisterSuccess(String redirectToAfterRegisterSuccess) {
+        this.redirectToAfterRegisterSuccess = redirectToAfterRegisterSuccess;
     }
 }

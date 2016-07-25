@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class LoanInvestAchievementDto implements Serializable {
 
-    private String firstInvestAchievementLoginName;
+    private String firstInvestAchievementMobile;
 
-    private String lastInvestAchievementLoginName;
+    private String lastInvestAchievementMobile;
 
-    private String maxAmountAchievementLoginName;
+    private String maxAmountAchievementMobile;
 
     private Date firstInvestAchievementDate;
 
@@ -17,28 +17,28 @@ public class LoanInvestAchievementDto implements Serializable {
 
     private Date lastInvestAchievementDate;
 
-    public String getFirstInvestAchievementLoginName() {
-        return firstInvestAchievementLoginName;
+    public String getFirstInvestAchievementMobile() {
+        return firstInvestAchievementMobile;
     }
 
-    public void setFirstInvestAchievementLoginName(String firstInvestAchievementLoginName) {
-        this.firstInvestAchievementLoginName = firstInvestAchievementLoginName;
+    public void setFirstInvestAchievementMobile(String firstInvestAchievementMobile) {
+        this.firstInvestAchievementMobile = firstInvestAchievementMobile;
     }
 
-    public String getLastInvestAchievementLoginName() {
-        return lastInvestAchievementLoginName;
+    public String getLastInvestAchievementMobile() {
+        return lastInvestAchievementMobile;
     }
 
-    public void setLastInvestAchievementLoginName(String lastInvestAchievementLoginName) {
-        this.lastInvestAchievementLoginName = lastInvestAchievementLoginName;
+    public void setLastInvestAchievementMobile(String lastInvestAchievementMobile) {
+        this.lastInvestAchievementMobile = lastInvestAchievementMobile;
     }
 
-    public String getMaxAmountAchievementLoginName() {
-        return maxAmountAchievementLoginName;
+    public String getMaxAmountAchievementMobile() {
+        return maxAmountAchievementMobile;
     }
 
-    public void setMaxAmountAchievementLoginName(String maxAmountAchievementLoginName) {
-        this.maxAmountAchievementLoginName = maxAmountAchievementLoginName;
+    public void setMaxAmountAchievementMobile(String maxAmountAchievementMobile) {
+        this.maxAmountAchievementMobile = maxAmountAchievementMobile;
     }
 
     public Date getFirstInvestAchievementDate() {

@@ -254,7 +254,6 @@
                 </#if>
             </div>
         </div>
-
         <div class="bg-w clear-blank borderBox loan-detail">
             <div class="loan-nav">
                 <ul class="clearfix">
@@ -368,8 +367,8 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="first"><span><a href="#">拓荒先锋 >></a></span></h4>
-                                        <#if (loan.achievement.firstInvestAchievementLoginName)??>
-                                            <p>恭喜${loan.achievement.firstInvestAchievementLoginName} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
+                                        <#if (loan.achievement.firstInvestAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.firstInvestAchievementMobile} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -380,8 +379,8 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="king"><span><a href="#">拓天标王 >></a></span></h4>
-                                        <#if (loan.achievement.maxAmountAchievementLoginName)??>
-                                            <p>恭喜${loan.achievement.maxAmountAchievementLoginName} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元红包</p>
+                                        <#if (loan.achievement.maxAmountAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -392,8 +391,8 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="hammer"><span><a href="#">一锤定音 >></a></span></h4>
-                                        <#if (loan.achievement.lastInvestAchievementLoginName)??>
-                                            <p>恭喜${loan.achievement.lastInvestAchievementLoginName} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
+                                        <#if (loan.achievement.lastInvestAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.lastInvestAchievementMobile} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
                                         </#if>

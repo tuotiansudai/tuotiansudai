@@ -1,21 +1,15 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRequestModel;
-import com.tuotiansudai.paywrapper.service.impl.SystemRechargeServiceImpl;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.SystemRechargeDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.SystemRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.IdGenerator;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,10 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,7 +47,7 @@ public class SystemRechargeServiceTest {
         accountMapper.create(accountModel);
 
         SystemRechargeDto dto = new SystemRechargeDto();
-        dto.setLoginName("loginName");
+        dto.setMobile(userModel.getMobile());
         dto.setOperatorLoginName("admin");
         dto.setAmount("100");
         BaseDto<PayFormDataDto> baseDto = systemRechargeService.systemRecharge(dto);

@@ -57,7 +57,7 @@ public class UserMessageServiceTest {
 
         UserModel userTest = getFakeUserTest("userTest");
         userMapper.create(userTest);
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userTest.getLoginName(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userTest.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
 
         userMessageMapper.create(userMessageModel);
 
