@@ -1,0 +1,38 @@
+@import 'reset';
+@import 'btn';
+@import 'page_frame';
+@import 'questions';
+
+.banner-box {
+  background: url("../../images/ba01.jpg") no-repeat;
+  height:140px;
+}
+.m-title {
+  font-size:18px;
+  color:#333333;
+  font-weight: bold;
+  line-height: 50px;
+}
+
+.pagination {
+  text-align: center;
+  margin-top:20px;
+  a {
+    display: inline-block;
+    margin-right:6px;
+    background: #fff;
+    line-height: 15px;
+    padding:10px;
+    @include center-block;
+    border:1px solid #e5e5e5;
+  }
+}
+
+
+
+
+
+
+
+
+
