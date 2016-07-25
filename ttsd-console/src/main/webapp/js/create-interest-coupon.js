@@ -207,7 +207,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $('.productType').prop('checked',true);
                 $('.coupon-start').val('2100-01-01').prop('readonly', true);
                 $('.coupon-end').val('2200-12-30').prop('readonly', true);
-            }else {
+            } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
                 $('.give-number').val('').prop('readonly', true);

@@ -75,6 +75,7 @@ public class UserCouponServiceTest {
         loanModel.setLastInvestAchievementId(lastInvestModel.getId());
         loanMapper.update(loanModel);
         CouponModel firstCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        CouponModel firstRedCoupon = fakeCouponDto(loginName, CouponType.RED_ENVELOPE, UserGroup.FIRST_INVEST_ACHIEVEMENT);
         CouponModel maxCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.MAX_AMOUNT_ACHIEVEMENT);
         CouponModel lastCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.LAST_INVEST_ACHIEVEMENT);
         userCouponService.createInvestAchievementCoupon(loanModel.getId());
@@ -84,6 +85,8 @@ public class UserCouponServiceTest {
         assertEquals(userCouponModelList.get(0).getCouponId(),maxCoupon.getId());
         userCouponModelList = userCouponMapper.findByLoginName(LastLoginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertEquals(userCouponModelList.get(0).getCouponId(),lastCoupon.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(firstLoginName, Lists.newArrayList(CouponType.RED_ENVELOPE));
+        assertEquals(userCouponModelList.get(0).getCouponId(),firstRedCoupon.getId());
 
     }
 

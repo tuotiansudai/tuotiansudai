@@ -217,46 +217,23 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public void createInvestAchievementCoupon(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
-        CouponModel couponModel;
-        if (loanModel.getFirstInvestAchievementId() != null) {
-            couponModel = findCouponModel(UserGroup.FIRST_INVEST_ACHIEVEMENT, couponModelList);
-            if (couponModel != null) {
-                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getFirstInvestAchievementId()).getLoginName(),
-                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
-            }
-        }else{
-            logger.error(MessageFormat.format("loan id : {0} nothing firstInvestAchievement",String.valueOf(loanId)));
-        }
-
-        if (loanModel.getMaxAmountAchievementId() != null) {
-            couponModel = findCouponModel(UserGroup.MAX_AMOUNT_ACHIEVEMENT, couponModelList);
-            if (couponModel != null) {
-                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getMaxAmountAchievementId()).getLoginName(),
-                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
-            }
-        }else{
-            logger.error(MessageFormat.format("loan id : {0} nothing maxInvestAchievement",String.valueOf(loanId)));
-        }
-
-        if (loanModel.getLastInvestAchievementId() != null) {
-            couponModel = findCouponModel(UserGroup.LAST_INVEST_ACHIEVEMENT, couponModelList);
-            if (couponModel != null) {
-                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getLastInvestAchievementId()).getLoginName(),
-                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
-            }
-        }else{
-            logger.error(MessageFormat.format("loan id : {0} nothing lastInvestAchievement",String.valueOf(loanId)));
-        }
+        createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
+        createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
+        createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
     }
 
-    private CouponModel findCouponModel(final UserGroup userGroup, List<CouponModel> couponModelList) {
-        Optional<CouponModel> firstInvestAchievement = Iterators.tryFind(couponModelList.iterator(), new Predicate<CouponModel>() {
-            @Override
-            public boolean apply(CouponModel input) {
-                return input.getUserGroup().equals(userGroup);
+    public void createUserCouponModel(Long investId,final UserGroup userGroup,long loanId){
+        if(investId == null){
+            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.getDescription()));
+            return;
+        }
+
+        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
+        for(CouponModel couponModel : couponModelList){
+            if(couponModel.getUserGroup().equals(userGroup)){
+                userCouponMapper.create(new UserCouponModel(investMapper.findById(investId).getLoginName(),
+                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
             }
-        });
-        return firstInvestAchievement.isPresent() ? firstInvestAchievement.get() : null;
+        }
     }
 }
