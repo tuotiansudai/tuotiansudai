@@ -3,6 +3,29 @@
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
     <div class="recharge-bind-card pad-s">
+    <div class="bank-item">
+        <div class="bank-list">
+            <label>快捷支付限额一览：</label>
+            <i class="fa fa-sort-asc"></i>
+            <ul class="list-item" id="bankList">
+                <li>中国工商银行:单笔50,000元,单日50,000元</li>
+                <li>广发银行:单笔50,000元,单日50,000元</li>
+                <li>浦东发展银行:单笔50,000元,单日50,000元</li>
+                <li>平安银行:单笔50,000元,单日50,000元</li>
+                <li>兴业银行:单笔50,000元,单日50,000元</li>
+                <li>交通银行:单笔50,000元,单日50,000元</li>
+                <li>中国光大银行:单笔50,000元,单日50,000元</li>
+                <li>中国民生银行:单笔50,000元,单日50,000元</li>
+                <li>中信银行:单笔50,000元,单日50,000元</li>
+                <li>中国银行:单笔50,000元,单日50,000元</li>
+                <li>中国农业银行:单笔50,000元,单日50,000元</li>
+                <li>中国建设银行:单笔50,000元,单日50,000元</li>
+                <li>招商银行:单笔1,000元,单日10,000元</li>
+                <li>邮储银行:单笔0元,单日0元</li>
+                <li>华夏银行:单笔0元,单日0元</li>
+            </ul>
+        </div>
+    </div>
         <ul class="payment-mode clearfix">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
