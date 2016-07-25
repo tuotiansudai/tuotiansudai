@@ -3,8 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.BookingLoanMapper">
-
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="bookingLoanMap" type="BookingLoanModel">
         <id column="id" property="id"/>
@@ -25,5 +24,72 @@
         VALUES
         (#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime})
     </insert>
+
+    <select id="findBookingLoanList" parameterType="map" resultMap="bookingLoanMap">
+        SELECT * from booking_loan bl
+        <where>
+            1 = 1
+            <if test="productType != null">
+                and bl.product_type = #{productType}
+            </if>
+            <if test="bookingTimeStartTime != null">
+                and bl.booking_time &gt;= #{bookingTimeStartTime}
+            </if>
+            <if test="bookingTimeEndTime != null">
+                and bl.booking_time &lt;= #{bookingTimeEndTime}
+            </if>
+            <if test="mobile !=null and mobile != ''">
+                and bl.mobile = #{mobile}
+            </if>
+            <if test="noticeTimeStartTime != null">
+                and bl.notice_time &gt;= #{noticeTimeStartTime}
+            </if>
+            <if test="noticeTimeEndTime != null">
+                and bl.notice_time &lt;= #{noticeTimeEndTime}
+            </if>
+            <if test="source != null">
+                and bl.source = #{source}
+            </if>
+            <if test="status != null">
+                and bl.status = #{status}
+            </if>
+            order by status,booking_time
+            limit #{index}, #{pageSize}
+
+        </where>
+
+    </select>
+
+    <select id="findCountBookingLoanList" parameterType="map" resultType="long">
+        SELECT count(1) from booking_loan bl
+        <where>
+            <if test="productType != null">
+                and bl.product_type = #{productType}
+            </if>
+            <if test="bookingTimeStartTime != null">
+                and bl.booking_time &gt;= #{bookingTimeStartTime}
+            </if>
+            <if test="bookingTimeEndTime != null">
+                and bl.booking_time &lt;= #{bookingTimeEndTime}
+            </if>
+            <if test="mobile !=null and mobile != ''">
+                and bl.mobile = #{mobile}
+            </if>
+            <if test="noticeTimeStartTime != null">
+                and bl.notice_time &gt;= #{noticeTimeStartTime}
+            </if>
+            <if test="noticeTimeEndTime != null">
+                and bl.notice_time &lt;= #{noticeTimeEndTime}
+            </if>
+            <if test="source != null">
+                and bl.source = #{source}
+            </if>
+            <if test="status != null">
+                and bl.status = #{status}
+            </if>
+
+        </where>
+
+    </select>
 
 </mapper>

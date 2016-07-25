@@ -1,75 +1,88 @@
-require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], function($, layer, tpl) {
+require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extension'], function($,_, layer, tpl) {
 	$(function() {
-		var $getHistory=$('.show-btn'),
-			$backBtn=$('.back-btn'),
-			$heroPre=$('#heroPre'),
-			$heroNext=$('#heroNext'),
-			$refePre=$('#refePre'),
-			$refeNext=$('#refeNext'),
-			$getVip=$('#getVip'),
-			$getRank=$('.get-rank');
+		var $getVip=$('#getVip'),
+			$getRank=$('.get-rank'),
+			$TodayAwards=$('#TodayAwards'),
+			$investRankingButton=$('#investRanking-button'),
+			$referRankingButton=$('#referRanking-button');
 
-		$getHistory.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$rankList=$self.closest('.rank-model');
-			$rankList.addClass('active');
-		});
-		$backBtn.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$rankList=$self.closest('.rank-model');
-			$rankList.removeClass('active');
-		});
+		var todayDate= $.trim($TodayAwards.text());
+		var ListTpl=$('#tplTable').html();
+		var ListRender = _.template(ListTpl);
 
-		$heroPre.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$dateTime=$self.siblings('.date-info'),
-				getTime=parseInt($dateTime.text().split('-')[2])>1?parseInt($dateTime.text().split('-')[2])-1:1,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
-			heroRank('history', timeNum);
-			$dateTime.text(timeNum);
-		});
-		$heroNext.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$dateTime=$self.siblings('.date-info'),
-				getTime=parseInt($dateTime.text().split('-')[2])<31?parseInt($dateTime.text().split('-')[2])+1:31,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
-			heroRank('history', timeNum);
-			$dateTime.text(timeNum);
+		$investRankingButton.find('.button-small').on('click',function(event) {
+			var $HistoryAwards=$('#HistoryAwards');
+			var dateSpilt=$HistoryAwards.find('em').show().text().split('-'),
+				year=dateSpilt[0],
+				month=dateSpilt[1],
+				day=dateSpilt[2],
+				currDate;
+			if(/heroPre/.test(event.target.id)) {
+				day=day-0-1;
+			}
+			else if(/heroNext/.test(event.target.id)){
+				day=day-0+1;
+			}
+			if(day>0 && day<=31) {
+				currDate=year+'-'+month+'-'+day;
+				$HistoryAwards.find('em').text(currDate);
+				if(currDate==todayDate) {
+					$HistoryAwards.find('i').show();
+					$HistoryAwards.find('em').hide();
+				}
+				else {
+					$HistoryAwards.find('i').hide();
+					$HistoryAwards.find('em').show();
+				}
+				heroRank(currDate);
+			}
 		});
 
-		$refePre.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$dateTime=$self.siblings('.date-info'),
-				getTime=parseInt($dateTime.text().split('-')[2])>1?parseInt($dateTime.text().split('-')[2])-1:1,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
-			refeInvest('history', timeNum);
-			$dateTime.text(timeNum);
+		$referRankingButton.find('.button-small').on('click',function(event) {
+			var $ReferRankingDate=$('#ReferRankingDate');
+			var dateSpilt=$ReferRankingDate.find('em').text().split('-'),
+				year=dateSpilt[0],
+				month=dateSpilt[1],
+				day=dateSpilt[2],
+				currDate;
+			if(/referPre/.test(event.target.id)) {
+				day=day-0-1;
+			}
+			else if(/referNext/.test(event.target.id)){
+				day=day-0+1;
+			}
+			if(day>0 && day<=31) {
+				currDate=year+'-'+month+'-'+day;
+				$ReferRankingDate.find('em').text(currDate);
+
+				if(currDate==todayDate) {
+					$ReferRankingDate.find('i').show();
+					$ReferRankingDate.find('em').hide();
+				}
+				else {
+					$ReferRankingDate.find('i').hide();
+					$ReferRankingDate.find('em').show();
+				}
+
+				refeInvest(currDate);
+			}
 		});
-		$refeNext.on('click', function(event) {
-			event.preventDefault();
-			var $self=$(this),
-				$dateTime=$self.siblings('.date-info'),
-				getTime=parseInt($dateTime.text().split('-')[2])<31?parseInt($dateTime.text().split('-')[2])+1:31,
-				timeNum='2016-07-'+(getTime>9?getTime:'0'+getTime);
-			refeInvest('history', timeNum);
-			$dateTime.text(timeNum);
-		});
+
+
 
 		$getVip.on('click', function(event) {
 			event.preventDefault();
+
 			$.ajax({
 				url: '/membership/receive',
 				type: 'GET',
 				dataType: 'json'
 			})
 			.done(function(data) {
-				console.log(data);
-				$('#vipTipModel').html(tpl('vipTipModelTpl', data));
+					var tipTpl=$('#vipTipModelTpl').html();
+					var TipRender = _.template(tipTpl);
+					$('#vipTipModel').html(TipRender(data));
+
 				layer.open({
 				  type: 1,
 				  move:false,
@@ -88,19 +101,29 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 			layer.closeAll();
 		});
 
-		//英雄榜排名
-		function heroRank(type, date) {
+		//英雄榜排名,今日投资排行
+		function heroRank(date) {
 			$.ajax({
 				url: '/activity/hero-ranking/invest/' + date,
 				type: 'GET',
 				dataType: 'json'
 			})
 			.done(function(data) {
-				if (type == 'list') {
-					$('#heroList').html(tpl('heroListTpl', data));
-				} else if (type == 'history') {
-					$('#heroRecord').html(tpl('heroRecordTpl', data));
+				if(data.status) {
+					var $nodataInvest=$('.nodata-invest'),
+						$contentRanking=$('#investRanking-tbody').parents('table');
+
+					if(_.isNull(data.records) || data.records.length==0) {
+						$nodataInvest.show();
+						$contentRanking.hide();
+						return;
+					}
+					$contentRanking.show();
+					$nodataInvest.hide();
+					data.type='invest';
+					$('#investRanking-tbody').html(ListRender(data));
 				}
+
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
@@ -108,27 +131,33 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension'], functio
 		}
 		
 		//推荐榜排名
-		function refeInvest(type, date) {
+		function refeInvest(date) {
 			$.ajax({
 				url: '/activity/hero-ranking/referrer-invest/' + date,
 				type: 'GET',
 				dataType: 'json'
 			})
 			.done(function(data) {
-				if (type == 'list') {
-					$('#refeInvest').html(tpl('refeInvestTpl', data));
-				} else if (type == 'history') {
-					$('#refeRecord').html(tpl('refeRecordTpl', data));
+				if(data.status) {
+					var $nodataInvest=$('.nodata-refer'),
+						$contentRefer=$('#referRanking-tbody').parents('table');
+					if(_.isNull(data.records) || data.records.length==0) {
+						$nodataInvest.show();
+						$contentRefer.hide();
+						return;
+					}
+					$contentRefer.show();
+					$nodataInvest.hide();
+					data.type='referrer';
+					$('#referRanking-tbody').html(ListRender(data));
 				}
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank('list', $('.date-text:eq(0)').text());
-		heroRank('history', $('.date-info:eq(0)').text());
-		refeInvest('list', $('.date-text:eq(0)').text());
-		refeInvest('history', $('.date-info:eq(0)').text());
+		heroRank(todayDate);
+		refeInvest(todayDate);
 
 		$getRank.on('click', function() {
 			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');
