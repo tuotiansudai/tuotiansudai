@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.MobileIsAvailableRequestDto;
 import com.tuotiansudai.api.dto.v1_0.RegisterRequestDto;
 
 public interface MobileAppRegisterService {
@@ -9,5 +10,5 @@ public interface MobileAppRegisterService {
 
     BaseResponseDto registerUser(RegisterRequestDto registerRequestDto);
 
-
+    BaseResponseDto mobileNumberIsExist(MobileIsAvailableRequestDto requestDto);
 }

@@ -33,6 +33,7 @@ public class LoginDto extends BaseDataDto {
         isCaptchaNotMatch = captchaNotMatch;
     }
 
+
     @JsonProperty(value = "roles")
     public List<Role> getRoles() {
         return roles;
@@ -49,4 +50,5 @@ public class LoginDto extends BaseDataDto {
     public void setNewSessionId(String newSessionId) {
         this.newSessionId = newSessionId;
     }
+
 }

@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="nodata-invest tc" style="display: none;">没有数据</div>
                                     <table class="table-sort-border" style="display: none;">
-                                        <caption>今日投资排行</caption>
+                                        <caption><span id="HistoryAwards"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>投资排行</caption>
                                         <thead>
                                         <tr>
                                             <th>排名</th>
@@ -116,7 +116,7 @@
                             <div class="dotted-normal-box">
                                 <div class="date-head">
                                     <i class="date-icon"></i>
-                                    <span class="date-text" id="ReferRankingDate"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
+                                    <span class="date-text" ><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                            <span class="my-order fr">
                                <@global.isAnonymous>
                                    我的排名：<a href="/login" target="_blank" class="get-rank">登录</a>
@@ -133,7 +133,7 @@
 
                                 <div class="nodata-refer tc" style="display: none;">没有数据</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption>今日推荐排行</caption>
+                                    <caption><span id="ReferRankingDate"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>推荐排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>
