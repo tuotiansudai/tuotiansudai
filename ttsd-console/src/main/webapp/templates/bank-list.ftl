@@ -25,7 +25,7 @@
                     <#list bankList as bank>
                         <tr>
                             <td>${bank.name!}</td>
-                            <td>${bank.shorterName!}</td>
+                            <td>${bank.bankCode!}</td>
                             <td><span class="webImg"><img id="webUrl" src="${bank.imageUrl!}"/></span></td>
                             <td>${bank.singleAmount/100}</td>
                             <td>${bank.singleDayAmount/100}</td>

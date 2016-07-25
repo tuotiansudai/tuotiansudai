@@ -13,7 +13,7 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     private String name;
 
-    private String shorterName;
+    private String bankCode;
 
     private String imageUrl;
 
@@ -49,12 +49,12 @@ public class BankDto extends BaseDataDto implements Serializable {
         this.name = name;
     }
 
-    public String getShorterName() {
-        return shorterName;
+    public String getBankCode() {
+        return bankCode;
     }
 
-    public void setShorterName(String shorterName) {
-        this.shorterName = shorterName;
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getImageUrl() {

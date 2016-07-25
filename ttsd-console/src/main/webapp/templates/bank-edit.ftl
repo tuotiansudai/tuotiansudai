@@ -37,7 +37,7 @@
                     <span>元</span>
                 </div>
                 <div class="int-item">
-                    <span>单笔不得超过:</span>
+                    <span>单日不得超过:</span>
                     <input type="text" class="form-control singleDayAmount" id="singleDayAmount" name="singleDayAmount" datatype="money_fl" value="<#if bank??>${(bank.singleDayAmount/100)?string('0.00')}</#if>" errormsg="单日金额不能小于0">
                     <span>元</span>
                 </div>

@@ -12,7 +12,7 @@ public class BankModel implements Serializable {
 
     private String name;
 
-    private String shorterName;
+    private String bankCode;
 
     private String imageUrl;
 
@@ -34,7 +34,7 @@ public class BankModel implements Serializable {
     public BankModel(BankDto bankDto) {
         this.id = bankDto.getId();
         this.name = bankDto.getName();
-        this.shorterName = bankDto.getShorterName();
+        this.bankCode = bankDto.getBankCode();
         this.imageUrl = bankDto.getImageUrl();
         this.singleAmount = AmountConverter.convertStringToCent(bankDto.getSingleAmount());
         this.singleDayAmount = AmountConverter.convertStringToCent(bankDto.getSingleDayAmount());
@@ -60,12 +60,12 @@ public class BankModel implements Serializable {
         this.name = name;
     }
 
-    public String getShorterName() {
-        return shorterName;
+    public String getBankCode() {
+        return bankCode;
     }
 
-    public void setShorterName(String shorterName) {
-        this.shorterName = shorterName;
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getImageUrl() {
