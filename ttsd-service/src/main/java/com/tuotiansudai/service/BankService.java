@@ -12,5 +12,5 @@ public interface BankService {
 
     List<BankModel> findBankList();
 
-    BankModel findByShorterName(String shorterName);
+    BankModel findByBankCode(String bankCode);
 }

@@ -17,10 +17,6 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             }
         });
 
-
-
-
-
         /*开通快捷支付*/
         $btnOpenFastPay.click(function () {
             $FormOpenFastPay.submit();

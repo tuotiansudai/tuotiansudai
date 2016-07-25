@@ -110,7 +110,7 @@ public class BindBankCardController {
                 bankCode = bankCardModel.getBankCode();
             }
         }
-        BankModel bankModel = bankService.findByShorterName(bankCode);
+        BankModel bankModel = bankService.findByBankCode(bankCode);
         if(bankModel == null){
             return "";
         }

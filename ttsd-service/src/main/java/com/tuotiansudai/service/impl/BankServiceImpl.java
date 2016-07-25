@@ -37,7 +37,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public BankModel findByShorterName(String shorterName) {
-        return bankMapper.findByShorterName(shorterName);
+    public BankModel findByBankCode(String bankCode) {
+        return bankMapper.findByBankCode(bankCode);
     }
 }

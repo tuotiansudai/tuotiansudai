@@ -6,24 +6,14 @@
     <div class="bank-item">
         <div class="bank-list">
             <label>快捷支付限额一览：</label>
-            <i class="fa fa-sort-asc"></i>
-            <ul class="list-item" id="bankList">
-                <li>中国工商银行:单笔50,000元,单日50,000元</li>
-                <li>广发银行:单笔50,000元,单日50,000元</li>
-                <li>浦东发展银行:单笔50,000元,单日50,000元</li>
-                <li>平安银行:单笔50,000元,单日50,000元</li>
-                <li>兴业银行:单笔50,000元,单日50,000元</li>
-                <li>交通银行:单笔50,000元,单日50,000元</li>
-                <li>中国光大银行:单笔50,000元,单日50,000元</li>
-                <li>中国民生银行:单笔50,000元,单日50,000元</li>
-                <li>中信银行:单笔50,000元,单日50,000元</li>
-                <li>中国银行:单笔50,000元,单日50,000元</li>
-                <li>中国农业银行:单笔50,000元,单日50,000元</li>
-                <li>中国建设银行:单笔50,000元,单日50,000元</li>
-                <li>招商银行:单笔1,000元,单日10,000元</li>
-                <li>邮储银行:单笔0元,单日0元</li>
-                <li>华夏银行:单笔0元,单日0元</li>
-            </ul>
+            <#if bankList??>
+                <i class="fa fa-sort-asc"></i>
+                <ul class="list-item" id="bankList">
+                    <#list bankList as bank>
+                        <li>${bank.name}:单笔${bank.singleAmount/100}元,单日${bank.singleDayAmount/100}元</li>
+                    </#list>
+                </ul>
+            </#if>
         </div>
     </div>
         <ul class="payment-mode clearfix">
@@ -55,6 +45,7 @@
                                 <p><label>银行卡：</label><span>${bankCard}</span></p>
                                 <input type="hidden" name="fastPay" value="true"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
                                 <div class="tc pad-s">
                                     <input type="submit" class="btn-normal" value="开通快捷支付"/>
                                 </div>
@@ -74,7 +65,7 @@
                                 <input type="hidden" name="fastPay" value="true"/>
                                 <input type="hidden" name="publicPay" value="false"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</div>
+                                <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
                                 <div class="tc pad-m">
                                     <button type="submit" class="btn" disabled="disabled">确认充值</button>
                                 </div>

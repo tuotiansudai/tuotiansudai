@@ -15,5 +15,5 @@ public interface BankMapper {
 
     List<BankModel> findBankList();
 
-    BankModel findByShorterName(@Param(value = "shorterName") String shorterName);
+    BankModel findByBankCode(@Param(value = "bankCode") String bankCode);
 }
