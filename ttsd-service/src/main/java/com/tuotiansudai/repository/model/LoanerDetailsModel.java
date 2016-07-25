@@ -1,13 +1,11 @@
 package com.tuotiansudai.repository.model;
 
-<<<<<<< HEAD
-=======
+
 import com.tuotiansudai.dto.LoanerDetailsDto;
 
->>>>>>> features/improve_loan_details_master
 import java.io.Serializable;
 
-public class LoanerDetailsModel implements Serializable{
+public class LoanerDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String loginName;
