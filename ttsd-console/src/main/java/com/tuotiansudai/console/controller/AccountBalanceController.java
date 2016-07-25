@@ -67,7 +67,7 @@ public class AccountBalanceController {
             modelAndView.addObject("pageSize", pageSize);
             List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
             modelAndView.addObject("userAccountList", userItemDataDtoList);
-            int count = userService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
+            long count = userService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
             modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
             long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -81,5 +81,4 @@ public class AccountBalanceController {
             return modelAndView;
         }
     }
-
 }
