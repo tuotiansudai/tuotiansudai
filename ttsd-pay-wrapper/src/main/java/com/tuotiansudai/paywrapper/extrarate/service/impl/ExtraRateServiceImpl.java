@@ -80,7 +80,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         }
     }
 
-    private void sendExtraRateAmount(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception{
+    private void sendExtraRateAmount(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception {
         InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
         AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if (accountModel == null) {

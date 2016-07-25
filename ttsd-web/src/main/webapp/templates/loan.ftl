@@ -1,30 +1,26 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.preheatSeconds?string.computer}"
+<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox clearfix no-border">
         <div class="loan-model borderBox no-border">
             <div class="news-share bg-w fl">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
-                    <div class="fl orange extra-rate" id="extra-rate">投资加息+0.4%~0.5% <i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
-                    <script>
-                        var __extraRate = [
-                               {
-                                   minInvestAmount: 100,
-                                   maxInvestAmount: 999,
-                                   rate: 0.3
-                               }, {
-                                   minInvestAmount: 1000,
-                                   maxInvestAmount: 9999,
-                                   rate: 0.4
-                               }, {
-                                   minInvestAmount: 10000,
-                                   maxInvestAmount: 0,
-                                   rate: 0.5
-                               }
-                           ];
-                    </script>
+                    <#if extraLoanRates??>
+                        <div class="fl orange extra-rate" id="extra-rate">投资加息+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                        <script>
+                            var __extraRate = [
+                                <#list extraLoanRates.items as extraLoanRate>
+                                    {
+                                        minInvestAmount: ${extraLoanRate.amountLower},
+                                        maxInvestAmount: ${extraLoanRate.amountUpper},
+                                        rate: ${extraLoanRate.rate}
+                                    }<#if extraLoanRate_has_next>,</#if>
+                                </#list>
+                            ];
+                        </script>
+                    </#if>
                     <script type="text/template" id="extra-rate-popup-tpl">
                        <div class="extra-rate-popup" id="extra-rate-popup">
                            <div class="header clearfix">
@@ -39,45 +35,52 @@
                            <% }) %>
                        </div>
                     </script>
-                    <span class="fr boilerplate">借款协议样本</span>
+                    <span class="fr boilerplate"><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
                 </h2>
                <div class="container-block loan-info">
                    <div class="content">
                        <div class="row loan-number-detail">
                            <div class="col-md-4">
                                <div class="title">预期年化收益</div>
-                               <div class="number red">11<i class="data-extra-rate" data-extra-rate></i><span>%</span></div>
+                               <div class="number red"><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
+                                   <#if loan.activityRate != 0>
+                                       <i class="data-extra-rate">
+                                           +<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>
+                                       </i>
+                                   </#if>
+                                   <i class="data-extra-rate" data-extra-rate></i>
+                                   <span>%</span>
+                               </div>
                            </div>
                            <div class="col-md-4">
                                <div class="title">项目期限</div>
-                               <div class="number">90<span>天</span></div>
+                               <div class="number">${loan.duration}<span>天</span></div>
                            </div>
                            <div class="col-md-4">
                                <div class="title">项目金额</div>
-                               <div class="number">100<span>万元</span></div>
+                               <div class="number"><@amount>${loan.loanAmount?string.computer}</@amount><span>元</span></div>
                            </div>
                        </div>
                        <div class="row loan-active-detail">
                            <div class="col-md-6">
                                <span class="title">投资进度：</span>
                                <div class="progress-bar">
-                                   <div class="progress-inner" style="width: 44.55%">
-                                   </div>
+                                   <div class="progress-inner" style="width: ${loan.progress?string("0.00")}%"></div>
                                </div>
                                <#-- 这里的百分比要和上面 .progress-inner的style里的百分比一样 -->
-                               <span class="orange2">44.55%</span>
+                               <span class="orange2">${loan.progress?string("0.00")}%</span>
                            </div>
                            <div class="col-md-6">
-                               <span class="title">可投金额：</span>
-                               33,333,333元
+                               <span class="title" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">可投金额：</span>
+                               ${(loan.amountNeedRaised / 100)?string("0.00")}元
                            </div>
                            <div class="col-md-6">
                                <span class="title">募集截止时间：</span>
-                               6天12小时58分(标满即放款)
+                               ${loan.raisingPeriod.getDays()}天${loan.raisingPeriod.getHours()}小时${loan.raisingPeriod.getMinutes()}分(标满即放款)
                            </div>
                            <div class="col-md-6">
                                <span class="title">还款方式：</span>
-                               按月付息，到期还本
+                               ${loan.type.getName()}
                            </div>
                        </div>
                    </div> <#-- .content end tag -->
@@ -88,20 +91,17 @@
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
                         <dl class="account-list">
-                            <!-- <dd>
-                                <span class="fl">可投金额：</span>
-                                <em class="fr">
-                                    <i class="amountNeedRaised-i" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">${(loan.amountNeedRaised / 100)?string("0.00")}</i> 元
-                                </em>
-                            </dd> -->
-                            <dd class="clearfix"><span class="fl">账户余额：</span><a class="fr" href="#">去充值>></a><em class="fr account-amount" data-user-balance="${loan.userBalance?string.computer}">${(loan.userBalance / 100)?string("0.00")} 元</em></dd>
-                            <!-- <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd> -->
+                            <dd class="clearfix">
+                                <span class="fl">账户余额：</span>
+                                <a class="fr" href="/recharge">去充值>></a>
+                                <em class="fr account-amount" data-user-balance="${loan.investor.balance?string.computer}">${(loan.investor.balance / 100)?string("0.00")} 元</em>
+                            </dd>
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                                 <span class="fl">投资金额：</span>
-                                <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}" data-max-invest-amount="${loan.maxInvestAmount}" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
-                                       data-no-password-remind="${loan.hasRemindInvestNoPassword?c}"
-                                       data-no-password-invest="${loan.investNoPassword?c}"
-                                       data-auto-invest-on="${loan.autoInvest?c}"
+                                <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}" data-max-invest-amount="${loan.maxInvestAmount}" placeholder="0.00" value="${loan.investor.maxAvailableInvestAmount}"
+                                       data-no-password-remind="${loan.investor.remindNoPassword?c}"
+                                       data-no-password-invest="${loan.investor.noPasswordInvest?c}"
+                                       data-auto-invest-on="${loan.investor.autoInvest?c}"
                                        class="text-input-amount fr position-width"/>
                                 <#if errorMessage?has_content>
                                     <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
@@ -212,7 +212,7 @@
                             </dd>
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
-                                <#if loan.preheatSeconds lte 1800>
+                                <#if loan.countdown lte 1800>
                                     <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
                                 <#else>
                                     ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
@@ -228,7 +228,7 @@
                                 </button>
                             </dd>
                             <@global.role hasRole="'INVESTOR'">
-                                <#if !loan.investNoPassword>
+                                <#if !loan.investor.noPasswordInvest>
                                     <dd>
                                         <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.autoInvest?c}" >
                                             推荐您开通免密投资
@@ -254,6 +254,7 @@
                 </#if>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="chart-info-responsive bg-w">
             项目金额：<@amount>${loan.loanAmount?string.computer}</@amount> 元<br/>
             代理人：${loan.agentLoginName}<br/>
@@ -327,6 +328,8 @@
             </div>
         </#if>
 
+=======
+>>>>>>> features/improve_loan_details_master
         <div class="bg-w clear-blank borderBox loan-detail">
             <div class="loan-nav">
                 <ul class="clearfix">
@@ -337,34 +340,41 @@
             <div class="loan-list pad-s invest-list-content">
                 <div class="loan-list-con">
                     <div class="content detail">
-                        <div class="subtitle">
-                            <h3>借款基本信息</h3>
-                        </div>
-                        <div class="container-fluid list-block">
-                            <div class="row">
-                                <div class="col-md-4">借款人：刘某某</div>
-                                <div class="col-md-4">平台ID：1212</div>
-                                <div class="col-md-4">性别：男</div>
-                                <div class="col-md-4">年龄：22</div>
-                                <div class="col-md-4">婚姻状况：已婚</div>
-                                <div class="col-md-4">身份证号：212121212121212</div>
-                                <div class="col-md-4">申请地区：北京</div>
-                                <div class="col-md-4">收入水平：5万元</div>
+                        <#if loan.loanerDetail??>
+                            <div class="subtitle">
+                                <h3>借款人基本信息</h3>
                             </div>
-                        </div>
+                            <div class="container-fluid list-block">
+                                <div class="row">
+                                    <#list ['借款人', '平台ID', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
+                                        <#if loan.loanerDetail[key]??>
+                                            <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
+                                        </#if>
+                                    </#list>
+                                </div>
+                            </div>
+                        </#if>
+
                         <div class="subtitle">
                             <h3>抵押档案</h3>
                         </div>
                         <div class="container-fluid list-block">
                             <div class="row">
-                                <div class="col-md-4">借款人：刘某某</div>
-                                <div class="col-md-4">平台ID：1212</div>
-                                <div class="col-md-4">性别：男</div>
-                                <div class="col-md-4">年龄：22</div>
-                                <div class="col-md-4">婚姻状况：已婚</div>
-                                <div class="col-md-4">身份证号：212121212121212</div>
-                                <div class="col-md-4">申请地区：北京</div>
-                                <div class="col-md-4">收入水平：5万元</div>
+                                <#if loan.pledgeHouseDetail??>
+                                    <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
+                                        <#if loan.pledgeHouseDetail[key]??>
+                                            <div class="col-md-4">${key}：${loan.pledgeHouseDetail[key]}</div>
+                                        </#if>
+                                    </#list>
+                                </#if>
+
+                                <#if loan.pledgeVehicleDetail??>
+                                    <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
+                                        <#if loan.pledgeVehicleDetail[key]??>
+                                            <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
+                                        </#if>
+                                    </#list>
+                                </#if>
                             </div>
                         </div>
                         <div class="subtitle">
@@ -375,24 +385,24 @@
                                 <div class="col-md-6">
                                     <div class="container-fluid table">
                                         <div class="row">
-                                            <div class="col-xs-6 bg">1212</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
-                                            <div class="col-xs-6 bg">1212</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
-                                            <div class="col-xs-6 br-b bg">1212</div>
-                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
+                                            <div class="col-xs-6 bg">身份认证</div>
+                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            <div class="col-xs-6 bg">手机认证</div>
+                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            <div class="col-xs-6 br-b bg">婚姻状况认证</div>
+                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="container-fluid table">
                                         <div class="row">
-                                            <div class="col-xs-6 bg">1212</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
-                                            <div class="col-xs-6 bg">1212</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
-                                            <div class="col-xs-6 br-b bg">1212</div>
-                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>1212</div>
+                                            <div class="col-xs-6 bg">房产认证</div>
+                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            <div class="col-xs-6 bg">住址信息认证</div>
+                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            <div class="col-xs-6 br-b bg">收入证明</div>
+                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
                                         </div>
                                     </div>
                                 </div>
@@ -402,234 +412,27 @@
                             <h3>申请资料</h3>
                         </div>
                         <div class="apply-data">
-                            <h5>1、身份证</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
-                            <h5>2、房本证件</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
-                            <h5>3、借款合同</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
-                            <h5>4、房屋强制执行公证书</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
-                            <h5>5、打款凭条</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
-                            <h5>6、不动产登记证明</h5>
-                            <div class="scroll-wrap" scroll-carousel>
-                                <div class="scroll-content">
-                                    <div class="row">
-                                        <a class="col" href="http://placekitten.com/200/125" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/125" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                        <a class="col" href="http://placekitten.com/200/120" rel="example_group">
-                                            <img class="img" src="http://placekitten.com/200/120" layer-src="http://placekitten.com/200/120" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="left-button disabled">
-                                </div>
-                                <div class="right-button">
-                                </div>
-                            </div>
+                            <#list loan.loanTitleDto as loanTitle>
+                                <#list loan.loanTitles as loanTitleRelation >
+                                    <#if loanTitle.id == loanTitleRelation.titleId>
+                                        <h5>${loanTitle_index}、${loanTitle.title}</h5>
+                                        <div class="scroll-wrap" scroll-carousel>
+                                            <div class="scroll-content">
+                                                <div class="row">
+                                                    <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
+                                                        <a class="col" href="${title}" rel="example_group">
+                                                            <img class="img" layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
+                                                        </a>
+                                                    </#list>
+
+                                                </div>
+                                            </div>
+                                            <div class="left-button disabled"></div>
+                                            <div class="right-button"></div>
+                                        </div>
+                                    </#if>
+                                </#list>
+                            </#list>
                         </div>
                     </div>
                 </div>
@@ -640,7 +443,11 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="first"><span><a href="#">拓荒先锋 >></a></span></h4>
-                                        <p>恭喜yyh***2016-05-21 10:49:21 拔得头筹奖励0.2％加息券＋50元红包</p>
+                                        <#if (loan.achievement.firstInvestAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.firstInvestAchievementMobile} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
+                                        <#else>
+                                            <p>虚位以待</p>
+                                        </#if>
                                     </div>
                                 </div>
                             </div>
@@ -648,7 +455,11 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="king"><span><a href="#">拓天标王 >></a></span></h4>
-                                        <p>恭喜yyh****以累计投资 60000.00元 夺得标王奖励0.2％加息券＋50元红包</p>
+                                        <#if (loan.achievement.maxAmountAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元红包</p>
+                                        <#else>
+                                            <p>虚位以待</p>
+                                        </#if>
                                     </div>
                                 </div>
                             </div>
@@ -656,7 +467,11 @@
                                 <div class="br">
                                     <div class="item">
                                         <h4 class="hammer"><span><a href="#">一锤定音 >></a></span></h4>
-                                        <p>恭喜yyh***2016-05-21 10:49:21 终结此标奖励0.2％加息券＋50元红包</p>
+                                        <#if (loan.achievement.lastInvestAchievementMobile)??>
+                                            <p>恭喜${loan.achievement.lastInvestAchievementMobile} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
+                                        <#else>
+                                            <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
+                                        </#if>
                                     </div>
                                 </div>
                             </div>

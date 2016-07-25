@@ -2,12 +2,21 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
+<<<<<<< HEAD
 public abstract class AbstractPledgeDetail implements Serializable{
     private long id;
     private long loanId;
     private String pledgeLocation;
     private String estimateAmount;
     private String loanAmount;
+=======
+public abstract class AbstractPledgeDetail implements Serializable {
+    protected long id;
+    protected long loanId;
+    protected String pledgeLocation;
+    protected String estimateAmount;
+    protected String loanAmount;
+>>>>>>> features/improve_loan_details_master
 
     public AbstractPledgeDetail() {
     }

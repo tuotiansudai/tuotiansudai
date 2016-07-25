@@ -8,6 +8,7 @@ public class UserMessageModel implements Serializable {
     private long messageId;
     private String loginName;
     private String title;
+    private String appTitle;
     private String content;
     private boolean read;
     private Date readTime;
@@ -16,10 +17,11 @@ public class UserMessageModel implements Serializable {
     public UserMessageModel() {
     }
 
-    public UserMessageModel(long messageId, String loginName, String title, String content) {
+    public UserMessageModel(long messageId, String loginName, String title, String appTitle, String content) {
         this.messageId = messageId;
         this.loginName = loginName;
         this.title = title;
+        this.appTitle = appTitle;
         this.content = content;
         this.createdTime = new Date();
     }
@@ -54,6 +56,14 @@ public class UserMessageModel implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAppTitle() {
+        return appTitle;
+    }
+
+    public void setAppTitle(String appTitle) {
+        this.appTitle = appTitle;
     }
 
     public String getContent() {

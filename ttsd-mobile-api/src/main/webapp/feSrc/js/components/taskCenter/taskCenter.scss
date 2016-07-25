@@ -43,28 +43,28 @@
 
         .MenuBox ul {
             position:absolute;
-            line-height: 30px;
             border-radius: 5px;
             border: 1px solid #ff5959;
-            height: 50px;
+            height: 50px;  /*px*/
             left: 3rem;
             bottom: 20px;
             width:302px;
         }
-        .MenuBoxItemNormal {
+        .MenuBox ul .MenuBoxItemNormal {
             float: left;
             display: block;
             width: 50%;
             height:100%;
+            padding-top: 4px;  /*px*/
             text-align: center;
             color: #ff5959;
             background-color: transparent;
             font-size: 28px;  /*px*/
             font-style: normal;
-            line-height: 43px;
+
             &.active {
                 color: #ffffff;
-            background-color: #ff5959;  
+            background-color: #ff5959;
             }
         }
 

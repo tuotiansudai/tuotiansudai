@@ -1,35 +1,36 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
-    (function(){
-        var $registerForm=$('.register-user-form'),
-            $phoneDom=$('#mobile'),
-            $fetchCaptcha=$('.fetch-captcha'),
-            $changecode=$('.img-change'),
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+    (function () {
+        var $registerForm = $('.register-user-form'),
+            $phoneDom = $('#mobile'),
+            $fetchCaptcha = $('.fetch-captcha'),
+            $changecode = $('.img-change'),
             $registerBtn = $(".registered span"),
-            $password = $('#password'),
             $appCaptcha = $('#appCaptcha'),
-            $webRegister=$('.web-page-register'),
-            $mobileRegister=$('.mobile-page-register'),
-            $landingTop=$('.landing-top');
+            $webRegister = $('.web-page-register'),
+            $mobileRegister = $('.mobile-page-register'),
+            $landingTop = $('.landing-top');
 
-        var bCategory=commonFun.browserRedirect();
+        var $popWinBox = $('#popWinBox');
 
-        if(bCategory=='mobile') {
+        var bCategory = commonFun.browserRedirect();
+
+        if (bCategory == 'mobile') {
             $webRegister.empty();
             $mobileRegister.empty().append($landingTop);
         }
 
-        $('input[type="text"],input[type="password"]',$registerForm).placeholder();
+        $('input[type="text"],input[type="password"]', $registerForm).placeholder();
         //form validate
         $registerForm.validate({
             focusInvalid: false,
-            errorPlacement: function(error, element) {
-                error.appendTo($('#'+ element.attr('id') + 'Err'));
+            errorPlacement: function (error, element) {
+                error.appendTo($('#' + element.attr('id') + 'Err'));
             },
             rules: {
                 mobile: {
                     required: true,
                     digits: true,
-                    isPhone:true,
+                    isPhone: true,
                     minlength: 11,
                     maxlength: 11,
                     isExist: "/register/user/mobile/{0}/is-exist"
@@ -38,10 +39,10 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                     required: true,
                     regex: /^(?=.*[^\d])(.{6,20})$/
                 },
-                appCaptcha : {
+                appCaptcha: {
                     required: true
                 },
-                captcha : {
+                captcha: {
                     required: true,
                     digits: true,
                     maxlength: 6,
@@ -67,7 +68,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                     required: '请输入手机号',
                     digits: '必须是数字',
                     minlength: '手机格式不正确',
-                    isPhone:'请输入正确的手机号码',
+                    isPhone: '请输入正确的手机号码',
                     maxlength: '手机格式不正确',
                     isExist: '手机号已存在'
                 },
@@ -89,109 +90,124 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                     required: "请同意服务协议"
                 }
             },
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 form.submit();
             }
         });
 
+        if ($popWinBox.length) {
+            var dataShow = $popWinBox.data('show-coupon-alert');
+            if (dataShow) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '80%',
+                    skin: 'layui-layer-nobg',
+                    shadeClose: false,
+                    content: $popWinBox
+                });
+            }
+            $popWinBox.find('.app-close').on('click', function () {
+                layer.closeAll();
+            });
+            $popWinBox.find('.app-button').on('click', function () {
+                layer.closeAll();
+                location.href = '/loan-list';
+            });
+
+        }
         var refreshCaptcha = function () {
-            $('.image-captcha img').each(function(index, el) {
+            $('.image-captcha img').each(function (index, el) {
                 $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
             });
         };
         refreshCaptcha();
 
         //phone focusout
-        $('#appCaptcha').on('focusout', function(event) {
+        $('#appCaptcha').on('focusout', function (event) {
             event.preventDefault();
-            if($phoneDom.val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($phoneDom.val()) && $('#appCaptcha').val()!=''){
+            if ($phoneDom.val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($phoneDom.val()) && $('#appCaptcha').val() != '') {
                 $fetchCaptcha.prop('disabled', false);
-            }else{
+            } else {
                 $fetchCaptcha.prop('disabled', true);
             }
         });
 
-        $appCaptcha.on('focus', function(event) {
+        $appCaptcha.on('focus', function (event) {
             $('#appCaptchaErr').html('');
         });
         //change images code
-        $changecode.on('click', function(event) {
+        $changecode.on('click', function (event) {
             event.preventDefault();
             refreshCaptcha();
         });
         //show protocol info
-        $('.show-agreement').on('click', function(event) {
+        $('.show-agreement').on('click', function (event) {
             event.preventDefault();
-            var area=['950px', '600px'];
-             if(bCategory=='mobile') {
-                area=['100%', '100%'];
+            var area = ['950px', '600px'];
+            if (bCategory == 'mobile') {
+                area = ['100%', '100%'];
             }
             layer.open({
                 type: 1,
-                title: '拓天速贷服务协议',
+                title: false,
+                closeBtn: 0,
                 area: area,
                 shadeClose: true,
                 move: false,
                 scrollbar: true,
-                skin:'register-skin',
+                skin: 'register-skin',
                 content: $('#agreementBox')
             });
         });
 
-        $fetchCaptcha.on('click', function(event) {
+        $('#agreementBox').find('.close-tip').on('click', function () {
+            layer.closeAll();
+        })
+        $fetchCaptcha.on('click', function (event) {
             event.preventDefault();
 
-            var captchaVal=$('#appCaptcha').val(),
-                mobile=$phoneDom.val();
-             $.ajax({
-                 url: '/register/user/send-register-captcha',
-                 type: 'POST',
-                 dataType: 'json',
-                 data: {imageCaptcha: captchaVal,mobile:mobile}
-             })
-             .done(function(data) {
-                 var countdown=60;
-                 if(data.data.status && !data.data.isRestricted){
-                     timer=setInterval(function() {
-                         $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
-                         countdown--;
-                         if(countdown==0) {
-                             clearInterval(timer);
-                             $fetchCaptcha.prop('disabled',false).text('重新发送');
-                         }
-                     }, 1000);
-                    return;
-                 }
-                 if(!data.data.status && data.data.isRestricted) {
-                     $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
-                 }
+            var captchaVal = $('#appCaptcha').val(),
+                mobile = $phoneDom.val();
+            $.ajax({
+                    url: '/register/user/send-register-captcha',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {imageCaptcha: captchaVal, mobile: mobile}
+                })
+                .done(function (data) {
+                    var countdown = 60;
+                    if (data.data.status && !data.data.isRestricted) {
+                        timer = setInterval(function () {
+                            $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
+                            countdown--;
+                            if (countdown == 0) {
+                                clearInterval(timer);
+                                countdown = 60;
+                                $fetchCaptcha.prop('disabled', false).text('重新发送');
+                            }
+                        }, 1000);
+                        return;
+                    }
+                    if (!data.data.status && data.data.isRestricted) {
+                        $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
+                    }
 
-                 if(!data.data.status && !data.data.isRestricted) {
-                     $('#appCaptchaErr').html('图形验证码错误');
-                 }
-                 refreshCaptcha();
-             })
-             .fail(function() {
-                 refreshCaptcha();
-                 layer.msg('请求失败，请重试！');
+                    if (!data.data.status && !data.data.isRestricted) {
+                        $('#appCaptchaErr').html('图形验证码错误');
+                    }
+                    refreshCaptcha();
+                })
+                .fail(function () {
+                    refreshCaptcha();
+                    layer.msg('请求失败，请重试！');
 
-             });
-
+                });
         });
-        //timer
-        function getCode() {
-            if (countdown == 0) {
-                window.clearInterval(timer);
-                $fetchCaptcha.prop('disabled',false).text('获取验证码');
-                countdown = 60;
-            } else {
-                $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
-                countdown--;
-            }
-        }
 
         // phone validate
-        jQuery.validator.addMethod("isPhone", function(value, element) {
+        jQuery.validator.addMethod("isPhone", function (value, element) {
             var tel = /0?(13|14|15|18)[0-9]{9}/;
             return this.optional(element) || (tel.test(value));
         }, "请正确填写您的手机号码");
@@ -199,7 +215,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
         //register button
         $registerBtn.on('click', function (event) {
             event.preventDefault();
-            $('body,html').animate({scrollTop:0},'fast');
+            $('body,html').animate({scrollTop: 0}, 'fast');
         });
 
         $("#slideBox").slide({mainCell: ".bd ul", effect: "left", trigger: "click"});

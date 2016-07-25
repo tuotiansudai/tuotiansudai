@@ -9,7 +9,7 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
         }
         $paginationElement.loadPagination({index: index}, function (data) {
             window.location.hash = data.index;
-            data.messageTypeHandler =  function () {
+            data.messageTypeHandler = function () {
                 return function (text, render) {
                     return render(text) === 'MANUAL' ? "拓天速贷" : "系统消息";
                 }

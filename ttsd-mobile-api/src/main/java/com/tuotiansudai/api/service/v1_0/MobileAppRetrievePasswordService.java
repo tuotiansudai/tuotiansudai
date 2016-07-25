@@ -11,10 +11,4 @@ public interface MobileAppRetrievePasswordService {
      */
     BaseResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto);
 
-    /**
-     * @function 发送手机验证码
-     * @param retrievePasswordRequestDto 发送手机验证码参数封装类
-     * @return BaseResponseDto
-     */
-    BaseResponseDto sendSMS(RetrievePasswordRequestDto retrievePasswordRequestDto, String remoteIp);
 }

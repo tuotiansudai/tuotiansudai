@@ -4,7 +4,6 @@ package com.tuotiansudai.task.aspect;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
-import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
@@ -73,7 +72,7 @@ public class AuditTaskAspectActivity {
                         String senderRealName = accountService.getRealName(senderLoginName);
 
                         task.setSender(senderLoginName);
-                        task.setOperateURL("/activity-manage/activity-center/"+activityDto.getActivityId());
+                        task.setOperateURL("/activity-manage/activity-center/" + activityDto.getActivityId());
                         task.setDescription(senderRealName + " 创建了一个活动［" + activityDto.getTitle() + "］，请审核。");
 
                         redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);

@@ -19,7 +19,6 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -28,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -53,9 +53,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -86,6 +83,18 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -119,68 +128,99 @@ public class LoanServiceImpl implements LoanService {
         return loanTitleMapper.findAll();
     }
 
-    /**
-     * @param loanDto
-     * @return BaseDto<PayDataDto>
-     * @function 创建标的
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> createLoan(final LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        baseDto.setData(dataDto);
+    private BaseDto<BaseDataDto> loanCheck(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
         long minInvestAmount = AmountConverter.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountConverter.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountConverter.convertStringToCent(loanDto.getLoanAmount());
         String agentLoginName = getLoginName(loanDto.getAgentLoginName());
         if (agentLoginName == null) {
-            dataDto.setMessage("代理用户不存在");
-            baseDto.setData(dataDto);
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         } else {
             if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
-                dataDto.setMessage("代理用户不具有借款人角色");
-                return baseDto;
+                return new BaseDto<>(new BaseDataDto(false, "代理用户不具有借款人角色"));
             }
         }
         if (loanDto.getPeriods() <= 0) {
-            dataDto.setMessage("借款期限最小为1");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "借款期限最小为1"));
         }
         if (loanAmount <= 0) {
-            dataDto.setMessage("预计出借金额应大于0");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "预计出借金额应大于0"));
         }
         if (minInvestAmount <= 0) {
-            dataDto.setMessage("最小投资金额应大于0");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最小投资金额应大于0"));
         }
         if (maxInvestAmount < minInvestAmount) {
-            dataDto.setMessage("最小投资金额不得大于最大投资金额");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最小投资金额不得大于最大投资金额"));
         }
         if (maxInvestAmount > loanAmount) {
-            dataDto.setMessage("最大投资金额不得大于预计出借金额");
-            return baseDto;
+            return new BaseDto<>(new BaseDataDto(false, "最大投资金额不得大于预计出借金额"));
         }
         if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
+            return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
+        }
+        if (StringUtils.isEmpty(loanDetailsDto.getDeclaration())) {
+            return new BaseDto<>(new BaseDataDto(false, "声明为空"));
+        }
+        if (StringUtils.isEmpty(loanerDetailsDto.getLoanerUserName()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerEmploymentStatus()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerIncome()) || StringUtils.isEmpty(loanerDetailsDto.getLoanerRegion()) ||
+                StringUtils.isEmpty(loanerDetailsDto.getLoanerIdentityNumber())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款人信息不完善"));
+        }
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            PledgeHouseDto pledgeHouseDto = (PledgeHouseDto) pledgeDetailsDto;
+            if (StringUtils.isEmpty(pledgeHouseDto.getPledgeLocation()) || StringUtils.isEmpty(pledgeHouseDto.getLoanAmount()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getEstimateAmount()) || StringUtils.isEmpty(pledgeHouseDto.getSquare()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getAuthenticAct()) || StringUtils.isEmpty(pledgeHouseDto.getEstateRegisterId()) ||
+                    StringUtils.isEmpty(pledgeHouseDto.getPropertyCardId())) {
+                return new BaseDto<>(new BaseDataDto(false, "房屋抵押物信息不完善"));
+            }
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            PledgeVehicleDto pledgeVehicleDto = (PledgeVehicleDto) pledgeDetailsDto;
+            if (StringUtils.isEmpty(pledgeVehicleDto.getPledgeLocation()) || StringUtils.isEmpty(pledgeVehicleDto.getLoanAmount()) ||
+                    StringUtils.isEmpty(pledgeVehicleDto.getEstimateAmount()) || StringUtils.isEmpty(pledgeVehicleDto.getBrand()) ||
+                    StringUtils.isEmpty(pledgeVehicleDto.getModel())) {
+                return new BaseDto<>(new BaseDataDto(false, "车辆抵押物信息不完善"));
+            }
+        } else {
+            return new BaseDto<>(new BaseDataDto(false, "抵押物类型错误"));
+        }
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<BaseDataDto> createLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
+        BaseDto<BaseDataDto> baseDto = loanCheck(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
+        if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        final long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(projectId);
-        loanMapper.create(new LoanModel(loanDto));
-        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (loanTitleRelationModelList.size() > 0) {
-            for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
-                loanTitleRelationModel.setId(idGenerator.generate());
-                loanTitleRelationModel.setLoanId(projectId);
-            }
-            loanTitleRelationMapper.create(loanTitleRelationModelList);
+
+        long loanId = idGenerator.generate();/****标的号****/
+        loanDto.setId(loanId);
+        loanDetailsDto.setLoanId(loanId);
+        loanerDetailsDto.setLoanId(loanId);
+        pledgeDetailsDto.setLoanId(loanId);
+        for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(loanId);
         }
-        updateExtraRate(loanDto, projectId);
-        dataDto.setStatus(true);
+
+        loanMapper.create(new LoanModel(loanDto));
+        if (!CollectionUtils.isEmpty(loanDto.getLoanTitles())) {
+            loanTitleRelationMapper.create(loanDto.getLoanTitles());
+        }
+        loanDetailsMapper.create(new LoanDetailsModel(loanDetailsDto));
+        loanerDetailsMapper.create(new LoanerDetailsModel(loanerDetailsDto));
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            pledgeHouseMapper.create(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            pledgeVehicleMapper.create(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+        }
+
+        baseDto.getData().setMessage(String.valueOf(loanId));
+        updateExtraRate(loanDto, loanId);
         return baseDto;
     }
 
@@ -258,26 +298,41 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
-        PayDataDto payDataDto = new PayDataDto();
+    public BaseDto<BaseDataDto> updateLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                           AbstractPledgeDetailsDto pledgeDetailsDto) {
+        BaseDto<BaseDataDto> baseDto = loanCheck(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
         LoanModel loanModelBefore = loanMapper.findById(loanDto.getId());
-        if (loanModelBefore == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
+        if (null == loanModelBefore) {
+            baseDto.getData().setStatus(false);
+            baseDto.getData().setMessage("标的不存在");
             return baseDto;
         }
-        updateLoanWithoutStatus(loanDto);
+        if (loanDto.getId() != loanDetailsDto.getLoanId() || loanDto.getId() != loanerDetailsDto.getLoanId() || loanDto.getId() != pledgeDetailsDto.getLoanId()) {
+            baseDto.getData().setStatus(false);
+            baseDto.getData().setMessage("loanID不一致");
+        }
+        if (!((PledgeType.HOUSE == loanDto.getPledgeType() && pledgeDetailsDto instanceof PledgeHouseDto) ||
+                (PledgeType.VEHICLE == loanDto.getPledgeType() && pledgeDetailsDto instanceof PledgeVehicleDto))) {
+            baseDto.getData().setStatus(false);
+            baseDto.getData().setMessage("抵押物类型与抵押物详细信息不一致");
+        }
+
+        //修改抵押物类型的标的需要删除原有的抵押物类型
+        if (PledgeType.HOUSE == loanDto.getPledgeType()) {
+            pledgeVehicleMapper.deleteByLoanId(loanDto.getId());
+        } else if (PledgeType.VEHICLE == loanDto.getPledgeType()) {
+            pledgeHouseMapper.deleteByLoanId(loanDto.getId());
+        }
+
+        updateLoanWithoutStatus(loanDto, loanDetailsDto, loanerDetailsDto, pledgeDetailsDto);
         LoanModel loanModelAfter = loanMapper.findById(loanDto.getId());
         if (loanModelBefore.getFundraisingEndTime() != loanModelAfter.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(loanModelAfter);
         }
         createFundraisingStartJob(loanModelAfter);
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
         return baseDto;
     }
 
@@ -347,6 +402,24 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public AbstractCreateLoanDto findCreateLoanDto(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
+        loanModel.setLoanTitles(loanTitleRelationModelList);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        AbstractCreateLoanDto createLoanDto = null;
+        if (PledgeType.HOUSE == loanModel.getPledgeType()) {
+            AbstractPledgeDetail pledgeDetail = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+            createLoanDto = new CreateHouseLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeHouseModel) pledgeDetail);
+        } else if (PledgeType.VEHICLE == loanModel.getPledgeType()) {
+            AbstractPledgeDetail pledgeDetail = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+            createLoanDto = new CreateVehicleLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeVehicleModel) pledgeDetail);
+        }
+        return createLoanDto;
+    }
+
+    @Override
     public boolean loanIsExist(long loanId) {
         return findLoanById(loanId) != null;
     }
@@ -396,10 +469,28 @@ public class LoanServiceImpl implements LoanService {
         updateLoanTitleAndExtraRate(loanDto, loanModel);
     }
 
-    private void updateLoanWithoutStatus(LoanDto loanDto) {
+    private void updateLoanWithoutStatus(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                         AbstractPledgeDetailsDto pledgeDetailsDto) {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.updateWithoutStatus(loanModel);
+
+        loanDetailsMapper.updateByLoanId(new LoanDetailsModel(loanDetailsDto));
+        loanerDetailsMapper.updateByLoanId(new LoanerDetailsModel(loanerDetailsDto));
+        if (pledgeDetailsDto instanceof PledgeHouseDto) {
+            if (null == pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanDto.getId())) {
+                pledgeHouseMapper.create(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+            } else {
+                pledgeHouseMapper.updateByLoanId(new PledgeHouseModel((PledgeHouseDto) pledgeDetailsDto));
+            }
+        } else if (pledgeDetailsDto instanceof PledgeVehicleDto) {
+            if (null == pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanDto.getId())) {
+                pledgeVehicleMapper.create(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+            } else {
+                pledgeVehicleMapper.updateByLoanId(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
+            }
+        }
+
         updateLoanTitleAndExtraRate(loanDto, loanModel);
     }
 
@@ -627,7 +718,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
-                if(rate > 0){
+                if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
                 }
                 return loanItemDto;
@@ -637,7 +728,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd) {
-        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
@@ -666,11 +757,11 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
-    private List<ExtraLoanRateDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
-            @Override
-            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateDto(model);
+    private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateItemDto>() {
+    @Override
+            public ExtraLoanRateItemDto apply(ExtraLoanRateModel model) {
+                return new ExtraLoanRateItemDto(model);
             }
         });
     }
@@ -684,5 +775,4 @@ public class LoanServiceImpl implements LoanService {
         payDataDto.setStatus(true);
         return baseDto;
     }
-
 }

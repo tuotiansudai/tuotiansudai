@@ -7,6 +7,7 @@
         <div class="form-group">
             <input type="text" name="id" hidden="hidden" value="${(dto.id?c)!"0"}">
             <label class="col-sm-1 control-label">收件人: </label>
+
             <div class="col-sm-4 receiver-type">
                 <#list userGroups as userGroup>
                     <label>

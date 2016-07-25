@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -178,9 +179,9 @@ public class LoanDto extends BaseDataDto implements Serializable {
     /***
      * 申请材料
      ***/
-    private List<LoanTitleRelationModel> loanTitles;
+    private List<LoanTitleRelationModel> loanTitles = new ArrayList<>();
 
-    private List<LoanTitleModel> loanTitleDto;
+    private List<LoanTitleModel> loanTitleDto = new ArrayList<>();
 
     /**
      * 可投金额

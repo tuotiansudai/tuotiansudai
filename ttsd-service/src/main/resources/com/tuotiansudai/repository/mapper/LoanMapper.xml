@@ -423,11 +423,8 @@
                 periods = #{periods},
                 duration = #{duration},
             </if>
-            <if test="descriptionText !=null and descriptionText!=''">
-                description_text = #{descriptionText},
-            </if>
-            <if test="descriptionHtml !=null and descriptionHtml!=''">
-                description_html = #{descriptionHtml},
+            <if test="pledgeType != null">
+                pledge_type = #{pledgeType},
             </if>
             <if test="loanAmount !=null and loanAmount!=''">
                 loan_amount = #{loanAmount},
@@ -480,7 +477,6 @@
             <if test="updateTime != null">
                 update_time = #{updateTime}
             </if>
-
         </trim>
         where id = #{id}
     </update>

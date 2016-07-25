@@ -17,10 +17,6 @@ public class RandomUtils {
 
     private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
-    private static final String allChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    private static final String letterChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     private static final String numberChar = "0123456789";
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
@@ -32,33 +28,16 @@ public class RandomUtils {
     @Autowired
     private UserMapper userMapper;
 
-    private static String generateMixString(int length) {
-        StringBuilder sb = new StringBuilder();
+    private String generateNumString(int length) {
+        StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
-            sb.append(allChar.charAt(random.nextInt(letterChar.length())));
+            stringBuilder.append(numberChar.charAt(random.nextInt(numberChar.length())));
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
-    public  String generateLowerString(int length) {
-        return generateMixString(length).toLowerCase();
-    }
-
-    public String generateNumString(int length) {
-        StringBuffer stringBuffer = new StringBuffer();
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            stringBuffer.append(numberChar.charAt(random.nextInt(numberChar.length())));
-        }
-        return stringBuffer.toString();
-    }
-
-    public  String generateUpperString(int length) {
-        return generateMixString(length).toUpperCase();
-    }
-
-    public static String showChar(int showLength) {
+    private static String showChar(int showLength) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < showLength; i++) {
             sb.append('*');
@@ -66,7 +45,7 @@ public class RandomUtils {
         return sb.toString();
     }
 
-    public String encryptMobile(String loginName, String investorLoginName, long investId,Source source) {
+    public String encryptMobile(String loginName, String investorLoginName, long investId, Source source) {
         String userMobile;
         String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
         if (StringUtils.isNotEmpty(loginName)) {
@@ -80,9 +59,9 @@ public class RandomUtils {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
         }
         String encryptMobile;
-        if(source.equals(Source.WEB)){
+        if (source.equals(Source.WEB)) {
             encryptMobile = encryptWebMiddleMobile(investUserMobile);
-        }else{
+        } else {
             encryptMobile = encryptAppMiddleMobile(investUserMobile);
         }
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
@@ -96,12 +75,12 @@ public class RandomUtils {
         return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
-    public String encryptMobile(String loginName, String encryptLoginName,Source source) {
+    public String encryptMobile(String loginName, String encryptLoginName, Source source) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return userMapper.findByLoginName(loginName).getMobile();
         }
 
-        if(source.equals(Source.WEB)){
+        if (source.equals(Source.WEB)) {
             return encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
         }
         return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
