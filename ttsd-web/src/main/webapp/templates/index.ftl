@@ -628,6 +628,30 @@
         </div>
     </div>
 
+    <div class="book-invest-box">
+        <table class="book-invest-table">
+            <caption>选择项目</caption>
+            <tr>
+                <th>预约项目</th>
+                <th>预期年化收益</th>
+            </tr>
+            <tr>
+                <td><input type="radio" name="projectOrder" id="po1"><label for="po1">90天项目</label></td>
+                <td>11%</td>
+            </tr>
+            <tr>
+                <td><input type="radio" name="projectOrder" id="po2"><label for="po1">180天项目</label></td>
+                <td>12%</td>
+            </tr>
+            <tr>
+                <td><input type="radio" name="projectOrder" id="po3"><label for="po1">360天项目</label></td>
+                <td>13%</td>
+            </tr>
+        </table>
+
+        
+    </div>
+
     <#include "coupon-alert.ftl" />
 </div>
 

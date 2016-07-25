@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _,layer) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -103,7 +103,17 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
 
         $('.web-book-box').on('click',function(event) {
             event.preventDefault();
-            window.location.href=$(this).attr('data-url');
+
+            layer.open({
+                title: '温馨提示',
+                type: 1,
+                btn: ['再想想', '确定'],
+                skin: 'demo-class',
+                area: ['400px', '180px'],
+                content: '<p class="tc pad-m">您确定取消该笔债权的转让？</p>',
+            });
+            //window.location.href=$(this).attr('data-url');
+
         })
         $('.loan-btn li').on('click', function(event) {
             event.preventDefault();
