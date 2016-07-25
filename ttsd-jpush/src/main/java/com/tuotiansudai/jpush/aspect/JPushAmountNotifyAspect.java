@@ -36,7 +36,7 @@ public class JPushAmountNotifyAspect {
     public final static String REFERRER_REWARD = "ReferrerReward-{0}";
     public final static String COUPON_INCOME = "CouponIncomeLoanRepayId-{0}";
     public final static String COUPON_RED_ENVELOPE = "CouponRedEnvelopeLoanId-{0}";
-    public final static String LOAN_OUT = "loanOutLoanId-{0}";
+    public final static String LOAN_OUT = "postLoanOutLoanId-{0}";
 
     @Autowired
     private JobManager jobManager;
