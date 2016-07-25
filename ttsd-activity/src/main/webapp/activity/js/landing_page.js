@@ -5,12 +5,13 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             $fetchCaptcha=$('.fetch-captcha'),
             $changecode=$('.img-change'),
             $registerBtn = $(".registered span"),
-            $loginName = $('#login-name'),
             $password = $('#password'),
             $appCaptcha = $('#appCaptcha'),
             $webRegister=$('.web-page-register'),
             $mobileRegister=$('.mobile-page-register'),
             $landingTop=$('.landing-top');
+
+        var $popWinBox=$('#popWinBox');
 
         var bCategory=commonFun.browserRedirect();
 
@@ -27,11 +28,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                 error.appendTo($('#'+ element.attr('id') + 'Err'));
             },
             rules: {
-                loginName: {
-                    required: true,
-                    regex: /(?!^\d+$)^\w{5,25}$/,
-                    isExist: "/register/user/login-name/{0}/is-exist"
-                },
                 mobile: {
                     required: true,
                     digits: true,
@@ -100,6 +96,28 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             }
         });
 
+        if($popWinBox.length) {
+            var dataShow=$popWinBox.data('show-coupon-alert');
+            if(dataShow) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '80%',
+                    skin: 'layui-layer-nobg',
+                    shadeClose: false,
+                    content: $popWinBox
+                });
+            }
+            $popWinBox.find('.app-close').on('click',function() {
+                layer.closeAll();
+            });
+            $popWinBox.find('.app-button').on('click',function() {
+                layer.closeAll();
+                location.href='/loan-list';
+            });
+
+        }
         var refreshCaptcha = function () {
             $('.image-captcha img').each(function(index, el) {
                 $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
@@ -134,7 +152,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             }
             layer.open({
                 type: 1,
-                title: '拓天速贷服务协议',
+                title: false,
+                closeBtn: 0,
                 area: area,
                 shadeClose: true,
                 move: false,
@@ -143,7 +162,10 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                 content: $('#agreementBox')
             });
         });
-        
+
+        $('#agreementBox').find('.close-tip').on('click',function() {
+            layer.closeAll();
+        })
         $fetchCaptcha.on('click', function(event) {
             event.preventDefault();
 
@@ -163,6 +185,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                          countdown--;
                          if(countdown==0) {
                              clearInterval(timer);
+                             countdown = 60;
                              $fetchCaptcha.prop('disabled',false).text('重新发送');
                          }
                      }, 1000);
@@ -182,11 +205,10 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                  layer.msg('请求失败，请重试！');
 
              });
-            
         });
 
-        // phone validate   
-        jQuery.validator.addMethod("isPhone", function(value, element) {   
+        // phone validate
+        jQuery.validator.addMethod("isPhone", function(value, element) {
             var tel = /0?(13|14|15|18)[0-9]{9}/;
             return this.optional(element) || (tel.test(value));
         }, "请正确填写您的手机号码");

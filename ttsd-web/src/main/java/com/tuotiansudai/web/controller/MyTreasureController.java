@@ -1,10 +1,12 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +43,7 @@ public class MyTreasureController {
         modelAndView.addObject("unusedCoupons", unusedUserCoupons);
         modelAndView.addObject("useRecords", useRecords);
         modelAndView.addObject("expiredCoupons", expiredUserCoupons);
-        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         return modelAndView;
     }
 

@@ -139,7 +139,7 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptLoginName(loginName, investModel.getLoginName(),6,investModel.getId()));
+            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(),Source.WEB));
             transferApplicationRecodesDto.setReceiveAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             transferApplicationRecodesDto.setSource(investModel.getSource());
             transferApplicationRecodesDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
@@ -219,18 +219,18 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
-        transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginNme, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
+        transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginNme, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(),Source.MOBILE));
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginNme);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginNme, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginNme, investModel.getLoginName(), investModel.getId(),Source.MOBILE));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
             transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
         }
         else if(transferApplicationModel.getStatus() == TransferStatus.SUCCESS){
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptLoginName(loginNme, investModel.getLoginName(), showLoginNameLength, investModel.getId()));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginNme, investModel.getLoginName(), investModel.getId(),Source.MOBILE));
             transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }

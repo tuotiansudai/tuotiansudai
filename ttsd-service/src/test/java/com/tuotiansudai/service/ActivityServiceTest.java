@@ -121,6 +121,10 @@ public class ActivityServiceTest {
         activityModel.setUpdatedTime(DateTime.parse("2016-05-30T01:20").toDate());
         activityModel.setActivatedBy(userModel.getLoginName());
 
+        activityModel.setShareUrl("url");
+        activityModel.setShareContent("content");
+        activityModel.setShareTitle("title");
+
         activityMapper.create(activityModel);
 
         return activityModel;
@@ -167,6 +171,9 @@ public class ActivityServiceTest {
         activityDto.setCreatedBy(loginName);
         activityDto.setCreatedTime(new Date());
         activityDto.setDescription("description");
+        activityDto.setShareContent("content");
+        activityDto.setShareTitle("title");
+        activityDto.setShareUrl("url");
         return activityDto;
     }
 
