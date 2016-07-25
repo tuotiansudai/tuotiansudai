@@ -14,9 +14,11 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +51,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -199,12 +205,58 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public long findSumBirthdayAndInterestByLoginName(String loginName){
+    public long findSumBirthdayAndInterestByLoginName(String loginName) {
         return userCouponMapper.findSumBirthdayAndInterestByLoginName(loginName);
     }
 
     @Override
-    public long findSumRedEnvelopeByLoginName(String loginName){
+    public long findSumRedEnvelopeByLoginName(String loginName) {
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
+    }
+
+    @Override
+    public void createInvestAchievementCoupon(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
+        CouponModel couponModel;
+        if (loanModel.getFirstInvestAchievementId() != null) {
+            couponModel = findCouponModel(UserGroup.FIRST_INVEST_ACHIEVEMENT, couponModelList);
+            if (couponModel == null) {
+                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getFirstInvestAchievementId()).getLoginName(),
+                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
+            }
+        }else{
+            logger.error(MessageFormat.format("loan id : {0} nothing firstInvestAchievement",String.valueOf(loanId)));
+        }
+
+        if (loanModel.getMaxAmountAchievementId() != null) {
+            couponModel = findCouponModel(UserGroup.MAX_AMOUNT_ACHIEVEMENT, couponModelList);
+            if (couponModel != null) {
+                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getMaxAmountAchievementId()).getLoginName(),
+                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
+            }
+        }else{
+            logger.error(MessageFormat.format("loan id : {0} nothing maxInvestAchievement",String.valueOf(loanId)));
+        }
+
+        if (loanModel.getLastInvestAchievementId() != null) {
+            couponModel = findCouponModel(UserGroup.LAST_INVEST_ACHIEVEMENT, couponModelList);
+            if (couponModel != null) {
+                userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getLastInvestAchievementId()).getLoginName(),
+                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
+            }
+        }else{
+            logger.error(MessageFormat.format("loan id : {0} nothing lastInvestAchievement",String.valueOf(loanId)));
+        }
+    }
+
+    private CouponModel findCouponModel(final UserGroup userGroup, List<CouponModel> couponModelList) {
+        Optional<CouponModel> firstInvestAchievement = Iterators.tryFind(couponModelList.iterator(), new Predicate<CouponModel>() {
+            @Override
+            public boolean apply(CouponModel input) {
+                return input.getUserGroup().equals(userGroup);
+            }
+        });
+        return firstInvestAchievement.isPresent() ? firstInvestAchievement.get() : null;
     }
 }

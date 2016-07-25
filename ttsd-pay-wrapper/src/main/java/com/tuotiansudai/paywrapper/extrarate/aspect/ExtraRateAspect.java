@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.extrarate.aspect;
 
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import org.apache.log4j.Logger;
@@ -23,6 +24,9 @@ public class ExtraRateAspect {
 
     @Autowired
     private LoanOutInvestCalculationService investExtraRateService;
+
+    @Autowired
+    private UserCouponService userCouponService;
 
     @After(value = "execution(* *..InvestTransferPurchaseService.postPurchase(*))")
     public void afterReturningInvestTransferPurchase(JoinPoint joinPoint) {
@@ -63,6 +67,12 @@ public class ExtraRateAspect {
     public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
         investExtraRateService.rateIncreases(loanId);
+    }
+
+    @AfterReturning(value = "execution(* *..LoanService.postLoanOut(*))", returning = "returnValue")
+    public void afterReturningLoanOutCreateInvestAchievement(JoinPoint joinPoint, Object returnValue) {
+        final long loanId = (long) joinPoint.getArgs()[0];
+        userCouponService.createInvestAchievementCoupon(loanId);
     }
 }
 
