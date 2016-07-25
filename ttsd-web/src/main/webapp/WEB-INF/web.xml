@@ -20,7 +20,7 @@
 
     <filter>
         <filter-name>XssSqlFilter</filter-name>
-        <filter-class>com.tuotiansudai.web.interceptors.XssFilter</filter-class>
+        <filter-class>com.tuotiansudai.web.config.interceptors.XssFilter</filter-class>
     </filter>
 
     <filter>

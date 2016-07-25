@@ -9,10 +9,11 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,8 @@ import javax.validation.Valid;
 @RequestMapping(path = "/register/user")
 public class RegisterUserController {
 
+    private final static Logger logger = Logger.getLogger(RegisterUserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -39,6 +42,8 @@ public class RegisterUserController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MyAuthenticationManager myAuthenticationManager;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
@@ -52,14 +57,17 @@ public class RegisterUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess;
+        boolean isRegisterSuccess = false;
         try {
             if (request.getSession().getAttribute("channel") != null) {
                 registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
             }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
+            if (isRegisterSuccess) {
+                myAuthenticationManager.createAuthentication(registerUserDto.getLoginName());
+            }
         } catch (ReferrerRelationException e) {
-            isRegisterSuccess = false;
+            logger.error(e.getLocalizedMessage(), e);
         }
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);

@@ -3,8 +3,6 @@ package com.tuotiansudai.web.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.AjaxAccessDeniedDto;
-import com.tuotiansudai.dto.BaseDto;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,16 +71,12 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
             return;
         }
 
-        BaseDto<AjaxAccessDeniedDto> baseDto = new BaseDto<>();
-        AjaxAccessDeniedDto dataDto = new AjaxAccessDeniedDto();
-        dataDto.setStatus(true);
-        dataDto.setDirectUrl(accessDeniedRedirectUrl);
-        baseDto.setData(dataDto);
+        AjaxAccessDeniedDto ajaxAccessDeniedDto = new AjaxAccessDeniedDto();
+        ajaxAccessDeniedDto.setDirectUrl(accessDeniedRedirectUrl);
 
         String referer = request.getHeader(HttpHeaders.REFERER);
-
         if (!Strings.isNullOrEmpty(referer)) {
-            dataDto.setRefererUrl(referer);
+            ajaxAccessDeniedDto.setRefererUrl(referer);
         }
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -90,7 +84,7 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            writer.print(objectMapper.writeValueAsString(baseDto));
+            writer.print(objectMapper.writeValueAsString(ajaxAccessDeniedDto));
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
@@ -110,5 +104,27 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 
     public void setAccessDeniedExceptionRedirect(Map<String, String> accessDeniedExceptionRedirect) {
         this.accessDeniedExceptionRedirect = accessDeniedExceptionRedirect;
+    }
+
+    private class AjaxAccessDeniedDto {
+        private String directUrl;
+
+        private String refererUrl;
+
+        public String getDirectUrl() {
+            return directUrl;
+        }
+
+        public void setDirectUrl(String directUrl) {
+            this.directUrl = directUrl;
+        }
+
+        public String getRefererUrl() {
+            return refererUrl;
+        }
+
+        public void setRefererUrl(String refererUrl) {
+            this.refererUrl = refererUrl;
+        }
     }
 }

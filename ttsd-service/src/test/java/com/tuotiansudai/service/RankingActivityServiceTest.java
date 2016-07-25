@@ -84,11 +84,10 @@ public class RankingActivityServiceTest {
         clearRankingDataInRedis();
 
         String loginName = "ranking_test_1";
-        String mobile = "13900001111";
         createUserByUserId(loginName);
-        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
+        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName);
 
-        assert (baseDto.isSuccess() == false);
+        assert (!baseDto.isSuccess());
         assert (baseDto.getData().getReturnCode() == 1);
     }
 
@@ -97,7 +96,6 @@ public class RankingActivityServiceTest {
         clearRankingDataInRedis();
 
         String loginName = "rankTest";
-        String mobile = "13900001111";
         createUserByUserId(loginName);
         long investAmount = 30000;
         long tianDouScore = investAmount * 3 / 12; // 3月标，7500
@@ -105,7 +103,7 @@ public class RankingActivityServiceTest {
 
         mockInvestTianDou(loginName, investAmount, tianDouScore, loanId);
 
-        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
+        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName);
 
         assert (baseDto.isSuccess() == true);
         assert (baseDto.getData().getStatus() == true);
@@ -198,13 +196,13 @@ public class RankingActivityServiceTest {
             mockInvestTianDou(loginName1, investAmount, tianDouScore, loanId);
             Thread.sleep(1000L);
 
-            BaseDto<DrawLotteryDto> baseDto1 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto1 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto2 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto2 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto3 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto3 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto4 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto4 = rankingActivityService.drawTianDouPrize(loginName1);
 
             assert (baseDto1.isSuccess() == true);
             assert (baseDto1.getData().getStatus() == true);

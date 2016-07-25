@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,6 +50,9 @@ public class RegisterUserControllerTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private MyAuthenticationManager myAuthenticationManager;
 
     @Before
     public void init() {
@@ -108,7 +113,7 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-
+        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))

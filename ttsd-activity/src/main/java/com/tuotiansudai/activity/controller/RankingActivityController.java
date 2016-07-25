@@ -35,7 +35,7 @@ public class RankingActivityController {
     private AccountMapper accountMapper;
 
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
+    public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
@@ -63,9 +63,7 @@ public class RankingActivityController {
     @RequestMapping(value = "/draw-tiandou", method = RequestMethod.POST)
     public BaseDto<DrawLotteryDto> drawTianDouPrize() {
         String loginName = LoginUserInfo.getLoginName();
-        String mobile = LoginUserInfo.getMobile();
-
-        return rankingActivityService.drawTianDouPrize(loginName, mobile);
+        return rankingActivityService.drawTianDouPrize(loginName);
     }
 
     @ResponseBody

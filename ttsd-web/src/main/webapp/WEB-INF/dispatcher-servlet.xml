@@ -17,7 +17,7 @@
             <bean id="jacksonMessageConverter"
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.web.configuration.CustomerObjectMapper"/>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -41,7 +41,6 @@
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
 
-    <mvc:resources mapping="/html/**" location="/html/"/>
     <mvc:resources mapping="/style/**" location="/style/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
@@ -51,7 +50,7 @@
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
     <mvc:resources mapping="/favicon.ico" location="/favicon.ico"/>
 
-    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${web.static.server}"/>
         <property name="javascriptLocation" value="${web.js.path}"/>

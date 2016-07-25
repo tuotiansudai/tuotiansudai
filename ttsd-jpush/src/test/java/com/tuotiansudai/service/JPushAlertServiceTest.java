@@ -102,8 +102,6 @@ public class JPushAlertServiceTest {
     private static final long loanRepayId3 = 300000003L;
     private static final long investId3 = 49393993235555L;
 
-    private static final String JPUSH_ID_KEY = "api:jpushId:store";
-
     private InvestRepayModel createInvestRepayHasDefaultInterest(long investId, RepayStatus repayStatus, int period) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setId(idGenerator.generate());
@@ -281,7 +279,7 @@ public class JPushAlertServiceTest {
 
         when(investRepayMapper.findByInvestIdAndPeriod(anyInt(), anyInt())).thenReturn(investRepayModel);
 
-        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), any(HashMap.class), any(PushSource.class))).thenReturn(true);
+        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyMap(), any(PushSource.class))).thenReturn(true);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(createInvestSuccessList(loanId1));
 

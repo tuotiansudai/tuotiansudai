@@ -6,16 +6,14 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.util.IdentityNumberValidator;
 import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.web.util.IdentityNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/register/account")
@@ -51,7 +49,6 @@ public class RegisterAccountController {
     public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-            registerAccountDto.setMobile(LoginUserInfo.getMobile());
             return this.userService.registerAccount(registerAccountDto);
         }
 

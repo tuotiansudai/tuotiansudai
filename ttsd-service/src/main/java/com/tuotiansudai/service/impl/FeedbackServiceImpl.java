@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.FeedbackMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
@@ -18,13 +19,16 @@ import java.util.List;
 public class FeedbackServiceImpl implements FeedbackService {
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private FeedbackMapper feedbackMapper;
 
     @Override
-    public FeedbackModel create(String loginName, String contact, Source source, FeedbackType type, String content) {
+    public FeedbackModel create(String loginName, Source source, FeedbackType type, String content) {
         FeedbackModel feedbackModel = new FeedbackModel();
         feedbackModel.setLoginName(loginName);
-        feedbackModel.setContact(contact);
+        feedbackModel.setContact(userMapper.findByLoginName(loginName).getMobile());
         feedbackModel.setSource(source);
         feedbackModel.setType(type == null ? FeedbackType.opinion : type);
         feedbackModel.setContent(content);

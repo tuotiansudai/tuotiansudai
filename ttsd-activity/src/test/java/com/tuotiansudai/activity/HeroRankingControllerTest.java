@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
 import org.junit.Before;
@@ -16,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -62,8 +62,8 @@ public class HeroRankingControllerTest {
     }
 
     @Test
-    public void shouldObtainHeroRankingIsSuccess() throws Exception{
-        mockLoginUser("investor", "13900000000");
+    public void shouldObtainHeroRankingIsSuccess() throws Exception {
+        mockLoginUser("investor");
         HeroRankingView heroRankingView = new HeroRankingView();
         heroRankingView.setLoginName("loginName");
         heroRankingView.setMobile("13900000000");
@@ -72,7 +72,7 @@ public class HeroRankingControllerTest {
         List<HeroRankingView> heroRankingViews = Lists.newArrayList(heroRankingView);
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
-        when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
+        when(randomUtils.encryptMobile(anyString(), anyString(), any(Source.class))).thenReturn(heroRankingView.getLoginName());
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())
@@ -84,9 +84,9 @@ public class HeroRankingControllerTest {
 
     }
 
-    private void mockLoginUser(String loginName, String mobile){
-        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
-        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
+    private void mockLoginUser(String loginName) {
+        User user = new User(loginName, "", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
+        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user, null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
     }
 }

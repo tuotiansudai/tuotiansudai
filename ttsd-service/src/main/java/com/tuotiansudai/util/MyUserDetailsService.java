@@ -1,4 +1,4 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.util;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,22 +34,20 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    @Value("${web.login.max.failed.times}")
-    private int times;
-
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Value("${web.login.max.failed.times}")
+    private int times;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
         UserModel userModel = userMapper.findByLoginNameOrMobile(username);
         if (userModel == null) {
-            String errorMessage = MessageFormat.format("Login Error: {0} not found!", username);
-            throw new UsernameNotFoundException(errorMessage);
+            throw new UsernameNotFoundException(MessageFormat.format("Login Error: {0} not found!", username));
         }
 
         String loginName = userModel.getLoginName();
-        String mobile = userModel.getMobile();
         String password = userModel.getPassword();
 
         if (verifyLoginFailedMaxTimes(loginName)) {
@@ -57,8 +56,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         boolean enabled = userModel.isActive();
-
-        String salt = userModel.getSalt();
 
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
 
@@ -69,7 +66,7 @@ public class MyUserDetailsService implements UserDetailsService {
             }
         });
 
-        return new MyUser(loginName, password, enabled, true, true, true, grantedAuthorities, mobile, salt);
+        return new User(loginName, password, enabled, true, true, true, grantedAuthorities);
     }
 
     private boolean verifyLoginFailedMaxTimes(String loginName) {

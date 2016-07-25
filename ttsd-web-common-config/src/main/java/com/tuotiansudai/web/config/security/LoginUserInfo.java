@@ -1,32 +1,21 @@
 package com.tuotiansudai.web.config.security;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 public class LoginUserInfo {
 
     public static String getLoginName() {
         Object principal = LoginUserInfo.getPrincipal();
 
-        if (principal instanceof MyUser) {
-            return ((MyUser) principal).getUsername();
-        }
-
-        return null;
-    }
-
-    public static String getMobile() {
-        Object principal = LoginUserInfo.getPrincipal();
-
-        if (principal instanceof MyUser) {
-            return ((MyUser) principal).getMobile();
+        if (principal instanceof User) {
+            return ((User) principal).getUsername();
         }
 
         return null;
     }
 
     private static Object getPrincipal() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getPrincipal();
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
