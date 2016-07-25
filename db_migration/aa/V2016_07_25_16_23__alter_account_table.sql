@@ -1,0 +1,11 @@
+BEGIN;
+ALTER TABLE `aa`.`account`
+DROP FOREIGN KEY `FK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME`;
+ALTER TABLE `aa`.`account`
+CHANGE COLUMN `login_name` `login_name` VARCHAR(25) NOT NULL,
+ADD UNIQUE INDEX `login_name_UNIQUE` (`login_name` ASC);
+ALTER TABLE `aa`.`account`
+ADD CONSTRAINT `FK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME`
+FOREIGN KEY (`login_name`)
+REFERENCES `aa`.`user` (`login_name`);
+COMMIT;
