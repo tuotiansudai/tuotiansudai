@@ -1,23 +1,26 @@
-package com.tuotiansudai.util;
+package com.tuotiansudai.spring;
 
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MyAuthenticationManager {
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     public void createAuthentication(String username) {
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDetails, userDetails.getPassword(), userDetails.getAuthorities());

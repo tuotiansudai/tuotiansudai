@@ -2,11 +2,11 @@
   "name": "question-answer",
   "version": "1.0.0",
   "description": "question answer projects",
-  "main": "index.js",
+  "main": "",
   "scripts": {
-    "start": "webpack-dev-server --hot --inline & npm run server",
+    "start": "webpack-dev-server --hot --inline",
     "server": "nodemon src/main/webapp/ask/feDev/server.js",
-    "build": "rm -rf ./src/main/webapp/ask/prod/ & webpack --progress --profile --colors --config webpack.production.js"
+    "build": "rm -rf ./src/main/webapp/ask/dist/ & webpack --progress --profile --colors --config webpack.production.js"
   },
   "keywords": [
     "build",

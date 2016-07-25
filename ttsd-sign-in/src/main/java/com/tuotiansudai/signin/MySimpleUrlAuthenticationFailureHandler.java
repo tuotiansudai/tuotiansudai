@@ -9,7 +9,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,7 +28,7 @@ import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationFailureHandler.class);
+    private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationFailureHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -61,7 +60,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
 
-        if(exception instanceof BadCredentialsException){
+        if (exception instanceof BadCredentialsException) {
             this.updateUserStatus(request.getParameter("username"));
         }
 
@@ -96,7 +95,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             }
             if (loginFailedTime >= loginMaxTimes) {
                 Long leftSeconds = redisWrapperClient.ttl(redisKey);
-                if(leftSeconds <= 0){
+                if (leftSeconds <= 0) {
                     redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
                     userModel.setStatus(UserStatus.INACTIVE);
                     userMapper.updateUser(userModel);

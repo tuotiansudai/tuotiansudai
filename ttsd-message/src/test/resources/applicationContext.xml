@@ -70,6 +70,6 @@
 
     <bean id="loginLogService" class="com.tuotiansudai.service.impl.LoginLogServiceImpl"/>
 
-    <bean id="springContextUtil" class="com.tuotiansudai.util.SpringContextUtil"/>
+    <bean id="springContextUtil" class="com.tuotiansudai.spring.SpringContextUtil"/>
 
 </beans>

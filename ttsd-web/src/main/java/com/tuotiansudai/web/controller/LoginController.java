@@ -87,6 +87,7 @@ public class LoginController {
         }
         sessionCookie.setSecure(request.isSecure());
         sessionCookie.setPath(cookiePath(request));
+        sessionCookie.setDomain(".ttsddev.com");
         if(sessionIds.isEmpty()) {
             sessionCookie.setMaxAge(0);
             return sessionCookie;

@@ -64,7 +64,7 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
-    <bean class="com.tuotiansudai.util.SpringContextUtil"/>
+    <bean class="com.tuotiansudai.spring.SpringContextUtil"/>
 
     <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
 

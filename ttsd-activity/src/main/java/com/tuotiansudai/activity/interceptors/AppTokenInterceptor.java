@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
-import com.tuotiansudai.util.MyAuthenticationManager;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

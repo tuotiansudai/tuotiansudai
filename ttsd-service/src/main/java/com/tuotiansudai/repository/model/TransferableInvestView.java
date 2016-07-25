@@ -1,4 +1,4 @@
-package com.tuotiansudai.transfer.repository.model;
+package com.tuotiansudai.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.TransferStatus;

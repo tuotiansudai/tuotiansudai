@@ -1,12 +1,16 @@
 package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +29,7 @@ import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
+    private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -36,7 +40,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     private LoginLogService loginLogService;
 
     @Autowired
-    private UserRoleService userRoleService;
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -54,7 +58,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
-        loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
+        loginDto.setRoles(Lists.transform(userRoleMapper.findByLoginName(loginName), new Function<UserRoleModel, Role>() {
+            @Override
+            public Role apply(UserRoleModel input) {
+                return input.getRole();
+            }
+        }));
         loginDto.setNewSessionId(request.getSession().getId());
         baseDto.setData(loginDto);
 

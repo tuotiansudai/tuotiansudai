@@ -1,4 +1,4 @@
-package com.tuotiansudai.util;
+package com.tuotiansudai.spring;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -48,7 +48,9 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         String loginName = userModel.getLoginName();
+        String mobile = userModel.getMobile();
         String password = userModel.getPassword();
+        String salt = userModel.getSalt();
 
         if (verifyLoginFailedMaxTimes(loginName)) {
             userModel.setStatus(UserStatus.ACTIVE);
@@ -66,7 +68,7 @@ public class MyUserDetailsService implements UserDetailsService {
             }
         });
 
-        return new User(loginName, password, enabled, true, true, true, grantedAuthorities);
+        return new MyUser(loginName, password, enabled, true, true, true, grantedAuthorities, mobile, salt);
     }
 
     private boolean verifyLoginFailedMaxTimes(String loginName) {

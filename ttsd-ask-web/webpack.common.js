@@ -1,14 +1,14 @@
 var path = require('path');
 var webpack = require('webpack');
-var basePath = path.join(__dirname, 'src/main/webapp/ask');
+var basePath = path.join(__dirname, 'src/main/webapp/ask/dist');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 //var extractCSS = new ExtractTextPlugin('[name].css');
 module.exports = {
     output: {
-        filename: "[name].js",
-        path: path.join(basePath, 'dist'),
-        publicPath: '/js/'
+        filename: "main.js",
+        path: basePath,
+        publicPath: '/ask/dist/'
         //上线后的文件目录
     },
     module:{
@@ -38,5 +38,4 @@ module.exports = {
         }),
         new ExtractTextPlugin('main.css')
     ]
-
 };

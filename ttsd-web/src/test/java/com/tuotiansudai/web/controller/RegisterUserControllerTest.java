@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.util.MyAuthenticationManager;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

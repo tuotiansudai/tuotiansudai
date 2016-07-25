@@ -8,8 +8,6 @@ import java.util.Date;
 
 public interface LoginLogService {
 
-    void generateLoginLog(String loginNameOrMobile, Source source, String ip, String device, boolean loginSuccess);
-
     BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month);
 
     long countSuccessTimesOnDate(String loginName, Date date);

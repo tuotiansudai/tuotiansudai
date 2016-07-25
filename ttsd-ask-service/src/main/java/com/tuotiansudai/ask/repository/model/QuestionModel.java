@@ -10,6 +10,8 @@ public class QuestionModel implements Serializable {
 
     private String loginName;
 
+    private String mobile;
+
     private String question;
 
     private String addition;
@@ -17,6 +19,8 @@ public class QuestionModel implements Serializable {
     private List<Tag> tags;
 
     private int answers;
+
+    private Date lastAnsweredTime;
 
     private boolean approved;
 
@@ -52,6 +56,14 @@ public class QuestionModel implements Serializable {
         this.loginName = loginName;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -82,6 +94,14 @@ public class QuestionModel implements Serializable {
 
     public void setAnswers(int answers) {
         this.answers = answers;
+    }
+
+    public Date getLastAnsweredTime() {
+        return lastAnsweredTime;
+    }
+
+    public void setLastAnsweredTime(Date lastAnsweredTime) {
+        this.lastAnsweredTime = lastAnsweredTime;
     }
 
     public boolean isApproved() {

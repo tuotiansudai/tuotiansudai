@@ -12,7 +12,7 @@ import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
-import com.tuotiansudai.util.MyAuthenticationManager;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Before;
 import org.junit.Test;
