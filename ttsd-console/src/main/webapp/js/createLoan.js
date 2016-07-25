@@ -481,7 +481,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         function checkedExtraRate() {
             $('.form-error').html('');
-            var $loanName = $('.jq-user');
+            var $loanName = $('.jq-name');
             var $productType = $('.jq-product-line');
             if ($loanName.val() == '') {
                 showErrorMessage('项目名称未选择，不能操作此选项');
@@ -532,7 +532,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        $('.jq-user').on('change', function () {
+        $('.jq-name').on('change', function () {
             var $productType = $('.jq-product-line');
             if ($(this).val() == '') {
                 uncheckedExtraRate();
@@ -546,7 +546,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             if ($(this).val() == '' || $(this).val() == '_30') {
                 uncheckedExtraRate();
             }
-            if ($('.jq-user').val() != '' && $('#extra').is(':checked')) {
+            if ($('.jq-name').val() != '' && $('#extra').is(':checked')) {
                 checkedExtraRate();
             }
         });
