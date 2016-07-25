@@ -161,8 +161,8 @@ public class JPushAmountNotifyAspect {
     @AfterReturning(value = "postLoanOutPointcut()", returning = "returnValue")
     public void afterReturningPostLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
-        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
-        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+        boolean isSuccess = (boolean) returnValue;
+        if (isSuccess) {
             createAutoJPushRedEnvelopeJob(loanId);
             createAutoJPushAlertLoanOutJob(loanId);
         }
