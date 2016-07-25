@@ -9,7 +9,7 @@
     <resultMap id="bankResultMap" type="BankModel">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
-        <result column="shorter_name" property="shorterName"></result>
+        <result column="bank_code" property="bankCode"></result>
         <result column="image_url" property="imageUrl"></result>
         <result column="single_amount" property="singleAmount"></result>
         <result column="single_day_amount" property="singleDayAmount"></result>
