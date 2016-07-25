@@ -1,0 +1,46 @@
+{
+  "name": "question-answer",
+  "version": "1.0.0",
+  "description": "question answer projects",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline & npm run server",
+    "server": "nodemon src/main/webapp/ask/feDev/server.js",
+    "build": "rm -rf ./src/main/webapp/ask/prod/ & webpack --progress --profile --colors --config webpack.production.js"
+  },
+  "keywords": [
+    "build",
+    "demo",
+    "webpack"
+  ],
+  "author": "belen",
+  "license": "ISC",
+  "dependencies": {
+    "bundle-loader": "^0.5.4",
+    "css-loader": "~0.16.0",
+    "file-loader": "~0.8.4",
+    "history": "^1.17.0",
+    "html-webpack-plugin": "2.x",
+    "jquery": "~2.1.4",
+    "open-browser-webpack-plugin": "0.0.1",
+    "style-loader": "~0.12.3",
+    "url-loader": "~0.5.6",
+    "webpack": "~1.13.0",
+    "webpack-dev-server": "^1.14.0",
+    "express": "^4.13.4",
+    "freemarker.js": "^1.2.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.7",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "node-sass": "^3.8.0",
+    "nodemon": "^1.9.2",
+    "postcss-loader": "^0.9.1",
+    "sass-loader": "^4.0.0",
+    "url-loader": "^0.5.7"
+  }
+}

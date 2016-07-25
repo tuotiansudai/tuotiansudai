@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <!-- enable autowire -->
+    <!-- enable autowircaptchaHelpere -->
     <context:annotation-config/>
 
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties" />

@@ -17,7 +17,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <aop:aspectj-autoproxy expose-proxy="true" />
@@ -30,8 +30,8 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minimumIdle" value="${web.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${web.aa.maximumPoolSize}"/>
+        <property name="minimumIdle" value="${ask.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${ask.aa.maximumPoolSize}"/>
         <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
         <property name="dataSourceProperties">
             <props>
