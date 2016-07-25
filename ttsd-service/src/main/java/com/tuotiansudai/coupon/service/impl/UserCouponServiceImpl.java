@@ -221,7 +221,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         CouponModel couponModel;
         if (loanModel.getFirstInvestAchievementId() != null) {
             couponModel = findCouponModel(UserGroup.FIRST_INVEST_ACHIEVEMENT, couponModelList);
-            if (couponModel == null) {
+            if (couponModel != null) {
                 userCouponMapper.create(new UserCouponModel(investMapper.findById(loanModel.getFirstInvestAchievementId()).getLoginName(),
                         couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
             }
