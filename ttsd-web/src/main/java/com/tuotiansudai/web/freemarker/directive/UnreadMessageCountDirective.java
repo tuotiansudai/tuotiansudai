@@ -2,6 +2,7 @@ package com.tuotiansudai.web.freemarker.directive;
 
 
 import com.tuotiansudai.message.service.UserMessageService;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import java.io.Writer;
 import java.util.Map;
 
 public class UnreadMessageCountDirective implements TemplateDirectiveModel {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private UserMessageService userMessageService;
@@ -39,9 +43,9 @@ public class UnreadMessageCountDirective implements TemplateDirectiveModel {
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            String loginName = new String(cbuf, off, len);
-            long unreadMessageCount = userMessageService.getUnreadMessageCount(loginName);
-            out.write(String.valueOf(unreadMessageCount));
+            String mobile = new String(cbuf, off, len);
+            long unreadMessageCount = userMessageService.getUnreadMessageCount(userMapper.findByMobile(mobile).getLoginName());
+            out.write(unreadMessageCount > 0 ? String.valueOf(unreadMessageCount) : "zero");
         }
 
         @Override

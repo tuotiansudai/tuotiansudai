@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.RegisterRequestDto;
-import com.tuotiansudai.api.dto.v1_0.RegisterResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
@@ -75,12 +72,12 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         if(loginNameIsExist){
             return new BaseResponseDto(ReturnMessage.USER_NAME_IS_EXIST.getCode(),ReturnMessage.USER_NAME_IS_EXIST.getMsg());
         }
-        if (StringUtils.isEmpty(dto.getMobile())){
-            return new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
+        if (StringUtils.isEmpty(dto.getMobile())) {
+            return new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
         }
         boolean mobileIsExist = userService.mobileIsExist(dto.getMobile());
-        if (mobileIsExist){
-            return new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
+        if (mobileIsExist) {
+            return new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
         }
 
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !userService.loginNameOrMobileIsExist(dto.getReferrer());
@@ -88,8 +85,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(),ReturnMessage.REFERRER_IS_NOT_EXIST.getMsg());
         }
         boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
-        if (verifyCaptchaFailed){
-            return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+        if (verifyCaptchaFailed) {
+            return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
         try {
@@ -97,14 +94,19 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         } catch (ReferrerRelationException e) {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(), e.getMessage());
         }
-        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
+        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
-        registerDataDto.setUserId(registerRequestDto.getUserName());
-        registerDataDto.setUserName(registerRequestDto.getUserName());
         registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
         registerDataDto.setToken(mobileAppTokenProvider.refreshToken(dto.getLoginName()));
         baseResponseDto.setData(registerDataDto);
         return baseResponseDto;
+    }
+
+    @Override
+    public BaseResponseDto mobileNumberIsExist(MobileIsAvailableRequestDto requestDto) {
+        boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
+        return mobileIsExist ? new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg()) :
+                new BaseResponseDto(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode(), ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
     }
 
 }

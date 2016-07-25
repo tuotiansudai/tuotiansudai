@@ -51,7 +51,7 @@ public class CouponAlertServiceImpl implements CouponAlertService {
     private UserMapper userMapper;
 
     @Override
-    public CouponAlertDto getCouponAlert(String loginName) {
+    public CouponAlertDto getCouponAlert(String loginName, List<CouponType> couponTypes) {
         if (Strings.isNullOrEmpty(loginName)) {
             return null;
         }
@@ -86,13 +86,13 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                     }
                 }
 
-                if (CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
+                if (couponTypes.contains(CouponType.NEWBIE_COUPON) && CollectionUtils.isNotEmpty(newbieCouponAlertDto.getCouponIds())) {
                     userCouponIds.addAll(newbieCouponAlertDto.getCouponIds());
                     redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
                     return newbieCouponAlertDto;
                 }
 
-                if (CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
+                if (couponTypes.contains(CouponType.RED_ENVELOPE) && CollectionUtils.isNotEmpty(redEnvelopeCouponAlertDto.getCouponIds())) {
                     userCouponIds.addAll(redEnvelopeCouponAlertDto.getCouponIds());
                     redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(userCouponIds));
                     return redEnvelopeCouponAlertDto;

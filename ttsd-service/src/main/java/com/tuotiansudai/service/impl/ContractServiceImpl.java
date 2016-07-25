@@ -304,7 +304,8 @@ public class ContractServiceImpl implements ContractService {
             dataModel.put("daysLimit", dayLimit);
         }
 
-        double fee = TransferRuleUtil.getTransferFeeRate(investModel, transferRuleModel, loanMapper.findById(transferApplicationModel.getLoanId()));
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        double fee = TransferRuleUtil.getTransferFeeRate(loanModel.getType(), loanModel.getRecheckTime(), investModel.getCreatedTime(), transferRuleModel);
         dataModel.put("percent", fee > 0 ? (fee * 100) : "0");
 
 

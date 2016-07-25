@@ -110,7 +110,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             var $self = $(this);
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
-                    $('.message-template').val(getContent());
+                    $('.message-template').val(getContentTxt());
                     $self.attr('disabled', 'disabled');
                     $messageForm[0].submit();
                 }
