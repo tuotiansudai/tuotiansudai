@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -34,7 +35,14 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
 
         Source source = Source.valueOf(feedbackRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
 
-        feedbackService.create(getLoginName(), feedbackRequestDto.getBaseParam().getPhoneNum(), source, FeedbackType.opinion, feedbackRequestDto.getContent());
+        FeedbackType type;
+        if (StringUtils.isEmpty(feedbackRequestDto.getType())) {
+            type = FeedbackType.opinion;
+        } else {
+            type = FeedbackType.valueOf(feedbackRequestDto.getType());
+        }
+
+        feedbackService.create(getLoginName(), source, type, feedbackRequestDto.getContent());
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 }

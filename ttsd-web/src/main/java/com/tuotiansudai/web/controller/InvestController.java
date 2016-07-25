@@ -14,7 +14,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,7 +161,8 @@ public class InvestController {
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
-        long expectedInterest = investService.estimateInvestIncome(loanId, amount);
+        String loginName = LoginUserInfo.getLoginName();
+        long expectedInterest = investService.estimateInvestIncome(loanId, loginName, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
@@ -170,7 +171,8 @@ public class InvestController {
     public String calculateCouponExpectedInterest(@PathVariable long loanId,
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponIds, amount);
+        String loginName = LoginUserInfo.getLoginName();
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 

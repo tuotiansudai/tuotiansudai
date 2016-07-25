@@ -15,6 +15,7 @@
                         <div class="pr-square-in">
                             <em>
                                 <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
+                                <span data-extra-rate></span>
                                 <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                             </em>
                             <i>预期年化收益</i>
@@ -37,11 +38,35 @@
                     <#if loan.newbieInterestCouponRate gt 0>
                         <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
                     </#if>
-                <#else>
-                    <#if loan.productType??>
-                        <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div>
-                    </#if>
                 </#if>
+                <#if extraLoanRateModels?size != 0 >
+                     <div class="extra-rate" id="extra-rate">投资加息+${minRate*100}%~${maxRate*100}%<i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+                     <script>
+                         var __extraRate = [
+                            <#list extraLoanRateModels as extraLoanRate>
+                                {
+                                    minInvestAmount: ${extraLoanRate.amountLower},
+                                    maxInvestAmount: ${extraLoanRate.amountUpper},
+                                    rate: ${extraLoanRate.rate}
+                                },
+                            </#list>
+                            ];
+                     </script>
+                </#if>
+                 <script type="text/template" id="extra-rate-popup-tpl">
+                    <div class="extra-rate-popup" id="extra-rate-popup">
+                        <div class="header clearfix">
+                            <div class="td fl">投资金额</div>
+                            <div class="td fl">加息</div>
+                        </div>
+                        <% _.each(__extraRate, function(value){ %>
+                            <div class="clearfix">
+                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
+                                <div class="td fl"><%= value.rate %>%</div>
+                            </div>
+                        <% }) %>
+                    </div>
+                 </script>
             </div>
             <div class="account-info fl">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
@@ -239,10 +264,10 @@
                     <tbody>
                     <tr>
                         <td class="title">获得者</td>
-                        <td>${loan.achievement.firstInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
+                        <td>${loan.achievement.firstInvestAchievementMobile!('<span class="text-lighter">虚位以待</span>')}</td>
                         <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
-                                ${loan.achievement.maxAmountAchievementLoginName}
+                            <#if loan.achievement.maxAmountAchievementMobile??>
+                                ${loan.achievement.maxAmountAchievementMobile}
                                 <#if loan.loanStatus == 'RAISING'>
                                     <span class="text-lighter">(待定)</span>
                                 </#if>
@@ -250,26 +275,26 @@
                                 <span class="text-lighter">虚位以待</span>
                             </#if>
                         </td>
-                        <td>${loan.achievement.lastInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
+                        <td>${loan.achievement.lastInvestAchievementMobile!('<span class="text-lighter">虚位以待</span>')}</td>
                     </tr>
                     <tr>
                         <td class="title">战况</td>
                         <td>
-                            <#if loan.achievement.firstInvestAchievementLoginName??>
+                            <#if loan.achievement.firstInvestAchievementMobile??>
                                 ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 占领先锋
                             <#else>
                                 --
                             </#if>
                         </td>
                         <td>
-                            <#if loan.achievement.maxAmountAchievementLoginName??>
+                            <#if loan.achievement.maxAmountAchievementMobile??>
                                 以累积投资 ${loan.achievement.maxAmountAchievementAmount}元 夺得标王
                             <#else>
                                 --
                             </#if>
                         </td>
                         <td>
-                            <#if loan.achievement.lastInvestAchievementLoginName??>
+                            <#if loan.achievement.lastInvestAchievementMobile??>
                                 ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 一锤定音
                             <#else>
                                 目前项目剩余${loan.achievement.loanRemainingAmount}元<br/>快来一锤定音吧

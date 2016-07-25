@@ -12,11 +12,16 @@
 
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
+    <mvc:interceptors>
+        <bean class="com.tuotiansudai.api.interceptors.LogGenerateInterceptor"/>
+    </mvc:interceptors>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
-            <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <bean id="jacksonMessageConverter"
+                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.api.util.CustomerObjectMapper"/>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -50,9 +55,9 @@
         </property>
     </bean>
 
-    <bean id="staticResourceVersionMap" class="com.tuotiansudai.api.configruration.FreeMarkerVariablesMap">
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${web.static.server}"/>
+        <property name="staticServer" value="${api.static.server}"/>
         <property name="javascriptLocation" value="${api.js.path}"/>
         <property name="cssLocation" value="${api.css.path}"/>
         <property name="sourceMap">
@@ -60,7 +65,6 @@
             </map>
         </property>
     </bean>
-
 
 
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">

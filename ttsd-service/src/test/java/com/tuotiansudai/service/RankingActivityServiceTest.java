@@ -2,7 +2,6 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
@@ -10,15 +9,16 @@ import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -50,7 +52,7 @@ public class RankingActivityServiceTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private RandomUtils randomUtils;
 
     private void createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
@@ -82,11 +84,10 @@ public class RankingActivityServiceTest {
         clearRankingDataInRedis();
 
         String loginName = "ranking_test_1";
-        String mobile = "13900001111";
         createUserByUserId(loginName);
-        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
+        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName);
 
-        assert (baseDto.isSuccess() == false);
+        assert (!baseDto.isSuccess());
         assert (baseDto.getData().getReturnCode() == 1);
     }
 
@@ -95,7 +96,6 @@ public class RankingActivityServiceTest {
         clearRankingDataInRedis();
 
         String loginName = "rankTest";
-        String mobile = "13900001111";
         createUserByUserId(loginName);
         long investAmount = 30000;
         long tianDouScore = investAmount * 3 / 12; // 3月标，7500
@@ -103,7 +103,7 @@ public class RankingActivityServiceTest {
 
         mockInvestTianDou(loginName, investAmount, tianDouScore, loanId);
 
-        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
+        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName);
 
         assert (baseDto.isSuccess() == true);
         assert (baseDto.getData().getStatus() == true);
@@ -163,7 +163,8 @@ public class RankingActivityServiceTest {
 
         UserTianDouRecordDto userTianDouRecordDto = otherList.get(0);
 //        assert (userTianDouRecordDto.getPrize() == TianDouPrize.InterestCoupon5);
-        assert (userTianDouRecordDto.getLoginName().equals(loginName));
+
+        assert (userTianDouRecordDto.getLoginName().equals(randomUtils.encryptMobile("", loginName, Source.WEB)));
     }
 
     @Test
@@ -195,13 +196,13 @@ public class RankingActivityServiceTest {
             mockInvestTianDou(loginName1, investAmount, tianDouScore, loanId);
             Thread.sleep(1000L);
 
-            BaseDto<DrawLotteryDto> baseDto1 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto1 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto2 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto2 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto3 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto3 = rankingActivityService.drawTianDouPrize(loginName1);
             Thread.sleep(1000L);
-            BaseDto<DrawLotteryDto> baseDto4 = rankingActivityService.drawTianDouPrize(loginName1, mobile1);
+            BaseDto<DrawLotteryDto> baseDto4 = rankingActivityService.drawTianDouPrize(loginName1);
 
             assert (baseDto1.isSuccess() == true);
             assert (baseDto1.getData().getStatus() == true);
@@ -290,16 +291,16 @@ public class RankingActivityServiceTest {
         assert (otherList != null && otherList.size() == 4);
 
         UserTianDouRecordDto userTianDouRecordDto1_0 = otherList.get(0);
-        assert (userTianDouRecordDto1_0.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_0.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_1 = otherList.get(1);
-        assert (userTianDouRecordDto1_1.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_1.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_2 = otherList.get(2);
-        assert (userTianDouRecordDto1_2.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_2.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
 
         UserTianDouRecordDto userTianDouRecordDto1_3 = otherList.get(3);
-        assert (userTianDouRecordDto1_3.getLoginName().equals(loginName1));
+        assert (userTianDouRecordDto1_3.getLoginName().equals(randomUtils.encryptMobile("", loginName1,Source.WEB)));
     }
 
 //    @Test

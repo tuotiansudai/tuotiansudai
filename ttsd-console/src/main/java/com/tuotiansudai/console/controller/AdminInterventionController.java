@@ -3,11 +3,13 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AdminInterventionDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ public class AdminInterventionController {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView intervene(Model model) {
         ModelAndView modelAndView = new ModelAndView("/admin-intervention");
@@ -51,7 +56,9 @@ public class AdminInterventionController {
         long orderId = idGenerator.generate();
 
         try {
-            String loginName = adminInterventionDto.getLoginName();
+            String mobile = adminInterventionDto.getMobile();
+            UserModel userModel = userMapper.findByMobile(mobile);
+            String loginName = userModel.getLoginName();
             long amount = AmountConverter.convertStringToCent(adminInterventionDto.getAmount());
             String description = adminInterventionDto.getDescription();
             switch (adminInterventionDto.getOperationType()) {

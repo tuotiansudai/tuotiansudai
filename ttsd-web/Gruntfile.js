@@ -28,6 +28,14 @@ module.exports = function(grunt) {
                         '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
+            },
+            base64: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= meta.baseCssPath %>/base64'
+                    ]
+                }]
             }
         },
         uglify: {
@@ -71,12 +79,23 @@ module.exports = function(grunt) {
                     extDot: 'first', // Extensions in filenames begin after the first dot
                     flatten: true
                 }]
+            },
+            base64: {
+                files: [{
+                    expand: true, // Enable dynamic expansion.
+                    cwd: '', // Src matches are relative to this path.
+                    src: ['<%= meta.baseCssPath %>/base64/*.css'], // Actual pattern(s) to match.
+                    dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
+                    ext: '.min.css', // Dest filepaths will have this extension.
+                    extDot: 'first', // Extensions in filenames begin after the first dot
+                    flatten: true
+                }]
             }
         },
         watch: {
             sass: {
                 files: [
-                    '<%= meta.baseSassPath %>/*.scss'
+                    '<%= meta.baseSassPath %>/**/*.scss'
                 ],
                 tasks: ['clean:css', 'sass']
             },
@@ -84,7 +103,7 @@ module.exports = function(grunt) {
                 files: [
                     ['<%= meta.baseCssPath %>/*.css']
                 ],
-                tasks: ['cssmin']
+                tasks: ['cssmin:dist']
             },
             uglify: {
                 files: [
@@ -101,14 +120,23 @@ module.exports = function(grunt) {
                     base: 'src/main/webapp',
                     middleware: function(connect, options, middlewares) {
                         middlewares.unshift(function(req, res, next) {
-                            if (/woff2|woff|ttf/.test(req.url)) {
-                                res.setHeader('Access-Control-Allow-Origin', '*');
-                                return next();
-                            }
+                            res.setHeader('Access-Control-Allow-Origin', '*');
                             return next();
                         });
                         return middlewares;
                     }
+                }
+            }
+        },
+        dataUri: {
+            dist: {
+                src: ['<%= meta.baseCssPath %>/*.css'],
+                dest: '<%= meta.baseCssPath %>/base64',
+                options: {
+                    target: ['./src/main/webapp/images/**/*.*'],
+                    fixDirLevel: false,
+                    maxBytes: 1024 * 8,
+                    baseDir: './src/main/webapp'
                 }
             }
         }
@@ -118,6 +146,7 @@ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin', 'connect', 'watch']);
+    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
+    grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
 
 };

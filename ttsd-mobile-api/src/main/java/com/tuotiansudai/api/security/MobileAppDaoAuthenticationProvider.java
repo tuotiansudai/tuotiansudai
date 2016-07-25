@@ -44,12 +44,14 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication)
-            throws AuthenticationException {
-
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = httpServletRequest.getParameter("j_deviceId");
+            if(StringUtils.isEmpty(deviceId)){
+                deviceId = httpServletRequest.getParameter("deviceId");
+            }
+
             if(StringUtils.isNotEmpty(captcha)){
                 boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
 
@@ -61,10 +63,6 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
 
         }
         return super.authenticate(authentication);
-    }
-
-    public void setCaptchaHelper(CaptchaHelper captchaHelper) {
-        this.captchaHelper = captchaHelper;
     }
 
     public void setEnableCaptchaVerify(boolean enableCaptchaVerify) {

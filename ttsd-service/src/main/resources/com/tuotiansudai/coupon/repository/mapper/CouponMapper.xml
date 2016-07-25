@@ -218,19 +218,19 @@
             ON c.`id` = e.`coupon_id` ;
     </select>
 
-    <select id="findCouponExchangeableList" parameterType="map" resultMap="couponResultMap">
-        SELECT
-        c.*
-        FROM
-        coupon c
-        JOIN coupon_exchange e
-        ON c.`id` = e.`coupon_id`
-        AND c.`total_count` > c.`issued_count`
-        AND c.`active` is TRUE
-        AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
-        AND c.`end_time` >= now()
-        ORDER BY c.created_time desc
-        LIMIT #{index},#{pageSize}
+    <select id="findExchangeableCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT *
+        FROM `coupon`
+        WHERE `total_count` > `issued_count`
+        AND `active` is TRUE
+        AND `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON')
+        AND `end_time` >= now()
+        AND EXISTS (SELECT 1 FROM coupon_exchange WHERE `coupon`.`id` = `coupon_exchange`.`coupon_id`)
+        ORDER BY `created_time` desc, `id` desc
+        <if test="index != null and pageSize != null">
+            LIMIT #{index},#{pageSize}
+        </if>
+
     </select>
 
     <select id="findCouponExchangeableCount" resultType="int">

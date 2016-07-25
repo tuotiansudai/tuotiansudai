@@ -8,14 +8,17 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
+import com.tuotiansudai.util.MyUserDetailsService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,14 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -69,6 +69,9 @@ public class LoanerControllerTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Before
     public void setUp() throws Exception {
@@ -116,11 +119,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = mockMvc.perform(post("/login-handler").param("username", loginName).param("password", rawPassword))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn()
-                .getRequest()
-                .getSession();
+        HttpSession session = getHttpSession(loginName);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -144,6 +143,23 @@ public class LoanerControllerTest {
                 .andExpect(jsonPath("$.data.records[1].completedDate").value(dateFormat.format(new DateTime().withDate(2000, 6, 1).withTimeAtStartOfDay().toDate())))
                 .andExpect(jsonPath("$.data.records[1].expectedRepayAmount").value("0.16"))
                 .andExpect(jsonPath("$.data.records[1].actualRepayAmount").value("0.13"));
+    }
+
+    private HttpSession getHttpSession(String loginName) throws Exception {
+        HttpSession session = mockMvc.perform(post("/"))
+                .andReturn()
+                .getRequest()
+                .getSession();
+
+        UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(token);
+
+        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+        return session;
     }
 
     @Test
@@ -185,11 +201,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = mockMvc.perform(post("/login-handler").param("username", loginName).param("password", rawPassword))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn()
-                .getRequest()
-                .getSession();
+        HttpSession session = getHttpSession(loginName);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -252,11 +264,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = mockMvc.perform(post("/login-handler").param("username", loginName).param("password", rawPassword))
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn()
-                .getRequest()
-                .getSession();
+        HttpSession session = getHttpSession(loginName);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

@@ -1,13 +1,13 @@
-require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float', 'jquery.form'], function ($) {
     var loanProgress = $('.loan-detail-content').data('loan-progress');
 
     if (loanProgress <= 50) {
-        $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * loanProgress + "deg)");
+        $('.chart-box .rount').css('transform', "rotate(" + 3.6 * loanProgress + "deg)");
         $('.chart-box .rount2').hide();
     } else {
-        $('.chart-box .rount').css('webkitTransform', "rotate(180deg)");
+        $('.chart-box .rount').css('transform', "rotate(180deg)");
         $('.chart-box .rount2').show();
-        $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
+        $('.chart-box .rount2').css('transform', "rotate(" + 3.6 * (loanProgress - 50) + "deg)");
     }
 
     $.ajax({
@@ -19,11 +19,11 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float',
         type: 'get',
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8'
-    }).done(function(amount) {
+    }).done(function (amount) {
         $(".principal-income").text(amount);
     });
 
-    $('#investSubmit').on('click', function(event) {
+    $('#investSubmit').on('click', function (event) {
         var self = $(this);
         $("#investForm").ajaxSubmit({
             dataType: 'json',
@@ -42,7 +42,7 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert','red-envelope-float',
         return false;
     });
 
-    $('.close-free').on('click', function(event) {
+    $('.close-free').on('click', function (event) {
         event.preventDefault();
         $('#freeSuccess').hide();
         window.location.reload();

@@ -1,18 +1,15 @@
 package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.security.MyUser;
-import com.tuotiansudai.security.MyUserDetailsService;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -24,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
@@ -33,13 +29,13 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private MobileAppTokenProvider mobileAppTokenProvider;
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private MyAuthenticationManager myAuthenticationManager;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private String ignoreUrls = "/login";
+    private final PathMatcher matcher = new AntPathMatcher();
 
-    private String[] ignoreUrlArray;
+    private List<String> ignoreUrls = Lists.newArrayList("/login");
 
     private String refreshTokenUrl = "/refresh-token";
 
@@ -47,95 +43,55 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        if (shouldNotFilter(httpServletRequest)) {
-            authenticateAnonymousToken();
+        if (shouldNotAuthenticated(httpServletRequest)) {
             chain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
-        String token = mobileAppTokenProvider.getToken(bufferedRequest.getInputStream());
-        String loginName = null;
-        if (!Strings.isNullOrEmpty(token)) {
-            loginName = mobileAppTokenProvider.getUserNameByToken(token);
+        String loginName = mobileAppTokenProvider.getLoginName(httpServletRequest);
+        if (Strings.isNullOrEmpty(loginName)) {
+            chain.doFilter(httpServletRequest, httpServletResponse);
+            return;
         }
-        if (!Strings.isNullOrEmpty(loginName)) {
-            if (isRefreshTokenRequest(httpServletRequest)) {
-                processGenerateTokenRequest(httpServletResponse, loginName, token);
-                return;
+
+        if (refreshTokenUrl.equalsIgnoreCase(httpServletRequest.getRequestURI())) {
+            this.processGenerateTokenRequest(httpServletResponse, loginName);
+            return;
+        }
+
+        myAuthenticationManager.createAuthentication(loginName);
+        chain.doFilter(httpServletRequest, response);
+    }
+
+    private boolean shouldNotAuthenticated(HttpServletRequest request) {
+        final String uri = request.getRequestURI();
+
+        return Iterators.any(ignoreUrls.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String ignoreUrl) {
+                return matcher.match(ignoreUrl, uri);
             }
-            bufferedRequest.setAttribute("currentLoginName", loginName);
-            authenticateToken(loginName);
-        } else {
-            authenticateAnonymousToken();
-        }
-        chain.doFilter(bufferedRequest, response);
+        });
     }
 
-    private boolean isRefreshTokenRequest(HttpServletRequest request) {
-        return refreshTokenUrl.equalsIgnoreCase(request.getRequestURI());
-    }
-
-    private boolean shouldNotFilter(HttpServletRequest request) {
-        if (request.getMethod().equalsIgnoreCase("GET")) {
-            return true;
-        }
-
-        String uri = request.getRequestURI();
-        for (String ignoreUrl : ignoreUrlArray) {
-            if (ignoreUrl.equalsIgnoreCase(uri)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void processGenerateTokenRequest(HttpServletResponse httpServletResponse, String loginName, String token) throws IOException {
-        String newToken = mobileAppTokenProvider.refreshToken(loginName, token);
+    private void processGenerateTokenRequest(HttpServletResponse httpServletResponse, String loginName) throws IOException {
+        String newToken = mobileAppTokenProvider.refreshToken(loginName);
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(newToken);
-        responseObject(httpServletResponse, dto);
-    }
-
-    private void responseObject(HttpServletResponse httpServletResponse, BaseResponseDto responseDto) throws IOException {
         httpServletResponse.setContentType("application/json; charset=UTF-8");
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        try (PrintWriter out = httpServletResponse.getWriter()) {
-            String jsonString = objectMapper.writeValueAsString(responseDto);
-            out.print(jsonString);
+
+        PrintWriter out = null;
+        try {
+            out = httpServletResponse.getWriter();
+            out.print(objectMapper.writeValueAsString(dto));
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 
-    private void authenticateToken(String loginName) {
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
-
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("USER");
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(grantedAuthority);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), grantedAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    private void authenticateAnonymousToken() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
-        UserDetails userDetails = new MyUser("anonymousUser", "anonymousUser", true, true, true, true, grantedAuthorities, "", "");
-
-        AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(
-                userDetails.getUsername(), userDetails.getPassword(), grantedAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    @Override
-    protected void initFilterBean() throws ServletException {
-        if (!Strings.isNullOrEmpty(ignoreUrls)) {
-            ignoreUrlArray = ignoreUrls.split(",");
-        } else {
-            ignoreUrlArray = new String[]{};
-        }
-    }
-
-    public void setIgnoreUrls(String ignoreUrls) {
+    public void setIgnoreUrls(List<String> ignoreUrls) {
         this.ignoreUrls = ignoreUrls;
     }
 

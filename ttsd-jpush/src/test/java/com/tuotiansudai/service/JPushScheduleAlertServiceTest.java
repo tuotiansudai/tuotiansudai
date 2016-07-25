@@ -34,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 public class JPushScheduleAlertServiceTest {
 
     @InjectMocks
-    private JPushScheduleAlertServiceImpl jPushScheduleAlertService ;
+    private JPushScheduleAlertServiceImpl jPushScheduleAlertService;
     @Mock
     private ScheduleClient scheduleClient = null;
     @Mock
@@ -62,7 +62,7 @@ public class JPushScheduleAlertServiceTest {
 
     @Test
     public void shouldSendJPushScheduleAlertIsOk() throws APIConnectionException, APIRequestException {
-        ReflectionTestUtils.setField(jPushScheduleAlertService, "scheduleClient" ,scheduleClient);
+        ReflectionTestUtils.setField(jPushScheduleAlertService, "scheduleClient", scheduleClient);
         String scheduleId = "testSchedule";
         PushPayload pushPayload = createCommonPushPayLoad();
         Calendar now= Calendar.getInstance();
@@ -76,9 +76,9 @@ public class JPushScheduleAlertServiceTest {
         when(scheduleClient.createSchedule((SchedulePayload) anyObject())).thenReturn(scheduleResult);
         when(scheduleClient.getSchedule(anyString())).thenReturn(scheduleResult);
         when(scheduleClient.updateSchedule(anyString(), (SchedulePayload) anyObject())).thenReturn(scheduleResult);
-        when(redisClient.sadd(anyString(),anyString())).thenReturn(0l);
+        when(redisClient.sadd(anyString(), anyString())).thenReturn(0L);
 
-        scheduleResult = jPushScheduleAlertService.sendJPushScheduleAlert(scheduleId,pushPayload,triggerPayload);
+        scheduleResult = jPushScheduleAlertService.sendJPushScheduleAlert(scheduleId, pushPayload, triggerPayload);
         scheduleResult = jPushScheduleAlertService.findPushScheduleAlert(scheduleResult.getSchedule_id());
         jPushScheduleAlertService.updatePushScheduleAlert(scheduleResult.getSchedule_id(),SchedulePayload.newBuilder().setName("修改测试类").build());
         assertNotNull(scheduleResult);
@@ -86,15 +86,15 @@ public class JPushScheduleAlertServiceTest {
         ArgumentCaptor argumentCaptorSchedulePayload = ArgumentCaptor.forClass(SchedulePayload.class);
         verify(scheduleClient).createSchedule((SchedulePayload) argumentCaptorSchedulePayload.capture());
         String schedulePayloadString = argumentCaptorSchedulePayload.getAllValues().get(0).toString();
-        verify(scheduleClient).getSchedule((String)findId.capture());
-        verify(scheduleClient).updateSchedule((String)findId.capture(),(SchedulePayload) argumentCaptorSchedulePayload.capture());
-        assertTrue(schedulePayloadString.indexOf("testSchedule") != -1);
-        assertTrue(schedulePayloadString.indexOf("手动推送测试") != -1);
-        assertTrue(schedulePayloadString.indexOf("3") != -1);
+        verify(scheduleClient).getSchedule((String) findId.capture());
+        verify(scheduleClient).updateSchedule((String) findId.capture(), (SchedulePayload) argumentCaptorSchedulePayload.capture());
+        assertTrue(schedulePayloadString.contains("testSchedule"));
+        assertTrue(schedulePayloadString.contains("手动推送测试"));
+        assertTrue(schedulePayloadString.contains("3"));
     }
 
-    private PushPayload createCommonPushPayLoad(){
-        PushPayload pushPayload = PushPayload.newBuilder()
+    private PushPayload createCommonPushPayLoad() {
+        return PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
                 .setAudience(Audience.newBuilder().addAudienceTarget(AudienceTarget.tag("test")).build())
                 .setNotification(Notification.newBuilder()
@@ -103,7 +103,5 @@ public class JPushScheduleAlertServiceTest {
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(Environment.DEV)).build())
                 .build();
-        return pushPayload;
     }
-
 }

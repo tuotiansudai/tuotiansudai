@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.service.ReferrerManageService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

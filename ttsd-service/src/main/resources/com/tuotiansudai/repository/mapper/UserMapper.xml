@@ -26,18 +26,53 @@
         <result column="city" property="city"></result>
         <result column="auto_invest_status" property="autoInvestStatus"></result>
         <result column="last_bill_time" property="lastBillTime"></result>
+        <result column="sign_in_count" property="signInCount"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
-            <id column="id" property="id"></id>
-            <result column="login_name" property="loginName"></result>
-            <result column="user_name" property="userName"></result>
-            <result column="identity_number" property="identityNumber"></result>
-            <result column="pay_user_id" property="payUserId"></result>
-            <result column="pay_account_id" property="payAccountId"></result>
-            <result column="balance" property="balance"></result>
-            <result column="freeze" property="freeze"></result>
-            <result column="point" property="point"></result>
-            <result column="register_time" property="registerTime"></result>
-            <result column="auto_invest" property="autoInvest"></result>
+            <id column="id" property="id"/>
+            <result column="login_name" property="loginName"/>
+            <result column="user_name" property="userName"/>
+            <result column="identity_number" property="identityNumber"/>
+            <result column="pay_user_id" property="payUserId"/>
+            <result column="pay_account_id" property="payAccountId"/>
+            <result column="balance" property="balance"/>
+            <result column="freeze" property="freeze"/>
+            <result column="point" property="point"/>
+            <result column="register_time" property="registerTime"/>
+            <result column="auto_invest" property="autoInvest"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="userViewResultMap" type="UserView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="mobile"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="last_modified_time" property="lastModifiedTime"/>
+        <result column="last_modified_user" property="lastModifiedUser"/>
+        <result column="avatar" property="avatar"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="status" property="status"/>
+        <result column="salt" property="salt"/>
+        <result column="channel" property="channel"/>
+        <result column="source" property="source"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="auto_invest_status" property="autoInvestStatus"/>
+        <result column="last_bill_time" property="lastBillTime"/>
+        <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
+            <id column="id" property="id"/>
+            <result column="login_name" property="loginName"/>
+            <result column="user_name" property="userName"/>
+            <result column="identity_number" property="identityNumber"/>
+            <result column="pay_user_id" property="payUserId"/>
+            <result column="pay_account_id" property="payAccountId"/>
+            <result column="balance" property="balance"/>
+            <result column="freeze" property="freeze"/>
+            <result column="register_time" property="registerTime"/>
+            <result column="auto_invest" property="autoInvest"/>
         </association>
     </resultMap>
 
@@ -67,8 +102,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source,sign_in_count)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source},#{signInCount})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -83,7 +118,8 @@
                         status = #{status},
                         referrer = #{referrer},
                         province = #{province},
-                        city = #{city}
+                        city = #{city},
+                        sign_in_count = #{signInCount}
                         where id = #{id}
     </update>
 
@@ -252,6 +288,14 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
+    <select id="findMobileLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select mobile from user where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+    </select>
+
+    <select id="findAccountMobileLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select mobile from user join account on user.login_name = account.login_name where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+    </select>
+
     <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
         and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
@@ -269,13 +313,19 @@
         select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
     </select>
 
-    <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
+    <select id="searchAllUsers" parameterType="map" resultMap="userViewResultMap">
         SELECT
-        *
+        u.*,
+        a.*,
+        referrer_u.`mobile` AS referrer_mobile
         FROM
-        user u
+        (user u
         LEFT JOIN account a
-        ON u.`login_name` = a.`login_name`
+        ON
+        u.`login_name` = a.`login_name`)
+        LEFT JOIN user referrer_u
+        ON
+        u.`referrer` = referrer_u.`login_name`
         <where>
             <if test="identityNumber != null and identityNumber != '' ">
                 AND a.`identity_number` = #{identityNumber}
@@ -283,8 +333,8 @@
             <if test="loginName != null and loginName != '' ">
                 AND u.`login_name` = #{loginName}
             </if>
-            <if test="referrer != null and referrer != '' ">
-                AND u.`referrer` = #{referrer}
+            <if test="referrerMobile != null and referrerMobile != '' ">
+                AND referrer_u.`mobile` = #{referrerMobile}
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND u.`mobile` = #{mobile}
@@ -293,70 +343,59 @@
         ORDER BY u.`register_time` DESC
     </select>
 
-    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
-        SELECT
-        *,
-        (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
-        FROM
-        user u
-        JOIN account a
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
+        SELECT `user`.*, `account`.*,
+        (select `referrer`.`mobile` from `user` `referrer` where `referrer`.`login_name` = `user`.`referrer`) as referrer_mobile,
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
         </if>
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
-        ORDER BY a.`balance` DESC
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+        ORDER BY `account`.`balance` DESC
         limit #{startLimit}, #{endLimit}
     </select>
 
     <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
-        SELECT
-        IFNULL(SUM(a.`balance`), 0)
-        FROM
-        user u
-        JOIN account a
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
+        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
         </if>
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
     </select>
 
-    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
-        SELECT
-        IFNULL(count(*), 0)
-        FROM
-        user u
-        JOIN account a
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="long">
+        SELECT IFNULL(count(1), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
         </if>
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
     </select>
 
     <select id="findAllUsers" resultType="java.lang.String">

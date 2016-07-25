@@ -12,7 +12,7 @@
                     <input type="text" name="title"  class="form-control article-title" value="<#if dto??>${dto.title!}</#if>" placeholder="" datatype="*" errormsg="标题不能为空">
                 </div>
                 <div class="col-sm-4">
-                    最多17个中文字符
+                    最多25个中文字符
                 </div>
             </div>
 
@@ -33,11 +33,7 @@
                 <div class="col-sm-4 ">
                     <input type="text" name="thumbPicture" value="<#if dto??>${dto.thumbPicture!}</#if>" readonly class="form-control article-thumbPicture"
                            placeholder="" datatype="*" errormsg="缩略图不能为空" >
-                    <div class="thumbPictureImage">
-                        <#if dto??&&dto.thumbPicture??>
-                            <img style="width:100%" src="/${dto.thumbPicture!}" alt="缩略图"/>
-                        </#if>
-                    </div>
+
                 </div>
                 <div class="col-sm-4 thumbPicture">
                     <input type="file" name="thumbPictureUrl" imageWidth="140" imageHeight="140"/>
@@ -49,16 +45,17 @@
 
             </div>
 
+            <div class="thumbPictureImage">
+                <#if dto??&&dto.thumbPicture??>
+                    <img style="width:100%" src="/${dto.thumbPicture!}" alt="缩略图"/>
+                </#if>
+            </div>
+
             <div class="form-group">
                 <label class="col-sm-1 control-label">展示图: </label>
                 <div class="col-sm-4">
                     <input type="text" name="showPicture" value="<#if dto??>${dto.showPicture!}</#if>" readonly class="form-control article-showPicture"
                            placeholder="" datatype="*" errormsg="展示图不能为空" imageWidth="750" imageHeight="340">
-                    <div class="showPictureImage">
-                        <#if dto??&&dto.showPicture??>
-                            <img style="width:100%" src="/${dto.showPicture!}" alt="展示图"/>
-                        </#if>
-                    </div>
                 </div>
                 <div class="col-sm-4 showPicture">
                     <input type="file" name="showPictureUrl" imageWidth="750" imageHeight="340"/>
@@ -67,6 +64,11 @@
                        (图片大小为:750px * 340px)
                 </div>
             </div>
+            <div class="showPictureImage">
+                <#if dto??&&dto.showPicture??>
+                    <img style="width:100%" src="/${dto.showPicture!}" alt="展示图"/>
+                </#if>
+            </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">文章来源: </label>
 
@@ -74,6 +76,19 @@
                     <input type="text" name="source" value="<#if dto??>${dto.source!}</#if>" class="form-control article-source" placeholder="" datatype="*" errormsg="文章来源不能为空">
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">发布时间:</label>
+                <div class="col-sm-2" style="width:20%">
+                    <div class='input-group date' id='timingTime'>
+                        <input type='text' class="form-control" name="timingTime" <#if dto??><#if dto.timingTime??>value="${(dto.timingTime?string("yyyy-MM-dd HH:mm"))!}"</#if></#if>/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label  class="col-sm-1 control-label">栏目: </label>
                 <div class="col-sm-2">

@@ -2,13 +2,13 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -26,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedbackController {
 
     static Logger logger = Logger.getLogger(FeedbackController.class);
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private FeedbackService feedbackService;
@@ -37,7 +39,7 @@ public class FeedbackController {
     @RequestMapping(value = "/submit", params = {"contact", "type", "content", "captcha"}, method = RequestMethod.POST)
     public BaseDto feedback(String contact, FeedbackType type, String content, String captcha) {
 
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
         baseDto.setSuccess(true);
@@ -52,12 +54,7 @@ public class FeedbackController {
             return baseDto;
         }
 
-        String loginName = LoginUserInfo.getLoginName();
-        if (LoginUserInfo.getMobile() != null) {
-            contact = LoginUserInfo.getMobile();
-        }
-
-        feedbackService.create(loginName, contact, Source.WEB, type, content);
+        feedbackService.create(LoginUserInfo.getLoginName(), Source.WEB, type, content);
 
         return baseDto;
     }

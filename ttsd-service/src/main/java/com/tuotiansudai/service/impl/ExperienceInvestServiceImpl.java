@@ -7,21 +7,24 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,9 @@ import java.util.Date;
 public class ExperienceInvestServiceImpl implements ExperienceInvestService {
 
     static Logger logger = Logger.getLogger(ExperienceInvestServiceImpl.class);
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -52,11 +58,16 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private CouponAssignmentService couponAssignmentService;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @Override
     @Transactional
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
+        userMapper.lockByLoginName(investDto.getLoginName());
+
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
@@ -66,10 +77,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
+        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
+        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
+        couponMapper.updateCoupon(couponModel);
 
-        InvestModel investModel = this.generateInvest(investDto, userCouponModel.getCouponId());
-
-        couponActivationService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS), null, null);
+        InvestModel investModel = this.generateInvest(investDto, couponModel);
 
         userCouponModel.setLoanId(Long.parseLong(investDto.getLoanId()));
         userCouponModel.setInvestId(investModel.getId());
@@ -77,27 +89,24 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
 
-        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
-        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
+        couponAssignmentService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
 
         dataDto.setStatus(true);
 
         return dto;
     }
 
-    private InvestModel generateInvest(InvestDto investDto, long couponId) {
+    private InvestModel generateInvest(InvestDto investDto, CouponModel couponModel) {
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
-        CouponModel couponModel = couponMapper.findById(couponId);
         long amount = Long.parseLong(investDto.getAmount());
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), defaultFee);
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
-        long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
+        long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, defaultFee);
 
         InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, amount, expectedInterest, expectedFee, repayDate, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepayModel));
@@ -105,6 +114,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     }
 
     private boolean validate(InvestDto investDto) {
+        if (StringUtils.isEmpty(investDto.getLoginName())) {
+            logger.error("[Experience Invest] the login name is null");
+            return false;
+        }
+
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
 
         long investAmount = Long.parseLong(investDto.getAmount());

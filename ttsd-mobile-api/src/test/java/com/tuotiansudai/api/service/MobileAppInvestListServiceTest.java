@@ -114,7 +114,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
+        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong(),any(Source.class))).thenReturn("log***");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -176,7 +176,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investMapper.findCountByLoginNameExceptTransfer(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
-        when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
+        when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
 

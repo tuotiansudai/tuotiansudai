@@ -177,18 +177,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl"
-                       errormsg="投资手续费比例需要正确填写" value="${(loanInfo.investFeeRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
             <div class="col-sm-4">
@@ -256,6 +244,44 @@
                        errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}">
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">阶梯加息: </label>
+
+            <div class="col-sm-4 checkbox">
+                <label for="extra"><input type="checkbox" id="extra" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if> <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
+                    选中后此标的采用阶梯式加息
+                </label>
+            </div>
+        </div>
+        <#if extraLoanRates?? && extraLoanRates?size gt 0>
+            <div class="form-group extra-rate">
+            <#list extraLoanRates as extraLoanRate>
+                <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+            </#list>
+                <label class="col-sm-2 control-label"></label>
+
+                <div class="col-sm-4">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>投资金额范围（元）</th>
+                            <th>加息比例（%）</th>
+                        </tr>
+                        </thead>
+                        <tbody class="extra-rate-rule">
+                        <#list extraLoanRates as extraLoanRate>
+                            <tr>
+                                <td>${(extraLoanRate.minInvestAmount/100)?string('0')}≤投资额<#if extraLoanRate.maxInvestAmount gt 0><${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
+                                <td>${extraLoanRate.rate * 100}</td>
+                            </tr>
+                        </#list>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </#if>
+
         <div class="form-group input-append">
             <label class="col-sm-2 control-label">筹款启动时间: </label>
 

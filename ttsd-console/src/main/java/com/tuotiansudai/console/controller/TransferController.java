@@ -1,12 +1,10 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferRuleDto;
-import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferRuleService;
 import com.tuotiansudai.util.RequestIPParser;
@@ -56,12 +54,12 @@ public class TransferController {
                                                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                               @RequestParam(name = "status", required = false) TransferStatus status,
-                                                              @RequestParam(name = "transferrerLoginName", required = false) String transferrerLoginName,
-                                                              @RequestParam(name = "transfereeLoginName", required = false) String transfereeLoginName,
+                                                              @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
+                                                              @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
                                                               @RequestParam(name = "loanId", required = false) Long loanId,
                                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                               @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize)  {
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerLoginName, transfereeLoginName, loanId, index, pageSize);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, index, pageSize);
         ModelAndView mv = new ModelAndView("/transfer-list");
         mv.addObject("data",basePaginationDataDto);
         mv.addObject("transferApplicationId",transferApplicationId);
@@ -69,8 +67,8 @@ public class TransferController {
         mv.addObject("endTime",endTime);
 
         mv.addObject("status",status);
-        mv.addObject("transferrerLoginName",transferrerLoginName);
-        mv.addObject("transfereeLoginName",transfereeLoginName);
+        mv.addObject("transferrerMobile", transferrerMobile);
+        mv.addObject("transfereeMobile", transfereeMobile);
         mv.addObject("loanId",loanId);
         mv.addObject("index",index);
         mv.addObject("pageSize",pageSize);

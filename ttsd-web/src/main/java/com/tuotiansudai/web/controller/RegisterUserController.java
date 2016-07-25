@@ -3,14 +3,17 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +23,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/register/user")
 public class RegisterUserController {
+
+    private final static Logger logger = Logger.getLogger(RegisterUserController.class);
 
     @Autowired
     private UserService userService;
@@ -34,11 +40,17 @@ public class RegisterUserController {
     @Autowired
     private CaptchaHelper captchaHelper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private MyAuthenticationManager myAuthenticationManager;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", referrer);
+        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -46,21 +58,24 @@ public class RegisterUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess;
+        boolean isRegisterSuccess = false;
         try {
             if (request.getSession().getAttribute("channel") != null) {
                 registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
             }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
+            if (isRegisterSuccess) {
+                myAuthenticationManager.createAuthentication(registerUserDto.getLoginName());
+            }
         } catch (ReferrerRelationException e) {
-            isRegisterSuccess = false;
+            logger.error(e.getLocalizedMessage(), e);
         }
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/" : "redirect:/register/user");
+        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", registerUserDto.getRedirectToAfterRegisterSuccess()) : "redirect:/register/user");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
@@ -123,7 +138,7 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
     public void registerImageCaptcha(HttpServletResponse response) {
-        int captchaWidth = 70;
+        int captchaWidth = 80;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());

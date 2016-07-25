@@ -1,11 +1,13 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.LoanItemDto;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +54,7 @@ public class LoanListController {
         int maxIndex = count / 10 + (count % 10 > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);
-        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         return modelAndView;
     }
 

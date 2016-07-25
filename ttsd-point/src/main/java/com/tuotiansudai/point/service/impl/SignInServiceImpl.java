@@ -1,11 +1,14 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.point.dto.SignInPoint;
 import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -20,12 +23,14 @@ public class SignInServiceImpl implements SignInService {
     static Logger logger = Logger.getLogger(SignInServiceImpl.class);
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private PointBillService pointBillService;
 
-    private static final String POINT_SIGN_IN_KEY = "web:point:signin";
+    @Autowired
+    private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
 
     @Override
     @Transactional
@@ -34,21 +39,22 @@ public class SignInServiceImpl implements SignInService {
 
         SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint(),SignInPoint.SECOND_SIGN_IN.getPoint());
 
-        SignInPointDto lastSignInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
-
+        SignInPointDto lastSignInPointDto = obtainSignInPointDto(loginName);
         if (lastSignInPointDto != null) {
-            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO) {
+            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ZERO) {
                 lastSignInPointDto.setStatus(false);
                 lastSignInPointDto.setMessage("今天已经签到过了，请明天再来！");
                 return lastSignInPointDto;
             }
-            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
+            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ONE) {
                 int signInCount = lastSignInPointDto.getSignInCount() + 1;
                 signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount),SignInPoint.getPointByTimes(signInCount + 1));
             }
         }
         signInPointDto.setStatus(true);
-        redisWrapperClient.hsetSeri(POINT_SIGN_IN_KEY, loginName, signInPointDto);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        userModel.setSignInCount(signInPointDto.getSignInCount());
+        userMapper.updateUser(userModel);
         pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
         logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
         return signInPointDto;
@@ -56,12 +62,23 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public boolean signInIsSuccess(String loginName) {
-        SignInPointDto signInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
-        return signInPointDto != null && Days.daysBetween(new DateTime(signInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
+        SignInPointDto signInPointDto = obtainSignInPointDto(loginName) ;
+
+        return signInPointDto != null && Days.daysBetween(new DateTime(signInPointDto.getSignInDate()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
     }
 
     @Override
     public SignInPointDto getLastSignIn(String loginName) {
-        return (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
+        return obtainSignInPointDto(loginName);
+    }
+
+    private SignInPointDto obtainSignInPointDto(String loginName){
+        SignInPointDto signInPointDto = null ;
+        PointBillModel pointBillModel = pointBillMapper.findLatestSignInPointBillByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        if(pointBillModel != null){
+            signInPointDto = new SignInPointDto(pointBillModel,userModel.getSignInCount());
+        }
+        return signInPointDto;
     }
 }

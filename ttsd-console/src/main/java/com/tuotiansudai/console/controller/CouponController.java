@@ -3,14 +3,14 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
@@ -80,6 +80,9 @@ public class CouponController {
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
 
+    @Autowired
+    private ExchangeCodeService exchangeCodeService;
+
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/coupon/{couponId}/exchange-code", method = RequestMethod.GET)
@@ -92,12 +95,9 @@ public class CouponController {
         }
         response.setContentType("application/csv");
         List<List<String>> data = Lists.newArrayList();
-        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
         CouponModel couponModel = couponService.findCouponById(couponId);
-        List<String> exchangeCodes = Lists.newArrayList();
-        for (String key : map.keySet()) {
-            exchangeCodes.add(key);
-        }
+        List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
+
         for (int i=0; i<exchangeCodes.size(); i++) {
             List<String> dataModel = Lists.newArrayList();
             if (i == 0) {
@@ -298,7 +298,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
         int couponsCount = couponService.findInterestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -315,7 +315,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findRedEnvelopeCoupons(index, pageSize));
         int couponsCount = couponService.findRedEnvelopeCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -350,7 +350,7 @@ public class CouponController {
         modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
         int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0? 1 : 0);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -380,7 +380,7 @@ public class CouponController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("userCouponsCount", userCouponsCount);
-        long totalPages = userCouponsCount / pageSize + (userCouponsCount % pageSize > 0 || userCouponsCount == 0? 1 : 0);
+        long totalPages = userCouponsCount / pageSize + (userCouponsCount % pageSize > 0 || userCouponsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -549,7 +549,7 @@ public class CouponController {
         modelAndView.addObject("pageSize", pageSize);
         int exchangeCouponCount = couponService.findCouponExchangeCount();
         modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
-        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0? 1 : 0);
+        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

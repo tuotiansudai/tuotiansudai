@@ -32,11 +32,11 @@ public class FeedbackServiceTest {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), "13811112222", Source.IOS, FeedbackType.opinion, "content");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 
-        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getLoginName(), null, null, null, null, null, 1, 3);
+        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getMobile(), null, null, null, null, null, 1, 3);
 
         long findCount = paginationDataDto.getCount();
         assertEquals(1, findCount);

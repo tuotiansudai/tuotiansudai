@@ -5,10 +5,10 @@
 <div class="col-md-10">
     <form class="form-horizontal" action="/finance-manage/admin-intervention" method="post">
         <div class="form-group">
-            <label for="login-name" class="col-sm-1 control-label">用户名</label>
+            <label for="login-name" class="col-sm-1 control-label">电话号码</label>
 
             <div class="col-sm-8 col-lg-3">
-                <input id="login-name" name="loginName" class="form-control" value="${data.loginName!}"/>
+                <input id="login-name" name="mobile" class="form-control" value="${data.mobile!}"/>
             </div>
         </div>
         <div class="form-group">

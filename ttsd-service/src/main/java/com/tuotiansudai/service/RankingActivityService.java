@@ -12,11 +12,11 @@ import java.util.Map;
 
 public interface RankingActivityService {
 
-    BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName, String mobile);
+    BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName);
 
     Long getUserRank(String loginName);
 
-    List<UserScoreDto> getTianDouTop15();
+    List<UserScoreDto> getTianDouTop15(String loginName);
 
     Map<String, List<UserTianDouRecordDto>> getTianDouWinnerList();
 

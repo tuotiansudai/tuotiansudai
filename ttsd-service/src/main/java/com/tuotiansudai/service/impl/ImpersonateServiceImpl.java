@@ -1,8 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.ImpersonateService;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

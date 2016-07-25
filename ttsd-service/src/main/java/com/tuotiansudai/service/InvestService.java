@@ -16,7 +16,7 @@ public interface InvestService {
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
-    long estimateInvestIncome(long loanId, long amount);
+    long estimateInvestIncome(long loanId, String loginName, long amount);
 
     BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String investorLoginName,
                                                                                    int index,
@@ -41,7 +41,7 @@ public interface InvestService {
                                                 InvestStatus investStatus,
                                                 LoanStatus loanStatus);
 
-    void turnOnAutoInvest(AutoInvestPlanModel model);
+    boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
 
     boolean turnOffAutoInvest(String loginName, String ip);
 

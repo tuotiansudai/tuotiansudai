@@ -1,0 +1,53 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		   http://www.springframework.org/schema/security
+		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <beans:property name="userPropertyToUse" value="salt"/>
+    </beans:bean>
+
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.web.config.security.MyAccessDeniedHandler">
+        <beans:property name="errorPage" value="/error/404"/>
+        <beans:property name="accessDeniedExceptionRedirect">
+            <beans:map>
+                <beans:entry key="com.tuotiansudai.web.config.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
+            </beans:map>
+        </beans:property>
+        <beans:property name="errorPageMapping">
+            <beans:map>
+                <beans:entry key="/login" value="/"/>
+                <beans:entry key="/logout" value="/"/>
+                <beans:entry key="/register/account" value="/"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+
+    <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
+
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.web.config.security.MyLoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/login"/>
+    </beans:bean>
+
+    <http auto-config="true" use-expressions="true" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+        <access-denied-handler ref="myAccessDeniedHandler"/>
+        <form-login login-page="/login"
+                    login-processing-url="/login-handler"/>
+        <logout logout-url="/logout" logout-success-url="/"/>
+
+        <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
+        <intercept-url pattern="/ask/style/**" access="permitAll()"/>
+        <intercept-url pattern="/ask/images/**" access="permitAll()"/>
+        <intercept-url pattern="/ask/js/**" access="permitAll()"/>
+
+        <intercept-url pattern="/**" access="permitAll()"/>
+
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
+    </http>
+</beans:beans>

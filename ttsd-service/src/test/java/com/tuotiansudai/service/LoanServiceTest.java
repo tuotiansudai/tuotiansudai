@@ -2,21 +2,19 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.*;
+import static junit.framework.Assert.*;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -90,7 +87,7 @@ public class LoanServiceTest {
         accountMapper.create(fakeAccount);
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
-        assertTrue(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getStatus(),is(true));
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
     }
@@ -233,7 +230,6 @@ public class LoanServiceTest {
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
@@ -298,7 +294,6 @@ public class LoanServiceTest {
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
@@ -334,50 +329,80 @@ public class LoanServiceTest {
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName1");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(100000L);
-        assertEquals("log***", randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****"+fakeUser.getMobile().substring(7), randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenAnonymousAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3) + "****", randomUtils.encryptMobile("", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameSameAsInvestorLoginName() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
+        UserModel userModel = this.createUserByUserId("ttdblvjing", "13333333333");
 
-        assertEquals("ttdblvjing", randomUtils.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****"+fakeUser.getMobile().substring(7), randomUtils.encryptMobile(userModel.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndIncludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName1");
+        userMapper.create(fakeUser);
+        UserModel fakeUser2 = getFakeUser("loginName2");
+        userMapper.create(fakeUser2);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("ttdblvjing");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
-
-        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(fakeUser.getMobile().substring(0, 3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
     }
 
     @Test
     public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndExcludeShowRandomLoginNameList() {
+        UserModel fakeUser = getFakeUser("loginName3");
+        userMapper.create(fakeUser);
         InvestModel investModel1 = new InvestModel();
-        investModel1.setLoginName("loginName3");
+        investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000003L);
 
-        assertEquals("log***", randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        UserModel userModel2 = createUserByUserId("loginName2", "13444444444");
+        assertEquals(fakeUser.getMobile().substring(0,3)+"****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile(userModel2.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
     }
 
     private String getDefaultkey(){
-        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
+        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","13333333333");
         return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
+    }
+
+    private UserModel createUserByUserId(String userId, String mobile) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(userId);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile(mobile);
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
     }
 }

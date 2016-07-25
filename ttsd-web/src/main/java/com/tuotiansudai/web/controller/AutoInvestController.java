@@ -10,7 +10,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,19 +90,7 @@ public class AutoInvestController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
-        model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
-        model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
-        model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
-        model.setIp(RequestIPParser.parse(request));
-        if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
-            dataDto.setStatus(false);
-        }
-        investService.turnOnAutoInvest(model);
+        dataDto.setStatus(investService.turnOnAutoInvest(LoginUserInfo.getLoginName(), autoInvestPlanDto, RequestIPParser.parse(request)));
         return baseDto;
     }
 

@@ -12,16 +12,18 @@ import java.util.List;
 
 @Service
 public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListService {
+
     @Autowired
     private RechargeMapper rechargeMapper;
+
     @Override
     public BaseResponseDto generateRechargeList(RechargeListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
-        String userId = requestDto.getBaseParam().getUserId();
         Integer offset = (index-1)*pageSize;
-        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, userId, null, null, null, offset, pageSize, null, null);
-        int count = rechargeMapper.findRechargeCount(null, userId, null, null, null, null, null);
+
+        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);
+        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null);
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if(rechargeModels != null) {

@@ -1,14 +1,18 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyAuthenticationManager;
+import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
-import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.MyAuthenticationManager;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +21,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -53,6 +56,12 @@ public class MockUserServiceTest {
 
     @Mock
     private ReferrerRelationService referrerRelationService;
+
+    @Mock
+    private MembershipMapper membershipMapper;
+
+    @Mock
+    private UserMembershipMapper userMembershipMapper;
 
 
     @Before
@@ -142,14 +151,23 @@ public class MockUserServiceTest {
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         doNothing().when(referrerRelationService).generateRelation(null, loginName);
         doNothing().when(myAuthenticationManager).createAuthentication(anyString());
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setId(1);
+        membershipModel.setLevel(0);
+        when(membershipMapper.findByLevel(0)).thenReturn(membershipModel);
 
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
         ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
 
-
         verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
         assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.USER));
+
+        ArgumentCaptor<UserMembershipModel> userMembershipModelArgumentCaptor = ArgumentCaptor.forClass(UserMembershipModel.class);
+        verify(userMembershipMapper, times(1)).create(userMembershipModelArgumentCaptor.capture());
+        UserMembershipModel newUserMembership = userMembershipModelArgumentCaptor.getValue();
+        assertThat(newUserMembership.getLoginName(), is(registerUserDto.getLoginName()));
+        assertThat(newUserMembership.getMembershipId(), is(membershipModel.getId()));
     }
 }

@@ -12,16 +12,13 @@
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
-                    <i class="sprite-register-login-name"></i>
-                    <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
-                </li>
-            <li>
-                <i class="sprite-register-ic-password"></i>
-                <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-            </li>
-                <li>
                     <i class="sprite-register-ic-mobile"></i>
-                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
+                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11"
+                           value="${(originalFormData.mobile)!}"/>
+                </li>
+                <li>
+                    <i class="sprite-register-ic-password"></i>
+                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
@@ -40,7 +37,6 @@
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                        <span> <input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
                     <i class="sprite-register-yes-checked"></i>
-
                 </li>
         </ul>
 

@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -32,7 +31,7 @@ public class AccountBalanceController {
     @RequestMapping(value = "/account-balance")
     public ModelAndView accountBalance(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                       @RequestParam(value = "loginName", required = false) String loginName,
+                                       @RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                        @RequestParam(value = "balanceMax", required = false) String balanceMax,
                                        @RequestParam(value = "export", required = false) String export,
@@ -45,7 +44,7 @@ public class AccountBalanceController {
                 logger.error(e.getLocalizedMessage(), e);
             }
             response.setContentType("application/csv");
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, 1, Integer.MAX_VALUE);
+            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(mobile, balanceMin, balanceMax, 1, Integer.MAX_VALUE);
             List<List<String>> data = Lists.newArrayList();
             for (UserItemDataDto itemDataDto : userItemDataDtoList) {
                 List<String> dataModel = Lists.newArrayList();
@@ -66,21 +65,20 @@ public class AccountBalanceController {
             ModelAndView modelAndView = new ModelAndView("/account-balance");
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, index, pageSize);
+            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
             modelAndView.addObject("userAccountList", userItemDataDtoList);
-            int count = userService.findUsersAccountBalanceCount(loginName, balanceMin, balanceMax);
-            modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(loginName, balanceMin, balanceMax));
-            long totalPages = count / pageSize + (count % pageSize > 0 || count == 0? 1 : 0);
+            long count = userService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
+            modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
+            long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             modelAndView.addObject("count", count);
-            modelAndView.addObject("loginName", loginName);
+            modelAndView.addObject("mobile", mobile);
             modelAndView.addObject("balanceMin", balanceMin);
             modelAndView.addObject("balanceMax", balanceMax);
             return modelAndView;
         }
     }
-
 }

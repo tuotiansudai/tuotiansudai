@@ -9,7 +9,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,20 +34,11 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         ModelAndView view = new ModelAndView("/bind-card");
-        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-
-        boolean isBindCard = bankCardModel != null;
-        if (isBindCard) {
-            view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
-            view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
-            view.addObject("cardNumber", bankCardModel.getCardNumber());
-        }
 
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         if (accountModel != null) {
             view.addObject("userName", accountModel.getUserName());
         }
-        view.addObject("isBindCard", isBindCard);
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
 
         return view;

@@ -2,7 +2,7 @@ import React from 'react';
 import { hashHistory } from 'react-router';
 import changeTitle from 'utils/changeTitle';
 import { main, spinner } from './MediaList.scss';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll'; 
 import imagesLoaded from 'imagesloaded';
 import Praise from 'components/licaiCircle/Praise';
 import classNames from 'classnames';
@@ -72,8 +72,16 @@ class MediaList extends React.Component {
 			});
 		});
 	}
+	findDelegateEle(ele) {
+		if (ele.dataset.delegate || ele.nodeName.toLowerCase() === 'body') {
+			return ele;
+		} else {
+			return this.findDelegateEle.call(this, ele.parentNode);
+		}
+	}
 	listItemTapHandler(event) {
-		hashHistory.push(`media-center/article/${event.target.dataset.id}`);
+		let target = this.findDelegateEle.call(this, event.target);
+		hashHistory.push(`media-center/article/${target.dataset.id}`);
 	}
 	pagination() {
 		this.listIndex++;
@@ -164,23 +172,21 @@ class MediaList extends React.Component {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body" ref="tabBody">
+				<div className="tab-body" ref="scroll-wrap">
 					<div className="scroll-wrap" ref="scrollWrap">
 						<ul className="list">
 							{this.state.listData.map((value, index) => {
 								return (
-									<li key={index} className="clearfix">
+									<li key={index} className="clearfix" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId} data-delegate="true">
 										<div className="pull-left">
-											<a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>
-												<img src={value.thumbPicture} alt={value.title} data-id={value.articleId}/>
-											</a>
+											<img src={value.thumbPicture} alt={value.title} data-id={value.articleId} />
 										</div>
-										<h3><a href="javascript:" onTouchTap={this.listItemTapHandler.bind(this)} data-id={value.articleId}>{value.title}</a></h3>
+										<h3>{value.title}</h3>
 										<div className="clearfix bottom-block">
 											<time className="pull-left">{value.creatTime}</time>
 											<div className="pull-right">
 												<div className="readed">阅读：<span>{value.readCount}</span></div>
-												<Praise className="praise" likeCount={value.likeCount} id={value.articleId}></Praise>
+												<Praise className="praise" likeCount={value.likeCount}></Praise>
 											</div>
 										</div>
 									</li>

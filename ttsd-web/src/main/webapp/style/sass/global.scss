@@ -129,7 +129,7 @@
 .fix-nav-list {
   position: fixed;
   right: 22px;
-  bottom: 180px;
+  bottom: 120px;
   width: 60px;
   height: 244px;
   z-index: 1000;
@@ -511,6 +511,16 @@
     }
   }
 }
+.hero-actor{
+  position: fixed;
+  bottom:380px;
+  right:5px;
+  width:92px;
+  height:124px;
+  z-index:1000;
+  background:url("/images/sign/actor/anniversary/hero-icon.png") no-repeat center;
+  background-size:100%;
+}
 
 /********************** Responsive Page ****************************/
 
@@ -583,6 +593,12 @@
   }
   .layer-tip-box, .fix-nav-list {
     display: none;
+  }
+  .hero-actor{
+    bottom:200px;
+    right:15px;
+    width:50px;
+    height:75px;
   }
 }
 

@@ -1,12 +1,11 @@
 package com.tuotiansudai.console.controller;
 
 
-import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
 import com.tuotiansudai.service.SystemRechargeService;
-import org.apache.log4j.Logger;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

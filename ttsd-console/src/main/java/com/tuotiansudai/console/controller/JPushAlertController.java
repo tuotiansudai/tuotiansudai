@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.web.config.security.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
@@ -94,7 +94,7 @@ public class JPushAlertController {
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         int jPushAlertCount = jPushAlertService.findPushAlertCount(pushType, pushSource, pushUserType,pushStatus,startTime,endTime, false);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
-        long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 || jPushAlertCount== 0 ? 1 : 0);
+        long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 || jPushAlertCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
