@@ -26,4 +26,8 @@
         (#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime})
     </insert>
 
+    <select id="selectBookingLoanByMobile" parameterType="map" resultMap="bookingLoanMap">
+        SELECT * FROM `aa`.`booking_loan` WHERE mobile = #{mobile}
+    </select>
+
 </mapper>
