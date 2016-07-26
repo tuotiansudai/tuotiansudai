@@ -18,6 +18,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     language: "zh",
                     uploadUrl: "/upload",
                     showUpload: true,
+                    dropZoneTitle: '选择图片文件到这里 &hellip;',
                     initialPreviewShowDelete:true,
                     allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
                     initialPreview:rereq[i]
@@ -75,6 +76,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 language: "zh",
                 uploadUrl: "/upload",
                 showUpload: true,
+                dropZoneTitle: '选择图片文件到这里 &hellip;',
                 initialPreviewShowDelete:true,
                 allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
             });
