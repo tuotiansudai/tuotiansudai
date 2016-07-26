@@ -327,14 +327,14 @@ public class CouponModel implements Serializable {
         this.channels = channels;
     }
 
-    public CouponModel(CouponDto couponDto){
+    public CouponModel(CouponDto couponDto) {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
         this.deadline = couponDto.getDeadline() != null ? couponDto.getDeadline() : 0;
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
-        this.productTypes = couponDto.getProductTypes() ;
+        this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
         this.smsAlert = couponDto.isSmsAlert();
@@ -343,6 +343,10 @@ public class CouponModel implements Serializable {
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
         this.agents = couponDto.getAgents();
         this.channels = couponDto.getChannels();
-        this.multiple = (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON || couponDto.getMultiple());
+        this.multiple = (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON ||
+                couponDto.getUserGroup() == UserGroup.FIRST_INVEST_ACHIEVEMENT ||
+                couponDto.getUserGroup() == UserGroup.MAX_AMOUNT_ACHIEVEMENT ||
+                couponDto.getUserGroup() == UserGroup.LAST_INVEST_ACHIEVEMENT ||
+                couponDto.getMultiple());
     }
 }

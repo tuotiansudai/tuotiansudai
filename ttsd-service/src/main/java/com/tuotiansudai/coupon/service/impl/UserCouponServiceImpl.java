@@ -215,25 +215,28 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public void createInvestAchievementCoupon(long loanId) {
+    public List<UserCouponModel> getInvestAchievementCoupon(long loanId) {
+        List<UserCouponModel> userCouponModels = Lists.newArrayList();
         LoanModel loanModel = loanMapper.findById(loanId);
-        createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
-        createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
-        createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
+        userCouponModels.addAll(getUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId));
+        userCouponModels.addAll(getUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId));
+        userCouponModels.addAll(getUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId));
+        return userCouponModels;
     }
 
-    public void createUserCouponModel(Long investId,final UserGroup userGroup,long loanId){
+    public List<UserCouponModel> getUserCouponModel(Long investId,final UserGroup userGroup,long loanId){
+        List<UserCouponModel> userCouponModels = Lists.newArrayList();
         if(investId == null){
             logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
-            return;
         }
 
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
         for(CouponModel couponModel : couponModelList){
             if(couponModel.getUserGroup().equals(userGroup)){
-                userCouponMapper.create(new UserCouponModel(investMapper.findById(investId).getLoginName(),
+                userCouponModels.add(new UserCouponModel(investMapper.findById(investId).getLoginName(),
                         couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
             }
         }
+        return userCouponModels;
     }
 }

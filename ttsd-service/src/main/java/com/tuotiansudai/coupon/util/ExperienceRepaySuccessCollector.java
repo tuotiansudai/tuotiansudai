@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.util;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -49,6 +50,11 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
                 return false;
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
         return true;
     }
 }

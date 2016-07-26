@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -74,20 +75,12 @@ public class UserCouponServiceTest {
         loanModel.setMaxAmountAchievementId(maxInvestModel.getId());
         loanModel.setLastInvestAchievementId(lastInvestModel.getId());
         loanMapper.update(loanModel);
-        CouponModel firstCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.FIRST_INVEST_ACHIEVEMENT);
-        CouponModel firstRedCoupon = fakeCouponDto(loginName, CouponType.RED_ENVELOPE, UserGroup.FIRST_INVEST_ACHIEVEMENT);
-        CouponModel maxCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.MAX_AMOUNT_ACHIEVEMENT);
-        CouponModel lastCoupon = fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.LAST_INVEST_ACHIEVEMENT);
-        userCouponService.createInvestAchievementCoupon(loanModel.getId());
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName(firstLoginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
-        assertEquals(userCouponModelList.get(0).getCouponId(),firstCoupon.getId());
-        userCouponModelList = userCouponMapper.findByLoginName(maxLoginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
-        assertEquals(userCouponModelList.get(0).getCouponId(),maxCoupon.getId());
-        userCouponModelList = userCouponMapper.findByLoginName(LastLoginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
-        assertEquals(userCouponModelList.get(0).getCouponId(),lastCoupon.getId());
-        userCouponModelList = userCouponMapper.findByLoginName(firstLoginName, Lists.newArrayList(CouponType.RED_ENVELOPE));
-        assertEquals(userCouponModelList.get(0).getCouponId(),firstRedCoupon.getId());
-
+        fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        fakeCouponDto(loginName, CouponType.RED_ENVELOPE, UserGroup.FIRST_INVEST_ACHIEVEMENT);
+        fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.MAX_AMOUNT_ACHIEVEMENT);
+        fakeCouponDto(loginName, CouponType.INTEREST_COUPON, UserGroup.LAST_INVEST_ACHIEVEMENT);
+        List<UserCouponModel> investAchievementCoupon = userCouponService.getInvestAchievementCoupon(loanModel.getId());
+        assertTrue(investAchievementCoupon.size() == 4);
     }
 
     private CouponModel fakeCouponDto(String loginName, CouponType couponType, UserGroup userGroup) {

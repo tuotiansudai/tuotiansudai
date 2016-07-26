@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.util;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,10 @@ public class AllUserCollector implements UserCollector {
     public boolean contains(long couponId, String loginName) {
         CouponModel couponModel = couponMapper.findById(couponId);
         return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
+    }
+
+    @Override
+    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
+        return true;
     }
 }

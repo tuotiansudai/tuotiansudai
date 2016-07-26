@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Aspect
@@ -39,6 +43,12 @@ public class CouponAspect {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private UserCouponService userCouponService;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
@@ -152,6 +162,15 @@ public class CouponAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
+        }
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))")
+    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint) {
+        final long loanId = (long) joinPoint.getArgs()[0];
+        List<UserCouponModel> investAchievementCoupons = userCouponService.getInvestAchievementCoupon(loanId);
+        for(UserCouponModel userCouponModel : investAchievementCoupons){
+            couponAssignmentService.assignUserCoupon(loanId,userCouponModel.getLoginName(),userCouponModel.getCouponId());
         }
     }
 }

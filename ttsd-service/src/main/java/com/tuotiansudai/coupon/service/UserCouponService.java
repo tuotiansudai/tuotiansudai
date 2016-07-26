@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 
 import java.util.List;
@@ -25,6 +26,6 @@ public interface UserCouponService {
 
     long findSumRedEnvelopeByLoginName(String loginName);
 
-    void createInvestAchievementCoupon(long loanId);
+    List<UserCouponModel> getInvestAchievementCoupon(long loanId);
     
 }

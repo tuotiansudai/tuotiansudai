@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,6 +34,11 @@ public class StaffCollector implements UserCollector{
                 return input.equals(loginName);
             }
         });
+    }
+
+    @Override
+    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
+        return true;
     }
 
 }

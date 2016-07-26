@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,11 @@ public class ChannelCollector implements UserCollector{
                 return input.getLoginName().equals(loginName);
             }
         });
+    }
+
+    @Override
+    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
+        return true;
     }
 
 }

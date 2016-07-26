@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,10 @@ public class ImportUserCollector implements UserCollector {
                 return userModel.getLoginName();
             }
         }).contains(loginName);
+    }
+
+    @Override
+    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
+        return true;
     }
 }
