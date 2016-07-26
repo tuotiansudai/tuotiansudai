@@ -318,7 +318,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         try {
             this.updateInvestRepay(transferApplicationModel);
-            this.updateCouponRepay(transferApplicationModel.getTransferInvestId());
+            this.updateCouponRepay(transferApplicationModel.getTransferInvestId(),transferApplicationModel.getPeriod());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update invest repay failed", String.valueOf(investModel.getId())), e);
             this.sendFatalNotify(MessageFormat.format("债权转让({0})更新回款计划失败", String.valueOf(investId)));
@@ -379,11 +379,18 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
     }
 
-    private void updateCouponRepay(long investId){
+    private void updateCouponRepay(long investId,final int period){
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investId);
-        for(CouponRepayModel couponRepayModel : couponRepayModels){
-            couponRepayModel.setActualInterest(0);
-            couponRepayModel.setActualFee(0);
+        List<CouponRepayModel> transferredCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
+            @Override
+            public boolean apply(CouponRepayModel input) {
+                return input.getPeriod() >= period;
+            }
+        }));
+
+        for(CouponRepayModel couponRepayModel : transferredCouponRepayModels){
+            couponRepayModel.setExpectedInterest(0);
+            couponRepayModel.setExpectedFee(0);
             couponRepayModel.setTransferred(true);
             couponRepayModel.setStatus(RepayStatus.COMPLETE);
             couponRepayMapper.update(couponRepayModel);
