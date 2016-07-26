@@ -14,5 +14,5 @@ public interface CouponRepayMapper {
     CouponRepayModel findByUserCouponIdAndPeriod(@Param(value = "userCouponId") long userCouponId,
                                                  @Param(value = "period") long period);
 
-    long update(CouponRepayModel couponRepayModel);
+    void update(CouponRepayModel couponRepayModel);
 }
