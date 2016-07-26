@@ -125,7 +125,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
             long fee = new BigDecimal(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount())).multiply(new BigDecimal(0.1)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             fakeItem.setExpectedInterest(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount()) - fee));
-            dataDto = new BasePaginationDataDto<>(index, pageSize, 1, Lists.<LoanDetailInvestPaginationItemDto>newArrayList());
+            dataDto = new BasePaginationDataDto<>(index, pageSize, 1, Lists.newArrayList(fakeItem));
         }
 
         baseDto.setData(dataDto);

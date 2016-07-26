@@ -45,13 +45,13 @@ public class HeroRankingController {
         String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
-        modelAndView.addObject("currentTime",new DateTime().withTimeAtStartOfDay().toDate());
-        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(),-1));
+        modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         Integer investRanking = heroRankingService.obtainHeroRankingByLoginName(new Date(), loginName);
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
-        modelAndView.addObject("investRanking",investRanking);
-        modelAndView.addObject("referRanking",referRanking);
-        modelAndView.addObject("mysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
+        modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("referRanking", referRanking);
+        modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
 
@@ -63,30 +63,26 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime, HttpServletRequest httpServletRequest) {
+    public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
         List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
 
         if (heroRankingViews != null) {
-            List<HeroRankingView> transform = Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {
-                @Override
-                public HeroRankingView apply(HeroRankingView heroRankingView) {
-                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
-                    return heroRankingView;
-                }
-            });
+            for (HeroRankingView heroRankingView : heroRankingViews) {
+                heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
+            }
 
             //TODO:fake
             LoanModel loanModel = loanMapper.findById(41650602422768L);
-            if (loanModel.getStatus() == LoanStatus.REPAYING) {
+            if (loanModel.getStatus() == LoanStatus.REPAYING && new DateTime(tradingTime).withTimeAtStartOfDay().isEqual(new DateTime(2016, 7, 29, 14, 14, 22))) {
                 HeroRankingView element = new HeroRankingView();
-                element.setMobile("186**67");
+                element.setLoginName("186**67");
                 element.setSumAmount(loanModel.getLoanAmount());
-                transform.add(0, element);
+                heroRankingViews.add(0, element);
             }
 
-            baseListDataDto.setRecords(transform.size() > 10 ? transform.subList(0, 9) : transform);
+            baseListDataDto.setRecords(heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 9) : heroRankingViews);
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;
