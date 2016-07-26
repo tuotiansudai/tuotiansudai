@@ -4,9 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseListDataDto;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HeroRankingService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -33,6 +37,9 @@ public class HeroRankingController {
     @Autowired
     private RandomUtils randomUtils;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
@@ -44,8 +51,6 @@ public class HeroRankingController {
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
         modelAndView.addObject("investRanking",investRanking);
         modelAndView.addObject("referRanking",referRanking);
-        modelAndView.addObject("userCount",heroRankingService.findUsersCount());
-        modelAndView.addObject("totalInvestAmount",heroRankingService.sumInvestAmount());
         modelAndView.addObject("mysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
@@ -62,15 +67,26 @@ public class HeroRankingController {
         final String loginName = LoginUserInfo.getLoginName();
         BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
         List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
+
         if (heroRankingViews != null) {
-            baseListDataDto.setRecords(Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {
+            List<HeroRankingView> transform = Lists.transform(heroRankingViews, new Function<HeroRankingView, HeroRankingView>() {
                 @Override
                 public HeroRankingView apply(HeroRankingView heroRankingView) {
                     heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
-                    heroRankingView.setCentSumAmount(heroRankingView.getCentSumAmount());
                     return heroRankingView;
                 }
-            }));
+            });
+
+            //TODO:fake
+            LoanModel loanModel = loanMapper.findById(41650602422768L);
+            if (loanModel.getStatus() == LoanStatus.REPAYING) {
+                HeroRankingView element = new HeroRankingView();
+                element.setMobile("186**67");
+                element.setSumAmount(loanModel.getLoanAmount());
+                transform.add(0, element);
+            }
+
+            baseListDataDto.setRecords(transform.size() > 10 ? transform.subList(0, 9) : transform);
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;

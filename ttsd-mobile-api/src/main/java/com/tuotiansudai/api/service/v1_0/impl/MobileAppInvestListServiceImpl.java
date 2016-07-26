@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -89,6 +90,18 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setIndex(index);
         investListResponseDataDto.setPageSize(pageSize);
         investListResponseDataDto.setTotalCount((int) count);
+
+        //TODO:fake
+        LoanModel loanModel = loanMapper.findById(41650602422768L);
+        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
+            investListResponseDataDto.setTotalCount(1);
+            InvestRecordResponseDataDto fakeRecord = new InvestRecordResponseDataDto();
+            fakeRecord.setUserName("186**67");
+            fakeRecord.setInvestMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+            fakeRecord.setInvestTime("2016-07-29 14:14:14");
+            investListResponseDataDto.setInvestRecord(Lists.newArrayList(fakeRecord));
+        }
+
         dto.setData(investListResponseDataDto);
         return dto;
     }

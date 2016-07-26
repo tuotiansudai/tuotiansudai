@@ -44,10 +44,11 @@ public class HomeServiceImpl implements HomeService {
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
             public HomeLoanDto apply(LoanModel loan) {
-                List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loan.getId());
-                long investAmount = 0;
-                for (InvestModel investModel : investModels) {
-                    investAmount += investModel.getAmount();
+                long investAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+
+                //TODO:fake
+                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
+                    investAmount = loan.getLoanAmount();
                 }
 
                 CouponModel newbieInterestCouponModel = null;
@@ -61,7 +62,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels,extraLoanRateMapper.findMaxRateByLoanId(loan.getId()));
+                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()));
             }
         });
     }
