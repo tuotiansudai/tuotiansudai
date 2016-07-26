@@ -46,9 +46,9 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String loginName =  userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
+        String loginName = userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
         String strSource = request.getParameter("source");
-        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
 
         BaseDto<LoginDto> baseDto = new BaseDto<>();
@@ -76,7 +76,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         clearAuthenticationAttributes(request);
     }
 
-    private void clearFailHistory(String username){
+    private void clearFailHistory(String username) {
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", username);
         redisWrapperClient.del(redisKey);
     }

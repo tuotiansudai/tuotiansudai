@@ -44,8 +44,8 @@ public class UnreadMessageCountDirective implements TemplateDirectiveModel {
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
             String mobile = new String(cbuf, off, len);
-            long unreadMessageCount = userMessageService.getUnreadMessageCount(userMapper.findByLoginNameOrMobile(mobile).getLoginName());
-            out.write(String.valueOf(unreadMessageCount));
+            long unreadMessageCount = userMessageService.getUnreadMessageCount(userMapper.findByMobile(mobile).getLoginName());
+            out.write(unreadMessageCount > 0 ? String.valueOf(unreadMessageCount) : "zero");
         }
 
         @Override

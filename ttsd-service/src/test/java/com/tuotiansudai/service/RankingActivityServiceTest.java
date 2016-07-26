@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -163,6 +165,7 @@ public class RankingActivityServiceTest {
 
         UserTianDouRecordDto userTianDouRecordDto = otherList.get(0);
 //        assert (userTianDouRecordDto.getPrize() == TianDouPrize.InterestCoupon5);
+
         assert (userTianDouRecordDto.getLoginName().equals(randomUtils.encryptMobile("", loginName, Source.WEB)));
     }
 

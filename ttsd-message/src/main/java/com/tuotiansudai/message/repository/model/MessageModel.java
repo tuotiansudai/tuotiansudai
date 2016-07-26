@@ -9,6 +9,7 @@ import java.util.List;
 public class MessageModel implements Serializable {
     private long id;
     private String title;
+    private String appTitle;
     private String template;
     private MessageType type;
     private MessageEventType eventType;
@@ -65,6 +66,14 @@ public class MessageModel implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAppTitle() {
+        return appTitle;
+    }
+
+    public void setAppTitle(String appTitle) {
+        this.appTitle = appTitle;
     }
 
     public String getTemplate() {
