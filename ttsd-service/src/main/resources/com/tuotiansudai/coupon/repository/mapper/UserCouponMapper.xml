@@ -23,6 +23,7 @@
         <result column="invest_id" property="investId"/>
         <result column="status" property="status"/>
         <result column="exchange_code" property="exchangeCode"/>
+        <result column="from_loan_id" property="fromLoanId"/>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -64,7 +65,8 @@
             default_interest = #{defaultInterest},
             created_time = #{createdTime},
             invest_id = #{investId},
-            status = #{status}
+            status = #{status},
+            from_loan_id = #{fromLoanId}
         where id = #{id}
     </update>
 

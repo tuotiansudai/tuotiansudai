@@ -43,6 +43,8 @@ public class UserCouponModel implements Serializable{
 
     private String exchangeCode;
 
+    private long fromLoanId;
+
     public UserCouponModel() {
     }
 
@@ -196,5 +198,13 @@ public class UserCouponModel implements Serializable{
 
     public void setExchangeCode(String exchangeCode) {
         this.exchangeCode = exchangeCode;
+    }
+
+    public long getFromLoanId() {
+        return fromLoanId;
+    }
+
+    public void setFromLoanId(long fromLoanId) {
+        this.fromLoanId = fromLoanId;
     }
 }

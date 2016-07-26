@@ -137,7 +137,8 @@ public class CouponAssignmentServiceTest {
     }
 
     private CouponModel getFakeCoupon(UserGroup userGroup, boolean isMultiple) {
-        UserModel couponCreator = getFakeUser("testAchievement");
+        UserModel couponCreator = getFakeUser("fakeUser");
+        userMapper.create(couponCreator);
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1);
         couponModel.setTotalCount(1L);

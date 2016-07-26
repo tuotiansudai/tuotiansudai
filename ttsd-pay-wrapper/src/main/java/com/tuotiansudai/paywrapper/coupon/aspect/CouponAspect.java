@@ -1,9 +1,7 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
@@ -181,16 +179,18 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))")
-    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint) {
-        final long loanId = (long) joinPoint.getArgs()[0];
-        LoanModel loanModel = loanMapper.findById(loanId);
-        createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
-        createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
-        createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
+    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint, Object returnValue) {
+        if((boolean)returnValue){
+            final long loanId = (long) joinPoint.getArgs()[0];
+            LoanModel loanModel = loanMapper.findById(loanId);
+            createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
+            createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
+            createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
+        }
     }
 
-    public void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
+    private void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
         if(investId == null){
             logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
         }
