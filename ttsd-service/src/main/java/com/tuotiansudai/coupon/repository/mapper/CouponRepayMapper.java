@@ -16,7 +16,6 @@ public interface CouponRepayMapper {
 
     long update(CouponRepayModel couponRepayModel);
 
-    void clearCouponRepayByLoginNameAndInvestId(@Param(value = "loginName") String loginName,
-                                                        @Param(value = "investId") long investId);
+    List<CouponRepayModel> findByUserCouponByInvestId(@Param(value = "investId") long investId);
 
 }

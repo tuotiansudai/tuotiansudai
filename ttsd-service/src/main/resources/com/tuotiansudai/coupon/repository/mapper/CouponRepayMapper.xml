@@ -51,8 +51,7 @@
         where id = #{id}
     </update>
 
-    <update id="clearCouponRepayByLoginNameAndInvestId" parameterType="map">
-      update coupon_repay set actual_fee = 0,actual_interest = 0,is_transferred = true,status = 'COMPLETE'
-      where login_name = #{loginName} and invest_id = #{investId}
-    </update>
+    <select id="findByUserCouponByInvestId" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where invest_id = #{investId}
+    </select>
 </mapper>

@@ -241,13 +241,4 @@ public class TransferServiceImpl implements TransferService {
         }
         return transferApplicationDetailDto;
     }
-
-    @Override
-    public void clearCouponRepay(String loginName,String loanId){
-        List<InvestModel> investModelList = investMapper.findByLoanIdAndLoginName(Long.parseLong(loanId),loginName);
-        for(InvestModel investModel : investModelList){
-            couponRepayMapper.clearCouponRepayByLoginNameAndInvestId(loginName,investModel.getId());
-        }
-    }
-
 }
