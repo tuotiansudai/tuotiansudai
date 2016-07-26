@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _,layer) {
+require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down','jquery.validate','autoNumeric'], function ($, _,layer) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -10,6 +10,8 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
+
+        var $bookInvestForm=$('.book-invest-form');
 
         $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
@@ -35,8 +37,6 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             $("#bannerBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
-
-
             $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
             $imgNum.click(function () {
                 var num_nav = $imgNum.index(this);
@@ -101,16 +101,15 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             })
         }
 
-        $('.web-book-box').on('click',function(event) {
+        $('.web-book-box,.book-text-tip').on('click',function(event) {
             event.preventDefault();
 
             layer.open({
-                title: '温馨提示',
+                title: '预约投资',
                 type: 1,
-                btn: ['再想想', '确定'],
-                skin: 'demo-class',
-                area: ['400px', '180px'],
-                content: '<p class="tc pad-m">您确定取消该笔债权的转让？</p>',
+                skin: 'book-box-layer',
+                area: ['500px'],
+                content: $('.book-invest-box')
             });
             //window.location.href=$(this).attr('data-url');
 
@@ -131,7 +130,58 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             event.preventDefault();
             $('.product-box-inner').removeClass('active');
         });
+        $('input.autoNumeric').autoNumeric('init');
+        $bookInvestForm.validate({
+            focusInvalid: false,
+            errorPlacement: function(error, element) {
+                layer.tips(error.text(), element, {
+                    tips: [1, '#efbf5c'],
+                    time: 3000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            },
+            rules: {
+                productType:{
+                    required: true
+                },
+                bookingAmount:{
+                    required: true,
+                    number:true
+                }
+            },
+            messages: {
+                productType: {
+                    required: "请选择您希望投资的项目"
+                },
+                bookingAmount:{
+                    required:"请输入预计投资金额",
+                    number:"请输入正确的投资金额"
+                }
 
+            },
+            submitHandler: function (form) {
+                var data=$(form).serialize();
+                //form.submit();
+                $.ajax({
+                    url:'/booking-loan/invest?'+data,
+                    //data:data,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                    .done(function (response) {
+                        if (response.data.status) {
+                            layer.closeAll();
+                        }
+                    })
+                    .fail(function(response) {
+                        layer.alert('接口错误');
+                    });
+                return false;
+            }
+        });
         function cnzzCount(){
             var url = $(this).data('name');
             switch (url){
