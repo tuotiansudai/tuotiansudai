@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
@@ -16,8 +17,11 @@ public class BookingLoanServiceImpl implements BookingLoanService{
     @Autowired
     private BookingLoanMapper bookingLoanMapper;
 
-    public void create(String phoneNum, ProductType productType, String bookingAmount){
-        BookingLoanModel bookingLoanModel = new BookingLoanModel(phoneNum,
+    @Autowired
+    private UserMapper userMapper;
+
+    public void create(String loginName, ProductType productType, String bookingAmount){
+        BookingLoanModel bookingLoanModel = new BookingLoanModel(userMapper.findUsersMobileByLoginName(loginName),
                 Source.WEB,
                 DateTime.now().toDate(),
                 productType,
