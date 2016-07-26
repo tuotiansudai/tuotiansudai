@@ -402,7 +402,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public AbstractCreateLoanDto findCreateLoanDto(long loanId) {
+    public AbstractCreateLoanDto findCreateLoanDto(long loanId) throws Exception {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
         loanModel.setLoanTitles(loanTitleRelationModelList);
@@ -415,6 +415,8 @@ public class LoanServiceImpl implements LoanService {
         } else if (PledgeType.VEHICLE == loanModel.getPledgeType()) {
             AbstractPledgeDetail pledgeDetail = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
             createLoanDto = new CreateVehicleLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeVehicleModel) pledgeDetail);
+        } else {
+            throw new Exception("pledge type not exist");
         }
         return createLoanDto;
     }
@@ -629,8 +631,7 @@ public class LoanServiceImpl implements LoanService {
         currentPageNo = (currentPageNo - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
-        for (int i = 0; i < loanModels.size(); i++) {
-            LoanModel loanModel = loanModels.get(i);
+        for (LoanModel loanModel : loanModels) {
             LoanListDto loanListDto = new LoanListDto();
             loanListDto.setId(loanModel.getId());
             loanListDto.setName(loanModel.getName());
@@ -644,6 +645,7 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDto.setProductType(loanModel.getProductType());
+            loanListDto.setPledgeType(loanModel.getPledgeType());
             List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
