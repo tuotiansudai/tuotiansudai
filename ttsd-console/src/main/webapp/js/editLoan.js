@@ -1,5 +1,5 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype','ueditor', 'csrf'], function ($, template) {
+require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'], function ($, template) {
     $(function () {
         var _html = '';
         var data = '';
