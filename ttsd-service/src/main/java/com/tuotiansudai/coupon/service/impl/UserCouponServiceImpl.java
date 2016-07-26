@@ -14,11 +14,9 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -30,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -51,9 +48,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -213,5 +207,4 @@ public class UserCouponServiceImpl implements UserCouponService {
     public long findSumRedEnvelopeByLoginName(String loginName) {
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
     }
-
 }
