@@ -50,7 +50,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @WebAppConfiguration
 @Transactional
 public class CouponRepayServiceTest {
@@ -114,6 +114,11 @@ public class CouponRepayServiceTest {
         TransferResponseModel responseModel = new TransferResponseModel();
         responseModel.setRetCode("0000");
 
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+        couponRepayModel.setLoginName(userModel.getLoginName());
+        couponRepayModel.setCouponId(couponModel.getId());
+        couponRepayModel.setUserCouponId(userCouponModel.getId());
+
         when(loanRepayMapper.findById(anyLong())).thenReturn(loanRepay);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
@@ -122,8 +127,10 @@ public class CouponRepayServiceTest {
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
+        doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(idGenerator.generate());
 
@@ -147,6 +154,12 @@ public class CouponRepayServiceTest {
         TransferResponseModel responseModel = new TransferResponseModel();
         responseModel.setRetCode("0000");
 
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+        couponRepayModel.setLoginName(userModel.getLoginName());
+        couponRepayModel.setCouponId(couponModel.getId());
+        couponRepayModel.setUserCouponId(userCouponModel.getId());
+
+
         when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepay);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
@@ -155,8 +168,10 @@ public class CouponRepayServiceTest {
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(),anyLong())).thenReturn(couponRepayModel);
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
+        doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(idGenerator.generate());
 
@@ -178,7 +193,7 @@ public class CouponRepayServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(anyLong(), anyListOf(CouponType.class))).thenReturn(Lists.newArrayList(userCouponModel));
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        couponRepayService.generateCouponPayment(loanModel.getId());
+        couponRepayService.generateCouponRepay(loanModel.getId());
 
         doNothing().when(couponRepayMapper).create(any(ArrayList.class));
         ArgumentCaptor<ArrayList> argumentCaptor = ArgumentCaptor.forClass(ArrayList.class);
@@ -281,6 +296,7 @@ public class CouponRepayServiceTest {
         AccountModel model = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         return model;
     }
+
 
 
 }

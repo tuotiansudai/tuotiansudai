@@ -92,6 +92,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         investModel == null ? "null" : String.valueOf(investModel.getId())));
                 continue;
             }
+            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
+
+            if(couponRepayModel == null){
+                logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
+                                currentLoanRepayModel.getLoanId(),
+                                userCouponModel.getId(),
+                                currentLoanRepayModel.getPeriod()));
+                continue;
+            }
 
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
 
@@ -135,6 +144,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
 
+                    couponRepayModel.setActualInterest(actualInterest);
+                    couponRepayModel.setActualFee(actualFee);
+                    couponRepayModel.setActualRepayDate(currentLoanRepayModel.getActualRepayDate());
+                    couponRepayModel.setStatus(couponRepayModel.getStatus());
+                    couponRepayMapper.update(couponRepayModel);
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
