@@ -3,11 +3,9 @@ package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.dto.v1_0.LoanStatus;
-import com.tuotiansudai.api.dto.v2_0.LoanDetailRequestDto;
-import com.tuotiansudai.api.dto.v2_0.LoanDetailResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -32,7 +30,6 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Service {
@@ -61,9 +58,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private PledgeVehicleMapper pledgeVehicleMapper;
 
     @Autowired
-    private ContractService contractService;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
@@ -86,8 +80,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
 
     @Override
-    public BaseResponseDto<LoanDetailResponseDataDto> findLoanDetail(LoanDetailRequestDto requestDto) {
-        BaseResponseDto<LoanDetailResponseDataDto> responseDto = new BaseResponseDto<>();
+    public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
+        BaseResponseDto<LoanDetailV2ResponseDataDto> responseDto = new BaseResponseDto<>();
         String loanId = requestDto.getLoanId();
         LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
         if (loanModel == null) {
@@ -97,14 +91,14 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         String loginName = requestDto.getBaseParam().getUserId();
-        LoanDetailResponseDataDto dataDto = convertLoanDetailFromLoan(loanModel, loginName);
+        LoanDetailV2ResponseDataDto dataDto = convertLoanDetailFromLoan(loanModel, loginName);
         responseDto.setData(dataDto);
         return responseDto;
     }
 
-    private LoanDetailResponseDataDto convertLoanDetailFromLoan(LoanModel loanModel, String loginName) {
+    private LoanDetailV2ResponseDataDto convertLoanDetailFromLoan(LoanModel loanModel, String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        LoanDetailResponseDataDto dataDto = new LoanDetailResponseDataDto();
+        LoanDetailV2ResponseDataDto dataDto = new LoanDetailV2ResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
         dataDto.setLoanName(loanModel.getName());
@@ -166,7 +160,23 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanModel.getRaisingCompleteTime() != null) {
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }
-        dataDto.setLoanDetail(obtainLoanDetail(loanModel.getId()));
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        if (loanerDetailsModel != null) {
+            dataDto.setLoaner(new LoanerDto(loanerDetailsModel));
+            switch (loanModel.getPledgeType()) {
+                case HOUSE:
+                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+                    if (pledgeHouseModel != null) {
+                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModel));
+                    }
+                case VEHICLE:
+                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+                    if (pledgeVehicleModel != null) {
+                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
+                    }
+            }
+        }
+
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
         if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
@@ -228,66 +238,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         }
 
         return days + "天" + hours + "时" + minutes + "分";
-    }
-
-    public String obtainLoanDetail(long loanId) {
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel != null) {
-            Map<String, Object> dateModel = collectLoanDetailDateModel(loanId, loanModel.getPledgeType());
-            switch (loanModel.getPledgeType()) {
-                case HOUSE:
-                    return contractService.getContract("pledgeHouse", dateModel);
-                case VEHICLE:
-                    return contractService.getContract("pledgeVehicle", dateModel);
-                default:
-                    return loanModel.getDescriptionHtml();
-
-            }
-        }
-        return null;
-
-    }
-
-    private Map<String, Object> collectLoanDetailDateModel(long loanId, PledgeType pledgeType) {
-        Map<String, Object> dataModel = Maps.newHashMap();
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
-        if (loanerDetailsModel != null) {
-            dataModel.put("loaner", loanerDetailsModel.getUserName());
-            dataModel.put("marriage", loanerDetailsModel.getMarriage());
-
-        }
-        if (loanDetailsModel != null) {
-            dataModel.put("declaration", loanDetailsModel.getDeclaration());
-
-        }
-        switch (pledgeType) {
-            case HOUSE:
-                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
-                if (pledgeHouseModel != null) {
-                    dataModel.put("loanAmount", pledgeHouseModel.getLoanAmount());
-                    dataModel.put("estimateAmount", pledgeHouseModel.getEstimateAmount());
-                    dataModel.put("pledgeLocation", pledgeHouseModel.getPledgeLocation());
-                    dataModel.put("square", pledgeHouseModel.getSquare());
-                    dataModel.put("propertyCardId", pledgeHouseModel.getPropertyCardId());
-                    dataModel.put("estateRegisterId", pledgeHouseModel.getEstateRegisterId());
-                    dataModel.put("authenticAct", pledgeHouseModel.getAuthenticAct());
-
-                }
-                break;
-            case VEHICLE:
-                PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
-                if (pledgeVehicleModel != null) {
-                    dataModel.put("loanAmount", pledgeVehicleModel.getLoanAmount());
-                    dataModel.put("estimateAmount", pledgeVehicleModel.getEstimateAmount());
-                    dataModel.put("model", pledgeVehicleModel.getModel());
-                }
-                break;
-
-        }
-
-        return dataModel;
-
     }
 
     private List<EvidenceResponseDataDto> getEvidenceByLoanId(long loanId) {

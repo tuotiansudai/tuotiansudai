@@ -1,20 +1,29 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 
+import com.tuotiansudai.repository.model.PledgeHouseModel;
+
 import java.io.Serializable;
 
 public class PledgeHouseDto implements Serializable {
-    private String pledge_location;
+    private String pledgeLocation;
     private String square;
     private String estimateAmount;
     private String loanAmount;
 
-    public String getPledge_location() {
-        return pledge_location;
+    public PledgeHouseDto(PledgeHouseModel pledgeHouseModel) {
+        this.pledgeLocation = pledgeHouseModel.getPledgeLocation();
+        this.square = pledgeHouseModel.getSquare();
+        this.estimateAmount = pledgeHouseModel.getEstimateAmount();
+        this.loanAmount = pledgeHouseModel.getLoanAmount();
     }
 
-    public void setPledge_location(String pledge_location) {
-        this.pledge_location = pledge_location;
+    public String getPledgeLocation() {
+        return pledgeLocation;
+    }
+
+    public void setPledgeLocation(String pledgeLocation) {
+        this.pledgeLocation = pledgeLocation;
     }
 
     public String getSquare() {

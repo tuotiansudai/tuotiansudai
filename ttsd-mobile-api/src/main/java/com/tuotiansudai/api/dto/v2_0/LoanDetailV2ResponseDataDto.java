@@ -7,8 +7,9 @@ import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-public class LoanDetailResponseDataDto extends BaseResponseDataDto {
+public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private Long loanId;//标的id
 
@@ -64,7 +65,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     private String raiseCompletedTime;//募集完成时间
 
-    private String loanDetail;//借款详情
+    private LoanerDto loaner;//借款详情
+
+    private PledgeHouseDto pledgeHouse;
+
+    private PledgeVehicleDto pledgeVehicle;
 
     private String investFeeRate;//手续费比例
 
@@ -300,12 +305,28 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.raiseCompletedTime = raiseCompletedTime;
     }
 
-    public String getLoanDetail() {
-        return loanDetail;
+    public LoanerDto getLoaner() {
+        return loaner;
     }
 
-    public void setLoanDetail(String loanDetail) {
-        this.loanDetail = loanDetail;
+    public void setLoaner(LoanerDto loaner) {
+        this.loaner = loaner;
+    }
+
+    public PledgeHouseDto getPledgeHouse() {
+        return pledgeHouse;
+    }
+
+    public void setPledgeHouse(PledgeHouseDto pledgeHouse) {
+        this.pledgeHouse = pledgeHouse;
+    }
+
+    public PledgeVehicleDto getPledgeVehicle() {
+        return pledgeVehicle;
+    }
+
+    public void setPledgeVehicle(PledgeVehicleDto pledgeVehicle) {
+        this.pledgeVehicle = pledgeVehicle;
     }
 
     public String getInvestFeeRate() {

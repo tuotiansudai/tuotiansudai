@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 
-public class LoanDetailRequestDto extends BaseParamDto {
+public class LoanDetailV2RequestDto extends BaseParamDto {
     @NotEmpty(message = "0024")
     @Pattern(regexp = "^\\d+$", message = "0024")
     private String loanId;

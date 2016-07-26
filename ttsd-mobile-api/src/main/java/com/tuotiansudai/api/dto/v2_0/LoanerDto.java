@@ -1,14 +1,24 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 
+import com.tuotiansudai.repository.model.LoanerDetailsModel;
+
 import java.io.Serializable;
 
 public class LoanerDto implements Serializable {
     private String gender;
-    private String age;
+    private Integer age;
     private String marriage;
     private String employmentStatus;
     private String income;
+
+    public LoanerDto(LoanerDetailsModel model) {
+        this.gender = model.getGender().getDescription();
+        this.age = model.getAge();
+        this.marriage = model.getMarriage().getDescription();
+        this.employmentStatus = model.getEmploymentStatus();
+        this.income = model.getIncome();
+    }
 
     public String getGender() {
         return gender;
@@ -18,11 +28,11 @@ public class LoanerDto implements Serializable {
         this.gender = gender;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
