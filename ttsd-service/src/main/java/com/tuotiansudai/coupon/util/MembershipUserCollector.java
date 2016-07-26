@@ -47,5 +47,4 @@ public class MembershipUserCollector implements UserCollector {
 
         return membershipModel != null && mapping.get(membershipModel.getLevel()) == userGroup;
     }
-
 }

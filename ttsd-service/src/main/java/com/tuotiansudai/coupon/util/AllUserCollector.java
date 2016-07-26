@@ -30,5 +30,4 @@ public class AllUserCollector implements UserCollector {
         CouponModel couponModel = couponMapper.findById(couponId);
         return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
     }
-
 }

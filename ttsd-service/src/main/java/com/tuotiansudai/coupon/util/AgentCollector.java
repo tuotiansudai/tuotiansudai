@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.util;
 
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

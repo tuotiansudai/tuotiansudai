@@ -1,7 +1,5 @@
 package com.tuotiansudai.coupon.util;
 
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-
 import java.util.List;
 
 public interface UserCollector {

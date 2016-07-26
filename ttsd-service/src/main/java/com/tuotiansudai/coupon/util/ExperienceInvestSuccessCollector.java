@@ -1,7 +1,6 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ActivityType;
@@ -38,5 +37,4 @@ public class ExperienceInvestSuccessCollector implements UserCollector {
         }
         return false;
     }
-
 }

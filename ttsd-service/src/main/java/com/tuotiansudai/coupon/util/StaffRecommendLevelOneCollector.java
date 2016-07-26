@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,5 @@ public class StaffRecommendLevelOneCollector implements UserCollector{
             }
         });
     }
-
 
 }
