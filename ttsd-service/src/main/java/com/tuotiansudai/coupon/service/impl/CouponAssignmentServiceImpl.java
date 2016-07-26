@@ -164,7 +164,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
+            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
                 @Override
                 public boolean apply(UserCouponModel input) {
                     return input.getStatus() == InvestStatus.SUCCESS;
