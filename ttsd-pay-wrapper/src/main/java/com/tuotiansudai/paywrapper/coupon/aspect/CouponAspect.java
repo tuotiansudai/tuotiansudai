@@ -190,8 +190,7 @@ public class CouponAspect {
         createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
     }
 
-    public List<UserCouponModel> createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
-        List<UserCouponModel> userCouponModels = Lists.newArrayList();
+    public void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
         if(investId == null){
             logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
         }
@@ -202,7 +201,6 @@ public class CouponAspect {
                 couponAssignmentService.assignUserCoupon(loanId,investMapper.findById(investId).getLoginName(),couponModel.getId());
             }
         }
-        return userCouponModels;
     }
 }
 
