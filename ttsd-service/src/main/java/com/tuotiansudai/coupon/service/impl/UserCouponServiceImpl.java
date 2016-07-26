@@ -199,12 +199,12 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public long findSumBirthdayAndInterestByLoginName(String loginName) {
+    public long findSumBirthdayAndInterestByLoginName(String loginName){
         return userCouponMapper.findSumBirthdayAndInterestByLoginName(loginName);
     }
 
     @Override
-    public long findSumRedEnvelopeByLoginName(String loginName) {
+    public long findSumRedEnvelopeByLoginName(String loginName){
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
     }
 }
