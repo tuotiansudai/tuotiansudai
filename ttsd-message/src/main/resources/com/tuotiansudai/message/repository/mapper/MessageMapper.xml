@@ -9,6 +9,7 @@
     <resultMap id="messageResultMap" type="MessageModel">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
+        <result column="app_title" property="appTitle"/>
         <result column="template" property="template"/>
         <result column="type" property="type"/>
         <result column="event_type" property="eventType"/>
@@ -28,8 +29,8 @@
     </resultMap>
 
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into message (`title`, `template`, `type`, `event_type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`, `deleted`)
-        value(#{title}, #{template}, #{type}, #{eventType}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime}, 0)
+        insert into message (`title`, `app_title`, `template`, `type`, `event_type`, `user_groups`, `channels`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `updated_by`, `updated_time`, `created_by`, `created_time`, `deleted`)
+        value(#{title}, #{appTitle}, #{template}, #{type}, #{eventType}, #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler}, #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime}, #{expiredTime}, #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime}, 0)
     </insert>
 
     <update id="update" parameterType="MessageModel">

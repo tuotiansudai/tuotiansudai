@@ -22,7 +22,7 @@
     <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.signin.MySimpleUrlAuthenticationSuccessHandler"/>
     <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.signin.MySimpleUrlAuthenticationFailureHandler"/>
 
-    <beans:bean id="mySuccessHandler" class="com.tuotiansudai.signin.MySuccessHandler"/>
+    <beans:bean id="mySuccessHandler" class="com.tuotiansudai.signin.MySimpleUrlLogoutSuccessHandler"/>
 
     <http auto-config="true" use-expressions="true">
         <headers>
@@ -32,7 +32,7 @@
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" success-handler-ref="mySuccessHandler"/>
-        <csrf disabled="true"></csrf>
+        <csrf disabled="true"/>
     </http>
 
     <authentication-manager alias="authenticationManager">
