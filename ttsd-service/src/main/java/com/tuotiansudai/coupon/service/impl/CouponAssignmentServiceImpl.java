@@ -124,7 +124,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode,null);
+        ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
     }
@@ -173,7 +173,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null,null);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
@@ -211,13 +211,13 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }));
 
         for (CouponModel couponModel : couponModels) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null,null);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
         }
     }
 
     @Transactional
     @Override
-    public UserCouponModel assign(String loginName, long couponId, String exchangeCode,Long loanId) {
+    public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
         couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
@@ -232,7 +232,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
         userCouponModel.setExchangeCode(exchangeCode);
-        userCouponModel.setLoanId(loanId);
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
     }
@@ -288,7 +287,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null,loanId);
+            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            userCouponModel.setLoanId(loanId);
+            userCouponMapper.update(userCouponModel);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
     }
