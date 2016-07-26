@@ -56,10 +56,10 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
         }).done(function (data) {
-            if(data!=''){
-                $('.limit-tips').html('<span>'+data+'</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i>');
+            if(data !=''){
+                $('.limit-tips').html('<span>'+ data +'</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i>');
             }else{
-               $('.limit-tips').html(''); 
+               $('.limit-tips').html('');
             }
         }).fail(function (data) {
             console.log(data);

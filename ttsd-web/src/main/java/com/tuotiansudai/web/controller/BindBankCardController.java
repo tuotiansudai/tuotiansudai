@@ -14,11 +14,15 @@ import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.DecimalFormat;
 
 @Controller
 @RequestMapping(value = "/bind-card")
@@ -104,6 +108,8 @@ public class BindBankCardController {
     @RequestMapping(value = "/limit-tips", method = RequestMethod.GET)
     @ResponseBody
     public String getLimitTips(String bankCode) {
+        DecimalFormat myformat = new DecimalFormat();
+        myformat.applyPattern("##,###");
         if(bankCode == null){
             BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
             if(bankCardModel != null && bankCardModel.isFastPayOn()){
@@ -114,7 +120,7 @@ public class BindBankCardController {
         if(bankModel == null){
             return "";
         }
-        return bankModel.getName() + "快捷支付限额:" + "单笔" + bankModel.getSingleAmount()/100 + "元/单日"+ bankModel.getSingleDayAmount()/100 + "元";
+        return bankModel.getName() + "快捷支付限额:" + "单笔" + myformat.format(bankModel.getSingleAmount()/100) + "元/单日"+ myformat.format(bankModel.getSingleDayAmount()/100) + "元";
     }
 
 }

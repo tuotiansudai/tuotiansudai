@@ -27,8 +27,8 @@
                             <td>${bank.name!}</td>
                             <td>${bank.bankCode!}</td>
                             <td><span class="webImg"><img id="webUrl" src="${bank.imageUrl!}"/></span></td>
-                            <td>${bank.singleAmount/100}</td>
-                            <td>${bank.singleDayAmount/100}</td>
+                            <td>${bank.singleAmount}</td>
+                            <td>${bank.singleDayAmount}</td>
                             <td>
                                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                     <a href="/finance-manage/bank/${bank.id?c}/edit" >编辑</a>

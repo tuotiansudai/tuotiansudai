@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BankDto;
 import com.tuotiansudai.repository.model.BankModel;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface BankService {
 
     boolean updateBank(BankModel bankModel);
 
-    List<BankModel> findBankList();
-
     BankModel findByBankCode(String bankCode);
+
+    List<BankDto> findBankList();
 }

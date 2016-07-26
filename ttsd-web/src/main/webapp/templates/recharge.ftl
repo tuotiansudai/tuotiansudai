@@ -10,7 +10,7 @@
                 <i class="fa fa-sort-asc"></i>
                 <ul class="list-item" id="bankList">
                     <#list bankList as bank>
-                        <li>${bank.name}:单笔${bank.singleAmount/100}元,单日${bank.singleDayAmount/100}元</li>
+                        <li>${bank.name}:单笔${bank.singleAmount?number}元,单日${bank.singleDayAmount?number}元</li>
                     </#list>
                 </ul>
             </#if>
@@ -45,7 +45,9 @@
                                 <p><label>银行卡：</label><span>${bankCard}</span></p>
                                 <input type="hidden" name="fastPay" value="true"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                                <#if bankModel??>
+                                    <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)}元/单日${(bankModel.singleDayAmount/100)}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                                </#if>
                                 <div class="tc pad-s">
                                     <input type="submit" class="btn-normal" value="开通快捷支付"/>
                                 </div>
@@ -65,7 +67,7 @@
                                 <input type="hidden" name="fastPay" value="true"/>
                                 <input type="hidden" name="publicPay" value="false"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)?string('0')}元/单日${(bankModel.singleDayAmount/100)?string('0')}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                                <div class="limit-tips"><span>${bankModel.name}快捷支付限额:单笔${(bankModel.singleAmount/100)}元/单日${(bankModel.singleDayAmount/100)}元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
                                 <div class="tc pad-m">
                                     <button type="submit" class="btn" disabled="disabled">确认充值</button>
                                 </div>

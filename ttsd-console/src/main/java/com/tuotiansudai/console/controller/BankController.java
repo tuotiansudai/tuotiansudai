@@ -24,7 +24,7 @@ public class BankController {
     @RequestMapping(value = "/bank-list")
     public ModelAndView bannerList() {
         ModelAndView modelAndView = new ModelAndView("/bank-list");
-        List<BankModel> bankModelList = bankService.findBankList();
+        List<BankDto> bankModelList = bankService.findBankList();
         modelAndView.addObject("bankList", bankModelList);
         return modelAndView;
     }
