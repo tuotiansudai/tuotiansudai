@@ -20,8 +20,7 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,9 +37,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-//import com.tuotiansudai.task.OperationType;
-//import com.tuotiansudai.task.aspect.ApplicationAspect;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -97,6 +93,11 @@ public class UserServiceImpl implements UserService {
 
     public static String SHA = "SHA";
 
+    @Autowired
+    private IdGenerator idGenerator;
+
+    private static String LOGIN_NAME = "user-{0}";
+
     @Override
     public boolean emailIsExist(String email) {
         return userMapper.findByEmail(email) != null;
@@ -120,8 +121,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-        String loginName = dto.getLoginName();
-        boolean loginNameIsExist = this.loginNameIsExist(loginName);
+
+        boolean loginNameIsExist = false;
+        String loginName;
+        if (StringUtils.isNotEmpty(dto.getLoginName())) {
+            loginName = dto.getLoginName();
+            loginNameIsExist = this.loginNameIsExist(loginName);
+        } else {
+            loginName = MessageFormat.format(LOGIN_NAME, String.valueOf(idGenerator.generate()));
+            dto.setLoginName(loginName);
+        }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
@@ -148,21 +157,21 @@ public class UserServiceImpl implements UserService {
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(loginName.toLowerCase());
+        userRoleModel.setLoginName(userModel.getLoginName().toLowerCase());
         userRoleModel.setRole(Role.USER);
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
+            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), userModel.getLoginName());
         }
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
-        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(userModel.getLoginName(), membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
-        myAuthenticationManager.createAuthentication(loginName);
+        myAuthenticationManager.createAuthentication(userModel.getLoginName());
 
         return true;
     }
@@ -338,6 +347,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> findMobileLike(String mobile) {
+        return userMapper.findMobileLike(mobile);
+    }
+
+    @Override
+    public List<String> findAccountMobileLike(String mobile) {
+        return userMapper.findAccountMobileLike(mobile);
+    }
+
+    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
@@ -389,35 +408,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
-        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    public List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
     @Override
-    public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapper.findUsersAccountBalance(mobile,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for(UserModel userModel : userModels) {
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+        for(UserView userView : userViews) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userView.getLoginName(), Role.STAFF));
             userItemDataDtoList.add(userItemDataDto);
         }
         return userItemDataDtoList;
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+    public int findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
+        return userMapper.findUsersAccountBalanceCount(mobile, balance[0], balance[1]);
     }
 
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
+        return userMapper.findUsersAccountBalanceSum(mobile, balance[0], balance[1]);
     }
 
     @Override

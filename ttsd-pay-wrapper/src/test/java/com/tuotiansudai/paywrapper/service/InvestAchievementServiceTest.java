@@ -275,6 +275,7 @@ public class InvestAchievementServiceTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(new Date());
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }

@@ -9,14 +9,16 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.service.impl.ContractServiceImpl;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.Version;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -26,11 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailService {
@@ -49,6 +54,17 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private RandomUtils randomUtils;
 
     @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Value("${web.server}")
@@ -63,6 +79,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private ContractService contractService;
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -133,30 +152,28 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         loanDetailResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
-        loanDetailResponseDataDto.setLoanDetail(loan.getDescriptionHtml());
+        loanDetailResponseDataDto.setLoanDetail(obtainLoanDetail(loan.getId()));
         loanDetailResponseDataDto.setEvidence(getEvidenceByLoanId(loan.getId()));
 
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loan.getId());
-        if (loan.getActivityType() != ActivityType.NEWBIE) {
-            StringBuffer marqueeTitle = new StringBuffer();
-            if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loan.getStatus())) {
-                marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
-            } else {
-                for (InvestModel investModel : investAchievements) {
-                    String investorLoginName = randomUtils.encryptLoginName(loginName, investModel.getLoginName(), 3, investModel.getId());
-                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() == LoanStatus.RAISING) {
-                        marqueeTitle.append(investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
-                        marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loan.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() != LoanStatus.RAISING) {
-                        marqueeTitle.append("恭喜" + investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
-                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)) {
-                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
-                    }
+        StringBuffer marqueeTitle = new StringBuffer();
+        if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loan.getStatus())) {
+            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+        } else {
+            for (InvestModel investModel : investAchievements) {
+                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(),Source.MOBILE);
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() == LoanStatus.RAISING) {
+                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loan.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loan.getStatus() != LoanStatus.RAISING) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loan.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)){
+                    marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
                 }
             }
             loanDetailResponseDataDto.setMarqueeTitle(marqueeTitle.toString());
@@ -237,4 +254,63 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         return days + "天" + hours + "时" + minutes + "分";
     }
+
+    public String obtainLoanDetail(long loanId){
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if(loanModel != null){
+            Map<String, Object> dateModel = collectLoanDetailDateModel(loanId,loanModel.getPledgeType());
+            switch (loanModel.getPledgeType()){
+                case HOUSE:
+                    return contractService.getContract("pledgeHouse",dateModel);
+                case VEHICLE:
+                    return contractService.getContract("pledgeVehicle",dateModel);
+                default:
+                    return loanModel.getDescriptionHtml();
+
+            }
+        }
+        return null;
+
+    }
+    private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
+        Map<String, Object> dataModel = new HashMap<>();
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        if(loanerDetailsModel != null){
+            dataModel.put("loaner",loanerDetailsModel.getUserName());
+            dataModel.put("marriage",loanerDetailsModel.getMarriage());
+
+        }
+        if(loanDetailsModel != null ){
+            dataModel.put("declaration",loanDetailsModel.getDeclaration());
+
+        }
+        switch (pledgeType){
+            case HOUSE:
+                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel)pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+                if(pledgeHouseModel != null){
+                    dataModel.put("loanAmount",pledgeHouseModel.getLoanAmount());
+                    dataModel.put("estimateAmount",pledgeHouseModel.getEstimateAmount());
+                    dataModel.put("pledgeLocation",pledgeHouseModel.getPledgeLocation());
+                    dataModel.put("square",pledgeHouseModel.getSquare());
+                    dataModel.put("propertyCardId",pledgeHouseModel.getPropertyCardId());
+                    dataModel.put("estateRegisterId",pledgeHouseModel.getEstateRegisterId());
+                    dataModel.put("authenticAct",pledgeHouseModel.getAuthenticAct());
+
+                }
+                break ;
+            case VEHICLE:
+                PledgeVehicleModel pledgeVehicleModel = (PledgeVehicleModel)pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+                if(pledgeVehicleModel != null){
+                    dataModel.put("loanAmount",pledgeVehicleModel.getLoanAmount());
+                    dataModel.put("estimateAmount",pledgeVehicleModel.getEstimateAmount());
+                    dataModel.put("model",pledgeVehicleModel.getModel());
+                }
+                break;
+
+        }
+
+        return dataModel;
+    }
+
 }
