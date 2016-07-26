@@ -22,7 +22,7 @@
 
             <div class="col-sm-4 ">
                 <span class="info-text">
-                    <#if bank??>${bank.shorterName!}</#if>
+                    <#if bank??>${bank.bankCode!}</#if>
                 </span>
             </div>
 

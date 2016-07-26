@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.repository.model.BankModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
@@ -32,6 +34,17 @@ public class BankDto extends BaseDataDto implements Serializable {
     private String updatedBy;
 
     private Date updatedTime;
+
+    public BankDto(){
+    }
+    public BankDto(BankModel bankModel){
+        this.id = bankModel.getId();
+        this.name = bankModel.getName();
+        this.bankCode = bankModel.getBankCode();
+        this.imageUrl = bankModel.getImageUrl();
+        this.singleAmount = AmountConverter.convertCentToString(bankModel.getSingleAmount());
+        this.singleDayAmount = AmountConverter.convertCentToString(bankModel.getSingleDayAmount());
+    }
 
     public long getId() {
         return id;
