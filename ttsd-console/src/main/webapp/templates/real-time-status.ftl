@@ -14,8 +14,8 @@
         </div>
 
         <div class="login-name form-group" <#if type?? && type != 'user'>style="display: none"</#if>>
-            <label for="loginName">用户名</label>
-            <input type="text" id="loginName" name="login-name" class="form-control ui-autocomplete-input" value="${loginName!}"/>
+            <label for="loginName">电话号码</label>
+            <input type="text" id="loginName" name="login-name" class="form-control ui-autocomplete-input" value="${mobile!}"/>
         </div>
 
         <div class="loan form-group" <#if !(type??) || type != 'loan'>style="display: none"</#if>>

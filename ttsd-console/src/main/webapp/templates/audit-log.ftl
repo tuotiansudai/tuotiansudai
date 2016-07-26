@@ -22,17 +22,17 @@
         </div>
 
         <div class="form-group">
-            <label for="operatorLoginName">操作人</label>
-            <input type="text" id="operator-login-name" name="operatorLoginName"
+            <label for="operatorMobile">操作人手机</label>
+            <input type="text" id="operator-mobile" name="operatorMobile"
                    class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                   value="${operatorLoginName!}"/>
+                   value="${operatorMobile!}"/>
         </div>
 
         <div class="form-group">
-            <label for="auditorLoginName">审核人</label>
-            <input type="text" id="auditor-login-name" name="auditorLoginName"
+            <label for="auditorMobile">审核人手机</label>
+            <input type="text" id="auditor-mobile" name="auditorMobile"
                    class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                   value="${auditorLoginName!}"/>
+                   value="${auditorMobile!}"/>
         </div>
 
         <div class="form-group">
@@ -64,8 +64,8 @@
                 <th>IP</th>
                 <th>业务类型</th>
                 <th>操作对象（ID）</th>
-                <th>操作人</th>
-                <th>审核人</th>
+                <th>操作人手机</th>
+                <th>审核人手机</th>
                 <th>操作详情</th>
 
             </tr>
@@ -77,8 +77,8 @@
                     <td>${record.ip}</td>
                     <td>${record.operationType.getTargetType()}</td>
                     <td>${record.targetId!}</td>
-                    <td>${record.operatorLoginName!}</td>
-                    <td>${record.auditorLoginName!}</td>
+                    <td>${record.operatorMobile!}</td>
+                    <td>${record.auditorMobile!}</td>
                     <td>${record.description!}</td>
                 </tr>
                 <#else>
@@ -95,14 +95,14 @@
         </div>
         <ul class="pagination">
             <li <#if !data.hasPreviousPage>class="disabled"</#if>>
-                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorLoginName=${operatorLoginName!}&auditorLoginName=${auditorLoginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index-1}"
+                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorMobile=${operatorMobile!}&auditorMobile=${auditorMobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index-1}"
                    class="previous <#if !data.hasPreviousPage>disabled</#if>">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <li class="disabled"><a class="current-page" data-index="${data.index}">${data.index}</a></li>
             <li <#if !data.hasNextPage>class="disabled"</#if>>
-                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorLoginName=${operatorLoginName!}&auditorLoginName=${auditorLoginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
+                <a href="?operationType=${operationType!}&targetId=${targetId!}&operatorMobile=${operatorMoible!}&auditorMoible=${auditorMobile!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
                    class="next <#if !data.hasNextPage>disabled</#if>">
                     <span aria-hidden="true">&raquo;</span>
                 </a>

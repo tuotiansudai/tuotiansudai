@@ -17,6 +17,8 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     private String usableUserCouponCount;
     private String point;
     private String rewardAmount;
+    private String membershipLevel;
+    private String membershipPoint;
 
     public String getTotalAssets() {
         return totalAssets;
@@ -127,4 +129,20 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     public String getRewardAmount() { return rewardAmount; }
 
     public void setRewardAmount(String rewardAmount) { this.rewardAmount = rewardAmount; }
+
+    public String getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(String membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
+    public String getMembershipPoint() {
+        return membershipPoint;
+    }
+
+    public void setMembershipPoint(String membershipPoint) {
+        this.membershipPoint = membershipPoint;
+    }
 }

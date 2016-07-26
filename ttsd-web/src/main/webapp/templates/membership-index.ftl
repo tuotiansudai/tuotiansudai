@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员中心" activeLeftNav="" title="会员中心" site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员中心" activeLeftNav="" title="会员中心_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
-    <#if loginName??>
+    <#if mobile??>
         <div class="user-info-block page-width">
             <div class="info clearfix">
                 <div class="avatar fl">
@@ -10,7 +10,7 @@
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
-                    <p><span class="orange font20">您好！${loginName!}</span>
+                    <p><span class="orange font20">您好！${mobile!}</span>
                         <#if membershipType == 'GIVEN'>
                             <span class="font14">会员有效期还有：<strong class="font22">${leftDays?string('0')}</strong>天</span>
                         </#if>
@@ -29,7 +29,7 @@
                     <div class="vip-bg vip-5 <#if membershipLevel == 5>active</#if>"></div>
                     <#if membershipType == 'UPGRADE'>
                         <#if membershipNextLevel <= 5 && membershipLevel != 5>
-                            <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i
+                            <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
                     </#if>
