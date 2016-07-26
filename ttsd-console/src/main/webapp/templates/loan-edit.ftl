@@ -60,9 +60,9 @@
         <h3><span>项目信息</span></h3>
         <hr class="top-line">
         <div>
+            <input type="text" hidden class="jq-pledge-type" value="${loanInfo.pledgeType}">
             <div class="form-group">
                 <label class="col-sm-2 control-label">借款项目名称: </label>
-
                 <div class="col-sm-4">
                     <select class="selectpicker b-width jq-name">
                         <option value="房产抵押借款" <#if loanInfo.projectName == "房产抵押借款">selected</#if>>房产抵押借款</option>
