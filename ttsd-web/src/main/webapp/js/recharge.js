@@ -107,7 +107,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric', 'comm
         }
     });
 
-    $bankList.on('click', function(event) {
+    $bankList.on('mouseover mouseout', function(event) {
         event.preventDefault();
         $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
     });

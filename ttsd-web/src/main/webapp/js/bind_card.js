@@ -41,7 +41,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
             });
         });
 
-        $bankList.on('click', function(event) {
+        $bankList.on('mouseover mouseout', function(event) {
             event.preventDefault();
             $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
         });
