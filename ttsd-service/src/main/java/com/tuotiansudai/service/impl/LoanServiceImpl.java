@@ -402,7 +402,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public AbstractCreateLoanDto findCreateLoanDto(long loanId) throws Exception {
+    public AbstractCreateLoanDto findCreateLoanDto(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
         loanModel.setLoanTitles(loanTitleRelationModelList);
@@ -416,7 +416,7 @@ public class LoanServiceImpl implements LoanService {
             AbstractPledgeDetail pledgeDetail = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
             createLoanDto = new CreateVehicleLoanDto(loanModel, loanDetailsModel, loanerDetailsModel, (PledgeVehicleModel) pledgeDetail);
         } else {
-            throw new Exception("pledge type not exist");
+            return null;
         }
         return createLoanDto;
     }

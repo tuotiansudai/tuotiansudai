@@ -54,7 +54,7 @@ public interface LoanService {
 
     LoanModel findLoanById(long loanId);
 
-    AbstractCreateLoanDto findCreateLoanDto(long loanId) throws Exception;
+    AbstractCreateLoanDto findCreateLoanDto(long loanId);
 
     boolean loanIsExist(long loanId);
 

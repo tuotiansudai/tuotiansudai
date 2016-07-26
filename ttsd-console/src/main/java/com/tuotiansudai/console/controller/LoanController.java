@@ -80,7 +80,7 @@ public class LoanController {
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView loanInfo(@PathVariable long loanId) throws Exception {
+    public ModelAndView loanInfo(@PathVariable long loanId) {
         if (!loanService.loanIsExist(loanId)) {
             return new ModelAndView("/index");
         }
