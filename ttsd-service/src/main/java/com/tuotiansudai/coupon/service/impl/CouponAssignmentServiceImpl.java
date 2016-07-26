@@ -288,7 +288,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (isAssignableCoupon) {
             UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
-            userCouponModel.setLoanId(loanId);
+            userCouponModel.setFromLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
