@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InvestAchievementCollector implements UserCollector {
+public class InvestAchievementCollector implements InvestAchievementUserCollector {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -24,10 +24,6 @@ public class InvestAchievementCollector implements UserCollector {
         return Lists.newArrayList();
     }
 
-    @Override
-    public boolean contains(long couponId, String loginName) {
-        return true;
-    }
 
     @Override
     public boolean contains(long loanId, String loginName, UserGroup userGroup) {

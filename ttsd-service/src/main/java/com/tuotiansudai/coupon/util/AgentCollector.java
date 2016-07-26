@@ -26,9 +26,4 @@ public class AgentCollector implements UserCollector {
         return couponUserGroupModel != null && couponUserGroupModel.getUserGroupItems().contains(loginName);
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
-
 }

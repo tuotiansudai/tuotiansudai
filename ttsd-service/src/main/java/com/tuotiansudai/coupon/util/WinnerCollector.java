@@ -19,8 +19,4 @@ public class WinnerCollector implements UserCollector{
         return true;
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

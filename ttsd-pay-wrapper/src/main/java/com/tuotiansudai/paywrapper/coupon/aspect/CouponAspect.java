@@ -1,6 +1,10 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
@@ -13,7 +17,10 @@ import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -49,6 +56,15 @@ public class CouponAspect {
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
@@ -168,10 +184,25 @@ public class CouponAspect {
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))")
     public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint) {
         final long loanId = (long) joinPoint.getArgs()[0];
-        List<UserCouponModel> investAchievementCoupons = userCouponService.getInvestAchievementCoupon(loanId);
-        for(UserCouponModel userCouponModel : investAchievementCoupons){
-            couponAssignmentService.assignUserCoupon(loanId,userCouponModel.getLoginName(),userCouponModel.getCouponId());
+        LoanModel loanModel = loanMapper.findById(loanId);
+        createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
+        createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
+        createUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId);
+    }
+
+    public List<UserCouponModel> createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
+        List<UserCouponModel> userCouponModels = Lists.newArrayList();
+        if(investId == null){
+            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
         }
+
+        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
+        for(CouponModel couponModel : couponModelList){
+            if(couponModel.getUserGroup().equals(userGroup)){
+                couponAssignmentService.assignUserCoupon(loanId,investMapper.findById(investId).getLoginName(),couponModel.getId());
+            }
+        }
+        return userCouponModels;
     }
 }
 

@@ -26,6 +26,4 @@ public interface UserCouponService {
 
     long findSumRedEnvelopeByLoginName(String loginName);
 
-    List<UserCouponModel> getInvestAchievementCoupon(long loanId);
-    
 }

@@ -30,8 +30,4 @@ public class RegisteredNotInvestedUserCollector implements UserCollector {
         return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) == 0 && accountMapper.findByLoginName(loginName) != null;
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

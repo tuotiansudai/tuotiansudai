@@ -48,8 +48,4 @@ public class MembershipUserCollector implements UserCollector {
         return membershipModel != null && mapping.get(membershipModel.getLevel()) == userGroup;
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

@@ -53,8 +53,4 @@ public class ImportUserCollector implements UserCollector {
         }).contains(loginName);
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

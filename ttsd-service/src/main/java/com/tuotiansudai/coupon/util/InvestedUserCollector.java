@@ -28,8 +28,4 @@ public class InvestedUserCollector implements UserCollector {
         return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

@@ -31,8 +31,4 @@ public class AllUserCollector implements UserCollector {
         return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

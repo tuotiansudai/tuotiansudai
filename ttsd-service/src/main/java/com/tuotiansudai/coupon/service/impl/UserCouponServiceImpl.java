@@ -214,29 +214,4 @@ public class UserCouponServiceImpl implements UserCouponService {
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
     }
 
-    @Override
-    public List<UserCouponModel> getInvestAchievementCoupon(long loanId) {
-        List<UserCouponModel> userCouponModels = Lists.newArrayList();
-        LoanModel loanModel = loanMapper.findById(loanId);
-        userCouponModels.addAll(getUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId));
-        userCouponModels.addAll(getUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId));
-        userCouponModels.addAll(getUserCouponModel(loanModel.getLastInvestAchievementId(),UserGroup.LAST_INVEST_ACHIEVEMENT,loanId));
-        return userCouponModels;
-    }
-
-    public List<UserCouponModel> getUserCouponModel(Long investId,final UserGroup userGroup,long loanId){
-        List<UserCouponModel> userCouponModels = Lists.newArrayList();
-        if(investId == null){
-            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
-        }
-
-        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
-        for(CouponModel couponModel : couponModelList){
-            if(couponModel.getUserGroup().equals(userGroup)){
-                userCouponModels.add(new UserCouponModel(investMapper.findById(investId).getLoginName(),
-                        couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime()));
-            }
-        }
-        return userCouponModels;
-    }
 }

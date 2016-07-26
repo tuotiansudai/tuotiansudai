@@ -36,9 +36,5 @@ public class StaffCollector implements UserCollector{
         });
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 
 }

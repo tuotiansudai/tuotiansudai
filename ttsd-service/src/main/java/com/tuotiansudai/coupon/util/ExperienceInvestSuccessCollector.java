@@ -39,8 +39,4 @@ public class ExperienceInvestSuccessCollector implements UserCollector {
         return false;
     }
 
-    @Override
-    public boolean contains(long loanId, String loginName, UserGroup userGroup) {
-        return true;
-    }
 }

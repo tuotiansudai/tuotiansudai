@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementCollector;
+import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
@@ -99,7 +100,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private UserCollector notAccountNotInvestedUserCollector;
 
     @Resource(name = "investAchievementCollector")
-    private UserCollector investAchievementCollector;
+    private InvestAchievementUserCollector investAchievementCollector;
 
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
@@ -252,17 +253,19 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        UserCollector collector = getCollector(couponModel.getUserGroup());
-
-        if (collector == null) {
-            logger.error(MessageFormat.format("[Coupon Assignment] user({0}) coupon({1}) user group({2}) collector not found", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
-            return;
-        }
-
         boolean contains;
         if(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.AGENT.LAST_INVEST_ACHIEVEMENT).contains(couponModel.getUserGroup())){
+            InvestAchievementUserCollector collector = getInvestAchievementCollector(couponModel.getUserGroup());
             contains = collector.contains(loanId, loginName,couponModel.getUserGroup());
         }else{
+
+            UserCollector collector = getCollector(couponModel.getUserGroup());
+
+            if (collector == null) {
+                logger.error(MessageFormat.format("[Coupon Assignment] user({0}) coupon({1}) user group({2}) collector not found", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
+                return;
+            }
+
             contains = collector.contains(couponId, loginName);
         }
 
@@ -313,6 +316,11 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.MEMBERSHIP_V3, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V4, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V5, this.membershipUserCollector)
+                .build()).get(userGroup);
+    }
+
+    private InvestAchievementUserCollector getInvestAchievementCollector(UserGroup userGroup) {
+        return Maps.newHashMap(ImmutableMap.<UserGroup, InvestAchievementUserCollector>builder()
                 .put(UserGroup.FIRST_INVEST_ACHIEVEMENT, this.investAchievementCollector)
                 .put(UserGroup.MAX_AMOUNT_ACHIEVEMENT, this.investAchievementCollector)
                 .put(UserGroup.LAST_INVEST_ACHIEVEMENT, this.investAchievementCollector)
