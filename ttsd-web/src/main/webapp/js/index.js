@@ -11,7 +11,8 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
-        var $bookInvestForm=$('.book-invest-form');
+        var $bookInvestForm=$('.book-invest-form'),
+            $projectTransfer=$('.project-transfer-frame');
 
         $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
@@ -114,11 +115,11 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
             //window.location.href=$(this).attr('data-url');
 
         })
-        $('.loan-btn li').on('click', function(event) {
+        $('.loan-btn').on('click', 'li',function(event) {
             event.preventDefault();
-            window.location.href=$(this).attr('data-url');
+            window.location.href=$(this).data('url');
         });
-        $('.new-user-free').on('click', function (event) {
+        $('.new-user-free,.product-box-tran').on('click', function (event) {
             event.preventDefault();
             window.location.href = $(this).attr('data-url');
         });
@@ -188,6 +189,33 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
                 return false;
             }
         });
+
+        //转让项目
+        $.ajax({
+            url:'/transfer-list/homePage',
+            data:{"index":1,"pageSize":2},
+            type:'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        })
+            .done(function (response) {
+                var transerTpl=$('#transerTpl').html(),
+                    transerTplMobile=$('#transerTplMobile').html();
+
+                var render = _.template(transerTpl),
+                    renderMobile=_.template(transerTplMobile);
+                var data={};
+                data.list=response;
+                var html = render(data),
+                    htmlMobile=renderMobile(data);
+
+                var $element=$projectTransfer.find('.loan-box-inner'),
+                    $elementMobile=$('.project-transfer-mobile');
+                $element.html(html);
+                $elementMobile.html(htmlMobile);
+
+            });
+
         function cnzzCount(){
             var url = $(this).data('name');
             switch (url){

@@ -267,7 +267,6 @@
     background: #fafafa;
     margin-top: 35px;
     padding-top: 35px;
-    .page-width {
       &.new-model {
         margin-bottom: 45px;
       }
@@ -276,28 +275,29 @@
         height: 45px;
         margin-bottom: 10px;
         span {
-          float: left;
+          //float: left;
           font-size: 20px;
           color: #999;
           line-height: 45px;
           height:45px;
+          width: 722px;
+          display: inline-block;
           &.product-icon {
-            width: 722px;
             padding-left: 38px;
-            background: url("/images/sign/home-title-new.png") -10px -10px  no-repeat;
+            background: url("/images/sign/home-title-new.png") -10px -2px  no-repeat;
           }
           &.hot-product {
-            width: 722px;
             padding-left: 38px;
             background: url("/images/sign/home-title-new.png") -10px -53px no-repeat;
           }
           &.media-coverage-icon {
-            width: 722px;
             background: url("/images/sign/home-title-new.png") -10px -110px no-repeat;
           }
           &.partner-icon {
-            width: 722px;
             background: url("/images/sign/home-title-new.png") -10px -153px no-repeat;
+          }
+          &.project-transfer-icon {
+            background: url("/images/sign/home-title-new.png") -10px -233px no-repeat;
           }
         }
         .hot-more {
@@ -331,7 +331,6 @@
         float: left;
         width: 760px;
         height: auto;
-        margin-bottom: 25px;
         ul {
           float: left;
           li {
@@ -481,7 +480,6 @@
                 }
               }
             }
-
           }
         }
       }
@@ -489,7 +487,6 @@
         float: right;
         width: 218px;
         height: 158px;
-        margin-bottom: 25px;
         border: 1px solid #e6e6e6;
         background-color: #fff;
         overflow: hidden;
@@ -1126,7 +1123,7 @@
           display: none;
         }
       }
-    }
+
     .media-coverage-box {
       .media-list {
         width:563px;
@@ -1186,7 +1183,27 @@
       }
     }
   }
-
+  .project-transfer-frame {
+    .loan-info-frame {
+      .loan-info-dl dl {
+        &.transfer-one {
+          width:30%!important;
+        }
+        &.transfer-two {
+          width:20%!important;
+        }
+        dd em{
+          color: #ff7200!important;
+        }
+      }
+    }
+    .loan-process {
+      .deadline {
+        display: inline-block;
+        padding-top:15px;
+      }
+    }
+  }
   .book-invest-box {
     padding:20px;
     .book-table-column {
@@ -1427,10 +1444,67 @@
         }
       }
     }
+    .project-transfer-frame {
+      .label-title {
+        display: none;
+      }
+    }
+    .project-transfer-mobile {
+      margin: 0 auto auto 10px;
+      width: 100%;
+      color: #999;
+      .product-box-tran {
+        background: #fff;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        .l-title {
+          font-size:15px;
+        }
+        .loan-info-dl {
+          dl {
+            float: left;
+            width:33%;
+            em {
+              color: #ff3333;
+              font-weight: bold;
+              font-size:20px;
+            }
+          }
+          .btn-normal {
+            width: auto;
+            border: 1px solid #ff6400 !important;
+            background: #fff !important;
+            color: #ff6400 !important;
+            letter-spacing: 0;
+            padding: 7px 11px;
+            float: right;
+            border-radius: 5px;
+          }
+        }
+        .transer-bottom {
+          border-top:1px solid #e5e5e5;
+          line-height: 35px;
+          em {
+            color: #ff3333;
+            font-size:15px;
+          }
+        }
+      }
+    }
+  }
+  .loan-list-index{
+    display:none!important;
+  }
+  .product-box-list{
+    display:block!important;
   }
 
   .book-box-layer {
     left: 5%!important;
     width:90%!important;
   }
+
+
 }
