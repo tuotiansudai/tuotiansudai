@@ -628,6 +628,52 @@
         </div>
     </div>
 
+    <div class="book-invest-box" style="display: none">
+        <form name="bookInvest" class="book-invest-form">
+        <div class="clearfix book-table-column">
+            <div class="fl">选择项目</div>
+            <div class="fr">
+                <table class="book-invest-table">
+                    <tr>
+                        <th>预约项目</th>
+                        <th>预期年化收益</th>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po1" value="_90"><label for="po1">90天项目</label>
+                        </td>
+                        <td>11%</td>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po2" value="_180"><label for="po2">180天项目</label></td>
+                        <td>12%</td>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po3" value="_360"><label for="po3">360天项目</label></td>
+                        <td>13%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <dl class="book-dl clearfix">
+            <dt>预计投资金额</dt>
+            <dd><input type="text" class="form-text" name="bookingAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric"> 元</dd>
+        </dl>
+        <dl class="book-dl clearfix">
+            <dt>预约说明</dt>
+            <dd>1. 每次预约不可同时预约多个项目； <br/>
+                2. 预约设置完成时开始进入预约队列； <br/>
+                3. 预约后，当有相应标的时，我们会第一时间通知您进行投资； <br/>
+                4. 可添加多笔预约，每笔预约排名互相独立， 互不影响； <br/>
+                5. 每笔预约在通知投资后失效；
+
+            </dd>
+
+        </dl>
+
+        <div class="tc"><button type="submit" class="btn btn-normal">确认预约</button> </div>
+        </form>
+    </div>
+
     <#include "coupon-alert.ftl" />
 </div>
 

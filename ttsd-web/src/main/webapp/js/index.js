@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down'], function ($, _) {
+require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down','jquery.validate','autoNumeric'], function ($, _,layer) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -10,6 +10,8 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
             $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
+
+        var $bookInvestForm=$('.book-invest-form');
 
         $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
@@ -35,8 +37,6 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
             $("#bannerBox").slide({mainCell:".bd ul",effect:"leftLoop",autoPlay:true});
         } else if (viewport == 'mobile') {
             $imgScroll.find('img.pc-img').remove();
-
-
             $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2, 'visibility': 'visible'});
             $imgNum.click(function () {
                 var num_nav = $imgNum.index(this);
@@ -101,9 +101,18 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
             })
         }
 
-        $('.web-book-box').on('click',function(event) {
+        $('.web-book-box,.book-text-tip').on('click',function(event) {
             event.preventDefault();
-            window.location.href=$(this).attr('data-url');
+
+            layer.open({
+                title: '预约投资',
+                type: 1,
+                skin: 'book-box-layer',
+                area: ['500px'],
+                content: $('.book-invest-box')
+            });
+            //window.location.href=$(this).attr('data-url');
+
         })
         $('.loan-btn li').on('click', function(event) {
             event.preventDefault();
@@ -121,7 +130,64 @@ require(['jquery', 'underscore', 'superslide','jquery.ajax.extension', 'commonFu
             event.preventDefault();
             $('.product-box-inner').removeClass('active');
         });
+        $('input.autoNumeric').autoNumeric('init');
+        $bookInvestForm.validate({
+            focusInvalid: false,
+            errorPlacement: function(error, element) {
+                layer.tips(error.text(), element, {
+                    tips: [1, '#efbf5c'],
+                    time: 3000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            },
+            rules: {
+                productType:{
+                    required: true
+                },
+                bookingAmount:{
+                    required: true,
+                    number:true
+                }
+            },
+            messages: {
+                productType: {
+                    required: "请选择您希望投资的项目"
+                },
+                bookingAmount:{
+                    required:"请输入预计投资金额",
+                    number:"请输入正确的投资金额"
+                }
 
+            },
+            submitHandler: function (form) {
+                var data=$(form).serialize();
+                //form.submit();
+                $.ajax({
+                    url:'/booking-loan/invest?'+data,
+                    //data:data,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                    .done(function (response) {
+                        if (response.data.status) {
+                            layer.closeAll();
+                            layer.msg('<h2>恭喜您预约成功！</h2> 当有可投项目时客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。', {
+                                time: 6000,
+                                icon:1,
+                                tips: [1, '#efbf5c']
+                            });
+
+                        }
+                    })
+                    .fail(function(response) {
+                        layer.alert('接口错误');
+                    });
+                return false;
+            }
+        });
         function cnzzCount(){
             var url = $(this).data('name');
             switch (url){
