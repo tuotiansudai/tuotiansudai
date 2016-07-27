@@ -32,9 +32,9 @@
                     <p>每月发放投资红包，588、688、788、888元随机派送</p>
                 </li>
                 <li class="service-fee-discount">
-                    <h3>服务费折扣</h3>
+                    <h3>技术服务费</h3>
 
-                    <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                    <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                 </li>
                 <li class="vip-service">
                     <h3>贵宾专线</h3>
@@ -42,9 +42,9 @@
                     <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                 </li>
                 <li class="spec-financial-advisor">
-                    <h3>专享理财顾问</h3>
+                    <h3>专享投资顾问</h3>
 
-                    <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                    <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                 </li>
                 <li class="birthday-benefits">
                     <h3>生日福利</h3>
@@ -111,7 +111,7 @@
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                 </tr>
                 <tr>
-                    <td>服务费折扣（折后费率）</td>
+                    <td>技术服务费（折后费率）</td>
                     <td>10%（基础费率）</td>
                     <td>10%（基础费率）</td>
                     <td>9%</td>
@@ -129,7 +129,7 @@
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                 </tr>
                 <tr>
-                    <td>专享理财顾问</td>
+                    <td>专享投资顾问</td>
                     <td></td>
                     <td></td>
                     <td></td>
