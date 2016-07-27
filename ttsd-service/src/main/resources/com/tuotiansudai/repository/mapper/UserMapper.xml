@@ -344,71 +344,57 @@
     </select>
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
-        SELECT
-        *,
-        referrer_u.mobile AS referrer_mobile,
-        (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
-        FROM
-        user u
-        JOIN account a
-        LEFT JOIN user referrer_u
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        AND u.referrer = referrer_u.login_name
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
+        SELECT `user`.*, `account`.*,
+        (select `referrer`.`mobile` from `user` `referrer` where `referrer`.`login_name` = `user`.`referrer`) as referrer_mobile,
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
-            AND u.`mobile` = #{mobile}
+            AND `user`.`mobile` = #{mobile}
         </if>
-        ORDER BY a.`balance` DESC
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+        ORDER BY `account`.`balance` DESC
         limit #{startLimit}, #{endLimit}
     </select>
 
     <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
-        SELECT
-        IFNULL(SUM(a.`balance`), 0)
-        FROM
-        user u
-        JOIN account a
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
+        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
-            AND u.`mobile` = #{mobile}
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
-    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
-        SELECT
-        IFNULL(count(*), 0)
-        FROM
-        user u
-        JOIN account a
-        ON u.`login_name` = a.`login_name`
-        AND a.`balance` >= #{balanceMin}
-        AND a.`balance` &lt;= #{balanceMax}
-        WHERE NOT EXISTS
-        (SELECT
-        1
-        FROM
-        user_role r
-        WHERE u.`login_name` = r.`login_name`
-        AND r.`role` = 'LOANER')
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="long">
+        SELECT IFNULL(count(1), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
-            AND u.`mobile` = #{mobile}
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 

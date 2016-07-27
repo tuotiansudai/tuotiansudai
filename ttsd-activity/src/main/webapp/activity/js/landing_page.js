@@ -111,7 +111,12 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
             $popWinBox.find('.app-close').on('click', function () {
                 layer.closeAll();
             });
+<<<<<<< HEAD
             $popWinBox.find('.app-button').on('click', function () {
+=======
+            $popWinBox.find('.app-button').on('click',function() {
+                cnzzPush.trackClick('154landingPage2','领取588红包');
+>>>>>>> mobile_app_2.5
                 layer.closeAll();
                 location.href = '/loan-list';
             });

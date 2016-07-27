@@ -35,7 +35,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric'], func
             formElement.submit();
             layer.open({
                 type: 1,
-                title: '登录到联动优势支付平台充值',
+                title: '登录到联动优势支付平台提现',
                 area: ['560px', '270px'],
                 shadeClose: true,
                 content: $('#popWithdraw')
