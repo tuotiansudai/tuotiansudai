@@ -61,8 +61,7 @@
       padding-right: 40px;
       border-right: 1px solid #e6e6e6;
       .transfer-info-dl {
-        float:left;
-        width: 100%;
+        margin-top: 20px;
         dl {
           width: 25%;
           float:left;
@@ -85,7 +84,7 @@
       .info-detail{
         float:left;
         width:100%;
-        margin-top:40px;
+        margin-top: 20px;
         border-top:1px dashed #e6e6e6;
         padding:10px 0;
         .detail-list{
@@ -249,9 +248,8 @@
       }
     }
     .transfer-table{
-      float:left;
       width:920px;
-      padding:20px 40px;
+      margin-left: -15px;
       table{
         border:1px solid #e6e6e6;
         i{
