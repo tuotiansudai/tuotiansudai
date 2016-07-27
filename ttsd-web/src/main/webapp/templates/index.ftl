@@ -103,6 +103,7 @@
     </div>
 
     <div class="home-content" id="productFrame">
+    <#--新手专享-->
         <div class="page-width clearfix new-model">
             <div class="new-user-free" data-url="/loan/1">
                 <div class="left-intro">
@@ -160,9 +161,11 @@
                 <div class="mask-bg"></div>
             </div>
         </div>
+
+    <#--优选债权-->
         <#list loans as loan>
             <#if loan.activityType == "NEWBIE">
-                <div class="page-width clearfix media-hide">
+                <div class="page-width clearfix media-hide margin-top25">
                     <h3 class="label-title">
                         <span class="product-icon"></span>
                     </h3>
@@ -273,13 +276,20 @@
                 </div>
             </#if>
         </#list>
-        <div class="page-width clearfix">
+
+        <div class="page-width clearfix margin-top25">
             <h3 class="label-title media-hide">
                 <span class="hot-product"></span>
                 <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
             </h3>
 
             <div class="loan-list-index fl">
+
+                <div class="web-book-box" data-url="/loan/1">
+                    <span>预约后当有相应项目我们会及时通知您</span>
+                    <i class="btn-invest btn-normal">我要预约</i>
+                </div>
+
                 <ul class="loan-box-inner loan-btn">
                     <#list loans as loan>
                         <#if loan.activityType != "NEWBIE">
@@ -421,6 +431,14 @@
                             <span class="guide-btn"></span>
                         </div>
                     </div>
+
+                    <div class="product-box tc product-type book-text-tip" >
+                        <div class="pad-m" title="BLQ001" data-url="/loan/1">
+                            <i>预约后当有相应项目我们会及时通知您</i>
+                        </div>
+                        <a href="/loan/1" class="btn-normal">我要预约</a>
+                    </div>
+
                     <#list loans as loan>
                         <#if loan.activityType == "NEWBIE">
                             <div class="product-box tc product-type">
@@ -557,7 +575,23 @@
                             </div>
                         </#if>
                     </#list>
+
+                <#--转让项目-->
+
+                    <div class="project-transfer-mobile">
+
+                    </div>
                 </div>
+            </div>
+        </div>
+
+    <#--转让项目-->
+        <div class="page-width project-transfer-frame margin-top25 media-hide">
+            <h3 class="label-title">
+                <span class="project-transfer-icon"></span>
+            </h3>
+            <div class="loan-list-index">
+                <ul class="loan-box-inner loan-btn"> </ul>
             </div>
         </div>
 
@@ -614,6 +648,136 @@
         </div>
     </div>
 
+    <div class="book-invest-box" style="display: none">
+        <form name="bookInvest" class="book-invest-form">
+            <div class="clearfix book-table-column">
+                <div class="fl">选择项目</div>
+                <div class="fr">
+                    <table class="book-invest-table">
+                        <tr>
+                            <th>预约项目</th>
+                            <th>预期年化收益</th>
+                        </tr>
+                        <tr>
+                            <td class="product-type"><input type="radio" name="productType" id="po1" value="_90"><label for="po1">90天项目</label>
+                            </td>
+                            <td>11%</td>
+                        </tr>
+                        <tr>
+                            <td class="product-type"><input type="radio" name="productType" id="po2" value="_180"><label for="po2">180天项目</label></td>
+                            <td>12%</td>
+                        </tr>
+                        <tr>
+                            <td class="product-type"><input type="radio" name="productType" id="po3" value="_360"><label for="po3">360天项目</label></td>
+                            <td>13%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <dl class="book-dl clearfix">
+                <dt>预计投资金额</dt>
+                <dd><input type="text" class="form-text" name="bookingAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric"> 元</dd>
+            </dl>
+            <dl class="book-dl clearfix">
+                <dt>预约说明</dt>
+                <dd>1. 每次预约不可同时预约多个项目； <br/>
+                    2. 预约设置完成时开始进入预约队列； <br/>
+                    3. 预约后，当有相应标的时，我们会第一时间通知您进行投资； <br/>
+                    4. 可添加多笔预约，每笔预约排名互相独立， 互不影响； <br/>
+                    5. 每笔预约在通知投资后失效；
+
+                </dd>
+
+            </dl>
+
+            <div class="tc"><button type="submit" class="btn btn-normal">确认预约</button> </div>
+        </form>
+    </div>
+    <script type="text/template" id="transerTpl">
+        <% for(var i = 0; i < list.length; i++) {
+        var item = list[i],button;
+        if(item.transferStatus=='TRANSFERRING') {
+        button='<button class="btn-invest btn-normal">马上投资</button>';
+        }
+        else {
+        button='<button class="btn-invest btn-normal" disabled>已转让</button>';
+        }
+        %>
+        <li data-url="/transfer/<%=item.loanId%>" class="clearfix">
+            <div class="loan-info-frame fl">
+                <div class="loan-top">
+                    <span class="l-title fl"><%=item.name%></span>
+                </div>
+                <div class="loan-info-dl">
+                    <dl class="transfer-one">
+                        <dt>转让价格</dt>
+                        <dd>
+                            <em><%=item.transferAmount.split('.')[0]%>.</em>
+                            <i><%=item.transferAmount.split('.')[1]%></i> 元
+                        </dd>
+                    </dl>
+
+                    <dl class="transfer-one">
+                        <dt>待收本金</dt>
+                        <dd><em><%=item.investAmount.split('.')[0]%>.</em><i><%=item.investAmount.split('.')[1]%></i> 元</dd>
+                    </dl>
+                    <dl class="transfer-two">
+                        <dt>年化收益</dt>
+                        <dd><em><%=item.baseRate%></em><i>%</i></dd>
+                    </dl>
+                    <dl class="transfer-two">
+                        <dt>剩余期数</dt>
+                        <dd><em><%=item.leftPeriod%></em></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="loan-process ">
+
+                <span class="deadline"> 截止时间：<%=item.deadLine%></span>
+                <div class="rest-amount">
+                    <%=button%>
+                </div>
+            </div>
+        </li>
+        <% } %>
+    </script>
+
+    <script type="text/template" id="transerTplMobile">
+        <% for(var i = 0; i < list.length; i++) {
+        var item = list[i],
+        button;
+        if(item.transferStatus=='TRANSFERRING') {
+        button='<button class="btn-invest btn-normal">马上投资</button>';
+        }
+        else {
+        button='<button class="btn-invest btn-normal" disabled>已转让</button>';
+        }
+        %>
+        <div class="product-box-tran" data-url="/transfer/<%=item.loanId%>">
+            <div class="loan-top clearfix">
+                <span class="l-title fl"><%=item.name%></span>
+            </div>
+            <div class="loan-info-dl clearfix">
+                <dl>
+                    <dt>年化收益</dt>
+                    <dd><em><%=item.baseRate%>%</em></dd>
+                </dl>
+                <dl>
+                    <dt class="tc">剩余期数</dt>
+                    <dd class="tc"><em><%=item.leftPeriod%></em></dd>
+                </dl>
+                <dl>
+                    <dd><%=button%></dd>
+                </dl>
+            </div>
+            <div class="transer-bottom clearfix">
+                转让价格：<em><%=item.transferAmount%>元</em> / <%=item.investAmount%>元
+            </div>
+        </div>
+
+        <% } %>
+    </script>
     <#include "coupon-alert.ftl" />
 </div>
 
