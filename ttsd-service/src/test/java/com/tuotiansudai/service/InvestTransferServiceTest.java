@@ -93,6 +93,7 @@ public class InvestTransferServiceTest {
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         loanDto.setRecheckTime(new Date());
         loanDto.setProductType(ProductType._180);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         return loanModel;
