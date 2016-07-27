@@ -223,6 +223,9 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 2);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 2);
     }
 
     @Test
@@ -252,6 +255,38 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 2);
+    }
+
+    @Test
+    public void shouldManyLoanInvestAchievementAssignUserCouponIsOk(){
+        String loginName = "testAchievement";
+        createMockUser(loginName);
+        LoanModel loanModel = getFakeExperienceLoan(loginName);
+        InvestModel firstInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel maxInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel lastInvestModel = createInvest(loginName, loanModel.getId());
+        loanModel.setFirstInvestAchievementId(firstInvestModel.getId());
+        loanModel.setMaxAmountAchievementId(maxInvestModel.getId());
+        loanModel.setLastInvestAchievementId(lastInvestModel.getId());
+        loanMapper.update(loanModel);
+        CouponModel couponModel = getFakeCoupon(UserGroup.LAST_INVEST_ACHIEVEMENT,true);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
+
+        String loginNameTwo = "testAchievementTwo";
+        createMockUser(loginNameTwo);
+        loanModel = getFakeExperienceLoan(loginNameTwo);
+        firstInvestModel = createInvest(loginNameTwo, loanModel.getId());
+        maxInvestModel = createInvest(loginNameTwo, loanModel.getId());
+        lastInvestModel = createInvest(loginNameTwo, loanModel.getId());
+        loanModel.setFirstInvestAchievementId(firstInvestModel.getId());
+        loanModel.setMaxAmountAchievementId(maxInvestModel.getId());
+        loanModel.setLastInvestAchievementId(lastInvestModel.getId());
+        loanMapper.update(loanModel);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
