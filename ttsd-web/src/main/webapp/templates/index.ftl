@@ -280,6 +280,14 @@
             </h3>
 
             <div class="loan-list-index fl">
+
+                <div class="web-book-box" data-url="/loan/1">
+                    <span>预约后当有相应项目我们会及时通知您</span>
+                    <i class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">
+                        我要预约
+                    </i>
+                </div>
+
                 <ul class="loan-box-inner loan-btn">
                     <#list loans as loan>
                         <#if loan.activityType != "NEWBIE">
@@ -421,6 +429,14 @@
                             <span class="guide-btn"></span>
                         </div>
                     </div>
+
+                    <div class="product-box tc product-type book-text-tip" >
+                        <div class="pad-m" title="BLQ001" data-url="/loan/1">
+                            <i>预约后当有相应项目我们会及时通知您</i>
+                        </div>
+                        <a href="/loan/1" class="btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">我要预约</a>
+                    </div>
+
                     <#list loans as loan>
                         <#if loan.activityType == "NEWBIE">
                             <div class="product-box tc product-type">
@@ -612,6 +628,52 @@
                 </ul>
             </div>
         </div>
+    </div>
+
+    <div class="book-invest-box" style="display: none">
+        <form name="bookInvest" class="book-invest-form">
+        <div class="clearfix book-table-column">
+            <div class="fl">选择项目</div>
+            <div class="fr">
+                <table class="book-invest-table">
+                    <tr>
+                        <th>预约项目</th>
+                        <th>预期年化收益</th>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po1" value="_90"><label for="po1">90天项目</label>
+                        </td>
+                        <td>11%</td>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po2" value="_180"><label for="po2">180天项目</label></td>
+                        <td>12%</td>
+                    </tr>
+                    <tr>
+                        <td class="product-type"><input type="radio" name="productType" id="po3" value="_360"><label for="po3">360天项目</label></td>
+                        <td>13%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <dl class="book-dl clearfix">
+            <dt>预计投资金额</dt>
+            <dd><input type="text" class="form-text" name="bookingAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric"> 元</dd>
+        </dl>
+        <dl class="book-dl clearfix">
+            <dt>预约说明</dt>
+            <dd>1. 每次预约不可同时预约多个项目； <br/>
+                2. 预约设置完成时开始进入预约队列； <br/>
+                3. 预约后，当有相应标的时，我们会第一时间通知您进行投资； <br/>
+                4. 可添加多笔预约，每笔预约排名互相独立， 互不影响； <br/>
+                5. 每笔预约在通知投资后失效；
+
+            </dd>
+
+        </dl>
+
+        <div class="tc"><button type="submit" class="btn btn-normal">确认预约</button> </div>
+        </form>
     </div>
 
     <#include "coupon-alert.ftl" />

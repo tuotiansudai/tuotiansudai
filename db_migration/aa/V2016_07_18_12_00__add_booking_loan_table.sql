@@ -6,7 +6,7 @@ CREATE TABLE `aa`.`booking_loan` (
   `product_type` VARCHAR(10) NOT NULL,
   `amount` BIGINT(20) UNSIGNED NOT NULL,
   `notice_time` DATETIME NULL,
-  `status` VARCHAR(10) NULL,
+  `status` TINYINT(1) NULL,
   `create_time` DATETIME NULL,
   `update_time` DATETIME NULL,
   PRIMARY KEY (`id`),

@@ -1,14 +1,15 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BookingLoanModel;
+import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,6 @@ import java.util.Locale;
 @Service
 public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanService{
 
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private AccountMapper accountMapper;
     @Autowired
     private BookingLoanMapper bookingLoanMapper;
 
