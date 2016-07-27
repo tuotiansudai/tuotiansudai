@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface InvestAchievementUserCollector {
 
-    List<String> collect(long couponId);
-
-    boolean contains(long loanId, String loginName, UserGroup userGroup, CouponType couponType);
+    boolean contains(long couponId,long loanId, String loginName, UserGroup userGroup);
 }

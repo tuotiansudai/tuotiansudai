@@ -9,7 +9,6 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.util.InvestAchievementCollector;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -21,10 +20,8 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -153,7 +150,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         boolean contains = collector.contains(couponId, loginName);
-
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
             return;
@@ -253,7 +249,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         InvestAchievementUserCollector collector = getInvestAchievementCollector(couponModel.getUserGroup());
-        boolean contains = collector.contains(loanId, loginName,couponModel.getUserGroup(),couponModel.getCouponType());
+        boolean contains = collector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));

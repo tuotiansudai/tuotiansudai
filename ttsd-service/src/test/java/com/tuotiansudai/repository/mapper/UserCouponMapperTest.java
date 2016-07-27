@@ -112,7 +112,7 @@ public class UserCouponMapperTest {
         UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
         userCouponModel.setAchievementLoanId(fakeLoan.getId());
         userCouponMapper.create(userCouponModel);
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginNameAndAchievementLoanId(userModel.getLoginName(),fakeLoan.getId(),Lists.newArrayList(CouponType.INVEST_COUPON));
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findByAchievementLoanId(fakeLoan.getId());
         assertTrue(userCouponModelList.size() > 0);
         assertTrue(userCouponModelList.get(0).getAchievementLoanId() == fakeLoan.getId());
     }
