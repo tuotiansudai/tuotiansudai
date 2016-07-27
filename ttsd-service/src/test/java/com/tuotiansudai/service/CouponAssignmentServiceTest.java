@@ -158,7 +158,7 @@ public class CouponAssignmentServiceTest {
     }
 
     @Test
-    public void shouldAssignUserCouponIsOk(){
+    public void shouldFirstInvestAchievementAssignUserCouponIsOk(){
         String loginName = "testAchievement";
         createMockUser(loginName);
         LoanModel loanModel = getFakeExperienceLoan(loginName);
@@ -171,6 +171,56 @@ public class CouponAssignmentServiceTest {
         loanMapper.update(loanModel);
         getFakeUser(loginName);
         CouponModel couponModel = getFakeCoupon(UserGroup.FIRST_INVEST_ACHIEVEMENT,true);
+        couponAssignmentService.assignUserCoupon(123456,loginName,couponModel.getId());
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 0);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
+    }
+
+    @Test
+    public void shouldMaxInvestAchievementAssignUserCouponIsOk(){
+        String loginName = "testAchievement";
+        createMockUser(loginName);
+        LoanModel loanModel = getFakeExperienceLoan(loginName);
+        InvestModel firstInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel maxInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel lastInvestModel = createInvest(loginName, loanModel.getId());
+        loanModel.setFirstInvestAchievementId(firstInvestModel.getId());
+        loanModel.setMaxAmountAchievementId(maxInvestModel.getId());
+        loanModel.setLastInvestAchievementId(lastInvestModel.getId());
+        loanMapper.update(loanModel);
+        getFakeUser(loginName);
+        CouponModel couponModel = getFakeCoupon(UserGroup.MAX_AMOUNT_ACHIEVEMENT,true);
+        couponAssignmentService.assignUserCoupon(123456,loginName,couponModel.getId());
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 0);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 1);
+    }
+
+    @Test
+    public void shouldLastInvestAchievementAssignUserCouponIsOk(){
+        String loginName = "testAchievement";
+        createMockUser(loginName);
+        LoanModel loanModel = getFakeExperienceLoan(loginName);
+        InvestModel firstInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel maxInvestModel = createInvest(loginName, loanModel.getId());
+        InvestModel lastInvestModel = createInvest(loginName, loanModel.getId());
+        loanModel.setFirstInvestAchievementId(firstInvestModel.getId());
+        loanModel.setMaxAmountAchievementId(maxInvestModel.getId());
+        loanModel.setLastInvestAchievementId(lastInvestModel.getId());
+        loanMapper.update(loanModel);
+        getFakeUser(loginName);
+        CouponModel couponModel = getFakeCoupon(UserGroup.LAST_INVEST_ACHIEVEMENT,true);
         couponAssignmentService.assignUserCoupon(123456,loginName,couponModel.getId());
         List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 0);

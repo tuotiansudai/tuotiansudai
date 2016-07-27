@@ -36,24 +36,13 @@ public class InvestAchievementCollector implements InvestAchievementUserCollecto
         long investId = 0;
         if (UserGroup.FIRST_INVEST_ACHIEVEMENT.equals(userGroup)) {
             investId = loanModel.getFirstInvestAchievementId();
-        }
-        if (UserGroup.MAX_AMOUNT_ACHIEVEMENT.equals(userGroup)) {
-            investId = loanModel.getFirstInvestAchievementId();
-        }
-        if (UserGroup.LAST_INVEST_ACHIEVEMENT.equals(userGroup)) {
-            investId = loanModel.getFirstInvestAchievementId();
+        }else if (UserGroup.MAX_AMOUNT_ACHIEVEMENT.equals(userGroup)) {
+            investId = loanModel.getMaxAmountAchievementId();
+        }else if (UserGroup.LAST_INVEST_ACHIEVEMENT.equals(userGroup)) {
+            investId = loanModel.getLastInvestAchievementId();
         }
 
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByAchievementLoanId(loanId);
-        if(CollectionUtils.isNotEmpty(userCouponModelList) && Iterables.all(userCouponModelList, new Predicate<UserCouponModel>() {
-            @Override
-            public boolean apply(UserCouponModel input) {
-                return input.getCouponId() == couponId;
-            }
-        })){
-            return false;
-        }
-        if (investMapper.findById(investId).getLoginName().equals(loginName)) {
+        if (investMapper.findById(investId).getLoginName().equals(loginName) && userCouponMapper.findCountByCouponIdAndUserGroup(couponId,userGroup,loginName) == 0) {
             return true;
         }
 

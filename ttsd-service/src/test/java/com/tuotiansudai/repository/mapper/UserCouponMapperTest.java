@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.UUIDGenerator;
@@ -85,6 +86,7 @@ public class UserCouponMapperTest {
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
+        couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
 
         return couponModel;
     }
@@ -112,9 +114,8 @@ public class UserCouponMapperTest {
         UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
         userCouponModel.setAchievementLoanId(fakeLoan.getId());
         userCouponMapper.create(userCouponModel);
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByAchievementLoanId(fakeLoan.getId());
-        assertTrue(userCouponModelList.size() > 0);
-        assertTrue(userCouponModelList.get(0).getAchievementLoanId() == fakeLoan.getId());
+        int count = userCouponMapper.findCountByCouponIdAndUserGroup(couponModel.getId(),couponModel.getUserGroup(),userModel.getLoginName());
+        assertTrue(count == 1);
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
