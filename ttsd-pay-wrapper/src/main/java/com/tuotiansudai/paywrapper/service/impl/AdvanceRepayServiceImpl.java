@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -354,7 +353,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             BaseDto<PayDataDto> dto = loanService.updateLoanStatus(loanId, LoanStatus.COMPLETE);
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
-            return  dto.getData().getStatus();
+            return dto.getData().getStatus();
         }
 
         try {
@@ -487,7 +486,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                         String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
             }
         }
-
     }
 
     private void createRepayJob(long loanRepayId, int delayMinutes) throws SchedulerException {
