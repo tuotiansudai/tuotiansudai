@@ -65,7 +65,7 @@ public interface UserService {
 
     List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
 
-    int findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax);
+    long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax);
 
     boolean resetUmpayPassword(String loginName, String identityNumber);
 

@@ -38,7 +38,7 @@
                 <li id="captchaErr" class="height"></li>
                 <li class="tc">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" class="register-user" value="">
+                    <input type="submit" class="register-user" value="" onclick="cnzzPush.trackClick('154landingPage2','领取5888体验金')">
                 </li>
                 <li class="agree-last">
                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
