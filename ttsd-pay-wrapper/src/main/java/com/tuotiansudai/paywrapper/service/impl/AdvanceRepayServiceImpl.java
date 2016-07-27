@@ -4,6 +4,8 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -97,6 +99,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    protected CouponRepayMapper couponRepayMapper;
 
     /**
      * 生成借款人还款form data
@@ -482,6 +487,18 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                         String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
             }
         }
+
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investModel.getId());
+        for(CouponRepayModel couponRepayModel : couponRepayModels){
+            if (couponRepayModel.getStatus() == RepayStatus.REPAYING) {
+                couponRepayModel.setStatus(RepayStatus.COMPLETE);
+                couponRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
+                couponRepayMapper.update(couponRepayModel);
+                logger.info(MessageFormat.format("[Advance Repay {0}] coupon repay({1}) update other REPAYING coupon repay({2}) status to COMPLETE",
+                        String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(couponRepayMapper.getId())));
+            }
+        }
+
     }
 
     private void createRepayJob(long loanRepayId, int delayMinutes) throws SchedulerException {
