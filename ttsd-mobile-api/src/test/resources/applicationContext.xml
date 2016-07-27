@@ -27,11 +27,12 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.util,com.tuotiansudai.api,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,com.tuotiansudai.transfer,com.tuotiansudai.api.util,com.tuotiansudai.jpush,com.tuotiansudai.membership"/>
+            base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.util,com.tuotiansudai.api,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,com.tuotiansudai.transfer,com.tuotiansudai.api.util,com.tuotiansudai.jpush,com.tuotiansudai.membership,com.tuotiansudai.message"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
         <property name="minimumIdle" value="1"/>
@@ -48,7 +49,8 @@
 
     <bean id="jobHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
         <property name="minimumIdle" value="1"/>
@@ -71,7 +73,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.membership.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
@@ -81,7 +83,7 @@
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.membership.repository.mapper,com.tuotiansudai.message.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>

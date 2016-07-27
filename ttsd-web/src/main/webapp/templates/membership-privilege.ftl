@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权" site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权_会员中心_拓天速贷" keywords="拓天会员,拓天福利,拓天顾问,拓天速贷特权,拓天速贷" description="拓天速贷会员特权为投资用户提供贵宾专线,会员特权,多重保障,为您提供安全、专业、便捷的互联网金融投资服务." site="membership">
 
 <div class="global-member-ship">
     <div class="levels">

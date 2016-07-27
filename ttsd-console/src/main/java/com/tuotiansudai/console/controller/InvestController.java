@@ -41,7 +41,7 @@ public class InvestController {
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
-                                      @RequestParam(name = "loginName", required = false) String investorLoginName,
+                                      @RequestParam(name = "mobile", required = false) String investorMobile,
                                       @RequestParam(name = "channel", required = false) String channel,
                                       @RequestParam(name = "source", required = false) Source source,
                                       @RequestParam(name = "role", required = false) String role,
@@ -61,8 +61,8 @@ public class InvestController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, null);
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, source, role, 1, (int) count, startTime, endTime, investStatus, null);
+            long count = investService.findCountInvestPagination(loanId, investorMobile, channel, source, role, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role, 1, (int) count, startTime, endTime, investStatus, null);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();
             for (int i = 0; i < investPaginationItemDataDtos.size(); i++) {
@@ -96,12 +96,12 @@ public class InvestController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
             return null;
         } else {
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
             List<String> channelList = investService.findAllChannel();
 
             ModelAndView mv = new ModelAndView("/invest-list");
             mv.addObject("data", dataDto);
-            mv.addObject("loginName", investorLoginName);
+            mv.addObject("mobile", investorMobile);
             mv.addObject("channel", channel);
             mv.addObject("loanId", loanId);
             mv.addObject("source", source);

@@ -26,6 +26,9 @@ public class ActivityDto {
     private String updatedBy;
     private Date updatedTime;
     private String activatedBy;
+    private String shareTitle;
+    private String shareContent;
+    private String shareUrl;
 
     public ActivityDto() {
     }
@@ -47,6 +50,9 @@ public class ActivityDto {
         this.updatedBy = activityModel.getUpdatedBy();
         this.updatedTime = activityModel.getUpdatedTime();
         this.activatedBy = activityModel.getActivatedBy();
+        this.shareTitle = activityModel.getShareTitle();
+        this.shareContent = activityModel.getShareContent();
+        this.shareUrl = activityModel.getShareUrl();
     }
 
     public Long getActivityId() {
@@ -175,5 +181,29 @@ public class ActivityDto {
 
     public void setActivatedBy(String activatedBy) {
         this.activatedBy = activatedBy;
+    }
+
+    public String getShareTitle() {
+        return shareTitle;
+    }
+
+    public void setShareTitle(String shareTitle) {
+        this.shareTitle = shareTitle;
+    }
+
+    public String getShareContent() {
+        return shareContent;
+    }
+
+    public void setShareContent(String shareContent) {
+        this.shareContent = shareContent;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
     }
 }

@@ -56,7 +56,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
     private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, BankCardModel bankCard, AccountModel account) {
         PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
         personalInfoDataDto.setUserId(user.getLoginName());
-        personalInfoDataDto.setUserName(user.getLoginName());
+        personalInfoDataDto.setUserName(user.getMobile());
         personalInfoDataDto.setPhoneNum(user.getMobile());
         personalInfoDataDto.setPhoto(user.getAvatar());
         personalInfoDataDto.setEmail(user.getEmail());

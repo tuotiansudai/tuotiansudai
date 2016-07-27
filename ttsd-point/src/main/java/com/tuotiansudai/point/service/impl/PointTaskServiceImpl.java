@@ -205,7 +205,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_REFERRER_INVEST:
                 return "/referrer/refer-list";
             case FIRST_TURN_ON_NO_PASSWORD_INVEST:
-                return "/personal-info";
+                return "/nopwdpay";
             case FIRST_TURN_ON_AUTO_INVEST:
                 return "/auto-invest/agreement";
         }
