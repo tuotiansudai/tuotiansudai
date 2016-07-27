@@ -488,17 +488,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             }
         }
 
-        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investModel.getId());
-        for(CouponRepayModel couponRepayModel : couponRepayModels){
-            if (couponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                couponRepayModel.setStatus(RepayStatus.COMPLETE);
-                couponRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
-                couponRepayMapper.update(couponRepayModel);
-                logger.info(MessageFormat.format("[Advance Repay {0}] coupon repay({1}) update other REPAYING coupon repay({2}) status to COMPLETE",
-                        String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(couponRepayMapper.getId())));
-            }
-        }
-
     }
 
     private void createRepayJob(long loanRepayId, int delayMinutes) throws SchedulerException {

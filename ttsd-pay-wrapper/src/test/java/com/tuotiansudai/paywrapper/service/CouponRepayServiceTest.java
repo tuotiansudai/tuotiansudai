@@ -132,7 +132,7 @@ public class CouponRepayServiceTest {
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate());
+        couponRepayService.repay(idGenerator.generate(),false);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
@@ -173,7 +173,7 @@ public class CouponRepayServiceTest {
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate());
+        couponRepayService.repay(idGenerator.generate(),true);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());

@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -76,7 +78,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Override
-    public void repay(long loanRepayId) {
+    public void repay(long loanRepayId,boolean isAdvanced) {
         logger.debug(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
         LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
@@ -92,8 +94,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         investModel == null ? "null" : String.valueOf(investModel.getId())));
                 continue;
             }
-            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
-
+            final CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
             if(couponRepayModel == null){
                 logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
                                 currentLoanRepayModel.getLoanId(),
@@ -149,6 +150,24 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     couponRepayModel.setActualRepayDate(currentLoanRepayModel.getActualRepayDate());
                     couponRepayModel.setStatus(RepayStatus.COMPLETE);
                     couponRepayMapper.update(couponRepayModel);
+                    if(isAdvanced){
+                        List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investModel.getId()), new Predicate<CouponRepayModel>() {
+                            @Override
+                            public boolean apply(CouponRepayModel input) {
+                                return input.getPeriod() > couponRepayModel.getPeriod();
+                            }
+                        }));
+                        for(CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels){
+                           if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
+                               advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
+                               advancedCouponRepayModel.setActualRepayDate(new Date());
+                                couponRepayMapper.update(advancedCouponRepayModel);
+                                logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
+                                        String.valueOf(loanRepayId),  String.valueOf(advancedCouponRepayModel.getId())));
+                            }
+                        }
+
+                    }
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
@@ -234,4 +253,24 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
         couponRepayMapper.create(couponRepayModels);
     }
+
+//    @Override
+//    @Transactional
+//    public void updateCouponRepayToComplete(long loanRepayId) {
+//        LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
+//        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
+//        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
+//        for(InvestModel investModel:successInvests){
+//            List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investModel.getId());
+//            for(CouponRepayModel couponRepayModel : couponRepayModels){
+//                if (couponRepayModel.getStatus() == RepayStatus.REPAYING) {
+//                    couponRepayModel.setStatus(RepayStatus.COMPLETE);
+//                    couponRepayModel.setActualRepayDate(new Date());
+//                    couponRepayMapper.update(couponRepayModel);
+//                    logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
+//                            String.valueOf(loanRepayId),  String.valueOf(couponRepayModel.getId())));
+//                }
+//            }
+//        }
+//    }
 }
