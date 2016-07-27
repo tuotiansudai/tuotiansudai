@@ -60,11 +60,12 @@
         <h3><span>项目信息</span></h3>
         <hr class="top-line">
         <div>
+            <input type="text" hidden class="jq-pledge-type" value="${loanInfo.pledgeType}">
             <div class="form-group">
                 <label class="col-sm-2 control-label">借款项目名称: </label>
-
                 <div class="col-sm-4">
-                    <select class="selectpicker b-width jq-name">
+                    <select class="selectpicker b-width jq-name"
+                            <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>>
                         <option value="房产抵押借款" <#if loanInfo.projectName == "房产抵押借款">selected</#if>>房产抵押借款</option>
                         <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                     </select>
@@ -185,7 +186,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl"
                            errormsg="活动利率需要正确填写" value="${((loanInfo.activityRate?number)*100)?string('0.00')}"
-                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanloanStatus!= "RAISING">disabled="disabled"</#if>>
+                           <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>

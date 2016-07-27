@@ -1,5 +1,5 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype','ueditor', 'csrf'], function ($, template) {
+require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'], function ($, template) {
     $(function () {
         var _html = '';
         var data = '';
@@ -18,6 +18,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     language: "zh",
                     uploadUrl: "/upload",
                     showUpload: true,
+                    dropZoneTitle: '选择图片文件到这里 &hellip;',
                     initialPreviewShowDelete:true,
                     allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
                     initialPreview:rereq[i]
@@ -75,6 +76,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 language: "zh",
                 uploadUrl: "/upload",
                 showUpload: true,
+                dropZoneTitle: '选择图片文件到这里 &hellip;',
                 initialPreviewShowDelete:true,
                 allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
             });
@@ -277,9 +279,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             beforeCheck: function(curform){
                 $('.form-error').html('');
 
-                var projectName = $('.jq-user', curform).val();
+                var projectName = $('.jq-name', curform).val();
                 if (projectName == '') {
-                    showErrorMessage('请选择借款项目名称', $('.jq-user', curform));
+                    showErrorMessage('请选择借款项目名称', $('.jq-name', curform));
                     return false;
                 }
 
@@ -368,6 +370,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "id": $('.jq-loanId').val(),
                         "loanStatus": $('.jq-status').val(),
                         "projectName": $('.jq-name').val(),
+                        "pledgeType": $('.jq-pledge-type').val(),
                         "agentLoginName": $('.jq-agent').val(),
                         "loanerLoginName": "",
                         "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
@@ -418,6 +421,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "id": $('.jq-loanId').val(),
                         "loanStatus": $('.jq-status').val(),
                         "projectName": $('.jq-name').val(),
+                        "pledgeType": $('.jq-pledge-type').val(),
                         "agentLoginName": $('.jq-agent').val(),
                         "loanerLoginName": $('.jq-loaner-login-name').val(),
                         "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
@@ -495,7 +499,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         function checkedExtraRate() {
             $('.form-error').html('');
-            var $loanName = $('.jq-user');
+            var $loanName = $('.jq-name');
             var $productType = $('.jq-product-line');
             if ($loanName.val() == '') {
                 showErrorMessage('项目名称未选择，不能操作此选项');
@@ -546,7 +550,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        $('.jq-user').on('change', function () {
+        $('.jq-name').on('change', function () {
             var $productType = $('.jq-product-line');
             if ($(this).val() == '') {
                 uncheckedExtraRate();
@@ -560,7 +564,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             if ($(this).val() == '' || $(this).val() == '_30') {
                 uncheckedExtraRate();
             }
-            if ($('.jq-user').val() != '' && $('#extra').is(':checked')) {
+            if ($('.jq-name').val() != '' && $('#extra').is(':checked')) {
                 checkedExtraRate();
             }
         });

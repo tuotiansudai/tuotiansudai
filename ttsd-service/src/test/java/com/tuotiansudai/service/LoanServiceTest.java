@@ -249,7 +249,7 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void testUpdateLoanAnd() {
+    public void testUpdateLoanAnd() throws Exception {
         BaseDto<BaseDataDto> baseDto = createLoan(PledgeType.VEHICLE, DateTime.parse("2011-1-1").toDate(), DateTime.parse("2011-1-2").toDate(),
                 100, 10000);
         assertEquals(true, baseDto.getData().getStatus());
