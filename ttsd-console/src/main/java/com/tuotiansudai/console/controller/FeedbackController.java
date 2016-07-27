@@ -103,7 +103,7 @@ public class FeedbackController {
     @RequestMapping(value = "/updateRemark", method = RequestMethod.POST)
     public String updateRemark(long feedbackId, String remark) {
         FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
-        if(feedbackModel != null && (feedbackModel.getRemark() !=null || "".equals(feedbackModel.getRemark())))
+        if(feedbackModel != null && (feedbackModel.getRemark() !=null || !"".equals(feedbackModel.getRemark())))
         {
             remark = feedbackModel.getRemark() + remark + "|" ;
         }
