@@ -98,4 +98,16 @@ public class FeedbackController {
         feedbackService.updateStatus(feedbackId, status ? ProcessStatus.DONE : ProcessStatus.NOT_DONE);
         return "true";
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateRemark", method = RequestMethod.POST)
+    public String updateRemark(long feedbackId, String remark) {
+        FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
+        if(feedbackModel != null && (feedbackModel.getRemark() !=null || "".equals(feedbackModel.getRemark())))
+        {
+            remark = feedbackModel.getRemark() + "|" +remark;
+        }
+        feedbackService.updateRemark(feedbackId, remark);
+        return "true";
+    }
 }

@@ -48,4 +48,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     public void updateStatus(long feedbackId, ProcessStatus status) {
         feedbackMapper.updateStatus(feedbackId, status);
     }
+
+    @Override
+    public void updateRemark(long feedbackId, String remark) {
+        feedbackMapper.updateRemark(feedbackId, remark);
+    }
+
+    @Override
+    public FeedbackModel findById(long feedbackId) {
+        return feedbackMapper.findById(feedbackId);
+    }
+
+
 }

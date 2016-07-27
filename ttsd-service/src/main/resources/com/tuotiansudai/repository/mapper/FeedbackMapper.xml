@@ -13,12 +13,13 @@
         <result column="source" property="source"></result>
         <result column="type" property="type"></result>
         <result column="status" property="status"></result>
+        <result column="remark" property="remark"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="FeedbackModel" useGeneratedKeys="true" keyProperty="id">
-        insert into feedback(`login_name`, `contact`, `source`, `type`, `content`, `status`, `created_time`)
-        value(#{loginName},#{contact},#{source},#{type},#{content},#{status},#{createdTime})
+        insert into feedback(`login_name`, `contact`, `source`, `type`, `content`, `remark`, `status`, `created_time`)
+        value(#{loginName},#{contact},#{source},#{type},#{content},#{remark},#{status},#{createdTime})
     </insert>
 
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
@@ -75,4 +76,12 @@
     <update id="updateStatus" parameterType="map">
         update feedback set status = #{status} where id = #{feedbackId}
     </update>
+
+    <update id="updateRemark" parameterType="map">
+        update feedback set remark = #{remark} where id = #{feedbackId}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="feedbackResultMap">
+        select * from feedback where id = #{feedbackId}
+    </select>
 </mapper>

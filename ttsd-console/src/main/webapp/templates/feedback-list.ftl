@@ -83,6 +83,7 @@
                 <th>内容</th>
                 <th>时间</th>
                 <th>是否处理</th>
+                <th>备注</th>
             </tr>
             </thead>
             <tbody>
@@ -100,6 +101,7 @@
                     <#else>
                         <td width="100"><input type="checkbox" class="feedback-status" data-id="${feedback.id?c}" checked/></td>
                     </#if>
+                    <td style="text-align:left;">${feedback.remark?replace('|','<br>')}</td>
                 </tr>
                 </#list>
             </tbody>
