@@ -33,11 +33,11 @@
     </update>
 
     <select id="findBankList" resultMap="bankResultMap">
-        select * from bank where single_amount > 0 order by single_day_amount desc, single_amount desc
+        select * from bank order by single_day_amount desc, single_amount desc
     </select>
 
     <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">
-        select * from bank where bank_code = #{bankCode} and single_amount >0
+        select * from bank where bank_code = #{bankCode}
     </select>
 
 </mapper>
