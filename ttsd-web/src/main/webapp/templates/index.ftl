@@ -703,7 +703,7 @@
         button='<button class="btn-invest btn-normal" disabled>已转让</button>';
         }
         %>
-        <li data-url="/transfer/<%=item.loanId%>" class="clearfix">
+        <li data-url="/transfer/<%=item.transferApplicationId%>" class="clearfix">
             <div class="loan-info-frame fl">
                 <div class="loan-top">
                     <span class="l-title fl"><%=item.name%></span>
@@ -754,7 +754,7 @@
         button='<button class="btn-invest btn-normal" disabled>已转让</button>';
         }
         %>
-        <div class="product-box-tran" data-url="/transfer/<%=item.loanId%>">
+        <div class="product-box-tran" data-url="/transfer/<%=item.transferApplicationId%>">
             <div class="loan-top clearfix">
                 <span class="l-title fl"><%=item.name%></span>
             </div>
