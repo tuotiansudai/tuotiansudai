@@ -92,10 +92,10 @@
         <div class="detail-record-info">
             <div class="record-title"><span>原始项目信息</span></div>
             <div class="old-project">
-                <span>预期年化收益率：11%</span>
-                <span>项目期限：90天（3期）</span>
-                <span>项目总额：90万</span>
-                <span>还款方式：按月付息，到期还本</span>
+                <span>预期年化收益率：${100 * (loanDto.basicRate?number + loanDto.activityRate?number)}%</span>
+                <span>项目期限：${30 * loanDto.periods}天（${loanDto.periods}期）</span>
+                <span>项目总额：${loanDto.loanAmount}元</span>
+                <span>还款方式：${loanDto.type.getRepayType()}</span>
             </div>
 
             <div class="record-title"><span>债权转让介绍</span></div>
@@ -104,18 +104,34 @@
 
             <div class="question-list">
                 <dl>
-                    <dt>1，债权转让的收益怎么计算？<i class="fa fa-chevron-circle-down fr"></i> </dt>
-                    <dd>债权转让项目按照原债权的预期年化收益计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。例如：一笔3期的债权，4月1号完成了一次回款，下次回款在5月1号，最后一次回款在5月31号，该笔债权在4月10号成功转让，则受让人将获得2期60天（4月2号至6月31号）的收益。</dd>
+                    <dt>1. 转让项目的优势？<i class="fa fa-chevron-circle-down fr"></i> </dt>
+                    <dd>转让债权和原始债权的预期年化收益、还款方式（按月付息，到期还本）是一样的。
+                        与普通债权相比，购买转让债权没有等待其他用户投标、等待放款等环节，可以更快的收回投资。同时还可享受到出让人的价格折让。</dd>
                 </dl>
 
                 <dl>
-                    <dt>1，债权转让的收益怎么计算？<i class="fa fa-chevron-circle-down fr"></i></dt>
-                    <dd>债权转让项目按照原债权的预期年化收益计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。例如：一笔3期的债权，4月1号完成了一次回款，下次回款在5月1号，最后一次回款在5月31号，该笔债权在4月10号成功转让，则受让人将获得2期60天（4月2号至6月31号）的收益。</dd>
+                    <dt>2. 债权转让的收益怎么计算？
+                        <i class="fa fa-chevron-circle-down fr"></i></dt>
+                    <dd>债权转让项目按照原债权的预期年化收益计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。 <br/>
+                        例如：一笔3期的债权，4月1号完成了一次回款，下次回款在5月1号，最后一次回款在5月31号，该笔债权在4月10号成功转让，则受让人将获得2期60天（4月2号至6月31号）的收益。</dd>
                 </dl>
 
                 <dl>
-                    <dt>1，债权转让的收益怎么计算？<i class="fa fa-chevron-circle-down fr"></i></dt>
-                    <dd>债权转让项目按照原债权的预期年化收益计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。例如：一笔3期的债权，4月1号完成了一次回款，下次回款在5月1号，最后一次回款在5月31号，该笔债权在4月10号成功转让，则受让人将获得2期60天（4月2号至6月31号）的收益。</dd>
+                    <dt>3. 债权转让的时效为多久？
+                        <i class="fa fa-chevron-circle-down fr"></i></dt>
+                    <dd>债权转让的时效为转让当日剩余时间另加5个自然日内。转让时效内未成功转让，平台将自动撤销该转让申请。</dd>
+                </dl>
+
+                <dl>
+                    <dt>4. 购买的债权可再次转让吗？
+                        <i class="fa fa-chevron-circle-down fr"></i></dt>
+                    <dd>目前，债权只可转让一次，您接手债权后不可再进行转让。</dd>
+                </dl>
+
+                <dl>
+                    <dt>5. 债权转让是否收取服务费？
+                        <i class="fa fa-chevron-circle-down fr"></i></dt>
+                    <dd>转让达成后，平台会向债权出让人收取一定数量的转让服务费，此过程不对债权受让人收取服务费用。</dd>
                 </dl>
             </div>
         </div>

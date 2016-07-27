@@ -112,6 +112,5 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
         else {
             $this.find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down');
         }
-
     })
 });
