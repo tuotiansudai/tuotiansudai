@@ -1,4 +1,4 @@
 BEGIN;
 ALTER TABLE `aa`.`account`
-ADD UNIQUE INDEX `login_name_UNIQUE` (`login_name` ASC);
+ADD UNIQUE INDEX `UNIQUE_ACCOUNT_LOGIN_NAME` (`login_name` ASC);
 COMMIT;
