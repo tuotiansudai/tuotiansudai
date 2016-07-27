@@ -71,7 +71,7 @@
                                 <span class="orange2">${loan.progress?string("0.00")}%</span>
                             </div>
                             <div class="col-md-6">
-                                <span class="title" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">可投金额：</span>
+                                <span class="title">可投金额：</span>
                             ${(loan.amountNeedRaised / 100)?string("0.00")}元
                             </div>
                             <div class="col-md-6">
@@ -103,6 +103,7 @@
                                        data-no-password-remind="${loan.investor.remindNoPassword?c}"
                                        data-no-password-invest="${loan.investor.noPasswordInvest?c}"
                                        data-auto-invest-on="${loan.investor.autoInvest?c}"
+                                       data-amount-need-raised="${loan.amountNeedRaised?string.computer}"
                                        class="text-input-amount fr position-width"/>
                                 <#if errorMessage?has_content>
                                     <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>

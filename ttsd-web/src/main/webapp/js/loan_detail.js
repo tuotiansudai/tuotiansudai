@@ -44,7 +44,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 layer.closeAll();
             }
         });
-    }
+    };
 
     if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
         showLayer();
@@ -246,7 +246,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         var validateInvestAmount = function() {
             var amount = getInvestAmount();
-            var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised")) || 0;
+            var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
             return amount > 0 && amountNeedRaised >= amount;
         };
 
