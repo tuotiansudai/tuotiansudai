@@ -6,6 +6,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -55,6 +57,9 @@ public class TransferServiceImpl implements TransferService {
 
     @Autowired
     private TransferRuleMapper transferRuleMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
 
     @Override
@@ -236,5 +241,4 @@ public class TransferServiceImpl implements TransferService {
         }
         return transferApplicationDetailDto;
     }
-
 }

@@ -25,6 +25,8 @@ public class CouponRepayModel implements Serializable {
 
     private long actualFee;
 
+    private long repayAmount;
+
     private int period;
 
     private Date repayDate;
@@ -35,7 +37,7 @@ public class CouponRepayModel implements Serializable {
 
     private RepayStatus status;
 
-    private Date createdTime;
+    private Date createdTime = new Date();
 
     public CouponRepayModel() {
     }
@@ -122,6 +124,14 @@ public class CouponRepayModel implements Serializable {
 
     public void setActualFee(long actualFee) {
         this.actualFee = actualFee;
+    }
+
+    public long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(long repayAmount) {
+        this.repayAmount = repayAmount;
     }
 
     public int getPeriod() {
