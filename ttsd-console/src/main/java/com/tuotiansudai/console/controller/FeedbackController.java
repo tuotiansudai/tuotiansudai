@@ -105,7 +105,7 @@ public class FeedbackController {
         FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
         if(feedbackModel != null && (feedbackModel.getRemark() !=null || "".equals(feedbackModel.getRemark())))
         {
-            remark = feedbackModel.getRemark() + "|" +remark;
+            remark = feedbackModel.getRemark() + remark + "|" ;
         }
         feedbackService.updateRemark(feedbackId, remark);
         return "true";
