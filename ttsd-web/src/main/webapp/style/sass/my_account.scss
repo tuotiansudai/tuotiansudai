@@ -701,6 +701,55 @@ body{
 }
 //recharge and bind-card pages
 .recharge-bind-card {
+  position: relative;
+  .bank-item{
+    position: absolute;
+    top:15px;
+    right:0;
+    width:380px;
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
+  }
+  }
   & ul.payment-mode {
     border-bottom: 1px solid #ccc;
 
@@ -888,12 +937,64 @@ body{
 }
 .bind-card-frame {
   border-top-width: 1px !important;
-
   .e-bank-recharge {
     display: block !important;
-
     .input-bankcard {
       width: 200px;
+    }
+  }
+  .bank-card-limit{
+    float:left;
+    width:100%;
+    padding-bottom:15px;
+    border-bottom: 1px solid #ddd;
+    .user-name{
+      float:left;
+      font-size:14px;
+      color:#4c4c4c;
+      line-height:30px;
+    }
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
     }
   }
 }
