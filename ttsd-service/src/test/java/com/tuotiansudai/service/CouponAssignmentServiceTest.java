@@ -179,7 +179,7 @@ public class CouponAssignmentServiceTest {
         assertTrue(userCouponModelList.size() == 1);
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
-        assertTrue(userCouponModelList.size() == 2);
+        assertTrue(userCouponModelList.size() == 1);
     }
 
     private InvestModel createInvest(String loginName, long loanId) {

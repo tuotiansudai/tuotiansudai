@@ -43,7 +43,7 @@ public class UserCouponModel implements Serializable{
 
     private String exchangeCode;
 
-    private long fromLoanId;
+    private long achievementLoanId;
 
     public UserCouponModel() {
     }
@@ -200,11 +200,11 @@ public class UserCouponModel implements Serializable{
         this.exchangeCode = exchangeCode;
     }
 
-    public long getFromLoanId() {
-        return fromLoanId;
+    public long getAchievementLoanId() {
+        return achievementLoanId;
     }
 
-    public void setFromLoanId(long fromLoanId) {
-        this.fromLoanId = fromLoanId;
+    public void setAchievementLoanId(long achievementLoanId) {
+        this.achievementLoanId = achievementLoanId;
     }
 }

@@ -180,8 +180,8 @@ public class CouponAspect {
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
-    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint, Object returnValue) {
-        if((boolean)returnValue){
+    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint, boolean returnValue) {
+        if(returnValue){
             final long loanId = (long) joinPoint.getArgs()[0];
             LoanModel loanModel = loanMapper.findById(loanId);
             createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);

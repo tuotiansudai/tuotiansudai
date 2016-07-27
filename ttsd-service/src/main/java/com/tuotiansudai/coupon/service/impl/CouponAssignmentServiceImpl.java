@@ -252,43 +252,17 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        boolean contains;
-        if(Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.AGENT.LAST_INVEST_ACHIEVEMENT).contains(couponModel.getUserGroup())){
-            InvestAchievementUserCollector collector = getInvestAchievementCollector(couponModel.getUserGroup());
-            contains = collector.contains(loanId, loginName,couponModel.getUserGroup());
-        }else{
-
-            UserCollector collector = getCollector(couponModel.getUserGroup());
-
-            if (collector == null) {
-                logger.error(MessageFormat.format("[Coupon Assignment] user({0}) coupon({1}) user group({2}) collector not found", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
-                return;
-            }
-
-            contains = collector.contains(couponId, loginName);
-        }
+        InvestAchievementUserCollector collector = getInvestAchievementCollector(couponModel.getUserGroup());
+        boolean contains = collector.contains(loanId, loginName,couponModel.getUserGroup(),couponModel.getCouponType());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
             return;
         }
 
-        List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
-
-        boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
-
-        if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
-                @Override
-                public boolean apply(UserCouponModel input) {
-                    return input.getStatus() == InvestStatus.SUCCESS;
-                }
-            });
-        }
-
-        if (isAssignableCoupon) {
+        if (couponModel.isMultiple()) {
             UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
-            userCouponModel.setFromLoanId(loanId);
+            userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }

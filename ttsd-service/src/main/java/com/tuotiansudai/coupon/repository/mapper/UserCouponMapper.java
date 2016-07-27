@@ -3,7 +3,6 @@ package com.tuotiansudai.coupon.repository.mapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +52,8 @@ public interface UserCouponMapper {
     List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
+
+    List<UserCouponModel> findByLoginNameAndAchievementLoanId(@Param("loginName") String loginName,
+                                                              @Param("achievementLoanId") long achievementLoanId,
+                                                              @Param("couponTypes") List<CouponType> couponTypes);
 }
