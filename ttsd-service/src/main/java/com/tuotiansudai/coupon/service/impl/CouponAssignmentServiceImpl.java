@@ -248,8 +248,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        InvestAchievementUserCollector collector = getInvestAchievementCollector(couponModel.getUserGroup());
-        boolean contains = collector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
+        boolean contains = investAchievementCollector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
@@ -287,14 +286,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 .put(UserGroup.MEMBERSHIP_V3, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V4, this.membershipUserCollector)
                 .put(UserGroup.MEMBERSHIP_V5, this.membershipUserCollector)
-                .build()).get(userGroup);
-    }
-
-    private InvestAchievementUserCollector getInvestAchievementCollector(UserGroup userGroup) {
-        return Maps.newHashMap(ImmutableMap.<UserGroup, InvestAchievementUserCollector>builder()
-                .put(UserGroup.FIRST_INVEST_ACHIEVEMENT, this.investAchievementCollector)
-                .put(UserGroup.MAX_AMOUNT_ACHIEVEMENT, this.investAchievementCollector)
-                .put(UserGroup.LAST_INVEST_ACHIEVEMENT, this.investAchievementCollector)
                 .build()).get(userGroup);
     }
 }
