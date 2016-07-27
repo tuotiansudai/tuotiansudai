@@ -282,6 +282,6 @@
 
     <select id="findCountByCouponIdAndUserGroup" parameterType="map" resultType="int">
         select count(1) from user_coupon uc JOIN coupon c on uc.coupon_id = c.id
-        where c.user_group = #{userGroup} and uc.coupon_id = #{couponId} and uc.login_name = #{loginName}
+        where uc.coupon_id = #{couponId} and c.user_group = #{userGroup} and uc.login_name = #{loginName}
     </select>
 </mapper>
