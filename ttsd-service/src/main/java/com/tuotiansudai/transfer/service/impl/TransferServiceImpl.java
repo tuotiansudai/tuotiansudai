@@ -233,8 +233,8 @@ public class TransferServiceImpl implements TransferService {
                 long seconds = (transferApplicationModel.getDeadline().getTime() - now.getTime()) / 1000;
                 int days = (int)(seconds / (60 * 60 * 24));
                 int hours = (int)((seconds % (60 * 60 * 24)) / (60 * 60));
-                int minutes = (int)((seconds % (60 * 60 * 24 * 60)) / 60);
-                beforeDeadLine = MessageFormat.format("{}天{}小时{}分", days, hours, minutes);
+                int minutes = (int) ((seconds % (60 * 60)) / 60);
+                beforeDeadLine = MessageFormat.format("{0}天{1}小时{2}分", days, hours, minutes);
             } else {
                 beforeDeadLine = "已过期";
             }
