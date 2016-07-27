@@ -21,6 +21,7 @@ import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +99,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             InvestRecordResponseDataDto fakeRecord = new InvestRecordResponseDataDto();
             fakeRecord.setUserName("186**67");
             fakeRecord.setInvestMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeRecord.setInvestTime("2016-07-29 14:14:14");
+            fakeRecord.setInvestTime(new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss"));
             investListResponseDataDto.setInvestRecord(Lists.newArrayList(fakeRecord));
         }
 

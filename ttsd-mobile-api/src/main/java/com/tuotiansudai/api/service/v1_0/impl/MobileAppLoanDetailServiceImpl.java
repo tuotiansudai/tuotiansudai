@@ -165,7 +165,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         //TODO:fake
         if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
-            loanDetailResponseDataDto.setMarqueeTitle(MessageFormat.format("恭喜186**67 以累计投资{0}元夺得标王，奖励0.5％加息券＋100元红包    恭喜186**67 2016-07-29 14:44:56占领先锋，奖励0.2％加息券＋50元红包    恭喜186**67 2016-07-29 14:44:56一锤定音，奖励0.2％加息券＋50元红包    ", AmountConverter.convertCentToString(loan.getLoanAmount())));
+            loanDetailResponseDataDto.setMarqueeTitle(MessageFormat.format("恭喜186**67 以累计投资{0}元夺得标王，奖励0.5％加息券＋100元红包    恭喜186**67 {0}占领先锋，奖励0.2％加息券＋50元红包    恭喜186**67 2016-07-29 14:44:56一锤定音，奖励0.2％加息券＋50元红包    ",
+                    AmountConverter.convertCentToString(loan.getLoanAmount()), new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss")));
         }
 
         loanDetailResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
