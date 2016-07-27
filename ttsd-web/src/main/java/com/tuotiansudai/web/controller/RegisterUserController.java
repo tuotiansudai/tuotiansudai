@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/register/user")
@@ -66,7 +67,7 @@ public class RegisterUserController {
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/" : "redirect:/register/user");
+        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", registerUserDto.getRedirectToAfterRegisterSuccess()) : "redirect:/register/user");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)

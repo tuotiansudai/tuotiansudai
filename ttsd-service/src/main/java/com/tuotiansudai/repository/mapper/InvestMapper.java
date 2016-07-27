@@ -39,6 +39,8 @@ public interface InvestMapper {
      */
     InvestModel findById(@Param(value = "id") Long id);
 
+    InvestModel lockById(@Param(value = "id") Long id);
+
     /**
      * 查找用户的投资记录
      *

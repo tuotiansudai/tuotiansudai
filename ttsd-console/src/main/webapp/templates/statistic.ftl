@@ -11,13 +11,14 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserDateReport">
-                                <select class="form-control search-category" name="granularity">
+                                <select class="form-control search-category granularity-select" name="granularity">
                                     <option value="Daily" selected>日</option>
                                     <option value="Weekly">周</option>
                                     <option value="Monthly">月</option>
+                                    <option value="Hourly">小时</option>
                                 </select>
-                                开始时间： <input type="text" class="form-control start-date" name="startTime">
-                                结束时间：<input type="text" class="form-control end-date" name="endTime">
+                                    <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
+                                    <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                                 <select class="form-control" name="province"></select>
                                 <select class="form-control" name="userStage">
                                     <option value="ALL" selected>全部</option>
@@ -52,13 +53,14 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserRechargeReport">
-                            <select class="form-control search-category" name="granularity">
+                            <select class="form-control search-category granularity-select" name="granularity">
                                 <option value="Daily" selected>日</option>
                                 <option value="Weekly">周</option>
                                 <option value="Monthly">月</option>
+                                <option value="Hourly">小时</option>
                             </select>
-                            开始时间： <input type="text" class="form-control start-date" name="startTime">
-                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                            <em class="start-time-word">开始时间</em>：<input type="text" class="form-control start-date" name="startTime">
+                            <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
                             <option>北京</option>
@@ -84,14 +86,15 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formWithdrawReport">
-                        <select class="form-control search-category" name="granularity">
+                        <select class="form-control search-category granularity-select" name="granularity">
                             <option value="Daily" selected>日</option>
                             <option value="Weekly">周</option>
                             <option value="Monthly">月</option>
+                            <option value="Hourly">小时</option>
                         </select>
 
-                            开始时间： <input type="text" class="form-control start-date" name="startTime">
-                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                            <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
+                            <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
                             <option>北京</option>

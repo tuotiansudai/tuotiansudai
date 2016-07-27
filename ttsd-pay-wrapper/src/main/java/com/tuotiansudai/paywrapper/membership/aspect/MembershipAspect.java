@@ -1,18 +1,14 @@
 package com.tuotiansudai.paywrapper.membership.aspect;
 
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.MembershipInvestService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.InvestModel;
-import org.aopalliance.intercept.Joinpoint;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,8 +48,4 @@ public class MembershipAspect {
         }
 
     }
-
-
-
-
 }

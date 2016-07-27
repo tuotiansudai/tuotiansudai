@@ -20,9 +20,7 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.MobileLocationUtils;
-import com.tuotiansudai.util.MyShaPasswordEncoder;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -121,7 +119,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-
         boolean loginNameIsExist = false;
         String loginName;
         if (StringUtils.isNotEmpty(dto.getLoginName())) {
@@ -413,12 +410,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
-        int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserView> userViews = userMapper.findUsersAccountBalance(mobile,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int index, int pageSize) {
+        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
+        List<UserView> userViews = userMapper.findUsersAccountBalance(mobile, balance.get(0), balance.get(1), (index - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for(UserView userView : userViews) {
+        for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
             userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userView.getLoginName(), Role.STAFF));
             userItemDataDtoList.add(userItemDataDto);
@@ -427,16 +424,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
-        int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceCount(mobile, balance[0], balance[1]);
+    public long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
+        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceCount(mobile, balance.get(0), balance.get(1));
     }
 
 
     @Override
     public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
-        int[] balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceSum(mobile, balance[0], balance[1]);
+        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceSum(mobile, balance.get(0), balance.get(1));
     }
 
     @Override
@@ -449,22 +446,10 @@ public class UserServiceImpl implements UserService {
         return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
 
-    private int[] parseBalanceInt(String balanceMin, String balanceMax) {
-        int min, max;
-        try {
-            min = Integer.parseInt(balanceMin) * 100;
-        } catch (NumberFormatException e) {
-            min = 0;
-            logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
-        }
-
-        try {
-            max = Integer.parseInt(balanceMax) * 100;
-        } catch (NumberFormatException e) {
-            max = Integer.MAX_VALUE;
-            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMax);
-        }
-        return new int[]{min, max};
+    private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
+        long min = AmountConverter.convertStringToCent(balanceMin);
+        long max = AmountConverter.convertStringToCent(balanceMax);
+        return Lists.newArrayList(min, max);
     }
 
 }

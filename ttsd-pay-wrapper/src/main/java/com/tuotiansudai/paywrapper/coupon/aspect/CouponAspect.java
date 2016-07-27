@@ -72,7 +72,6 @@ public class CouponAspect {
 
         if (returnValue) {
             couponRepayService.repay(loanRepayId);
-            createSendCouponIncomeJob(loanRepayId);
         }
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
@@ -121,15 +120,13 @@ public class CouponAspect {
         }
     }
 
-
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
     public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
         final long loanId = (long) joinPoint.getArgs()[0];
-        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
-        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+        boolean isSuccess = (boolean) returnValue;
+        if (isSuccess) {
             createSendRedEnvelopeJob(loanId);
-            createAutoJPushAlertLoanOutJob(loanId);
         }
     }
 
