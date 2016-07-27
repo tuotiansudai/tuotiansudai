@@ -139,6 +139,12 @@ public class CouponAssignmentServiceTest {
     private CouponModel getFakeCoupon(UserGroup userGroup, boolean isMultiple) {
         UserModel couponCreator = getFakeUser("fakeUser");
         userMapper.create(couponCreator);
+        CouponModel couponModel = createCouponModel(userGroup,isMultiple,couponCreator.getLoginName());
+        couponMapper.create(couponModel);
+        return couponModel;
+    }
+
+    public CouponModel createCouponModel(UserGroup userGroup, boolean isMultiple,String loginName){
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1);
         couponModel.setTotalCount(1L);
@@ -149,7 +155,7 @@ public class CouponAssignmentServiceTest {
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setInvestLowerLimit(0);
         couponModel.setUserGroup(userGroup);
-        couponModel.setCreatedBy(couponCreator.getLoginName());
+        couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponModel.setActive(true);
         couponModel.setMultiple(isMultiple);
@@ -180,6 +186,14 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 1);
+        couponModel = createCouponModel(UserGroup.MAX_AMOUNT_ACHIEVEMENT,true,loginName);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 2);
+        couponModel = createCouponModel(UserGroup.LAST_INVEST_ACHIEVEMENT,true,loginName);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 3);
     }
 
     @Test
@@ -230,6 +244,10 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 1);
+        couponModel = createCouponModel(UserGroup.MAX_AMOUNT_ACHIEVEMENT,true,loginName);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 2);
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
