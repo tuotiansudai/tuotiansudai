@@ -187,9 +187,9 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        long extraRateInterest = getExtraRate(loanId,amount,loanModel.getDuration());
+        long extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
         long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        return (expectedInterest  - expectedFee) + (extraRateInterest - extraRateFee);
+        return (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
     @Override
@@ -313,7 +313,7 @@ public class InvestServiceImpl implements InvestService {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
                 InvestExtraRateModel extraRateModel = investExtraRateMapper.findByInvestId(view.getId());
-                InvestPaginationItemDataDto investPaginationItemDataDto =(extraRateModel == null)?new InvestPaginationItemDataDto(view):new InvestPaginationItemDataDto(view,extraRateModel);
+                InvestPaginationItemDataDto investPaginationItemDataDto = (extraRateModel == null) ? new InvestPaginationItemDataDto(view) : new InvestPaginationItemDataDto(view, extraRateModel);
                 investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
@@ -419,15 +419,15 @@ public class InvestServiceImpl implements InvestService {
         redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
     }
 
-    private long getExtraRate(long loanId,long amount,int duration){
+    private long getExtraRate(long loanId, long amount, int duration) {
         double rate = 0;
         List<ExtraLoanRateModel> extraLoanRateModelList = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
-        for(ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList){
-            if(extraLoanRateModel.getMinInvestAmount() <= amount && extraLoanRateModel.getMaxInvestAmount() == 0){
+        for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModelList) {
+            if (extraLoanRateModel.getMinInvestAmount() <= amount && extraLoanRateModel.getMaxInvestAmount() == 0) {
                 rate = extraLoanRateModel.getRate();
                 break;
             }
-            if(extraLoanRateModel.getMinInvestAmount() <= amount && amount < extraLoanRateModel.getMaxInvestAmount()){
+            if (extraLoanRateModel.getMinInvestAmount() <= amount && amount < extraLoanRateModel.getMaxInvestAmount()) {
                 rate = extraLoanRateModel.getRate();
                 break;
             }

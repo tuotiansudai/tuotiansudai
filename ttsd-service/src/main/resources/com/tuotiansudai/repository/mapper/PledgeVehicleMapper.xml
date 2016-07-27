@@ -35,4 +35,34 @@
         loan_id = #{loanId}
     </select>
 
+    <update id="updateByLoanId" parameterType="PledgeVehicleModel">
+        UPDATE
+          `aa`.`pledge_vehicle`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pledgeLocation != null and pledgeLocation != ''">
+                pledge_location = #{pledgeLocation},
+            </if>
+            <if test="estimateAmount != null and estimateAmount != ''">
+                estimate_amount = #{estimateAmount},
+            </if>
+            <if test="loanAmount != null and loanAmount != ''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="brand != null and brand != ''">
+                brand = #{brand},
+            </if>
+            <if test="model != null and model != ''">
+                model = #{model}
+            </if>
+        </trim>
+        WHERE
+          loan_id = #{loanId}
+    </update>
+
+    <delete id="deleteByLoanId">
+        DELETE FROM
+          `aa`.`pledge_vehicle`
+        WHERE
+          loan_id = #{loanId}
+    </delete>
 </mapper>

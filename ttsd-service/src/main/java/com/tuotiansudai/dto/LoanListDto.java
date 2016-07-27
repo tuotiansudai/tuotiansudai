@@ -35,7 +35,7 @@ public class LoanListDto{
 
     private ProductType productType;
 
-    List<ExtraLoanRateDto> extraLoanRateModels;
+    List<ExtraLoanRateItemDto> extraLoanRateModels;
 
     public long getId() {
         return id;
@@ -133,14 +133,14 @@ public class LoanListDto{
         this.productType = productType;
     }
 
-    public List<ExtraLoanRateDto> getExtraLoanRateModels() {
+    public List<ExtraLoanRateItemDto> getExtraLoanRateModels() {
         if (CollectionUtils.isEmpty(extraLoanRateModels)){
             return new ArrayList<>();
         }
         return extraLoanRateModels;
     }
 
-    public void setExtraLoanRateModels(List<ExtraLoanRateDto> extraLoanRateModels) {
+    public void setExtraLoanRateModels(List<ExtraLoanRateItemDto> extraLoanRateModels) {
         this.extraLoanRateModels = extraLoanRateModels;
     }
 }

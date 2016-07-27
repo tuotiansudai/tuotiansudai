@@ -15,5 +15,7 @@ public enum MessageStatus {
         this.description = description;
     }
 
-    MessageStatus(String description){this.description = description; }
+    MessageStatus(String description) {
+        this.description = description;
+    }
 }

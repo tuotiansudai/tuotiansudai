@@ -10,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -84,5 +83,45 @@ public class PledgeHouseMapperTest {
         assertEquals(pledgeHouseModel.getEstateRegisterId(), findPledgeHouseModel.getEstateRegisterId());
         assertEquals(pledgeHouseModel.getPropertyCardId(), findPledgeHouseModel.getPropertyCardId());
         assertEquals(pledgeHouseModel.getSquare(), findPledgeHouseModel.getSquare());
+    }
+
+    @Test
+    public void testUpdateByLoanId() throws Exception {
+        prepareData();
+        PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
+                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+        pledgeHouseMapper.create(pledgeHouseModel);
+
+        pledgeHouseModel.setPledgeLocation("updateLocation");
+        pledgeHouseModel.setEstimateAmount("updateValue");
+        pledgeHouseModel.setLoanAmount("updateLoanAmount");
+        pledgeHouseModel.setSquare("updateSquare");
+        pledgeHouseModel.setPropertyCardId("updateCardId");
+        pledgeHouseModel.setEstateRegisterId("updateRegisterId");
+        pledgeHouseModel.setAuthenticAct("updateAct");
+
+        pledgeHouseMapper.updateByLoanId(pledgeHouseModel);
+        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId());
+        assertNotNull(findPledgeHouseModel);
+        assertEquals(pledgeHouseModel.getLoanId(), findPledgeHouseModel.getLoanId());
+        assertEquals(pledgeHouseModel.getEstimateAmount(), findPledgeHouseModel.getEstimateAmount());
+        assertEquals(pledgeHouseModel.getLoanAmount(), findPledgeHouseModel.getLoanAmount());
+        assertEquals(pledgeHouseModel.getPledgeLocation(), findPledgeHouseModel.getPledgeLocation());
+        assertEquals(pledgeHouseModel.getAuthenticAct(), findPledgeHouseModel.getAuthenticAct());
+        assertEquals(pledgeHouseModel.getEstateRegisterId(), findPledgeHouseModel.getEstateRegisterId());
+        assertEquals(pledgeHouseModel.getPropertyCardId(), findPledgeHouseModel.getPropertyCardId());
+        assertEquals(pledgeHouseModel.getSquare(), findPledgeHouseModel.getSquare());
+    }
+
+    @Test
+    public void testDeleteByLoanId() throws Exception {
+        prepareData();
+        PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
+                "square", "propertyCardId", "estateRegisterId", "authenticAct");
+        pledgeHouseMapper.create(pledgeHouseModel);
+        assertNotNull(pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId()));
+
+        pledgeHouseMapper.deleteByLoanId(pledgeHouseModel.getLoanId());
+        assertNull(pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId()));
     }
 }

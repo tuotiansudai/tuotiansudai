@@ -228,7 +228,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     }
 
-    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
             @Override
             public ExtraLoanRateDto apply(ExtraLoanRateModel model) {

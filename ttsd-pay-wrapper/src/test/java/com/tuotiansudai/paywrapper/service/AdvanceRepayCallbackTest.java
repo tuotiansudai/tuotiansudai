@@ -171,7 +171,7 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         investMapper.create(investTransferee);
 
         Date dateLine = new DateTime().plusDays(5).toDate();
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest,"name",2,9800,200,dateLine,5,Source.WEB);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest, "name", 2, 9800, 200, dateLine, 5, Source.WEB);
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 

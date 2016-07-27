@@ -39,7 +39,7 @@ public class HeroRankingController {
 
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime",new DateTime().withTimeAtStartOfDay().toDate());
-        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(),-1));
+        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         Integer investRanking = heroRankingService.obtainHeroRankingByLoginName(new Date(), loginName);
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
         modelAndView.addObject("investRanking",investRanking);

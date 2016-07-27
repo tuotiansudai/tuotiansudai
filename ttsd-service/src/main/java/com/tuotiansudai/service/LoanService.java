@@ -1,8 +1,9 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.BaseException;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 
 import java.util.Date;
 import java.util.List;
@@ -21,17 +22,23 @@ public interface LoanService {
     List<LoanTitleModel> findAllTitles();
 
     /**
-     * @return
      * @function 创建标的
+     * @param loanDto
+     * @param loanDetailsDto
+     * @param loanerDetailsDto
+     * @param pledgeDetailsDto
+     * @return
      */
-    BaseDto<PayDataDto> createLoan(LoanDto loanDto);
+    BaseDto<BaseDataDto> createLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                    AbstractPledgeDetailsDto pledgeDetailsDto);
 
     /**
      * @param loanDto
      * @return
      * @function 标的编辑
      */
-    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
+    BaseDto<BaseDataDto> updateLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
+                                    AbstractPledgeDetailsDto pledgeDetailsDto);
 
     BaseDto<PayDataDto> delayLoan(LoanDto loanDto);
 
@@ -46,6 +53,8 @@ public interface LoanService {
     int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd);
 
     LoanModel findLoanById(long loanId);
+
+    AbstractCreateLoanDto findCreateLoanDto(long loanId);
 
     boolean loanIsExist(long loanId);
 

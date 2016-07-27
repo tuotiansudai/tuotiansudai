@@ -1,15 +1,18 @@
 package com.tuotiansudai.repository.model;
 
+
+import com.tuotiansudai.dto.LoanerDetailsDto;
+
 import java.io.Serializable;
 
-public class LoanerDetailsModel implements Serializable{
+public class LoanerDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String loginName;
     private String userName;
     private Gender gender;
     private int age;
-    private String identifyNumber;
+    private String identityNumber;
     private Marriage marriage;
     private String region;
     private String income;
@@ -18,17 +21,30 @@ public class LoanerDetailsModel implements Serializable{
     public LoanerDetailsModel() {
     }
 
-    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identifyNumber, Marriage marriage, String region, String income, String employmentStatus) {
+    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identityNumber, Marriage marriage, String region, String income, String employmentStatus) {
         this.loanId = loanId;
         this.loginName = loginName;
         this.userName = userName;
         this.gender = gender;
         this.age = age;
-        this.identifyNumber = identifyNumber;
+        this.identityNumber = identityNumber;
         this.marriage = marriage;
         this.region = region;
         this.income = income;
         this.employmentStatus = employmentStatus;
+    }
+
+    public LoanerDetailsModel(LoanerDetailsDto loanerDetailsDto) {
+        this.loanId = loanerDetailsDto.getLoanId();
+        this.loginName = loanerDetailsDto.getLoanerLoginName();
+        this.userName = loanerDetailsDto.getLoanerUserName();
+        this.gender = loanerDetailsDto.getLoanerGender();
+        this.age = loanerDetailsDto.getLoanerAge();
+        this.identityNumber = loanerDetailsDto.getLoanerIdentityNumber();
+        this.marriage = loanerDetailsDto.getLoanerMarriage();
+        this.region = loanerDetailsDto.getLoanerRegion();
+        this.income = loanerDetailsDto.getLoanerIncome();
+        this.employmentStatus = loanerDetailsDto.getLoanerEmploymentStatus();
     }
 
     public long getId() {
@@ -79,12 +95,12 @@ public class LoanerDetailsModel implements Serializable{
         this.age = age;
     }
 
-    public String getIdentifyNumber() {
-        return identifyNumber;
+    public String getIdentityNumber() {
+        return identityNumber;
     }
 
-    public void setIdentifyNumber(String identifyNumber) {
-        this.identifyNumber = identifyNumber;
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 
     public Marriage getMarriage() {

@@ -312,6 +312,7 @@ public class PointTaskServiceTest {
         loanDto.setProductType(productType);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setAgentLoginName(loaner.getLoginName());
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
         return loanModel;
     }
