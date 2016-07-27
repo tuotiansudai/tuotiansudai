@@ -118,9 +118,8 @@ public class HeroRankingServiceTest {
         investMapper.create(investModel3);
 
         BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
-        HeroRankingView heroRankingView = baseListDataDto.getRecords().get(0);
-        assertThat(heroRankingView.getSumAmount(), is(4000l));
-        assertThat(heroRankingView.getLoginName(), is(randomUtils.encryptMobile(investor2.getLoginName(), investor1.getLoginName(),Source.MOBILE)));
+
+        assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
     }
 
     @Test

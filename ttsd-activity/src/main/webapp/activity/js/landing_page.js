@@ -11,6 +11,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             $mobileRegister=$('.mobile-page-register'),
             $landingTop=$('.landing-top');
 
+        var $popWinBox=$('#popWinBox');
+
         var bCategory=commonFun.browserRedirect();
 
         if(bCategory=='mobile') {
@@ -94,6 +96,29 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             }
         });
 
+        if($popWinBox.length) {
+            var dataShow=$popWinBox.data('show-coupon-alert');
+            if(dataShow) {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '80%',
+                    skin: 'layui-layer-nobg',
+                    shadeClose: false,
+                    content: $popWinBox
+                });
+            }
+            $popWinBox.find('.app-close').on('click',function() {
+                layer.closeAll();
+            });
+            $popWinBox.find('.app-button').on('click',function() {
+                cnzzPush.trackClick('154landingPage2','领取588红包');
+                layer.closeAll();
+                location.href='/loan-list';
+            });
+
+        }
         var refreshCaptcha = function () {
             $('.image-captcha img').each(function(index, el) {
                 $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
@@ -128,7 +153,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             }
             layer.open({
                 type: 1,
-                title: '拓天速贷服务协议',
+                title: false,
+                closeBtn: 0,
                 area: area,
                 shadeClose: true,
                 move: false,
@@ -138,6 +164,9 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
             });
         });
 
+        $('#agreementBox').find('.close-tip').on('click',function() {
+            layer.closeAll();
+        })
         $fetchCaptcha.on('click', function(event) {
             event.preventDefault();
 
@@ -157,6 +186,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                          countdown--;
                          if(countdown==0) {
                              clearInterval(timer);
+                             countdown = 60;
                              $fetchCaptcha.prop('disabled',false).text('重新发送');
                          }
                      }, 1000);
@@ -176,19 +206,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                  layer.msg('请求失败，请重试！');
 
              });
-
         });
-        //timer
-        function getCode() {
-            if (countdown == 0) {
-                window.clearInterval(timer);
-                $fetchCaptcha.prop('disabled',false).text('获取验证码');
-                countdown = 60;
-            } else {
-                $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
-                countdown--;
-            }
-        }
 
         // phone validate
         jQuery.validator.addMethod("isPhone", function(value, element) {
