@@ -242,7 +242,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptLoginName(loginName, transferApplicationModel.getLoginName(), showLoginNameLength, transferApplicationModel.getTransferInvestId()));
-        transferApplicationDetailDto.setTransferrerMobile(randomUtils.encryptMobile(userMapper.findByLoginName(loginName).getMobile()));
+        transferApplicationDetailDto.setTransferrerMobile(randomUtils.encryptMobile(userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile()));
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
