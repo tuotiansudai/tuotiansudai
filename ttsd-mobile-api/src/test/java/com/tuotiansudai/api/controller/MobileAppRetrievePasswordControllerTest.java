@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -48,10 +47,4 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
                 .andExpect(jsonPath("$.code").value("0012"));
     }
 
-    @Test
-    public void sendSMS() throws Exception {
-        when(service.sendSMS(any(RetrievePasswordRequestDto.class), anyString())).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/retrievepassword/sendsms",
-                new RetrievePasswordRequestDto());
-    }
 }

@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -44,6 +45,9 @@ public class RegisterUserControllerTest {
 
     @Mock
     private CaptchaHelper captchaHelper;
+
+    @Mock
+    private UserMapper userMapper;
 
     @Before
     public void init() {
@@ -183,6 +187,8 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldDisplayRegisterUserTemplate() throws Exception {
+        when(userMapper.findUsersMobileByLoginName(anyString())).thenReturn("");
+
         this.mockMvc.perform(get("/register/user"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/register-user"));

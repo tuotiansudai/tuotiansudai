@@ -5,10 +5,12 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface WithdrawMapper {
 
     void create(WithdrawModel withdrawModel);
@@ -20,7 +22,7 @@ public interface WithdrawMapper {
     long findSumSuccessWithdrawByLoginName(String loginName);
 
     List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") String withdrawId,
-                                                        @Param(value = "loginName") String loginName,
+                                                        @Param(value = "mobile") String mobile,
                                                         @Param(value = "status") WithdrawStatus status,
                                                         @Param(value = "source") Source source,
                                                         @Param(value = "index") int index,
@@ -30,7 +32,7 @@ public interface WithdrawMapper {
 
 
     long findSumWithdrawAmount(@Param(value = "withdrawId") String withdrawId,
-                               @Param(value = "loginName") String loginName,
+                               @Param(value = "mobile") String mobile,
                                @Param(value = "status") WithdrawStatus status,
                                @Param(value = "source") Source source,
                                @Param(value = "role") Role role,
@@ -39,14 +41,14 @@ public interface WithdrawMapper {
 
 
     long findSumWithdrawFee(@Param(value = "withdrawId") String withdrawId,
-                            @Param(value = "loginName") String loginName,
+                            @Param(value = "mobile") String mobile,
                             @Param(value = "status") WithdrawStatus status,
                             @Param(value = "source") Source source,
                             @Param(value = "startTime") Date startTime,
                             @Param(value = "endTime") Date endTime);
 
     int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
-                          @Param(value = "loginName") String loginName,
+                          @Param(value = "mobile") String mobile,
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "source") Source source,
                           @Param(value = "startTime") Date startTime,

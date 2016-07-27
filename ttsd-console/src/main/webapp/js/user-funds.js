@@ -22,7 +22,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
         var autoValue = '';
         $(".jq-loginName").autocomplete({
             source: function (query, process) {
-                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -45,21 +45,21 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
         });
 
         $('.search').click(function() {
-            var loginName = $('.jq-loginName').val();
+            var mobile = $('.jq-loginName').val();
             var startTime = $('.jq-startTime').val();
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&index=1&pageSize=10";
+            window.location.href = "/finance-manage/user-funds?mobile="+mobile+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&index=1&pageSize=10";
         });
 
         $('.down-load').click(function(){
-            var loginName = $('.jq-loginName').val();
+            var mobile = $('.jq-loginName').val();
             var startTime = $('.jq-startTime').val();
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
+            window.location.href = "/finance-manage/user-funds?mobile="+mobile+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
         });
     });
 })

@@ -14,7 +14,7 @@ import java.util.List;
 public interface FeedbackMapper {
     void create(FeedbackModel model);
 
-    List<FeedbackModel> findAll(@Param("loginName") String loginName,
+    List<FeedbackModel> findAll(@Param("mobile") String mobile,
                                 @Param("source") Source source,
                                 @Param("type") FeedbackType type,
                                 @Param("status") ProcessStatus status,
@@ -23,7 +23,7 @@ public interface FeedbackMapper {
                                 @Param("rowIndex") int rowIndex,
                                 @Param("rowLimit") int rowLimit);
 
-    long findAllCount(@Param("loginName") String loginName,
+    long findAllCount(@Param("mobile") String mobile,
                       @Param("source") Source source,
                       @Param("type") FeedbackType type,
                       @Param("status") ProcessStatus status,

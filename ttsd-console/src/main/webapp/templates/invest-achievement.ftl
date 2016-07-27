@@ -4,8 +4,8 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="loginName">用户名</label>
-            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
+            <label for="loginName">电话号码</label>
+            <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}" />
         </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
     </form>
@@ -68,7 +68,7 @@
         <ul class="pagination pull-left">
             <li>
                 <#if hasPreviousPage >
-                <a href="?loginName=${loginName!}&pageSize=${pageSize}&index=${index-1}"
+                <a href="?mobile=${mobile!}&pageSize=${pageSize}&index=${index-1}"
                    aria-label="Previous">
                 <#else>
                 <a href="#" aria-label="Previous">
@@ -79,7 +79,7 @@
             <li><a>${index}</a></li>
             <li>
                 <#if hasNextPage >
-                <a href="?loginName=${loginName!}&pageSize=${pageSize}&index=${index+1}"
+                <a href="?mobile=${mobile!}&pageSize=${pageSize}&index=${index+1}"
                    aria-label="Next">
                 <#else>
                 <a href="#" aria-label="Next">

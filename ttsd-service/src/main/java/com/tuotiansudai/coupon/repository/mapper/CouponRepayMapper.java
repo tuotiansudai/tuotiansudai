@@ -9,10 +9,13 @@ import java.util.List;
 @Repository
 public interface CouponRepayMapper {
 
-    long create(CouponRepayModel couponRepayModel);
+    void create(List<CouponRepayModel> couponRepayModels);
 
     CouponRepayModel findByUserCouponIdAndPeriod(@Param(value = "userCouponId") long userCouponId,
                                                  @Param(value = "period") long period);
 
-    long update(CouponRepayModel couponRepayModel);
+    void update(CouponRepayModel couponRepayModel);
+
+    List<CouponRepayModel> findByUserCouponByInvestId(@Param(value = "investId") long investId);
+
 }

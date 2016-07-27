@@ -5,6 +5,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
@@ -34,6 +40,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
@@ -106,6 +113,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -264,6 +277,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             // 返款成功
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
+            investModel.setTradingTime(new Date());
             investMapper.update(investModel);
         } else {
             // 返款失败，发报警短信，手动干预
@@ -285,6 +299,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         // update transferee invest status
         investModel.setStatus(InvestStatus.SUCCESS);
+        // update trading time
+        investModel.setTradingTime(new Date());
+
         investMapper.update(investModel);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
 
@@ -305,6 +322,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         try {
             this.updateInvestRepay(transferApplicationModel);
+            this.updateCouponRepay(transferApplicationModel.getTransferInvestId(),transferApplicationModel.getPeriod());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update invest repay failed", String.valueOf(investModel.getId())), e);
             this.sendFatalNotify(MessageFormat.format("债权转让({0})更新回款计划失败", String.valueOf(investId)));
@@ -363,6 +381,25 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             //sms notify
             this.sendFatalNotify(MessageFormat.format("债权转让(0)返款转让人失败", String.valueOf(transferApplicationModel.getInvestId())));
         }
+    }
+
+    private void updateCouponRepay(long investId,final int period){
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investId);
+        List<CouponRepayModel> transferredCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
+            @Override
+            public boolean apply(CouponRepayModel input) {
+                return input.getPeriod() >= period;
+            }
+        }));
+
+        for(CouponRepayModel couponRepayModel : transferredCouponRepayModels){
+            couponRepayModel.setExpectedInterest(0);
+            couponRepayModel.setExpectedFee(0);
+            couponRepayModel.setTransferred(true);
+            couponRepayModel.setStatus(RepayStatus.COMPLETE);
+            couponRepayMapper.update(couponRepayModel);
+        }
+
     }
 
     private void updateInvestRepay(TransferApplicationModel transferApplicationModel) {
@@ -440,7 +477,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
-                this.overInvestPaybackProcess(transferApplicationModel, investModel);
+                this.overInvestPaybackProcess(investId);
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
@@ -457,11 +494,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     /**
      * 超投处理：返款、更新投资状态为失败
      *
-     * @param investModel
+     * @param investId
      */
-    private void overInvestPaybackProcess(TransferApplicationModel transferApplicationModel, InvestModel investModel) {
+    private void overInvestPaybackProcess(long investId) {
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
         long transferAmount = transferApplicationModel.getTransferAmount();
-        long investId = investModel.getId();
+        InvestModel investModel = investMapper.findById(investId);
 
         try {
             String overInvestPaybackOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis()));

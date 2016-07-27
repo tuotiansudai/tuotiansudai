@@ -6,7 +6,7 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'moment', 'csrf'], function ($) {
         });
 
         var autoValue = '';
-        $("#loginName, #input-referrer").autocomplete({
+        $("#loginName").autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
                 $.get('/user-manage/user/' + query.term + '/search', function (respData) {
@@ -15,7 +15,26 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'moment', 'csrf'], function ($) {
                 });
             }
         });
-        $("#loginName, #input-referrer").blur(function () {
+        $("#loginName").blur(function () {
+            for (var i = 0; i < autoValue.length; i++) {
+                if ($(this).val() == autoValue[i]) {
+                    $(this).removeClass('Validform_error');
+                    return false;
+                } else {
+                    $(this).addClass('Validform_error');
+                }
+            }
+        });
+        $("#input-referrer").autocomplete({
+            source: function (query, process) {
+                //var matchCount = this.options.items;//返回结果集最大数量
+                $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
+                    autoValue = respData;
+                    return process(respData);
+                });
+            }
+        });
+        $("#input-referrer").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');

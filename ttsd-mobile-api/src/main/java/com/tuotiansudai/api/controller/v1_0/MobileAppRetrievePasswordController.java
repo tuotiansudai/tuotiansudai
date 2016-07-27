@@ -37,15 +37,4 @@ public class MobileAppRetrievePasswordController extends MobileAppBaseController
         }
     }
 
-
-    /**
-     * @param retrievePasswordRequestDto
-     * @param request
-     * @return BaseResponseDto
-     * @function 发送手机验证码
-     */
-    @RequestMapping(value = "/retrievepassword/sendsms", method = RequestMethod.POST)
-    public BaseResponseDto sendSMS(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto, HttpServletRequest request) {
-        return retrievePasswordService.sendSMS(retrievePasswordRequestDto, CommonUtils.getRemoteHost(request));
-    }
 }

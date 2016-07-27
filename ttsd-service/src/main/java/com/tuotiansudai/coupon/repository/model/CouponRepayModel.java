@@ -37,7 +37,7 @@ public class CouponRepayModel implements Serializable {
 
     private RepayStatus status;
 
-    private Date createdTime;
+    private Date createdTime = new Date();
 
     public CouponRepayModel() {
     }

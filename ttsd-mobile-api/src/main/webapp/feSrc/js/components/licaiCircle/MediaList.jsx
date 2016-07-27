@@ -2,7 +2,7 @@ import React from 'react';
 import { hashHistory } from 'react-router';
 import changeTitle from 'utils/changeTitle';
 import { main, spinner } from './MediaList.scss';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll'; 
 import imagesLoaded from 'imagesloaded';
 import Praise from 'components/licaiCircle/Praise';
 import classNames from 'classnames';
@@ -132,8 +132,8 @@ class MediaList extends React.Component {
 		imagesLoaded(this.refs.scrollWrap).on('always', () => {
 			setTimeout(() => {
 				if (!this.myScroll) {
-					let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
-					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight - marginTop) + 'px';
+					// let marginTop = parseInt(window.getComputedStyle(this.refs.tabBody)['margin-top']);
+					this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.banner.offsetHeight - this.refs.tabHeader.offsetHeight ) + 'px';
 					this.myScroll = new IScroll(this.refs.scrollWrap);
 					this.myScroll.on('scrollEnd', () => {
 						if (this.myScroll.y <= this.myScroll.maxScrollY) {
@@ -172,7 +172,7 @@ class MediaList extends React.Component {
 						return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
 					})}
 				</ul>
-				<div className="tab-body" ref="tabBody">
+				<div className="tab-body" ref="scroll-wrap">
 					<div className="scroll-wrap" ref="scrollWrap">
 						<ul className="list">
 							{this.state.listData.map((value, index) => {

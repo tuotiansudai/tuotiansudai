@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -45,6 +44,8 @@ public class UserModel implements Cloneable, Serializable {
     private AccountModel account;
 
     private Date lastBillTime;
+
+    private int signInCount;
 
     public String getSalt() {
         return salt;
@@ -208,6 +209,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setLastBillTime(Date lastBillTime) {
         this.lastBillTime = lastBillTime;
+    }
+
+    public int getSignInCount() {
+        return signInCount;
+    }
+
+    public void setSignInCount(int signInCount) {
+        this.signInCount = signInCount;
     }
 
     @Override

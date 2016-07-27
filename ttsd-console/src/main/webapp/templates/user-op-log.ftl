@@ -5,10 +5,10 @@
     <form action="" class="form-inline query-build">
 
         <div class="form-group">
-            <label for="loginName">用户</label>
-            <input type="text" id="login-name" name="loginName"
+            <label for="mobile">用户手机</label>
+            <input type="text" id="mobile" name="mobile"
                    class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                   value="${loginName!}"/>
+                   value="${mobile!}"/>
         </div>
 
         <div class="form-group">
@@ -49,7 +49,7 @@
             <thead>
             <tr>
                 <th>操作时间</th>
-                <th>用户名</th>
+                <th>用户手机</th>
                 <th>IP</th>
                 <th>操作类型</th>
                 <th>终端类型</th>
@@ -61,7 +61,7 @@
                 <#list data.records as record>
                 <tr>
                     <td>${record.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td>${record.loginName!}</td>
+                    <td>${record.mobile!}</td>
                     <td>${record.ip}</td>
                     <td>${record.opType.getDesc()}</td>
                     <td>${record.source!}</td>
@@ -82,14 +82,14 @@
         </div>
         <ul class="pagination">
             <li <#if !data.hasPreviousPage>class="disabled"</#if>>
-                <a href="?loginName=${loginName!}&opType=${opType!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index-1}"
+                <a href="?mobile=${mobile!}&opType=${opType!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index-1}"
                    class="previous <#if !data.hasPreviousPage>disabled</#if>">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <li class="disabled"><a class="current-page" data-index="${data.index}">${data.index}</a></li>
             <li <#if !data.hasNextPage>class="disabled"</#if>>
-                <a href="?loginName=${loginName!}&opType=${opType!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
+                <a href="?mobile=${mobile!}&opType=${opType!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&pageSize=${pageSize}&index=${index+1}"
                    class="next <#if !data.hasNextPage>disabled</#if>">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
