@@ -30,7 +30,7 @@
                             <td>${bank.singleAmount}</td>
                             <td>${bank.singleDayAmount}</td>
                             <td>
-                                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')">
                                     <a href="/finance-manage/bank/${bank.id?c}/edit" >编辑</a>
                                 </@security.authorize>
                             </td>

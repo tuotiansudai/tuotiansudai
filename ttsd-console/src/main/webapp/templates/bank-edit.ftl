@@ -55,7 +55,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-4">
-                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')">
                     <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">发布</button>
                 </@security.authorize>
                 <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnBack">返回</button>
