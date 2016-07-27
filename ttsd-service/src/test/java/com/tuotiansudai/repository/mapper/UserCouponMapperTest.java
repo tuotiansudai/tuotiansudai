@@ -43,9 +43,6 @@ public class UserCouponMapperTest {
     @Autowired
     private IdGenerator idGenerator;
 
-    @Autowired
-    private LoanMapper loanMapper;
-
     @Test
     public void shouldCreateUserCoupon() {
         UserModel userModel = fakeUserModel();
@@ -87,7 +84,6 @@ public class UserCouponMapperTest {
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
         couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
-
         return couponModel;
     }
 
@@ -101,40 +97,5 @@ public class UserCouponMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
-    }
-
-    @Test
-    public void shouldFindByAchievementLoanIdOrCouponTypeIsOk(){
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        CouponModel couponModel = fakeCouponModel();
-        couponMapper.create(couponModel);
-        LoanModel fakeLoan = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.PREHEAT,ActivityType.NEWBIE);
-        loanMapper.create(fakeLoan);
-        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
-        userCouponModel.setAchievementLoanId(fakeLoan.getId());
-        userCouponMapper.create(userCouponModel);
-        int count = userCouponMapper.findCountByCouponIdAndUserGroup(couponModel.getId(),couponModel.getUserGroup(),userModel.getLoginName());
-        assertTrue(count == 1);
-    }
-
-    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
-        LoanModel fakeLoanModel = new LoanModel();
-        fakeLoanModel.setId(idGenerator.generate());
-        fakeLoanModel.setName("loanName");
-        fakeLoanModel.setLoanerLoginName(loanerLoginName);
-        fakeLoanModel.setLoanerUserName("借款人");
-        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
-        fakeLoanModel.setAgentLoginName(agentLoginName);
-        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        fakeLoanModel.setPeriods(3);
-        fakeLoanModel.setStatus(loanStatus);
-        fakeLoanModel.setActivityType(activityType);
-        fakeLoanModel.setFundraisingStartTime(new Date());
-        fakeLoanModel.setFundraisingEndTime(new Date());
-        fakeLoanModel.setDescriptionHtml("html");
-        fakeLoanModel.setDescriptionText("text");
-        fakeLoanModel.setCreatedTime(new Date());
-        return fakeLoanModel;
     }
 }

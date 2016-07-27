@@ -279,9 +279,4 @@
         AND t.`status` = 'SUCCESS'
         and  c.`coupon_type` = 'RED_ENVELOPE';
     </select>
-
-    <select id="findCountByCouponIdAndUserGroup" parameterType="map" resultType="int">
-        select count(1) from user_coupon uc JOIN coupon c on uc.coupon_id = c.id
-        where uc.coupon_id = #{couponId} and c.user_group = #{userGroup} and uc.login_name = #{loginName}
-    </select>
 </mapper>

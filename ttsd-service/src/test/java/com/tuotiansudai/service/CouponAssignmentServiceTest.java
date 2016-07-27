@@ -219,6 +219,10 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
         userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
         assertTrue(userCouponModelList.size() == 1);
+        couponModel = createCouponModel(UserGroup.LAST_INVEST_ACHIEVEMENT,true,loginName);
+        couponAssignmentService.assignUserCoupon(loanModel.getId(),loginName,couponModel.getId());
+        userCouponModelList = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        assertTrue(userCouponModelList.size() == 2);
     }
 
     @Test
