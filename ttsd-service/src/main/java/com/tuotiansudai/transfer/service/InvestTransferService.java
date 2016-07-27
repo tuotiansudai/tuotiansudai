@@ -44,5 +44,4 @@ public interface InvestTransferService {
                                                                          Date startTime,
                                                                          Date endTime,
                                                                          LoanStatus loanStatus);
-
 }
