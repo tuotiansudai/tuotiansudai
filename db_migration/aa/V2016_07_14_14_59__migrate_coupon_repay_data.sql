@@ -1,6 +1,9 @@
 BEGIN;
 
 # migrate INVEST_COUPON
+delete from user_point_prize where point_prize_id = 100006;
+delete from point_prize where coupon_id = 302;
+
 DELETE FROM `coupon`
 WHERE `coupon`.`id` IN (302, 100004);
 
