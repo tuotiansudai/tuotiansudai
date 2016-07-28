@@ -66,7 +66,9 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Map<String, String> pledgeVehicleDetail;
 
-    public LoanDetailDto(LoanModel loanModel, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
+    private String declaration;
+
+    public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
         this.progress = new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
@@ -88,6 +90,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.countdown = Seconds.secondsBetween(new DateTime(), new DateTime(loanModel.getFundraisingStartTime())).getSeconds();
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
         this.investor = investorDto;
+        this.declaration = loanDetails.getDeclaration();
     }
 
     public long getId() {
@@ -212,5 +215,9 @@ public class LoanDetailDto extends BaseDataDto {
 
     public Map<String, String> getPledgeVehicleDetail() {
         return pledgeVehicleDetail;
+    }
+
+    public String getDeclaration() {
+        return declaration;
     }
 }

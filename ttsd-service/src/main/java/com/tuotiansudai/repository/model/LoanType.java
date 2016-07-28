@@ -37,6 +37,7 @@ public enum LoanType {
     public String getRepayType() {
         return this.name.substring(0, name.indexOf("，"));
     }
+
     public String getInterestType() {return Splitter.on('，').splitToList(this.name).get(2);}
 
     public InterestInitiateType getInterestInitiateType() {
