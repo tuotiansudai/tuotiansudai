@@ -354,8 +354,13 @@
                 <h3 class="panel-title">平台待收</h3>
             </div>
             <div class="panel-body" id="">
-                <form class="form-inline" id="platformSumRepayByTime">
-                    开始时间： <input type="text" class="form-control start-date" name="startTime">
+                <form class="form-inline" id="platformSumRepayByTimeReport">
+                    <select class="form-control search-category granularity-select" name="granularity">
+                        <option value="Daily">日</option>
+                        <option value="Monthly" selected>月</option>
+                        <option value="Weekly">周</option>
+                    </select>
+                    开始时间： <input type="text" class="form-control start-date repay_date" name="startTime">
                     结束时间：<input type="text" class="form-control end-date" name="endTime">
                     <button class="btn btn-primary" type="button">查询</button>
                 </form>

@@ -69,6 +69,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
+    $('.repay_date').val('2016-01-01');
 
     $('.granularity-select').on('change', function(){
         if ($(this).val() == 'Hourly') {
@@ -160,7 +161,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
 
     /*平台待收 总待收-总入金+回款*/
-    showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','小时','kBar');
+    showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','小时','Lines');
 
 
 });

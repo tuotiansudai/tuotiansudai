@@ -307,4 +307,15 @@
     <select id="findLastRepayDateByLoanId" parameterType="map" resultType="date">
         select max(repay_date) from loan_repay where loan_id = #{loanId};
     </select>
+
+    <select id="findSumExpectedRepayByRepayDate" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(
+        t.`corpus` + t.`default_interest` + t.`expected_interest`
+        ),0)
+        FROM
+        loan_repay t
+        WHERE t.`status` != 'COMPLETE'
+        AND t.`repay_date` BETWEEN #{startTime} AND #{endTime}
+    </select>
 </mapper>

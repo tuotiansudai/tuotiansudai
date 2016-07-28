@@ -61,4 +61,7 @@ public interface LoanRepayMapper {
     List<LoanRepayNotifyModel> findLoanRepayNotifyToday(@Param(value = "today") String today);
 
     Date findLastRepayDateByLoanId(@Param(value="loanId") long loanId);
+
+    long findSumExpectedRepayByRepayDate(@Param(value = "startTime") Date startTime,
+                                 @Param(value = "endTime") Date endTime);
 }
