@@ -37,6 +37,10 @@ public class AdvertisementUtils {
     public AdvertisementResponseDataDto getAdvertisementInfo(String jsonName, BaseParamDto requestDto) {
         List<AdvertisementPictureResponseDataDto> advertisements = null;
         String pictureUrl = "";
+        String title = "";
+        String linkedUrl = "";
+        String sharedUrl = "";
+        String content = "";
         if (!jsonName.equals("")) {
             advertisements = loadPictureListFromConfigFile(jsonName);
             int randomInt = (int)(0 + Math.random()*(advertisements.size() - 1 + 1));
@@ -59,9 +63,17 @@ public class AdvertisementUtils {
             else if("android".equals(requestDto.getBaseParam().getPlatform())){
                 pictureUrl = advertisementPictureResponseDataDto.getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);;
             }
+            title = advertisementPictureResponseDataDto.getTitle();
+            linkedUrl = advertisementPictureResponseDataDto.getLinkedUrl();
+            sharedUrl = advertisementPictureResponseDataDto.getSharedUrl();
+            content = advertisementPictureResponseDataDto.getContent();
         }
         AdvertisementResponseDataDto dataDto = new AdvertisementResponseDataDto();
         dataDto.setUrl(pictureUrl);
+        dataDto.setTitle(title);
+        dataDto.setLinkedUrl(linkedUrl);
+        dataDto.setSharedUrl(sharedUrl);
+        dataDto.setContent(content);
         return dataDto;
     }
 
