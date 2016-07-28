@@ -82,6 +82,7 @@ public abstract class BaseMapperTest {
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setStatus(loanStatus);
         fakeLoanModel.setProductType(productType);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
