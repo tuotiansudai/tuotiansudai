@@ -110,29 +110,31 @@
             </tr>
             </thead>
             <tbody>
-                <#list bookingLoan.records as record>
-                <tr>
-                    <td>${record.userName!}</td>
-                    <td>${record.mobile!}</td>
-                    <td>${record.source!}</td>
-                    <td>${(record.bookingTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <td>${record.productType.getName()}</td>
-                    <td>${record.amount!}</td>
-                    <#if record.noticeTime??>
-                        <td>${(record.noticeTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <#else >
-                        <td>-/-/-</td>
-                    </#if>
-                    <#if record.status>
-                        <td>已通知</td>
-                        <td>--</td>
-                    <#else >
-                        <td>队列中</td>
-                        <td><a href="/booking-loan-manage/${record.bookingLoanId}/notice">通知</a></td>
-                    </#if>
+                <#if bookingLoan.records??>
+                    <#list bookingLoan.records as record>
+                    <tr>
+                        <td>${record.userName!}</td>
+                        <td>${record.mobile!}</td>
+                        <td>${record.source!}</td>
+                        <td>${(record.bookingTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                        <td>${record.productType.getName()}</td>
+                        <td>${record.amount!}</td>
+                        <#if record.noticeTime??>
+                            <td>${(record.noticeTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                        <#else >
+                            <td>-/-/-</td>
+                        </#if>
+                        <#if record.status>
+                            <td>已通知</td>
+                            <td>--</td>
+                        <#else >
+                            <td>队列中</td>
+                            <td><a href="/booking-loan-manage/${record.bookingLoanId}/notice">通知</a></td>
+                        </#if>
 
-                </tr>
-                </#list>
+                    </tr>
+                    </#list>
+                </#if>
             </tbody>
         </table>
     </div>
