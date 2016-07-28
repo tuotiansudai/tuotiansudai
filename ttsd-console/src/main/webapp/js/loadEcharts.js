@@ -310,7 +310,6 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     }],
                     series: seriesDataList
                 };
-
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             }
         },
