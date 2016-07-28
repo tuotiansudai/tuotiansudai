@@ -110,7 +110,7 @@
             </tr>
             </thead>
             <tbody>
-                <#if bookingLoan.records??>
+                <#if bookingLoan?? && bookingLoan.records??>
                     <#list bookingLoan.records as record>
                     <tr>
                         <td>${record.userName!}</td>
