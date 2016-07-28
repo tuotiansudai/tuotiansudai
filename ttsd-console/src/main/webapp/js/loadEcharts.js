@@ -395,7 +395,9 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         var ecConfig = require('echarts/config');
                         option.chart.on(ecConfig.EVENT.LEGEND_SELECTED, function(param){
                             var selected = param.selected;
-                            alert(selected);
+                            $.each(selected,function(key,select) {
+                                alert(select);
+                            });
                             option.option.title.text='总计:';
                             option.chart.setOption(option.option);
                             $.each(option.option.series,function(key,series) {
