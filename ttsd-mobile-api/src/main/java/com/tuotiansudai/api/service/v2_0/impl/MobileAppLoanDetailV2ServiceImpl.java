@@ -141,7 +141,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setBaseRatePercent(decimalFormat.format(loanModel.getBaseRate() * 100));
         dataDto.setActivityRatePercent(decimalFormat.format(loanModel.getActivityRate() * 100));
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
-        dataDto.setDeclaration(loanDetailsModel.getDeclaration());
+        if(loanDetailsModel != null){
+            dataDto.setDeclaration(loanDetailsModel.getDeclaration());
+        }
         dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
         if (loanModel.getFundraisingEndTime() != null) {
             dataDto.setFundRaisingEndTime(new DateTime(loanModel.getFundraisingEndTime()).toDate());
