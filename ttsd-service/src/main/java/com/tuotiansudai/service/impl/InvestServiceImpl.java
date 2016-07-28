@@ -111,9 +111,12 @@ public class InvestServiceImpl implements InvestService {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
 
-
         if (loan == null) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
+        }
+
+        if (investDto.getLoginName().equalsIgnoreCase(loan.getAgentLoginName())) {
+            throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
         }
 
         long userInvestMinAmount = loan.getMinInvestAmount();

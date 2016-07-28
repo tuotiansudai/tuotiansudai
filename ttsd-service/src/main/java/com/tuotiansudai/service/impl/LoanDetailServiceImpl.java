@@ -34,6 +34,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanMapper loanMapper;
 
     @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
@@ -145,6 +148,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
+                loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId()),
                 investedAmount,
                 loanTitleMapper.findAll(),
                 loanTitleRelationMapper.findByLoanId(loanModel.getId()),
@@ -154,7 +158,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         if (loanerDetail != null) {
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
                     .put("借款人", loanerDetail.getUserName())
-                    .put("平台ID", loanerDetail.getLoginName())
                     .put("性别", loanerDetail.getGender().getDescription())
                     .put("年龄", String.valueOf(loanerDetail.getAge()))
                     .put("婚姻状况", loanerDetail.getMarriage().getDescription())

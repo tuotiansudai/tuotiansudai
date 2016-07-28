@@ -71,7 +71,7 @@
                                 <span class="orange2">${loan.progress?string("0.00")}%</span>
                             </div>
                             <div class="col-md-6">
-                                <span class="title" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">可投金额：</span>
+                                <span class="title">可投金额：</span>
                             ${(loan.amountNeedRaised / 100)?string("0.00")}元
                             </div>
                             <div class="col-md-6">
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-6">
                                 <span class="title">还款方式：</span>
-                            ${loan.type.getName()}
+                            ${loan.type.getInterestType()}
                             </div>
                         </div>
                     </div> <#-- .content end tag -->
@@ -103,6 +103,7 @@
                                        data-no-password-remind="${loan.investor.remindNoPassword?c}"
                                        data-no-password-invest="${loan.investor.noPasswordInvest?c}"
                                        data-auto-invest-on="${loan.investor.autoInvest?c}"
+                                       data-amount-need-raised="${loan.amountNeedRaised?string.computer}"
                                        class="text-input-amount fr position-width"/>
                                 <#if errorMessage?has_content>
                                     <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
@@ -275,7 +276,7 @@
                             </div>
                             <div class="container-fluid list-block">
                                 <div class="row">
-                                    <#list ['借款人', '平台ID', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
+                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
                                         <#if loan.loanerDetail[key]??>
                                             <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
@@ -344,7 +345,7 @@
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <h5>${loanTitle_index}、${loanTitle.title}</h5>
+                                        <h5>${loanTitle_index + 1}、${loanTitle.title}</h5>
                                         <div class="scroll-wrap" scroll-carousel>
                                             <div class="scroll-content">
                                                 <div class="row">
@@ -353,7 +354,6 @@
                                                             <img class="img" layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>
-
                                                 </div>
                                             </div>
                                             <div class="left-button disabled"></div>
@@ -362,6 +362,7 @@
                                     </#if>
                                 </#list>
                             </#list>
+                            <h5>声明：${loan.declaration}</h5>
                         </div>
                     </div>
                 </div>
@@ -371,7 +372,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="first"><span><a href="#">拓荒先锋 >></a></span></h4>
+                                        <h4 class="first"><span><a href="/activity/invest-achievement">拓荒先锋 >></a></span></h4>
                                         <#if (loan.achievement.firstInvestAchievementMobile)??>
                                             <p>恭喜${loan.achievement.firstInvestAchievementMobile} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
                                         <#else>
@@ -383,7 +384,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="king"><span><a href="#">拓天标王 >></a></span></h4>
+                                        <h4 class="king"><span><a href="/activity/invest-achievement">拓天标王 >></a></span></h4>
                                         <#if (loan.achievement.maxAmountAchievementMobile)??>
                                             <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span
                                                     class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元红包</p>
@@ -396,7 +397,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="hammer"><span><a href="#">一锤定音 >></a></span></h4>
+                                        <h4 class="hammer"><span><a href="/activity/invest-achievement">一锤定音 >></a></span></h4>
                                         <#if (loan.achievement.lastInvestAchievementMobile)??>
                                             <p>恭喜${loan.achievement.lastInvestAchievementMobile} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
                                         <#else>
