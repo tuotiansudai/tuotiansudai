@@ -156,13 +156,13 @@
                and ta.status = #{status}
             </if>
             <if test="transferrerLoginName != null and transferrerLoginName != '' ">
-              and ta.login_name = #{transferrerLoginName}
+                and ta.login_name = #{transferrerLoginName}
             </if>
             <if test="transfereeLoginName != null and transfereeLoginName != ''">
-              and i.login_name = #{transfereeLoginName}
+                and i.login_name = #{transfereeLoginName}
             </if>
             <if test="loanId != null">
-              and i.loan_id = #{loanId}
+                and i.loan_id = #{loanId}
             </if>
             <if test="source != null">
                 and ta.source = #{source}

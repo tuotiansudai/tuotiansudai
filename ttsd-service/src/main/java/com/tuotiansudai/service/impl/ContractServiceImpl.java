@@ -8,7 +8,9 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -46,6 +48,8 @@ public class ContractServiceImpl implements ContractService {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     @Override
     public String getContract(String templateName, Map<String, Object> dataModel) {
@@ -244,6 +248,7 @@ public class ContractServiceImpl implements ContractService {
 
     private Map<String, Object> collectTransferContractModel(long transferApplicationId) {
         Map<String, Object> dataModel = new HashMap<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         if (null == transferApplicationModel) {
@@ -252,7 +257,7 @@ public class ContractServiceImpl implements ContractService {
 
         dataModel.put("period", transferApplicationModel.getPeriod());
         dataModel.put("investAmount", transferApplicationModel.getInvestAmount());
-        dataModel.put("transferTime", transferApplicationModel.getTransferTime());
+        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", transferApplicationModel.getLeftPeriod());
 
         dataModel.put("loanId", String.valueOf(transferApplicationModel.getLoanId()));
@@ -281,17 +286,22 @@ public class ContractServiceImpl implements ContractService {
 
         if (transferApplicationModel.getLeftPeriod() != transferApplicationModel.getLeftPeriod()) {
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod() - transferApplicationModel.getLeftPeriod());
-            dataModel.put("transferStartTime", new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate());
+            dataModel.put("transferStartTime", simpleDateFormat.format(new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate()));
         } else {
             if (loanModel.getType().equals(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY) || loanModel.getType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY) {
-                dataModel.put("transferStartTime", investModel.getInvestTime());
+                dataModel.put("transferStartTime", simpleDateFormat.format(investModel.getInvestTime()));
             } else if (loanModel.getType().equals(LoanType.LOAN_INTEREST_MONTHLY_REPAY) || loanModel.getType().equals(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY)) {
-                dataModel.put("transferStartTime", loanModel.getRecheckTime());
+                dataModel.put("transferStartTime", simpleDateFormat.format(loanModel.getRecheckTime()));
             }
         }
 
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod());
-        dataModel.put("transferEndTime", investRepayModel.getRepayDate());
+        dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        dataModel.put("fee30", transferRuleModel.getLevelOneFee());
+        dataModel.put("fee30_90", transferRuleModel.getLevelTwoFee());
+        dataModel.put("fee90", transferRuleModel.getLevelThreeFee());
 
         return dataModel;
     }

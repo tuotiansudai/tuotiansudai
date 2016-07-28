@@ -166,4 +166,12 @@ public class TransferApplicationRecordDto implements Serializable {
     public Date getDeadLine() { return deadLine; }
 
     public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
 }

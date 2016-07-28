@@ -118,7 +118,7 @@
     </tr>
     <tr>
         <td>借款本金数额</td>
-        <td>￥${actualMoney}</td>
+        <td>¥${actualMoney}</td>
         <td>${million}</td>
         <td>${hundredThousand}</td>
         <td>${tenThousand}</td>

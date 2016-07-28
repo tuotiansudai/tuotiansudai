@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -23,6 +24,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private double baseRate;
     private double activityRate;
     private Date applicationTime;
+    private Source source;
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -43,6 +45,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.activityRate = transferApplicationRecordDto.getActivityRate()*100;
         this.setTransferStatus(transferApplicationRecordDto.getTransferStatus().name());
         this.applicationTime = transferApplicationRecordDto.getApplicationTime();
+        this.source = transferApplicationRecordDto.getSource();
     }
 
     public String getTransferAmount() {
@@ -160,4 +163,12 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     public double getActivityRate() { return activityRate; }
 
     public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
 }
