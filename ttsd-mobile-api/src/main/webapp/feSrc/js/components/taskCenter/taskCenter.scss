@@ -84,7 +84,7 @@
         }
         .fixTopMenu {
             position:absolute;
-            top:10px;
+            top:328px;
             width:100%;
             background:red;
             z-index: 100;
@@ -126,10 +126,10 @@
         }
 
         .TaskItemNewbie {
-            float: left;
+        
             width: 100%;
             margin-top: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             background-color: #ffe9b9;
             border-radius: 15px;
             color: #ffffff;
@@ -138,6 +138,9 @@
             -webkit-box-shadow:0px 8px 0px #ecd4a3; 
             box-shadow:0px 8px 0px #ecd4a3;
             position:relative;
+            height:auto;
+            overflow:auto;
+
             .TaskItemLine {
                 border: 0.5px solid #ff5959;
                 margin-top: -3px;
@@ -162,8 +165,7 @@
             }
 
              .TaskItemBtn,.TaskItemCompleteBtn {
-                float: right;
-                margin-right:20px;
+              
                 display: inline-block;
                 width: 132px;
                 height: 72px;
@@ -177,6 +179,8 @@
                 -moz-box-shadow:0px 5px 0px #e45050; 
                 -webkit-box-shadow:0px 5px 0px #e45050; 
                 box-shadow:0px 5px 0px #e45050;
+                position:absolute;
+                right:10px;
                 &.column-one {
                     margin-top: 20px;
                 }
@@ -244,11 +248,11 @@
         .TaskAdvanceRewardGroup {
             float: left;
             display: block;
-            margin-left: 5%;
+            margin-left: 15px; /*px*/
         }
 
         .TaskAdvanceContent {
-            width: 76%;
+            width: 85%;
             float: left;
             display: block;
             margin-top: 15px;
@@ -291,7 +295,7 @@
             font-size: 26px;  /*px*/
             margin-top: 5px;
             margin-bottom: 15px;
-            margin-left: 5%;
+            margin-left: 15px;/*px*/
             color: #34312b;
         }
     }
