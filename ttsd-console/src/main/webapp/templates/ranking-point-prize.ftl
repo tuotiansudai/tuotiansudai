@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="pointPrize" title="财豆奖品管理">
+<@global.main pageCss="" pageJavascript="ranking-point-prize.js" headLab="activity-manage" sideLab="pointPrize" title="财豆奖品管理">
 
 <!-- content area begin -->
 <div class="table-responsive">
@@ -13,16 +13,18 @@
         </tr>
         </thead>
         <tbody>
-        <#list pointPrizeWinnerGroups as pointPrizeWinnerGroup>
+            <#list pointPrizeWinnerGroups as pointPrizeWinnerGroup>
             <tr>
                 <td>${pointPrizeWinnerGroup.description!}</td>
                 <td>${pointPrizeWinnerGroup.num?string('0')!}</td>
                 <td>${pointPrizeWinnerGroup.active?string('已生效','未生效')}</td>
-                <td><a href="/activity-manage/point-prize-detail?pointPrizeId=${pointPrizeWinnerGroup.id?string('0')!}">查看详情</a></td>
+                <td><a href="/activity-manage/point-prize-detail?pointPrizeId=${pointPrizeWinnerGroup.id?string('0')!}">查看详情</a>
+                </td>
             </tr>
-        </#list>
+            </#list>
         </tbody>
     </table>
+    <button class="btn btn-default pull-left export-ranking-point-prize" type="button">导出Excel</button>
 </div>
 
 </@global.main>
