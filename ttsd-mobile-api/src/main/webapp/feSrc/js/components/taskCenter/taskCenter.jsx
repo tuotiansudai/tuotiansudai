@@ -2,7 +2,7 @@ import React from 'react';
 import { main ,spinner } from './taskCenter.scss'; 
 import changeTitle from 'utils/changeTitle';
 import ajax from 'utils/ajax';
-import IScroll from 'iscroll';
+import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
@@ -216,11 +216,28 @@ class taskCenter extends React.Component {
 
 	}
     componentDidUpdate() {
-        imagesLoaded(this.refs.scrollWrap).on('always', () => {
+
+        imagesLoaded(this.refs.mainConWrap).on('always', () => {
             setTimeout(() => {
             if (!this.myScroll) {
-                this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.scrollWrap);
+                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
+                this.myScroll = new IScroll(this.refs.mainConWrap,{ probeType: 3, mouseWheel: true });
+                this.myScroll.on('scroll', function() {
+                    let imgHeight=document.getElementById('imageTopHead').scrollHeight-20;
+                    let tabHeaderDom=document.getElementById('tabHeaderDom');
+                
+                    console.log(this.y+'--'+imgHeight);
+                    if(Math.abs(this.y)>= imgHeight) {
+                        tabHeaderDom.className="MenuBox fixTopMenu";
+                        tabHeaderDom.style="top:"+Math.abs(this.y)+"px";
+                    }
+                    else {
+                        tabHeaderDom.className="MenuBox";
+                        tabHeaderDom.style='';
+                    }
+                });
+
             }
             else {
                 this.myScroll.refresh();
@@ -238,24 +255,29 @@ class taskCenter extends React.Component {
             loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
         }
   		return (
-			<div className={main}>
-			    <div className="MenuBox" ref="tabHeader">
-			        <ul>
+			<div className={main} >
+                <div className="bodyCon" ref='mainConWrap'>
+                <div className="clearfix">
+                <div className="imageTopHead" id="imageTopHead" ref="imageTopHead"></div>
+			    <div className="MenuBox" ref="tabHeader" id="tabHeaderDom">
+			        <ul >
                         {MenuData.tabHeader.map((value, index) => {
                             return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
                         })}
 			        </ul>
 			    </div>
 		
-			<div className="ContentBox" ref="scrollWrap">
-			<div id="OngoingBox" className="OngoingBox clearfix" >
-            {loading}
-			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
+    			<div className="ContentBox" ref="scrollWrap">
+    			     <div id="OngoingBox" className="OngoingBox clearfix" >
+                {loading}
+    			<NewbieTaskGroup data={this.state.listData.newbieTasks} jumpToEvent={this.jumpTo} />
 
-			<AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
-            
-			</div>
-			</div>
+    			<AdvanceTaskGroup data={this.state.listData.advancedTasks} jumpToEvent={this.jumpTo} />
+                
+    			     </div>
+                     </div>
+    			</div>
+                </div>
 			</div>	    
 		);
 	}

@@ -12,17 +12,13 @@
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
-                    <i class="sprite-register-login-name"></i>
-                    <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
-                </li>
-            <li>
-                <i class="sprite-register-ic-password"></i>
-                <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-            </li>
-                <li>
                     <i class="sprite-register-ic-mobile"></i>
                     <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11"
                            value="${(originalFormData.mobile)!}"/>
+                </li>
+                <li>
+                    <i class="sprite-register-ic-password"></i>
+                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>

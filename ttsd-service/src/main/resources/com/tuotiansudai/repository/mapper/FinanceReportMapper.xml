@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.FinanceReportMapper">
+
+    <resultMap id="FinanceReportMap" type="FinanceReportItemView">
+        <result column="id" property="loanId"/>
+        <result column="name" property="loanName"/>
+        <result column="type" property="loanType"/>
+        <result column="loaner_user_name" property="loanerUserName"/>
+        <result column="agent_login_name" property="agentLoginName"/>
+        <result column="base_rate" property="baseRate"/>
+        <result column="activity_rate" property="activityRate"/>
+        <result column="duration" property="duration"/>
+        <result column="loan_amount" property="loanAmount"/>
+        <result column="verify_time" property="verifyTime"/>
+        <result column="invest_time" property="investTime"/>
+        <result column="recheck_time" property="recheckTime"/>
+        <result column="invest_id" property="investId"/>
+        <result column="login_name" property="investLoginName"/>
+        <result column="user_name" property="investRealName"/>
+        <result column="referrer" property="referrer"/>
+        <result column="amount" property="investAmount"/>
+        <result column="repay_date" property="repayTime"/>
+        <result column="period" property="period"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="actual_fee" property="fee"/>
+        <result column="repay_amount" property="actualRepayAmount"/>
+    </resultMap>
+
+    <select id="findFinanceReportViews" resultMap="FinanceReportMap">
+        SELECT loan.id, loan.name, loan.type, loan.loaner_user_name, loan.agent_login_name, loan.base_rate,
+        loan.activity_rate, loan.duration, loan.loan_amount, loan.verify_time, invest.invest_time, loan.recheck_time,
+        invest.id as invest_id, invest.login_name, account.user_name, user.referrer, invest.amount,
+        invest_repay.repay_date,
+        invest_repay.period, invest_repay.actual_interest, invest_repay.actual_fee, invest_repay.repay_amount
+        FROM
+        `aa`.`loan` JOIN `aa`.`invest` JOIN `aa`.`invest_repay` JOIN `aa`.`account` JOIN `aa`.`user`
+        ON
+        loan.id = invest.loan_id AND invest.id = invest_repay.invest_id AND invest.login_name = account.login_name AND
+        invest.login_name = user.login_name
+        <where>
+            <if test="loanId != null">
+                AND loan.id = #{loanId}
+            </if>
+            <if test="period != null">
+                AND invest_repay.period = #{period}
+            </if>
+            <if test="investLoginName != null and investLoginName != ''">
+                AND invest.login_name = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND invest.invest_time &gt;= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                AND invest.invest_time &lt;= #{investEndTime}
+            </if>
+        </where>
+        ORDER BY invest.invest_time DESC , invest.login_name, invest_repay.period
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountFinanceReportViews" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM
+        `aa`.`loan` JOIN `aa`.`invest` JOIN `aa`.`invest_repay` JOIN `aa`.`account` JOIN `aa`.`user`
+        ON
+        loan.id = invest.loan_id AND invest.id = invest_repay.invest_id AND invest.login_name = account.login_name AND
+        invest.login_name = user.login_name
+        <where>
+            <if test="loanId != null">
+                AND loan.id = #{loanId}
+            </if>
+            <if test="period != null">
+                AND invest_repay.period = #{period}
+            </if>
+            <if test="investLoginName != null and investLoginName != ''">
+                AND invest.login_name = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND invest.invest_time &gt;= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                AND invest.invest_time &lt;= #{investEndTime}
+            </if>
+        </where>
+    </select>
+</mapper>

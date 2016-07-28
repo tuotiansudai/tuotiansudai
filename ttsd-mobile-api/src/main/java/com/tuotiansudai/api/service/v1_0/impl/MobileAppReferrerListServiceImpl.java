@@ -6,7 +6,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerListService;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.ReferrerManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
     private ReferrerManageMapper referrerManageMapper;
     @Autowired
     private ReferrerManageService referrerManageService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public BaseResponseDto generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
@@ -38,6 +43,8 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
         List<ReferrerResponseDataDto> referrerResponseDataDtos = Lists.transform(referrerRelationDtos, new Function<ReferrerRelationView, ReferrerResponseDataDto>() {
             @Override
             public ReferrerResponseDataDto apply(ReferrerRelationView input) {
+                UserModel userModel = userMapper.findByLoginName(input.getLoginName());
+                input.setLoginName(userModel.getMobile());
                 return new ReferrerResponseDataDto(input);
             }
         });

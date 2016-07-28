@@ -56,13 +56,13 @@ public class TransferController {
                                                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                               @RequestParam(name = "status", required = false) TransferStatus status,
-                                                              @RequestParam(name = "transferrerLoginName", required = false) String transferrerLoginName,
-                                                              @RequestParam(name = "transfereeLoginName", required = false) String transfereeLoginName,
+                                                              @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
+                                                              @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
                                                               @RequestParam(name = "loanId", required = false) Long loanId,
                                                               @RequestParam(name = "source", required = false) Source source,
                                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                               @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize)  {
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerLoginName, transfereeLoginName, loanId, source, index, pageSize);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, index, pageSize);
         ModelAndView mv = new ModelAndView("/transfer-list");
         mv.addObject("data",basePaginationDataDto);
         mv.addObject("transferApplicationId",transferApplicationId);
@@ -72,8 +72,8 @@ public class TransferController {
         mv.addObject("status",status);
         mv.addObject("sourceList", Lists.newArrayList(Source.values()));
         mv.addObject("selectedSource", source);
-        mv.addObject("transferrerLoginName",transferrerLoginName);
-        mv.addObject("transfereeLoginName",transfereeLoginName);
+        mv.addObject("transferrerMobile", transferrerMobile);
+        mv.addObject("transfereeMobile", transfereeMobile);
         mv.addObject("loanId",loanId);
         mv.addObject("index",index);
         mv.addObject("pageSize",pageSize);

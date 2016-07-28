@@ -24,13 +24,13 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     private InvestMapper investMapper;
 
     @Override
-    public long findInvestAchievementCount(String loginName) {
-        return loanMapper.findLoanAchievementCount(loginName);
+    public long findInvestAchievementCount(String mobile) {
+        return loanMapper.findLoanAchievementCount(mobile);
     }
 
     @Override
-    public List<LoanAchievementView> findInvestAchievement(int index, int pageSize, String loginName) {
-        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, loginName);
+    public List<LoanAchievementView> findInvestAchievement(int index, int pageSize, String mobile) {
+        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, mobile);
         return Lists.transform(loanAchievementViews, new Function<LoanAchievementView, LoanAchievementView>() {
             @Override
             public LoanAchievementView apply(LoanAchievementView input) {

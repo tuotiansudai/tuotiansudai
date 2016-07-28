@@ -11,6 +11,7 @@
         <result column="message_id" property="messageId"/>
         <result column="login_name" property="loginName"/>
         <result column="title" property="title"/>
+        <result column="app_title" property="appTitle"/>
         <result column="content" property="content"/>
         <result column="read" property="read"/>
         <result column="read_time" property="readTime"/>
@@ -26,8 +27,8 @@
     </select>
 
     <insert id="create" parameterType="UserMessageModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_message (`message_id`, `login_name`, `title`, `content`, `read`, `read_time`, `created_time`)
-        value(#{messageId}, #{loginName}, #{title}, #{content}, #{read}, #{readTime}, #{createdTime})
+        insert into user_message (`message_id`, `login_name`, `title`, `app_title`, `content`, `read`, `read_time`, `created_time`)
+        value(#{messageId}, #{loginName}, #{title}, #{appTitle}, #{content}, #{read}, #{readTime}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="UserMessageModel">
@@ -35,6 +36,7 @@
         set `message_id` = #{messageId},
             `login_name` = #{loginName},
             `title` = #{title},
+            `app_title` = #{appTitle},
             `content` = #{content},
             `read` = #{read},
             `read_time` = #{readTime},
@@ -43,8 +45,15 @@
     </update>
 
     <select id="findMessagesByLoginName" parameterType="map" resultMap="userMessageResultMap">
-        select * from user_message
+        select u.* from user_message u
+        inner join message m on u.message_id = m.id
         where login_name = #{loginName}
+        <if test="channels != null">
+            and find_in_set(#{channels},m.channels)
+        </if>
+        <if test="channels != null and channels.name() == 'APP_MESSAGE'">
+            and u.app_title is not null
+        </if>
         order by created_time desc
         <if test="index != null and pageSize != null">
             limit #{index}, #{pageSize}
@@ -52,10 +61,25 @@
     </select>
 
     <select id="countMessagesByLoginName" parameterType="string" resultType="long">
-        select count(1) from user_message where login_name = #{loginName}
+        select count(u.id) from user_message u
+        inner join message m on u.message_id = m.id
+        where login_name = #{loginName}
+        <if test="channels != null">
+            and find_in_set(#{channels},m.channels)
+        </if>
     </select>
 
     <select id="countUnreadMessagesByLoginName" parameterType="string" resultType="long">
-        select count(1) from user_message where login_name = #{loginName} and `read` = FALSE
+        select count(u.id) from user_message u
+        inner join message m on u.message_id = m.id
+        where login_name = #{loginName}
+        <if test="channels != null">
+            and find_in_set(#{channels},m.channels)
+        </if>
+        <if test="channels != null and channels = 'APP_MESSAGE'">
+            and u.app_title is not null
+        </if>
+        and `read` = FALSE
     </select>
+
 </mapper>

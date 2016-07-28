@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UMPayRealTimeStatusService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,12 @@ public class UMPayRealTimeStatusController {
     @Autowired
     private UMPayRealTimeStatusService payRealTimeStatusService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getStatus(@RequestParam(value = "type", required = false) String type,
-                                  @RequestParam(value = "loginName", required = false) String loginName,
+                                  @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "loanId", required = false) String loanId,
                                   @RequestParam(value = "orderId", required = false) String orderId,
                                   @RequestParam(value = "merDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date merDate,
@@ -34,8 +39,9 @@ public class UMPayRealTimeStatusController {
         if (!Strings.isNullOrEmpty(type)) {
             switch (type) {
                 case "user":
-                    if (!Strings.isNullOrEmpty(loginName)) {
-                        data = payRealTimeStatusService.getUserStatus(loginName);
+                    if (!Strings.isNullOrEmpty(mobile)) {
+                        UserModel userModel = userMapper.findByMobile(mobile);
+                        data = payRealTimeStatusService.getUserStatus(userModel.getLoginName());
                     }
                     break;
                 case "platform":
@@ -61,7 +67,7 @@ public class UMPayRealTimeStatusController {
         ModelAndView modelAndView = new ModelAndView("/real-time-status");
         modelAndView.addObject("data", data);
         modelAndView.addObject("type", type);
-        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("orderId", orderId);
         modelAndView.addObject("merDate", merDate);

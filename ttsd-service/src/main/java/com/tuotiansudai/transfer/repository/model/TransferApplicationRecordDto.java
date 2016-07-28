@@ -19,8 +19,8 @@ public class TransferApplicationRecordDto implements Serializable {
     private String remainingInterestDays;
     private TransferStatus transferStatus;
     private Long loanId;
-    private String transferrerLoginName;
-    private String transfereeLoginName;
+    private String transferrerMobile;
+    private String transfereeMobile;
     private long transferFee;
     private Long transferInvestId;
     private int period;
@@ -29,11 +29,17 @@ public class TransferApplicationRecordDto implements Serializable {
     private Date applicationTime;
     private Source source;
 
+    public String getSumRatePercent() {
+        return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
+    }
+
     public long getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) { this.transferApplicationId = transferApplicationId; }
+    public void setTransferApplicationId(long transferApplicationId) {
+        this.transferApplicationId = transferApplicationId;
+    }
 
     public String getName() {
         return name;
@@ -83,9 +89,13 @@ public class TransferApplicationRecordDto implements Serializable {
         this.activityRate = activityRate;
     }
 
-    public String getRemainingInterestDays() { return remainingInterestDays; }
+    public String getRemainingInterestDays() {
+        return remainingInterestDays;
+    }
 
-    public void setRemainingInterestDays(String remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
+    public void setRemainingInterestDays(String remainingInterestDays) {
+        this.remainingInterestDays = remainingInterestDays;
+    }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
@@ -95,28 +105,28 @@ public class TransferApplicationRecordDto implements Serializable {
         this.transferStatus = transferStatus;
     }
 
-    public String getTransferrerLoginName() {
-        return transferrerLoginName;
-    }
-
-    public void setTransferrerLoginName(String transferrerLoginName) {
-        this.transferrerLoginName = transferrerLoginName;
-    }
-
-    public String getTransfereeLoginName() {
-        return transfereeLoginName;
-    }
-
-    public void setTransfereeLoginName(String transfereeLoginName) {
-        this.transfereeLoginName = transfereeLoginName;
-    }
-
     public Long getLoanId() {
         return loanId;
     }
 
     public void setLoanId(Long loanId) {
         this.loanId = loanId;
+    }
+
+    public String getTransferrerMobile() {
+        return transferrerMobile;
+    }
+
+    public void setTransferrerMobile(String transferrerMobile) {
+        this.transferrerMobile = transferrerMobile;
+    }
+
+    public String getTransfereeMobile() {
+        return transfereeMobile;
+    }
+
+    public void setTransfereeMobile(String transfereeMobile) {
+        this.transfereeMobile = transfereeMobile;
     }
 
     public long getTransferFee() {
@@ -151,8 +161,12 @@ public class TransferApplicationRecordDto implements Serializable {
         this.leftPeriod = leftPeriod;
     }
 
-    public String getSumRatePercent(){
-        return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
+    public Date getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(Date deadLine) {
+        this.deadLine = deadLine;
     }
 
     public Date getApplicationTime() {
@@ -162,11 +176,7 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setApplicationTime(Date applicationTime) {
         this.applicationTime = applicationTime;
     }
-
-    public Date getDeadLine() { return deadLine; }
-
-    public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
-
+    
     public Source getSource() {
         return source;
     }

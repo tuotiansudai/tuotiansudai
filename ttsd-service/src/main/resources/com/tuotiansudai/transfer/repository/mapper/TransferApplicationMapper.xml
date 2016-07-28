@@ -35,8 +35,8 @@
         <result column="activity_rate" property="activityRate"/>
         <result column="status" property="transferStatus"/>
         <result column="loan_id" property="loanId"/>
-        <result column="transferrer_loginName" property="transferrerLoginName"/>
-        <result column="transferee_loginName" property="transfereeLoginName"/>
+        <result column="transferrer_mobile" property="transferrerMobile"/>
+        <result column="transferee_mobile" property="transfereeMobile"/>
         <result column="transfer_fee" property="transferFee"/>
         <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="period" property="period"/>
@@ -137,39 +137,42 @@
     </select>
 
     <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
-        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,ta.application_time,i.login_name AS
-        transferee_loginName, ta.source AS source
-        from
-        transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        SELECT ta.id, ta.name, ta.transfer_amount, ta.invest_amount, ta.transfer_time, ta.status, ta.loan_id, u1.mobile
+        AS transferrer_mobile,
+        ta.transfer_fee, ta.transfer_invest_id, ta.period, ta.left_period, ta.deadline, ta.application_time, u2.mobile
+        AS transferee_mobile, ta.source AS source
+        FROM
+        (transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name)
+        left JOIN
+        (invest i JOIN aa.user u2 ON i.login_name = u2.login_name)
+        ON ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
             </if>
             <if test="startTime != null">
-                and ta.application_time >= #{startTime}
+                AND ta.application_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and ta.application_time <= #{endTime} ]]>
+                <![CDATA[ AND ta.application_time <= #{endTime} ]]>
             </if>
             <if test="status">
-               and ta.status = #{status}
+                AND ta.status = #{status}
             </if>
-            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
-                and ta.login_name = #{transferrerLoginName}
+            <if test="transferrerMobile != null and transferrerMobile != ''">
+                AND u1.mobile = #{transferrerMobile}
             </if>
-            <if test="transfereeLoginName != null and transfereeLoginName != ''">
-                and i.login_name = #{transfereeLoginName}
+            <if test="transfereeMobile != null and transfereeMobile != ''">
+                AND u2.mobile = #{transfereeMobile}
             </if>
             <if test="loanId != null">
-                and i.loan_id = #{loanId}
+                AND i.loan_id = #{loanId}
             </if>
             <if test="source != null">
-                and ta.source = #{source}
+                AND ta.source = #{source}
             </if>
-
         </where>
-        order by application_time
+        ORDER BY application_time
         limit #{index}, #{pageSize}
     </select>
 
@@ -239,9 +242,12 @@
 
 
     <select id="findCountTransferApplicationPagination" parameterType="map" resultType="int">
-
         select count(1)
-        from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        from
+        (transfer_application ta JOIN user u1 on ta.login_name = u1.login_name)
+        left JOIN
+        (invest i JOIN user u2 on i.login_name = u2.login_name)
+        ON ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
@@ -255,11 +261,11 @@
             <if test="status != null">
                 and ta.status = #{status}
             </if>
-            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
-                and ta.login_name = #{transferrerLoginName}
+            <if test="transferrerMobile != null and transferrerMobile != '' ">
+                and u1.mobile = #{transferrerMobile}
             </if>
-            <if test="transfereeLoginName != null and transfereeLoginName != ''">
-                and i.login_name = #{transfereeLoginName}
+            <if test="transfereeMobile != null and transfereeMobile != ''">
+                and u2.mobile = #{transfereeMobile}
             </if>
             <if test="loanId != null">
                 and i.loan_id = #{loanId}

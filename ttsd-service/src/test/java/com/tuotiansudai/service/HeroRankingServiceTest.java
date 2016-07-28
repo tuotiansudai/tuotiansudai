@@ -78,9 +78,9 @@ public class HeroRankingServiceTest {
     @Test
     public void shouldFindHeroRankingByReferrer() {
         List<String> date = Lists.newArrayList();
-        date.add(sdf.format(new DateTime(2016,7,1,0,0,0).toDate()));
-        date.add(sdf.format(new DateTime(2016,7,31,23,59,59).toDate()));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+        date.add(sdf.format(new DateTime(2016, 7, 1, 0, 0, 0).toDate()));
+        date.add(sdf.format(new DateTime(2016, 7, 31, 23, 59, 59).toDate()));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod", date);
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
@@ -118,16 +118,16 @@ public class HeroRankingServiceTest {
         investMapper.create(investModel3);
 
         BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
+
         assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
-        assertThat(baseListDataDto.getRecords().get(0).getLoginName(), is(randomUtils.encryptLoginName(investor2.getLoginName(), investor1.getLoginName(), 6)));
     }
 
     @Test
     public void shouldObtainHeroRankingIsSuccess(){
         List<String> date = Lists.newArrayList();
-        date.add(sdf.format(new DateTime(2016,7,1,0,0,0).toDate()));
-        date.add(sdf.format(new DateTime(2016,7,31,23,59,59).toDate()));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+        date.add(sdf.format(new DateTime(2016, 7, 1, 0, 0, 0).toDate()));
+        date.add(sdf.format(new DateTime(2016, 7, 31, 23, 59, 59).toDate()));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod", date);
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
@@ -144,17 +144,17 @@ public class HeroRankingServiceTest {
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName(),loanModel.getId());
         investModel1.setAmount(2000);
-        investModel1.setTradingTime(new DateTime("2016-07-05").toDate());
+        investModel1.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel1);
         InvestModel investModel2 = this.getFakeInvestModelByLoginName(investor2.getLoginName(),loanModel.getId());
         investModel2.setAmount(1000);
-        investModel2.setTradingTime(new DateTime("2016-07-05").toDate());
+        investModel2.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel2);
         InvestModel investModel3 = this.getFakeInvestModelByLoginName(investor3.getLoginName(),loanModel.getId());
         investModel3.setAmount(3000);
-        investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
+        investModel3.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel3);
-        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(new DateTime(2016, 7, 5, 0, 0, 0).toDate());
+        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(new DateTime(2016, 7, 7, 0, 0, 0).toDate());
 
         assertEquals(3,heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
@@ -226,9 +226,9 @@ public class HeroRankingServiceTest {
     @Test
     public void shouldObtainHeroRankingByLoginNameIsSuccess(){
         List<String> date = Lists.newArrayList();
-        date.add(sdf.format(new DateTime(2016,7,1,0,0,0).toDate()));
-        date.add(sdf.format(new DateTime(2016,7,31,23,59,59).toDate()));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+        date.add(sdf.format(new DateTime(2016, 7, 1, 0, 0, 0).toDate()));
+        date.add(sdf.format(new DateTime(2016, 7, 31, 23, 59, 59).toDate()));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod", date);
         UserModel loaner = createUserByUserId("loaner");
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
