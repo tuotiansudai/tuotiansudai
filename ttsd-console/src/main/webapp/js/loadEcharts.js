@@ -98,7 +98,16 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             },
             Bar: function (data, name,xAxisName) {
                 var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var total = 0;
+                $.each(bar_datas.data,function (i,item){
+                    total += Number(item.value);
+                });
                 var option = {
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     tooltip: {
                         trigger: 'item',
                         formatter: "{c}"
@@ -193,7 +202,16 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
     },
             Pie: function (data, name) {
                 var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
+                var total = 0;
+                $.each(pie_datas.data,function (i,item){
+                    total += Number(item.value);
+                });
                 var option = {
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     tooltip : {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} 人 ({d}%)"
@@ -392,21 +410,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         if(/userInvestViscosity/.test(option.chart.dom.id)) {
                             option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
                         }
-                        var ecConfig = require('echarts/config');
-                        option.chart.on(ecConfig.EVENT.LEGEND_SELECTED, function(param){
-                            var selected = param.selected;
-                            $.each(selected,function(key,select) {
-                                alert(select);
-                            });
-                            option.option.title.text='总计:';
-                            option.chart.setOption(option.option);
-                            $.each(option.option.series,function(key,series) {
-                            });
-
-                        });
                         window.onresize = option.option.resize;
-
-
                     });
             }
         },
