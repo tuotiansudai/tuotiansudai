@@ -3,7 +3,7 @@
 <div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox clearfix no-border">
-        <div class="loan-model bg-w borderBox">
+        <div class="loan-model bg-w">
             <div class="news-share bg-w fl">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
@@ -372,7 +372,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="first"><span><a href="/activity/invest-achievement">拓荒先锋 >></a></span></h4>
+                                        <h4 class="first"><span><a href="/activity/invest-achievement" target="_blank">拓荒先锋 >></a></span></h4>
                                         <#if (loan.achievement.firstInvestAchievementMobile)??>
                                             <p>恭喜${loan.achievement.firstInvestAchievementMobile} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
                                         <#else>
@@ -384,7 +384,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="king"><span><a href="/activity/invest-achievement">拓天标王 >></a></span></h4>
+                                        <h4 class="king"><span><a href="/activity/invest-achievement" target="_blank">拓天标王 >></a></span></h4>
                                         <#if (loan.achievement.maxAmountAchievementMobile)??>
                                             <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span
                                                     class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元红包</p>
@@ -397,7 +397,7 @@
                             <div class="col-md-4">
                                 <div class="br">
                                     <div class="item">
-                                        <h4 class="hammer"><span><a href="/activity/invest-achievement">一锤定音 >></a></span></h4>
+                                        <h4 class="hammer"><span><a href="/activity/invest-achievement" target="_blank">一锤定音 >></a></span></h4>
                                         <#if (loan.achievement.lastInvestAchievementMobile)??>
                                             <p>恭喜${loan.achievement.lastInvestAchievementMobile} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
                                         <#else>
