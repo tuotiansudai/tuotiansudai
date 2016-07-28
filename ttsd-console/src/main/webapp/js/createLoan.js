@@ -407,7 +407,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     var dataDto = {
                         "projectName": $('.jq-name').val(),
                         "agentLoginName": $('.jq-agent').val(),
-                        "loanerLoginName": $('.jq-loaner-login-name').val(),
+                        "loanerLoginName": "",
                         "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
                         "loanerUserName": $('.jq-loaner-user-name').val(),
                         "type": $('.jq-mark-type').val(),
