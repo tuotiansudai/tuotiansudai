@@ -37,8 +37,8 @@ public class ExtraLoanRateDto implements Serializable {
                 }
             });
 
-            this.minExtraRate = new BigDecimal(ordering.min(models).getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).toString();
-            this.maxExtraRate = new BigDecimal(ordering.max(models).getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).toString();
+            this.minExtraRate = new BigDecimal(ordering.min(models).getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
+            this.maxExtraRate = new BigDecimal(ordering.max(models).getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
         }
     }
 
