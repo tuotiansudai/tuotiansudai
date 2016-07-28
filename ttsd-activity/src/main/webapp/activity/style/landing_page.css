@@ -959,7 +959,7 @@ form label.error {
             border-left: 1px solid #a09385;
             margin-top: 2px; }
             .landing-container-app .register-box ul li.bg-col-captcha button[disabled="disabled"] {
-              color: #666; }
+              color: #ccc; }
           .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
             position: absolute;
             display: inline-block;
@@ -1048,7 +1048,8 @@ form label.error {
       border-radius: 0;
       padding-bottom: 30px;
       margin-top: 0;
-      height: 376px; }
+      height: 376px;
+      overflow: hidden; }
       .landing-top .register-box .register-user-form {
         box-sizing: border-box;
         width: 100%;

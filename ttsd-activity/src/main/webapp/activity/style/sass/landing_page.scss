@@ -923,7 +923,7 @@ form label.error {
             border-left: 1px solid #a09385;
             margin-top: 2px;
             &[disabled="disabled"] {
-              color: #666;
+              color: #ccc;
             }
           }
           .decorate-icon {
@@ -1036,6 +1036,7 @@ form label.error {
       padding-bottom: 30px;
       margin-top:0;
       height: 376px;
+      overflow: hidden;
       .register-user-form {
         box-sizing: border-box;
         width:100%;
