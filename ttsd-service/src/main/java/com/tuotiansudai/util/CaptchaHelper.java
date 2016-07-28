@@ -56,8 +56,6 @@ public class CaptchaHelper {
     }
 
     public void storeCaptcha(String attributeKey, String captcha, String deviceId) {
-        redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
-
         if (attributeKey.equals(CaptchaHelper.BASIC_CAPTCHA)) {
             redisWrapperClient.setex(MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
         } else {

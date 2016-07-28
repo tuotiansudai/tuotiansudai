@@ -5,6 +5,10 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
+i,em{
+    font-style: normal;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -315,11 +319,6 @@ td.td {
 .agent-rate {
     padding-right: 5px;
 }
-
-.form-group .form-control {
-    padding: 6px;
-}
-
 .item-invest {
     float: left;
     line-height: 35px;
@@ -635,4 +634,19 @@ td.td {
     display: inline-block;
     margin-left: 106px;
     margin-bottom: 10px;
+}
+.int-item{
+    float:left;
+    width:100%;
+    margin-bottom:10px;
+}
+.int-item .form-control,.int-item span{
+    float:left;
+    line-height: 34px;
+}
+.int-item .form-control{
+    width:200px;
+}
+.info-text{
+    line-height:34px;
 }

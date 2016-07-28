@@ -113,6 +113,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun','superslide', 'plac
                 layer.closeAll();
             });
             $popWinBox.find('.app-button').on('click',function() {
+                cnzzPush.trackClick('154landingPage2','领取588红包');
                 layer.closeAll();
                 location.href='/loan-list';
             });
