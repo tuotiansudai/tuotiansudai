@@ -2,9 +2,9 @@ BEGIN;
 
 # migrate INVEST_COUPON
 DELETE FROM user_point_prize
-WHERE point_prize_id = 100006;
+WHERE point_prize_id in (302,100006);
 DELETE FROM point_prize
-WHERE coupon_id = 302;
+WHERE coupon_id in (302,100004);
 DELETE FROM user_coupon
 WHERE coupon_id IN (302, 100004);
 
