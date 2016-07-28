@@ -190,6 +190,7 @@ public class CouponAspect {
     private void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
         if(investId == null || investId == 0){
             logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
+            return;
         }
 
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
