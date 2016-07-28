@@ -40,4 +40,6 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<KeyValueModel> queryWithdrawUserCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime,@Param("granularity") Granularity granularity);
+
+    List<KeyValueModel> queryPlatformSumRepayByDate(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

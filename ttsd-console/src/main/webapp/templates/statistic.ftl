@@ -354,13 +354,13 @@
                 <h3 class="panel-title">平台待收</h3>
             </div>
             <div class="panel-body" id="">
-                <form class="form-inline" id="formLoanAmountReport">
+                <form class="form-inline" id="platformSumRepayByTime">
                     开始时间： <input type="text" class="form-control start-date" name="startTime">
                     结束时间：<input type="text" class="form-control end-date" name="endTime">
                     <button class="btn btn-primary" type="button">查询</button>
                 </form>
 
-                <div id="loanAmountDistribution" style="width:100%; height:400px;">
+                <div id="platformSumRepayByTimeDistribution" style="width:100%; height:400px;">
                     <span class="loading-report">加载中...</span>
                 </div>
             </div>

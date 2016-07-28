@@ -208,4 +208,12 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity);
     }
+
+    @Override
+    public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        List<KeyValueModel>  keyValueModels = businessIntelligenceMapper.queryPlatformSumRepayByDate(queryStartTime, queryEndTime);
+        return businessIntelligenceMapper.queryPlatformSumRepayByDate(queryStartTime, queryEndTime);
+    }
 }

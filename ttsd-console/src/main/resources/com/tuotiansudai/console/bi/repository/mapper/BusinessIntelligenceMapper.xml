@@ -1395,4 +1395,35 @@
             year(created_time), month(created_time)
         </if>
     </select>
+
+    <select id="queryPlatformSumRepayByDate" parameterType="map" resultMap="keyValueMap">
+        SELECT repayDate as name,IFNULL((interest-amount + actualInterest),0) AS value FROM (
+            SELECT * FROM (
+                SELECT
+                    DATE_FORMAT(repay_date, '%Y-%m') as repayDate,
+                    SUM(expected_interest + corpus + default_interest) AS interest
+                FROM
+                    loan_repay
+                GROUP BY DATE_FORMAT(repay_date, '%Y-%m')
+            ) expectedRepay
+            left join
+            (
+                SELECT
+                    DATE_FORMAT(invest_time, '%Y-%m') as investDate,
+                    SUM(amount) as amount
+                FROM invest where status = 'SUCCESS'
+                GROUP BY DATE_FORMAT(invest_time, '%Y-%m')
+            ) invest on expectedRepay.repayDate = invest.investDate
+            left join
+           (
+                SELECT
+                    DATE_FORMAT(repay_date, '%Y-%m') as actualDate,
+                    SUM(actual_interest + corpus + default_interest) AS actualInterest
+                FROM
+                    loan_repay
+                WHERE status = 'COMPLETE'
+                GROUP BY DATE_FORMAT(repay_date, '%Y-%m')
+            ) actualRepay on expectedRepay.repayDate = actualRepay.actualDate
+        ) T
+    </select>
 </mapper>
