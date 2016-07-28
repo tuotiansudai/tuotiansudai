@@ -239,7 +239,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
             },
             Lines: function (data, name, is_stack) {
-                var xAxisdata,legendData,seriesData,seriesDataList=[];
+                var xAxisdata,legendData,seriesData,seriesDataList=[],total = 0;
                 xAxisdata=_.sortBy(_.uniq(_.pluck(data, 'name')));
                 legendData=_.uniq(_.pluck(data, 'group'));
 
@@ -257,6 +257,9 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     groupDataOrder=_.sortBy(groupData,'name');//sort by time
 
                     var opData=_.pluck(groupDataOrder,'value');
+                    $.each(opData,function (i,item){
+                        total += Number(item);
+                    });
                     seriesDataList.push({
                         name:option,
                         type:'line',
@@ -267,7 +270,11 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 });
 
                 var option = {
-
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     legend: {
                         x:'center',
                         y:'bottom',
@@ -285,6 +292,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     }],
                     series: seriesDataList
                 };
+
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             }
         },
@@ -384,7 +392,17 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         if(/userInvestViscosity/.test(option.chart.dom.id)) {
                             option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
                         }
-                        window.onresize = option.chart.resize;
+                        var ecConfig = require('echarts/config');
+                        option.chart.on(ecConfig.EVENT.LEGEND_SELECTED, function(param){
+                            var selected = param.selected;
+                            alert(selected);
+                            option.option.title.text='总计:';
+                            option.chart.setOption(option.option);
+                            $.each(option.option.series,function(key,series) {
+                            });
+
+                        });
+                        window.onresize = option.option.resize;
 
 
                     });
