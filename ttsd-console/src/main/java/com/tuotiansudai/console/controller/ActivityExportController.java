@@ -220,6 +220,7 @@ public class ActivityExportController {
             row.add(MessageFormat.format(useCondition, record.getInvestLowerLimit()));
             row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
             row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
+            row.add(record.isShared() ? "是" : "否");
             rows.add(row);
         }
         return rows;
@@ -254,6 +255,7 @@ public class ActivityExportController {
             row.add(String.valueOf(record.getUsedCount()));
             row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
             row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
+            row.add("是");
             rows.add(row);
         }
         return rows;
