@@ -21,7 +21,10 @@ public enum UserGroup {
     MEMBERSHIP_V4("会员V4"),
     MEMBERSHIP_V5("会员V5"),
     EXPERIENCE_INVEST_SUCCESS("新手体验标投资用户"),
-    EXPERIENCE_REPAY_SUCCESS("新手体验标收益用户");
+    EXPERIENCE_REPAY_SUCCESS("新手体验标收益用户"),
+    FIRST_INVEST_ACHIEVEMENT("拓荒先锋"),
+    MAX_AMOUNT_ACHIEVEMENT("拓天标王"),
+    LAST_INVEST_ACHIEVEMENT("一锤定音");
 
     private final String description;
 
