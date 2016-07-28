@@ -66,7 +66,7 @@ public class RandomUtils {
         return sb.toString();
     }
 
-    public String encryptMobile(String loginName, String investorLoginName, long investId,Source source) {
+    public String encryptMobile(String loginName, String investorLoginName, long investId, Source source) {
         String userMobile;
         String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
         if (StringUtils.isNotEmpty(loginName)) {

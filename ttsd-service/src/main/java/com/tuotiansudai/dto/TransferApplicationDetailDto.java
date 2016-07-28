@@ -17,8 +17,6 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private String transferrer;
 
-    private String transferrerMobile;
-
     private long investId;
 
     private long transferInvestId;
@@ -95,14 +93,6 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     public String getTransferrer() { return transferrer; }
 
     public void setTransferrer(String transferrer) { this.transferrer = transferrer; }
-
-    public String getTransferrerMobile() {
-        return transferrerMobile;
-    }
-
-    public void setTransferrerMobile(String transferrerMobile) {
-        this.transferrerMobile = transferrerMobile;
-    }
 
     public long getInvestId() {
         return investId;

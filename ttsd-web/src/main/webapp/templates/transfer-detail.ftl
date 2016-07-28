@@ -39,7 +39,7 @@
                         <span>下次回款：${transferApplication.nextRefundDate?string("yyyy-MM-dd")}/${transferApplication.nextExpecedInterest!}元</span>
                     </li>
                     <li>
-                        <span>出让人：${transferApplication.transferrerMobile}</span>
+                        <span>出让人：${transferApplication.transferrer}</span>
                     </li>
                     <li>
                         <span>距下架时间：${transferApplication.beforeDeadLine}</span>
