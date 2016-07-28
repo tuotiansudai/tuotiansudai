@@ -45,7 +45,7 @@
                         <span>距下架时间：${transferApplication.beforeDeadLine}</span>
                     </li>
                     <li>
-                        <span><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>
+                        <span><a href="${staticServer}/pdf/transferAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>
                     </li>
                 </ul>
             </div>
