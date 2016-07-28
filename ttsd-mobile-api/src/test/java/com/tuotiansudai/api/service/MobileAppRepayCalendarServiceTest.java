@@ -294,6 +294,7 @@ public class MobileAppRepayCalendarServiceTest {
         loanDto.setProductType(ProductType._30);
         com.tuotiansudai.repository.model.LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
         return loanModel;
     }

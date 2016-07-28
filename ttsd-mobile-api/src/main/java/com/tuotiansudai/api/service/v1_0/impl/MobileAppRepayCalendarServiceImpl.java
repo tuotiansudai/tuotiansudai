@@ -159,9 +159,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             }
             repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(sdf.format(investRepayModel.getRepayDate()));
             if(investRepayModel.getActualInterest() > 0){
-                repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest()));
+                repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),String.valueOf(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest())));
             }else{
-                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest()));
+                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),String.valueOf(investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
             }
         }
 
@@ -175,9 +175,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             }
             couponRepayCalendarYearResponseDto = couponRepayCalendarResponseDtoMaps.get(sdf.format(couponRepayModel.getRepayDate()));
             if(couponRepayModel.getActualInterest() > 0){
-                couponRepayCalendarYearResponseDto.setRepayAmount(addMoney(couponRepayCalendarYearResponseDto.getRepayAmount(),couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
+                couponRepayCalendarYearResponseDto.setRepayAmount(addMoney(couponRepayCalendarYearResponseDto.getRepayAmount(),String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee())));
             }else{
-                couponRepayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(couponRepayCalendarYearResponseDto.getExpectedRepayAmount(),couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee()));
+                couponRepayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(couponRepayCalendarYearResponseDto.getExpectedRepayAmount(),String.valueOf(couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee())));
             }
         }
 
@@ -195,12 +195,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         return repayCalendarYearResponseDtoList;
     }
 
-    private String addMoney(String num1,long num2){
-        return String.valueOf(Long.parseLong(Strings.isNullOrEmpty(num1) ? "0" : num1) + num2);
-    }
-
     private String addMoney(String num1,String num2){
-        return String.valueOf(Long.parseLong(num1)) + Long.parseLong(num2);
+        return String.valueOf(Long.parseLong(Strings.isNullOrEmpty(num1) ? "0" : num1) + Long.parseLong(Strings.isNullOrEmpty(num2) ? "0" : num2));
     }
 
     private String replenishMonth(String month){
