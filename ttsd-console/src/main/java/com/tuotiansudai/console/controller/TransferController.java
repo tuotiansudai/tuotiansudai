@@ -70,7 +70,7 @@ public class TransferController {
         mv.addObject("endTime",endTime);
 
         mv.addObject("status",status);
-        mv.addObject("sourceList", Lists.newArrayList(Source.values()));
+        mv.addObject("sourceList", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.WEB));
         mv.addObject("selectedSource", source);
         mv.addObject("transferrerMobile", transferrerMobile);
         mv.addObject("transfereeMobile", transfereeMobile);
