@@ -38,7 +38,7 @@ public class ActivityExportController {
     public void exportCoupons(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("体验券" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.CouponHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -55,7 +55,7 @@ public class ActivityExportController {
     public void exportInterestCoupons(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("加息券" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.InterestCouponsHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -71,7 +71,7 @@ public class ActivityExportController {
     public void exportRedEnvelopes(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("现金红包" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.RedEnvelopesHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -87,7 +87,7 @@ public class ActivityExportController {
     public void exportBirthdayCoupons(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("生日月活动" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.BirthdayCouponsHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -103,7 +103,7 @@ public class ActivityExportController {
     public void exportPointPrize(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("财逗奖品" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.PointPrizeHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
