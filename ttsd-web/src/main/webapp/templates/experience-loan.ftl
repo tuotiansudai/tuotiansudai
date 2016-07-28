@@ -1,10 +1,10 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
-<div class="loan-detail-content" data-loan-progress="${loan.progress?string.computer}">
+<div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
             <div class="news-share bg-w fl">
-                <h2 class="hd clearfix title-block">
+                <h2 class="hd clearfix title-block new-free-tag">
                     <div class="fl title">${loan.name}</div>
                     <span class="new-free"></span>
                 </h2>
@@ -18,11 +18,11 @@
                                     <span>%</span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="title">项目期限</div>
                                 <div class="number red">${loan.duration}<span>天</span></div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="title">项目金额</div>
                                 <div class="number red">${loan.loanAmount}<span>元(体验金)</span></div>
                             </div>
@@ -56,7 +56,7 @@
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if loan.loanStatus == 'RAISING'>
                     <form action="/experience-invest" method="post" id="investForm">
-                        <dl class="account-list new-text">
+                        <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
                             <input type="hidden" name="userCouponIds"
                                    value="<#if coupon??>${coupon.id?string.computer}</#if>"
