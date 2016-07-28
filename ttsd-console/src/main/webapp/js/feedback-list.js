@@ -1,15 +1,15 @@
 require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
     $(function () {
+        $('.selectpicker').selectpicker();
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
+
+        $('[data-toggle="tooltip"]').tooltip()
 
         var tooltip = $('.add-tooltip');
         if (tooltip.length){
             tooltip.tooltip();
         }
-
-        $('.selectpicker').selectpicker();
-
-        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
-        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
         //自动完成提示
         var autoValue = '';
@@ -48,10 +48,8 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
                 status:status
             }
         }).done(function (data) {
-            console.log("done");
             $self.prop('checked',status);
         }).fail(function () {
-            console.log("error");
             alert("提交失败");
         });
     });
@@ -104,10 +102,8 @@ function update() {
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8'
     }).done(function (data) {
-        console.log("done");
         location.href = "/announce-manage/feedback";
     }).fail(function () {
-        console.log("error");
         alert("提交备注失败");
     });
     $('#update').modal('hide');

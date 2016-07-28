@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
@@ -13,6 +15,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,13 +104,17 @@ public class FeedbackController {
 
     @ResponseBody
     @RequestMapping(value = "/updateRemark", method = RequestMethod.POST)
-    public String updateRemark(long feedbackId, String remark) {
+    public BaseDto<BaseDataDto> updateRemark(long feedbackId, String remark) {
         FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
-        if(feedbackModel != null && (feedbackModel.getRemark() !=null || !"".equals(feedbackModel.getRemark())))
+        BaseDataDto dataDto = new BaseDataDto();
+        if(feedbackModel != null)
         {
-            remark = feedbackModel.getRemark() + remark + "|" ;
+            feedbackModel.setRemark(StringUtils.isEmpty(feedbackModel.getRemark())?remark:feedbackModel.getRemark() + "|" + remark);
+            feedbackService.updateRemark(feedbackModel);
         }
-        feedbackService.updateRemark(feedbackId, remark);
-        return "true";
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 }

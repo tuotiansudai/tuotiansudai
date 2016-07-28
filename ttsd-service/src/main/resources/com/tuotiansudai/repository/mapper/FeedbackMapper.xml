@@ -56,19 +56,19 @@
         </if>
         <where>
             <if test="source != null">
-                and source = #{source}
+                and feedback.source = #{source}
             </if>
             <if test="type != null">
-                and type = #{type}
+                and feedback.type = #{type}
             </if>
             <if test="status != null">
-                and status = #{status}
+                and feedback.status = #{status}
             </if>
             <if test="startTime != null">
-                and created_time > #{startTime}
+                and feedback.created_time > #{startTime}
             </if>
             <if test="endTime != null">
-                and created_time &lt; #{endTime}
+                and feedback.created_time &lt; #{endTime}
             </if>
         </where>
     </select>
@@ -78,7 +78,14 @@
     </update>
 
     <update id="updateRemark" parameterType="map">
-        update feedback set remark = #{remark} where id = #{feedbackId}
+        update feedback set
+          `contact` = #{contact},
+          `source` = #{source},
+          `type` = #{type},
+          `content` = #{content},
+          `status` = #{status},
+          `remark` = #{remark}
+        where `id` = #{id}
     </update>
 
     <select id="findById" parameterType="map" resultMap="feedbackResultMap">

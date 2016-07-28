@@ -50,8 +50,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void updateRemark(long feedbackId, String remark) {
-        feedbackMapper.updateRemark(feedbackId, remark);
+    public void updateRemark(FeedbackModel feedbackModel) {
+        feedbackMapper.updateRemark(feedbackModel);
     }
 
     @Override

@@ -27,7 +27,7 @@ public interface FeedbackService {
 
     void updateStatus(long feedbackId, ProcessStatus status);
 
-    void updateRemark(long feedbackId, String remark);
+    void updateRemark(FeedbackModel feedbackModel);
 
     FeedbackModel findById(long feedbackId);
 }
