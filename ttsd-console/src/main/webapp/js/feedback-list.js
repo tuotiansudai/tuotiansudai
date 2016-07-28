@@ -4,8 +4,6 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
-        $('[data-toggle="tooltip"]').tooltip()
-
         var tooltip = $('.add-tooltip');
         if (tooltip.length){
             tooltip.tooltip();
