@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-6">
                                 <span class="title">还款方式：</span>
-                            ${loan.type.getInterestType()}
+                            ${loan.type.getRepayType()},${loan.type.getInterestType()}
                             </div>
                         </div>
                     </div> <#-- .content end tag -->
