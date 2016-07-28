@@ -104,12 +104,10 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
         $('.web-book-box').on('click', function (event) {
             event.preventDefault();
             if ($(this).find('i').hasClass('not-anonymous')) {
-                alert(1);
                 location.href = '/login';
                 return;
             }
             if ($(this).find('i').hasClass('is-user')) {
-                alert(2);
                 layer.open({
                     title: '预约投资',
                     type: 1,
@@ -119,7 +117,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                 });
                 return;
             }
-            alert(3);
             location.href = '/register/account';
         });
 
