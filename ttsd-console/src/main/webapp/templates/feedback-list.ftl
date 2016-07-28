@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="feedback-list.js" headLab="announce-manage" sideLab="feedbackMan" title="意见反馈">
 <!-- content area begin -->
@@ -113,7 +114,11 @@
                             ${feedback.remark!}</span>
                         </#if>
                     </td>
-                    <td><input type="button" class="feedback-remark" value="添加备注" data-feedback-id="${feedback.id?c}"></td>
+                    <td>
+                        <@security.authorize access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')">
+                            <input type="button" class="feedback-remark" value="添加备注" data-feedback-id="${feedback.id?c}">
+                        </@security.authorize>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
