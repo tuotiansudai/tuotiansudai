@@ -96,15 +96,15 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         })
 
         $('.down-load').click(function () {
-            location.href = "/activity-export/coupons";
+            location.href = "/export/coupons";
         });
 
         $('.export-red-envelopes').click(function () {
-            location.href = "/activity-export/red-envelopes";
+            location.href = "/export/red-envelopes";
         });
 
         $('.export-birthday-coupons').click(function () {
-            location.href = "/activity-export/birthday-coupons";
+            location.href = "/export/birthday-coupons";
         });
 
     });

@@ -104,7 +104,7 @@
     </div>
 
     <!-- pagination  -->
-    <nav>
+    <nav class="pagination-control">
 
         <div>
             <span class="bordern">总共${loanRepays.count}条,每页显示${loanRepays.pageSize}条</span>
@@ -142,6 +142,7 @@
             </#if>
 
         </ul>
+
     </nav>
     <!-- pagination -->
 </div>

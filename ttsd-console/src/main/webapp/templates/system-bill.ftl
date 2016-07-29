@@ -87,7 +87,7 @@
     </table>
 
     <!-- pagination  -->
-    <nav>
+    <nav class="pagination-control">
         <#if systemBillList?has_content>
             <div>
                 <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
@@ -115,6 +115,7 @@
                 </a>
                 </li>
             </ul>
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
         </#if>
     </nav>
     <!-- pagination -->

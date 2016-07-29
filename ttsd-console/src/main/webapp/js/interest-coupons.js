@@ -105,7 +105,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
     });
 
     $('.down-load').click(function () {
-        location.href = "/activity-export/interest-coupons";
+        location.href = "/export/interest-coupons";
     });
 
 });

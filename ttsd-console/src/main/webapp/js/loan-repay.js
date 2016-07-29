@@ -36,7 +36,9 @@ require(['jquery', 'jquery-ui',
         });
 
 
-
+        $('.down-load').click(function () {
+            location.href = "/export/loan-repay?" + $('form').serialize();
+        });
         function pageinationView(e){
             var index = $(e.target).attr("pageIndex");
 
