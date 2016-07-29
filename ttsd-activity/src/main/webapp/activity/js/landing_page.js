@@ -59,11 +59,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
                 }
             },
             messages: {
-                loginName: {
-                    required: "请输入用户名",
-                    regex: '5位至25位数字与字母下划线组合，不能全部数字',
-                    isExist: '用户名已存在'
-                },
                 mobile: {
                     required: '请输入手机号',
                     digits: '必须是数字',
@@ -95,9 +90,15 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
             }
         });
 
-        if ($popWinBox.length) {
-            var dataShow = $popWinBox.data('show-coupon-alert');
-            if (dataShow) {
+        if($popWinBox.length) {
+            var dataShow=$popWinBox.data('show-coupon-alert'),
+                screenWid=$(window).width(),
+                bgImgHeight=screenWid*815/750;
+
+            if(screenWid>700) {
+                $('.landing-container-app').css({'padding-top':bgImgHeight*0.5 });
+            }
+            if(dataShow) {
                 layer.open({
                     type: 1,
                     title: false,
@@ -152,8 +153,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
             }
             layer.open({
                 type: 1,
-                title: false,
-                closeBtn: 0,
+                title: '拓天速贷服务协议',
                 area: area,
                 shadeClose: true,
                 move: false,

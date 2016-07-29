@@ -13,12 +13,12 @@
                     <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                         <ul class="reg-list tl register-step-one">
                             <li>
-                                <label for="" class="reg-title">用户名:</label>
-                                <i class="sprite-register-login-name"></i>
-                                <input type="text" id="login-name" class="login-name long" name="loginName"
-                                       placeholder="用户名" maxlength="25" value="">
+                                <label for="" class="reg-title">手机号:</label>
+                                <i class="sprite-register-ic-mobile"></i>
+                                <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
+                                       maxlength="11" value="">
                             </li>
-                            <li id="login-nameErr" class="height"></li>
+                            <li id="mobileErr" class="height"></li>
                             <li>
                                 <label for="" class="reg-title">密码:</label>
                                 <i class="sprite-register-ic-password"></i>
@@ -26,13 +26,7 @@
                                        class="password long" value="">
                             </li>
                             <li id="passwordErr" class="height"></li>
-                            <li>
-                                <label for="" class="reg-title">手机号:</label>
-                                <i class="sprite-register-ic-mobile"></i>
-                                <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
-                                       maxlength="11" value="">
-                            </li>
-                            <li id="mobileErr" class="height"></li>
+
                             <li class="code">
                                 <label for="" class="reg-title">验证码:</label>
                                 <i class="sprite-register-ic-img-code"></i>
@@ -311,7 +305,6 @@
     </form>
 </div>
 <div id="agreementBox"  style="display: none;">
-    <div class="header-title">拓天速贷服务协议 <i class="close-tip fa fa-times"></i> </div>
     <div class="pad-m">
     <p>
         本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
