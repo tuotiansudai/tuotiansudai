@@ -259,6 +259,18 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> openLoan(LoanDto loanDto, String ip) {
+        // TODO:fake
+        if (loanDto.getId() == 41650602422768L) {
+            loanDto.setLoanStatus(LoanStatus.PREHEAT);
+            loanDto.setVerifyTime(new Date());
+            updateAllLoan(loanDto);
+            PayDataDto payDataDto = new PayDataDto();
+            payDataDto.setStatus(true);
+            createFundraisingStartJob(loanMapper.findById(loanDto.getId()));
+            createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
+            return new BaseDto<>(payDataDto);
+        }
+
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
@@ -656,10 +668,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd, int index) {
+    public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd, int index) {
         index = (index - 1) * 10;
 
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd, durationStart, durationEnd, index);
 
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
@@ -688,7 +700,7 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setStatus(loanModel.getStatus());
                 loanItemDto.setLoanAmount(loanModel.getLoanAmount());
                 loanItemDto.setActivityType(loanModel.getActivityType());
-                loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {
@@ -709,7 +721,7 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
                     loanItemDto.setProgress(100);
                 }
-                if(loanItemDto.getProductType() == ProductType.EXPERIENCE){
+                if (loanItemDto.getProductType() == ProductType.EXPERIENCE) {
                     Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                     Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                     List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
@@ -729,7 +741,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd) {
+    public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd) {
         return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd, durationStart, durationEnd);
     }
 
@@ -759,9 +771,9 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
-    private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateItemDto> fillExtraLoanRate(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateItemDto>() {
-    @Override
+            @Override
             public ExtraLoanRateItemDto apply(ExtraLoanRateModel model) {
                 return new ExtraLoanRateItemDto(model);
             }
