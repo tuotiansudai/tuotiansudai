@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,7 +103,8 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
                 InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
                 if (lastInvestRepayModel != null) {
-                    dto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+                    String lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd");
+                    dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
                 }
 
                 String transferStatus;
