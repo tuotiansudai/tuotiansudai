@@ -7,4 +7,5 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 public interface MobileAppRechargeService {
     BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto);
 
+
 }
