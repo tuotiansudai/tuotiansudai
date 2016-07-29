@@ -287,6 +287,9 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     });
                 });
 
+                if(total.toString().indexOf('.') != -1){
+                    total = total.toFixed(2);
+                }
                 var option = {
                     title:{
                         text: '总计:' + total,
