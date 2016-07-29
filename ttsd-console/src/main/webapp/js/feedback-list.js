@@ -4,10 +4,18 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
-        var tooltip = $('.add-tooltip');
-        if (tooltip.length){
-            tooltip.tooltip();
+
+
+        var options={
+            delay:100,
+            trigger:'hover click' //触发tooltip的事件
         }
+        $('.add-tooltip').tooltip(options);
+
+        //var tooltip = $('.add-tooltip');
+        //if (tooltip.length){
+        //    tooltip.tooltip();
+        //}
 
         //自动完成提示
         var autoValue = '';

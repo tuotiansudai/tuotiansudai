@@ -106,11 +106,11 @@
                     <td style="text-align:left;" width="160" class="remark-tips">
                         <#if feedback.remark?? && feedback.remark?length gt 20 && feedback.remark?contains('|')>
                             <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
-                                  title="${feedback.remark?replace('|','——————————————')!}">
+                                  data-original-title="${feedback.remark?replace('|','————————————————————')!}">
                             ${(feedback.remark?replace('|',''))?substring(0,20)!}...</span>
                             <#elseif  feedback.remark?? && feedback.remark?contains('|')>
                                 <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
-                                     title="${feedback.remark?replace('|','——————————————')!}">${(feedback.remark?replace('|',' '))!}</span>
+                                      data-original-title="${feedback.remark?replace('|','————————————————————')!}">${(feedback.remark?replace('|',' '))!}</span>
                             <#else>
                                 <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
                                       data-original-title="${feedback.remark!}">${feedback.remark!}</span>
