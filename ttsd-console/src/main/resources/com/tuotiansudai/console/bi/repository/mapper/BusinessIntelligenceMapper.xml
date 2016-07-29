@@ -1395,4 +1395,33 @@
             year(created_time), month(created_time)
         </if>
     </select>
+
+    <select id="queryExpectedRepayByRepayDate" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="granularity.name() == 'Daily'">
+            DATE(repay_date) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            DATE_FORMAT(repay_date, '%Y-W%u') AS `name`,
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            DATE_FORMAT(repay_date, '%Y-%m') AS `name`,
+        </if>
+        SUM(corpus + default_interest + expected_interest) AS value,
+        '待收金额' AS `group`
+        FROM
+        loan_repay
+        WHERE status != 'COMPLETE'
+        AND repay_date between #{startTime} and #{endTime}
+        GROUP BY
+        <if test="granularity.name() == 'Daily'">
+            date(repay_date)
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            year(repay_date), week(repay_date)
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            year(repay_date), month(repay_date)
+        </if>
+    </select>
 </mapper>
