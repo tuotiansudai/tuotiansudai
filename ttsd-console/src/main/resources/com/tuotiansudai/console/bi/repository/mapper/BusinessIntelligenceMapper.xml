@@ -1407,7 +1407,7 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(repay_date, '%Y-%m') AS `name`,
         </if>
-        SUM(corpus + default_interest + expected_interest) AS value,
+        ROUND(SUM(corpus + default_interest + expected_interest / 100), 2) AS value,
         '待收金额' AS `group`
         FROM
         loan_repay
