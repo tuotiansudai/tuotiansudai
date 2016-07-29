@@ -3364,24 +3364,25 @@ $red: #eb4a3e;
         border-left-width: 0;
         border-bottom-width: 0;
       }
+      .account-info {
+        width: 100%;
+        border-left-width: 0;
+        border-right-width: 0;
+        margin-bottom: 10px;
+        padding-bottom:15px;
+        .l-title {
+          display: none;
+        }
+        .account-list {
+          margin-left: 0 !important;
+        }
+      }
     }
   }
   .chart-info-responsive {
     display: block !important;
   }
-  .account-info {
-    width: 96% !important;
-    padding: 0 2% !important;
-    border-left: none !important;
-    border-top: 1px solid #ccc;
 
-    .l-title {
-      display: none;
-    }
-    .account-list {
-      margin-left: 0 !important;
-    }
-  }
   .loan-designation{
     display:none;
   }
