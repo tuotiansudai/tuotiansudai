@@ -3,14 +3,14 @@ package com.tuotiansudai.api.dto.v1_0;
 import java.util.List;
 
 public class BankLimitResponseDataDto extends BaseResponseDataDto {
-    private double rechargeLeftAmount;
+    private String rechargeLeftAmount;
     private List<BankLimitUnitDto> bankLimits;
 
-    public double getRechargeLeftAmount() {
+    public String getRechargeLeftAmount() {
         return rechargeLeftAmount;
     }
 
-    public void setRechargeLeftAmount(double rechargeLeftAmount) {
+    public void setRechargeLeftAmount(String rechargeLeftAmount) {
         this.rechargeLeftAmount = rechargeLeftAmount;
     }
 
