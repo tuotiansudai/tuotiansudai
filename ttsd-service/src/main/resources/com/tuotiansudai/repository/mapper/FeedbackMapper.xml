@@ -23,7 +23,7 @@
     </insert>
 
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
-        select * from feedback join user on feedback.login_name = user.login_name
+        select * from feedback
         <if test="mobile != null and mobile != ''">
             and user.mobile = #{mobile}
         </if>
@@ -50,7 +50,7 @@
     </select>
 
     <select id="findAllCount" parameterType="map" resultType="long">
-        select count(1) from feedback join user on feedback.login_name = user.login_name
+        select count(1) from feedback
         <if test="mobile != null and mobile != ''">
             and user.mobile = #{mobile}
         </if>

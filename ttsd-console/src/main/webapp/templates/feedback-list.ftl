@@ -103,18 +103,20 @@
                     <#else>
                         <td width="100"><input type="checkbox" class="feedback-status" data-id="${feedback.id?c}" checked/></td>
                     </#if>
-                    <td style="text-align:left;" width="160" class="remark-tips">
-                        <#if feedback.remark?? && feedback.remark?length gt 20 && feedback.remark?contains('|')>
-                            <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
-                                  data-original-title="${feedback.remark?replace('|','————————————————————')!}">
-                            ${(feedback.remark?replace('|',''))?substring(0,20)!}...</span>
-                            <#elseif  feedback.remark?? && feedback.remark?contains('|')>
-                                <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
-                                      data-original-title="${feedback.remark?replace('|','————————————————————')!}">${(feedback.remark?replace('|',' '))!}</span>
+                    <td style="text-align:left;" width="160">
+                        <#if feedback.remark??>
+                                <span class="tooltip-list"
+                            <#if feedback.remark?length gt 20 && feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark?replace('|','—————————————————')!}">${(feedback.remark?replace('|',''))?substring(0,20)!}...
+                            <#elseif feedback.remark?length gt 20 && !feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark!}">${feedback.remark?substring(0,20)!}...
+                            <#elseif feedback.remark?length lt 20 && feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark?replace('|','—————————————————')!}">${(feedback.remark?replace('|',' '))!}
                             <#else>
-                                <span class="add-tooltip" data-placement="left" data-toggle="tooltip"
-                                      data-original-title="${feedback.remark!}">${feedback.remark!}</span>
+                                      data-original-title="${feedback.remark!}">${feedback.remark!}
                             </#if>
+                                </span>
+                        </#if>
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')">

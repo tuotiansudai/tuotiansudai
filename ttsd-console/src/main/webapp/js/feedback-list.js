@@ -1,21 +1,16 @@
-require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
-    $(function () {
+require(['jquery', 'jquery-ui', 'layer','layer-extend','layerWrapper', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
+    $(function() {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
-
-
-        var options={
-            delay:100,
-            trigger:'hover click' //触发tooltip的事件
-        }
-        $('.add-tooltip').tooltip(options);
-
-        //var tooltip = $('.add-tooltip');
-        //if (tooltip.length){
-        //    tooltip.tooltip();
-        //}
+        $('.tooltip-list').on('mouseover', function(){
+            var that = this,
+                tiptext = $(this).attr('data-original-title');
+            layer.tips(tiptext, that,{
+                tips: [4,'#000000']
+            });
+        });
 
         //自动完成提示
         var autoValue = '';
@@ -37,7 +32,6 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
             }
         });
     });
-
     $('.feedback-status').on('click',function(e){
         e.preventDefault();
         var $self=$(this),
@@ -55,6 +49,7 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
             }
         }).done(function (data) {
             $self.prop('checked',status);
+            location.href = "/announce-manage/feedback";
         }).fail(function () {
             alert("提交失败");
         });
