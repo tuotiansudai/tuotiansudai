@@ -2,10 +2,11 @@ package com.tuotiansudai.activity;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
@@ -51,7 +52,7 @@ public class HeroRankingControllerTest {
     @Mock
     private RandomUtils randomUtils;
     @Mock
-    private UserMapper userMapper;
+    private LoanMapper loanMapper;
 
     @Before
     public void init() {
@@ -74,12 +75,12 @@ public class HeroRankingControllerTest {
         heroRankingView.setSumAmount(2000000000000l);
         heroRankingView.setUserName("userName");
         List<HeroRankingView> heroRankingViews = Lists.newArrayList(heroRankingView);
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.COMPLETE);
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
         when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
-        UserModel userModel = new UserModel();
-        userModel.setMobile("15210007891");
-        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())

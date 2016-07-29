@@ -35,7 +35,7 @@ public class RankingActivityController {
     private AccountMapper accountMapper;
 
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
+    public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
