@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -51,16 +52,15 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     private LoanTitleMapper loanTitleMapper;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
+    private ExtraLoanRateMapper extraLoanRateMapper;
     @Mock
     private LoanerDetailsMapper loanerDetailsMapper;
+    @Mock
+    private LoanDetailsMapper loanDetailsMapper;
     @Mock
     private PledgeHouseMapper pledgeHouseMapper;
     @Mock
     private ContractService contractService;
-    @Mock
-    private LoanDetailsMapper loanDetailsMapper;
-    @Mock
-    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Test
     public void shouldGenerateLoanDetailIsOk(){
@@ -145,6 +145,10 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
+        when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(new LoanerDetailsModel());
+        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
+        when(pledgeHouseMapper.getPledgeHouseDetailByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
+        when(contractService.getContract(anyString(),anyMap())).thenReturn("");
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
 

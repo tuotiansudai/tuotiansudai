@@ -1493,6 +1493,13 @@ $red: #eb4a3e;
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
+  &.loan-detail-new {
+    .loan-model {
+      .account-info {
+        min-height: 295px;
+      }
+    }
+  }
   .borderBox {
     padding: 0;
     &.no-border{
@@ -1504,6 +1511,7 @@ $red: #eb4a3e;
     width:100%;
     .news-share {
       width: 616px;
+      min-height: 279px;
       @media (max-width: 700px) {
         width: 100%;
       }
@@ -1518,6 +1526,11 @@ $red: #eb4a3e;
         .title {
           font-size: 20px;
           color: #333;
+        }
+        &.new-free-tag {
+          .title {
+            padding-left: 41px;
+          }
         }
       }
       .boilerplate {
@@ -1568,9 +1581,9 @@ $red: #eb4a3e;
             font-size: 18px;
           }
           .number {
-            font-size: 40px;
+            font-size: 28px;
             span {
-              font-size: 24px;
+              font-size: 16px;
             }
           }
           .data-extra-rate {
@@ -1618,6 +1631,9 @@ $red: #eb4a3e;
         text-align: right;
       }
       .account-list {
+        &.account-list-new {
+          margin-top:30px;
+        }
         padding: 18px;
         &.new-text {
           font-size: 14px;
@@ -2298,6 +2314,7 @@ $red: #eb4a3e;
     }
   }
 }
+
 .bind-card-layer {
   width: 540px;
   height: 244px;

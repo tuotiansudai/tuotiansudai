@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -343,6 +344,6 @@ public class CouponModel implements Serializable {
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
         this.agents = couponDto.getAgents();
         this.channels = couponDto.getChannels();
-        this.multiple = (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON || couponDto.getMultiple());
+        this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponDto.getUserGroup());
     }
 }

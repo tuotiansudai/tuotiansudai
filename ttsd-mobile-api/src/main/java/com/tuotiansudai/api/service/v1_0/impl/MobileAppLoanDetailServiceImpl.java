@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.service.impl.ContractServiceImpl;
+
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import freemarker.template.Configuration;
@@ -254,7 +255,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         return days + "天" + hours + "时" + minutes + "分";
     }
-
     public String obtainLoanDetail(long loanId){
         LoanModel loanModel = loanMapper.findById(loanId);
         if(loanModel != null){

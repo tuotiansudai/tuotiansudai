@@ -13,7 +13,7 @@ public class ExtraLoanRateItemDto implements Serializable {
     private String amountUpper;
 
     public ExtraLoanRateItemDto(ExtraLoanRateModel model) {
-        this.rate = new BigDecimal(model.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).toString();
+        this.rate = new BigDecimal(model.getRate()).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
         this.amountLower = AmountConverter.convertCentToString(model.getMinInvestAmount());
         this.amountUpper = AmountConverter.convertCentToString(model.getMaxInvestAmount());
     }

@@ -14,4 +14,6 @@ public interface CouponAssignmentService {
     void assignUserCoupon(String loginNameOrMobile, List<UserGroup> userGroups);
 
     UserCouponModel assign(String loginName, long couponId, String exchangeCode);
+
+    void assignUserCoupon(long loanId,String loginNameOrMobile, long couponId);
 }
