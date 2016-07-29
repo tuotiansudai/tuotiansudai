@@ -702,6 +702,55 @@ body{
 }
 //recharge and bind-card pages
 .recharge-bind-card {
+  position: relative;
+  .bank-item{
+    position: absolute;
+    top:15px;
+    right:0;
+    width:380px;
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
+  }
+  }
   & ul.payment-mode {
     border-bottom: 1px solid #ccc;
 
@@ -889,12 +938,64 @@ body{
 }
 .bind-card-frame {
   border-top-width: 1px !important;
-
   .e-bank-recharge {
     display: block !important;
-
     .input-bankcard {
       width: 200px;
+    }
+  }
+  .bank-card-limit{
+    float:left;
+    width:100%;
+    padding-bottom:15px;
+    border-bottom: 1px solid #ddd;
+    .user-name{
+      float:left;
+      font-size:14px;
+      color:#4c4c4c;
+      line-height:30px;
+    }
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
     }
   }
 }
@@ -1392,13 +1493,6 @@ $red: #eb4a3e;
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
-  &.loan-detail-new {
-    .loan-model {
-      .account-info {
-        min-height: 295px;
-      }
-    }
-  }
   .borderBox {
     padding: 0;
     &.no-border{
@@ -1406,11 +1500,11 @@ $red: #eb4a3e;
     }
   }
   .loan-model{
-    float:left;
     width:100%;
+    display:table;
     .news-share {
       width: 616px;
-      min-height: 279px;
+      display: table-cell;
       @media (max-width: 700px) {
         width: 100%;
       }
@@ -1500,6 +1594,9 @@ $red: #eb4a3e;
             margin-top: 20px;
             line-height: 1;
           }
+          .short-detail {
+            line-height: 24px;
+          }
         }
         .progress-bar {
           display: inline-block;
@@ -1516,8 +1613,13 @@ $red: #eb4a3e;
         }
       }
     }
+    .blank-middle {
+      display: table-cell;
+      width:10px;
+    }
     .account-info {
       width: 370px;
+      display: table-cell;
       text-align: center;
       font-size: 12px;
       color: #949494;
@@ -1531,7 +1633,7 @@ $red: #eb4a3e;
       }
       .account-list {
         &.account-list-new {
-          margin-top:30px;
+          margin-top:40px;
         }
         padding: 18px;
         &.new-text {
@@ -1700,7 +1802,7 @@ $red: #eb4a3e;
             margin-bottom: 0;
           }
           &.img-status {
-            padding: 30px 10px;
+            padding: 20px 10px;
           }
           &.time-item {
             display: inline-block;
@@ -2434,7 +2536,7 @@ $red: #eb4a3e;
   position: absolute;
   z-index: 100;
   border: 1px solid #ffd4b2;
-  width: 200px;
+  width: 290px;
   text-align: center;
   > div {
     border-top: 1px solid #ffd4b2;
@@ -2450,10 +2552,10 @@ $red: #eb4a3e;
     border-left: 1px solid #ffd4b2;
     line-height: 28px;
     text-align: center;
-    width: 49px;
+    width: 60px;
     &:first-child {
       border-left: none;
-      width: 150px;
+      width: 220px;
     }
   }
   &:before {
@@ -2461,7 +2563,7 @@ $red: #eb4a3e;
     display: block;
     position: absolute;
     top: -7px;
-    right: 20px;
+    right: 80px;
     color: #ffd4b2;
     background: #fff;
     width: 12px;
@@ -3248,22 +3350,39 @@ $red: #eb4a3e;
 }
 
 @media screen and (max-width:700px) {
+
+  .loan-detail-content {
+    .loan-model {
+      display: block;
+      .blank-middle {
+        display: none;
+      }
+      .news-share,.account-info {
+        display: block;
+      }
+      .news-share {
+        border-left-width: 0;
+        border-bottom-width: 0;
+      }
+      .account-info {
+        width: 100%;
+        border-left-width: 0;
+        border-right-width: 0;
+        margin-bottom: 10px;
+        padding-bottom:15px;
+        .l-title {
+          display: none;
+        }
+        .account-list {
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
   .chart-info-responsive {
     display: block !important;
   }
-  .account-info {
-    width: 96% !important;
-    padding: 0 2% !important;
-    border-left: none !important;
-    border-top: 1px solid #ccc;
 
-    .l-title {
-      display: none;
-    }
-    .account-list {
-      margin-left: 0 !important;
-    }
-  }
   .loan-designation{
     display:none;
   }
