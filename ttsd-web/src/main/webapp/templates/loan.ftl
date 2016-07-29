@@ -4,7 +4,7 @@
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
-            <div class="news-share bg-w fl">
+            <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
                     <#if extraLoanRates??>
@@ -27,9 +27,17 @@
                                 <div class="td fl">投资金额</div>
                                 <div class="td fl">加息</div>
                             </div>
-                            <% _.each(__extraRate, function(value){ %>
+                            <% _.each(__extraRate, function(value){
+                            var text;
+                            if(value.maxInvestAmount!=0) {
+                                text =' < '+ value.maxInvestAmount;
+                            }
+                            else {
+                                text='';
+                            }
+                            %>
                             <div class="clearfix">
-                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
+                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额 <%=text %></div>
                                 <div class="td fl"><%= value.rate %>%</div>
                             </div>
                             <% }) %>
@@ -86,7 +94,8 @@
                     </div> <#-- .content end tag -->
                 </div> <#-- .container-block end tag -->
             </div>
-            <div class="account-info fl bg-w">
+            <div class="blank-middle"></div>
+            <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">

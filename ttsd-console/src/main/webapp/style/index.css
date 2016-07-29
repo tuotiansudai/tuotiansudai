@@ -319,6 +319,11 @@ td.td {
 .agent-rate {
     padding-right: 5px;
 }
+
+.form-group .form-control {
+    padding: 6px;
+}
+
 .item-invest {
     float: left;
     line-height: 35px;
@@ -639,13 +644,10 @@ td.td {
     margin-left: 106px;
     margin-bottom: 10px;
 }
-<<<<<<< HEAD
-
 .top-line {
     border: 1px solid #000;
     margin-top: 0px;
 }
-=======
 .int-item{
     float:left;
     width:100%;
@@ -661,4 +663,3 @@ td.td {
 .info-text{
     line-height:34px;
 }
->>>>>>> master
