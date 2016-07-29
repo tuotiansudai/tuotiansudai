@@ -1,14 +1,23 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
+import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanRepayModel;
@@ -27,6 +36,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Aspect
@@ -38,7 +48,14 @@ public class CouponAspect {
 
     @Autowired
     private CouponInvestService couponInvestService;
-
+    @Autowired
+    private LoanMapper loanMapper;
+    @Autowired
+    private CouponMapper couponMapper;
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private JobManager jobManager;
@@ -136,6 +153,61 @@ public class CouponAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    private void createAutoJPushAlertLoanOutJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
+                    .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    private void createSendCouponIncomeJob(long loanRepayId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.SEND_COUPON_INCOME_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.SendCouponIncome, SendCouponIncomeJob.class)
+                    .addJobData(SendCouponIncomeJob.LOAN_REPAY_ID_KEY, loanRepayId)
+                    .withIdentity(JobType.SendCouponIncome.name(), "LoanRepayId-" + loanRepayId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
+        }
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.postLoanOut(*))", returning = "returnValue")
+    public void afterReturningCreateInvestAchievementUserCoupon(JoinPoint joinPoint, boolean returnValue) {
+        if(returnValue){
+            final long loanId = (long) joinPoint.getArgs()[0];
+            LoanModel loanModel = loanMapper.findById(loanId);
+            createUserCouponModel(loanModel.getFirstInvestAchievementId(),UserGroup.FIRST_INVEST_ACHIEVEMENT,loanId);
+            createUserCouponModel(loanModel.getMaxAmountAchievementId(),UserGroup.MAX_AMOUNT_ACHIEVEMENT,loanId);
+            createUserCouponModel(loanModel.getLastInvestAchievementId(), UserGroup.LAST_INVEST_ACHIEVEMENT, loanId);
+        }
+    }
+
+    private void createUserCouponModel(Long investId, final UserGroup userGroup, long loanId){
+        if(investId == null || investId == 0){
+            logger.error(MessageFormat.format("loan id : {0} nothing {1}",String.valueOf(loanId),userGroup.name()));
+            return;
+        }
+
+        List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
+        for(CouponModel couponModel : couponModelList){
+            if(couponModel.getUserGroup().equals(userGroup)){
+                couponAssignmentService.assignUserCoupon(loanId,investMapper.findById(investId).getLoginName(),couponModel.getId());
+            }
         }
     }
 }

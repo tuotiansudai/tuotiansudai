@@ -45,6 +45,8 @@ public class UserCouponModel implements Serializable{
     //TODO: Remove
     private Long investAmount;
 
+    private long achievementLoanId;
+
     public UserCouponModel() {
     }
 
@@ -198,5 +200,13 @@ public class UserCouponModel implements Serializable{
 
     public void setExchangeCode(String exchangeCode) {
         this.exchangeCode = exchangeCode;
+    }
+
+    public long getAchievementLoanId() {
+        return achievementLoanId;
+    }
+
+    public void setAchievementLoanId(long achievementLoanId) {
+        this.achievementLoanId = achievementLoanId;
     }
 }
