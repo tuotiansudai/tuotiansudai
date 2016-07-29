@@ -45,7 +45,7 @@ public class ExportCsvUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<String> dtoStrings = new ArrayList<>();
         Field[] fields = t.getClass().getDeclaredFields();
-        for(Field field : fields) {
+        for (Field field : fields) {
             field.setAccessible(true);
             Object fieldObject = null;
             try {
@@ -54,10 +54,10 @@ public class ExportCsvUtil {
                 logger.error("T:" + t.getClass().getName() + ", field:" + field.getName() + "\n" + e.getMessage());
             }
             String fieldString;
-            if(null == fieldObject) {
+            if (null == fieldObject) {
                 fieldString = "";
-            } else if(fieldObject instanceof Date) {
-                fieldString = simpleDateFormat.format((Date)fieldObject);
+            } else if (fieldObject instanceof Date) {
+                fieldString = simpleDateFormat.format((Date) fieldObject);
             } else {
                 fieldString = String.valueOf(fieldObject);
             }

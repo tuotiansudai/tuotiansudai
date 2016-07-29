@@ -9,12 +9,10 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,7 +28,9 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailService {
@@ -49,6 +49,15 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private RandomUtils randomUtils;
 
     @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+    @Autowired
+    private PledgeHouseMapper pledgeHouseMapper;
+    @Autowired
+    private PledgeVehicleMapper pledgeVehicleMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Value("${web.server}")
@@ -63,6 +72,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private ContractService contractService;
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -137,7 +149,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         loanDetailResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
-        loanDetailResponseDataDto.setLoanDetail(loan.getDescriptionHtml());
+        loanDetailResponseDataDto.setLoanDetail(obtainLoanDetail(loan.getId()));
         loanDetailResponseDataDto.setEvidence(getEvidenceByLoanId(loan.getId()));
 
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loan.getId());
@@ -219,7 +231,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     }
 
-    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateDto> fillExtraLoanRateDto(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
             @Override
             public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
@@ -244,5 +256,63 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
 
         return days + "天" + hours + "时" + minutes + "分";
+    }
+    public String obtainLoanDetail(long loanId){
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if(loanModel != null){
+            Map<String, Object> dateModel = collectLoanDetailDateModel(loanId,loanModel.getPledgeType());
+            switch (loanModel.getPledgeType()){
+                case HOUSE:
+                    return contractService.getContract("pledgeHouse",dateModel);
+                case VEHICLE:
+                    return contractService.getContract("pledgeVehicle",dateModel);
+                default:
+                    return loanModel.getDescriptionHtml();
+
+            }
+        }
+        return null;
+
+    }
+
+    private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
+        Map<String, Object> dataModel = new HashMap<>();
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        if(loanerDetailsModel != null){
+            dataModel.put("loaner",loanerDetailsModel.getUserName());
+            dataModel.put("marriage",loanerDetailsModel.getMarriage());
+
+        }
+        if(loanDetailsModel != null ){
+            dataModel.put("declaration",loanDetailsModel.getDeclaration());
+
+        }
+        switch (pledgeType){
+            case HOUSE:
+                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel)pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+                if(pledgeHouseModel != null){
+                    dataModel.put("loanAmount",pledgeHouseModel.getLoanAmount());
+                    dataModel.put("estimateAmount",pledgeHouseModel.getEstimateAmount());
+                    dataModel.put("pledgeLocation",pledgeHouseModel.getPledgeLocation());
+                    dataModel.put("square",pledgeHouseModel.getSquare());
+                    dataModel.put("propertyCardId",pledgeHouseModel.getPropertyCardId());
+                    dataModel.put("estateRegisterId",pledgeHouseModel.getEstateRegisterId());
+                    dataModel.put("authenticAct",pledgeHouseModel.getAuthenticAct());
+
+                }
+                break ;
+            case VEHICLE:
+                PledgeVehicleModel pledgeVehicleModel = (PledgeVehicleModel)pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+                if(pledgeVehicleModel != null){
+                    dataModel.put("loanAmount",pledgeVehicleModel.getLoanAmount());
+                    dataModel.put("estimateAmount",pledgeVehicleModel.getEstimateAmount());
+                    dataModel.put("model",pledgeVehicleModel.getModel());
+                }
+                break;
+
+        }
+
+        return dataModel;
     }
 }

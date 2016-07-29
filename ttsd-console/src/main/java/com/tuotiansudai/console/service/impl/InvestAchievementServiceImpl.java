@@ -37,7 +37,7 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
                 if (input.getRaisingCompleteTime() == null) {
                     input.setCompleteInvestDuration("/");
                 } else {
-                    input.setCompleteInvestDuration(hours(input.getFundraisingStartTime(),input.getRaisingCompleteTime()));
+                    input.setCompleteInvestDuration(hours(input.getFundraisingStartTime(), input.getRaisingCompleteTime()));
                 }
                 Date firstInvestDate = investMapper.findFirstTradeTimeInvestByLoanId(input.getLoanId());
                 input.setFirstInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
@@ -68,6 +68,6 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     }
 
     private String hours(Date startTime, Date endTime) {
-        return new DecimalFormat("0.00").format((double)(((endTime.getTime() - startTime.getTime()) / 1000) / 60) / 60) + "小时";
+        return new DecimalFormat("0.00").format((double) (((endTime.getTime() - startTime.getTime()) / 1000) / 60) / 60) + "小时";
     }
 }
