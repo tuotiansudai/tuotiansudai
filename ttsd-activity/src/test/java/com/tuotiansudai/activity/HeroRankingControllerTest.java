@@ -54,7 +54,6 @@ public class HeroRankingControllerTest {
     @Mock
     private LoanMapper loanMapper;
 
-
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
