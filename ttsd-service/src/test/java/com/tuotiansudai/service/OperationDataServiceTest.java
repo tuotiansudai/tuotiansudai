@@ -86,6 +86,7 @@ public class OperationDataServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
         loanMapper.create(loanModel);

@@ -3,7 +3,6 @@ package com.tuotiansudai.message.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 

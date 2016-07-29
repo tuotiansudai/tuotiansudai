@@ -919,9 +919,9 @@ form label.error {
   background-size: 100%;
   height: auto;
   overflow: auto;
-  padding-top: 245px; }
+  padding-top: 745px; }
   .landing-container-app .register-box {
-    margin: 0 45px; }
+    margin: 50px 150px; }
     .landing-container-app .register-box ul {
       position: relative; }
       .landing-container-app .register-box ul li {
@@ -959,7 +959,7 @@ form label.error {
             border-left: 1px solid #a09385;
             margin-top: 2px; }
             .landing-container-app .register-box ul li.bg-col-captcha button[disabled="disabled"] {
-              color: #666; }
+              color: #ccc; }
           .landing-container-app .register-box ul li.bg-col-captcha .decorate-icon {
             position: absolute;
             display: inline-block;
@@ -975,10 +975,10 @@ form label.error {
           color: #de3936; }
         .landing-container-app .register-box ul li .register-user {
           width: 100%;
-          height: 44px;
-          background: url(/activity/images/landing-app/button.png) left top no-repeat;
-          background-size: 100%;
-          border: 0; }
+          height: 90px;
+          background: url(/activity/images/landing-app/button.png) center top no-repeat;
+          border: 0;
+          text-align: center; }
   .landing-container-app .my-advantage {
     margin-top: 50px;
     text-align: center; }
@@ -1048,7 +1048,8 @@ form label.error {
       border-radius: 0;
       padding-bottom: 30px;
       margin-top: 0;
-      height: 440px; }
+      height: 376px;
+      overflow: hidden; }
       .landing-top .register-box .register-user-form {
         box-sizing: border-box;
         width: 100%;
@@ -1086,7 +1087,31 @@ form label.error {
     display: block; }
 
   .footer-container {
-    display: none; } }
+    display: none; }
+
+  .landing-container-app {
+    padding-top: 245px; }
+    .landing-container-app .register-box {
+      margin: 0 45px; }
+      .landing-container-app .register-box ul {
+        position: relative; }
+        .landing-container-app .register-box ul li {
+          min-height: 16px; }
+          .landing-container-app .register-box ul li.bg-col input {
+            background: #fff;
+            height: 40px;
+            border: 1px solid #ccc;
+            width: 93%;
+            border-radius: 24px;
+            padding: 0 0 0 7%; }
+            .landing-container-app .register-box ul li.bg-col input.appCaptcha {
+              width: 58%; }
+          .landing-container-app .register-box ul li .register-user {
+            width: 100%;
+            height: 44px;
+            background: url(/activity/images/landing-app/button.png) left top no-repeat;
+            background-size: 100%;
+            border: 0; } }
 @media screen and (max-width: 350px) {
   .landing-container-app {
     padding-top: 200px; }

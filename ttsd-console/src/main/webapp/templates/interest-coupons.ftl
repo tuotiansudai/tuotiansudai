@@ -134,7 +134,10 @@
                 -
             </@security.authorize>
             <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
+                <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
+                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
+                </#if>
+                <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
             </@security.authorize>
         </#if>
         </#if>

@@ -1,48 +1,63 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
-<div class="loan-detail-content" data-loan-progress="${loan.progress?string.computer}">
+<div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
     <div class="borderBox clearfix no-border">
-        <div class="loan-model bg-w borderBox">
-            <div class="news-share fl">
-                <h2 class="title hd new">${loan.name}<span class="new-free"></span></h2>
-
-                <div class="chart-box">
-                    <div class="box" title="已投${loan.progress?string("0.00")}%">
-                        <div class="bg"></div>
-                        <div class="rount"></div>
-                        <div class="bg2"></div>
-                        <div class="rount2" style="display: none;"></div>
-                        <div class="pr-square-in">
-                            <em>
-                                <b>${loan.baseRate}%</b>
-                            </em>
-                            <i>预期年化收益</i>
+        <div class="loan-model">
+            <div class="news-share bg-w">
+                <h2 class="hd clearfix title-block new-free-tag">
+                    <div class="fl title">${loan.name}</div>
+                    <span class="new-free"></span>
+                </h2>
+                <div class="container-block loan-info">
+                    <div class="content">
+                        <div class="row loan-number-detail">
+                            <div class="col-md-4">
+                                <div class="title">预期年化收益</div>
+                                <div class="number red">
+                                    <@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="title">项目期限</div>
+                                <div class="number red">${loan.duration}<span>天</span></div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="title">项目金额</div>
+                                <div class="number red">${loan.loanAmount}<span>元(体验金)</span></div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="chart-info">
-                    项目金额：${loan.loanAmount}元(体验金)<br/>
-                    项目期限：${loan.duration}天<br/>
-                    起息时间：即投即生息。<br/>
-                    还款方式：到期付息,体验金收回。<br/>
-                    投资要求：新手体验标仅能使用新手体验券进行投资。<br/>
-                    项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。<br/>
-                </div>
-                <div class="product-type-text">新手体验项目</div>
+                        <div class="row loan-active-detail">
+                            <div class="col-md-6">
+                                <span class="title">投资进度：</span>
+                                <div class="progress-bar">
+                                    <div class="progress-inner" style="width: ${loan.progress?string("0.00")}%"></div>
+                                </div>
+                                <#-- 这里的百分比要和上面 .progress-inner的style里的百分比一样 -->
+                                <span class="orange2">${loan.progress?string("0.00")}%</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="title" data-amount-need-raised="${loan.investAmount}">可投金额：</span>
+                                ${loan.investAmount}元(体验金)
+                            </div>
+                            <div class="col-md-6">
+                                <span class="title">还款方式：</span>
+                                到期付息,体验金收回。
+                            </div>
+                            <div class="col-md-6 short-detail">
+                                <span class="title">项目简介：</span>
+                                此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。
+                            </div>
+                        </div>
+                    </div> <#-- .content end tag -->
+                </div> <#-- .container-block end tag -->
             </div>
-            <div class="account-info fl">
+            <div class="blank-middle"></div>
+            <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if loan.loanStatus == 'RAISING'>
                     <form action="/experience-invest" method="post" id="investForm">
-                        <dl class="account-list new-text">
-                            <dd class="experience-info clearfix">
-                                <span class="fl">可投金额：</span>
-                                <em class="fr">
-                                    <i class="amountNeedRaised-i"
-                                       data-amount-need-raised="${loan.investAmount}">${loan.investAmount}</i> 元(体验金)
-                                </em>
-                            </dd>
-
+                        <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
                             <input type="hidden" name="userCouponIds"
                                    value="<#if coupon??>${coupon.id?string.computer}</#if>"

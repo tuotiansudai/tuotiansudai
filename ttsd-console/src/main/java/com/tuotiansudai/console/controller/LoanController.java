@@ -5,10 +5,7 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.RequestIPParser;
@@ -63,11 +60,22 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/create/house", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
-        loanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        return loanService.createLoan(loanDto);
+    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
+        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.setPledgeType(PledgeType.HOUSE);
+        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
+    }
+
+    @RequestMapping(value = "/create/vehicle", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
+        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        createLoanDto.setPledgeType(PledgeType.VEHICLE);
+        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
@@ -81,16 +89,26 @@ public class LoanController {
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
-        modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
+        modelAndView.addObject("loanInfo", loanService.findCreateLoanDto(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save-house", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto) {
-        return loanService.updateLoan(loanDto);
+    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
+        createLoanDto.setPledgeType(PledgeType.HOUSE);
+        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
+    }
+
+    @RequestMapping(value = "/save-vehicle", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
+        createLoanDto.setPledgeType(PledgeType.VEHICLE);
+        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
+                createLoanDto.getPledgeDetailsDto());
     }
 
     @RequestMapping(value = "/ok", method = RequestMethod.POST)
@@ -128,7 +146,7 @@ public class LoanController {
 
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType){
+    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
 

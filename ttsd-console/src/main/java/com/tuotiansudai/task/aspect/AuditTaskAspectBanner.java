@@ -28,12 +28,12 @@ public class AuditTaskAspectBanner {
     public void afterReturningCreateBanner(JoinPoint joinPoint) {
         logger.debug("after create banner aspect.");
         try {
-                BannerDto bannerDto = (BannerDto) joinPoint.getArgs()[0];
-                String loginName = (String) joinPoint.getArgs()[1];
-                String ip = (String) joinPoint.getArgs()[2];
+            BannerDto bannerDto = (BannerDto) joinPoint.getArgs()[0];
+            String loginName = (String) joinPoint.getArgs()[1];
+            String ip = (String) joinPoint.getArgs()[2];
 
-                String description = loginName + "在 " + sdf.format(new Date()) +"创建了" +"名称为:" + bannerDto.getName() + "的banner." ;
-                auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerDto.getName(), description, ip);
+            String description = loginName + "在 " + sdf.format(new Date()) + "创建了" + "名称为:" + bannerDto.getName() + "的banner.";
+            auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerDto.getName(), description, ip);
         } catch (Exception e) {
             logger.error("after create banner aspect fail ", e);
         }
@@ -47,7 +47,7 @@ public class AuditTaskAspectBanner {
             String loginName = (String) joinPoint.getArgs()[1];
             String ip = (String) joinPoint.getArgs()[2];
 
-            String description = loginName + "在 " + sdf.format(new Date()) +"修改了" +"名称为:" + bannerModel.getName() + "的banner." ;
+            String description = loginName + "在 " + sdf.format(new Date()) + "修改了" + "名称为:" + bannerModel.getName() + "的banner.";
             auditLogService.createAuditLog(loginName, loginName, OperationType.BANNER, bannerModel.getName(), description, ip);
         } catch (Exception e) {
             logger.error("after update banner aspect fail ", e);

@@ -30,4 +30,12 @@ public class KeyValueModel {
         this.group = group;
     }
 
+    public KeyValueModel() {
+    }
+
+    public KeyValueModel(String name, String value, String group) {
+        this.name = name;
+        this.value = value;
+        this.group = group;
+    }
 }
