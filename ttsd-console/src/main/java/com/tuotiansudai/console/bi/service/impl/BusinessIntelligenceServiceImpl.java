@@ -10,6 +10,7 @@ import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableVi
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.collections4.ListUtils;
@@ -17,8 +18,10 @@ import org.apache.commons.collections4.Predicate;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
@@ -31,6 +34,9 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
 
     @Override
     public List<String> getChannels() {
@@ -207,5 +213,12 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity);
+    }
+
+    @Override
+    public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryExpectedRepayByRepayDate(queryStartTime,queryEndTime,granularity);
     }
 }
