@@ -354,7 +354,7 @@
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <h5>${loanTitle_index + 1}、${loanTitle.title}</h5>
+                                        <h5>${loanTitle.title}</h5>
                                         <div class="scroll-wrap" scroll-carousel>
                                             <div class="scroll-content">
                                                 <div class="row">
