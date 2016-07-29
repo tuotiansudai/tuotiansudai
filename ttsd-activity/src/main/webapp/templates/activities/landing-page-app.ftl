@@ -38,7 +38,7 @@
                 <li id="captchaErr" class="height"></li>
                 <li class="tc">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" class="register-user" value="">
+                    <input type="submit" class="register-user" value="" onclick="cnzzPush.trackClick('154landingPage2','领取5888体验金')">
                 </li>
                 <li class="agree-last">
                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
@@ -73,7 +73,6 @@
     </div>
 </div>
 <div id="agreementBox"  style="display: none;">
-    <div class="header-title">拓天速贷服务协议 <i class="close-tip fa fa-times"></i> </div>
     <div class="pad-m">
         <p>
             本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>

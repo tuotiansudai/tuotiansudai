@@ -70,6 +70,16 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
 
+    $('.granularity-select').on('change', function(){
+        if ($(this).val() == 'Hourly') {
+            $(this).parent().find('.start-time-word').html('查询时间');
+            $(this).parent().find('.over-end-date').hide();
+        } else {
+            $(this).parent().find('.start-time-word').html('开始时间');
+            $(this).parent().find('.over-end-date').show();
+        }
+    });
+
     function showReport(form,url,reportbox,name,category,xAxisName) {
         var Btn=$(form).find(':button');
         Btn.click(function() {
