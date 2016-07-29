@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
+import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
@@ -94,6 +95,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
     @Resource(name = "notAccountNotInvestedUserCollector")
     private UserCollector notAccountNotInvestedUserCollector;
+
+    @Resource(name = "investAchievementCollector")
+    private InvestAchievementUserCollector investAchievementCollector;
 
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
@@ -226,6 +230,37 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
+    }
+
+    @Override
+    public void assignUserCoupon(long loanId,String loginNameOrMobile,long couponId){
+        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
+
+        CouponModel couponModel = couponMapper.findById(couponId);
+
+        if (couponModel == null) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is not exist", String.valueOf(couponId)));
+            return;
+        }
+
+        if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is inactive", String.valueOf(couponId)));
+            return;
+        }
+
+        boolean contains = investAchievementCollector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
+
+        if (!contains) {
+            logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
+            return;
+        }
+
+        if (couponModel.isMultiple()) {
+            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            userCouponModel.setAchievementLoanId(loanId);
+            userCouponMapper.update(userCouponModel);
+            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+        }
     }
 
     private UserCollector getCollector(UserGroup userGroup) {
