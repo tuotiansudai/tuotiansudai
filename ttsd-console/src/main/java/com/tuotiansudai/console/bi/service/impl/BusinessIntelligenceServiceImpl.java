@@ -27,8 +27,6 @@ import java.util.*;
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
 
-    public static final String LINK_EXCHANGE_KEY = "console:repay:list";
-
     @Autowired
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
@@ -40,9 +38,6 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public List<String> getChannels() {
@@ -225,38 +220,6 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        Date today = DateTime.now().plusDays(1).withTimeAtStartOfDay().toDate();
-        List<KeyValueModel> investList = businessIntelligenceMapper.querySumInvestByInvestTime(queryStartTime,queryEndTime,granularity);
-        List<KeyValueModel> actualList = businessIntelligenceMapper.queryActualSumRepayByRepayDate(queryStartTime,queryEndTime,granularity);
-        long sumRepayMoney;
-        if(!redisWrapperClient.hexists(LINK_EXCHANGE_KEY,today.toString())){
-            sumRepayMoney = loanRepayMapper.findSumExpectedRepayByRepayDate(DateTime.parse("2016-01-01").withTimeAtStartOfDay().toDate(),today);
-            Map<String,String> redisMap = Maps.newConcurrentMap();
-            redisMap.put(today.toString(),String.valueOf(sumRepayMoney));
-            redisWrapperClient.hmset(LINK_EXCHANGE_KEY,redisMap);
-        }else{
-            sumRepayMoney = Long.parseLong(redisWrapperClient.hget(LINK_EXCHANGE_KEY, String.valueOf(today)));
-        }
-
-        Map<String,Long> echartsData = Maps.newConcurrentMap();
-        for(KeyValueModel keyValueModel : investList){
-            if(echartsData.get(keyValueModel.getName()) == null){
-                echartsData.put(keyValueModel.getName(),sumRepayMoney - Long.parseLong(keyValueModel.getValue()));
-            }
-        }
-
-        for(KeyValueModel keyValueModel : actualList){
-            if(echartsData.get(keyValueModel.getName()) == null){
-                echartsData.put(keyValueModel.getName(),sumRepayMoney + Long.parseLong(keyValueModel.getValue()));
-                continue;
-            }
-            echartsData.put(keyValueModel.getName(),echartsData.get(keyValueModel.getName()) + Long.parseLong(keyValueModel.getValue()));
-        }
-
-        List<KeyValueModel> keyValueModelLists = Lists.newArrayList();
-        for(Map.Entry<String,Long> map : echartsData.entrySet()){
-            keyValueModelLists.add(new KeyValueModel(map.getKey(),String.valueOf(sumRepayMoney - map.getValue()),"待收金额"));
-        }
-        return keyValueModelLists;
+        return businessIntelligenceMapper.queryExpectedRepayByRepayDate(queryStartTime,queryEndTime,granularity);
     }
 }

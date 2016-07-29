@@ -62,6 +62,4 @@ public interface LoanRepayMapper {
 
     Date findLastRepayDateByLoanId(@Param(value="loanId") long loanId);
 
-    long findSumExpectedRepayByRepayDate(@Param(value = "startTime") Date startTime,
-                                 @Param(value = "endTime") Date endTime);
 }

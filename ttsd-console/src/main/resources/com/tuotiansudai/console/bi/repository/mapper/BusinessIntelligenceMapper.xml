@@ -1396,53 +1396,22 @@
         </if>
     </select>
 
-    <select id="querySumInvestByInvestTime" parameterType="map" resultMap="keyValueMap">
+    <select id="queryExpectedRepayByRepayDate" parameterType="map" resultMap="keyValueMap">
         SELECT
-            <if test="granularity.name() == 'Daily'">
-                DATE(invest_time) AS `name`,
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                DATE_FORMAT(invest_time, '%Y-W%u') AS `name`,
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                DATE_FORMAT(invest_time, '%Y-%m') AS `name`,
-            </if>
-			SUM(amount) AS value,
-            '待收金额' AS `group`
-		FROM
-			invest
-		WHERE
-			status = 'SUCCESS'
-        AND invest_time between #{startTime} and #{endTime}
-		GROUP BY
         <if test="granularity.name() == 'Daily'">
-            date(invest_time)
+            DATE(repay_date) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            year(invest_time), week(invest_time)
+            DATE_FORMAT(repay_date, '%Y-W%u') AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
-            year(invest_time), month(invest_time)
+            DATE_FORMAT(repay_date, '%Y-%m') AS `name`,
         </if>
-    </select>
-
-    <select id="queryActualSumRepayByRepayDate" parameterType="map" resultMap="keyValueMap">
-        SELECT
-            <if test="granularity.name() == 'Daily'">
-                DATE(repay_date) AS `name`,
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                DATE_FORMAT(repay_date, '%Y-W%u') AS `name`,
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                DATE_FORMAT(repay_date, '%Y-%m') AS `name`,
-            </if>
-            SUM(actual_interest + corpus + default_interest) AS value,
-            '待收金额' AS `group`
-            FROM
-          loan_repay
-        WHERE
-          status = 'COMPLETE'
+        SUM(corpus + default_interest + expected_interest) AS value,
+        '待收金额' AS `group`
+        FROM
+        loan_repay
+        WHERE status != 'COMPLETE'
         AND repay_date between #{startTime} and #{endTime}
         GROUP BY
         <if test="granularity.name() == 'Daily'">
