@@ -2,8 +2,6 @@ package com.tuotiansudai.console.bi.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
@@ -18,11 +16,12 @@ import com.tuotiansudai.service.UserService;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
 import org.joda.time.DateTime;
-import org.relaxng.datatype.Datatype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
