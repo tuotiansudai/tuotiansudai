@@ -172,6 +172,7 @@ class taskCenter extends React.Component {
         if(/active/.test(event.target.className) ) {
             return;
         }
+        // debugger
         this.myScroll.scrollTo(0, -imgHeight, 1000);
         this.setState({
           active: value,
@@ -239,7 +240,7 @@ class taskCenter extends React.Component {
                     let imgHeight=document.getElementById('imageTopHead').scrollHeight-40;
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
                      // debugger
-                    if(Math.abs(this.myScroll.y)> imgHeight) {
+                    if(Math.abs(this.myScroll.y)>= imgHeight) {
                         this.setState({
                           isFixedMenu: true,
                           menuTop:Math.abs(this.myScroll.y)+10
