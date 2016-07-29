@@ -110,7 +110,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{c}"
+                        formatter: name+":{c}"
                         //formatter: xAxisName+"为{b}:{c}"
                     },
                     xAxis: [{
