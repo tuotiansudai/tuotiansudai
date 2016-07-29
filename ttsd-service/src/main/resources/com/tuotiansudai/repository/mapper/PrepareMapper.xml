@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PrepareMapper">
+    <resultMap id="PrepareResultMap" type="PrepareModel">
+        <id column="id" property="id"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="mobile" property="mobile"/>
+        <result column="channel" property="channel"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="PrepareModel" useGeneratedKeys="true" keyProperty="id">
+        insert into prepare_user(referrer_mobile,mobile,channel,created_time)
+        values (#{referrerMobile},#{mobile},#{channel},#{createdTime})
+    </insert>
+</mapper>
