@@ -286,7 +286,7 @@
                             <div class="container-fluid list-block">
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
-                                        <#if loan.loanerDetail[key]?? && loan.loanerDetail[key] != '不明' >
+                                        <#if loan.loanerDetail[key]?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                                             <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -301,7 +301,7 @@
                             <div class="row">
                                 <#if loan.pledgeHouseDetail??>
                                     <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeHouseDetail[key]??>
+                                        <#if loan.pledgeHouseDetail[key]?? && loan.pledgeHouseDetail[key] != ''>
                                             <div class="col-md-4">${key}：${loan.pledgeHouseDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -309,7 +309,7 @@
 
                                 <#if loan.pledgeVehicleDetail??>
                                     <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeVehicleDetail[key]??>
+                                        <#if loan.pledgeVehicleDetail[key]?? && loan.pledgeVehicleDetail[key] != ''>
                                             <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -377,6 +377,7 @@
                 </div>
                 <div class="loan-list-con">
                     <div class="content record">
+                        <#if loan.achievement??>
                         <div class="row title-list">
                             <div class="col-md-4">
                                 <div class="br">
@@ -416,6 +417,7 @@
                                 </div>
                             </div>
                         </div>
+                        </#if>
                         <table class="table-striped invest-list">
                         </table>
                         <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
