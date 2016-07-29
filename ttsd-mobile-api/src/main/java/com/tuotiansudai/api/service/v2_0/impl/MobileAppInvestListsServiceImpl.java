@@ -102,10 +102,11 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
                 InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
+                String lastRepayDate = null;
                 if (lastInvestRepayModel != null) {
-                    String lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd");
-                    dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
+                    lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd");
                 }
+                dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
 
                 String transferStatus;
                 if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE) {
