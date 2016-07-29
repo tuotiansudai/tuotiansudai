@@ -82,10 +82,12 @@
                                 <span class="title">可投金额：</span>
                             ${(loan.amountNeedRaised / 100)?string("0.00")}元
                             </div>
-                            <div class="col-md-6">
-                                <span class="title">募集截止时间：</span>
-                            ${loan.raisingPeriod.getDays()}天${loan.raisingPeriod.getHours()}小时${loan.raisingPeriod.getMinutes()}分(标满即放款)
-                            </div>
+                            <#if loan.loanStatus='RAISING'>
+                                <div class="col-md-6">
+                                    <span class="title">募集截止时间：</span>
+                                ${loan.raisingPeriod.getDays()}天${loan.raisingPeriod.getHours()}小时${loan.raisingPeriod.getMinutes()}分(标满即放款)
+                                </div>
+                            </#if>
                             <div class="col-md-6">
                                 <span class="title">还款方式：</span>
                             ${loan.type.getRepayType()},${loan.type.getInterestType()}
