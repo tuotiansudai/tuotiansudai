@@ -3350,6 +3350,22 @@ $red: #eb4a3e;
 }
 
 @media screen and (max-width:700px) {
+
+  .loan-detail-content {
+    .loan-model {
+      display: block;
+      .blank-middle {
+        display: none;
+      }
+      .news-share,.account-info {
+        display: block;
+      }
+      .news-share {
+        border-left-width: 0;
+        border-bottom-width: 0;
+      }
+    }
+  }
   .chart-info-responsive {
     display: block !important;
   }
