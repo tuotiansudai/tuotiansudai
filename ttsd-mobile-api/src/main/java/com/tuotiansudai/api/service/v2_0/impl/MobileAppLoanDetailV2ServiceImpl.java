@@ -103,7 +103,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
         dataDto.setLoanName(loanModel.getName());
         dataDto.setRepayTypeCode("");
-
+        dataDto.setDuration(loanModel.getDuration());
         String repayTypeName = loanModel.getType().getRepayType();
         dataDto.setRepayTypeName(repayTypeName);
 
@@ -213,7 +213,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             dataDto.setMarqueeTitle(marqueeTitle.toString());
             dataDto.setTitle(title);
             dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney(), dataDto.getDeadline(), dataDto.getRepayUnit(), dataDto.getRatePercent()));
-            dataDto.setDuration(loanModel.getDuration());
             dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");
             List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
