@@ -24,10 +24,10 @@
 
     <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
         select * from feedback
-        <if test="mobile != null and mobile != ''">
-            and user.mobile = #{mobile}
-        </if>
         <where>
+            <if test="mobile != null and mobile != ''">
+                and feedback.contact = #{mobile}
+            </if>
             <if test="source != null">
                 and feedback.source = #{source}
             </if>
@@ -51,10 +51,10 @@
 
     <select id="findAllCount" parameterType="map" resultType="long">
         select count(1) from feedback
-        <if test="mobile != null and mobile != ''">
-            and user.mobile = #{mobile}
-        </if>
         <where>
+            <if test="mobile != null and mobile != ''">
+                and feedback.contact = #{mobile}
+            </if>
             <if test="source != null">
                 and feedback.source = #{source}
             </if>
