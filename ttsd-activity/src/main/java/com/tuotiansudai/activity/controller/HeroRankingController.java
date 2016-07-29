@@ -75,7 +75,7 @@ public class HeroRankingController {
 
             //TODO:fake
             LoanModel loanModel = loanMapper.findById(41650602422768L);
-            if (loanModel.getStatus() == LoanStatus.REPAYING && new DateTime(tradingTime).withTimeAtStartOfDay().isEqual(new DateTime(2016, 7, 28, 0, 0, 0).withTimeAtStartOfDay())) {
+            if (loanModel.getStatus() == LoanStatus.REPAYING && new DateTime(tradingTime).withTimeAtStartOfDay().isEqual(new DateTime(2016, 7, 29, 15, 33, 45).withTimeAtStartOfDay())) {
                 HeroRankingView element = new HeroRankingView();
                 element.setLoginName("186**67");
                 element.setSumAmount(loanModel.getLoanAmount());

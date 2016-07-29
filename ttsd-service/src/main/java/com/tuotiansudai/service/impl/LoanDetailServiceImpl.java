@@ -119,7 +119,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
             fakeItem.setMobile("186****9367");
             fakeItem.setAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeItem.setCreatedTime(new DateTime(2016, 7, 28, 0, 0, 0).toDate());
+            fakeItem.setCreatedTime(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
             fakeItem.setSource(Source.WEB);
             fakeItem.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST, InvestAchievement.MAX_AMOUNT, InvestAchievement.LAST_INVEST));
 
@@ -196,11 +196,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
             //TODO:fake
             if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
-                achievementDto.setFirstInvestAchievementDate(new DateTime(2016, 7, 29, 12, 0, 0).toDate());
+                achievementDto.setFirstInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
                 achievementDto.setFirstInvestAchievementMobile("186****9367");
                 achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
                 achievementDto.setMaxAmountAchievementMobile("186****9367");
-                achievementDto.setLastInvestAchievementDate(new DateTime(2016, 7, 28, 0, 0, 0).toDate());
+                achievementDto.setLastInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
                 achievementDto.setLastInvestAchievementMobile("186****9367");
                 achievementDto.setLoanRemainingAmount("0");
             }

@@ -99,7 +99,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             InvestRecordResponseDataDto fakeRecord = new InvestRecordResponseDataDto();
             fakeRecord.setUserName("186**67");
             fakeRecord.setInvestMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            fakeRecord.setInvestTime(new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss"));
+            fakeRecord.setInvestTime(new DateTime(2016, 7, 29, 15, 33, 45).toString("yyyy-MM-dd HH:mm:ss"));
             investListResponseDataDto.setInvestRecord(Lists.newArrayList(fakeRecord));
         }
 
