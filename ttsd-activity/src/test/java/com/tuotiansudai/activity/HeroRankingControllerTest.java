@@ -2,8 +2,10 @@ package com.tuotiansudai.activity;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
@@ -48,6 +50,8 @@ public class HeroRankingControllerTest {
     private HeroRankingController heroRankingController;
     @Mock
     private RandomUtils randomUtils;
+    @Mock
+    private UserMapper userMapper;
 
     @Before
     public void init() {
@@ -73,6 +77,9 @@ public class HeroRankingControllerTest {
 
         when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
         when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
+        UserModel userModel = new UserModel();
+        userModel.setMobile("15210007891");
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
 
         this.mockMvc.perform(get("/activity/hero-ranking/invest/2016-07-05"))
                 .andExpect(status().isOk())
