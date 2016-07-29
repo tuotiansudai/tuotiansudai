@@ -46,28 +46,6 @@
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
-<<<<<<< HEAD
-                            </li>
-                            <li id="captchaErr" class="height"></li>
-                            <li class="agree-last">
-                                <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
-                                       checked>
-                                <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
-                                                                                         class="show-agreement">《服务协议》</a></label>
-                            </li>
-                            <li id="agreementInputErr" class="height"></li>
-                            <li class="tc">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <input type="submit" class="register-user" value="立即注册">
-                            </li>
-                            <li class="tc mobile-agreement">
-                                <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);"
-                                                       class="show-agreement">《服务协议》</a></label>
-                            </li>
-                        </ul>
-                    </form>
-                </div>
-=======
                         </li>
                         <li id="captchaErr" class="height"></li>
                         <li class="agree-last">
@@ -84,7 +62,7 @@
                         </li>
                     </ul>
                 </form>
->>>>>>> master
+
             </div>
         </div>
     </div>
