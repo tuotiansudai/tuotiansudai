@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.repository.mapper.PrepareMapper;
 import com.tuotiansudai.repository.model.PrepareModel;
@@ -18,17 +19,17 @@ public class PrepareServiceImpl implements PrepareService {
     private PrepareMapper prepareMapper;
 
     @Override
-    public boolean prepareRegister(PrepareRegisterRequestDto requestDto) {
+    public BaseDataDto prepareRegister(PrepareRegisterRequestDto requestDto) {
         try {
             PrepareModel prepareModel = new PrepareModel();
             prepareModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareModel.setMobile(requestDto.getMobile());
             requestDto.setChannel(requestDto.getChannel());
             prepareMapper.create(prepareModel);
-            return true;
+            return new BaseDataDto(true, null);
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.error(e.getLocalizedMessage());
+            return new BaseDataDto(false, e.getMessage());
         }
-        return false;
     }
 }

@@ -3,6 +3,7 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.PrepareChannel;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ public class PrepareRegisterRequestDto implements Serializable {
     @Pattern(regexp = "^1\\d{10}$", message = "手机号格式不正确")
     private String mobile;
 
-    @NotEmpty(message = "渠道不能为空")
+    @NotNull(message = "渠道不能为空")
     private PrepareChannel channel;
 
     public String getReferrerMobile() {
