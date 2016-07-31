@@ -196,7 +196,7 @@ public class ExportController {
                 1,
                 Integer.MAX_VALUE);
 
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(baseDto.getData().getRecords());
+        List<List<String>> csvData = exportService.buildSystemBillCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader, csvData, httpServletResponse.getOutputStream());
 
     }
@@ -239,7 +239,7 @@ public class ExportController {
         BaseDto<BasePaginationDataDto> baseDto = loanRepayService.findLoanRepayPagination(1, Integer.MAX_VALUE,
                 loanId, loginName, startTime, endTime, repayStatus);
 
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(baseDto.getData().getRecords());
+        List<List<String>> csvData = exportService.buildLoanRepayCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader, csvData, httpServletResponse.getOutputStream());
 
     }
