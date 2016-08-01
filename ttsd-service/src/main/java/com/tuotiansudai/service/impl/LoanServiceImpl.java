@@ -325,11 +325,13 @@ public class LoanServiceImpl implements LoanService {
         if (loanDto.getId() != loanDetailsDto.getLoanId() || loanDto.getId() != loanerDetailsDto.getLoanId() || loanDto.getId() != pledgeDetailsDto.getLoanId()) {
             baseDto.getData().setStatus(false);
             baseDto.getData().setMessage("loanID不一致");
+            return baseDto;
         }
         if (!((PledgeType.HOUSE == loanDto.getPledgeType() && pledgeDetailsDto instanceof PledgeHouseDto) ||
                 (PledgeType.VEHICLE == loanDto.getPledgeType() && pledgeDetailsDto instanceof PledgeVehicleDto))) {
             baseDto.getData().setStatus(false);
             baseDto.getData().setMessage("抵押物类型与抵押物详细信息不一致");
+            return baseDto;
         }
 
         //修改抵押物类型的标的需要删除原有的抵押物类型
