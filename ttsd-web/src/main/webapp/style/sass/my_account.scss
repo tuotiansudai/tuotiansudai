@@ -1841,6 +1841,7 @@ $red: #eb4a3e;
           .btn-normal {
             width: 100%;
             padding: 8px 0;
+            border-radius:0;
           }
           .account-amount {
             padding-right: .5em;
@@ -1962,7 +1963,7 @@ $red: #eb4a3e;
         color: #ed9c30;
       }
       &.active {
-        border-top: 2px solid #ed9c30;
+        border-top: 2px solid #ff752a;
         margin-top: -1px;
         margin-bottom: -1px;
         i {
