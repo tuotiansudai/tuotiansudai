@@ -4,11 +4,18 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			$getRank=$('.get-rank'),
 			$TodayAwards=$('#TodayAwards'),
 			$investRankingButton=$('#investRanking-button'),
-			$referRankingButton=$('#referRanking-button');
+			$referRankingButton=$('#referRanking-button'),
+			$heroNext=$('#heroNext'),
+			$referNext=$('#referNext');
 
 		var todayDate= $.trim($TodayAwards.text());
 		var ListTpl=$('#tplTable').html();
 		var ListRender = _.template(ListTpl);
+
+		if(todayDate.replace(/-/gi,'')>=20160731) {
+			$heroNext.hide();
+			$referNext.hide();
+		}
 
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
@@ -24,19 +31,19 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 		$investRankingButton.find('.button-small').on('click',function(event) {
 			var $HistoryAwards=$('#HistoryAwards');
 			var dateSpilt=$HistoryAwards.find('em').show().text(),
-				year=dateSpilt[0],
-				month=dateSpilt[1],
-				day=dateSpilt[2],
 				currDate;
 			if(/heroPre/.test(event.target.id)) {
-				//day=day-0-1;
 				currDate=GetDateStr(dateSpilt,-1); //前一天
 			}
 			else if(/heroNext/.test(event.target.id)){
-				//day=day-0+1;
 				currDate=GetDateStr(dateSpilt,1); //后一天
 			}
-				//currDate=year+'-'+month+'-'+day;
+			if(currDate.replace(/-/gi,'')>=20160731) {
+				$heroNext.hide();
+			}
+			else {
+				$heroNext.show();
+			}
 				$HistoryAwards.find('em').text(currDate);
 
 				if(currDate==todayDate) {
@@ -56,12 +63,16 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			var dateSpilt=$ReferRankingDate.find('em').text(),
 				currDate;
 			if(/referPre/.test(event.target.id)) {
-				//day=day-0-1;
 				currDate=GetDateStr(dateSpilt,-1); //前一天
 			}
 			else if(/referNext/.test(event.target.id)){
-				//day=day-0+1;
 				currDate=GetDateStr(dateSpilt,1); //后一天
+			}
+			if(currDate.replace(/-/gi,'')>=20160731) {
+				$referNext.hide();
+			}
+			else {
+				$referNext.show();
 			}
 				$ReferRankingDate.find('em').text(currDate);
 
