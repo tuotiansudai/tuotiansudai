@@ -171,7 +171,11 @@ public class LoanItemDto {
         this.duration = duration;
     }
 
-    public double getExtraRate() { return extraRate; }
+    public double getExtraRate() {
+        return extraRate;
+    }
 
-    public void setExtraRate(double extraRate) { this.extraRate = extraRate; }
+    public void setExtraRate(double extraRate) {
+        this.extraRate = extraRate;
+    }
 }

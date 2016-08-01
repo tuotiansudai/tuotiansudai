@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +53,14 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
     @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
+    @Mock
+    private LoanerDetailsMapper loanerDetailsMapper;
+    @Mock
+    private LoanDetailsMapper loanDetailsMapper;
+    @Mock
+    private PledgeHouseMapper pledgeHouseMapper;
+    @Mock
+    private ContractService contractService;
 
     @Test
     public void shouldGenerateLoanDetailIsOk(){
@@ -82,6 +92,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setRecheckTime(new Date());
         loanModel.setVerifyTime(new Date());
         loanModel.setUpdateTime(new Date());
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanModel.setRaisingCompleteTime(new Date());
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<>();
         LoanTitleRelationModel idCardModel = new LoanTitleRelationModel();
@@ -123,6 +134,10 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
+        when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(new LoanerDetailsModel());
+        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
+        when(pledgeHouseMapper.getPledgeHouseDetailByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
+        when(contractService.getContract(anyString(),anyMap())).thenReturn("");
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
 

@@ -4,8 +4,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
         $('.selectpicker').selectpicker();
 
         $('.approve-btn').on('click', function () {
-            if(confirm("确认审核？"))
-            {
+            if (confirm("确认审核？")) {
                 var messageId = $(this).attr('data-messageId');
                 var url = "/message-manage/manual-message/" + messageId + "/approve";
                 $.ajax({
@@ -22,8 +21,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
             }
         });
         $('.reject-btn').on('click', function () {
-            if(confirm("确认驳回？"))
-            {
+            if (confirm("确认驳回？")) {
                 var messageId = $(this).attr('data-messageId');
                 var url = "/message-manage/manual-message/" + messageId + "/reject";
                 $.ajax({
@@ -40,8 +38,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
             }
         });
         $('.delete-btn').on('click', function () {
-            if(confirm("确认删除？"))
-            {
+            if (confirm("确认删除？")) {
                 var messageId = $(this).attr('data-messageId');
                 var url = "/message-manage/manual-message/" + messageId + "/delete";
                 $.ajax({

@@ -7,87 +7,83 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
     <resultMap id="loanResultMap" type="LoanModel">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="agent_login_name" property="agentLoginName"></result>
-        <result column="loaner_login_name" property="loanerLoginName"></result>
-        <result column="loaner_user_name" property="loanerUserName"></result>
-        <result column="loaner_identity_number" property="loanerIdentityNumber"></result>
-        <result column="type" property="type"></result>
-        <result column="periods" property="periods"></result>
-        <result column="duration" property="duration"></result>
-        <result column="description_text" property="descriptionText"></result>
-        <result column="description_html" property="descriptionHtml"></result>
-        <result column="base_rate" property="baseRate"></result>
-        <result column="loan_amount" property="loanAmount"></result>
-        <result column="min_invest_amount" property="minInvestAmount"></result>
-        <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
-        <result column="max_invest_amount" property="maxInvestAmount"></result>
-        <result column="activity_type" property="activityType"></result>
-        <result column="product_type" property="productType"></result>
-        <result column="activity_rate" property="activityRate"></result>
-        <result column="contract_id" property="contractId"></result>
-        <result column="fundraising_start_time" property="fundraisingStartTime"></result>
-        <result column="fundraising_end_time" property="fundraisingEndTime"></result>
-        <result column="raising_complete_time" property="raisingCompleteTime"></result>
-        <result column="show_on_home" property="showOnHome"></result>
-        <result column="created_time" property="createdTime"></result>
-        <result column="created_login_name" property="createdLoginName"></result>
-        <result column="verify_time" property="verifyTime"></result>
-        <result column="verify_login_name" property="verifyLoginName"></result>
-        <result column="recheck_time" property="recheckTime"></result>
-        <result column="recheck_login_name" property="recheckLoginName"></result>
-        <result column="status" property="status"></result>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="agent_login_name" property="agentLoginName"/>
+        <result column="loaner_login_name" property="loanerLoginName"/>
+        <result column="loaner_user_name" property="loanerUserName"/>
+        <result column="loaner_identity_number" property="loanerIdentityNumber"/>
+        <result column="type" property="type"/>
+        <result column="periods" property="periods"/>
+        <result column="duration" property="duration"/>
+        <result column="description_text" property="descriptionText"/>
+        <result column="description_html" property="descriptionHtml"/>
+        <result column="pledge_type" property="pledgeType"/>
+        <result column="base_rate" property="baseRate"/>
+        <result column="loan_amount" property="loanAmount"/>
+        <result column="min_invest_amount" property="minInvestAmount"/>
+        <result column="invest_increasing_amount" property="investIncreasingAmount"/>
+        <result column="max_invest_amount" property="maxInvestAmount"/>
+        <result column="activity_type" property="activityType"/>
+        <result column="product_type" property="productType"/>
+        <result column="activity_rate" property="activityRate"/>
+        <result column="contract_id" property="contractId"/>
+        <result column="fundraising_start_time" property="fundraisingStartTime"/>
+        <result column="fundraising_end_time" property="fundraisingEndTime"/>
+        <result column="raising_complete_time" property="raisingCompleteTime"/>
+        <result column="show_on_home" property="showOnHome"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_login_name" property="createdLoginName"/>
+        <result column="verify_time" property="verifyTime"/>
+        <result column="verify_login_name" property="verifyLoginName"/>
+        <result column="recheck_time" property="recheckTime"/>
+        <result column="recheck_login_name" property="recheckLoginName"/>
+        <result column="status" property="status"/>
         <result column="first_invest_achievement_id" property="firstInvestAchievementId"/>
         <result column="max_amount_achievement_id" property="maxAmountAchievementId"/>
         <result column="last_invest_achievement_id" property="lastInvestAchievementId"/>
-        <result column="next_repay_date" property="nextRepayDate"></result>
-        <result column="completed_date" property="completedDate"></result>
-        <result column="unpaid_amount" property="unpaidAmount"></result>
-        <result column="expected_repay_amount" property="expectedRepayAmount"></result>
-        <result column="actual_repay_amount" property="actualRepayAmount"></result>
-        <result column="update_time" property="updateTime"></result>
+        <result column="next_repay_date" property="nextRepayDate"/>
+        <result column="completed_date" property="completedDate"/>
+        <result column="unpaid_amount" property="unpaidAmount"/>
+        <result column="expected_repay_amount" property="expectedRepayAmount"/>
+        <result column="actual_repay_amount" property="actualRepayAmount"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
-        <result column="loan_id" property="loanId"></result>
-        <result column="name" property="name"></result>
-        <result column="loan_status" property="loanStatus"></result>
-        <result column="periods" property="periods"></result>
-        <result column="loan_amount" property="loanAmount"></result>
-        <result column="raising_complete_time" property="raisingCompleteTime"></result>
-        <result column="fundraising_start_time" property="fundraisingStartTime"></result>
-        <result column="first_invest_achievement_id" property="firstInvestAchievementId"></result>
-        <result column="first_invest_login_name" property="firstInvestLoginName"></result>
-        <result column="first_invest_amount" property="firstInvestAmount"></result>
-        <result column="last_invest_achievement_id" property="lastInvestAchievementId"></result>
-        <result column="last_invest_login_name" property="lastInvestLoginName"></result>
-        <result column="last_invest_amount" property="lastInvestAmount"></result>
-        <result column="max_amount_achievement_id" property="maxAmountAchievementId"></result>
-        <result column="max_amount_login_name" property="maxAmountLoginName"></result>
-        <result column="max_amount" property="maxAmount"></result>
+        <result column="loan_id" property="loanId"/>
+        <result column="name" property="name"/>
+        <result column="loan_status" property="loanStatus"/>
+        <result column="periods" property="periods"/>
+        <result column="loan_amount" property="loanAmount"/>
+        <result column="raising_complete_time" property="raisingCompleteTime"/>
+        <result column="fundraising_start_time" property="fundraisingStartTime"/>
+        <result column="first_invest_achievement_id" property="firstInvestAchievementId"/>
+        <result column="first_invest_login_name" property="firstInvestLoginName"/>
+        <result column="first_invest_amount" property="firstInvestAmount"/>
+        <result column="last_invest_achievement_id" property="lastInvestAchievementId"/>
+        <result column="last_invest_login_name" property="lastInvestLoginName"/>
+        <result column="last_invest_amount" property="lastInvestAmount"/>
+        <result column="max_amount_achievement_id" property="maxAmountAchievementId"/>
+        <result column="max_amount_login_name" property="maxAmountLoginName"/>
+        <result column="max_amount" property="maxAmount"/>
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
         insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type,
-        periods, duration, description_text, description_html, base_rate, loan_amount, min_invest_amount,
-        invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id,
-        fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time,
-        verify_login_name, recheck_time, recheck_login_name, status, update_time)
-        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber},
-        #{type}, #{periods}, #{duration}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount},
-        #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType},
-        #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime},
-        #{createdLoginName}, #{verifyTime}, #{verifyLoginName}, #{recheckTime}, #{recheckLoginName}, #{status},
-        #{updateTime})
+        periods, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
+        invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time,
+        fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
+        recheck_login_name, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
+        #{periods}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
+        #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
+        #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
+        #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
-    </select>
-
-    <select id="getCompletedXsInvest"  resultMap="loanResultMap">
-        select * from loan where status = 'COMPLETE' and activity_type = 'NOVICE' limit 1;
     </select>
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
@@ -328,11 +324,8 @@
                 periods = #{periods},
                 duration = #{duration},
             </if>
-            <if test="descriptionText !=null and descriptionText!=''">
-                description_text = #{descriptionText},
-            </if>
-            <if test="descriptionHtml !=null and descriptionHtml!=''">
-                description_html = #{descriptionHtml},
+            <if test="pledgeType != null">
+                pledge_type = #{pledgeType},
             </if>
             <if test="loanAmount !=null and loanAmount!=''">
                 loan_amount = #{loanAmount},
@@ -430,11 +423,8 @@
                 periods = #{periods},
                 duration = #{duration},
             </if>
-            <if test="descriptionText !=null and descriptionText!=''">
-                description_text = #{descriptionText},
-            </if>
-            <if test="descriptionHtml !=null and descriptionHtml!=''">
-                description_html = #{descriptionHtml},
+            <if test="pledgeType != null">
+                pledge_type = #{pledgeType},
             </if>
             <if test="loanAmount !=null and loanAmount!=''">
                 loan_amount = #{loanAmount},
@@ -487,7 +477,6 @@
             <if test="updateTime != null">
                 update_time = #{updateTime}
             </if>
-
         </trim>
         where id = #{id}
     </update>

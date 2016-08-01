@@ -129,12 +129,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.productType').prop('checked',false).eq(0).prop('checked',true);
         }
 
-        function resetForm(){
-            $('.productType').prop('checked',false).eq(0).prop('checked',true);
-            $('.coupon-start').val('').prop('readonly', false);
-            $('.coupon-end').val('').prop('readonly', false);
-        }
-
         $('.userGroup').change(function(){
             $('.coupon-table').hide();
             $('.name-tr').remove();
@@ -143,19 +137,16 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER' && userGroup != 'FIRST_INVEST_ACHIEVEMENT' && userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && userGroup != 'LAST_INVEST_ACHIEVEMENT'){
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER' && userGroup == 'FIRST_INVEST_ACHIEVEMENT' && userGroup == 'MAX_AMOUNT_ACHIEVEMENT' && userGroup == 'LAST_INVEST_ACHIEVEMENT'){
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
-                resetForm();
             } else if (userGroup == "EXCHANGER_CODE") {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
-                    resetForm();
             } else if (userGroup == 'NEW_REGISTERED_USER') {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
-                    resetForm();
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
@@ -166,7 +157,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     }
                 })
                 $('.give-number').val('0');
-                resetForm();
             } else if (userGroup == 'CHANNEL') {
                 $.get('/user-manage/user/channels', function(data) {
                     if (data.length > 0) {
@@ -177,14 +167,8 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     }
                 })
                 $('.give-number').val('0');
-                resetForm();
             } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT') {
-                $('.give-number').val('999999').prop('readonly', true);
-                $('.coupon-number').prop('readonly', false);
-                $('.productType').prop('checked',true);
-                $('.coupon-start').val('2000-01-01').prop('readonly', true);
-                $('.coupon-end').val('2200-12-30').prop('readonly', true);
-                $("[name='investLowerLimit']").val('0').prop('readonly', true);
+                $('.give-number').val('').prop('readonly', false);
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
