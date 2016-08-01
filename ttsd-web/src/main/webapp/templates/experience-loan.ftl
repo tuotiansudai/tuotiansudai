@@ -3,7 +3,7 @@
 <div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
-            <div class="news-share bg-w fl">
+            <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block new-free-tag">
                     <div class="fl title">${loan.name}</div>
                     <span class="new-free"></span>
@@ -44,7 +44,7 @@
                                 <span class="title">还款方式：</span>
                                 到期付息,体验金收回。
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 short-detail">
                                 <span class="title">项目简介：</span>
                                 此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。
                             </div>
@@ -52,7 +52,8 @@
                     </div> <#-- .content end tag -->
                 </div> <#-- .container-block end tag -->
             </div>
-            <div class="account-info bg-w fl">
+            <div class="blank-middle"></div>
+            <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if loan.loanStatus == 'RAISING'>
                     <form action="/experience-invest" method="post" id="investForm">

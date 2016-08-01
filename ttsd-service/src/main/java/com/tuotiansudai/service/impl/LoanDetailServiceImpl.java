@@ -14,14 +14,17 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -133,6 +136,22 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         }
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
+
+        // TODO:fake
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
+            LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
+            fakeItem.setMobile("186****9367");
+            fakeItem.setAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+            fakeItem.setCreatedTime(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
+            fakeItem.setSource(Source.WEB);
+            fakeItem.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST, InvestAchievement.MAX_AMOUNT, InvestAchievement.LAST_INVEST));
+
+            long fee = new BigDecimal(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount())).multiply(new BigDecimal(0.1)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            fakeItem.setExpectedInterest(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, loanModel.getLoanAmount()) - fee));
+            dataDto = new BasePaginationDataDto<>(index, pageSize, 1, Lists.newArrayList(fakeItem));
+        }
+
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
@@ -144,8 +163,16 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
-        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
 
+        //TODO:fake
+        if (loanModel.getId() == 41650602422768L) {
+            if (loanModel.getStatus() == LoanStatus.REPAYING) {
+                investedAmount = loanModel.getLoanAmount();
+            }
+        }
+
+
+        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId()),
@@ -157,11 +184,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
         if (loanerDetail != null) {
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
-                    .put("借款人", loanerDetail.getUserName())
+                    .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
                     .put("性别", loanerDetail.getGender().getDescription())
                     .put("年龄", String.valueOf(loanerDetail.getAge()))
                     .put("婚姻状况", loanerDetail.getMarriage().getDescription())
-                    .put("身份证号", loanerDetail.getIdentityNumber())
+                    .put("身份证号", MessageFormat.format("{0}*******", loanerDetail.getIdentityNumber().substring(0, 10)))
                     .put("申请地区", loanerDetail.getRegion())
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
@@ -225,6 +252,16 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 achievementDto.setLastInvestAchievementMobile(randomUtils.encryptMobile(loginName, lastInvest.getLoginName(), Source.WEB));
             }
             loanDto.setAchievement(achievementDto);
+
+            //TODO:fake
+            if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
+                achievementDto.setFirstInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
+                achievementDto.setFirstInvestAchievementMobile("186****9367");
+                achievementDto.setMaxAmountAchievementAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+                achievementDto.setMaxAmountAchievementMobile("186****9367");
+                achievementDto.setLastInvestAchievementDate(new DateTime(2016, 7, 29, 15, 33, 45).toDate());
+                achievementDto.setLastInvestAchievementMobile("186****9367");
+            }
         }
 
         return loanDto;

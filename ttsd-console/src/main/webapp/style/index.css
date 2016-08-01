@@ -319,6 +319,11 @@ td.td {
 .agent-rate {
     padding-right: 5px;
 }
+
+.form-group .form-control {
+    padding: 6px;
+}
+
 .item-invest {
     float: left;
     line-height: 35px;

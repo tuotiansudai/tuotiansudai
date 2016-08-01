@@ -210,10 +210,13 @@ public class CouponAspect {
 
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
         for (CouponModel couponModel : couponModelList) {
-            if (couponModel.getUserGroup().equals(userGroup)) {
+
+            if (couponModel.getUserGroup().equals(userGroup) && DateTime.now().toDate().before(couponModel.getEndTime())
+                                                             && DateTime.now().toDate().after(couponModel.getStartTime())) {
                 couponAssignmentService.assignUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId());
             }
         }
     }
+
 }
 

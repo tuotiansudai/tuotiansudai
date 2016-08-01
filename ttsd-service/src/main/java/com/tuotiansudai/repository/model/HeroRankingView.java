@@ -47,8 +47,4 @@ public class HeroRankingView implements Serializable {
     public String getCentSumAmount() {
         return AmountConverter.convertCentToString(this.sumAmount);
     }
-
-    public void setCentSumAmount(String centSumAmount) {
-        this.centSumAmount = centSumAmount;
-    }
 }

@@ -4,7 +4,7 @@
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
-            <div class="news-share bg-w fl">
+            <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
                     <#if extraLoanRates??>
@@ -27,9 +27,17 @@
                                 <div class="td fl">投资金额</div>
                                 <div class="td fl">加息</div>
                             </div>
-                            <% _.each(__extraRate, function(value){ %>
+                            <% _.each(__extraRate, function(value){
+                            var text;
+                            if(value.maxInvestAmount!=0) {
+                                text =' < '+ value.maxInvestAmount;
+                            }
+                            else {
+                                text='';
+                            }
+                            %>
                             <div class="clearfix">
-                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额</div>
+                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额 <%=text %></div>
                                 <div class="td fl"><%= value.rate %>%</div>
                             </div>
                             <% }) %>
@@ -74,10 +82,12 @@
                                 <span class="title">可投金额：</span>
                             ${(loan.amountNeedRaised / 100)?string("0.00")}元
                             </div>
-                            <div class="col-md-6">
-                                <span class="title">募集截止时间：</span>
-                            ${loan.raisingPeriod.getDays()}天${loan.raisingPeriod.getHours()}小时${loan.raisingPeriod.getMinutes()}分(标满即放款)
-                            </div>
+                            <#if loan.loanStatus='RAISING'>
+                                <div class="col-md-6">
+                                    <span class="title">募集截止时间：</span>
+                                ${loan.raisingPeriod.getDays()}天${loan.raisingPeriod.getHours()}小时${loan.raisingPeriod.getMinutes()}分(标满即放款)
+                                </div>
+                            </#if>
                             <div class="col-md-6">
                                 <span class="title">还款方式：</span>
                             ${loan.type.getRepayType()},${loan.type.getInterestType()}
@@ -86,7 +96,8 @@
                     </div> <#-- .content end tag -->
                 </div> <#-- .container-block end tag -->
             </div>
-            <div class="account-info fl bg-w">
+            <div class="blank-middle"></div>
+            <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -236,7 +247,7 @@
                             <@global.role hasRole="'INVESTOR'">
                                 <#if !loan.investor.noPasswordInvest>
                                     <dd>
-                                        <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.autoInvest?c}">
+                                        <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
                                             推荐您开通免密投资
                                             <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i>
                                         </a>
@@ -277,7 +288,7 @@
                             <div class="container-fluid list-block">
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
-                                        <#if loan.loanerDetail[key]??>
+                                        <#if loan.loanerDetail[key]?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                                             <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -292,7 +303,7 @@
                             <div class="row">
                                 <#if loan.pledgeHouseDetail??>
                                     <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeHouseDetail[key]??>
+                                        <#if loan.pledgeHouseDetail[key]?? && loan.pledgeHouseDetail[key] != ''>
                                             <div class="col-md-4">${key}：${loan.pledgeHouseDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -300,7 +311,7 @@
 
                                 <#if loan.pledgeVehicleDetail??>
                                     <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
-                                        <#if loan.pledgeVehicleDetail[key]??>
+                                        <#if loan.pledgeVehicleDetail[key]?? && loan.pledgeVehicleDetail[key] != ''>
                                             <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
                                         </#if>
                                     </#list>
@@ -345,7 +356,7 @@
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <h5>${loanTitle_index + 1}、${loanTitle.title}</h5>
+                                        <h5>${loanTitle.title}</h5>
                                         <div class="scroll-wrap" scroll-carousel>
                                             <div class="scroll-content">
                                                 <div class="row">
@@ -368,6 +379,7 @@
                 </div>
                 <div class="loan-list-con">
                     <div class="content record">
+                        <#if loan.achievement??>
                         <div class="row title-list">
                             <div class="col-md-4">
                                 <div class="br">
@@ -407,6 +419,7 @@
                                 </div>
                             </div>
                         </div>
+                        </#if>
                         <table class="table-striped invest-list">
                         </table>
                         <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
