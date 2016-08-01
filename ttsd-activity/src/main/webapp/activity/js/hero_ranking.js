@@ -173,8 +173,8 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank(todayDate);
-		refeInvest(todayDate);
+		heroRank('2016-07-31');
+		refeInvest('2016-07-31');
 
 		$getRank.on('click', function() {
 			cnzzPush.trackClick('153周年庆', '我要上榜', '英雄榜');

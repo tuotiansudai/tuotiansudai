@@ -41,6 +41,12 @@ body {
       margin-top:50px;
       color: #ffe900;
       font-size: 24px;
+      &:disabled {
+        background: #ccc;
+        border:0;
+        border-top:4px solid #bbb;
+        color: #666;
+      }
     }
     .button-small {
       background: #e62e2e;
