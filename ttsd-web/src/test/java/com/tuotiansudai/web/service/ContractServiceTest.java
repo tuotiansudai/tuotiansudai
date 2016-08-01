@@ -105,6 +105,7 @@ public class ContractServiceTest {
         lm.setShowOnHome(false);
         lm.setCreatedTime(new Date());
         lm.setCreatedLoginName("testUserModel");
+        lm.setPledgeType(PledgeType.HOUSE);
         lm.setUpdateTime(new Date());
         return lm;
     }

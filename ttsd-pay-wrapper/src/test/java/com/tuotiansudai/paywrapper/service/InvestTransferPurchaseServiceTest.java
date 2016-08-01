@@ -461,6 +461,7 @@ public class InvestTransferPurchaseServiceTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(recheckTime);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
@@ -483,7 +484,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private TransferApplicationModel createFakeTransferApplication(InvestModel investModel, int period, long transferAmount, long transferFee) {
-        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate(),3,Source.WEB);
+        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate(), 3, Source.WEB);
         transferApplicationMapper.create(fakeTransferApplication);
         return fakeTransferApplication;
     }

@@ -34,11 +34,11 @@ public class ExtraLoanRateMapperTest {
     private IdGenerator idGenerator;
 
     @Test
-    public void shouldFindMaxRateByLoanIdIsOk(){
+    public void shouldFindMaxRateByLoanIdIsOk() {
         String loginName = "testExtraRate";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
         extraLoanRateMapper.create(extraLoanRateModels);
         double maxRate = extraLoanRateMapper.findMaxRateByLoanId(loanId);
@@ -46,11 +46,11 @@ public class ExtraLoanRateMapperTest {
     }
 
     @Test
-    public void shouldFindByLoanIdOrderByRate(){
+    public void shouldFindByLoanIdOrderByRate() {
         String loginName = "testExtraRate";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
         extraLoanRateMapper.create(createExtraLoanRate(loanId));
         List<ExtraLoanRateModel> extraLoanRateModelsOrderByRate = extraLoanRateMapper.findByLoanIdOrderByRate(loanId);
         assertTrue(extraLoanRateModelsOrderByRate.size() == 3);
@@ -59,7 +59,7 @@ public class ExtraLoanRateMapperTest {
     }
 
 
-    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId){
+    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
         ExtraLoanRateModel model = new ExtraLoanRateModel();
         model.setLoanId(loanId);
         model.setExtraRateRuleId(100001);
@@ -115,6 +115,7 @@ public class ExtraLoanRateMapperTest {
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
     }
 

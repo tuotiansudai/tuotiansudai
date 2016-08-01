@@ -48,7 +48,7 @@
                 <#list sourceList as sourceItem>
                     <option value="${sourceItem.name()}"
                             <#if (source?has_content && source == sourceItem.name()) >selected</#if>
-                            >${sourceItem.name()}</option>
+                    >${sourceItem.name()}</option>
                 </#list>
             </select>
         </div>
@@ -81,54 +81,55 @@
             <tbody>
                 <#if activityCenterList?? >
                     <#list activityCenterList as activity>
-                        <tr>
-                            <td><span class="webImg"><img id="webPicture"  src="/${activity.webPictureUrl!}"/></span></td>
-                            <td><span class="appImg"><img id="appPicture" src="/${activity.appPictureUrl!}"/></span></td>
-                            <td>${activity.title!}</td>
-                            <td><#if activity.activatedTime??>${activity.activatedTime?string('yyyy-MM-dd')}</#if></td>
-                            <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</td>
-                            <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}" target="_blank">${activity.appActivityUrl!}</a></td>
-                            <td>${activity.description!}</td>
+                    <tr>
+                        <td><span class="webImg"><img id="webPicture" src="/${activity.webPictureUrl!}"/></span></td>
+                        <td><span class="appImg"><img id="appPicture" src="/${activity.appPictureUrl!}"/></span></td>
+                        <td>${activity.title!}</td>
+                        <td><#if activity.activatedTime??>${activity.activatedTime?string('yyyy-MM-dd')}</#if></td>
+                        <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</td>
+                        <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}"
+                                                                                                                         target="_blank">${activity.appActivityUrl!}</a></td>
+                        <td>${activity.description!}</td>
+                        <td>
+                            <#list activity.source as source>
+                            ${source.name()}<#sep>, </#sep>
+                            </#list>
+                        </td>
+                        <td>${activity.shareTitle!}</td>
+                        <td>${activity.shareContent!}</td>
+                        <td>${activity.shareUrl!}</td>
+                        <#if activity.expiredTime??>
+                            <#assign expiredTime = activity.expiredTime?string('yyyy-MM-dd HH:mm')>
+                            <#assign currentTime = .now?string('yyyy-MM-dd HH:mm')>
                             <td>
-                                <#list activity.source as source>
-                                ${source.name()}<#sep>, </#sep>
-                                </#list>
+                                <#if activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                    进行中
+                                <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                    已结束
+                                <#else>
+                                ${activity.status.getDescription()!}
+                                </#if>
                             </td>
-                            <td>${activity.shareTitle!}</td>
-                            <td>${activity.shareContent!}</td>
-                            <td>${activity.shareUrl!}</td>
-                            <#if activity.expiredTime??>
-                                <#assign expiredTime = activity.expiredTime?string('yyyy-MM-dd HH:mm')>
-                                <#assign currentTime = .now?string('yyyy-MM-dd HH:mm')>
-                                <td>
-                                    <#if activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                        进行中
-                                    <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                        已结束
-                                    <#else>
-                                        ${activity.status.getDescription()!}
-                                    </#if>
-                                </td>
 
-                                <td>
-                                    <#if activity.status == 'TO_APPROVE' >
-                                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                                            <a href="/activity-manage/activity-center/${activity.activityId?c!}">审核</a>
-                                        </@security.authorize>
-                                    <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
-                                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                                            <a href="/activity-manage/activity-center/${activity.activityId?c!}">修改</a>
-                                        </@security.authorize>
-                                    <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                            --
-                                    </#if>
-                                </td>
-                            </#if>
-                        </tr>
+                            <td>
+                                <#if activity.status == 'TO_APPROVE' >
+                                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                        <a href="/activity-manage/activity-center/${activity.activityId?c!}">审核</a>
+                                    </@security.authorize>
+                                <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
+                                    <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                        <a href="/activity-manage/activity-center/${activity.activityId?c!}">修改</a>
+                                    </@security.authorize>
+                                <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
+                                    --
+                                </#if>
+                            </td>
+                        </#if>
+                    </tr>
                     <#else>
-                        <tr>
-                            <td colspan="10">暂时没有活动</td>
-                        </tr>
+                    <tr>
+                        <td colspan="10">暂时没有活动</td>
+                    </tr>
                     </#list>
 
                 </#if>

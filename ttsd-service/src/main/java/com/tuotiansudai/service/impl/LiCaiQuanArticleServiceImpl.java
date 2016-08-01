@@ -101,15 +101,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 continue;
             }
 
-            if(articleSectionType != null && articleStatus == null
-                    && liCaiQuanArticleDto.getSection() != null && liCaiQuanArticleDto.getSection().equals(articleSectionType)){
-                articleDtoList.add(liCaiQuanArticleDto);
-            }else if(articleSectionType == null && articleStatus != null
-                    && liCaiQuanArticleDto.getArticleStatus() != null && liCaiQuanArticleDto.getArticleStatus().equals(articleStatus)){
-                articleDtoList.add(liCaiQuanArticleDto);
-            }else if(articleSectionType != null && articleStatus != null
-                    && liCaiQuanArticleDto.getSection() != null && liCaiQuanArticleDto.getSection().equals(articleSectionType)
-                    && liCaiQuanArticleDto.getArticleStatus() != null && liCaiQuanArticleDto.getArticleStatus().equals(articleStatus)){
+            if (liCaiQuanArticleDto.getSection() != null && liCaiQuanArticleDto.getSection().equals(articleSectionType)) {
                 articleDtoList.add(liCaiQuanArticleDto);
             }
         }
@@ -270,7 +262,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             Map<String, String> comment = getAllComments(model.getId());
             redisWrapperClient.hdel(articleCommentRedisKey, String.valueOf(model.getId()));
             for(String key: comment.keySet()){
-                commentModelList.add(new LicaiquanArticleCommentModel(model.getId(),comment.get(key), new DateTime(key).toDate()));
+                commentModelList.add(new LicaiquanArticleCommentModel(model.getId(), comment.get(key), new DateTime(key).toDate()));
             }
 
             if(CollectionUtils.isNotEmpty(commentModelList)){
