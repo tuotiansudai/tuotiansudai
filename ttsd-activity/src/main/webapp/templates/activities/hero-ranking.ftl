@@ -159,7 +159,7 @@
 
                     </div>
                     <div class="tc clearfix">
-                        <a class="button-big" href="/referrer/refer-list" target="_blank">立即推荐</a>
+                        <button class="button-big" href="/referrer/refer-list" target="_blank" disabled>立即推荐</button>
                     </div>
                 </div>
             </div>
