@@ -37,6 +37,12 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         $(window).scrollTop(headerHeight+panelHeight*num+heightHack);
         return false;
     });
+
+    $('#repayStartTime').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate : '2016-01-01'
+    });
+
     $('.start-date,.end-date').datetimepicker({
         format: 'YYYY-MM-DD'
     });
@@ -69,7 +75,8 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
-    $('.repay_date').val('2016-01-01');
+    $('#repayStartTime').val('2016-01-01');
+
 
     $('.granularity-select').on('change', function(){
         if ($(this).val() == 'Hourly') {
@@ -162,6 +169,4 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*平台待收 总待收-总入金+回款*/
     showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','金额','Lines');
-
-
 });

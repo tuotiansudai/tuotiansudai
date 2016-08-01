@@ -1411,8 +1411,7 @@
         '待收金额' AS `group`
         FROM
         loan_repay
-        WHERE status != 'COMPLETE'
-        AND repay_date between #{startTime} and #{endTime}
+        WHERE repay_date between #{startTime} and #{endTime}
         GROUP BY
         <if test="granularity.name() == 'Daily'">
             date(repay_date)
