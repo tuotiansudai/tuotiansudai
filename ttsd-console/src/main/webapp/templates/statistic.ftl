@@ -360,8 +360,8 @@
                         <option value="Monthly" selected>月</option>
                         <option value="Weekly">周</option>
                     </select>
-                    开始时间： <input type="text" class="form-control start-date repay_date" name="startTime">
-                    结束时间：<input type="text" class="form-control end-date" name="endTime">
+                    开始时间： <input type="text" class="form-control start-date" id="repayStartTime" name="startTime">
+                    结束时间：<input type="text" class="form-control end-date" name="endTime" id="repayEndTime" >
                     <button class="btn btn-primary" type="button">查询</button>
                 </form>
 
