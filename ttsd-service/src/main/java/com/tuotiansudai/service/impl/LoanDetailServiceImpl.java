@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -183,11 +184,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
         if (loanerDetail != null) {
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
-                    .put("借款人", loanerDetail.getUserName())
+                    .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
                     .put("性别", loanerDetail.getGender().getDescription())
                     .put("年龄", String.valueOf(loanerDetail.getAge()))
                     .put("婚姻状况", loanerDetail.getMarriage().getDescription())
-                    .put("身份证号", (loanerDetail.getIdentityNumber().substring(0, 10) + "*******"))
+                    .put("身份证号", MessageFormat.format("{0}*******", loanerDetail.getIdentityNumber().substring(0, 10)))
                     .put("申请地区", loanerDetail.getRegion())
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
