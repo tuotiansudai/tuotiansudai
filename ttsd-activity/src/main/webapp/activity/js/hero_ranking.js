@@ -6,7 +6,9 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			$investRankingButton=$('#investRanking-button'),
 			$referRankingButton=$('#referRanking-button'),
 			$heroNext=$('#heroNext'),
-			$referNext=$('#referNext');
+			$referPre=$('#referPre'),
+			$referNext=$('#referNext'),
+			$heroPre=$('#heroPre');
 
 		var todayDate= $.trim($TodayAwards.text());
 		var ListTpl=$('#tplTable').html();
@@ -44,6 +46,12 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			else {
 				$heroNext.show();
 			}
+			if(currDate.replace(/-/gi,'')<=20160701) {
+				$heroPre.hide();
+			}
+			else {
+				$heroPre.show();
+			}
 				$HistoryAwards.find('em').text(currDate);
 				heroRank(currDate);
 
@@ -65,6 +73,13 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 			else {
 				$referNext.show();
 			}
+			if(currDate.replace(/-/gi,'')<=20160701) {
+				$referPre.hide();
+			}
+			else {
+				$referPre.show();
+			}
+
 				$ReferRankingDate.find('em').text(currDate);
 				refeInvest(currDate);
 		});
