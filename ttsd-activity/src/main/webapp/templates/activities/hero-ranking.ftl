@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="nodata-invest tc" style="display: none;">活动已结束</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption><span id="HistoryAwards"><em style="display: none">2016-07-31</em><i>今日</i></span>投资排行</caption>
+                                    <caption><span id="HistoryAwards"><em>2016-07-31</em></span>投资排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>
@@ -132,7 +132,7 @@
 
                                 <div class="nodata-refer tc" style="display: none;">活动已结束</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption><span id="ReferRankingDate"><em style="display: none">2016-07-31</em><i>今日</i></span>推荐排行</caption>
+                                    <caption><span id="ReferRankingDate"><em>2016-07-31</em></span>推荐排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>

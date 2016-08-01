@@ -45,15 +45,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				$heroNext.show();
 			}
 				$HistoryAwards.find('em').text(currDate);
-
-				if(currDate==todayDate) {
-					$HistoryAwards.find('i').show();
-					$HistoryAwards.find('em').hide();
-				}
-				else {
-					$HistoryAwards.find('i').hide();
-					$HistoryAwards.find('em').show();
-				}
 				heroRank(currDate);
 
 		});
@@ -75,15 +66,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 				$referNext.show();
 			}
 				$ReferRankingDate.find('em').text(currDate);
-
-				if(currDate==todayDate) {
-					$ReferRankingDate.find('i').show();
-					$ReferRankingDate.find('em').hide();
-				}
-				else {
-					$ReferRankingDate.find('i').hide();
-					$ReferRankingDate.find('em').show();
-				}
 				refeInvest(currDate);
 		});
 
