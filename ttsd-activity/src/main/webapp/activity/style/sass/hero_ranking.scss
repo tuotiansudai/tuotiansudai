@@ -276,7 +276,9 @@ body {
         .dotted-normal-box {
           padding: 6px;
           margin: 10px;
+          width: 90%;
           width: calc(100% - 20px);
+
           min-height:100px;
           text-align: center;
           box-sizing: border-box;
