@@ -10,22 +10,35 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 		var ListTpl=$('#tplTable').html();
 		var ListRender = _.template(ListTpl);
 
+		//获取前一天或者后一天的日期
+		function GetDateStr(date,AddDayCount) {
+			var dd = new Date(date);
+			dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+			var y = dd.getFullYear();
+			var m = dd.getMonth()+1;//获取当前月份的日期
+			var d = dd.getDate();
+
+			return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
+		}
+
 		$investRankingButton.find('.button-small').on('click',function(event) {
 			var $HistoryAwards=$('#HistoryAwards');
-			var dateSpilt=$HistoryAwards.find('em').show().text().split('-'),
+			var dateSpilt=$HistoryAwards.find('em').show().text(),
 				year=dateSpilt[0],
 				month=dateSpilt[1],
 				day=dateSpilt[2],
 				currDate;
 			if(/heroPre/.test(event.target.id)) {
-				day=day-0-1;
+				//day=day-0-1;
+				currDate=GetDateStr(dateSpilt,-1); //前一天
 			}
 			else if(/heroNext/.test(event.target.id)){
-				day=day-0+1;
+				//day=day-0+1;
+				currDate=GetDateStr(dateSpilt,1); //后一天
 			}
-			if(day>0 && day<=31) {
-				currDate=year+'-'+month+'-'+day;
+				//currDate=year+'-'+month+'-'+day;
 				$HistoryAwards.find('em').text(currDate);
+
 				if(currDate==todayDate) {
 					$HistoryAwards.find('i').show();
 					$HistoryAwards.find('em').hide();
@@ -35,24 +48,21 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 					$HistoryAwards.find('em').show();
 				}
 				heroRank(currDate);
-			}
+
 		});
 
 		$referRankingButton.find('.button-small').on('click',function(event) {
 			var $ReferRankingDate=$('#ReferRankingDate');
-			var dateSpilt=$ReferRankingDate.find('em').text().split('-'),
-				year=dateSpilt[0],
-				month=dateSpilt[1],
-				day=dateSpilt[2],
+			var dateSpilt=$ReferRankingDate.find('em').text(),
 				currDate;
 			if(/referPre/.test(event.target.id)) {
-				day=day-0-1;
+				//day=day-0-1;
+				currDate=GetDateStr(dateSpilt,-1); //前一天
 			}
 			else if(/referNext/.test(event.target.id)){
-				day=day-0+1;
+				//day=day-0+1;
+				currDate=GetDateStr(dateSpilt,1); //后一天
 			}
-			if(day>0 && day<=31) {
-				currDate=year+'-'+month+'-'+day;
 				$ReferRankingDate.find('em').text(currDate);
 
 				if(currDate==todayDate) {
@@ -63,12 +73,8 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'jquery.ajax.extensi
 					$ReferRankingDate.find('i').hide();
 					$ReferRankingDate.find('em').show();
 				}
-
 				refeInvest(currDate);
-			}
 		});
-
-
 
 		$getVip.on('click', function(event) {
 			event.preventDefault();
