@@ -286,7 +286,7 @@
                             <div class="container-fluid list-block">
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况'] as key>
-                                        <#if loan.loanerDetail[key]??>
+                                        <#if loan.loanerDetail[key]?? && loan.loanerDetail[key] != '不明' >
                                             <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
                                     </#list>
