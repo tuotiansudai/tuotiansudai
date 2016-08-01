@@ -199,7 +199,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                     .done(function (response) {
                         if (response.data.status) {
                             layer.closeAll();
-                            layer.msg('<h2>恭喜您预约成功！</h2> 当有可投项目时客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。', {
+                            layer.msg('<h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。', {
                                 time: 6000,
                                 icon: 1,
                                 tips: [1, '#efbf5c']

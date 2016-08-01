@@ -22,7 +22,6 @@ public class BookingLoanModel implements Serializable{
         this.bookingTime = bookingTime;
         this.productType = productType;
         this.amount = amount;
-        this.noticeTime = noticeTime;
         this.status = status;
         this.createTime = createTime;
     }
