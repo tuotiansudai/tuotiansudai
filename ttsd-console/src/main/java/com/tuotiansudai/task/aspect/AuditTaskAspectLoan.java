@@ -49,26 +49,26 @@ public class AuditTaskAspectLoan {
             if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
                 long loanId = ((LoanDto) joinPoint.getArgs()[0]).getId();
 
-                LoanModel loanDto = loanService.findLoanById(loanId);
+                LoanModel loanModel = loanService.findLoanById(loanId);
 
                 OperationTask<LoanDto> task = new OperationTask<>();
 
                 task.setTaskType(TaskType.TASK);
                 task.setOperationType(OperationType.PROJECT);
 
-                String taskId = task.getOperationType().toString() + "-" + loanDto.getId();
+                String taskId = task.getOperationType().toString() + "-" + loanModel.getId();
                 task.setId(taskId);
-                task.setObjId(String.valueOf(loanDto.getId()));
-                task.setObjName(loanDto.getName());
+                task.setObjId(String.valueOf(loanModel.getId()));
+                task.setObjName(loanModel.getName());
                 task.setCreatedTime(new Date());
 
-                String senderLoginName = loanDto.getCreatedLoginName();
+                String senderLoginName = loanModel.getCreatedLoginName();
                 AccountModel sender = accountService.findByLoginName(senderLoginName);
                 String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
-                task.setOperateURL("/project-manage/loan/" + loanDto.getId());
-                task.setDescription(senderRealName + " 创建了新的标的［" + loanDto.getName() + "］，请审核。");
+                task.setOperateURL("/project-manage/loan/" + loanModel.getId());
+                task.setDescription(senderRealName + " 创建了新的标的［" + loanModel.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
