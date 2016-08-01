@@ -3,8 +3,6 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import java.math.BigDecimal;
 import java.util.Date;

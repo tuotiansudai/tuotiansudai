@@ -55,6 +55,10 @@ public class LoanModel implements Serializable {
      ***/
     private String descriptionHtml;
     /***
+     * 抵押物类型
+     */
+    private PledgeType pledgeType;
+    /***
      * 借款金额
      ***/
     private long loanAmount;
@@ -74,7 +78,6 @@ public class LoanModel implements Serializable {
      * 活动类型
      ***/
     private ActivityType activityType;
-
     /**
      * 产品线
      */
@@ -194,6 +197,7 @@ public class LoanModel implements Serializable {
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
+        this.pledgeType = loanDto.getPledgeType();
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
         this.investIncreasingAmount = AmountConverter.convertStringToCent(loanDto.getInvestIncreasingAmount());
@@ -298,6 +302,14 @@ public class LoanModel implements Serializable {
 
     public void setDescriptionHtml(String descriptionHtml) {
         this.descriptionHtml = descriptionHtml;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 
     public long getLoanAmount() {

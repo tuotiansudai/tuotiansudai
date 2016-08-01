@@ -82,7 +82,7 @@ public class HeroRankingController {
                 heroRankingViews.add(0, element);
             }
 
-            baseListDataDto.setRecords(heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 9) : heroRankingViews);
+            baseListDataDto.setRecords(heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews);
         }
         baseListDataDto.setStatus(true);
         return baseListDataDto;

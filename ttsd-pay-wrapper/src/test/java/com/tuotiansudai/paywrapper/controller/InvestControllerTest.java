@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
@@ -40,10 +38,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -591,7 +587,7 @@ public class InvestControllerTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RAISING);
-//        lm.setUpdateTime(new Date());
+        lm.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(lm);
     }
 
@@ -599,20 +595,6 @@ public class InvestControllerTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
-    }
-
-    private Map<String, String> getFakeCallbackParamsMap(String orderId) {
-        return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("service", "project_transfer_notify")
-                .put("sign_type", "RSA")
-                .put("sign", "sign")
-                .put("mer_id", "mer_id")
-                .put("version", "1.0")
-                .put("trade_no", "trade_no")
-                .put("order_id", orderId)
-                .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
-                .put("ret_code", "0000")
-                .build());
     }
 
     private void generateMockResponse_success(int times) {
