@@ -5,13 +5,15 @@ import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.AccountItemDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -24,11 +26,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -75,7 +74,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findNewbieAndInvestCoupons(index, pageSize);
-        List<List<String>> coupons = buildCoupons(records);
+        List<List<String>> coupons = exportService.buildCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader, coupons, response.getOutputStream());
     }
 
@@ -91,7 +90,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findInterestCoupons(index, pageSize);
-        List<List<String>> interestCoupons = buildInterestCoupons(records);
+        List<List<String>> interestCoupons = exportService.buildInterestCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader, interestCoupons, response.getOutputStream());
     }
 
@@ -107,7 +106,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findRedEnvelopeCoupons(index, pageSize);
-        List<List<String>> redEnvelopeCoupons = buildRedEnvelopeCoupons(records);
+        List<List<String>> redEnvelopeCoupons = exportService.buildRedEnvelopeCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader, redEnvelopeCoupons, response.getOutputStream());
     }
 
@@ -123,7 +122,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findBirthdayCoupons(index, pageSize);
-        List<List<String>> birthdayCoupons = buildBirthdayCoupons(records);
+        List<List<String>> birthdayCoupons = exportService.buildBirthdayCoupons(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }
 
@@ -141,12 +140,12 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/user-point",method = RequestMethod.GET)
+    @RequestMapping(value = "/user-point", method = RequestMethod.GET)
     public void exportUserPoint(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                 @RequestParam(value = "loginName", required = false) String loginName,
                                 @RequestParam(value = "userName", required = false) String userName,
-                                @RequestParam(value = "mobile", required = false) String mobile,HttpServletResponse httpServletResponse) throws IOException {
+                                @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.UserPointHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -160,7 +159,8 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 
     }
-    @RequestMapping(value = "/coupon-exchange",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
@@ -175,11 +175,12 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, httpServletResponse.getOutputStream());
 
     }
+
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public void exportSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
-                                          @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                          @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
-                                          @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType,HttpServletResponse httpServletResponse) throws IOException {
+                                     @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                     @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
+                                     @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.SystemBillHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -203,12 +204,12 @@ public class ExportController {
 
     @RequestMapping(value = "/transfer-list", method = RequestMethod.GET)
     public void exportTransferList(@RequestParam(name = "transferApplicationId", required = false) Long transferApplicationId,
-                                                              @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                                              @RequestParam(name = "status", required = false) TransferStatus status,
-                                                              @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
-                                                              @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
-                                                              @RequestParam(name = "loanId", required = false) Long loanId,HttpServletResponse httpServletResponse) throws IOException {
+                                   @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                   @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                   @RequestParam(name = "status", required = false) TransferStatus status,
+                                   @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
+                                   @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
+                                   @RequestParam(name = "loanId", required = false) Long loanId, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.TransferListHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -221,14 +222,14 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, httpServletResponse.getOutputStream());
     }
 
-    @RequestMapping(value = "/loan-repay",method = RequestMethod.GET)
-    public void exportLoanRepay(@RequestParam(value = "index",defaultValue = "1",required = false) int index,
-                                                @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
-                                                @RequestParam(value = "loanId",required = false) Long loanId,
-                                                @RequestParam(value = "loginName",required = false) String loginName,
-                                                @RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,
-                                                @RequestParam(value = "startTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                                @RequestParam(value = "endTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping(value = "/loan-repay", method = RequestMethod.GET)
+    public void exportLoanRepay(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                @RequestParam(value = "loanId", required = false) Long loanId,
+                                @RequestParam(value = "loginName", required = false) String loginName,
+                                @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
+                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.LoanRepayHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -242,155 +243,6 @@ public class ExportController {
         List<List<String>> csvData = exportService.buildLoanRepayCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader, csvData, httpServletResponse.getOutputStream());
 
-    }
-
-
-
-    private List<List<String>> buildCoupons(List<CouponDto> records) {
-        String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
-        List<List<String>> rows = Lists.newArrayList();
-        for (CouponDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getCouponType().getName());
-            row.add(record.getAmount());
-            String investQuota = new BigDecimal(record.getTotalInvestAmount()).divide(new BigDecimal(100)).toString();
-            row.add(investQuota);
-            String startTime = new DateTime(record.getStartTime()).toString("yyyy-MM-dd");
-            String endTime = new DateTime(record.getEndTime()).toString("yyyy-MM-dd");
-            String activityTime = MessageFormat.format(activityTimeTemplate, startTime, endTime);
-            row.add(activityTime);
-            row.add(String.valueOf(record.getDeadline()));
-            row.add(String.valueOf(record.getTotalCount()));
-            row.add(String.valueOf(record.getIssuedCount()));
-            row.add(String.valueOf(record.getUsedCount()));
-            row.add(record.getUserGroup().getDescription());
-            List<ProductType> types = record.getProductTypes();
-            String productType = "";
-            for (int i = 0; i < types.size(); i++) {
-                if (i == 0) {
-                    productType = productType + types.get(i).getName();
-                } else {
-                    productType = productType + "/" + types.get(i).getName();
-                }
-            }
-            row.add(productType);
-            row.add(MessageFormat.format(useCondition, record.getInvestLowerLimit()));
-            row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
-            row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
-            rows.add(row);
-        }
-        return rows;
-    }
-
-    private List<List<String>> buildInterestCoupons(List<CouponDto> records) {
-        String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
-        List<List<String>> rows = Lists.newArrayList();
-        for (CouponDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getCouponType().getName());
-            row.add(new BigDecimal(String.valueOf(record.getRate())).multiply(new BigDecimal(100)).toString());
-            row.add(new BigDecimal(record.getTotalInvestAmount()).divide(new BigDecimal(100)).toString());
-            String startTime = new DateTime(record.getStartTime()).toString("yyyy-MM-dd");
-            String endTime = new DateTime(record.getEndTime()).toString("yyyy-MM-dd");
-            String activityTime = MessageFormat.format(activityTimeTemplate, startTime, endTime);
-            row.add(activityTime);
-            row.add(String.valueOf(record.getDeadline()));
-            row.add(record.getUserGroup().getDescription());
-            row.add(String.valueOf(record.getTotalCount()));
-            row.add(record.isSmsAlert() ? "是" : "否");
-            row.add(String.valueOf(record.getIssuedCount()));
-            row.add(String.valueOf(record.getUsedCount()));
-            List<ProductType> types = record.getProductTypes();
-            String productType = "";
-            for (int i = 0; i < types.size(); i++) {
-                if (i == 0) {
-                    productType = productType + types.get(i).getName();
-                } else {
-                    productType = productType + "/" + types.get(i).getName();
-                }
-            }
-            row.add(productType);
-            row.add(MessageFormat.format(useCondition, record.getInvestLowerLimit()));
-            row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
-            row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
-            rows.add(row);
-        }
-        return rows;
-    }
-
-    private List<List<String>> buildRedEnvelopeCoupons(List<CouponDto> records) {
-        String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
-        List<List<String>> rows = Lists.newArrayList();
-        for (CouponDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getCouponType().getName());
-            row.add(record.getAmount());
-            String investQuota = new BigDecimal(record.getTotalInvestAmount()).divide(new BigDecimal(100)).toString();
-            row.add(investQuota);
-            String startTime = new DateTime(record.getStartTime()).toString("yyyy-MM-dd");
-            String endTime = new DateTime(record.getEndTime()).toString("yyyy-MM-dd");
-            String activityTime = MessageFormat.format(activityTimeTemplate, startTime, endTime);
-            row.add(activityTime);
-            row.add(String.valueOf(record.getDeadline()));
-            row.add(String.valueOf(record.getIssuedCount()));
-            row.add(String.valueOf(record.getUsedCount()));
-            row.add(record.getUserGroup().getDescription());
-
-            List<ProductType> types = record.getProductTypes();
-            String productType = "";
-            for (int i = 0; i < types.size(); i++) {
-                if (i == 0) {
-                    productType = productType + types.get(i).getName();
-                } else {
-                    productType = productType + "/" + types.get(i).getName();
-                }
-            }
-            row.add(productType);
-            row.add(MessageFormat.format(useCondition, record.getInvestLowerLimit()));
-            row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
-            row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
-            row.add(record.isShared() ? "是" : "否");
-            rows.add(row);
-        }
-        return rows;
-    }
-
-
-    private List<List<String>> buildBirthdayCoupons(List<CouponDto> records) {
-        String activityTimeTemplate = "{0}至{1}";
-        List<List<String>> rows = Lists.newArrayList();
-        for (CouponDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getCouponType().getName());
-            row.add(String.valueOf(record.getBirthdayBenefit() + 1));
-            String investQuota = new BigDecimal(record.getTotalInvestAmount()).divide(new BigDecimal(100)).toString();
-            row.add(investQuota);
-            String startTime = new DateTime(record.getStartTime()).toString("yyyy-MM-dd");
-            String endTime = new DateTime(record.getEndTime()).toString("yyyy-MM-dd");
-            String activityTime = MessageFormat.format(activityTimeTemplate, startTime, endTime);
-            row.add(activityTime);
-            row.add(record.getUserGroup().getDescription());
-
-            List<ProductType> types = record.getProductTypes();
-            String productType = "";
-            for (int i = 0; i < types.size(); i++) {
-                if (i == 0) {
-                    productType = productType + types.get(i).getName();
-                } else {
-                    productType = productType + "/" + types.get(i).getName();
-                }
-            }
-            row.add(productType);
-            row.add(String.valueOf(record.getUsedCount()));
-            row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
-            row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
-            row.add("是");
-            rows.add(row);
-        }
-        return rows;
     }
 
     private List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records) {
