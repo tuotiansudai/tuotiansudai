@@ -64,6 +64,8 @@
                 authentic_act = #{authenticAct}
             </if>
         </trim>
+        WHERE
+        loan_id = #{loanId}
     </update>
 
     <delete id="deleteByLoanId">
