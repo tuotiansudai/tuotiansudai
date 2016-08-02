@@ -11,8 +11,6 @@ import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
 import taskBean from './task_bean.png';
 
-var _ = require('underscore');
-
 const pageSize = 10;
 const MenuData = {
     tabHeader: [{
@@ -230,19 +228,22 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
 
-         let query = _(function() {  
-
-               let imgHeight=document.getElementById('imageTopHead').scrollHeight;
+        imagesLoaded(this.refs.mainConWrap).on('always', () => {
+            setTimeout(() => {
+            if (!this.myScroll) {
+                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
+                this.myScroll = new IScroll(this.refs.mainConWrap,{ probeType: 3, mouseWheel: true });
+                this.myScroll.on('scroll',function() {
+                     let imgHeight=document.getElementById('imageTopHead').scrollHeight;
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
                      let topH;
                     if(Math.abs(this.myScroll.y) >= imgHeight-18) {
                         if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
                            topH= Math.abs(this.myScroll.maxScrollY)
-                            console.log('maxScrollY'+top);
                         }
                         else {
-                            topH = Math.abs(this.myScroll.y)
-                            console.log('y:'+top);
+                            topH = Math.abs(this.myScroll.y);
                         }
                          this.setState({
                               isFixedMenu: true,
@@ -257,15 +258,7 @@ class taskCenter extends React.Component {
                         });
                        
                     }
-            }.bind(this)).throttle(200);
-
-        imagesLoaded(this.refs.mainConWrap).on('always', () => {
-            setTimeout(() => {
-            if (!this.myScroll) {
-                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
-                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.mainConWrap,{ probeType: 3, mouseWheel: true });
-                this.myScroll.on('scroll',query);
+                }.bind(this));
 
             }
             else {
