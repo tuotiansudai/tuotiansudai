@@ -148,9 +148,7 @@
             <ul class="pagination">
                 <li>
                     <#if bookingLoan.hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize} <#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if> <#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if>
-                        <#if mobile??>&mobile=${mobile}</#if> <#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if>
-                        <#if source??>&source=${source}</#if><#if status??>&source=${status}</#if>" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -160,9 +158,7 @@
                 <li><a>${bookingLoan.index}</a></li>
                 <li>
                     <#if bookingLoan.hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if> <#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if>
-                        <#if mobile??>&mobile=${mobile}</#if> <#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if>
-                        <#if source??>&source=${source}</#if><#if status??>&source=${status}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

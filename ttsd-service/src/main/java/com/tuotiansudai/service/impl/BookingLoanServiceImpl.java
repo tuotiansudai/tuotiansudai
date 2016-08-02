@@ -117,7 +117,7 @@ public class BookingLoanServiceImpl implements BookingLoanService{
     public void noticeBookingLoan(long bookingLoanId) {
         BookingLoanModel bookingLoanModel = bookingLoanMapper.findById(bookingLoanId);
         bookingLoanModel.setStatus(true);
-        bookingLoanModel.setBookingTime(new Date());
+        bookingLoanModel.setNoticeTime(new Date());
         bookingLoanModel.setUpdateTime(new Date());
         bookingLoanMapper.update(bookingLoanModel);
     }
