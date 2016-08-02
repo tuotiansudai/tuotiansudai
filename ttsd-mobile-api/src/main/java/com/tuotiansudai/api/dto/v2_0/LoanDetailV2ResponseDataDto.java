@@ -45,7 +45,7 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private String declaration;//声明
 
-    private Date verifyTime;//发布日期
+    private String verifyTime;//发布日期
 
     private Date fundRaisingEndTime;//募集截至日期
 
@@ -225,11 +225,11 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
         this.declaration = declaration;
     }
 
-    public Date getVerifyTime() {
+    public String getVerifyTime() {
         return verifyTime;
     }
 
-    public void setVerifyTime(Date verifyTime) {
+    public void setVerifyTime(String verifyTime) {
         this.verifyTime = verifyTime;
     }
 
