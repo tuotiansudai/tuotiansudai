@@ -47,10 +47,10 @@ public class MobileXssFilter implements Filter {
     }
 
     private String getRequestBody(InputStream inputStream) throws IOException {
-        char[] buffer = new char[DEFAULT_BUFFER_SIZE];
         String body = "";
         try (Reader input = new InputStreamReader(inputStream);
              Writer output = new StringWriter()) {
+            char[] buffer = new char[DEFAULT_BUFFER_SIZE];
             int n = 0;
             while (-1 != (n = input.read(buffer))) {
                 output.write(buffer, 0, n);
