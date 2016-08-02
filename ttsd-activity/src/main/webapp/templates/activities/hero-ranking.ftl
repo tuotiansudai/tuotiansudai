@@ -13,11 +13,11 @@
                         <div class="fl tc">
                             <div class="dotted-normal-box">
                                 <h2>今日大奖</h2>
-                                <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" class="mysterious-img">
+                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward-07-31.jpg" alt="神秘大奖" class="mysterious-img">
                                 <span class="reward-name"><em><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></em></span>
                             </div>
                             <div class="tc">
-                                <a href="/loan-list?productType=JYF" class="get-rank button-big" target="_blank">我要上榜</a>
+                                <button href="/loan-list?productType=JYF" class="get-rank button-big" target="_blank" disabled>活动已结束</button>
                             </div>
                         </div>
                         <div class="fr">
@@ -38,9 +38,9 @@
                                        </@global.isNotAnonymous>
                                 </span>
                                 </div>
-                                <div class="nodata-invest tc" style="display: none;">没有数据</div>
+                                <div class="nodata-invest tc" style="display: none;">活动已结束</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption><span id="HistoryAwards"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>投资排行</caption>
+                                    <caption><span id="HistoryAwards"><em>2016-07-31</em></span>投资排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>
@@ -130,9 +130,9 @@
                            </span>
                                 </div>
 
-                                <div class="nodata-refer tc" style="display: none;">没有数据</div>
+                                <div class="nodata-refer tc" style="display: none;">活动已结束</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption><span id="ReferRankingDate"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>推荐排行</caption>
+                                    <caption><span id="ReferRankingDate"><em>2016-07-31</em></span>推荐排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>
@@ -159,7 +159,7 @@
 
                     </div>
                     <div class="tc clearfix">
-                        <a class="button-big" href="/referrer/refer-list" target="_blank">立即推荐</a>
+                        <button class="button-big" href="/referrer/refer-list" target="_blank" disabled>活动已结束</button>
                     </div>
                 </div>
             </div>
