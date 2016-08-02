@@ -65,32 +65,13 @@
 <div class="main-frame full-screen clearfix">
 
     <div class="borderBox tc mobile-menu">
-        <a href="#" class="btn-main want-question">我要提问</a>
-        <a href="#" class="btn-main my-question">我的提问</a>
-        <a href="#" class="btn-main my-answer">我的回答</a>
+        <a href="/askQuestion" class="btn-main want-question">我要提问</a>
+        <a href="/qaAnswer" class="btn-main my-question">我的提问</a>
+        <a href="/qaAnswer" class="btn-main my-answer">我的回答</a>
     </div>
     <div class="download-mobile">
         <a href="#"> <img src="${staticServer}/images/sign/downloadApp.jpg"></a>
     </div>
-    <div class="hot-question-category">
-        <div class="m-title">热门问题分类 <i></i></div>
-        <ul class="qa-list clearfix" style="display: none">
-            <li><a href="javascript:void(0);" class="active">证劵</a></li>
-            <li><a href="javascript:void(0);">银行</a></li>
-            <li><a href="javascript:void(0);">期货</a></li>
-            <li><a href="javascript:void(0);">P2P</a></li>
-            <li><a href="javascript:void(0);">信托</a></li>
-            <li><a href="javascript:void(0);">贷款</a></li>
-            <li><a href="javascript:void(0);">基金</a></li>
-            <li><a href="javascript:void(0);">众筹</a></li>
-            <li><a href="javascript:void(0);">理财</a></li>
-            <li><a href="javascript:void(0);">信用卡</a></li>
-            <li><a href="javascript:void(0);">外汇</a></li>
-            <li><a href="javascript:void(0);">股票</a></li>
-            <li><a href="javascript:void(0);">其他</a></li>
-        </ul>
-    </div>
-
     <div class="question-container answer-container">
         <#nested>
 
@@ -100,12 +81,12 @@
                 <ul class="welcome-info">
                     <li class="username">CG007008,您好</li>
                     <li>提问有新回答 <br/>
-                        <a href="#"> 点击查看</a>
+                        <a href="questionDetail"> 点击查看</a>
                     </li>
                 </ul>
                 <div class="button-layer">
-                    <a href="#" class="btn">我的提问<em>(4)</em></a>
-                    <a href="#" class="btn">我的回答<em>(8)</em></a>
+                    <a href="qaAnswer" class="btn">我的提问<em>(4)</em></a>
+                    <a href="qaAnswer" class="btn">我的回答<em>(8)</em></a>
                 </div>
                 <div class="vertical-line"></div>
             </div>
@@ -113,19 +94,19 @@
             <div class="hot-questions margin-top-10 clearfix">
                 <div class="qa-title">热门问题分类</div>
                 <ul class="qa-list clearfix">
-                    <li><a href="javascript:void(0);" class="active">证劵</a></li>
-                    <li><a href="javascript:void(0);">银行</a></li>
-                    <li><a href="javascript:void(0);">期货</a></li>
-                    <li><a href="javascript:void(0);">P2P</a></li>
-                    <li><a href="javascript:void(0);">信托</a></li>
-                    <li><a href="javascript:void(0);">贷款</a></li>
-                    <li><a href="javascript:void(0);">基金</a></li>
-                    <li><a href="javascript:void(0);">众筹</a></li>
-                    <li><a href="javascript:void(0);">理财</a></li>
-                    <li><a href="javascript:void(0);">信用卡</a></li>
-                    <li><a href="javascript:void(0);">外汇</a></li>
-                    <li><a href="javascript:void(0);">股票</a></li>
-                    <li><a href="javascript:void(0);">其他</a></li>
+                    <li><a href="category" class="active">证劵</a></li>
+                    <li><a href="category">银行</a></li>
+                    <li><a href="category">期货</a></li>
+                    <li><a href="category">P2P</a></li>
+                    <li><a href="category">信托</a></li>
+                    <li><a href="category">贷款</a></li>
+                    <li><a href="category">基金</a></li>
+                    <li><a href="category">众筹</a></li>
+                    <li><a href="category">理财</a></li>
+                    <li><a href="category">信用卡</a></li>
+                    <li><a href="category">外汇</a></li>
+                    <li><a href="category">股票</a></li>
+                    <li><a href="category">其他</a></li>
                 </ul>
             </div>
 

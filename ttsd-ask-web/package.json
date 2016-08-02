@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline & npm run server",
     "server": "nodemon src/main/webapp/ask/feDev/server.js",
-    "build": "rm -rf ./src/main/webapp/ask/prod/ & webpack --progress --profile --colors --config webpack.production.js"
+    "dist": "rm -rf ./src/main/webapp/ask/dist/ & webpack --progress --profile --colors --config webpack.production.js"
   },
   "keywords": [
     "build",

@@ -7,24 +7,7 @@ var commonOptions = require('./webpack.common');
 var basePath = path.join(__dirname, 'src/main/webapp/ask/');
 
 var port = 8080;
-var getIP = function() {
-    var ipList = os.networkInterfaces();
-    var result = 'localhost';
-    for (var key in ipList) {
-        if (/^e/.test(key)) {
-            for (var i = ipList[key].length - 1; i >= 0; i--) {
-                if (/192\.168/.test(ipList[key][i].address)) {
-                    result = ipList[key][i].address;
-                    break;
-                }
-            }
-        }
-    }
-    return result;
-};
 
-var IP = getIP();
-console.log('IP:', IP);
 IP='localhost';
 
 module.exports = objectAssign(commonOptions, {
@@ -43,6 +26,6 @@ module.exports = objectAssign(commonOptions, {
         inline:true,
         progress:true,
         publicPath: '/js/'
-        //线下调试的虚拟目录，本地用
+        //线下调试的虚拟目录，本地用,需要与服务器环境配置保持一致
     }
 });
