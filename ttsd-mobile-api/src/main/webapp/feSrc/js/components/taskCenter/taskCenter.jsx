@@ -268,9 +268,6 @@ class taskCenter extends React.Component {
 	}
 	render() { 
         let loading = null;
-        if (this.state.isShowLoading) {
-            loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
-        }
   		return (
 			<div className={main} >
                 <div className="bodyCon" ref='mainConWrap'>
@@ -297,6 +294,10 @@ class taskCenter extends React.Component {
                 </div>
 			</div>	    
 		);
+
+        if (this.state.isShowLoading) {
+            loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
+        }
 	}
 }
 export default taskCenter;
