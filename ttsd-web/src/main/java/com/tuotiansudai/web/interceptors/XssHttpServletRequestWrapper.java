@@ -56,8 +56,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     private String cleanXSS(String value) {
 
-        value = value.toLowerCase();
-
         value = value.replaceAll("<", "").replaceAll(">", "");
 
         value = value.replaceAll("\\(", "").replaceAll("\\)", "");
