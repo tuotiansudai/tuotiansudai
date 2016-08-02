@@ -276,18 +276,12 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     private boolean isWeekend(Calendar cal){
         int week= cal.get(Calendar.DAY_OF_WEEK)-1;
-        if(week==0){//0代表周日，6代表周六
-            return true;
-        }
-        return false;
+        return week == 0;
     }
 
     private boolean isLastDayOfMonth(Calendar calendar) {
         calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
-        if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-            return true;
-        }
-        return false;
+        return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
 
 }

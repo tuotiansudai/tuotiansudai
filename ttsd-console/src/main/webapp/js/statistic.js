@@ -38,9 +38,16 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         return false;
     });
 
+    var preDate = new Date(new Date().getTime() - 24*60*60*1000);
     $('#repayStartTime').datetimepicker({
         format: 'YYYY-MM-DD',
-        minDate : '2016-01-01'
+        minDate : '2016-01-01',
+        maxDate : preDate
+    });
+    $('#repayEndTime').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate : '2016-01-01',
+        maxDate : preDate
     });
 
     $('.start-date,.end-date').datetimepicker({
@@ -72,11 +79,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     initStartDate=loadEcharts.datetimeFun.getBeforeDate(6);
     initEndDate=loadEcharts.datetimeFun.getBeforeDate(0);
-
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
     $('#repayStartTime').val('2016-01-01');
-
+    $('#repayEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
 
     $('.granularity-select').on('change', function(){
         if ($(this).val() == 'Hourly') {
