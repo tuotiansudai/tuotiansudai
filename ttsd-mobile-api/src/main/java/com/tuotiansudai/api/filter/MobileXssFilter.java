@@ -47,14 +47,18 @@ public class MobileXssFilter implements Filter {
     }
 
     private String getRequestBody(InputStream inputStream) throws IOException {
-        Reader input = new InputStreamReader(inputStream);
-        Writer output = new StringWriter();
         char[] buffer = new char[DEFAULT_BUFFER_SIZE];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
+        String body = "";
+        try (Reader input = new InputStreamReader(inputStream);
+             Writer output = new StringWriter()) {
+            int n = 0;
+            while (-1 != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+            body = output.toString();
         }
-        return output.toString();
+
+        return body;
     }
 
     private boolean containKeyWords(String s) {
