@@ -9,6 +9,7 @@ import com.tuotiansudai.api.controller.v1_0.MobileAppBannerController;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppAdvertisementServiceImpl;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppBannerServiceImpl;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,7 @@ public class AdvertisementUtils {
             int randomInt = (int)(0 + Math.random()*(advertisements.size() - 1 + 1));
             String getMethod = "";
             AdvertisementPictureResponseDataDto advertisementPictureResponseDataDto = advertisements.get(randomInt);
-            if("iOS".equals(requestDto.getBaseParam().getPlatform())) {
+            if(Source.IOS == Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase())) {
                 try {
                     Class clazz = advertisementPictureResponseDataDto.getClass();
                     getMethod = "getPicture" + requestDto.getBaseParam().getScreenW().trim() + requestDto.getBaseParam().getScreenH().trim().trim();
@@ -60,7 +61,7 @@ public class AdvertisementUtils {
                     logger.debug("AdvertisementUtils InvocationTarget: " + e2.getMessage());
                 }
             }
-            else if("android".equals(requestDto.getBaseParam().getPlatform())){
+            else if(Source.ANDROID == Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase())){
                 pictureUrl = advertisementPictureResponseDataDto.getPicture7201280().replaceFirst("\\{static\\}", staticDomainName);;
             }
             title = advertisementPictureResponseDataDto.getTitle();
