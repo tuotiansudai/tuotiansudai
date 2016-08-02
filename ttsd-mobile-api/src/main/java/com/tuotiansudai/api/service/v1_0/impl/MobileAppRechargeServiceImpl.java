@@ -88,7 +88,8 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
                 @Override
                 public BankLimitUnitDto apply(BankModel bankModel) {
                     return new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
-                            AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode());
+                            AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
+                            bankModel.getName());
                 }
             });
 
@@ -105,7 +106,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
             } else {
                 bankLimitResponseDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(leftAmount));
                 bankLimitResponseDataDto.setBankLimits(Lists.newArrayList(new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
-                        AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode())));
+                        AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(), bankModel.getName())));
             }
         }
         BaseResponseDto<BankLimitResponseDataDto> bankLimitResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
