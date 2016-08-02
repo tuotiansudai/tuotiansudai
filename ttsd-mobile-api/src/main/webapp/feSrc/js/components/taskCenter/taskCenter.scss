@@ -43,40 +43,25 @@
             background-size: cover;
             // position:relative;
         }
-
-        // .MenuBox {
-        //     width: 100%;
-        //     height:414px;         
-        //     background:url('task_banner.png') no-repeat;
-        //     background-size: cover;
-        //     position:relative;
-        // }
-
-
         .MenuBox ul {
             // position:absolute;
             border-radius: 5px;
             border: 1px solid #ff5959;
             height: 50px;  /*px*/
-            // left: 3rem;
-            // bottom: 20px;
             width:302px;
-
-             margin: 0px auto;
-             margin-top: -20px;
+            margin: 0px auto;
+            margin-top: -35px; /*px*/
         }
         .MenuBox ul .MenuBoxItemNormal {
             float: left;
             display: block;
             width: 50%;
             height:100%;
-            padding-top: 4px;  /*px*/
             text-align: center;
             color: #ff5959;
             background-color: #0f3d70;
             font-size: 28px;  /*px*/
             font-style: normal;
-
             &.active {
                 color: #ffffff;
             background-color: #ff5959;
@@ -85,19 +70,21 @@
         .fixTopMenu {
             position:absolute;
             top:328px;
+            height:70px; /*px*/
             width:100%;
-            background:red;
             z-index: 100;
                 
         }
         .fixTopMenu ul {
             width:100%;
-            height: 1rem!important;
+            height:70px; /*px*/
+            border-width:0;
+            margin-top: 0!important; /*px*/
         }
         .fixTopMenu ul li {
             width:50%;
-            height:1rem;
-            line-height:1rem;
+            height:70px; /*px*/
+            line-height:70px; /*px*/
         }
 
         .ContentBox {

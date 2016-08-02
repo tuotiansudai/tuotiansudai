@@ -11,6 +11,8 @@ import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
 import taskBean from './task_bean.png';
 
+var _ = require('underscore');
+
 const pageSize = 10;
 const MenuData = {
     tabHeader: [{
@@ -172,7 +174,6 @@ class taskCenter extends React.Component {
         if(/active/.test(event.target.className) ) {
             return;
         }
-        // debugger
         this.myScroll.scrollTo(0, -imgHeight, 1000);
         this.setState({
           active: value,
@@ -182,7 +183,6 @@ class taskCenter extends React.Component {
         });
 
         if(value=='ONGOING') {
-             // debugger
             this.fetchData('/task-center/tasks',(response) => {
             this.setState((previousState) => {
                 return {
@@ -230,21 +230,25 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
 
-        imagesLoaded(this.refs.mainConWrap).on('always', () => {
-            setTimeout(() => {
-            if (!this.myScroll) {
-                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
-                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.mainConWrap,{ probeType: 3, mouseWheel: true });
-                this.myScroll.on('scroll', function() {
-                    let imgHeight=document.getElementById('imageTopHead').scrollHeight-40;
+         let query = _(function() {  
+
+               let imgHeight=document.getElementById('imageTopHead').scrollHeight;
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
-                     // debugger
-                    if(Math.abs(this.myScroll.y)>= imgHeight) {
-                        this.setState({
-                          isFixedMenu: true,
-                          menuTop:Math.abs(this.myScroll.y)+10
-                        });
+                     let topH;
+                    if(Math.abs(this.myScroll.y) >= imgHeight-18) {
+                        if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
+                           topH= Math.abs(this.myScroll.maxScrollY)
+                            console.log('maxScrollY'+top);
+                        }
+                        else {
+                            topH = Math.abs(this.myScroll.y)
+                            console.log('y:'+top);
+                        }
+                         this.setState({
+                              isFixedMenu: true,
+                              menuTop:topH
+                            });
+                    
                     }
                     else {
                         this.setState({
@@ -253,13 +257,23 @@ class taskCenter extends React.Component {
                         });
                        
                     }
-                }.bind(this));
+            }.bind(this)).throttle(200);
+
+        imagesLoaded(this.refs.mainConWrap).on('always', () => {
+            setTimeout(() => {
+            if (!this.myScroll) {
+                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
+                this.myScroll = new IScroll(this.refs.mainConWrap,{ probeType: 3, mouseWheel: true });
+                this.myScroll.on('scroll',query);
 
             }
             else {
                 this.myScroll.refresh();
             }
           },200);
+
+
         });
     }
 
