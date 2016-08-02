@@ -32,7 +32,7 @@ public class MobileXssFilter implements Filter {
         String body;
         try {
             InputStream inputStream = request.getInputStream();
-            body = getRequestBodyJson(inputStream);
+            body = getRequestBody(inputStream);
         } catch (IOException | NullPointerException e) {
             log.error(MessageFormat.format("[MobileXssFilter][isEvilPost] request:{0} exception:{1}", request, e));
             return true;
@@ -46,7 +46,7 @@ public class MobileXssFilter implements Filter {
         return false;
     }
 
-    private String getRequestBodyJson(InputStream inputStream) throws IOException {
+    private String getRequestBody(InputStream inputStream) throws IOException {
         Reader input = new InputStreamReader(inputStream);
         Writer output = new StringWriter();
         char[] buffer = new char[DEFAULT_BUFFER_SIZE];
@@ -62,7 +62,7 @@ public class MobileXssFilter implements Filter {
                 "prompt", "confirm", " src", "&#", "autofocus", "onerror", "onload", "onstart", "href");
         for (String keyWord : keyWords) {
             if (s.contains(keyWord)) {
-                log.error(keyWord);
+                log.info(MessageFormat.format("[MobileXssFilter][containKeyWords] requestBody:{0} keyWords:{1}", s, keyWord));
                 return true;
             }
         }
