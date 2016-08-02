@@ -105,10 +105,8 @@ public class SignInClient extends BaseClient {
 
     protected String execute(String oldSessionId, String path, RequestBody requestBody) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
-
         String requestId = (MDC.get(REQUEST_ID) != null && MDC.get(REQUEST_ID) instanceof String) ? MDC.get(REQUEST_ID).toString() : UUIDGenerator.generate();
         String userId = (MDC.get(USER_ID) != null && MDC.get(USER_ID) instanceof String) ? MDC.get(USER_ID).toString() : ANONYMOUS;
-
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
