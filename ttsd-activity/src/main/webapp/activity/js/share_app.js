@@ -286,7 +286,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$iosBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/register/user/mobile/'+$('#mobile').val()+'/is-exist', //判断手机号是否存在
+				url: '/register/user/mobile/'+$('#mobile').val()+'/is-register', //判断手机号是否存在
 				type: 'POST',
 				dataType: 'json',
 				data: {
