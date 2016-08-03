@@ -71,6 +71,10 @@ public class InterestCalculator {
         // 2015-01-01 ~ 2015-01-31: 30
         int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
 
+        return getExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
+    }
+
+    private static long getExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
@@ -101,33 +105,8 @@ public class InterestCalculator {
         if (loanModel == null || couponModel == null) {
             return 0;
         }
-
         int duration = loanModel.getDuration();
-
-        long expectedInterest = 0;
-        switch (couponModel.getCouponType()) {
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                expectedInterest = new BigDecimal(duration * couponModel.getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(duration * investAmount)
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case BIRTHDAY_COUPON:
-                expectedInterest = new BigDecimal(30 * investAmount)
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
-                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case RED_ENVELOPE:
-                expectedInterest = couponModel.getAmount();
-                break;
-        }
-        return expectedInterest;
+        return getExpectedInterest(loanModel, couponModel, investAmount, duration);
     }
 
     public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
