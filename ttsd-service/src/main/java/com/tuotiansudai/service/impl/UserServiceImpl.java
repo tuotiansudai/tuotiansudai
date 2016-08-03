@@ -15,6 +15,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -88,6 +89,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private PrepareUserMapper prepareUserMapper;
 
     @Value("${web.login.max.failed.times}")
     private int times;
@@ -440,6 +444,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean mobileIsRegister(String mobile) {
+        return mobileIsExist(mobile) || prepareUserMapper.findByMobile(mobile) != null;
+    }
+
+    @Override
     public boolean resetUmpayPassword(String loginName, String identityNumber) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
@@ -450,11 +459,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
-        Long min = StringUtils.isNotEmpty(balanceMin)?AmountConverter.convertStringToCent(balanceMin):null;
-        Long max = StringUtils.isNotEmpty(balanceMax)?AmountConverter.convertStringToCent(balanceMax):null;
+        Long min = StringUtils.isNotEmpty(balanceMin) ? AmountConverter.convertStringToCent(balanceMin) : null;
+        Long max = StringUtils.isNotEmpty(balanceMax) ? AmountConverter.convertStringToCent(balanceMax) : null;
         return Lists.newArrayList(min, max);
     }
-
 
 
 }

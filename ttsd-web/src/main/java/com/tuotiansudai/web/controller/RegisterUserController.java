@@ -103,6 +103,16 @@ public class RegisterUserController {
 
     }
 
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> mobileIsRegister(@PathVariable String mobile) {
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(userService.mobileIsRegister(mobile));
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
     @RequestMapping(value = "/login-name/{loginName}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {

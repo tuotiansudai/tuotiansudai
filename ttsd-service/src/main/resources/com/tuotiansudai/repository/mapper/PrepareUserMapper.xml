@@ -59,4 +59,8 @@
             </if>
         </where>
     </select>
+
+    <select id="findByMobile" parameterType="java.lang.String" resultMap="prepareResultMap">
+        select * from prepare_user where mobile=#{mobile}
+    </select>
 </mapper>
