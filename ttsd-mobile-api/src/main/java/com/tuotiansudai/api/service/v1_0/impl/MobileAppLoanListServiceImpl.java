@@ -7,9 +7,9 @@ import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
@@ -132,6 +132,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 investedAmount = couponService.findExperienceInvestAmount(investModelList);
             } else {
                 investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+                //TODO:fake
+                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
+                    investedAmount = loan.getLoanAmount();
+                }
             }
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
@@ -145,7 +149,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-            if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+            if(ProductType.EXPERIENCE == loan.getProductType()){
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
@@ -154,7 +158,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return loanDtoList;
     }
 
-    private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels){
+    private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels) {
         return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
             @Override
             public ExtraLoanRateDto apply(ExtraLoanRateModel model) {

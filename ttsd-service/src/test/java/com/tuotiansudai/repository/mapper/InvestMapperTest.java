@@ -149,6 +149,7 @@ public class InvestMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanStatus);
         loanMapper.create(loanModel);
@@ -498,6 +499,7 @@ public class InvestMapperTest {
         loanDto.setProductType(ProductType._180);
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanStatus);
         loanMapper.create(loanModel);
@@ -799,6 +801,7 @@ public class InvestMapperTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setProductType(ProductType.EXPERIENCE);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
 
         InvestModel investModel = this.getFakeInvestModel();

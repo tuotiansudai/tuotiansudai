@@ -95,7 +95,7 @@ public class FinanceReportServiceTest {
         loanModel.setFundraisingStartTime(new Date());
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setStatus(loanStatus);
-
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(loanModel);
         return loanModel;
     }

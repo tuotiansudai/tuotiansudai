@@ -44,6 +44,11 @@ public class FeedbackServiceTest {
         List<FeedbackModel> models = paginationDataDto.getRecords();
         assertEquals(1, models.size());
         assertEquals("content", models.get(0).getContent());
+
+        FeedbackModel feedbackModel = feedbackService.findById(model.getId());
+        assertEquals("loginname", feedbackModel.getLoginName());
+        assertEquals("content", feedbackModel.getContent());
+
     }
 
     private UserModel getFakeUser(String loginName) {

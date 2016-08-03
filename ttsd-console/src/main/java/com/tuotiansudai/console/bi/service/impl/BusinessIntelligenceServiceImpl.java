@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.bi.service.impl;
 
-import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
@@ -8,19 +10,30 @@ import com.tuotiansudai.console.bi.repository.mapper.BusinessIntelligenceMapper;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableView;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
+import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.TaskConstant;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
+
+    public static final String PLATFROM_REPAY_KEY = "console:platformRepay:list";
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private BusinessIntelligenceMapper businessIntelligenceMapper;
@@ -30,6 +43,8 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Autowired
     private InvestService investService;
+
+    private int lifeSecond = 2592000;
 
     @Override
     public List<String> getChannels() {
@@ -42,23 +57,66 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Override
     public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province, UserStage userStage, RoleStage roleStage, String channel) {
+        if (granularity == Granularity.Hourly) {
+            endTime = startTime;
+        }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
+    }
+
+    private List<KeyValueModel> getHourKeyValueModels(List<KeyValueModel> keyValueModelList) {
+        Map<Integer, KeyValueModel> modelMap = new HashMap<>();
+        for (int i = 0; i<24; i++) {
+            KeyValueModel keyValueModel = new KeyValueModel();
+            keyValueModel.setName(String.valueOf(i));
+            keyValueModel.setGroup("");
+            keyValueModel.setValue("");
+            modelMap.put(i, keyValueModel);
+        }
+        for (KeyValueModel keyValueModel : keyValueModelList) {
+            modelMap.put(Integer.parseInt(keyValueModel.getName()), keyValueModel);
+        }
+        List<KeyValueModel> keyValueModels = Lists.newArrayList(modelMap.values());
+        return Lists.transform(keyValueModels, new Function<KeyValueModel, KeyValueModel>() {
+            @Override
+            public KeyValueModel apply(KeyValueModel input) {
+                input.setName(String.format("%02d", Integer.parseInt(input.getName())));
+                return input;
+            }
+        });
     }
 
     @Override
     public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+        if (granularity == Granularity.Hourly) {
+            endTime = startTime;
+        }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
     public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+        if (granularity == Granularity.Hourly) {
+            endTime = startTime;
+        }
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
+        if (granularity == Granularity.Hourly) {
+            return getHourKeyValueModels(keyValueModels);
+        }
+        return keyValueModels;
     }
 
     @Override
@@ -164,4 +222,66 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime, granularity);
     }
+
+    @Override
+    public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
+        Date queryStartTime = new DateTime(startTime).minusDays(1).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        List<KeyValueModel> keyValueModelLists = Lists.newArrayList();
+        if (redisWrapperClient.hgetValuesSeri(PLATFROM_REPAY_KEY).size() == 0) {
+            while (queryStartTime.before(queryEndTime)) {
+                queryStartTime = DateUtils.addDays(queryStartTime, 1);
+                keyValueModelLists.add(businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(queryStartTime));
+            }
+            redisWrapperClient.hsetSeri(PLATFROM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
+        }else{
+            List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(PLATFROM_REPAY_KEY);
+            for (byte[] bs : notifies) {
+                keyValueModelLists = (List<KeyValueModel>) SerializeUtil.deserialize(bs);
+            }
+        }
+
+        Date redisLastDate = DateTime.parse(keyValueModelLists.get(keyValueModelLists.size() - 1).getName()).toDate();
+        Date nowDate = DateTime.now().plusDays(1).withTimeAtStartOfDay().toDate();
+        if (redisLastDate.before(nowDate)) {
+            while (redisLastDate.before(nowDate)) {
+                redisLastDate = DateUtils.addDays(redisLastDate, 1);
+                keyValueModelLists.add(businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(redisLastDate));
+            }
+            redisWrapperClient.hsetSeri(PLATFROM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
+        }
+
+        return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
+    }
+
+    private List<KeyValueModel> getMonthKeyValue(List<KeyValueModel> keyValueModels, Granularity granularity,Date queryStartTime,Date queryEndTime){
+        List<KeyValueModel> list = Lists.newArrayList();
+        Calendar calendar = Calendar.getInstance();
+        for(KeyValueModel keyValueModel : keyValueModels){
+            Date redisDate = DateTime.parse(keyValueModel.getName()).toDate();
+            if(redisDate.after(queryEndTime) || redisDate.before(queryStartTime)){
+                continue;
+            }
+            calendar.setTime(redisDate);
+            if(granularity.equals(Granularity.Monthly) && isLastDayOfMonth(calendar)){
+                list.add(keyValueModel);
+            }else if(granularity.equals(Granularity.Weekly) && isWeekend(calendar)){
+                list.add(keyValueModel);
+            }else if(granularity.equals(Granularity.Daily)){
+                list.add(keyValueModel);
+            }
+        }
+        return list;
+    }
+
+    private boolean isWeekend(Calendar cal){
+        int week= cal.get(Calendar.DAY_OF_WEEK)-1;
+        return week == 0;
+    }
+
+    private boolean isLastDayOfMonth(Calendar calendar) {
+        calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
+        return calendar.get(Calendar.DAY_OF_MONTH) == 1;
+    }
+
 }

@@ -3,11 +3,13 @@
 
 <div class="content-container create-transfer-content">
     <h4 class="column-title"><em class="tc">消息中心</em></h4>
+
     <div class="list-container">
         <div class="global-message-list active">
 
         </div>
-        <div class="pagination" data-url="/message/user-message-list-data" data-page-index="1" data-page-size="10"></div>
+        <div class="pagination" data-url="/message/user-message-list-data" data-page-index="1"
+             data-page-size="10"></div>
     </div>
 </div>
 

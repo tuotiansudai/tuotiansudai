@@ -14,7 +14,7 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     public BannerPictureResponseDataDto() {
     }
 
-    public BannerPictureResponseDataDto(String title, String url, String sharedUrl, Integer seqNum, String picture,String content, boolean isAuthorized) {
+    public BannerPictureResponseDataDto(String title, String url, String sharedUrl, Integer seqNum, String picture, String content, boolean isAuthorized) {
         this.title = title;
         this.url = url;
         this.sharedUrl = sharedUrl;

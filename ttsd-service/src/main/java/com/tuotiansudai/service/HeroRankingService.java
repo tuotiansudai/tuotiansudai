@@ -26,8 +26,4 @@ public interface HeroRankingService {
     MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
 
     GivenMembership receiveMembership(String loginName);
-
-    long findUsersCount();
-
-    long sumInvestAmount();
 }

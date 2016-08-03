@@ -34,4 +34,6 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(Date startTime, Date endTime);
 
     List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity);
+
+    List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime,Granularity granularity);
 }

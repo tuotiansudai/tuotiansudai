@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +24,7 @@ public class BannerMapperTest {
     private BannerMapper bannerMapper;
 
     @Test
-    public void shouldFindBannerIsAuthenticatedOrderByOrderIsOk(){
+    public void shouldFindBannerIsAuthenticatedOrderByOrderIsOk() {
         BannerModel bannerModel = new BannerModel();
         bannerModel.setWebImageUrl("11");
         bannerModel.setAppImageUrl("11");
@@ -38,7 +40,7 @@ public class BannerMapperTest {
         bannerModel.setName("1");
         bannerModel.setUrl("1");
         bannerModel.setSharedUrl("11");
-        bannerModel.setSource(Lists.newArrayList(Source.WEB,Source.ANDROID));
+        bannerModel.setSource(Lists.newArrayList(Source.WEB, Source.ANDROID));
         bannerMapper.create(bannerModel);
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(true, Source.WEB);
         assertTrue(bannerModelList.size() > 0);
