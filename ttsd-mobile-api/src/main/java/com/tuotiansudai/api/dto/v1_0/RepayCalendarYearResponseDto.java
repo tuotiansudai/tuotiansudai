@@ -20,10 +20,10 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
 
     public RepayCalendarYearResponseDto(String month,InvestRepayModel investRepayModel){
         this.month = month;
-        if(investRepayModel.getActualInterest() > 0){
-            this.repayAmount = String.valueOf(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest());
+        if(investRepayModel.getActualRepayDate() != null){
+            this.repayAmount = String.valueOf(investRepayModel.getRepayAmount());
             this.expectedRepayAmount = "0";
-        }else if(investRepayModel.getExpectedInterest() > 0){
+        }else{
             this.repayAmount = "0";
             this.expectedRepayAmount = String.valueOf(investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest());
         }
@@ -31,8 +31,8 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
 
     public RepayCalendarYearResponseDto(String month,CouponRepayModel couponRepayModel){
         this.month = month;
-        if(couponRepayModel.getActualInterest() > 0){
-            this.repayAmount = String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee());
+        if(couponRepayModel.getActualRepayDate() != null){
+            this.repayAmount = String.valueOf(couponRepayModel.getRepayAmount());
         }else if(couponRepayModel.getExpectedInterest() > 0){
             this.expectedRepayAmount = String.valueOf(couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee());
         }

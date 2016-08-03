@@ -63,13 +63,13 @@
         WHERE login_name = #{loginName}
         AND status IN ('REPAYING','COMPLETE')
         <if test="year != null and year != ''">
-            AND DATE_FORMAT(repay_date, '%Y') = #{year}
+            AND (DATE_FORMAT(repay_date, '%Y') = #{year} or DATE_FORMAT(actual_repay_date, '%Y') = #{year})
         </if>
         <if test="month != null and month != ''">
-            AND DATE_FORMAT(repay_date, '%m') = #{month}
+            AND (DATE_FORMAT(repay_date, '%m') = #{month} or DATE_FORMAT(actual_repay_date, '%m') = #{month})
         </if>
         <if test="day != null and day != ''">
-            AND DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day}
+            AND (DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day} or DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day})
         </if>
         ORDER BY repay_date
     </select>
