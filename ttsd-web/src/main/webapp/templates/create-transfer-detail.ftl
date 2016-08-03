@@ -13,10 +13,10 @@
 						转让价格：
 					</div>
 					<div class="info-right">
-						<input type="text" class="int-number" id="transferAmount" name="price" value="${(investAmount/100)?string('0.00')!}">
-						<input type="hidden" id="transferInvestId" value="${transferInvestId?string('0')!}">
+						<input type="text" class="int-number" id="transferAmount" name="price" value="${formData.investAmount}">
+						<input type="hidden" id="transferInvestId" value="${formData.transferInvestId?string.computer}">
 						<span>元</span>
-						<span class="tip-text" id="tipText" data-min="${(transferAmountLimit/100)?string('0.00')!}" data-max="${(investAmount/100)?string('0.00')!}">转让价格只能设置在${(transferAmountLimit/100)?string('0.00')!}～${(investAmount/100)?string('0.00')!}元之间</span>
+						<span class="tip-text" id="tipText" data-min="${formData.transferAmountLower}" data-max="${formData.investAmount}">转让价格只能设置在${formData.transferAmountLower}～${formData.investAmount}元之间</span>
 					</div>
 				</li>
 				<li class="info-list">
@@ -24,7 +24,7 @@
 						项目本金：
 					</div>
 					<div class="info-right">
-						${(investAmount/100)?string('0.00')!}元
+						${formData.investAmount}元
 					</div>
 				</li>
 				<li class="info-list">
@@ -32,8 +32,8 @@
 						转让手续费：
 					</div>
 					<div class="info-right">
-						<span>${(transferFee/100)?string('0.00')!}元</span>
-						<i class="fa fa-question-circle" aria-hidden="true" title="${message!}"></i>
+						<span>${formData.transferFee}元</span>
+						<i class="fa fa-question-circle" aria-hidden="true" title="您持有债权${formData.holdDays}天，需支付本金${(formData.transferFeeRate * 100)?string('0.0')}%的手续费。"></i>
 					</div>
 				</li>
 				<li class="info-list">
@@ -41,12 +41,15 @@
 						转让截止时间：
 					</div>
 					<div class="info-right">
-						${deadline?string('yyyy-MM-dd')!} 0点
+						${formData.expiredDate?string('yyyy-MM-dd')!} 0点
 					</div>
 				</li>
-				<li class="info-list tc">
+				<li class="info-list ">
+					<em class="agreement checked">
 					<i class="fa fa-check-square" aria-hidden="true"></i>
 					<span>我已阅读并同意<a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a></span>
+                    </em>
+					<span class="error agree-tip" style="display: none;">请勾选债权转让协议</span>
 				</li>
 				<li class="info-list tc">
 					<button class="btn btn-normal" type="submit">确定</button>

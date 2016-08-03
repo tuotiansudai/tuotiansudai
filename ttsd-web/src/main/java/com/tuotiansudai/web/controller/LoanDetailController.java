@@ -1,14 +1,18 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.ExtraLoanRateItemDto;
 import com.tuotiansudai.dto.LoanDetailDto;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ExtraLoanRateModel;
 import com.tuotiansudai.service.LoanDetailService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
+import java.util.List;
 
 
 @Controller
@@ -34,17 +39,17 @@ public class LoanDetailController {
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
-        LoanDetailDto dto = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
-        if (dto == null) {
+        LoanDetailDto loanDetail = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
+        if (loanDetail == null) {
             return new ModelAndView("/error/404");
         }
         ModelAndView modelAndView = new ModelAndView("/loan", "responsive", true);
-        modelAndView.addObject("loan", dto);
+        modelAndView.addObject("loan", loanDetail);
         modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), loanId));
-        modelAndView.addObject("maxBenefitUserCoupon", this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(),
-                loanId,
-                AmountConverter.convertStringToCent(dto.getMaxAvailableInvestAmount())));
-        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("maxBenefitUserCoupon",
+                this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
+        modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
         return modelAndView;
     }
 

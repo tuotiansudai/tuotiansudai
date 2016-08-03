@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ExtraLoanRateRuleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="extraLoanRateRuleResultMap" type="ExtraLoanRateRuleModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="product_type" property="productType"></result>
+        <result column="level" property="level"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="rate" property="rate"></result>
+    </resultMap>
+
+    <select id="findExtraLoanRateRuleByNameAndProductType" parameterType="map" resultMap="extraLoanRateRuleResultMap">
+        select * from extra_loan_rate_rule where name = #{loanName} and product_type = #{productType} order by level
+    </select>
+
+    <select id="findById" parameterType="map" resultMap="extraLoanRateRuleResultMap">
+        select * from extra_loan_rate_rule where id = #{id}
+    </select>
+
+</mapper>

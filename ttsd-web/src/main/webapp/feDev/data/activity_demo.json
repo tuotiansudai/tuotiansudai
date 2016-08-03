@@ -1,0 +1,15 @@
+{
+  "css": {
+    "activity_center": "activity_center.css"
+  },
+  "js": {
+    "activity_center": "activity_center.js"
+  },
+  "linkExchangeList": [
+    {
+      "linkUrl": 1212,
+      "noFollow": true,
+      "title": 121212
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +39,8 @@ public interface InvestMapper {
      */
     InvestModel findById(@Param(value = "id") Long id);
 
+    InvestModel lockById(@Param(value = "id") Long id);
+
     /**
      * 查找用户的投资记录
      *
@@ -51,9 +54,9 @@ public interface InvestMapper {
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
     List<InvestModel> findByLoginNameExceptTransfer(@Param(value = "loginName") String loginName,
-                                      @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize,
-                                      @Param(value = "isPagination") boolean isPagination);
+                                                    @Param(value = "index") Integer index,
+                                                    @Param(value = "pageSize") Integer pageSize,
+                                                    @Param(value = "isPagination") boolean isPagination);
 
     long findCountByLoginNameExceptTransfer(@Param(value = "loginName") String loginName);
 
@@ -115,7 +118,7 @@ public interface InvestMapper {
                                     @Param(value = "afterTime") Date afterTime);
 
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
-                                   @Param(value = "investorLoginName") String investorLoginName,
+                                   @Param(value = "investorMobile") String investorMobile,
                                    @Param(value = "channel") String channel,
                                    @Param(value = "source") Source source,
                                    @Param(value = "role") String role,
@@ -125,7 +128,7 @@ public interface InvestMapper {
                                    @Param(value = "loanStatus") LoanStatus loanStatus);
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
-                                                        @Param(value = "investorLoginName") String investorLoginName,
+                                                        @Param(value = "investorMobile") String investorMobile,
                                                         @Param(value = "channel") String channel,
                                                         @Param(value = "source") Source source,
                                                         @Param(value = "role") String role,
@@ -134,8 +137,7 @@ public interface InvestMapper {
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
-                                                        @Param(value = "loanStatus") LoanStatus loanStatus,
-                                                        @Param(value = "isPagination") boolean isPagination);
+                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
 
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,
@@ -175,8 +177,6 @@ public interface InvestMapper {
 
     List<InvestDataView> getInvestDetail();
 
-    List<InvestModel> findInvestByTransferInvestId(@Param(value = "transferInvestId") long transferInvestId);
-
     int countAchievementTimesByLoginName(@Param(value = "loginName") String loginName,
                                          @Param(value = "achievement") InvestAchievement achievement,
                                          @Param(value = "startTime") Date startTime,
@@ -195,4 +195,47 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime);
 
     Date findFirstTradeTimeInvestByLoanId(@Param(value = "loanId") long loanId);
+
+    List<HeroRankingView> findHeroRankingByTradingTime(@Param(value = "tradingTime") Date tradingTime,
+                                                       @Param(value = "activityBeginTime") String activityBeginTime,
+                                                       @Param(value = "activityEndTime") String activityEndTime);
+
+    List<HeroRankingView> findHeroRankingByReferrer(@Param(value = "tradingTime") Date tradingTime,
+                                                    @Param(value = "activityBeginTime") String activityBeginTime,
+                                                    @Param(value = "activityEndTime") String activityEndTime,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
+
+    List<TransferableInvestView> findWebTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName,
+                                                                                     @Param(value = "index") Integer index,
+                                                                                     @Param(value = "pageSize") Integer pageSize);
+
+    long findWebCountTransferableApplicationPaginationByLoginName(@Param("loginName") String loginName);
+
+    List<InvestModel> findTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName,
+                                                                       @Param(value = "index") Integer index,
+                                                                       @Param(value = "pageSize") Integer pageSize);
+
+    long findCountTransferableApplicationPaginationByLoginName(@Param(value = "loginName") String loginName);
+
+    List<InvestModel> findInvestAchievementsByLoanId(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> findInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                                  @Param(value = "index") int index,
+                                                                  @Param(value = "pageSize") int pageSize);
+
+    long countInvestorInvestWithoutTransferPagination(@Param(value = "loginName") String loginName,
+                                                      @Param(value = "loanStatus") LoanStatus loanStatus);
+
+    List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
+                                               @Param(value = "loginName") String loginName);
+
+    List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
+                                                     @Param(value = "startTime") Date startTime,
+                                                     @Param(value = "endTime") Date endTime);
+
+    int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
+                                                   @Param("productTypeList") List<ProductType> productTypeList);
+
 }

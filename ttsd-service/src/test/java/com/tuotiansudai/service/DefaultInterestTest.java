@@ -87,12 +87,12 @@ public class DefaultInterestTest {
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setBaseRate(baseRate);
         fakeLoanModel.setActivityRate(activityRate);
-        fakeLoanModel.setInvestFeeRate(investFeeRate);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(recheckTime);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 

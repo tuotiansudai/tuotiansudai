@@ -1,9 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleRelationModel;
@@ -64,14 +62,16 @@ public class LoanControllerTest {
 
     @Test
     public void shouldEditLoan() throws Exception {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
-        when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>(new BaseDataDto(true));
+        when(loanService.updateLoan(any(LoanDto.class), any(LoanDetailsDto.class), any(LoanerDetailsDto.class), any(AbstractPledgeDetailsDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(post("/project-manage/loan/save").contentType("application/json; charset=UTF-8").content(json))
+        this.mockMvc.perform(post("/project-manage/loan/save-house").contentType("application/json; charset=UTF-8").content(json))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
+        this.mockMvc.perform(post("/project-manage/loan/save-vehicle").contentType("application/json; charset=UTF-8").content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -95,7 +95,6 @@ public class LoanControllerTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);

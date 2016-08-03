@@ -37,12 +37,13 @@ public interface TransferApplicationMapper {
 
     int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName") String loginName);
 
+
     List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
                                                                              @Param("startTime") Date startTime,
                                                                              @Param("endTime") Date endTime,
                                                                              @Param("status") TransferStatus status,
-                                                                             @Param("transferrerLoginName") String transferrerLoginName,
-                                                                             @Param("transfereeLoginName") String transfereeLoginName,
+                                                                             @Param("transferrerMobile") String transferrerMobile,
+                                                                             @Param("transfereeMobile") String transfereeMobile,
                                                                              @Param("loanId") Long loanId,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
@@ -51,8 +52,8 @@ public interface TransferApplicationMapper {
                                                @Param("startTime") Date startTime,
                                                @Param("endTime") Date endTime,
                                                @Param("status") TransferStatus status,
-                                               @Param("transferrerLoginName") String transferrerLoginName,
-                                               @Param("transfereeLoginName") String transfereeLoginName,
+                                               @Param("transferrerMobile") String transferrerMobile,
+                                               @Param("transfereeMobile") String transfereeMobile,
                                                @Param("loanId") Long loanId);
 
 
@@ -79,5 +80,8 @@ public interface TransferApplicationMapper {
     int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
+
+    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
+
 
 }

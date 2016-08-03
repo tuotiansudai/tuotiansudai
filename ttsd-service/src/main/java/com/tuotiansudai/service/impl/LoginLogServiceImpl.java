@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoginLogModel;
+import com.tuotiansudai.repository.model.LoginLogView;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.LoginLogService;
@@ -16,19 +17,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
 
-    private static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}";
+    private final static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}";
 
     @Autowired
     private LoginLogMapper loginLogMapper;
 
     @Autowired
     private UserMapper userMapper;
-
 
     @Transactional
     @Override
@@ -38,33 +39,39 @@ public class LoginLogServiceImpl implements LoginLogService {
             return;
         LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
 
-        loginLogMapper.create(model, this.getLoginLogTableName());
+        loginLogMapper.create(model, this.getLoginLogTableName(new Date()));
 
     }
 
     @Override
-    public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month) {
-        String loginLogTableName = this.getLoginLogTableName();
-        long count = loginLogMapper.count(loginName, success, loginLogTableName);
+    public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String mobile, Boolean success, int index, int pageSize, int year, int month) {
+        String loginLogTableName = this.getLoginLogTableName(new Date());
+        long count = loginLogMapper.count(mobile, success, loginLogTableName);
 
-        List<LoginLogModel> data = Lists.newArrayList();
+        List<LoginLogView> data = Lists.newArrayList();
         if (count > 0 ) {
             int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            data = loginLogMapper.getPaginationData(loginName, success, (index - 1) * pageSize, pageSize, loginLogTableName);
+            data = loginLogMapper.getPaginationData(mobile, success, (index - 1) * pageSize, pageSize, loginLogTableName);
         }
 
-        List<LoginLogPaginationItemDataDto> records = Lists.transform(data, new Function<LoginLogModel, LoginLogPaginationItemDataDto>() {
+        List<LoginLogPaginationItemDataDto> records = Lists.transform(data, new Function<LoginLogView, LoginLogPaginationItemDataDto>() {
             @Override
-            public LoginLogPaginationItemDataDto apply(LoginLogModel input) {
-                return new LoginLogPaginationItemDataDto(input.getLoginName(), input.getSource(), input.getIp(), input.getDevice(), input.getLoginTime(), input.isSuccess());
+            public LoginLogPaginationItemDataDto apply(LoginLogView input) {
+                return new LoginLogPaginationItemDataDto(input.getMobile(), input.getSource(), input.getIp(), input.getDevice(), input.getLoginTime(), input.isSuccess());
             }
         });
 
         return new BasePaginationDataDto<>(index, pageSize, count, records);
     }
 
-    private String getLoginLogTableName() {
-        return MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, new DateTime().toString("yyyyMM"));
+    @Override
+    public long countSuccessTimesOnDate(String loginName, Date date) {
+        String loginLogTableName = this.getLoginLogTableName(date);
+        return loginLogMapper.countSuccessTimesOnDate(loginName, date, loginLogTableName);
+    }
+
+    private String getLoginLogTableName(Date date) {
+        return MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, new DateTime(date).toString("yyyyMM"));
     }
 }

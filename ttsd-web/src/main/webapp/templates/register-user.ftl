@@ -12,16 +12,13 @@
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
                 <li>
-                    <i class="sprite-register-login-name"></i>
-                    <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
-                </li>
-            <li>
-                <i class="sprite-register-ic-password"></i>
-                <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
-            </li>
-                <li>
                     <i class="sprite-register-ic-mobile"></i>
-                    <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
+                    <input type="text" name="mobile" class="mobile" preValue='' placeholder="请输入手机号" maxlength="11"
+                           value="${(originalFormData.mobile)!}"/>
+                </li>
+                <li>
+                    <i class="sprite-register-ic-password"></i>
+                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <i class="sprite-register-ic-captcha"></i>
@@ -33,13 +30,13 @@
                 <li class="referrer-open"> <i class="sprite-register-arrow-right"></i>请输入推荐人（此项选填）</li>
                 <li class="hide">
                     <i class="sprite-register-ic-referrer"></i>
-                    <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input type="text" name="referrer" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <label id="referrerError" class="error" style="display: none"></label>
                 </li>
                 <li class="agree-last">
-                    <label for="agreementInput" class="check-label" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                        <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check hide' />
-                    <i class="sprite-register-no-checked"></i>
-
+                    <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                       <span> <input type="checkbox" name='agreement' id="agreementInput" checked class='agreement-check' /></span>
+                    <i class="sprite-register-yes-checked"></i>
                 </li>
         </ul>
 
@@ -49,7 +46,7 @@
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
-                <input type="submit" class="register-user btn-success" value="立即注册" disabled />
+                <input type="submit" class="register-user btn-success" disabled value="立即注册" />
             </div>
 
         </form>
@@ -133,7 +130,6 @@
     <p>12.3本协议不涉及您与本网站其他用户之间因网上交易而产生的法律关系及法律纠纷，但您须在此同意将全面接受和履行与本网站其他用户通过本网站签订的任何电子法律文本，并承诺按该法律文本享有和/或放弃相应的权利、承担和/或豁免相应的义务。</p>
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
-
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <div class="image-captcha-inner">

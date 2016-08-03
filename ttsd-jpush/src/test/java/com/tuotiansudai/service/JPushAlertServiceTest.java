@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.jpush.service.JPushScheduleAlertService;
 import com.tuotiansudai.jpush.service.impl.JPushAlertServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -22,21 +23,23 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -83,6 +86,9 @@ public class JPushAlertServiceTest {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private JPushScheduleAlertService jPushScheduleAlertService ;
 
     private static final long loanId = 10000000001L;
     private static final long loanRepayId = 100000003L;
@@ -139,18 +145,18 @@ public class JPushAlertServiceTest {
     private JPushAlertModel createJPushAlert() {
         JPushAlertModel jPushAlertModel = new JPushAlertModel();
         jPushAlertModel.setId(1005);
-        jPushAlertModel.setName("用户资金变动推送-还款");
-        jPushAlertModel.setPushType(PushType.REPAY_ALERT);
-        jPushAlertModel.setPushSource(PushSource.ANDROID);
-        jPushAlertModel.setContent("亲爱的天宝，您刚刚收到一笔{0}元的项目还款，请点击查看");
+        jPushAlertModel.setName("用户资金变动推送");
+        jPushAlertModel.setPushType(PushType.COUPON_INCOME_ALERT);
+        jPushAlertModel.setPushSource(PushSource.ALL);
+        jPushAlertModel.setContent("【拓天速贷】亲爱的天宝，您刚刚收到{0}的收益{1}元，请点击查看");
         jPushAlertModel.setIsAutomatic(true);
         jPushAlertModel.setCreatedTime(new Date());
-        jPushAlertModel.setJumpTo(JumpTo.INVEST_RECEIVABLES);
+        jPushAlertModel.setJumpTo(JumpTo.MY_WEALTH);
         jPushAlertModel.setStatus(PushStatus.ENABLED);
         return jPushAlertModel;
     }
 
-    private List<InvestModel> createInvestSuccessList(long loanId){
+    private List<InvestModel> createInvestSuccessList(long loanId) {
 
         List<InvestModel> investModelList = new ArrayList<InvestModel>();
         InvestModel investModel_1 = new InvestModel();
@@ -177,7 +183,7 @@ public class JPushAlertServiceTest {
         return investModelList;
     }
 
-    private List<InvestReferrerRewardModel> createInvestReferrerRewardModelList(long investId){
+    private List<InvestReferrerRewardModel> createInvestReferrerRewardModelList(long investId) {
         List<InvestReferrerRewardModel> investReferrerRewardModelList = new ArrayList<InvestReferrerRewardModel>();
         InvestReferrerRewardModel investReferrerRewardModel_1 = new InvestReferrerRewardModel();
         investReferrerRewardModel_1.setInvestId(investId);
@@ -212,7 +218,6 @@ public class JPushAlertServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(0.15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
@@ -243,6 +248,23 @@ public class JPushAlertServiceTest {
         return exchangeCouponDto;
     }
 
+    private ExchangeCouponDto fakeCouponDto(CouponType couponType, UserGroup userGroup) {
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+        exchangeCouponDto.setId(1001L);
+        exchangeCouponDto.setAmount("1000.00");
+        exchangeCouponDto.setTotalCount(1000L);
+        exchangeCouponDto.setEndTime(new Date());
+        exchangeCouponDto.setStartTime(new Date());
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setCouponType(couponType);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType._180);
+        exchangeCouponDto.setProductTypes(productTypes);
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setUserGroup(userGroup);
+        return exchangeCouponDto;
+    }
+
     @Before
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -264,13 +286,19 @@ public class JPushAlertServiceTest {
         AccountModel accountModel = new AccountModel(loginName, "test", "32424234", "test", "1233", new Date());
         accountModel.setBalance(10);
 
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        loanModel.setId(loanId);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
 
         when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
 
         when(investRepayMapper.findByInvestIdAndPeriod(anyInt(), anyInt())).thenReturn(investRepayModel);
 
-        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyString(), anyString(), any(PushSource.class))).thenReturn(true);
+        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), any(HashMap.class), any(PushSource.class))).thenReturn(true);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(createInvestSuccessList(loanId1));
 
@@ -278,7 +306,7 @@ public class JPushAlertServiceTest {
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
 
-        when(redisWrapperClient.hexists(anyString(),anyString())).thenReturn(true);
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(registrationIds);
     }
 
@@ -296,12 +324,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
@@ -320,12 +347,11 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
@@ -347,19 +373,18 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
 
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
     }
 
     @Test
-    public void shouldAutoJPushReferrerRewardAlert(){
+    public void shouldAutoJPushReferrerRewardAlert() {
 
         publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", null);
 
@@ -367,12 +392,10 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
-
-        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
 
     }
 
@@ -397,9 +420,9 @@ public class JPushAlertServiceTest {
             loanRepayModels.add(loanRepayModel1);
         }
 
-        CouponModel couponModel = new CouponModel(fakeCouponDto());
+        CouponModel couponModel = new CouponModel(fakeCouponDto(CouponType.INVEST_COUPON, UserGroup.ALL_USER));
 
-        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null);
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
 
         List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
 
@@ -444,15 +467,118 @@ public class JPushAlertServiceTest {
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
+        ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
+
+        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
+
+        assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "69.04"), argumentAlert.getValue());
+    }
+
+    @Test
+    public void shouldAutoJPushRedEnvelopeAlert() {
+        LoanModel loanModel = fakeLoanModel("test123");
+        LoanRepayModel currentLoanRepayModel = new LoanRepayModel();
+        currentLoanRepayModel.setId(1000101);
+        currentLoanRepayModel.setLoanId(loanModel.getId());
+        currentLoanRepayModel.setPeriod(1);
+        currentLoanRepayModel.setStatus(RepayStatus.COMPLETE);
+        List<LoanRepayModel> loanRepayModels = new ArrayList<>();
+
+        for (int i = 1; i < 4; i++) {
+            LoanRepayModel repayModel = new LoanRepayModel();
+            repayModel.setLoanId(loanModel.getId());
+            repayModel.setId(Long.parseLong(10001 + "0" + i));
+            repayModel.setPeriod(i);
+            loanRepayModels.add(repayModel);
+        }
+        CouponModel couponModel = new CouponModel(fakeCouponDto(CouponType.RED_ENVELOPE, UserGroup.ALL_USER));
+        InvestModel investModel = new InvestModel(1001, loanModel.getId(), null, 100, "test123", null, Source.WEB, null, 0.1);
+        List<UserCouponModel> userCouponModels = new ArrayList<>();
+        UserCouponModel userCouponModel = new UserCouponModel();
+        userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setInvestId(1001L);
+        userCouponModel.setActualInterest(10);
+        userCouponModel.setLoginName("zhangyong");
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setLoanId(loanModel.getId());
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponModel.setActualInterest(1000);
+        userCouponModels.add(userCouponModel);
+
+        UserCouponModel userCouponModel2 = new UserCouponModel();
+        userCouponModel2.setId(idGenerator.generate());
+        userCouponModel2.setInvestId(1001L);
+        userCouponModel2.setLoginName("test2");
+        userCouponModel2.setCouponId(couponModel.getId());
+        userCouponModel2.setLoanId(loanModel.getId());
+        userCouponModel2.setStatus(InvestStatus.SUCCESS);
+        userCouponModels.add(userCouponModel2);
+
+
+        when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
+        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
+
+        when(userCouponMapper.findByLoanId(anyLong(), anyList())).thenReturn(userCouponModels);
+
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
+
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
+
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
         ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
         ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
 
-        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+        jPushAlertService.autoJPushRedEnvelopeAlert(currentLoanRepayModel.getId());
 
-        assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
-        assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}", "65.21"), argumentAlert.getValue());
+        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(),
+                argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
+
     }
 
+    @Test
+    public void shouldSendPushAlertManyExtrasByRegistrationIdsIsOk() {
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
+
+        investRepayModels.add(createInvestRepayNoDefaultInterest(investId, RepayStatus.COMPLETE, 1));
+        investRepayModels.add(createInvestRepayNoDefaultInterest(investId, RepayStatus.OVERDUE, 2));
+        investRepayModels.add(createInvestRepayNoDefaultInterest(investId, RepayStatus.REPAYING, 3));
+
+        publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", investRepayModels.get(1));
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.COMPLETE);
+        loanModel.setId(loanId);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        JPushAlertModel jPushAlertModel = createJPushAlert();
+        jPushAlertModel.setJumpTo(JumpTo.INVEST_REPAY);
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(jPushAlertModel);
+
+        jPushAlertService.autoJPushRepayAlert(loanRepayId2, false);
+
+        ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
+        ArgumentCaptor<HashMap> argumentCaptorExtras = ArgumentCaptor.forClass(HashMap.class);
+        ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+
+        verify(mobileAppJPushClient, times(3)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), argumentCaptorExtras.capture(), argumentPushSource.capture());
+        assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
+        assertEquals(String.valueOf(1),argumentCaptorExtras.getAllValues().get(0).get("isCompleted"));
+        assertEquals(String.valueOf(10003),argumentCaptorExtras.getAllValues().get(0).get("investId"));
+        assertEquals(String.valueOf(loanModel.getId()),argumentCaptorExtras.getAllValues().get(0).get("loanId"));
+    }
 }

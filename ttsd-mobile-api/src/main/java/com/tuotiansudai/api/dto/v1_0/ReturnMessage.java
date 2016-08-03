@@ -16,7 +16,7 @@ public enum ReturnMessage {
     USER_IS_ACTIVE("0011","用户已经被激活"),
     PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-20位"),
     USER_NAME_OR_PASSWORD_IS_INVALID("0018","用户名或密码不符合规则"),
-    LOGIN_FAILED("0019","用户名或密码错误"),
+    LOGIN_FAILED("0019","用户名或密码错误,还可以再试{0}次"),
     /******手机端注册返回码******/
 
     /******手机端实名认证返回码******/
@@ -94,8 +94,9 @@ public enum ReturnMessage {
     FAST_PAY_OFF("0046","未开通快捷支付"),
     PASSWORD_INVEST_OFF("0058", "尚未开启免密投资"),
 
-    USER_IS_DISABLED("0049", "用户名或密码错误,账户冻结30分钟,如您着急投资请与拓天速贷客服联系"),
+    USER_IS_DISABLED("0049", "错误次数太多,请{0}分钟以后再试。"),
     IMAGE_CAPTCHA_IS_WRONG("0081", "图形验证码错误"),
+    NEED_IMAGE_CAPTCHA("0077", "需要图形验证码"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
     /******自动投标******/
     AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),
@@ -134,6 +135,12 @@ public enum ReturnMessage {
 
     /******签到******/
     MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
+
+    /******
+     * 安全
+     ******/
+    WITHDRAW_IN_BLACKLIST("0102", "操作失败(错误代码:YM001), 请联系客服"),   //命中提现黑名单
+
     /******债权转让******/
     TRANSFER_IS_NOT_EXIST("0071", "该债权不能申请转让"),
 
@@ -148,7 +155,6 @@ public enum ReturnMessage {
         this.code = code;
         this.msg = msg;
     }
-
     public String getCode() {
         return code;
     }
@@ -174,5 +180,6 @@ public enum ReturnMessage {
         }
         return null;
     }
+
 
 }

@@ -220,11 +220,12 @@ public class CouponLoanOutServiceAspectTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RECHECK);
+        lm.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(lm);
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 

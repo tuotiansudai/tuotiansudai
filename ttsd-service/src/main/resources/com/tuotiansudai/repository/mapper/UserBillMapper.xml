@@ -92,7 +92,10 @@
         u.mobile,
         IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role = 'STAFF'),0) as is_staff
         from user_bill ub
-        LEFT JOIN `user` u on ub.login_name = u.login_name
+        JOIN `user` u on ub.login_name = u.login_name
+        <if test="mobile != null and mobile != ''">
+            and u.mobile = #{mobile}
+        </if>
         LEFT JOIN account a on ub.login_name = a.login_name
         <where>
             <if test="userBillBusinessType != null">
@@ -100,9 +103,6 @@
             </if>
             <if test="userBillOperationType != null">
                 and ub.operation_type = #{userBillOperationType}
-            </if>
-            <if test="loginName != null and loginName != ''">
-                and ub.login_name = #{loginName}
             </if>
             <if test="startTime != null">
                 and ub.created_time >= #{startTime}
@@ -116,22 +116,22 @@
     </select>
 
     <select id="findUserFundsCount" parameterType="map" resultType="int">
-        select count(*) from user_bill
+        select count(*) from user_bill join user on user_bill.login_name = user.login_name
+        <if test="mobile != null and mobile != ''">
+            and user.mobile = #{mobile}
+        </if>
         <where>
             <if test="userBillBusinessType != null">
-                and business_type = #{userBillBusinessType}
+                and user_bill.business_type = #{userBillBusinessType}
             </if>
             <if test="userBillOperationType != null">
-                and operation_type = #{userBillOperationType}
-            </if>
-            <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+                and user_bill.operation_type = #{userBillOperationType}
             </if>
             <if test="startTime != null">
-                and created_time >= #{startTime}
+                and user_bill.created_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and created_time <= #{endTime} ]]>
+                <![CDATA[ and user_bill.created_time <= #{endTime} ]]>
             </if>
         </where>
     </select>

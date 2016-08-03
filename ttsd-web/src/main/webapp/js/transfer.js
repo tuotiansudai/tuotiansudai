@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache','text!/tpl/transferrer-transfer-record-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,transferrerRecordTemplate,pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache','text!/tpl/transferrer-transfer-record-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate, transferrerRecordTemplate,pagination, layer) {
 	$(function() {
 		var activeIndex=$('.filters-list li.active').index(),
 			$paginationElement = $('.pagination');
@@ -30,26 +30,27 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 				}
 			});
 
-		};
+		}
 		loadLoanData();
 		
-		$('body').on('click', '.cancel-btn' ,function(event) {//click cancle btn
+		$('body').on('click', '.cancel-btn' ,function(event) {//click cancel btn
 			event.preventDefault();
 			var $self=$(this),
-				urlData=$self.attr('data-link');
+				transferApplicationId=$self.data('transfer-application-id');
 
 			layer.open({
 			  title: '温馨提示',
+				type:1,
 			  btn:['再想想','确定'],
 			  skin: 'demo-class',
 			  area: ['400px', '180px'],
-			  content: '<p class="tc">您确定取消该笔债权的转让？</p>',
+			  content: '<p class="tc pad-m">您确定取消该笔债权的转让？</p>',
 			  btn1:function(){
 			  	layer.closeAll();
 			  },
 			  btn2:function(){
 			  	$.ajax({
-					url: '/transfer/application/'+urlData+'/cancel',
+					url: '/transfer/application/'+transferApplicationId+'/cancel',
 					type: 'POST',
 					dataType: 'json'
 				})
@@ -65,22 +66,21 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 		.on('click', '.apply-transfer', function(event) {//click apply btn
 			event.preventDefault();
 			var $self=$(this),
-				applyId=$self.attr('data-applyId'),
-				urlData=$self.attr('data-link');
+				investId=$self.data('invest-id');
 			$.ajax({
-				url: '/transfer/application/'+urlData+'/isAllowTransfer',
-				type: 'POST',
+				url: '/transfer/invest/' + investId + '/is-transferable',
+				type: 'GET',
 				dataType: 'json'
 			})
-			.done(function(data) {
-				if(data.status==true){
-					location.href='/transfer/application/'+applyId+'/apply';
-				}else{
+			.done(function(response) {
+				if(response.data.status==true) {
+					location.href='/transfer/invest/' + investId + '/apply';
+				} else {
 					layer.open({
 					  title: '温馨提示',
 					  btn:['确定'],
 					  area: ['400px', '180px'],
-					  content: '<p class="tc">'+data.message+'</p>',
+					  content: '<p class="tc">'+response.data.message+'</p>',
 					  btn1:function(){
 					  	layer.closeAll();
 					  }

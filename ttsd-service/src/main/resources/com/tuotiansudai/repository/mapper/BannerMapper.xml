@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BannerMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="bannerResultMap" type="BannerModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="web_image_url" property="webImageUrl"></result>
+        <result column="app_image_url" property="appImageUrl"></result>
+        <result column="url" property="url"></result>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="shared_url" property="sharedUrl"></result>
+        <result column="source" property="source"
+                typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"></result>
+        <result column="authenticated" property="authenticated"></result>
+        <result column="order" property="order"></result>
+        <result column="active" property="active"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="activated_by" property="activatedBy"></result>
+        <result column="activated_time" property="activatedTime"></result>
+        <result column="deactivated_by" property="deactivatedBy"></result>
+        <result column="deactivated_time" property="deactivatedTime"></result>
+        <result column="deleted" property="deleted"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="BannerModel" useGeneratedKeys="true" keyProperty="id">
+        insert into banner (`name`,`web_image_url`,`app_image_url`,`url`,`title`,`content`,`shared_url`,`source`,`authenticated`,`order`,`active`,`created_by`,`created_time`,`activated_by`,`activated_time`,`deactivated_by`,`deactivated_time`,`deleted`)
+        values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{title},#{content},#{sharedUrl},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
+    </insert>
+
+    <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
+        select * from banner
+        where active = '1' and deleted = '0'
+        <if test="authenticated != null and !authenticated">
+            and authenticated = #{authenticated}
+        </if>
+
+        <if test="source != null">
+            and source like CONCAT(CONCAT('%', #{source}), '%')
+        </if>
+        order by banner.order
+    </select>
+
+    <update id="updateBanner" parameterType="BannerModel">
+        update banner set
+        `name` = #{name},
+        `web_image_url` = #{webImageUrl},
+        `app_image_url` = #{appImageUrl},
+        `url` = #{url},
+        `title` = #{title},
+        `shared_url` = #{sharedUrl},
+        `content` = #{content},
+        `source` = #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},
+        `authenticated` = #{authenticated},
+        `order` = #{order},
+        `active` = #{active},
+        `activated_by` = #{activatedBy},
+        `activated_time` = #{activatedTime},
+        `deactivated_by` = #{deactivatedBy},
+        `deactivated_time` = #{deactivatedTime},
+        `deleted` = #{deleted}
+        where `id` = #{id}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="bannerResultMap">
+        select * from banner where `id` = #{id}
+    </select>
+
+    <select id="findAllBannerList" parameterType="map" resultMap="bannerResultMap">
+        select * from banner
+        where `deleted` is FALSE
+        order by `active` desc,
+        case
+          when deactivated_time is not null then `deactivated_time`
+          else `active` end desc,
+        `order` asc
+    </select>
+
+</mapper>

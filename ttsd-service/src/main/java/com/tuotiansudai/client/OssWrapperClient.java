@@ -152,34 +152,35 @@ public class OssWrapperClient {
                 Image waterImage = ImageIO.read(waterFile);
                 graphics.drawImage(waterImage, 0, 0, width, height, null);
                 //水印文件结束
+                graphics.dispose();
+                ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
+                ios = ImageIO.createImageOutputStream(swapStream);
+                imageWriter.setOutput(ios);
+                JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
+                jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+                jpegParams.setCompressionQuality(0.35f);
+                IIOMetadata data = imageWriter.getDefaultImageMetadata(new ImageTypeSpecifier(image), jpegParams);
+                IIOMetadataNode tree = (IIOMetadataNode) data.getAsTree("javax_imageio_jpeg_image_1.0");
+                IIOMetadataNode jfif = (IIOMetadataNode) tree.getElementsByTagName("app0JFIF").item(0);
+                jfif.setAttribute("Xdensity", Integer.toString(96));
+                jfif.setAttribute("Ydensity", Integer.toString(96));
+                jfif.setAttribute("resUnits", "1");
+                data.mergeTree(data.getNativeMetadataFormatName(), tree);
+                imageWriter.write(null, new IIOImage(image, null, data), jpegParams);
+                imageWriter.dispose();
+            } else {
+                graphics.dispose();
+                ImageIO.write(image, "jpg", swapStream);
             }
-            graphics.dispose();
-            ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
-            ios = ImageIO.createImageOutputStream(swapStream);
-            imageWriter.setOutput(ios);
-
-            JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
-            jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
-            jpegParams.setCompressionQuality(0.35f);
-
-            IIOMetadata data = imageWriter.getDefaultImageMetadata(new ImageTypeSpecifier(image), jpegParams);
-            IIOMetadataNode tree = (IIOMetadataNode)data.getAsTree("javax_imageio_jpeg_image_1.0");
-            IIOMetadataNode jfif = (IIOMetadataNode)tree.getElementsByTagName("app0JFIF").item(0);
-            jfif.setAttribute("Xdensity", Integer.toString(96));
-            jfif.setAttribute("Ydensity", Integer.toString(96));
-            jfif.setAttribute("resUnits", "1");
-
-            data.mergeTree(data.getNativeMetadataFormatName(), tree);
-
-            imageWriter.write(null, new IIOImage(image, null, data), jpegParams);
-            imageWriter.dispose();
         } catch (Exception e) {
             logger.error("upload oss fail");
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
                 swapStream.close();
-                ios.close();
+                if (ios != null) {
+                    ios.close();
+                }
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }

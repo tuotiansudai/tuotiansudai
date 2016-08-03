@@ -90,19 +90,7 @@ public class AutoInvestController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
-        model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
-        model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
-        model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
-        model.setIp(RequestIPParser.parse(request));
-        if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
-            dataDto.setStatus(false);
-        }
-        investService.turnOnAutoInvest(model);
+        dataDto.setStatus(investService.turnOnAutoInvest(LoginUserInfo.getLoginName(), autoInvestPlanDto, RequestIPParser.parse(request)));
         return baseDto;
     }
 

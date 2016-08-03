@@ -14,12 +14,14 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +78,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
+                    input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(),Source.MOBILE));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
@@ -89,6 +91,18 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         investListResponseDataDto.setIndex(index);
         investListResponseDataDto.setPageSize(pageSize);
         investListResponseDataDto.setTotalCount((int) count);
+
+        //TODO:fake
+        LoanModel loanModel = loanMapper.findById(41650602422768L);
+        if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
+            investListResponseDataDto.setTotalCount(1);
+            InvestRecordResponseDataDto fakeRecord = new InvestRecordResponseDataDto();
+            fakeRecord.setUserName("186**67");
+            fakeRecord.setInvestMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+            fakeRecord.setInvestTime(new DateTime(2016, 7, 29, 15, 33, 45).toString("yyyy-MM-dd HH:mm:ss"));
+            investListResponseDataDto.setInvestRecord(Lists.newArrayList(fakeRecord));
+        }
+
         dto.setData(investListResponseDataDto);
         return dto;
     }
@@ -166,7 +180,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

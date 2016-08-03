@@ -6,11 +6,31 @@ public class FeedbackRequestDto extends BaseParamDto {
     @NotEmpty(message = "0080")
     private String content;
 
+    private String type;
+
+    private String contact;
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

@@ -1,7 +1,8 @@
 package com.tuotiansudai.coupon.repository.mapper;
 
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ public interface UserCouponMapper {
 
     void update(UserCouponModel userCouponModel);
 
-    List<UserCouponModel> findByLoginName(@Param("loginName") String loginName, @Param("couponTypeList") List<CouponType> couponTypeList);
+    List<UserCouponModel> findByLoginName(@Param("loginName") String loginName, @Param("couponTypes") List<CouponType> couponTypes);
 
     UserCouponModel findById(@Param("id") long id);
 
@@ -29,6 +30,12 @@ public interface UserCouponMapper {
     List<UserCouponView> findExpiredCoupons(@Param(value = "loginName") String loginName);
 
     List<UserCouponModel> findByInvestId(@Param("investId") long investId);
+
+    long findSumBirthdayAndInterestByLoginName(@Param("loginName") String loginName);
+
+    long findSumRedEnvelopeByLoginName(@Param("loginName") String loginName);
+
+    List<UserCouponModel> findUserCouponSuccessByInvestId(@Param("investId") long investId);
 
     long findSumInvestAmountByCouponId(@Param("couponId") long couponId);
 
@@ -46,4 +53,5 @@ public interface UserCouponMapper {
     List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
+
 }

@@ -14,8 +14,8 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         if ($('form input[name="loanId"]').val()) {
             queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
         }
-        if ($('form input[name="loginName"]').val().length > 0) {
-            queryParams += "loginName=" + $('form input[name="loginName"]').val() + "&";
+        if ($('form input[name="mobile"]').val().length > 0) {
+            queryParams += "mobile=" + $('form input[name="mobile"]').val() + "&";
         }
         if ($('form input[name="startTime"]').val()) {
             queryParams += "startTime=" + $('form input[name="startTime"]').val() + "&";
@@ -43,7 +43,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     var autoValue = '';
     $("#tags").autocomplete({
         source: function (query, process) {
-            $.get('/user-manage/account/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/account/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });

@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -31,6 +32,9 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private LoanRepayMapper loanRepayMapper;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     @Override
     public List<HomeLoanDto> getLoans() {
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
@@ -40,10 +44,11 @@ public class HomeServiceImpl implements HomeService {
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
             public HomeLoanDto apply(LoanModel loan) {
-                List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loan.getId());
-                long investAmount = 0;
-                for (InvestModel investModel : investModels) {
-                    investAmount += investModel.getAmount();
+                long investAmount = investMapper.sumSuccessInvestAmount(loan.getId());
+
+                //TODO:fake
+                if (loan.getId() == 41650602422768L && loan.getStatus() == LoanStatus.REPAYING) {
+                    investAmount = loan.getLoanAmount();
                 }
 
                 CouponModel newbieInterestCouponModel = null;
@@ -57,7 +62,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels);
+                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()));
             }
         });
     }

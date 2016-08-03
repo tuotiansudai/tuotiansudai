@@ -32,11 +32,11 @@ public class FeedbackServiceTest {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), "13811112222", Source.IOS, FeedbackType.opinion, "content");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), fakeUser.getMobile(), Source.IOS, FeedbackType.opinion, "content");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 
-        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getLoginName(), null, null, null, null, null, 1, 3);
+        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getMobile(), null, null, null, null, null, 1, 3);
 
         long findCount = paginationDataDto.getCount();
         assertEquals(1, findCount);
@@ -44,6 +44,11 @@ public class FeedbackServiceTest {
         List<FeedbackModel> models = paginationDataDto.getRecords();
         assertEquals(1, models.size());
         assertEquals("content", models.get(0).getContent());
+
+        FeedbackModel feedbackModel = feedbackService.findById(model.getId());
+        assertEquals("loginname", feedbackModel.getLoginName());
+        assertEquals("content", feedbackModel.getContent());
+
     }
 
     private UserModel getFakeUser(String loginName) {

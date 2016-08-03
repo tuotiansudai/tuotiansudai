@@ -1,5 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoanDetailResponseDataDto extends BaseResponseDataDto {
@@ -20,7 +23,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String activityRatePercent;
     private Long investedCount;
     private String loanDetail;
-    private Integer investCount;
     private String agent;
     private String loaner;
     private String verifyTime;
@@ -38,12 +40,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String content;
     private String duration;
     private String raisingPeriod;
+    private String marqueeTitle;
     private String productNewType;
-
+    private List<ExtraLoanRateDto> extraRates;
 
     private List<EvidenceResponseDataDto> evidence;
-
-    private List<InvestRecordResponseDataDto> investRecord;
 
     public String getLoanId() {
         return loanId;
@@ -125,14 +126,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.investedCount = investedCount;
     }
 
-    public Integer getInvestCount() {
-        return investCount;
-    }
-
-    public void setInvestCount(Integer investCount) {
-        this.investCount = investCount;
-    }
-
     public String getLoanDetail() {
         return loanDetail;
     }
@@ -147,14 +140,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setEvidence(List<EvidenceResponseDataDto> evidence) {
         this.evidence = evidence;
-    }
-
-    public List<InvestRecordResponseDataDto> getInvestRecord() {
-        return investRecord;
-    }
-
-    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
-        this.investRecord = investRecord;
     }
 
     public String getRatePercent() {
@@ -333,11 +318,30 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setRaisingPeriod(String raisingPeriod) { this.raisingPeriod = raisingPeriod; }
 
+    public String getMarqueeTitle() {
+        return marqueeTitle;
+    }
+
+    public void setMarqueeTitle(String marqueeTitle) {
+        this.marqueeTitle = marqueeTitle;
+    }
+
     public String getProductNewType() {
         return productNewType;
     }
 
     public void setProductNewType(String productNewType) {
         this.productNewType = productNewType;
+    }
+
+    public List<ExtraLoanRateDto> getExtraRates() {
+        if (CollectionUtils.isEmpty(extraRates)) {
+            return new ArrayList<>();
+        }
+        return extraRates;
+    }
+
+    public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }

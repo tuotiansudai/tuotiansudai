@@ -2,19 +2,20 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
+import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
+
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -33,7 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppTransferApplicationServiceImpl implements MobileAppTransferApplicationService {
@@ -55,6 +58,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private AccountMapper accountMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private InvestService investService;
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
 
     @Override
     public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {
@@ -97,24 +105,16 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Override
     public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
-        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
         BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
-        BigDecimal discountBig = new BigDecimal(transferRuleModel.getDiscount());
+        BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
-        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0,BigDecimal.ROUND_DOWN).longValue();
-        long discountUpper = investModel.getAmount();
-        if(transferAmount > discountUpper || transferAmount < discountLower){
-            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(),ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
+        long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
+            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
         }
 
-        try {
-            boolean result = investTransferService.investTransferApply(transferApplicationDto);
-            if (!result) {
-                return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+        if (!investTransferService.investTransferApply(transferApplicationDto)) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_APPLY_IS_FAIL.getCode(), ReturnMessage.TRANSFER_APPLY_IS_FAIL.getMsg());
         }
 
@@ -143,7 +143,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
-        transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel)));
+        transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel)));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -198,14 +198,14 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto){
+    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto) {
         BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId():transferApplicationModel.getTransferInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -227,10 +227,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        if (rateLower == null || rateLower == "") {
+        if (Strings.isNullOrEmpty(rateLower)) {
             rateLower = "0";
         }
-        if (rateUpper == null || rateUpper == "") {
+        if (Strings.isNullOrEmpty(rateUpper)) {
             rateUpper = "0";
         }
 
@@ -257,11 +257,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         return dto;
     }
 
-    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto){
+    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
         BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
         String transferApplicationId = requestDto.getTransferApplicationId();
         String loginName = requestDto.getBaseParam().getUserId();
-        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId),loginName, 3);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId), loginName, 3);
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

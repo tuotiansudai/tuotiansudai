@@ -1,6 +1,11 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -18,9 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -56,6 +59,10 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Test
     public void shouldCallbackFirstPeriodWhenLoanIsRepaying() throws Exception {
@@ -68,6 +75,12 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         AccountModel investorAccount = this.getFakeAccount(investor);
         userMapper.create(investor);
         accountMapper.create(investorAccount);
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+
+
 
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
@@ -79,7 +92,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
@@ -121,6 +134,14 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(investorUserMembershipModel);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
+        userMembershipMapper.create(transfereeUserMembershipModel);
+
+        MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
+        MembershipModel transfereeMembershipModel = membershipMapper.findById(transfereeUserMembershipModel.getMembershipId());
+
 
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
@@ -132,17 +153,17 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, investorMembershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
 
-        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, transferee.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, transferee.getLoginName(), new Date(), Source.WEB, null, transfereeMembershipModel.getFee());
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investTransferee);
 
         Date dateLine = new DateTime().plusDays(5).toDate();
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest,"name",2,9800,200,dateLine,5);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest, "name", 2, 9800, 200, dateLine, 5, Source.WEB);
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -193,6 +214,11 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 2000;
@@ -204,7 +230,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
@@ -249,6 +275,14 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(investorUserMembershipModel);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
+        userMembershipMapper.create(transfereeUserMembershipModel);
+
+        MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
+        MembershipModel transfereeMembershipModel = membershipMapper.findById(transfereeUserMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         long loanRepay1ExpectedInterest = 1000;
         long loanRepay2ExpectedInterest = 2000;
@@ -260,7 +294,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, investorMembershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
@@ -271,7 +305,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, transferee.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, transferee.getLoginName(), new Date(), Source.WEB, null, transfereeMembershipModel.getFee());
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investTransferee);
         InvestRepayModel investRepayTransferee1 = new InvestRepayModel(idGenerator.generate(), investTransferee.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
@@ -282,7 +316,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
         Date dateLine = new DateTime().plusDays(5).toDate();
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest,"name",2,9800,200,dateLine,5);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest, "name", 2, 9800, 200, dateLine, 5, Source.WEB);
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -322,6 +356,11 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
@@ -335,7 +374,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);
@@ -376,6 +415,14 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(investorUserMembershipModel);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
+        userMembershipMapper.create(transfereeUserMembershipModel);
+
+        MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
+        MembershipModel transfereeMembershipModel = membershipMapper.findById(transfereeUserMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
@@ -389,7 +436,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, investorMembershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
@@ -398,7 +445,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, transfereeMembershipModel.getFee());
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investTransferee);
         InvestRepayModel investRepayTransferee1 = new InvestRepayModel(idGenerator.generate(), investTransferee.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);
@@ -441,6 +488,11 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(investor);
         accountMapper.create(investorAccount);
 
+        UserMembershipModel userMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(userMembershipModel);
+
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
@@ -454,7 +506,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, membershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);
@@ -499,6 +551,14 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         userMapper.create(transferee);
         accountMapper.create(transfereeAccount);
 
+        UserMembershipModel investorUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.UPGRADE, 1);
+        userMembershipMapper.create(investorUserMembershipModel);
+        UserMembershipModel transfereeUserMembershipModel = getFakeUserMemberShip(investor.getLoginName(), UserMembershipType.GIVEN, 2);
+        userMembershipMapper.create(transfereeUserMembershipModel);
+
+        MembershipModel investorMembershipModel = membershipMapper.findById(investorUserMembershipModel.getMembershipId());
+        MembershipModel transfereeMembershipModel = membershipMapper.findById(transfereeUserMembershipModel.getMembershipId());
+
         LoanModel loan = this.getFakeNormalLoan(idGenerator.generate(), LoanType.INVEST_INTEREST_MONTHLY_REPAY, 10000, 2, 0.12, 0, 0.1, loaner.getLoginName(), new Date());
         loan.setStatus(LoanStatus.OVERDUE);
         long loanRepay1ExpectedInterest = 1000;
@@ -512,7 +572,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, investorMembershipModel.getFee());
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
@@ -522,7 +582,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null);
+        InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), new Date(), Source.WEB, null, transfereeMembershipModel.getFee());
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investTransferee);
         InvestRepayModel investRepayTransferee1 = new InvestRepayModel(idGenerator.generate(), investTransferee.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);

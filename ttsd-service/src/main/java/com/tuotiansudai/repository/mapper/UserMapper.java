@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +25,10 @@ public interface UserMapper {
 
     void updateUser(UserModel userModel);
 
-    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName, @Param(value = "referrer") String referrer, @Param(value = "mobile") String mobile,
-                                   @Param(value = "identityNumber") String identityNumber);
+    List<UserView> searchAllUsers(@Param(value = "loginName") String loginName,
+                                  @Param(value = "referrerMobile") String referrerMobile,
+                                  @Param(value = "mobile") String mobile,
+                                  @Param(value = "identityNumber") String identityNumber);
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 
@@ -33,27 +36,30 @@ public interface UserMapper {
 
     List<String> findLoginNameLike(String loginName);
 
+    List<String> findMobileLike(String mobile);
+
+    List<String> findAccountMobileLike(String mobile);
+
     List<String> findAllChannels();
 
     List<String> findAllUserChannels();
 
     List<UserModel> findUserByProvince();
 
-    List<UserModel> findUsersAccountBalance(@Param(value = "loginName") String loginName,
-                                            @Param(value = "balanceMin") int balanceMin,
-                                            @Param(value = "balanceMax") int balanceMax,
-                                            @Param(value = "startLimit") int startLimit,
-                                            @Param(value = "endLimit") int endLimit);
+    List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
+                                           @Param(value = "balanceMin") long balanceMin,
+                                           @Param(value = "balanceMax") long balanceMax,
+                                           @Param(value = "startLimit") int startLimit,
+                                           @Param(value = "endLimit") int endLimit);
 
 
+    long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
+                                    @Param(value = "balanceMin") long balanceMin,
+                                    @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
-                                    @Param(value = "balanceMin") int balanceMin,
-                                    @Param(value = "balanceMax") int balanceMax);
-
-    int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
-                                     @Param(value = "balanceMin") int balanceMin,
-                                     @Param(value = "balanceMax") int balanceMax);
+    long findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
+                                      @Param(value = "balanceMin") long balanceMin,
+                                      @Param(value = "balanceMax") long balanceMax);
 
     List<String> findAllUsers(Map<String, Object> params);
 
@@ -72,4 +78,6 @@ public interface UserMapper {
     String findUsersMobileByLoginName(@Param(value = "loginName") String loginName);
 
     long findUsersCount();
+
+    List<String> findLoginNames();
 }

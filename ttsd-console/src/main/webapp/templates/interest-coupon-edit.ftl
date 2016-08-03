@@ -49,8 +49,9 @@
             <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS'] />
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'EXCHANGER' && userGroup.name() != 'WINNER'>
+                        <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}"
                                 <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
                         </#if>
@@ -105,12 +106,12 @@
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>
-
+                    <#if productType.name() != 'EXPERIENCE'>
                     <label><input type="checkbox" name="productTypes" class="productType"
                                   <#if coupon?? && coupon.productTypes?seq_contains(productType.name())>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
-
+                    </#if>
                 </#list>
             </div>
         </div>

@@ -6,14 +6,14 @@
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">推荐人</label>
-                <input type="text" class="form-control referrerLoginName" name="referrerLoginName"
-                       value="${referrerLoginName!}">
+                <label for="control-label">推荐人手机</label>
+                <input type="text" class="form-control referrerMobile" name="referrerMobile"
+                       value="${referrerMobile!}">
             </div>
             <div class="form-group">
-                <label for="control-label">投资人</label>
-                <input type="text" class="form-control investLoginName" name="investLoginName"
-                       value="${investLoginName!}">
+                <label for="control-label">投资人手机</label>
+                <input type="text" class="form-control investMobile" name="investMobile"
+                       value="${investMobile!}">
             </div>
             <div class="form-group" id="investDate">
                 <label for="control-label">投资时间</label>
@@ -92,12 +92,12 @@
             <tr>
                 <th>项目名称</th>
                 <th>期数</th>
-                <th>投资人</th>
+                <th>投资人手机</th>
                 <th>投资人姓名</th>
                 <th>投资金额(元)</th>
                 <th>投资时间</th>
                 <th>来源</th>
-                <th>推荐人</th>
+                <th>推荐人手机</th>
                 <th>推荐人姓名</th>
                 <th>推荐人是否业务员</th>
                 <th>推荐层级</th>
@@ -111,12 +111,12 @@
                 <tr>
                     <td>${referrerManageView.loanName!}</td>
                     <td>${referrerManageView.periods?string('0')}</td>
-                    <td>${referrerManageView.investLoginName!}</td>
+                    <td>${referrerManageView.investMobile!}</td>
                     <td>${referrerManageView.investName!}</td>
                     <td>${referrerManageView.investAmount/100}</td>
                     <td>${referrerManageView.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${referrerManageView.source}</td>
-                    <td>${referrerManageView.referrerLoginName!}</td>
+                    <td>${referrerManageView.referrerMobile!}</td>
                     <td>${referrerManageView.referrerName!}</td>
                     <td><#if referrerManageView.role?? && referrerManageView.role == 'STAFF'>是<#else>否</#if></td>
                     <td>${referrerManageView.level?string('0')}</td>
@@ -137,7 +137,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -147,7 +147,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

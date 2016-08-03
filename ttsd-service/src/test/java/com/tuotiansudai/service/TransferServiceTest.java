@@ -1,14 +1,19 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +23,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -33,9 +40,6 @@ public class TransferServiceTest {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private InvestService investService;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -51,6 +55,12 @@ public class TransferServiceTest {
 
     @Autowired
     private TransferService transferService;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -79,7 +89,6 @@ public class TransferServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
@@ -87,8 +96,10 @@ public class TransferServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._90);
-        loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setPledgeType(PledgeType.HOUSE);
+        loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -113,7 +124,7 @@ public class TransferServiceTest {
         return transferApplicationModel;
     }
 
-    private void createUserByUserId(String userId) {
+    private UserModel createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
         userModelTest.setPassword("123abc");
@@ -123,16 +134,18 @@ public class TransferServiceTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
+        return userModelTest;
     }
 
-    private void createInvests(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+    private InvestModel createInvests(String loginName, long loanId, long investId) {
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
+        return model;
     }
 
     private void createInvestsTransferSuccess(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
         model.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(model);
     }
@@ -228,10 +241,82 @@ public class TransferServiceTest {
 
         assertThat(transferApplicationRecodesDto.getStatus(), is(true));
         assertThat(transferApplicationRecodesDto.getReceiveAmount(), is("900.00"));
-        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is("tes******"));
+
+        assertThat(transferApplicationRecodesDto.getTransferApplicationReceiver(), is(randomUtils.encryptMobile("", "testuser",Source.WEB)));
         assertThat(transferApplicationRecodesDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationRecodesDto.getSource(), is(Source.WEB));
         assertThat(transferApplicationRecodesDto.getInvestAmount(), is("1000.00"));
+    }
+
+    @Test
+    public void shouldGenerateTransferableInvestIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel investorModel = createUserByUserId("investorModelRound2Test");
+        UserModel loanerModel = createUserByUserId("loanerModelRound2Test");
+        LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId);
+        InvestModel investModel = createInvests(investorModel.getLoginName(), loanId, idGenerator.generate());
+        LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
+        loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
+        InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
+        investRepayMapper.create(Lists.newArrayList(investRepayModel));
+        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = transferService.generateTransferableInvest(investorModel.getLoginName(), 1, 10);
+        TransferableInvestPaginationItemDataDto dataDto = baseDto.getRecords().get(0);
+        assertEquals(1,baseDto.getRecords().size());
+        assertEquals(investModel.getId(), dataDto.getInvestId());
+        assertEquals(investModel.getLoanId(), dataDto.getLoanId());
+        assertEquals(loanModel.getName(), dataDto.getLoanName());
+        assertEquals(AmountConverter.convertCentToString(investModel.getAmount()), dataDto.getAmount());
+        assertEquals(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() - investRepayModel.getExpectedFee()), dataDto.getNextRepayAmount());
+        assertEquals(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(),new DateTime(dataDto.getNextRepayDate()).withTimeAtStartOfDay());
+        assertEquals("28",dataDto.getSumRate());
+        assertEquals(TransferStatus.TRANSFERABLE.getDescription(),dataDto.getTransferStatus());
+    }
+
+    private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,
+                                                 int period,
+                                                 RepayStatus repayStatus,
+                                                 Date repayDate,
+                                                 Date actualRepayDate,
+                                                 long corpus,
+                                                 long expectedInterest,
+                                                 long actualInterest,
+                                                 long defaultInterest
+    ) {
+        LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
+        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setPeriod(period);
+        fakeLoanRepayModel.setStatus(repayStatus);
+        fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());
+        fakeLoanRepayModel.setRepayDate(repayDate);
+        fakeLoanRepayModel.setActualRepayDate(actualRepayDate);
+        fakeLoanRepayModel.setCorpus(corpus);
+        fakeLoanRepayModel.setExpectedInterest(expectedInterest);
+        fakeLoanRepayModel.setActualInterest(actualInterest);
+        fakeLoanRepayModel.setDefaultInterest(defaultInterest);
+        return fakeLoanRepayModel;
+    }
+    private InvestRepayModel getFakeInvestRepayModel(InvestModel fakeInvestModel,
+                                                     int period,
+                                                     RepayStatus repayStatus,
+                                                     Date repayDate,
+                                                     Date actualRepayDate,
+                                                     long corpus,
+                                                     long expectedInterest,
+                                                     long actualInterest,
+                                                     long defaultInterest
+    ) {
+        InvestRepayModel fakeInvestRepayModel = new InvestRepayModel();
+        fakeInvestRepayModel.setId(idGenerator.generate());
+        fakeInvestRepayModel.setPeriod(period);
+        fakeInvestRepayModel.setStatus(repayStatus);
+        fakeInvestRepayModel.setInvestId(fakeInvestModel.getId());
+        fakeInvestRepayModel.setRepayDate(repayDate);
+        fakeInvestRepayModel.setActualRepayDate(actualRepayDate);
+        fakeInvestRepayModel.setCorpus(corpus);
+        fakeInvestRepayModel.setExpectedInterest(expectedInterest);
+        fakeInvestRepayModel.setActualInterest(actualInterest);
+        fakeInvestRepayModel.setDefaultInterest(defaultInterest);
+        return fakeInvestRepayModel;
     }
 
 }

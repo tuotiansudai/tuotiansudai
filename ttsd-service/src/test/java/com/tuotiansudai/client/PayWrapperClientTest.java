@@ -152,12 +152,12 @@ public class PayWrapperClientTest {
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RECHECK);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();

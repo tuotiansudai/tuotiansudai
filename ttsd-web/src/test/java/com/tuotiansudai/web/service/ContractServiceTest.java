@@ -18,11 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -44,8 +43,6 @@ public class ContractServiceTest {
     @Autowired
     private ContractService contractService;
 
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
         UserModel userModel = getUserModel();
@@ -62,33 +59,25 @@ public class ContractServiceTest {
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
         assertNotNull(pdfStr);
-        if(pdfStr.indexOf("baisong") == -1){
-            assertFalse(true);
-        }
-        if(pdfStr.indexOf("5天") == -1){
-            assertFalse(true);
-        }
-
-        if(pdfStr.indexOf("0.5%") == -1){
-            assertFalse(true);
-        }
+        assertTrue(pdfStr.indexOf("testUserModel") != -1);
+        assertTrue(pdfStr.indexOf("5天") != -1);
+        assertTrue(pdfStr.indexOf("1%") != -1);
     }
 
     private LoanModel getLoanModel() throws ParseException {
         LoanModel lm = new LoanModel();
         lm.setId(idGenerator.generate());
         lm.setName("12标的");
-        lm.setLoanerUserName("baisong");
-        lm.setAgentLoginName("baisong");
-        lm.setLoanerLoginName("baisong");
-        lm.setLoanerLoginName("baisong");
+        lm.setLoanerUserName("testUserModel");
+        lm.setAgentLoginName("testUserModel");
+        lm.setLoanerLoginName("testUserModel");
+        lm.setLoanerLoginName("testUserModel");
         lm.setLoanerIdentityNumber("22012219881003356X");
         lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         lm.setPeriods(3);
         lm.setDescriptionText("123");
         lm.setDescriptionHtml("<p>123</p>");
         lm.setLoanAmount(1300);
-        lm.setInvestFeeRate(0.1);
         lm.setMinInvestAmount(100);
         lm.setMaxInvestAmount(1300);
         lm.setInvestIncreasingAmount(1);
@@ -97,34 +86,34 @@ public class ContractServiceTest {
         lm.setBaseRate(0.12);
         lm.setActivityRate(0);
         lm.setContractId(789098123);
-        lm.setFundraisingStartTime(df.parse("2016-03-09 12:00:00"));
-        lm.setFundraisingEndTime(df.parse("2016-03-15 12:00:00"));
-        lm.setVerifyTime(df.parse("2016-03-09 11:46:18"));
-        lm.setVerifyLoginName("baisong");
+        lm.setFundraisingStartTime(new Date());
+        lm.setFundraisingEndTime(new Date());
+        lm.setVerifyTime(new Date());
+        lm.setVerifyLoginName("testUserModel");
         lm.setStatus(LoanStatus.RECHECK);
         lm.setShowOnHome(false);
-        lm.setCreatedTime(df.parse("2016-03-09 11:46:05"));
-        lm.setCreatedLoginName("baisong");
-        lm.setUpdateTime(df.parse("2016-03-09 11:46:18"));
+        lm.setCreatedTime(new Date());
+        lm.setCreatedLoginName("testUserModel");
+        lm.setPledgeType(PledgeType.HOUSE);
+        lm.setUpdateTime(new Date());
         return lm;
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "baisong", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null);
-        investModel.setCreatedTime(df.parse("2016-03-09 17:52:38"));
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "testUserModel", new Date(), Source.ANDROID, null, 0.1);
+        investModel.setCreatedTime(new Date());
         return investModel;
-
     }
 
     private UserModel getUserModel() throws ParseException {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
-        um.setLoginName("baisong");
+        um.setLoginName("testUserModel");
         um.setPassword("1234567");
         um.setMobile("1823123123");
-        um.setRegisterTime(df.parse("2016-03-08 16:27:46"));
-        um.setLastModifiedTime(df.parse("2016-03-09 17:06:57"));
-        um.setLastModifiedUser("baisong");
+        um.setRegisterTime(new Date());
+        um.setLastModifiedTime(new Date());
+        um.setLastModifiedUser("testUserModel");
         um.setStatus(UserStatus.ACTIVE);
         um.setSalt("12313");
         um.setChannel("123");
@@ -143,19 +132,19 @@ public class ContractServiceTest {
         al.setInvestId(investId);
         al.setPeriod(2);
         al.setLeftPeriod(1);
-        al.setLoginName("baisong");
+        al.setLoginName("testUserModel");
         al.setInvestAmount(100);
         al.setTransferAmount(100);
         al.setTransferFee(1);
         al.setStatus(TransferStatus.SUCCESS);
-        al.setDeadline(df.parse("2014-11-10 00:00:00"));
-        al.setTransferTime(df.parse("2014-11-10 00:00:00"));
-        al.setApplicationTime(df.parse("2014-11-10 00:00:00"));
+        al.setDeadline(new Date());
+        al.setTransferTime(new Date());
+        al.setApplicationTime(new Date());
         return al;
     }
 
     public AccountModel getAccountModel(){
-        AccountModel accountModel = new AccountModel("baisong", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("testUserModel", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         return accountModel;
     }
 
@@ -176,27 +165,3 @@ public class ContractServiceTest {
         return tr;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

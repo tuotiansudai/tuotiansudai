@@ -22,6 +22,7 @@
         <result column="transfer_time" property="transferTime"></result>
         <result column="application_time" property="applicationTime"></result>
         <result column="left_period" property="leftPeriod"></result>
+        <result column="source" property="source"></result>
     </resultMap>
 
     <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
@@ -34,8 +35,8 @@
         <result column="activity_rate" property="activityRate"></result>
         <result column="status" property="transferStatus"></result>
         <result column="loan_id" property="loanId"></result>
-        <result column="transferrer_loginName" property="transferrerLoginName"></result>
-        <result column="transferee_loginName" property="transfereeLoginName"></result>
+        <result column="transferrer_mobile" property="transferrerMobile"></result>
+        <result column="transferee_mobile" property="transfereeMobile"></result>
         <result column="transfer_fee" property="transferFee"></result>
         <result column="transfer_invest_id" property="transferInvestId"></result>
         <result column="period" property="period"></result>
@@ -44,9 +45,25 @@
         <result column="application_time" property="applicationTime"></result>
     </resultMap>
 
+    <resultMap id="transferableInvestPaginationItemDataDtoMap" type="TransferableInvestPaginationItemDataDto">
+        <result column="loan_id" property="loanId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="amount" property="amount"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="create_time" property="createdTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+    </resultMap>
+
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
-        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
-        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name,
+        invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time,
+        application_time,left_period,source)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount},
+        #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod},
+        #{source})
     </insert>
 
     <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
@@ -123,33 +140,39 @@
     </select>
 
     <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
-        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,ta.application_time,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        SELECT ta.id, ta.name, ta.transfer_amount, ta.invest_amount, ta.transfer_time, ta.status, ta.loan_id, u1.mobile
+        AS transferrer_mobile,
+        ta.transfer_fee, ta.transfer_invest_id, ta.period, ta.left_period, ta.deadline, ta.application_time, u2.mobile
+        AS transferee_mobile
+        FROM
+        (transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name)
+        left JOIN
+        (invest i JOIN aa.user u2 ON i.login_name = u2.login_name)
+        ON ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
             </if>
             <if test="startTime != null">
-                and ta.application_time >= #{startTime}
+                AND ta.application_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and ta.application_time <= #{endTime} ]]>
+                <![CDATA[ AND ta.application_time <= #{endTime} ]]>
             </if>
             <if test="status">
-               and ta.status = #{status}
+                AND ta.status = #{status}
             </if>
-            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
-              and ta.login_name = #{transferrerLoginName}
+            <if test="transferrerMobile != null and transferrerMobile != ''">
+                AND u1.mobile = #{transferrerMobile}
             </if>
-            <if test="transfereeLoginName != null and transfereeLoginName != ''">
-              and i.login_name = #{transfereeLoginName}
+            <if test="transfereeMobile != null and transfereeMobile != ''">
+                AND u2.mobile = #{transfereeMobile}
             </if>
             <if test="loanId != null">
-              and i.loan_id = #{loanId}
+                AND i.loan_id = #{loanId}
             </if>
-
         </where>
-        order by application_time
+        ORDER BY application_time
         limit #{index}, #{pageSize}
     </select>
 
@@ -180,7 +203,9 @@
                 <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
             </if>
         </where>
-        order by transfer_time
+        order by
+        CASE ta.status WHEN 'TRANSFERRING' THEN '1' WHEN 'SUCCESS' THEN '2' ELSE '3' END,
+        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time ELSE ta.transfer_time END desc
         limit #{index}, #{pageSize}
     </select>
 
@@ -217,9 +242,12 @@
 
 
     <select id="findCountTransferApplicationPagination" parameterType="map" resultType="int">
-
         select count(1)
-        from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        from
+        (transfer_application ta JOIN user u1 on ta.login_name = u1.login_name)
+        left JOIN
+        (invest i JOIN user u2 on i.login_name = u2.login_name)
+        ON ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
@@ -233,11 +261,11 @@
             <if test="status != null">
                 and ta.status = #{status}
             </if>
-            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
-                and ta.login_name = #{transferrerLoginName}
+            <if test="transferrerMobile != null and transferrerMobile != '' ">
+                and u1.mobile = #{transferrerMobile}
             </if>
-            <if test="transfereeLoginName != null and transfereeLoginName != ''">
-                and i.login_name = #{transfereeLoginName}
+            <if test="transfereeMobile != null and transfereeMobile != ''">
+                and u2.mobile = #{transfereeMobile}
             </if>
             <if test="loanId != null">
                 and i.loan_id = #{loanId}
@@ -337,4 +365,10 @@
             </if>
         </where>
     </select>
+
+    <select id="findCountTransferApplicationByApplicationTime" resultType="long" parameterType="map">
+          SELECT count(1) FROM transfer_application  WHERE login_name = #{loginName}
+                AND application_time between #{activityBeginTime} and #{tradingTime}
+    </select>
+
 </mapper>

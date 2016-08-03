@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface LoanMapper {
 
+    //不再支持descriptionText, descriptionHtml创建
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
@@ -30,17 +31,20 @@ public interface LoanMapper {
                              @Param(value = "durationEnd") int durationEnd);
 
     List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
-                                    @Param(value = "status") LoanStatus status,
-                                    @Param(value = "rateStart") double rateStart,
-                                    @Param(value = "rateEnd") double rateEnd,
-                                    @Param(value = "index") int index);
+                                          @Param(value = "status") LoanStatus status,
+                                          @Param(value = "rateStart") double rateStart,
+                                          @Param(value = "rateEnd") double rateEnd,
+                                          @Param(value = "index") int index);
 
     int findLoanListCountMobileApp(@Param(value = "productType") ProductType productType,
-                             @Param(value = "status") LoanStatus status,
-                             @Param(value = "rateStart") double rateStart,
-                             @Param(value = "rateEnd") double rateEnd);
+                                   @Param(value = "status") LoanStatus status,
+                                   @Param(value = "rateStart") double rateStart,
+                                   @Param(value = "rateEnd") double rateEnd);
 
+    //不再支持descriptionText, descriptionHtml创建
     void update(LoanModel loanModel);
+
+    void updateWithoutStatus(LoanModel loanModel);
 
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
 
@@ -87,11 +91,12 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "IsContainNewBie") String IsContainNewBie,
-                                                  @Param(value = "loanStatus") String loanStatus);
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "mobile") String mobile);
 
-    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
+    long findLoanAchievementCount(@Param(value = "mobile") String mobile);
 
-    long findLoanAchievementCount(@Param(value = "loginName") String loginName);
+    List<LoanModel> findByProductType(@Param(value = "loanStatus") LoanStatus loanStatus,
+                                      @Param("productTypeList") List<ProductType> productTypeList,
+                                      @Param(value = "activityType") ActivityType activityType);
 
 }

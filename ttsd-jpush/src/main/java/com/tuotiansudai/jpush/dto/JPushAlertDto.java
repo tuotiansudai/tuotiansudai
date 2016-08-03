@@ -31,6 +31,12 @@ public class JPushAlertDto {
 
     private boolean isAutomatic;
 
+    private String investId;
+
+    private String loanId;
+
+    private String isCompleted;
+
     public String getName() {
         return name;
     }
@@ -119,6 +125,30 @@ public class JPushAlertDto {
         this.isAutomatic = isAutomatic;
     }
 
+    public String getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(String investId) {
+        this.investId = investId;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
+    }
+
+    public String getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(String isCompleted) {
+        this.isCompleted = isCompleted;
+    }
+
     public JPushAlertDto(){
 
     }
@@ -133,5 +163,21 @@ public class JPushAlertDto {
         this.jumpTo = jPushAlertModel.getJumpTo();
         this.jumpToLink = jPushAlertModel.getJumpToLink();
         this.expectPushTime = new DateTime(jPushAlertModel.getExpectPushTime()).toString("yyyy-MM-dd HH:mm");
+    }
+
+    public JPushAlertDto(JPushAlertModel jPushAlertModel,String investId,String loanId,String isCompleted){
+        this.id = "" + jPushAlertModel.getId();
+        this.name = jPushAlertModel.getName();
+        this.pushType = jPushAlertModel.getPushType();
+        this.pushDistricts = jPushAlertModel.getPushDistricts();
+        this.pushUserType = jPushAlertModel.getPushUserType();
+        this.pushSource = jPushAlertModel.getPushSource();
+        this.content = jPushAlertModel.getContent();
+        this.jumpTo = jPushAlertModel.getJumpTo();
+        this.jumpToLink = jPushAlertModel.getJumpToLink();
+        this.expectPushTime = new DateTime(jPushAlertModel.getExpectPushTime()).toString("yyyy-MM-dd HH:mm");
+        this.investId = investId;
+        this.loanId = loanId;
+        this.isCompleted = isCompleted;
     }
 }

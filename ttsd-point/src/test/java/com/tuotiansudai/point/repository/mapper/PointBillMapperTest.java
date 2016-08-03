@@ -3,7 +3,6 @@ package com.tuotiansudai.point.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -56,5 +55,16 @@ public class PointBillMapperTest {
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUserModel);
         return fakeUserModel;
+    }
+
+    @Test
+    public void shouldFindPointBillPaginationIsOk() {
+        UserModel fakeUserModel = this.createFakeUserModel();
+        PointBillModel pointBillModel = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.LOTTERY, "note");
+        pointBillMapper.create(pointBillModel);
+        PointBillModel pointBillModel1 = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.EXCHANGE, "note");
+        pointBillMapper.create(pointBillModel1);
+        List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeUserModel.getLoginName(), 0, 10, null, null, Lists.newArrayList(PointBusinessType.EXCHANGE, PointBusinessType.LOTTERY));
+        assertThat(pointBillModelList.size(), is(2));
     }
 }

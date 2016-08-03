@@ -81,12 +81,15 @@
         <ul>
             <#list loanItemList as loanItem>
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
-                    <#if loanItem.activityType == 'NEWBIE'>
+                    <#if loanItem.productType == 'EXPERIENCE'>
+                        <span class="new-free"></span>
+                    <#elseif loanItem.activityType == 'NEWBIE'>
                         <span class="new-user"></span>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
-                            <span class="l-title fl">${loanItem.name}</span>
+                            <span class="l-title fl">${loanItem.name}<#if loanItem.productType == 'EXPERIENCE'><i
+                                    class="new-tip">仅限使用体验金投资</i></#if></span>
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">
@@ -103,6 +106,9 @@
                                     <#else>
                                         <em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
                                         <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
+                                            <#if (loanItem.extraRate > 0)>
+                                                ~ <@percentInteger>${loanItem.baseRate + loanItem.extraRate}</@percentInteger><@percentFraction>${loanItem.extraRate}</@percentFraction>
+                                            </#if>
                                             <#if (loanItem.activityRate > 0)>
                                                 +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
                                             </#if>%
@@ -118,7 +124,9 @@
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
-                                <dd><em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元</dd>
+                                <dd>
+                                    <em><@amount>${loanItem.loanAmount?string.computer}</@amount></em>元<#if loanItem.productType == 'EXPERIENCE'>
+                                    (体验金)</#if></dd>
                             </dl>
                         </div>
                     </div>
@@ -159,7 +167,7 @@
                                 <div class="percent" style="width:${loanItem.progress}%"></div>
                             </div>
                             <div class="rest-amount">
-                                <span>可投额度：<i>${loanItem.alert}</i></span>
+                                <span>可投额度：<i>${loanItem.alert}</i><#if loanItem.productType == 'EXPERIENCE'>(体验金)</#if></span>
                                 <i class="btn-invest btn-normal">马上投资</i>
                             </div>
                         </#if>

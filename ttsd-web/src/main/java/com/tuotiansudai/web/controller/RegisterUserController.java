@@ -3,11 +3,13 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/register/user")
@@ -34,11 +37,15 @@ public class RegisterUserController {
     @Autowired
     private CaptchaHelper captchaHelper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", referrer);
+        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -60,7 +67,7 @@ public class RegisterUserController {
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/register/account" : "redirect:/register/user");
+        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", registerUserDto.getRedirectToAfterRegisterSuccess()) : "redirect:/register/user");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
@@ -123,7 +130,7 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
     public void registerImageCaptcha(HttpServletResponse response) {
-        int captchaWidth = 70;
+        int captchaWidth = 80;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());

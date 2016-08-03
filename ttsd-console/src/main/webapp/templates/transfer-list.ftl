@@ -44,13 +44,13 @@
         </div>
         <div class="form-group">
             <label>转让人</label>
-            <input type="text" name="transferrerLoginName" class="form-control ui-autocomplete-input" datatype="*"
-                   autocomplete="off" value="${transferrerLoginName!}"/>
+            <input type="text" name="transferrerMobile" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${transferrerMobile!}"/>
         </div>
         <div class="form-group">
             <label>承接人</label>
-            <input type="text" name="transfereeLoginName" class="form-control ui-autocomplete-input" datatype="*"
-                   autocomplete="off" value="${transfereeLoginName!}"/>
+            <input type="text" name="transfereeMobile" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${transfereeMobile!}"/>
         </div>
         <div class="form-group">
             <label>原始项目</label>
@@ -85,7 +85,7 @@
                     <td >
                         <a href="${webServer}/loan/${transferApplication.loanId?string.computer}" target="_blank"><span class="text-success">${transferApplication.loanId?string.computer}</span></a>
                     </td>
-                    <td>${transferApplication.transferrerLoginName!}</td>
+                    <td>${transferApplication.transferrerMobile!}</td>
                     <td>${transferApplication.transferAmount}</td>
                     <td>${transferApplication.leftPeriod!}</td>
                     <td>
@@ -109,7 +109,7 @@
                             </#switch>
                     </td>
                     <td>${transferApplication.applicationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td>${transferApplication.transfereeLoginName!}</td>
+                    <td>${transferApplication.transfereeMobile!}</td>
                     <td>${transferApplication.transferFee}</td>
                 </tr>
                 </#list>
@@ -127,7 +127,8 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerLoginName=${transferrerLoginName}&</#if><#if transfereeLoginName??>transfereeLoginName=${transfereeLoginName}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>"
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -137,7 +138,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                        <a href="?index=${data.index + 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerLoginName=${transferrerLoginName}&</#if><#if transfereeLoginName??>transfereeLoginName=${transfereeLoginName}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>"
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

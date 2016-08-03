@@ -48,14 +48,14 @@ public class AccountServiceTest {
     private LoanMapper loanMapper;
 
     @Test
-    public void shouldTransferAblerAccountDetailCountIsOk(){
+    public void shouldTransferAblerAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("transferable");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.TRANSFERABLE);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,150000L,1000L,1000L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,150000L,1000L,1000L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.TRANSFERABLE);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -63,22 +63,22 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,2000L);
-        assertEquals(collectingPrincipal,150000L);
-        assertEquals(sumRepaying,1000L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 2000L);
+        assertEquals(collectingPrincipal, 150000L);
+        assertEquals(sumRepaying, 1000L);
+        assertEquals(freeze, 1000L);
     }
 
     @Test
-    public void shouldTransferRingAccountDetailCountIsOk(){
+    public void shouldTransferRingAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("transferring");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.TRANSFERRING);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,150000L,1000L,1000L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,150000L,1000L,1000L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.TRANSFERRING);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 150000L, 1000L, 1000L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 150000L, 1000L, 1000L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -86,23 +86,23 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,2000L);
-        assertEquals(collectingPrincipal,150000L);
-        assertEquals(sumRepaying,1000L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 2000L);
+        assertEquals(collectingPrincipal, 150000L);
+        assertEquals(sumRepaying, 1000L);
+        assertEquals(freeze, 1000L);
     }
 
 
     @Test
-    public void shouldSuccessAccountDetailCountIsOk(){
+    public void shouldSuccessAccountDetailCountIsOk() {
         UserModel userModel = createUserModelTest("success");
-        AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
+        AccountModel accountModel = createAccountModel(userModel.getLoginName(), 1000L);
         createUserBillModel(userModel.getLoginName());
         LoanModel loanModel = this.getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(userModel.getLoginName(),loanModel.getId(),TransferStatus.SUCCESS);
-        createInvestRepay(investModel.getId(),RepayStatus.REPAYING,350000L,2000L,500L);
-        createInvestRepay(investModel.getId(),RepayStatus.COMPLETE,350000L,2000L,500L);
+        InvestModel investModel = createInvest(userModel.getLoginName(), loanModel.getId(), TransferStatus.SUCCESS);
+        createInvestRepay(investModel.getId(), RepayStatus.REPAYING, 350000L, 2000L, 500L);
+        createInvestRepay(investModel.getId(), RepayStatus.COMPLETE, 350000L, 2000L, 500L);
         long banlance = accountService.getBalance(userModel.getLoginName());
         long collectedReward = userBillService.findSumRewardByLoginName(userModel.getLoginName());
         long sumRepaid = investRepayService.findSumRepaidInterestByLoginName(userModel.getLoginName());
@@ -110,11 +110,11 @@ public class AccountServiceTest {
         long sumRepaying = investRepayService.findSumRepayingInterestByLoginName(userModel.getLoginName());
         long freeze = accountService.getFreeze(userModel.getLoginName());
 
-        assertEquals(banlance,accountModel.getBalance());
-        assertEquals(collectedReward + sumRepaid,1000L);
-        assertEquals(collectingPrincipal,350000L);
-        assertEquals(sumRepaying,1500L);
-        assertEquals(freeze,1000L);
+        assertEquals(banlance, accountModel.getBalance());
+        assertEquals(collectedReward + sumRepaid, 1000L);
+        assertEquals(collectingPrincipal, 350000L);
+        assertEquals(sumRepaying, 1500L);
+        assertEquals(freeze, 1000L);
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
@@ -134,12 +134,13 @@ public class AccountServiceTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
 
 
-    public InvestModel createInvest(String loginName,long loanId,TransferStatus transferStatus){
+    public InvestModel createInvest(String loginName, long loanId, TransferStatus transferStatus) {
         InvestModel investModel = new InvestModel();
         investModel.setId(idGenerator.generate());
         investModel.setAmount(1000);
@@ -154,7 +155,7 @@ public class AccountServiceTest {
     }
 
 
-    public InvestRepayModel createInvestRepay(long investId,RepayStatus tepayStatus,long corpus,long actualFee,long expectedFee){
+    public InvestRepayModel createInvestRepay(long investId, RepayStatus tepayStatus, long corpus, long actualFee, long expectedFee) {
         List<InvestRepayModel> list = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
             InvestRepayModel investRepayModel = new InvestRepayModel();
@@ -177,7 +178,7 @@ public class AccountServiceTest {
 
     }
 
-    public AccountModel createAccountModel(String loginName,long balance){
+    public AccountModel createAccountModel(String loginName, long balance) {
         AccountModel accountModel = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(1000L);
@@ -185,7 +186,7 @@ public class AccountServiceTest {
         return accountModel;
     }
 
-    private UserBillModel createUserBillModel(String loginName){
+    private UserBillModel createUserBillModel(String loginName) {
         UserBillModel userBillModel = new UserBillModel();
         userBillModel.setId(idGenerator.generate());
         userBillModel.setAmount(1000L);

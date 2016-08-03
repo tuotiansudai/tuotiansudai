@@ -1,13 +1,13 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppRegisterController;
-import com.tuotiansudai.api.dto.v1_0.RegisterRequestDto;
-import com.tuotiansudai.api.dto.v1_0.SendSmsRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -50,9 +50,15 @@ public class MobileAppRegisterControllerTest extends ControllerTestBase {
                 .andExpect(jsonPath("$.code").value("0002"));
     }
 
-    public RegisterRequestDto getFakeRegisterRequestDto(){
+    @Test
+    public void shouldMobileNumberExist() throws Exception {
+        when(service.mobileNumberIsExist(any(MobileIsAvailableRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/mobile-is-available", new MobileIsAvailableRequestDto());
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
+
+    public RegisterRequestDto getFakeRegisterRequestDto() {
         RegisterRequestDto registerRequestDto = new RegisterRequestDto();
-        registerRequestDto.setUserName("loginName");
         registerRequestDto.setCaptcha("123456");
         registerRequestDto.setPassword("123ssword");
         registerRequestDto.setPhoneNum("13900000000");
