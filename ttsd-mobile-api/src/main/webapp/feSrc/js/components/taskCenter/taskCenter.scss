@@ -17,6 +17,7 @@
         .bodyCon {
             height:auto;
             overflow: auto;
+            transform:translate3d(0,0,0);
         }
         
         .loading {
@@ -41,6 +42,7 @@
             height:414px;         
             background:url('task_banner.png') no-repeat;
             background-size: cover;
+            -webkit-transform: translate3d(0, 0, 0);
             // position:relative;
         }
         .MenuBox ul {
@@ -67,6 +69,7 @@
                 color: #ffffff;
             background-color: #ff5959;
             }
+            -webkit-transform: translate3d(0, 0, 0);
         }
         .fixTopMenu {
             position:absolute;
@@ -100,6 +103,7 @@
             margin-bottom: 20px;
             border-radius: 15px;
             font-style: normal;
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
         .HeaderTitle {
@@ -114,7 +118,7 @@
         }
 
         .TaskItemNewbie {
-        
+            -webkit-transform: translate3d(0, 0, 0);
             width: 100%;
             margin-top: 10px;
             margin-bottom: 20px;
@@ -128,7 +132,6 @@
             position:relative;
             height:auto;
             overflow:auto;
-
             .TaskItemLine {
                 border: 0.5px solid #ff5959;
                 margin-top: -3px;
