@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -54,20 +55,22 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
-    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult) {
+    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);
         }
+        response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
         return prepareService.prepareRegister(requestDto);
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
-    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult) {
+    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);
         }
+        response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
         return prepareService.register(requestDto);
     }
 
