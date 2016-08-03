@@ -69,18 +69,18 @@ public class InterestCalculator {
             lastInvestRepayDate = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
         }
         // 2015-01-01 ~ 2015-01-31: 30
-        int period = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
+        int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
 
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
             case INVEST_COUPON:
-                expectedInterest = new BigDecimal(period * couponModel.getAmount())
+                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
                         .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(period * investAmount)
+                expectedInterest = new BigDecimal(periodDuration * investAmount)
                         .multiply(new BigDecimal(couponModel.getRate()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
