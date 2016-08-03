@@ -119,7 +119,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.sumRate = view.getSumRatePercent();
     }
 
-    public InvestPaginationItemDataDto(InvestPaginationItemView view,InvestExtraRateModel extraRateModel) {
+    public InvestPaginationItemDataDto(InvestPaginationItemView view, InvestExtraRateModel extraRateModel) {
         this(view);
         this.rate = extraRateModel.getExtraRate();
         this.expectedFee = extraRateModel.getExpectedFee();
@@ -360,15 +360,15 @@ public class InvestPaginationItemDataDto implements Serializable {
     }
 
     public String getExpectedFee() {
-        if (expectedFee!=null){
+        if (expectedFee != null) {
             return AmountConverter.convertCentToString(expectedFee);
         }
         return "-";
     }
 
     public String getActualFee() {
-        if (actualFee!=null){
-           return AmountConverter.convertCentToString(actualFee);
+        if (actualFee != null) {
+            return AmountConverter.convertCentToString(actualFee);
         }
         return "-";
     }

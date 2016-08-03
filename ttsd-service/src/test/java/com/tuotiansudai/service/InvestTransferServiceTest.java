@@ -93,6 +93,7 @@ public class InvestTransferServiceTest {
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         loanDto.setRecheckTime(new Date());
         loanDto.setProductType(ProductType._180);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         return loanModel;
@@ -162,7 +163,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(),3, Source.WEB);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(), 3, Source.WEB);
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 

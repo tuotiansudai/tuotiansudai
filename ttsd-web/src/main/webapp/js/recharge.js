@@ -2,7 +2,8 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric', 'comm
     var $rechargeCon = $(".recharge-bind-card"),
         $rechargeForm = $('.recharge-form', $rechargeCon),
         $fastRechargeForm = $(".fast-recharge-form", $rechargeCon),
-        $turnOnFast = $(".turn-on-fast-form", $rechargeCon);
+        $turnOnFast = $(".turn-on-fast-form", $rechargeCon),
+        $bankList=$('#bankList');
 
     var tabElement = $('.payment-mode li'),
         rechargeInputAmountElement = $('.amount', $rechargeForm),
@@ -104,5 +105,10 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric', 'comm
             $fastRecharge.removeClass('active');
             $bankRecharge.addClass('active');
         }
+    });
+
+    $bankList.on('mouseover mouseout', function(event) {
+        event.preventDefault();
+        $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
     });
 });

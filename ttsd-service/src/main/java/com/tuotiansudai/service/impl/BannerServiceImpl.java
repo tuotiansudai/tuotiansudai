@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class BannerServiceImpl implements BannerService{
+public class BannerServiceImpl implements BannerService {
 
     @Autowired
     private BannerMapper bannerMapper;
@@ -30,17 +30,17 @@ public class BannerServiceImpl implements BannerService{
     }
 
     @Override
-    public List<BannerModel> findAllBannerList(){
+    public List<BannerModel> findAllBannerList() {
         return bannerMapper.findAllBannerList();
     }
 
     @Override
-    public boolean updateBanner(BannerModel bannerModel, String loginName, String ip){
+    public boolean updateBanner(BannerModel bannerModel, String loginName, String ip) {
         return bannerMapper.updateBanner(bannerModel);
     }
 
     @Override
-    public BannerModel findById(long id){
+    public BannerModel findById(long id) {
         return bannerMapper.findById(id);
     }
 }

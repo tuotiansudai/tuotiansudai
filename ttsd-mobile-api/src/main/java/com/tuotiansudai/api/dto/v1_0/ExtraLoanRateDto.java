@@ -7,7 +7,7 @@ import com.tuotiansudai.util.AmountConverter;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class ExtraLoanRateDto implements Serializable{
+public class ExtraLoanRateDto implements Serializable {
     private double rate;
     private long amountLower;
     private long amountUpper;

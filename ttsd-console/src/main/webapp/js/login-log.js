@@ -26,7 +26,6 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
 
     $('form .query').click(function () {
         var params = [];
-        alert($mobile.val());
         if ($mobile.val()) {
             params.push("mobile=" + $mobile.val());
         }

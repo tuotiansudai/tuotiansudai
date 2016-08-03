@@ -32,4 +32,9 @@ public interface FeedbackMapper {
 
     void updateStatus(@Param("feedbackId") long feedbackId,
                       @Param("status") ProcessStatus status);
+
+    void updateRemark(FeedbackModel feedbackModel);
+
+    FeedbackModel findById(@Param("feedbackId") long feedbackId);
+
 }

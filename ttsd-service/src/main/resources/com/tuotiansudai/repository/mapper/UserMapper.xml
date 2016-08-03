@@ -354,10 +354,10 @@
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
-        <if test="balanceMin >= 0">
+        <if test="balanceMin !=null and balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax !=null and balanceMax >= 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
         ORDER BY `account`.`balance` DESC
@@ -373,10 +373,10 @@
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
-        <if test="balanceMin >= 0">
+        <if test="balanceMin !=null and balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax !=null and balanceMax >= 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
@@ -390,10 +390,10 @@
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
-        <if test="balanceMin >= 0">
+        <if test="balanceMin !=null and balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax !=null and balanceMax >= 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
