@@ -1396,32 +1396,18 @@
         </if>
     </select>
 
-    <select id="queryExpectedRepayByRepayDate" parameterType="map" resultMap="keyValueMap">
+    <select id="queryRepayByRecheckTimeAndActualRepayDate" parameterType="map" resultMap="keyValueMap">
         SELECT
-        <if test="granularity.name() == 'Daily'">
-            DATE(repay_date) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(repay_date, '%Y-W%u') AS `name`,
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(repay_date, '%Y-%m') AS `name`,
-        </if>
-        ROUND(SUM(corpus + default_interest + expected_interest) / 100, 2) AS value,
-        '待收金额' AS `group`
+            ROUND(IFNULL(SUM(r.corpus + r.expected_interest + r.default_interest),0)/ 100, 2) AS `value`,
+            DATE(#{startTime}) AS `name`,
+            '待收' as `group`
         FROM
-        loan_repay
-        WHERE status != 'COMPLETE'
-        AND repay_date between #{startTime} and #{endTime}
-        GROUP BY
-        <if test="granularity.name() == 'Daily'">
-            date(repay_date)
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            year(repay_date), week(repay_date)
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            year(repay_date), month(repay_date)
-        </if>
+            loan l
+                LEFT JOIN
+            loan_repay r ON l.id = r.loan_id
+        WHERE
+            l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
+            AND l.recheck_time &lt; #{startTime}
+            AND (r.actual_repay_date > #{startTime} or actual_repay_date is null)
     </select>
 </mapper>
