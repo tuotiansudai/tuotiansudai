@@ -235,6 +235,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         couponRepayModel.setActualInterest(actualInterest);
         couponRepayModel.setActualFee(actualFee);
+        couponRepayModel.setRepayAmount(actualInterest - actualFee);
         couponRepayModel.setActualRepayDate(new Date());
         couponRepayModel.setStatus(RepayStatus.COMPLETE);
         couponRepayMapper.update(couponRepayModel);
