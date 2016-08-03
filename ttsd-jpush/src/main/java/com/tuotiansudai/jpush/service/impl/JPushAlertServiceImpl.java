@@ -32,8 +32,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -220,7 +218,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         for (PushUserType pushUserType : pushUserTypes) {
             switch (pushUserType) {
                 case ALL:
-                    loginNames = userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
+                    loginNames = userMapper.findAllUsersByProvinces(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                     break;
                 case STAFF:
                     loginNames = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", districtName).build()));
@@ -552,7 +550,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             if (transferAmount > 0) {
                 List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
-                loginNameMap.put(userMapper.findUsersMobileByLoginName(userCouponModel.getLoginName()), amountLists);
+                loginNameMap.put(userMapper.findByLoginName(userCouponModel.getLoginName()).getMobile(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             }
         }
@@ -628,7 +626,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     if (jPushAlertModel != null) {
                         Map<String, List<String>> loginNameMap = Maps.newHashMap();
                         List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-                        loginNameMap.put(userMapper.findUsersMobileByLoginName(accountModel.getLoginName()), amountLists);
+                        loginNameMap.put(userMapper.findByLoginName(accountModel.getLoginName()).getMobile(), amountLists);
                         autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
                         loginNameMap.clear();
                     } else {

@@ -6,46 +6,46 @@
 
     <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapper"/>
 
-    <resultMap id="userResultMap" type="UserView">
+    <resultMap id="userViewResultMap" type="UserView">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
-        <result column="password" property="password"/>
-        <result column="email" property="email"/>
         <result column="mobile" property="mobile"/>
-        <result column="register_time" property="registerTime"/>
-        <result column="last_login_time" property="lastLoginTime"/>
-        <result column="last_modified_time" property="lastModifiedTime"/>
-        <result column="last_modified_user" property="lastModifiedUser"/>
-        <result column="avatar" property="avatar"/>
-        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="email" property="email"/>
+        <result column="user_name" property="userName"/>
+        <result column="identity_number" property="identityNumber"/>
+        <result column="is_staff" property="isStaff"/>
+        <result column="is_bind_bank_card" property="isBindBankCard"/>
         <result column="status" property="status"/>
-        <result column="salt" property="salt"/>
         <result column="channel" property="channel"/>
         <result column="source" property="source"/>
         <result column="province" property="province"/>
         <result column="city" property="city"/>
         <result column="auto_invest_status" property="autoInvestStatus"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
-        <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
-            <id column="id" property="id"/>
-            <result column="login_name" property="loginName"/>
-            <result column="user_name" property="userName"/>
-            <result column="identity_number" property="identityNumber"/>
-            <result column="pay_user_id" property="payUserId"/>
-            <result column="pay_account_id" property="payAccountId"/>
-            <result column="balance" property="balance"/>
-            <result column="freeze" property="freeze"/>
-            <result column="register_time" property="registerTime"/>
-            <result column="auto_invest" property="autoInvest"/>
-        </association>
     </resultMap>
 
-    <select id="findAllUser" parameterType="map" resultMap="userResultMap">
-        select
-        u.*,
-        a.*,
-        referrer_u.mobile as referrer_mobile,
-        IF(au.login_name is null, "0", "1") as auto_invest_status
+    <select id="findAllUser" parameterType="map" resultMap="userViewResultMap">
+        SELECT
+        u.id as id,
+        u.login_name as login_name,
+        u.mobile as mobile,
+        u.email as email,
+        u.source as source,
+        u.channel as channel,
+        u.province as province,
+        u.city as city,
+        u.register_time as register_time,
+        u.status as status,
+        a.user_name as user_name,
+        a.identity_number as identity_number,
+        (select mobile from user referrer where referrer.login_name = u.referrer) AS referrer_mobile,
+        IF(exists (select 1 from auto_invest_plan au where u.login_name = au.login_name and enabled is TRUE), "0", "1") as auto_invest_status,
+        IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and referrer_role.role = 'STAFF'), TRUE, FALSE) as is_referrer_staff,
+        IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
+        IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'), TRUE, FALSE) as is_bind_bank_card
         from
         <choose>
             <when test="roleStage == null ">
@@ -78,7 +78,6 @@
                 h.role IN ('STAFF' , 'AGENT')) ff) gg
                 WHERE
                 gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
-
             </when>
             <when test="roleStage.name() == 'RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
@@ -90,8 +89,6 @@
             </otherwise>
         </choose>
         left join account a on u.login_name = a.login_name
-        left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
-        left join user referrer_u on referrer_u.login_name = u.referrer
         <where>
             <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
@@ -112,7 +109,7 @@
                 and u.register_time &lt;= #{endTime}
             </if>
             <if test="referrerMobile !=null and referrerMobile != '' ">
-                and referrer_u.mobile = #{referrerMobile}
+                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
@@ -120,7 +117,6 @@
             <if test="source !=null">
                 and u.source = #{source}
             </if>
-
         </where>
         order by u.register_time desc
         limit #{index}, #{pageSize}
@@ -159,7 +155,6 @@
                 h.role IN ('STAFF' , 'AGENT')) ff) gg
                 WHERE
                 gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
-
             </when>
             <when test="roleStage.name() == 'RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
@@ -170,7 +165,6 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
-        left join user referrer_u on referrer_u.login_name = u.referrer
         <where>
             <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
@@ -191,7 +185,7 @@
                 and u.register_time &lt;= #{endTime}
             </if>
             <if test="referrerMobile !=null and referrerMobile != '' ">
-                and referrer_u.mobile = #{referrerMobile}
+                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
@@ -202,6 +196,124 @@
         </where>
     </select>
 
+    <select id="searchAllUsers" parameterType="map" resultMap="userViewResultMap">
+        SELECT
+        user.id as id,
+        user.login_name as login_name,
+        user.mobile as mobile,
+        user.email as email,
+        user.source as source,
+        user.channel as channel,
+        user.province as province,
+        user.city as city,
+        user.register_time as register_time,
+        user.status as status,
+        account.user_name as user_name,
+        account.identity_number as identity_number,
+        (select mobile from user referrer where referrer.login_name = user.referrer) AS referrer_mobile
+        FROM user
+        LEFT JOIN account ON user.login_name = account.login_name
+        <where>
+            <if test="identityNumber != null and identityNumber != '' ">
+                AND account.`identity_number` = #{identityNumber}
+            </if>
+            <if test="loginName != null and loginName != '' ">
+                AND user.`login_name` = #{loginName}
+            </if>
+            <if test="referrerMobile != null and referrerMobile != '' ">
+                AND EXISTS (select 1 from user referrer where referrer.login_name = user.referrer and referrer.mobile = #{referrerMobile})
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND user.`mobile` = #{mobile}
+            </if>
+        </where>
+        ORDER BY user.`register_time` DESC
+    </select>
 
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
+        SELECT
+        user.id as id,
+        user.login_name as login_name,
+        user.mobile as mobile,
+        user.province as province,
+        user.city as city,
+        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
+        user.register_time as register_time,
+        user.status as status,
+        account.user_name as user_name,
+        account.balance as balance,
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax > 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+        ORDER BY `account`.`balance` DESC
+        <if test="startLimit != null and endLimit != null">
+            limit #{startLimit}, #{endLimit}
+        </if>
+
+    </select>
+
+    <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+    </select>
+
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="long">
+        SELECT IFNULL(count(1), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax > 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+    </select>
+
+    <select id="findUsersCountByChannel" parameterType="string" resultType="long">
+        select ifnull(count(*),0) from user where channel = #{channel}
+    </select>
+
+    <select id="findStaffByLikeLoginName" parameterType="string" resultType="string">
+        select login_name
+        from user
+        where user.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        and exists(select 1 from user_role where user_role.login_name = user.login_name and user_role.role = 'STAFF')
+    </select>
+
+    <select id="findMobileLike" parameterType="string" resultType="string">
+        select mobile from user where mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+    </select>
+
+    <select id="findLoginNameLike" parameterType="string" resultType="string">
+        select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
 
 </mapper>

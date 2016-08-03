@@ -11,7 +11,6 @@ import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
@@ -22,6 +21,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -71,6 +71,9 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
@@ -244,7 +247,7 @@ public class CouponController {
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
             modelAndView.addObject("agents", userRoleService.queryAllAgent());
-            modelAndView.addObject("channels",userMapper.findAllChannels());
+            modelAndView.addObject("channels", userService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }
         if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {

@@ -40,12 +40,11 @@ public class RegisterUserController {
     @Autowired
     private UserMapper userMapper;
 
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
+        modelAndView.addObject("referrer", userMapper.findByLoginName(referrer).getMobile());
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }

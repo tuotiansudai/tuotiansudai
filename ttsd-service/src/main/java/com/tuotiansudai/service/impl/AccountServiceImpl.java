@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
         for(AccountModel accountModel : accountModels) {
             AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
             accountItemDataDto.setTotalPoint(accountMapper.findUsersAccountTotalPoint(accountModel.getLoginName()));
-            accountItemDataDto.setMobile(userMapper.findUsersMobileByLoginName(accountModel.getLoginName()));
+            accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());
             accountItemDataDtoList.add(accountItemDataDto);
         }
         return accountItemDataDtoList;

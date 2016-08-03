@@ -36,7 +36,7 @@ public class ActivitiesController {
         String loginName = httpServletRequest.getParameter("loginName");
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
-            modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(loginName));
+            modelAndView.addObject("referrer", userMapper.findByLoginName(loginName).getMobile());
         }
 
         return modelAndView;

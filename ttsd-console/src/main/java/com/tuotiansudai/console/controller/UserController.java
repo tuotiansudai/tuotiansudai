@@ -72,6 +72,9 @@ public class UserController {
     @Autowired
     private UserRoleService userRoleService;
 
+    @Autowired
+    private InvestService investService;
+
     @Value("${web.server}")
     private String webServer;
 
@@ -94,12 +97,13 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             AccountModel accountModel = accountService.findByLoginName(loginName);
-            UserModel userModel = userMapper.findByLoginName(loginName);
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
             if (bankCard != null) {
                 editUserDto.setBankCardNumber(bankCard.getCardNumber());
             }
-            editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
+
+            AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
+            editUserDto.setAutoInvestStatus(autoInvestPlan != null && autoInvestPlan.isEnabled() ? "1" : "0");
             editUserDto.setIdentityNumber(accountModel == null ? "" : accountModel.getIdentityNumber());
             editUserDto.setUserName(accountModel == null ? "" : accountModel.getUserName());
             modelAndView.addObject("user", editUserDto);
@@ -127,25 +131,19 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchLoginName(@PathVariable String loginName) {
-        return userService.findLoginNameLike(loginName);
+        return userServiceConsole.findLoginNameLike(loginName);
     }
 
     @RequestMapping(value = "/staff/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchStaffName(@PathVariable String loginName) {
-        return userService.findStaffNameFromUserLike(loginName);
+        return userServiceConsole.findStaffNameFromUserLike(loginName);
     }
 
     @RequestMapping(value = "/mobile/{mobile}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchMobile(@PathVariable String mobile) {
-        return userService.findMobileLike(mobile);
-    }
-
-    @RequestMapping(value = "/mobile/account/{mobile}/search", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> searchAccountMobile(@PathVariable String mobile) {
-        return userService.findAccountMobileLike(mobile);
+        return userServiceConsole.findMobileLike(mobile);
     }
 
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
@@ -177,7 +175,7 @@ public class UserController {
             mv.addObject("referrerMobile", referrerMobile);
             mv.addObject("mobile", mobile);
             mv.addObject("identityNumber", identityNumber);
-            mv.addObject("userList", userService.searchAllUsers(loginName, referrerMobile, mobile, identityNumber));
+            mv.addObject("userList", userServiceConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber));
         }
         return mv;
     }
@@ -250,7 +248,7 @@ public class UserController {
             mv.addObject("pageIndex", index);
             mv.addObject("pageSize", pageSize);
             List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
-            List<String> channelList = userService.findAllChannels();
+            List<String> channelList = userService.findAllUserChannels();
             mv.addObject("roleStageList", roleStageList);
             mv.addObject("channelList", channelList);
             mv.addObject("sourceList", Source.values());
@@ -292,13 +290,13 @@ public class UserController {
     @RequestMapping(value = "/user/channels", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllChannel() {
-        return userMapper.findAllChannels();
+        return userService.findAllUserChannels();
     }
 
     @RequestMapping(value = "/user/{channel}/channel", method = RequestMethod.GET)
     @ResponseBody
     public long queryUserByChannel(@PathVariable String channel) {
-        return userMapper.findUsersCountByChannel(channel);
+        return userServiceConsole.findUsersCountByChannel(channel);
     }
 
 }

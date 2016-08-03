@@ -48,13 +48,13 @@
                 <#list userList as userItem>
                 <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
                     <td>${userItem.loginName}</td>
-                    <td>${userItem.account.userName!}</td>
+                    <td>${userItem.userName!}</td>
                     <td>${userItem.mobile}</td>
                     <td>${userItem.referrerMobile!}</td>
                     <td>${userItem.source!}</td>
                     <td>${userItem.channel!}</td>
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
-                    <td>${userItem.account.identityNumber!}</td>
+                    <td>${userItem.identityNumber!}</td>
                     <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
                     <td><a href="/user-manage/user/${userItem.loginName}">查看</a></td>
                 </tr>

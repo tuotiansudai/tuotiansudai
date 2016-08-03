@@ -184,13 +184,4 @@ public class RegisterUserControllerTest {
         this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());
     }
-
-    @Test
-    public void shouldDisplayRegisterUserTemplate() throws Exception {
-        when(userMapper.findUsersMobileByLoginName(anyString())).thenReturn("");
-
-        this.mockMvc.perform(get("/register/user"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/register-user"));
-    }
 }
