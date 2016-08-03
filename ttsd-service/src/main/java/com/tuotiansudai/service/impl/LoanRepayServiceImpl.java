@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +160,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
         }
+        logger.debug(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue",loanRepayModel.getId()));
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(),loanRepayModel.getPeriod());
         for (CouponRepayModel couponRepayModel : couponRepayModels){
             if(couponRepayModel.getRepayDate().before(new Date())){
