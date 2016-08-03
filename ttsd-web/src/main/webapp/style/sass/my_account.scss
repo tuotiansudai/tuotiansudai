@@ -1505,6 +1505,7 @@ $red: #eb4a3e;
     .news-share {
       width: 616px;
       display: table-cell;
+      vertical-align: top;
       @media (max-width: 700px) {
         width: 100%;
       }
@@ -1620,6 +1621,7 @@ $red: #eb4a3e;
     .account-info {
       width: 370px;
       display: table-cell;
+      vertical-align: top;
       text-align: center;
       font-size: 12px;
       color: #949494;
@@ -1841,6 +1843,7 @@ $red: #eb4a3e;
           .btn-normal {
             width: 100%;
             padding: 8px 0;
+            border-radius:0;
           }
           .account-amount {
             padding-right: .5em;
@@ -1962,7 +1965,7 @@ $red: #eb4a3e;
         color: #ed9c30;
       }
       &.active {
-        border-top: 2px solid #ed9c30;
+        border-top: 2px solid #ff752a;
         margin-top: -1px;
         margin-bottom: -1px;
         i {
@@ -2050,7 +2053,9 @@ $red: #eb4a3e;
             .item {
               border: 1px solid #e6e6e6;
               text-align: center;
-              padding: 0 10px;
+              padding: 10px 5px;
+              min-height:125px;
+
               h4 {
                 font-size: 24px;
                 color: #808080;
