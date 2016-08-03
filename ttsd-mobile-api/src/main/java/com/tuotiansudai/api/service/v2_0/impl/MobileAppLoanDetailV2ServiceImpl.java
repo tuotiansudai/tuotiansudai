@@ -133,7 +133,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
             List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
             investedAmount = couponService.findExperienceInvestAmount(investModelList);
-            dataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toDate());
+            dataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         }
@@ -144,15 +144,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if(loanDetailsModel != null){
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
         }
-        dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
-        if (loanModel.getFundraisingEndTime() != null) {
-            dataDto.setFundRaisingEndTime(new DateTime(loanModel.getFundraisingEndTime()).toDate());
-        }
 
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
         if (loanModel.getFundraisingStartTime() != null) {
             dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
-            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
+            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         dataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loanModel.getFundraisingStartTime()));
         dataDto.setMinInvestMoney(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
