@@ -55,7 +55,7 @@ public class TransferApplicationController {
         loanDto.setType(loanModel.getType());
         loanDto.setPeriods(loanModel.getPeriods());
 
-        ModelAndView modelAndView = new ModelAndView("/transfer-detail", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
         modelAndView.addObject("loanDto", loanDto);
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));

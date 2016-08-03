@@ -1476,13 +1476,16 @@
           }
           .btn-normal {
             width: auto;
-            border: 1px solid #ff6400 !important;
-            background: #fff !important;
-            color: #ff6400 !important;
+            border: 1px solid #ff6400;
+            background: #fff;
+            color: #ff6400;
             letter-spacing: 0;
             padding: 7px 11px;
             float: right;
             border-radius: 5px;
+            &[disabled] {
+              color: #fff;
+            }
           }
         }
         .transer-bottom {
