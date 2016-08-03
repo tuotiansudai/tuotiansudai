@@ -1,10 +1,9 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.service.PrepareService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
@@ -49,6 +48,9 @@ public class RegisterUserControllerTest {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private PrepareService prepareService;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -60,6 +62,37 @@ public class RegisterUserControllerTest {
                 .setViewResolvers(viewResolver)
                 .build();
     }
+
+
+    @Test
+    public void shouldPrepareRegister() throws Exception {
+        BaseDataDto dataDto = new BaseDataDto(true, null);
+
+        when(prepareService.prepareRegister(any(PrepareRegisterRequestDto.class))).thenReturn(dataDto);
+
+        this.mockMvc.perform(post("/register/user/shared-prepare")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("referrerMobile", "18999999999")
+                .param("mobile", "18988888888")
+                .param("channel", "IOS"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void shouldRegister() throws Exception {
+        BaseDataDto dataDto = new BaseDataDto(true, null);
+        when(prepareService.register(any(ActivityRegisterRequestDto.class))).thenReturn(dataDto);
+        this.mockMvc.perform(post("/register/user/shared")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("referrerMobile", "18999999999")
+                .param("mobile", "18988888888")
+                .param("password", "123abc")
+                .param("captcha", "98765")
+                .param("channel", "ANDROID"))
+                .andExpect(status().isOk());
+    }
+
 
     @Test
     public void shouldMobileIsExist() throws Exception {
@@ -146,7 +179,7 @@ public class RegisterUserControllerTest {
 
 
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
-        when(captchaHelper.captchaVerify(anyString(),anyString())).thenReturn(true);
+        when(captchaHelper.captchaVerify(anyString(), anyString())).thenReturn(true);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("mobile", "13900000000").param("imageCaptcha", "12345"))
@@ -163,7 +196,7 @@ public class RegisterUserControllerTest {
         baseDto.setData(dataDto);
 
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
-        when(captchaHelper.captchaVerify(anyString(),anyString())).thenReturn(false);
+        when(captchaHelper.captchaVerify(anyString(), anyString())).thenReturn(false);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("mobile", "13900000000").param("imageCaptcha", "12345"))
