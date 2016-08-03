@@ -251,7 +251,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             redisWrapperClient.hsetSeri(PLATFROM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }
 
-        return getMonthKeyValue(keyValueModelLists,granularity,queryStartTime,queryEndTime);
+        return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
     }
 
     private List<KeyValueModel> getMonthKeyValue(List<KeyValueModel> keyValueModels, Granularity granularity,Date queryStartTime,Date queryEndTime){
