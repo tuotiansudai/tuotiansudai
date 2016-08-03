@@ -7,8 +7,6 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
@@ -42,7 +40,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Override
     public List<ExchangeCouponDto> findExchangeableCouponList() {
-        List<CouponModel> couponModels = couponMapper.findCouponExchangeableList(0, 100);
+        List<CouponModel> couponModels = couponMapper.findExchangeableCoupons(null, null);
         return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {

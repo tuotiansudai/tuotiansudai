@@ -2,8 +2,8 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
+import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -63,7 +63,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             investModel = investMapper.findById(transferApplicationModel.getInvestId());
         }
-        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptLoginName(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), 3, investModel.getId()) : "",
+        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId(),Source.MOBILE) : "",
                 transferApplicationModel.getTransferAmount(), transferApplicationModel.getTransferTime());
         TransferTransfereeResponseDataDto transferTransfereeResponseDataDto =  new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
                 Lists.newArrayList(transferTransfereeRecordResponseDataDto).size(), Lists.newArrayList(transferTransfereeRecordResponseDataDto));
@@ -77,6 +77,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
     public BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
+        investDto.setNoPassword(true);
         String code = "";
         String message = "";
         try {
@@ -155,7 +156,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
                 baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
                 baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
                 break;
-            case APPLICATION_IS_HIS_OWN:
+            case INVESTOR_IS_LOANER:
                 baseResponseDto.setCode(ReturnMessage.APPLICATION_IS_HIS_OWN.getCode());
                 baseResponseDto.setMessage(ReturnMessage.APPLICATION_IS_HIS_OWN.getMsg());
                 break;

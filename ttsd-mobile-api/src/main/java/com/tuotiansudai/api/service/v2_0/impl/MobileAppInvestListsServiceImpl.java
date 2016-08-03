@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -18,10 +19,12 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -45,6 +48,9 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
     @Autowired
     private CouponMapper couponMapper;
 
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
+
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto userInvestListRequestDto) {
         String loginName = userInvestListRequestDto.getBaseParam().getUserId();
@@ -53,7 +59,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         List<InvestModel>  investModels = investMapper.findInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus(), index, pageSize);
 
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investModels));
+        dtoData.setInvestList(convertResponseData(investModels,userInvestListRequestDto.getStatus()));
         dtoData.setIndex(userInvestListRequestDto.getIndex());
         dtoData.setPageSize(userInvestListRequestDto.getPageSize());
         long investModelCount = investMapper.countInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus());
@@ -67,14 +73,27 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         return dto;
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels) {
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel>  investModels,LoanStatus loanStatus) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         if (CollectionUtils.isNotEmpty(investModels)) {
             for (InvestModel investModel : investModels) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel);
+
+                if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
+                    dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
+                }
+
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+                dto.setExtraRate(investExtraRateModel != null ? decimalFormat.format(investExtraRateModel.getExtraRate() * 100) : null);
                 long actualInterest = 0;
                 long expectedInterest = 0;
+
+                if (investExtraRateModel != null) {
+                    expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                }
+
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
                     actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest();
@@ -83,9 +102,11 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
                 InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
+                String lastRepayDate = null;
                 if (lastInvestRepayModel != null) {
-                    dto.setLastRepayDate(new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+                    lastRepayDate = new DateTime(loanModel.getStatus() == LoanStatus.COMPLETE ? lastInvestRepayModel.getActualRepayDate() : lastInvestRepayModel.getRepayDate()).toString("yyyy-MM-dd");
                 }
+                dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
 
                 String transferStatus;
                 if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE) {
@@ -108,6 +129,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 dto.setUsedCoupon(CollectionUtils.isNotEmpty(couponTypes) && !couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setUsedRedEnvelope(couponTypes.contains(CouponType.RED_ENVELOPE));
                 dto.setProductNewType(loanModel.getProductType().name());
+
                 list.add(dto);
             }
         }

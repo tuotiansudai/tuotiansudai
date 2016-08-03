@@ -1,5 +1,4 @@
-window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype','ueditor', 'csrf'], function ($, template) {
+require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype', 'csrf'], function ($, template) {
     $(function () {
         var _html = '';
         var data = '';
@@ -13,6 +12,31 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             var dataTPL = {_data: data};
             _html = template('upload', dataTPL);
 
+        });
+
+        //根据项目名称改变抵押物详情
+        $('.jq-name').change(function () {
+            var house_html =
+                '<div class="form-group"><label class="col-sm-2 control-label">抵押物所在地: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-location" datatype="*" autocomplete="off" placeholder="" errormsg="抵押物所在地不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">不动产登记证明:编号: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-estate-register-id" datatype="*" autocomplete="off" placeholder="" errormsg="不动产登记证明不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">房本编号: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-property-card-id" datatype="*" autocomplete="off" placeholder="" errormsg="房本编号不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">借款抵押房产面积: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-square" datatype="*" autocomplete="off" placeholder="" errormsg="借款抵押房产面积不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">公证书: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-authentic-act" datatype="*" autocomplete="off" placeholder="" errormsg="公证书不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">借款抵押物估值: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*" autocomplete="off" placeholder="" errormsg="借款抵押物估值不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">抵押物借款金额: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*" autocomplete="off" placeholder="" errormsg="抵押物借款金额不能为空"></div></div>';
+            var vehicle_html =
+                '<div class="form-group"><label class="col-sm-2 control-label">抵押物所在地: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-location" datatype="*" autocomplete="off" placeholder="" errormsg="抵押物所在地不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">借款抵押车辆型号: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-model" datatype="*" autocomplete="off" placeholder="" errormsg="抵押车辆型号不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">借款抵押车辆品牌: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-brand" datatype="*" autocomplete="off" placeholder="" errormsg="抵押车辆品牌不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">借款抵押物估值: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*" autocomplete="off" placeholder="" errormsg="借款抵押物估值不能为空"></div></div>' +
+                '<div class="form-group"><label class="col-sm-2 control-label">抵押物借款金额: </label><div class="col-sm-4"><input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*" autocomplete="off" placeholder="" errormsg="抵押物借款金额不能为空"></div></div>';
+            var dom = document.getElementById("pledge-details");
+            var value = $('.jq-name').val();
+            if ("房产抵押借款" == value) {
+                dom.innerHTML = house_html;
+            } else if ("车辆抵押借款" == value) {
+                dom.innerHTML = vehicle_html;
+            }
         });
 
         function initSelect() {
@@ -42,6 +66,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 language: "zh",
                 uploadUrl: "/upload",
                 showUpload: true,
+                dropZoneTitle: '选择图片文件到这里 &hellip;',
                 initialPreviewShowDelete: true,
                 allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
             });
@@ -144,10 +169,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                             $('.jq-timer').val(_options.eq(i).data('period'));
                             $('.jq-duration').val(_options.eq(i).data('duration'));
                             $('.jq-product-line').val(_options.eq(i).data('product-line'));
+                            $('.jq-product-line').change();
                         } else {
                             $('.jq-timer').val('');
                             $('.jq-duration').val('');
                             $('.jq-product-line').val('');
+                            $('.jq-product-line').change();
                         }
                     }
                 }
@@ -242,9 +269,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             beforeCheck: function (curform) {
                 $('.form-error').html('');
 
-                var projectName = $('.jq-user', curform).val();
+                var projectName = $('.jq-name', curform).val();
                 if (projectName == '') {
-                    showErrorMessage('请选择借款项目名称', $('.jq-user', curform));
+                    showErrorMessage('请选择借款项目名称', $('.jq-name', curform));
                     return false;
                 }
 
@@ -301,6 +328,15 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 currentErrorObj.focus();
             }
         });
+
+        function getExtraRateIds() {
+            var extraRateIds = [];
+            $('.extra-rate-id').each(function () {
+                extraRateIds.push($(this).val());
+            });
+            return extraRateIds;
+        }
+
         //提交表单
         $('.jq-btn-form').click(function () {
             //$(".jq-form").Validform({
@@ -319,33 +355,101 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 if (showOnHomeInputVal == '0') {
                     showOnHome = false;
                 }
-                var dataForm = JSON.stringify({
-                    "projectName": $('.jq-user').val(),
-                    "agentLoginName": $('.jq-agent').val(),
-                    "loanerLoginName": $('.jq-loaner-login-name').val(),
-                    "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
-                    "loanerUserName": $('.jq-loaner-user-name').val(),
-                    "type": $('.jq-mark-type').val(),
-                    "periods": $('.jq-timer').val(),
-                    "duration": $('.jq-duration').val(),
-                    "descriptionText": getContentTxt(),
-                    "descriptionHtml": getContent(),
-                    "minInvestAmount": $('.jq-min-pay').val(),
-                    "maxInvestAmount": $('.jq-max-pay').val(),
-                    "investIncreasingAmount": $('.jq-add-pay').val(),
-                    "activityType": $('.jq-impact-type').val(),
-                    "productType": $('.jq-product-line').val(),
-                    "activityRate": $('.jq-percent').val(),
-                    "contractId": $('.jq-pact').val(),
-                    "basicRate": $('.jq-base-percent').val(),
-                    "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g, "/"))),
-                    "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
-                    "showOnHome": showOnHome,
-                    "loanAmount": $('.jq-pay').val(),
-                    "loanTitles": uploadFile
-                });
+                var value = $('.jq-name').val();
+                var url = "/project-manage/loan/create";
+                if ("房产抵押借款" == value) {
+                    var dataDto = {
+                        "projectName": $('.jq-name').val(),
+                        "agentLoginName": $('.jq-agent').val(),
+                        "loanerLoginName": "",
+                        "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
+                        "loanerUserName": $('.jq-loaner-user-name').val(),
+                        "type": $('.jq-mark-type').val(),
+                        "periods": $('.jq-timer').val(),
+                        "duration": $('.jq-duration').val(),
+                        "minInvestAmount": $('.jq-min-pay').val(),
+                        "maxInvestAmount": $('.jq-max-pay').val(),
+                        "investIncreasingAmount": $('.jq-add-pay').val(),
+                        "activityType": $('.jq-impact-type').val(),
+                        "productType": $('.jq-product-line').val(),
+                        "activityRate": $('.jq-percent').val(),
+                        "contractId": $('.jq-pact').val(),
+                        "basicRate": $('.jq-base-percent').val(),
+                        "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g, "/"))),
+                        "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
+                        "showOnHome": showOnHome,
+                        "loanAmount": $('.jq-pay').val(),
+                        "loanTitles": uploadFile,
+                        "extraRateIds": getExtraRateIds(),
+
+                        "declaration": $('.jq-loan-declaration').val(),
+
+                        "loanerLoginName": "",
+                        "loanerUserName": $('.jq-loaner-user-name').val(),
+                        "loanerGender": $('.jq-loaner-gender').val(),
+                        "loanerAge": $('.jq-loaner-age').val(),
+                        "loanerIdentifyNumber": $('.jq-loaner-identity-number').val(),
+                        "loanerMarriage": $('.jq-loaner-marriage').val(),
+                        "loanerRegion": $('.jq-loaner-region').val(),
+                        "loanerIncome": $('.jq-loaner-income').val(),
+                        "loanerEmploymentStatus": $('.jq-loaner-employment').val(),
+
+                        "pledgeLocation": $('.jq-pledge-location').val(),
+                        "estimateAmount": $('.jq-pledge-estimate-amount').val(),
+                        "pledgeLoanAmount": $('.jq-pledge-loan-amount').val(),
+                        "square": $('.jq-pledge-square').val(),
+                        "propertyCardId": $('.jq-pledge-property-card-id').val(),
+                        "estateRegisterId": $('.jq-pledge-estate-register-id').val(),
+                        "authenticAct": $('.jq-pledge-authentic-act').val()
+                    };
+                    url += "/house";
+                } else if ("车辆抵押借款" == value) {
+                    var dataDto = {
+                        "projectName": $('.jq-name').val(),
+                        "agentLoginName": $('.jq-agent').val(),
+                        "loanerLoginName": "",
+                        "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
+                        "loanerUserName": $('.jq-loaner-user-name').val(),
+                        "type": $('.jq-mark-type').val(),
+                        "periods": $('.jq-timer').val(),
+                        "duration": $('.jq-duration').val(),
+                        "minInvestAmount": $('.jq-min-pay').val(),
+                        "maxInvestAmount": $('.jq-max-pay').val(),
+                        "investIncreasingAmount": $('.jq-add-pay').val(),
+                        "activityType": $('.jq-impact-type').val(),
+                        "productType": $('.jq-product-line').val(),
+                        "activityRate": $('.jq-percent').val(),
+                        "contractId": $('.jq-pact').val(),
+                        "basicRate": $('.jq-base-percent').val(),
+                        "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g, "/"))),
+                        "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
+                        "showOnHome": showOnHome,
+                        "loanAmount": $('.jq-pay').val(),
+                        "loanTitles": uploadFile,
+                        "extraRateIds": getExtraRateIds(),
+
+                        "declaration": $('.jq-loan-declaration').val(),
+
+                        "loanerUserName": $('.jq-loaner-user-name').val(),
+                        "loanerGender": $('.jq-loaner-gender').val(),
+                        "loanerAge": $('.jq-loaner-age').val(),
+                        "loanerIdentifyNumber": $('.jq-loaner-identity-number').val(),
+                        "loanerMarriage": $('.jq-loaner-marriage').val(),
+                        "loanerRegion": $('.jq-loaner-region').val(),
+                        "loanerIncome": $('.jq-loaner-income').val(),
+                        "loanerEmploymentStatus": $('.jq-loaner-employment').val(),
+
+                        "pledgeLocation": $('.jq-pledge-location').val(),
+                        "estimateAmount": $('.jq-pledge-estimate-amount').val(),
+                        "pledgeLoanAmount": $('.jq-pledge-loan-amount').val(),
+                        "brand": $('.jq-pledge-brand').val(),
+                        "model": $('.jq-pledge-model').val()
+                    };
+                    url += "/vehicle";
+                }
+                var dataForm = JSON.stringify(dataDto);
                 $.ajax({
-                        url: API_FORM,
+                    url: url,
                         type: 'POST',
                         dataType: 'json',
                         data: dataForm,
@@ -368,5 +472,85 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     });
             }
         });
+
+        function uncheckedExtraRate() {
+            $('.extra-rate').addClass('hidden');
+            $('.extra-rate-rule').html('');
+            $('.extra-rate-id').remove();
+            $('#extra').prop('checked', false);
+        }
+
+        function checkedExtraRate() {
+            $('.form-error').html('');
+            var $loanName = $('.jq-name');
+            var $productType = $('.jq-product-line');
+            if ($loanName.val() == '') {
+                showErrorMessage('项目名称未选择，不能操作此选项');
+                $('#extra').prop('checked', false);
+            } else if ($productType.val() == '' || $productType.val() == '_30') {
+                showErrorMessage('借款期限未选择或选择为30天，不能操作此选项');
+                $('#extra').prop('checked', false);
+            } else {
+                $.ajax({
+                    url: '/project-manage/loan/extra-rate-rule?loanName=' + $loanName.val() + '&productType=' + $productType.val(),
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                    .done(function (res) {
+                        if (res.data.status) {
+                            $('.extra-rate-id').remove();
+                            $('.extra-rate').removeClass('hidden');
+                            var $extraRateRule = $('.extra-rate-rule');
+                            $extraRateRule.html('');
+                            var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
+                            for (var i = 0; i < extraLoanRateRuleModels.length; i++) {
+                                var minInvestAmount = extraLoanRateRuleModels[i].minInvestAmount / 100;
+                                var maxInvestAmount;
+                                if (extraLoanRateRuleModels[i].maxInvestAmount > 0) {
+                                    maxInvestAmount = '<' + extraLoanRateRuleModels[i].maxInvestAmount / 100;
+                                } else {
+                                    maxInvestAmount = '';
+                                }
+                                $extraRateRule.append('<tr><td> ' + minInvestAmount + '≤投资额' + maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
+                                $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
+                            }
+                        } else {
+                            showErrorMessage('服务端校验失败');
+                        }
+                    })
+                    .fail(function () {
+                        showErrorMessage('服务端操作失败');
+                    });
+            }
+        }
+
+        $('#extra').on('click', function () {
+            if (!$(this).is(':checked')) {
+                uncheckedExtraRate();
+            } else {
+                checkedExtraRate();
+            }
+        });
+
+        $('.jq-name').on('change', function () {
+            var $productType = $('.jq-product-line');
+            if ($(this).val() == '') {
+                uncheckedExtraRate();
+            }
+            if ($productType.val() != '' && $productType.val() != '_30' && $('#extra').is(':checked')) {
+                checkedExtraRate();
+            }
+        });
+
+        $('.jq-product-line').on('change', function () {
+            if ($(this).val() == '' || $(this).val() == '_30') {
+                uncheckedExtraRate();
+            }
+            if ($('.jq-name').val() != '' && $('#extra').is(':checked')) {
+                checkedExtraRate();
+            }
+        });
+
     });
 });

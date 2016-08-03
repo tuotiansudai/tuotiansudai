@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ExtraLoanRateMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="extraLoanRateResultMap" type="ExtraLoanRateModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="extra_rate_rule_id" property="extraRateRuleId"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="rate" property="rate"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="java.util.List">
+        insert into extra_loan_rate (loan_id,extra_rate_rule_id,min_invest_amount,max_invest_amount,rate,created_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.loanId},#{item.extraRateRuleId},#{item.minInvestAmount},#{item.maxInvestAmount},#{item.rate},now())
+        </foreach>
+    </insert>
+
+    <delete id="deleteByLoanId" parameterType="map">
+        delete from extra_loan_rate where loan_id = #{loanId}
+    </delete>
+
+    <select id="findByLoanId" parameterType="map" resultMap="extraLoanRateResultMap">
+        select * from extra_loan_rate where loan_id = #{loanId} order by extra_rate_rule_id
+    </select>
+
+    <select id="findMaxRateByLoanId" parameterType="map" resultType="double">
+        select IFNULL(max(rate),0) from extra_loan_rate where loan_id = #{loanId}
+    </select>
+
+    <select id="findByLoanIdOrderByRate" parameterType="map" resultMap="extraLoanRateResultMap">
+        select * from extra_loan_rate where loan_id = #{loanId} order by rate
+    </select>
+</mapper>

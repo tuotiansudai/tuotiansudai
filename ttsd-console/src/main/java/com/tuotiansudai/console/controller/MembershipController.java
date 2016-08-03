@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Joiner;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +41,9 @@ public class MembershipController {
     @Autowired
     private UserMembershipService userMembershipService;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
@@ -51,15 +54,14 @@ public class MembershipController {
                                        @RequestParam(value = "mobile", required = false, defaultValue = "") String mobile,
                                        @RequestParam(value = "type", required = false, defaultValue = "") UserMembershipType userMembershipType,
                                        @RequestParam(value = "levels", required = false, defaultValue = "") List<Integer> selectedLevels) {
+
+        int count = userMembershipMapper.findCountUserMembershipItemViews(loginName,
+                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels, (index - 1) * 10, pageSize);
+
         List<UserMembershipItemDto> userMembershipItemDtos = userMembershipService.getUserMembershipItems(loginName,
-                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels);
-        List<UserMembershipItemDto> results = new ArrayList<>();
-        for (int startIndex = (index - 1) * pageSize,
-             endIndex = index * pageSize <= userMembershipItemDtos.size() ? index * pageSize : userMembershipItemDtos.size();
-             startIndex < endIndex; ++startIndex) {
-            results.add(userMembershipItemDtos.get(startIndex));
-        }
-        BasePaginationDataDto<UserMembershipItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, userMembershipItemDtos.size(), results);
+                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels, (index - 1) * 10, pageSize);
+
+        BasePaginationDataDto<UserMembershipItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userMembershipItemDtos);
 
         ModelAndView modelAndView = new ModelAndView("/membership-list");
         modelAndView.addObject("data", basePaginationDataDto);

@@ -238,6 +238,7 @@ public class InvestRepayMapperTest {
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setStatus(LoanStatus.REPAYING);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 
@@ -268,7 +269,7 @@ public class InvestRepayMapperTest {
         investModel.setInvestTime(sdf.parse("2016-05-20"));
         investModel.setTransferStatus(TransferStatus.SUCCESS);
         investModel.setSource(Source.IOS);
-        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(),-1);
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());
@@ -301,7 +302,7 @@ public class InvestRepayMapperTest {
         investModel.setInvestTime(new Date());
         investModel.setTransferStatus(TransferStatus.SUCCESS);
         investModel.setSource(Source.IOS);
-        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date startTime = DateUtils.addDays(new DateTime().dayOfMonth().withMinimumValue().toDate(),-1);
         Date endTime = DateUtils.addMonths(startTime, 1);
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investModel.getId());

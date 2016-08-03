@@ -10,7 +10,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog),
 
         $referrerOpen=$('.referrer-open',registerUserForm),
-        $loginName=$('input.login-name',registerUserForm),
         $referrer=$('input.referrer', registerUserForm),
         $captchaInput=$('input.captcha',registerUserForm),
         $mobileInput=$('input.mobile',registerUserForm),
@@ -20,15 +19,13 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         referrerError=$('#referrerError'),
         countTimer;
 
-    var loginNameValid=false,
-        mobileValid=false,
+    var mobileValid=false,
         passwordValid=false,
         captchaValid=false,
         referrerValidBool=true,
         agreementValid=true;
 
     $('input[type="text"],input[type="password"]',registerUserForm).placeholder();
-
     $checkbox.on('click', function (event) {
         if (event.target.tagName.toUpperCase() == 'A') {
             return;
@@ -49,7 +46,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             agreementValid=true;
         }
         checkInputValid();
-
     });
     $referrerOpen.on('click',function() {
         var $this=$(this),
@@ -59,14 +55,13 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         checkOption=$this.next('li').hasClass('hide');
         iconArrow[0].className=checkOption?'sprite-register-arrow-bottom':'sprite-register-arrow-right';
         if($referrer.is(':hidden')) {
-            $referrer.val('');
-            $referrer.removeClass('error').addClass('valid');
-            referrerError.html('').hide();
             referrerValidBool=true;
-            checkInputValid();
         }
+        else if(!$referrer.is(':hidden') && $referrer.hasClass('error')) {
+            referrerValidBool=false;
+        }
+        checkInputValid();
     });
-
     showAgreement.click(function () {
         layer.open({
             type: 1,
@@ -174,11 +169,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
     registerUserForm.validate({
         ignore:'.referrer,.agreement',
         rules: {
-            loginName: {
-                required: true,
-                regex: /(?!^\d+$)^\w{5,25}$/,
-                checkLoginName:true
-            },
             mobile: {
                 required: true,
                 digits: true,
@@ -199,10 +189,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             }
         },
         messages: {
-            loginName: {
-                required: "请输入用户名",
-                regex: '5位至25位数字与字母下划线组合，不能全部数字'
-            },
             mobile: {
                 required: '请输入手机号',
                 digits: '必须是数字',
@@ -225,23 +211,31 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         success: function (error, element) {
             checkInputValid();
             if(!fetchCaptchaElement.hasClass('disabledButton')) {
-                if (element.name === 'mobile' && $loginName.hasClass('valid')) {
+                if (element.name === 'mobile') {
                     fetchCaptchaElement.prop('disabled', false);
                     $mobileInput.attr('preValue',$mobileInput.val());
                 }
-                if (element.name === 'loginName' && $mobileInput.hasClass('valid')) {
-                    fetchCaptchaElement.prop('disabled', false);
-                }
+            }
+        },
+        submitHandler: function (form) {
+
+            if($referrer.hasClass('error')) {
+                $referrerOpen.trigger('click');
+                referrerError.html('推荐人不存在').show();
+                return false;
+            }
+            else {
+                form.submit();
             }
         }
     });
-
     function checkInputValid(event) {
-        loginNameValid=$loginName.hasClass('valid');
         mobileValid=$mobileInput.hasClass('valid');
         passwordValid=$passwordInput.hasClass('valid');
-
-        if(loginNameValid && mobileValid && passwordValid && captchaValid && referrerValidBool && agreementValid) {
+        if($referrer.is(':hidden')) {
+            referrerValidBool=true;
+        }
+        if(referrerValidBool && mobileValid && passwordValid && captchaValid && agreementValid) {
             $registerSubmit.prop('disabled',false);
         }
         else {
@@ -255,14 +249,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             $registerSubmit.prop('disabled',true);
         }
     });
-    $loginName.on('keyup',function(event) {
-        if(!/(?!^\d+$)^\w{5,25}$/.test(event.target.value)) {
-            loginNameValid=false;
-            $(event.target).addClass('error').removeClass('valid');
-            $(event.target).next().html('请输入用户名');
-            $registerSubmit.prop('disabled',true);
-        }
-    });
+
     $passwordInput.on('keyup',function(event) {
         if(!/^(?=.*[^\d])(.{6,20})$/.test(event.target.value)) {
             passwordValid=false;
@@ -293,34 +280,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
         $registerSubmit.prop('disabled',true);
         captchaValid=false;
     });
-    jQuery.validator.addMethod("checkLoginName", function(value, element) {
-        var deferred = $.Deferred();
-        if(/(?!^\d+$)^\w{5,25}$/.test(value)) {
-            $.ajax({
-                url:'/register/user/login-name/'+value+'/is-exist',
-                async:false,
-                dataType:"json",
-                success:function(response) {
-                    var status = response.data.status;
-                    if (status) {
-                        deferred.reject();
-                        loginNameValid=false;
-                    } else {
-                        deferred.resolve();
-                        loginNameValid=true;
-                    }
-                }
-            });
-        }
-        else {
-            deferred.reject();
-            loginNameValid=false;
-        }
-        checkInputValid();
-
-        return deferred.state() == "resolved" ? true : false;
-    },'用户名已存在');
-
     jQuery.validator.addMethod("checkCaptcha", function(value, element) {
         var mobile=$('input.mobile',registerUserForm).val();
         var deferred = $.Deferred();
@@ -361,7 +320,7 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 type: 'GET',
                 dataType: 'json',
                 async:false,
-                contentType: 'application/json; charset=UTF-8',
+                contentType: 'application/json; charset=UTF-8'
             })
                 .done(function (res) {
                    var  checkValid=res.data.status;
@@ -391,6 +350,5 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
             referrerValidBool=true;
         }
         checkInputValid();
-
     });
 });

@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoanAchievementView;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Repository
 public interface LoanMapper {
 
+    //不再支持descriptionText, descriptionHtml创建
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
@@ -43,7 +41,10 @@ public interface LoanMapper {
                                    @Param(value = "rateStart") double rateStart,
                                    @Param(value = "rateEnd") double rateEnd);
 
+    //不再支持descriptionText, descriptionHtml创建
     void update(LoanModel loanModel);
+
+    void updateWithoutStatus(LoanModel loanModel);
 
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
 
@@ -90,13 +91,12 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByIsContainNewbie(@Param(value = "loanStatus") LoanStatus loanStatus,
-                                                  @Param(value = "isShowNewbieLoan") boolean isShowNewbieLoan);
+    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "mobile") String mobile);
 
-    List<LoanAchievementView> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize, @Param(value = "loginName") String loginName);
+    long findLoanAchievementCount(@Param(value = "mobile") String mobile);
 
-    long findLoanAchievementCount(@Param(value = "loginName") String loginName);
-
-    List<LoanModel> findByProductType(@Param(value = "productType") ProductType productType);
+    List<LoanModel> findByProductType(@Param(value = "loanStatus") LoanStatus loanStatus,
+                                      @Param("productTypeList") List<ProductType> productTypeList,
+                                      @Param(value = "activityType") ActivityType activityType);
 
 }

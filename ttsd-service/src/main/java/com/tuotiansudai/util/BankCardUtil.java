@@ -46,8 +46,6 @@ public class BankCardUtil {
     private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "BOC", "CEB",
             "CIB", "CMBC", "SPDB", "COMM", "GDB", "CITIC", "CMB", "SPAB");
 
-    private static final List<String> BIND_CARD_ONE_CENT_BANKS = Lists.newArrayList("CMB");
-
     public static List<String> getRechargeBanks() {
         return RECHARGE_BANKS;
     }
@@ -68,7 +66,4 @@ public class BankCardUtil {
         return FAST_PAY_BANKS.contains(bankCode);
     }
 
-    public static List<String> getBindCardOneCentBanks() {
-        return BIND_CARD_ONE_CENT_BANKS;
-    }
 }

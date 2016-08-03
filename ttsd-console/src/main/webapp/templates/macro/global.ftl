@@ -66,7 +66,10 @@
                     {"name":"adminIntervention","text":"修改账户余额","link":"/finance-manage/admin-intervention","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userBalance","text":"用户余额","link":"/finance-manage/account-balance?balanceMin=50","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"transferBill","text":"用户联动优势交易流水","link":"/finance-manage/transfer-bill","role":"'ADMIN'"},
+                    {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"financeReport","text":"债券财务数据","link":"/finance-manage/financeReport","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -75,8 +78,9 @@
                 "sidebar":[
                     {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"linkExchangeMan","text":"友链管理","link":"/link-exchange-manage/link-exchange","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"articleMan","text":"拓天资讯","link":"/announce-manage/article/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"articleMan","text":"拓天资讯","link":"/announce-manage/article/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','EDITOR'"},
+                    {"name":"bannerMan","text":"banner管理","link":"/banner-manage/list","role":"'ADMIN','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -105,7 +109,8 @@
                     {"name":"tiandouPrize","text":"天豆奖品管理","link":"/activity-manage/tiandou-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"pointPrize","text":"财豆奖品管理","link":"/activity-manage/point-prize","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"investAchievement","text":"投资称号管理","link":"/activity-manage/invest-achievement","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"heroRanking","text":"周年庆管理","link":"/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                {"name":"heroRanking","text":"周年庆管理","link":"/activity-manage/hero-ranking","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
                 ]
             },
             {
@@ -117,11 +122,15 @@
             },
             {
                 "name":"app-push-manage",
-                "header":{"text":"APP推送管理"},
+            "header":{"text":"消息管理"},
                 "sidebar":[
                     {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"autoAppPushManage","text":"自动推送管理","link":"/app-push-manage/auto-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                {"name":"autoAppPushManage","text":"自动推送管理","link":"/app-push-manage/auto-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                {"name":"manualMessageManage","text":"手动发送站内信管理","link":"/message-manage/manual-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                {"name":"autoMessageManage","text":"自动发送站内信管理","link":"/message-manage/event-message-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                {"name":"createManualMessage","text":"创建手动站内信","link":"/message-manage/manual-message","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+
                 ]
             },
             {
@@ -137,7 +146,8 @@
                     {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"userAge","text":"用户年龄分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"loanAmount","text":"标的资金分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"loanAmount","text":"标的资金分布","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"platformRepay","text":"平台待收","link":"/statistic","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
@@ -194,8 +204,8 @@
             </a>
         </div>
         <div class="collapse navbar-collapse">
-            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【<@global.security.authentication property="principal.username" />】</p>
-            <form id="logout-form" action="/logout" method="post">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/login/sign-out">注销</a>【<@global.security.authentication property="principal.username" />】</p>
+            <form id="logout-form" action="/login/sign-out" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </div>

@@ -112,6 +112,12 @@
         where id = #{id}
     </select>
 
+    <select id="lockById" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where id = #{id} for update
+    </select>
+
     <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
@@ -215,6 +221,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
+            and loan_id != 1
         </where>
         and status = 'SUCCESS'
     </select>
@@ -246,6 +253,9 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and u.mobile = #{investorMobile}
+        </if>
         left join account a on a.login_name = u.login_name
         left join user ru on ru.login_name = u.referrer
         left join account ra on ra.login_name = u.referrer
@@ -253,9 +263,6 @@
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -266,7 +273,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -293,7 +300,13 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
@@ -313,21 +326,27 @@
                 and invest.created_time &lt; #{endTime}
             </if>
             <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+                AND (loan.status = #{loanStatus}
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            </if>
+
+            <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
+                AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
         select count(1)
-        from invest join loan on invest.loan_id = loan.id
+        from invest join loan on invest.loan_id = loan.id join user on invest.login_name = user.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and user.mobile = #{investorMobile}
+        </if>
         <where>
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -338,7 +357,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -369,7 +388,7 @@
             <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null and source != ''">
+            <if test="source != null">
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
@@ -392,7 +411,7 @@
 
     <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
-        from invest
+        from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
     </select>
@@ -530,6 +549,7 @@
           MAX(t.`trading_time`)
         LIMIT #{index}, #{pageSize}
     </select>
+
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>
@@ -540,13 +560,17 @@
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
         <if test="loanStatus.name() == 'COMPLETE' ">
-            and loan.status = #{loanStatus}
+            and (loan.status = #{loanStatus}
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
-            and loan.status in ('REPAYING','OVERDUE')
+            and (loan.status in ('REPAYING','OVERDUE')
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
-            and loan.status in ('RAISING','RECHECK')
+            and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
         order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
@@ -568,18 +592,6 @@
             and loan.status in ('RAISING','RECHECK')
         </if>
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
-    </select>
-
-    <select id="countInvestSuccessExperienceToday" resultType="long">
-        SELECT
-          COUNT(*)
-        FROM
-          invest t
-          JOIN loan l
-            ON t.loan_id = l.id
-            AND l.product_type = 'EXPERIENCE'
-        WHERE t.status = 'SUCCESS'
-          AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
     </select>
 
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
@@ -798,6 +810,17 @@
                     AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
                     DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
                 )
+    </select>
+
+    <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
+        select count(1) from invest i left join loan l on i.loan_id = l.id where i.login_name = #{loginName}
+        and i.status = 'SUCCESS'
+        <if test="productTypeList != null ">
+            and l.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
     </select>
 
 </mapper>

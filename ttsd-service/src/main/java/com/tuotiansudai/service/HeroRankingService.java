@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HeroRankingService {
 
-    BaseListDataDto findHeroRankingByReferrer(Date tradingTime, String loginName, int index, int pageSize);
+    BaseListDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, String loginName, int index, int pageSize);
 
     Integer findHeroRankingByReferrerLoginName(String loginName);
 
@@ -26,5 +26,4 @@ public interface HeroRankingService {
     MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
 
     GivenMembership receiveMembership(String loginName);
-
 }

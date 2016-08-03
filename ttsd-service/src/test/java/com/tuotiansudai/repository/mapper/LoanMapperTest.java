@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.*;
@@ -237,6 +236,7 @@ public class LoanMapperTest {
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         fakeLoanModel.setCreatedTime(new Date());
         return fakeLoanModel;
     }
@@ -330,7 +330,6 @@ public class LoanMapperTest {
         loanMapper.create(fakeCanceledLoan2);
         loanMapper.create(fakeCanceledLoan3);
         loanMapper.create(fakeCanceledLoan4);
-
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(null,null,999999991,0,0);
         assertEquals(loanModels.get(0).getStatus(),LoanStatus.RAISING);
         assertEquals(loanModels.get(1).getStatus(),LoanStatus.PREHEAT);

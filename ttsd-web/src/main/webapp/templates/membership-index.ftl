@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员中心" activeLeftNav="" title="会员中心" site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员中心" activeLeftNav="" title="会员中心_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
-    <#if loginName??>
+    <#if mobile??>
         <div class="user-info-block page-width">
             <div class="info clearfix">
                 <div class="avatar fl">
@@ -10,7 +10,7 @@
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
-                    <p><span class="orange font20">您好！${loginName!}</span>
+                    <p><span class="orange font20">您好！${mobile!}</span>
                         <#if membershipType == 'GIVEN'>
                             <span class="font14">会员有效期还有：<strong class="font22">${leftDays?string('0')}</strong>天</span>
                         </#if>
@@ -29,7 +29,8 @@
                     <div class="vip-bg vip-5 <#if membershipLevel == 5>active</#if>"></div>
                     <#if membershipType == 'UPGRADE'>
                         <#if membershipNextLevel <= 5 && membershipLevel != 5>
-                            <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能就能尊享<i
+                            <div class="popup popup-${membershipNextLevel!}">
+                                还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
                     </#if>
@@ -116,9 +117,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount-hui">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
@@ -126,9 +127,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -157,9 +158,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount-hui">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
@@ -167,9 +168,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -198,9 +199,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
@@ -208,9 +209,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -239,9 +240,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
@@ -249,9 +250,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -280,9 +281,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
@@ -290,9 +291,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -321,9 +322,9 @@
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
-                            <h3>服务费折扣</h3>
+                            <h3>技术服务费</h3>
 
-                            <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                            <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                         </li>
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
@@ -331,9 +332,9 @@
                             <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor">
-                            <h3>专享理财顾问</h3>
+                            <h3>专享投资顾问</h3>
 
-                            <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits">
                             <h3>生日福利</h3>
@@ -457,9 +458,9 @@
                         <p>每月发放投资红包，588、688、788、888元随机派送</p>
                     </li>
                     <li class="service-fee-discount">
-                        <h3>服务费折扣</h3>
+                        <h3>技术服务费</h3>
 
-                        <p>平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
+                        <p>平台向V0、V1会员收取收益的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%</p>
                     </li>
                     <li class="vip-service">
                         <h3>贵宾专线</h3>
@@ -467,9 +468,9 @@
                         <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
                     </li>
                     <li class="spec-financial-advisor">
-                        <h3>专享理财顾问</h3>
+                        <h3>专享投资顾问</h3>
 
-                        <p>发标时间，平台活动，理财顾问第一时间通知到您</p>
+                        <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
                     </li>
                     <li class="birthday-benefits">
                         <h3>生日福利</h3>
@@ -537,7 +538,7 @@
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     </tr>
                     <tr>
-                        <td>服务费折扣（折后费率）</td>
+                        <td>技术服务费（折后费率）</td>
                         <td>10%（基础费率）</td>
                         <td>10%（基础费率）</td>
                         <td>9%</td>
@@ -555,7 +556,7 @@
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     </tr>
                     <tr>
-                        <td>专享理财顾问</td>
+                        <td>专享投资顾问</td>
                         <td></td>
                         <td></td>
                         <td></td>

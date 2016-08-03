@@ -6,13 +6,14 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
-        <beans:property name="userPropertyToUse" value="salt"/>
-    </beans:bean>
-
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
-        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
+        <beans:property name="accessDeniedExceptionRedirect">
+            <beans:map>
+                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
+            </beans:map>
+        </beans:property>
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>
@@ -24,12 +25,6 @@
 
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
-        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
-        <beans:property name="saltSource" ref="saltSource"/>
-        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-    </beans:bean>
-
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
     <beans:bean id="affirmativeBased" class="com.tuotiansudai.security.MyAffirmativeBased">
@@ -40,20 +35,9 @@
         <beans:constructor-arg name="loginFormUrl" value="/login"/>
     </beans:bean>
 
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="myDaoAuthenticationProvider"/>
-    </authentication-manager>
-
-    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
-    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
-
     <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"
-                    login-processing-url="/login-handler"
-                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
-                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-        <logout logout-url="/logout" logout-success-url="/"/>
+        <form-login login-page="/login"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/html/**" access="permitAll()"/>
@@ -65,9 +49,10 @@
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
         <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
+
+        <intercept-url pattern="/login/sign-in" access="isAnonymous()"/>
+        <intercept-url pattern="/login/sign-out" access="not isAnonymous()"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
-        <intercept-url pattern="/login-handler" access="isAnonymous()"/>
-        <intercept-url pattern="/logout" access="not isAnonymous()"/>
 
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
@@ -77,6 +62,7 @@
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/message/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
@@ -120,6 +106,8 @@
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
                 <beans:value>/activity/hero-ranking</beans:value>
+                <beans:value>/login/sign-in</beans:value>
+                <beans:value>/login/sign-out</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

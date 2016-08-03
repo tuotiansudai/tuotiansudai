@@ -30,8 +30,8 @@
         </div>
         <div class="form-group">
             <label>投资人</label>
-            <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*"
-                   autocomplete="off" value="${loginName!}"/>
+            <input type="text" id="tags" name="mobile" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${mobile!}"/>
         </div>
         <div class="form-group">
             <label>投资状态</label>
@@ -84,7 +84,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="16">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="17">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
@@ -101,6 +101,7 @@
                 <th>投资时间</th>
                 <th>自动投标</th>
                 <th>投资金额(元)</th>
+                <th>加息利率（%）/预期收益（元）/实发收益（元）</th>
                 <th>投资状态</th>
                 <th>回款记录</th>
             </tr>
@@ -130,6 +131,7 @@
                     <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
+                    <td>${invest.rate}/${invest.expectedFee}/${invest.actualFee}</td>
                     <td>${invest.status}</td>
                     <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
@@ -152,7 +154,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -162,7 +164,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

@@ -163,7 +163,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investMapper.create(investTransferee);
 
         Date dateLine = new DateTime().plusDays(5).toDate();
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest,"name",2,9800,200,dateLine,5);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest, "name", 2, 9800, 200, dateLine, 5, Source.WEB);
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -316,7 +316,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         investRepayMapper.create(Lists.newArrayList(investRepayTransferee1, investRepayTransferee2));
 
         Date dateLine = new DateTime().plusDays(5).toDate();
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest,"name",2,9800,200,dateLine,5);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(invest, "name", 2, 9800, 200, dateLine, 5, Source.WEB);
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 

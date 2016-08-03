@@ -76,7 +76,7 @@ public class UserBillServiceImpl implements UserBillService {
     }
 
     @Override
-    public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime, int index, int pageSize) {
+    public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -92,11 +92,11 @@ public class UserBillServiceImpl implements UserBillService {
             formattedEndTime = new DateTime(endTime).toDate();
         }
 
-        return userBillMapper.findUserFunds(userBillBusinessType, userBillOperationType, loginName, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize);
+        return userBillMapper.findUserFunds(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize);
     }
 
     @Override
-    public int findUserFundsCount(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime) {
+    public int findUserFundsCount(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -111,6 +111,6 @@ public class UserBillServiceImpl implements UserBillService {
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }
-        return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, formattedStartTime, formattedEndTime);
+        return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime);
     }
 }

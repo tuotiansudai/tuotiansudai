@@ -32,7 +32,7 @@ public class InvestAchievementController {
     @RequestMapping(value = "/invest-achievement", method = RequestMethod.GET)
     public ModelAndView investAchievement(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                                          @RequestParam(value = "loginName", required = false) String loginName,
+                                          @RequestParam(value = "mobile", required = false) String mobile,
                                           @RequestParam(value = "export", required = false) String export,
                                           HttpServletResponse response) throws IOException {
         if (export != null && !export.equals("")) {
@@ -44,8 +44,8 @@ public class InvestAchievementController {
             }
             response.setContentType("application/csv");
             List<List<String>> data = Lists.newArrayList();
-            long investAchievementCount = investAchievementService.findInvestAchievementCount(loginName);
-            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(1, new Long(investAchievementCount).intValue(), loginName);
+            long investAchievementCount = investAchievementService.findInvestAchievementCount(mobile);
+            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(1, new Long(investAchievementCount).intValue(), mobile);
             for (LoanAchievementView loanAchievementView : loanAchievementViews) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(loanAchievementView.getName());
@@ -75,13 +75,13 @@ public class InvestAchievementController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader, data, response.getOutputStream());
             return null;
         } else {
-            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, loginName);
+            List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, mobile);
             ModelAndView modelAndView = new ModelAndView("/invest-achievement");
             modelAndView.addObject("loanAchievementViews", loanAchievementViews);
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
-            modelAndView.addObject("loginName", loginName);
-            long investAchievementCount = investAchievementService.findInvestAchievementCount(loginName);
+            modelAndView.addObject("mobile", mobile);
+            long investAchievementCount = investAchievementService.findInvestAchievementCount(mobile);
             long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 || investAchievementCount == 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;

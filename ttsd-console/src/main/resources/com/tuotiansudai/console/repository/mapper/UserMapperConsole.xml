@@ -6,37 +6,37 @@
 
     <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapper"/>
 
-    <resultMap id="userResultMap" type="UserModel">
-        <id column="id" property="id"></id>
-        <result column="login_name" property="loginName"></result>
-        <result column="password" property="password"></result>
-        <result column="email" property="email"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="register_time" property="registerTime"></result>
-        <result column="last_login_time" property="lastLoginTime"></result>
-        <result column="last_modified_time" property="lastModifiedTime"></result>
-        <result column="last_modified_user" property="lastModifiedUser"></result>
-        <result column="avatar" property="avatar"></result>
-        <result column="referrer" property="referrer"></result>
-        <result column="status" property="status"></result>
-        <result column="salt" property="salt"></result>
-        <result column="channel" property="channel"></result>
-        <result column="source" property="source"></result>
-        <result column="province" property="province"></result>
-        <result column="city" property="city"></result>
-        <result column="auto_invest_status" property="autoInvestStatus"></result>
-        <result column="last_bill_time" property="lastBillTime"></result>
+    <resultMap id="userResultMap" type="UserView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="mobile"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="last_modified_time" property="lastModifiedTime"/>
+        <result column="last_modified_user" property="lastModifiedUser"/>
+        <result column="avatar" property="avatar"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="status" property="status"/>
+        <result column="salt" property="salt"/>
+        <result column="channel" property="channel"/>
+        <result column="source" property="source"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="auto_invest_status" property="autoInvestStatus"/>
+        <result column="last_bill_time" property="lastBillTime"/>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
-            <id column="id" property="id"></id>
-            <result column="login_name" property="loginName"></result>
-            <result column="user_name" property="userName"></result>
-            <result column="identity_number" property="identityNumber"></result>
-            <result column="pay_user_id" property="payUserId"></result>
-            <result column="pay_account_id" property="payAccountId"></result>
-            <result column="balance" property="balance"></result>
-            <result column="freeze" property="freeze"></result>
-            <result column="register_time" property="registerTime"></result>
-            <result column="auto_invest" property="autoInvest"></result>
+            <id column="id" property="id"/>
+            <result column="login_name" property="loginName"/>
+            <result column="user_name" property="userName"/>
+            <result column="identity_number" property="identityNumber"/>
+            <result column="pay_user_id" property="payUserId"/>
+            <result column="pay_account_id" property="payAccountId"/>
+            <result column="balance" property="balance"/>
+            <result column="freeze" property="freeze"/>
+            <result column="register_time" property="registerTime"/>
+            <result column="auto_invest" property="autoInvest"/>
         </association>
     </resultMap>
 
@@ -44,6 +44,7 @@
         select
         u.*,
         a.*,
+        referrer_u.mobile as referrer_mobile,
         IF(au.login_name is null, "0", "1") as auto_invest_status
         from
         <choose>
@@ -90,6 +91,7 @@
         </choose>
         left join account a on u.login_name = a.login_name
         left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
+        left join user referrer_u on referrer_u.login_name = u.referrer
         <where>
             <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
@@ -109,8 +111,8 @@
             <if test="endTime !=null ">
                 and u.register_time &lt;= #{endTime}
             </if>
-            <if test="referrer !=null and referrer != '' ">
-                and u.referrer = #{referrer}
+            <if test="referrerMobile !=null and referrerMobile != '' ">
+                and referrer_u.mobile = #{referrerMobile}
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
@@ -121,7 +123,7 @@
 
         </where>
         order by u.register_time desc
-        limit #{index},#{pageSize}
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findAllUserCount" parameterType="map" resultType="int">
@@ -168,9 +170,8 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
-
+        left join user referrer_u on referrer_u.login_name = u.referrer
         <where>
-
             <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
             </if>
@@ -189,8 +190,8 @@
             <if test="endTime !=null ">
                 and u.register_time &lt;= #{endTime}
             </if>
-            <if test="referrer !=null and referrer != '' ">
-                and u.referrer = #{referrer}
+            <if test="referrerMobile !=null and referrerMobile != '' ">
+                and referrer_u.mobile = #{referrerMobile}
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}

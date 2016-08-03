@@ -20,4 +20,8 @@ public interface UserCouponService {
     UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount);
 
     boolean isUsableUserCouponExist(String loginName);
+
+    long findSumBirthdayAndInterestByLoginName(String loginName);
+
+    long findSumRedEnvelopeByLoginName(String loginName);
 }

@@ -1,19 +1,20 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,30 +37,34 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
-
-        if (investMapper.sumSuccessInvestCountByLoginName(loginName) == 0) {
-            loanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, true);
-            if (CollectionUtils.isEmpty(loanModels)) {
-                List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, true);
-                if (CollectionUtils.isNotEmpty(completeLoanModels)) {
-                    loanModels.add(completeLoanModels.get(0));
-                }
-            }
+        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360, ProductType.EXPERIENCE);
+        List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
+        ActivityType activityType = ActivityType.NORMAL;
+        if (Strings.isNullOrEmpty(loginName)
+                || investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE));
         }
 
-        List<LoanModel> notContainNewbieList = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.RAISING, false);
+        if (investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceCondition) == 0) {
+            activityType = null;
+        }
+
+        List<LoanModel> notContainNewbieList = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceCondition, activityType);
         if (CollectionUtils.isNotEmpty(notContainNewbieList)) {
             loanModels.addAll(notContainNewbieList);
         }
 
         if (CollectionUtils.isEmpty(loanModels)) {
-            List<LoanModel> completeLoanModels = loanMapper.findHomeLoanByIsContainNewbie(LoanStatus.COMPLETE, false);
+            List<LoanModel> completeLoanModels = loanMapper.findByProductType(LoanStatus.COMPLETE, allProductTypesCondition, null);
             if (CollectionUtils.isNotEmpty(completeLoanModels)) {
                 loanModels.add(completeLoanModels.get(0));
             }
@@ -76,7 +80,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     }
 
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
-        List<LoanResponseDataDto> loanDtoList = new ArrayList<>();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
@@ -103,8 +107,12 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+
+            loanResponseDataDto.setInvestFeeRate(String.valueOf(membershipModel == null ? defaultFee : membershipModel.getFee()));
+
+            loanResponseDataDto.setExtraRates(convertExtraRateList(loan.getId()));
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-            if(loan != null && ProductType.EXPERIENCE == loan.getProductType()){
+            if (loan != null && ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
@@ -112,4 +120,19 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         }
         return loanDtoList;
     }
+
+    private List<ExtraRateListResponseDataDto> convertExtraRateList(long loanId) {
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        List<ExtraRateListResponseDataDto> extraRateListResponseDataDtos = Lists.newArrayList();
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
+        for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
+            ExtraRateListResponseDataDto extraRateListResponseDataDto = new ExtraRateListResponseDataDto();
+            extraRateListResponseDataDto.setRate(decimalFormat.format(extraLoanRateModel.getRate() * 100));
+            extraRateListResponseDataDto.setAmountLower(AmountConverter.convertCentToString(extraLoanRateModel.getMinInvestAmount()));
+            extraRateListResponseDataDto.setAmountUpper(AmountConverter.convertCentToString(extraLoanRateModel.getMaxInvestAmount()));
+            extraRateListResponseDataDtos.add(extraRateListResponseDataDto);
+        }
+        return extraRateListResponseDataDtos;
+    }
+
 }

@@ -2,9 +2,11 @@ package com.tuotiansudai.coupon.aspect;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.SignInDto;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -13,8 +15,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -45,7 +45,7 @@ public class CouponAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
+    @Pointcut("execution(* com.tuotiansudai.client.SignInClient.sendSignIn(..))")
     public void loginSuccessPointcut() {
     }
 
@@ -59,7 +59,7 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponAssignmentService.assignUserCoupon(registerUserDto.getLoginName(),
+                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(),
                         Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
             }
         } catch (Exception e) {
@@ -67,13 +67,15 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()")
-    public void afterReturningUserLogin(JoinPoint joinPoint) {
-        logger.debug("assign coupon after user login success");
+    @AfterReturning(value = "loginSuccessPointcut()", returning = "returnValue")
+    public void afterReturningUserLogin(JoinPoint joinPoint, BaseDto<LoginDto> returnValue) {
+        logger.debug("assign coupon after user login");
         try {
-            HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-            String loginName = request.getParameter("username");
-            couponAssignmentService.assignUserCoupon(loginName, userGroups);
+            if(returnValue.getData().getStatus()) {
+                SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
+                String loginName = signInDto.getUsername();
+                couponAssignmentService.assignUserCoupon(loginName, userGroups);
+            }
         } catch (Exception e) {
             logger.error("assign coupon after user login is failed ", e);
         }

@@ -1,5 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoanDetailResponseDataDto extends BaseResponseDataDto {
@@ -39,7 +42,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String raisingPeriod;
     private String marqueeTitle;
     private String productNewType;
-
+    private List<ExtraLoanRateDto> extraRates;
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -329,5 +332,16 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setProductNewType(String productNewType) {
         this.productNewType = productNewType;
+    }
+
+    public List<ExtraLoanRateDto> getExtraRates() {
+        if (CollectionUtils.isEmpty(extraRates)) {
+            return new ArrayList<>();
+        }
+        return extraRates;
+    }
+
+    public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
+        this.extraRates = extraRates;
     }
 }

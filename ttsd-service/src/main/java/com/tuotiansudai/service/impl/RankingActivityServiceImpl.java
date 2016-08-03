@@ -4,8 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -15,10 +13,15 @@ import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -27,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Tuple;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -52,6 +56,9 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
     // 抽奖次数计数器。
     public static final String TIAN_DOU_DRAW_COUNTER = "web:ranking:tian_dou_draw_counter";
 
@@ -75,6 +82,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
     private static final long DRAW_SCORE = 1000;
 
+    @Autowired
+    private RandomUtils randomUtils;
 
     public BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName, String mobile) {
         logger.debug(loginName + " is drawing the tiandou prize.");
@@ -191,14 +200,25 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     @Override
-    public List<UserScoreDto> getTianDouTop15() {
-        List<UserScoreDto> userScoreDtoTop10 = new ArrayList<>();
+    public List<UserScoreDto> getTianDouTop15(String loginName) {
+        List<UserScoreDto> userScoreDtoTop15 = Lists.newArrayList();
 
-        Set<Tuple> top10 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
-        for (Tuple tuple : top10) {
-            userScoreDtoTop10.add(new UserScoreDto(tuple.getElement(), (long) tuple.getScore()));
+        Set<Tuple> top15 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
+        for (Tuple tuple : top15) {
+            userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
         }
-        return userScoreDtoTop10;
+
+        //TODO:fake
+        LoanModel loanModel = loanMapper.findById(41650602422768L);
+        if (loanModel.getStatus() == LoanStatus.REPAYING) {
+            userScoreDtoTop15 = Lists.newArrayList(new UserScoreDto("186****9367", new BigDecimal((double) loanModel.getLoanAmount() * loanModel.getPeriods() / 1200).setScale(0, BigDecimal.ROUND_HALF_UP).longValue()));
+            Set<Tuple> top14 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 13);
+            for (Tuple tuple : top14) {
+                userScoreDtoTop15.add(new UserScoreDto(randomUtils.encryptMobile(loginName, tuple.getElement(),Source.WEB), (long) tuple.getScore()));
+            }
+        }
+
+        return userScoreDtoTop15;
     }
 
     // 2 MacBook + 4 iPhone + others
@@ -215,7 +235,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.MacBook);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.MacBook);
             }
         });
 
@@ -223,7 +243,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.Iphone6s);
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.Iphone6s);
             }
         });
 
@@ -245,7 +265,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
                 String prize = input.split("\\+")[1];
-                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.valueOf(prize));
+                return new UserTianDouRecordDto(randomUtils.encryptMobile(null, loginName,Source.WEB), "抽奖", TianDouPrize.valueOf(prize));
             }
         });
 
@@ -362,7 +382,14 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     public long getTotalInvestAmountInActivityPeriod() {
         Date startTime = new DateTime(2016, 4, 1, 0, 0, 0).toDate(); // from 2016-04-01 00:00:00
         Date endTime = new DateTime(2016, 8, 1, 0, 0, 0).toDate(); // to 2016-08-01 00:00:00
-        return investMapper.sumInvestAmountRanking(startTime, endTime);
+        long totalAmount = investMapper.sumInvestAmountRanking(startTime, endTime);
+
+        //TODO:fake
+        LoanModel loanModel = loanMapper.findById(41650602422768L);
+        if (loanModel.getStatus() == LoanStatus.REPAYING) {
+            totalAmount += loanModel.getLoanAmount();
+        }
+        return totalAmount;
     }
 
 }

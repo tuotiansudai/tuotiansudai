@@ -56,6 +56,7 @@ def stop():
     from paver.shell import sh
 
     sh('pkill python')
+    sh('pkill python')
 
 
 def remove_old_container(name):
@@ -74,10 +75,17 @@ def qa():
     """
     Deploy Staging/QA environment
     """
-    from scripts.deployment import QADeployment
+    from scripts.deployment import Deployment
 
-    qa_env = QADeployment()
-    qa_env.deploy()
+    deployment = Deployment()
+    deployment.deploy('QA')
+
+@task
+def dev():
+    from scripts.deployment import Deployment
+
+    deployment = Deployment()
+    deployment.deploy('DEV')
 
 
 @task
@@ -143,11 +151,26 @@ def only_api():
 
 
 @task
+def only_pay():
+    """
+    Deploy pay component to PROD from CI
+    """
+    fab_command("pay")
+
+@task
 def only_sms():
     """
     Deploy sms component to PROD from CI
     """
     fab_command("sms")
+
+
+@task
+def only_activity():
+    """
+    Deploy activity component to PROD from CI
+    """
+    fab_command("activity")
 
 
 @task
@@ -163,6 +186,8 @@ def generate_git_log_file():
 
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
@@ -238,6 +263,11 @@ def jcversion():
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
+
+    versioning_min_files('ttsd-activity/src/main/webapp/activity/js/dest/*.min.js')
+    versioning_min_files('ttsd-activity/src/main/webapp/activity/style/dest/*.min.css')
+    replace_min_files_in_config_js_file('ttsd-activity/src/main/webapp/activity/js/dest/')
+
     versioning_mobile_api_files('ttsd-mobile-api/')
 
 def get_current_dir():

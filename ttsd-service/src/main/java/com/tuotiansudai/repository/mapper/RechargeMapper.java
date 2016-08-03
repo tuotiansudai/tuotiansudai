@@ -20,7 +20,7 @@ public interface RechargeMapper {
     RechargeModel findById(long id);
 
     List<RechargeModel> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
-                                               @Param(value = "loginName") String loginName,
+                                               @Param(value = "mobile") String mobile,
                                                @Param(value = "source") RechargeSource source,
                                                @Param(value = "status") RechargeStatus status,
                                                @Param(value = "channel") String channel,
@@ -31,7 +31,7 @@ public interface RechargeMapper {
 
 
     long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
-                               @Param(value = "loginName") String loginName,
+                               @Param(value = "mobile") String mobile,
                                @Param(value = "source") RechargeSource source,
                                @Param(value = "status") RechargeStatus status,
                                @Param(value = "channel") String channel,
@@ -40,7 +40,7 @@ public interface RechargeMapper {
                                @Param(value = "endTime") Date endTime);
 
     int findRechargeCount(@Param(value = "rechargeId") String rechargeId,
-                          @Param(value = "loginName") String loginName,
+                          @Param(value = "mobile") String mobile,
                           @Param(value = "source") RechargeSource source,
                           @Param(value = "status") RechargeStatus status,
                           @Param(value = "channel") String channel,

@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.List;
 
 public class InvestPaginationItemDataDto implements Serializable {
 
@@ -81,6 +80,12 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private int leftPeriod;
 
+    private double rate;
+
+    private Long expectedFee;
+
+    private Long actualFee;
+
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
@@ -112,6 +117,13 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.baseRate = view.getLoanBaseRatePercent();
         this.activityRate = view.getLoanActivityRatePercent();
         this.sumRate = view.getSumRatePercent();
+    }
+
+    public InvestPaginationItemDataDto(InvestPaginationItemView view, InvestExtraRateModel extraRateModel) {
+        this(view);
+        this.rate = extraRateModel.getExtraRate();
+        this.expectedFee = extraRateModel.getExpectedFee();
+        this.actualFee = extraRateModel.getActualFee();
     }
 
     public boolean isStaff() {
@@ -340,5 +352,24 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setSumRate(String sumRate) {
         this.sumRate = sumRate;
+    }
+
+    public String getRate() {
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        return decimalFormat.format(rate * 100);
+    }
+
+    public String getExpectedFee() {
+        if (expectedFee != null) {
+            return AmountConverter.convertCentToString(expectedFee);
+        }
+        return "-";
+    }
+
+    public String getActualFee() {
+        if (actualFee != null) {
+            return AmountConverter.convertCentToString(actualFee);
+        }
+        return "-";
     }
 }

@@ -78,8 +78,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="referrer">推荐人</label>
-            <input type="text" class="form-control ui-autocomplete-input" id="input-referrer" name="referrer" placeholder=""  datatype="*" autocomplete="off" value="${referrer!}">
+            <label for="referrer">推荐人手机</label>
+            <input type="text" class="form-control ui-autocomplete-input" id="input-referrer" name="referrerMobile"
+                   placeholder="" datatype="*" autocomplete="off" value="${referrerMobile!}">
         </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
         <button type="reset" class="btn btn-sm btn-default">重置</button>
@@ -92,7 +93,7 @@
                 <th>真实姓名</th>
                 <th>手机号</th>
                 <th>电子邮件</th>
-                <th>推荐人</th>
+                <th>推荐人手机</th>
                 <th>来源</th>
                 <th>渠道</th>
                 <th>注册时间</th>
@@ -113,7 +114,7 @@
                     <td>${userItem.userName!}</td>
                     <td>${userItem.mobile}</td>
                     <td>${userItem.email!}</td>
-                    <td>${userItem.referrer!}
+                    <td>${userItem.referrerMobile!}
                         <#if userItem.referrerStaff>
                         <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
@@ -155,7 +156,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -166,7 +167,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

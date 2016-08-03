@@ -3,8 +3,6 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -44,14 +42,16 @@ public class HomeLoanDto {
 
     private int duration;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel,LoanModel loan,long investAmount ,List<LoanRepayModel> loanRepayModels) {
+    private double extraRate;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate) {
         this.id = loan.getId();
         this.name = loan.getName();
         this.productType = loan.getProductType();
         this.activityType = loan.getActivityType();
-        this.baseRate = new BigDecimal(String.valueOf(loan.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+        this.baseRate = new BigDecimal(String.valueOf(loan.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         if (activityRate > 0) {
-            this.activityRate = new BigDecimal(String.valueOf(loan.getActivityRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+            this.activityRate = new BigDecimal(String.valueOf(loan.getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.periods = loan.getPeriods();
         this.duration = loan.getDuration();
@@ -61,13 +61,16 @@ public class HomeLoanDto {
         this.fundraisingStartTime = loan.getFundraisingStartTime();
         this.preheatSeconds = (loan.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000;
         if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(loan.getProductType())) {
-            this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+            this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.availableInvestAmount = AmountConverter.convertCentToString(loan.getLoanAmount() - investAmount);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
                 completedPeriods++;
             }
+        }
+        if (extraRate != 0) {
+            this.extraRate = extraRate;
         }
     }
 
@@ -137,5 +140,13 @@ public class HomeLoanDto {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public double getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(double extraRate) {
+        this.extraRate = extraRate;
     }
 }

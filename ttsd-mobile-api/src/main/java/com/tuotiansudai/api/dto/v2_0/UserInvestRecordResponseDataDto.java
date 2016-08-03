@@ -3,7 +3,10 @@ package com.tuotiansudai.api.dto.v2_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestAchievement;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 
@@ -42,6 +45,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     private boolean usedRedEnvelope;
 
     private String productNewType;
+
+    private String extraRate;
 
     public String getLoanId() {
         return loanId;
@@ -166,6 +171,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     public String getProductNewType() { return productNewType; }
 
     public void setProductNewType(String productNewType) { this.productNewType = productNewType; }
+
+    public String getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(String extraRate) {
+        this.extraRate = extraRate;
+    }
 
     public UserInvestRecordResponseDataDto() {
 

@@ -5,7 +5,9 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.DecimalFormat;
 
 @Controller
 @RequestMapping(value = "/bind-card")
@@ -29,26 +32,21 @@ public class BindBankCardController {
     private BindBankCardService bindBankCardService;
 
     @Autowired
+    private BankService bankService;
+
+    @Autowired
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         ModelAndView view = new ModelAndView("/bind-card");
-        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-
-        boolean isBindCard = bankCardModel != null;
-        if (isBindCard) {
-            view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
-            view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
-            view.addObject("cardNumber", bankCardModel.getCardNumber());
-        }
 
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         if (accountModel != null) {
             view.addObject("userName", accountModel.getUserName());
         }
-        view.addObject("isBindCard", isBindCard);
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
+        view.addObject("bankList", bankService.findBankList());
 
         return view;
     }
@@ -105,6 +103,24 @@ public class BindBankCardController {
             return false;
         }
         return bindBankCardService.isManual(loginName);
+    }
+
+    @RequestMapping(value = "/limit-tips", method = RequestMethod.GET)
+    @ResponseBody
+    public String getLimitTips(String bankCode) {
+        DecimalFormat myformat = new DecimalFormat();
+        myformat.applyPattern("##,###");
+        if(bankCode == null){
+            BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+            if(bankCardModel != null && bankCardModel.isFastPayOn()){
+                bankCode = bankCardModel.getBankCode();
+            }
+        }
+        BankModel bankModel = bankService.findByBankCode(bankCode);
+        if(bankModel == null){
+            return "";
+        }
+        return bankModel.getName() + "快捷支付限额:" + "单笔" + myformat.format(bankModel.getSingleAmount()/100) + "元/单日"+ myformat.format(bankModel.getSingleDayAmount()/100) + "元";
     }
 
 }

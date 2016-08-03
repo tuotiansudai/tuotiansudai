@@ -5,6 +5,10 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
+i,em{
+    font-style: normal;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -592,4 +596,70 @@ td.td {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.webImg img, .appImg img {
+    width: 100px;
+    height: 50px;
+}
+
+.thumbPictureImage {
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+
+.showPictureImage {
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+
+.ladder-table {
+    width: 180px;
+}
+
+.ladder-table .tip-table {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 0;
+    left: 390px;
+    z-index: 99;
+    display: none;
+    background: #fff;
+    margin-bottom: 0;
+}
+
+.ladder-table:hover .tip-table {
+    display: block;
+}
+.thumbPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.showPictureImage{
+    display: inline-block;
+    margin-left: 106px;
+    margin-bottom: 10px;
+}
+.top-line {
+    border: 1px solid #000;
+    margin-top: 0px;
+}
+.int-item{
+    float:left;
+    width:100%;
+    margin-bottom:10px;
+}
+.int-item .form-control,.int-item span{
+    float:left;
+    line-height: 34px;
+}
+.int-item .form-control{
+    width:200px;
+}
+.info-text{
+    line-height:34px;
 }

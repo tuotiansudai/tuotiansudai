@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.*;
@@ -54,9 +53,6 @@ public class PayCallbackController {
     @Autowired
     private SystemRechargeService systemRechargeService;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -71,16 +67,31 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/mer_bind_agreement_notify", method = RequestMethod.GET)
-    public ModelAndView agreementNotify(HttpServletRequest request) {
+    @RequestMapping(value = "/fast_pay_notify", method = RequestMethod.GET)
+    public ModelAndView fastPayAgreementNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), null);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.FAST_PAY);
         return new ModelAndView("/callback_response", "content", responseData);
     }
-    @RequestMapping(value = "/no_password_invest_notify", method = RequestMethod.GET)
-    public ModelAndView noPasswordInvestNotify(HttpServletRequest request) {
+
+    @RequestMapping(value = "/auto_repay_notify", method = RequestMethod.GET)
+    public ModelAndView autoRepayAgreementNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(),AgreementBusinessType.NO_PASSWORD_INVEST);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.AUTO_REPAY);
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/no_password_invest_notify", method = RequestMethod.GET)
+    public ModelAndView noPasswordInvestAgreementNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.NO_PASSWORD_INVEST);
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/auto_invest_notify", method = RequestMethod.GET)
+    public ModelAndView autoInvestAgreementNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.AUTO_INVEST);
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -89,20 +100,20 @@ public class PayCallbackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData;
         String service = paramsMap.get("service");
-        if(UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)){
+        if (UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)) {
             responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
-        }else{
+        } else {
             responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         }
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/mer_replace_card_notify",method = RequestMethod.GET)
+    @RequestMapping(value = "/mer_replace_card_notify", method = RequestMethod.GET)
     public ModelAndView replaceBankCard(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData;
         String service = paramsMap.get("service");
-        if(UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)){
+        if (UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)) {
             responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
         } else {
             responseData = bindBankCardService.replaceBankCardCallback(paramsMap, request.getQueryString());

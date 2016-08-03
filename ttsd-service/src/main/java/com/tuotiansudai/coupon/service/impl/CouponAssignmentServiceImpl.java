@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
+import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
@@ -95,6 +96,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "notAccountNotInvestedUserCollector")
     private UserCollector notAccountNotInvestedUserCollector;
 
+    @Resource(name = "investAchievementCollector")
+    private InvestAchievementUserCollector investAchievementCollector;
+
     @Override
     public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
@@ -117,7 +121,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, exchangeCode);
+        ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
+
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
     }
 
@@ -155,7 +160,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
+            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
                 @Override
                 public boolean apply(UserCouponModel input) {
                     return input.getStatus() == InvestStatus.SUCCESS;
@@ -164,7 +169,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, null);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
@@ -184,12 +189,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
 
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
-                boolean isLotteryWinner = this.isLotteryWinner(couponModel);
-                return isInUserGroup && (isAssignableCoupon || isLotteryWinner);
-            }
-
-            private boolean isLotteryWinner(CouponModel couponModel) {
-                return couponModel.getUserGroup() == UserGroup.WINNER;
+                return isInUserGroup && isAssignableCoupon;
             }
 
             private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
@@ -207,13 +207,13 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }));
 
         for (CouponModel couponModel : couponModels) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(couponModel.getId(), loginName, null);
+            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
         }
     }
 
     @Transactional
     @Override
-    public UserCouponModel assign(long couponId, String loginName, String exchangeCode) {
+    public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
         couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
@@ -230,6 +230,37 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
+    }
+
+    @Override
+    public void assignUserCoupon(long loanId,String loginNameOrMobile,long couponId){
+        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
+
+        CouponModel couponModel = couponMapper.findById(couponId);
+
+        if (couponModel == null) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is not exist", String.valueOf(couponId)));
+            return;
+        }
+
+        if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is inactive", String.valueOf(couponId)));
+            return;
+        }
+
+        boolean contains = investAchievementCollector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
+
+        if (!contains) {
+            logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
+            return;
+        }
+
+        if (couponModel.isMultiple()) {
+            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            userCouponModel.setAchievementLoanId(loanId);
+            userCouponMapper.update(userCouponModel);
+            logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
+        }
     }
 
     private UserCollector getCollector(UserGroup userGroup) {

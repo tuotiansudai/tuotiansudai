@@ -90,6 +90,7 @@ public class InvestReferrerRewardMapperTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 }

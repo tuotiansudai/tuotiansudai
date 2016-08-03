@@ -5,56 +5,49 @@
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
         <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
-            <#if isBindCard>
-                <div class="card-box">
-                    <form class="open-fast-pay-form" action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-                        <div class="pad-s">
-                            <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png"/>
-                            <span class="user fr">${userName}</span>
-                        </div>
-                        <div class="card-num tc">${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</div>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="card-link clearfix">
-                            <#if replaceCardAvailable>
-                                <a class="card-edit fl" href="/bind-card/replace">换卡</a>
-                            </#if>
-                            <#if openFastPayAvailable>
-                                <input type="hidden" name="fastPay" value="true"/>
-                                <a class="open-fast-pay fr" href="javascript:">开通快捷支付</a>
-                            </#if>
-                        </div>
-
-                    </form>
-                </div>
-            <#else>
-                <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+            <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                <div class="bank-card-limit">
                     <#if userName??>
-                        真实姓名：${userName}
-                    </#if>
-                    <div class="clear-blank"></div>
-                    <div class="e-bank-recharge">
-                        <b class="title">选择银行:</b>
-                        <ol class="select-bank">
-                            <#list banks as bank>
-                                <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                                    <input id="bank-${bank}" data-name="${bank}" type="radio" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
-                                    <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
-                                </li>
-                            </#list>
-                        </ol>
-                        <div class="recharge-form pad-m">
-                            <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-
-                                银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="tc clear-blank-m">
-                                    <input type="submit" class="btn-normal bind-card-submit" disabled="disabled" value="确认绑定"/>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="user-name">
+                            真实姓名：${userName}
                     </div>
-                </form>
-            </#if>
+                    </#if>
+                    <#if bankList??>
+                    <div class="bank-list">
+                        <label>快捷支付限额一览：</label>
+                        <i class="fa fa-sort-asc"></i>
+                        <ul class="list-item" id="bankList">
+                        <#list bankList as bank>
+                            <li>${bank.name}:单笔${(bank.singleAmount?number)}元,单日${(bank.singleDayAmount?number)}元</li>
+                        </#list>
+                        </ul>
+                    </div>
+                    </#if>
+                </div>
+                <div class="clear-blank"></div>
+                <div class="e-bank-recharge">
+                    <b class="title">选择银行:</b>
+                    <ol class="select-bank">
+                        <#list banks as bank>
+                            <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
+                                <input id="bank-${bank}" data-name="${bank}" class="bank-checked" value="${bank}" type="radio" onclick="selectBank(this.value)" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
+                                <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                            </li>
+                        </#list>
+                    </ol>
+                    <div class="recharge-form pad-m">
+                        <div class="limit-tips"><span>中国银行快捷支付限额:单笔50,000元/单日50,000元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                        <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+
+                            银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <div class="tc clear-blank-m">
+                                <input type="submit" class="btn-normal bind-card-submit" disabled="disabled" value="确认绑定"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="clear-blank"></div>
         <div class="borderBox">

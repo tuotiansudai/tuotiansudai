@@ -5,8 +5,10 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
@@ -49,6 +51,8 @@ public class AccountController {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private UserMapper userMapper;
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -57,13 +61,16 @@ public class AccountController {
         Date endTime = DateUtils.addMonths(startTime, 1);
         String loginName = LoginUserInfo.getLoginName();
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        modelAndView.addObject("loginName",loginName);
+        modelAndView.addObject("mobile",userMapper.findUsersMobileByLoginName(loginName));
         modelAndView.addObject("userMembershipLevel", membershipModel != null?membershipModel.getLevel():0);
         modelAndView.addObject("balance",accountService.getBalance(loginName));
         modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));
         modelAndView.addObject("collectingPrincipal",investRepayService.findSumRepayingCorpusByLoginName(loginName));
         modelAndView.addObject("collectingInterest",investRepayService.findSumRepayingInterestByLoginName(loginName));
         modelAndView.addObject("collectedInterest",investRepayService.findSumRepaidInterestByLoginName(loginName));
+        modelAndView.addObject("collectedBirthdayAndInterest",userCouponService.findSumBirthdayAndInterestByLoginName(loginName));
+        modelAndView.addObject("collectedRedEnvelopeInterest",userCouponService.findSumRedEnvelopeByLoginName(loginName));
+
         modelAndView.addObject("freeze",accountService.getFreeze(loginName));
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)){
             modelAndView.addObject("successSumRepay",loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName,startTime,endTime));

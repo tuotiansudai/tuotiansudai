@@ -20,8 +20,8 @@ public interface UserBillService {
 
     long findSumRewardByLoginName(String loginName);
 
-    List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime,int currentPage,int pageSize);
+    List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String mobile,Date startTime,Date endTime,int currentPage,int pageSize);
 
-    int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime);
+    int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String mobile,Date startTime,Date endTime);
     
 }
