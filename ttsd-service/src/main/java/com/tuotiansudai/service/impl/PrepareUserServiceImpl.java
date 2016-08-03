@@ -12,9 +12,11 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.PrepareModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.PrepareUserService;
+import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +43,18 @@ public class PrepareUserServiceImpl implements PrepareUserService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SmsCaptchaService smsCaptchaService;
+
     @Override
     @Transactional
     public BaseDataDto prepareRegister(PrepareRegisterRequestDto requestDto) {
+
         boolean referrerMobileIsExist = userService.mobileIsExist(requestDto.getReferrerMobile());
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(requestDto.getMobile(), requestDto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
-        if (!referrerMobileIsExist || mobileIsExist) {
+        if (!referrerMobileIsExist || mobileIsExist || verifyCaptchaFailed) {
             return new BaseDataDto(false, null);
         }
 
