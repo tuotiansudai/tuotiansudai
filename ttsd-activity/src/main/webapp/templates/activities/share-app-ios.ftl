@@ -1,10 +1,10 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,P2P理财,短期理财,短期投资,拓天速贷2级推荐机制" description="拓天速贷针对老用户推出2级推荐机制的推荐奖励,可以让您的财富快速升值.">
+<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取5888体验金，体验再得红包大奖和3%的新手加息券.">
 <div class="share-app-container clearfix">
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-				<span>133****5387</span>
+				<span data-referrer="" id="referrer">133****5387</span>
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
