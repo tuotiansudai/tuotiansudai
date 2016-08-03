@@ -33,10 +33,10 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                 btn1: function () {
                     var transferInvestId = $('#transferInvestId').val();
                     $.ajax({
-                        url: '/transfer/application/' + transferInvestId + '/isAllowTransfer',
-                        type: 'POST'
+                        url: '/transfer/invest/' + transferInvestId + '/is-transferable',
+                        type: 'GET'
                     }).done(function (data) {
-                        if (true == data.status) {
+                        if (true == data.data.status) {
                             sendData();
                             layer.closeAll();
                         } else {

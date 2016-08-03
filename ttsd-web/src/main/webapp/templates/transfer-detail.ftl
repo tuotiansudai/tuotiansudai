@@ -84,9 +84,8 @@
         <div class="transfer-top">
             <ul>
                 <li class="active">项目详情</li>
-                <li>投资记录</li>
+                <li>转让记录</li>
             </ul>
-            <#--<span >债权承接记录</span>-->
         </div>
 
         <div class="detail-record-info">
@@ -141,12 +140,12 @@
                     <table>
                         <thead>
                         <tr>
-                            <th>承接人</th>
+                            <th>受让人</th>
                             <th>转让价格(元)</th>
-                            <th>承接方式</th>
-                            <th>预计收益(元)</th>
+                            <th>交易方式</th>
+                            <th>预期收益(元)</th>
                             <th>项目本金(元)</th>
-                            <th>承接时间</th>
+                            <th>交易时间</th>
                         </tr>
                         </thead>
                         <tbody>
