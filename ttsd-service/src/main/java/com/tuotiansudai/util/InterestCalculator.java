@@ -204,7 +204,7 @@ public class InterestCalculator {
     public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
         DateTime startTime;
         if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
-            startTime =new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
+            startTime = new DateTime(investModel.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
         } else {
             startTime = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         }

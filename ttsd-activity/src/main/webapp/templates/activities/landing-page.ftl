@@ -10,7 +10,7 @@
         <div class="landing-top">
             <div class="landing-inner">
                 <div class="register-box">
-                    <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate" >
+                    <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                         <ul class="reg-list tl register-step-one">
                             <li>
                                 <label for="" class="reg-title">手机号:</label>
@@ -42,8 +42,8 @@
                                 <label for="captcha" class="reg-title">手机验证码:</label>
                                 <i class="sprite-register-ic-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
-                                <input type="text"  class="captcha" autocomplete="off" name="captcha" id="captcha"
-                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" >
+                                <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
+                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
                         </li>
@@ -62,6 +62,7 @@
                         </li>
                     </ul>
                 </form>
+
             </div>
         </div>
     </div>
@@ -267,7 +268,7 @@
             <div class="mobile-page-register clearfix">
             </div>
         </#if>
-         </div>
+    </div>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">

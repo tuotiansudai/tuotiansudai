@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -35,7 +36,9 @@ public class LoanListDto{
 
     private ProductType productType;
 
-    List<ExtraLoanRateDto> extraLoanRateModels;
+    private PledgeType pledgeType;
+
+    List<ExtraLoanRateItemDto> extraLoanRateModels;
 
     public long getId() {
         return id;
@@ -133,14 +136,22 @@ public class LoanListDto{
         this.productType = productType;
     }
 
-    public List<ExtraLoanRateDto> getExtraLoanRateModels() {
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
+    }
+
+    public List<ExtraLoanRateItemDto> getExtraLoanRateModels() {
         if (CollectionUtils.isEmpty(extraLoanRateModels)){
             return new ArrayList<>();
         }
         return extraLoanRateModels;
     }
 
-    public void setExtraLoanRateModels(List<ExtraLoanRateDto> extraLoanRateModels) {
+    public void setExtraLoanRateModels(List<ExtraLoanRateItemDto> extraLoanRateModels) {
         this.extraLoanRateModels = extraLoanRateModels;
     }
 }

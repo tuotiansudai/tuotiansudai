@@ -450,9 +450,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
-        long min = AmountConverter.convertStringToCent(balanceMin);
-        long max = AmountConverter.convertStringToCent(balanceMax);
+        Long min = StringUtils.isNotEmpty(balanceMin)?AmountConverter.convertStringToCent(balanceMin):null;
+        Long max = StringUtils.isNotEmpty(balanceMax)?AmountConverter.convertStringToCent(balanceMax):null;
         return Lists.newArrayList(min, max);
     }
+
+
 
 }
