@@ -12,7 +12,7 @@ public class FeedbackModel implements Serializable {
     private String content;
     private Date createdTime;
     private ProcessStatus status;
-
+    private String remark;
 
     public long getId() {
         return id;
@@ -76,6 +76,14 @@ public class FeedbackModel implements Serializable {
 
     public void setStatus(ProcessStatus status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
 

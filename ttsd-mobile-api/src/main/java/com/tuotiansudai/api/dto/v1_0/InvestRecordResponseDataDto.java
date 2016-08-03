@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.google.common.primitives.Ints;
 import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -60,7 +61,7 @@ public class InvestRecordResponseDataDto {
         Collections.sort(investAchievements, new Comparator<InvestAchievement>() {
             @Override
             public int compare(InvestAchievement investAchievement1, InvestAchievement investAchievement2) {
-                return new Integer(investAchievement1.getPriority()).compareTo(new Integer(investAchievement2.getPriority()));
+                return Ints.compare(investAchievement1.getPriority(), investAchievement2.getPriority());
             }
         });
         this.setAchievements(investAchievements);

@@ -317,6 +317,7 @@ public class LoanRepayMapperTest {
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setStatus(loanStatus);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 

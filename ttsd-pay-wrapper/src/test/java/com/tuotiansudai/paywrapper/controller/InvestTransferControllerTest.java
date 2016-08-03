@@ -237,6 +237,7 @@ public class InvestTransferControllerTest {
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setRecheckTime(recheckTime);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }

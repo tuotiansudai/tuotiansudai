@@ -335,7 +335,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     }
 
     public List<ExtraLoanRateDto> getExtraRates() {
-        if (CollectionUtils.isEmpty(extraRates)){
+        if (CollectionUtils.isEmpty(extraRates)) {
             return new ArrayList<>();
         }
         return extraRates;

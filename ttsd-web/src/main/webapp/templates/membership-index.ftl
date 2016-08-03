@@ -29,7 +29,8 @@
                     <div class="vip-bg vip-5 <#if membershipLevel == 5>active</#if>"></div>
                     <#if membershipType == 'UPGRADE'>
                         <#if membershipNextLevel <= 5 && membershipLevel != 5>
-                            <div class="popup popup-${membershipNextLevel!}">还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
+                            <div class="popup popup-${membershipNextLevel!}">
+                                还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
                     </#if>

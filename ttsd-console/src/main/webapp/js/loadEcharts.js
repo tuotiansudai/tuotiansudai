@@ -98,11 +98,24 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             },
             Bar: function (data, name,xAxisName) {
                 var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var total = 0;
+                $.each(bar_datas.data,function (i,item){
+                    total += Number(item.value);
+                });
+
+                total=parseFloat(total).toFixed(2);
                 var option = {
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{c}"
-                        //formatter: xAxisName+"为{b}:{c}"
+                        formatter: function(option) {
+                            console.log(option);
+                            return option.seriesName + ':' + option.value;
+                        }
                     },
                     xAxis: [{
                         type: 'category',
@@ -193,7 +206,16 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
     },
             Pie: function (data, name) {
                 var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
+                var total = 0;
+                $.each(pie_datas.data,function (i,item){
+                    total += Number(item.value);
+                });
                 var option = {
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     tooltip : {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} 人 ({d}%)"
@@ -239,7 +261,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
             },
             Lines: function (data, name, is_stack) {
-                var xAxisdata,legendData,seriesData,seriesDataList=[];
+                var xAxisdata,legendData,seriesData,seriesDataList=[],total = 0;
                 xAxisdata=_.sortBy(_.uniq(_.pluck(data, 'name')));
                 legendData=_.uniq(_.pluck(data, 'group'));
 
@@ -257,6 +279,9 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     groupDataOrder=_.sortBy(groupData,'name');//sort by time
 
                     var opData=_.pluck(groupDataOrder,'value');
+                    $.each(opData,function (i,item){
+                        total += Number(item);
+                    });
                     seriesDataList.push({
                         name:option,
                         type:'line',
@@ -266,8 +291,15 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     });
                 });
 
+                if(total.toString().indexOf('.') != -1){
+                    total = total.toFixed(2);
+                }
                 var option = {
-
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
                     legend: {
                         x:'center',
                         y:'bottom',
@@ -384,9 +416,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         if(/userInvestViscosity/.test(option.chart.dom.id)) {
                             option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
                         }
-                        window.onresize = option.chart.resize;
-
-
+                        window.onresize = option.option.resize;
                     });
             }
         },
