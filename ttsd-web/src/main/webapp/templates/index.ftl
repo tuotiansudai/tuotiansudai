@@ -658,9 +658,14 @@
         </div>
         <dl class="book-dl clearfix">
             <dt>预计投资金额</dt>
-            <dd><input type="text" class="form-text" name="bookingAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric"> 元</dd>
+            <dd>
+                <span>
+                    <input type="text" class="form-text autoNumeric" name="bookingAmount" data-l-zero="deny" data-v-min="0.00" data-v-max="99999999999.99" placeholder="0.00" class="autoNumeric"> 元
+                </span>
+            </dd>
         </dl>
-        <dl class="book-dl clearfix">
+            <div class="tc margin-top25"><button type="submit" class="btn btn-normal">确认预约</button> </div>
+        <dl class="book-dl book-bottom-notice clearfix">
             <dt>预约说明</dt>
             <dd>1. 每次预约不可同时预约多个项目； <br/>
                 2. 预约设置完成时开始进入预约队列； <br/>
@@ -671,8 +676,6 @@
             </dd>
 
         </dl>
-
-        <div class="tc"><button type="submit" class="btn btn-normal">确认预约</button> </div>
         </form>
     </div>
 
