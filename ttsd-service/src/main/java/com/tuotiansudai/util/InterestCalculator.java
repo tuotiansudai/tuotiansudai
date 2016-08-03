@@ -71,10 +71,10 @@ public class InterestCalculator {
         // 2015-01-01 ~ 2015-01-31: 30
         int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
 
-        return getExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
+        return getCouponExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
     }
 
-    private static long getExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
+    private static long getCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
@@ -106,7 +106,7 @@ public class InterestCalculator {
             return 0;
         }
         int duration = loanModel.getDuration();
-        return getExpectedInterest(loanModel, couponModel, investAmount, duration);
+        return getCouponExpectedInterest(loanModel, couponModel, investAmount, duration);
     }
 
     public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
