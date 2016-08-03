@@ -112,7 +112,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                     title: '预约投资',
                     type: 1,
                     skin: 'book-box-layer',
-                    area: ['500px'],
+                    area: ['680px'],
                     content: $('.book-invest-box')
                 });
                 return;
@@ -187,6 +187,9 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
 
             },
             submitHandler: function (form) {
+                var amount=$(form).find('input[name="bookingAmount"]').val().replace(/,/gi,'');
+
+                $(form).find('input[name="bookingAmount"]').val(amount);
                 var data = $(form).serialize();
                 //form.submit();
                 $.ajax({
@@ -199,11 +202,19 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                     .done(function (response) {
                         if (response.data.status) {
                             layer.closeAll();
-                            layer.msg('<h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。', {
-                                time: 6000,
-                                icon: 1,
-                                tips: [1, '#efbf5c']
+
+                            layer.open({
+                                type: 1,
+                                title:'&nbsp',
+                                area:['400px','185px'],
+                                content:'<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
                             });
+
+                            //layer.msg('', {
+                            //    time: 6000,
+                            //    icon: 1,
+                            //    tips: [1, '#efbf5c']
+                            //});
                         }
                     })
                     .fail(function (response) {
