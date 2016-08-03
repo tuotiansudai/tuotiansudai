@@ -173,7 +173,12 @@
                 AND i.loan_id = #{loanId}
             </if>
             <if test="source != null">
-                AND ta.source = #{source}
+                <if test="source.name() == 'MOBILE'">
+                    AND (ta.source = 'IOS' OR ta.source = 'ANDROID')
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    AND ta.source = #{source}
+                </if>
             </if>
         </where>
         ORDER BY application_time
@@ -275,7 +280,12 @@
                 and i.loan_id = #{loanId}
             </if>
             <if test="source != null">
-                and ta.source = #{source}
+                <if test="source.name() == 'MOBILE'">
+                    and (ta.source = 'IOS' or ta.source = 'ANDROID')
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    and ta.source = #{source}
+                </if>
             </if>
         </where>
     </select>
