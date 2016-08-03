@@ -35,6 +35,8 @@ public class ContractServiceTest {
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -61,6 +63,8 @@ public class ContractServiceTest {
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel();
         loanMapper.create(loanModel);
+        LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
+        loanerDetailsMapper.create(loanerDetailsModel);
         InvestModel investModel = getInvest(loanModel.getId());
         investMapper.create(investModel);
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), investModel.getId());
@@ -108,6 +112,12 @@ public class ContractServiceTest {
         lm.setPledgeType(PledgeType.HOUSE);
         lm.setUpdateTime(new Date());
         return lm;
+    }
+
+    private LoanerDetailsModel getLoanerDetailsModel(LoanModel loanModel) {
+        return new LoanerDetailsModel(loanModel.getId(), loanModel.getLoanerLoginName(),
+                loanModel.getLoanerUserName(), Gender.FEMALE, 12, loanModel.getLoanerIdentityNumber(), Marriage.MARRIED,
+                "", "", "");
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {
