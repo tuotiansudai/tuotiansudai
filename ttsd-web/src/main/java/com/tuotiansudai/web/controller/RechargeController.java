@@ -6,7 +6,9 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.util.AmountConverter;
@@ -34,6 +36,9 @@ public class RechargeController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private BankService bankService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
@@ -46,6 +51,7 @@ public class RechargeController {
         modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("isFastPayOn", isFastPayOn);
+        modelAndView.addObject("bankList", bankService.findBankList());
 
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         if (accountModel != null && isBindCard) {
@@ -54,6 +60,9 @@ public class RechargeController {
             modelAndView.addObject("bankCode", bankCard.getBankCode());
             modelAndView.addObject("bank", BankCardUtil.getBankName(bankCard.getBankCode()));
             modelAndView.addObject("bankCard", bankCard.getCardNumber());
+
+            BankModel bankModel = bankService.findByBankCode(bankCard.getBankCode());
+            modelAndView.addObject("bankModel", bankModel);
         }
 
         return modelAndView;

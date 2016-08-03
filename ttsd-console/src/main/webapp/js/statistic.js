@@ -5,7 +5,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         winScrollTop,
         headerHeight=$('#top').height()+20,
         panelHeight=$('.panel-success').eq(0).height();
-        $('.panel-success').eq(0).height();
+    $('.panel-success').eq(0).height();
 
     $(window).scroll(function() {
 
@@ -37,6 +37,19 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         $(window).scrollTop(headerHeight+panelHeight*num+heightHack);
         return false;
     });
+
+    var preDate = new Date(new Date().getTime() - 24*60*60*1000);
+    $('#repayStartTime').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate : '2016-01-01',
+        maxDate : preDate
+    });
+    $('#repayEndTime').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate : '2016-01-01',
+        maxDate : preDate
+    });
+
     $('.start-date,.end-date').datetimepicker({
         format: 'YYYY-MM-DD'
     });
@@ -66,15 +79,26 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     initStartDate=loadEcharts.datetimeFun.getBeforeDate(6);
     initEndDate=loadEcharts.datetimeFun.getBeforeDate(0);
-
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
+    $('#repayStartTime').val('2016-01-01');
+    $('#repayEndTime').val(loadEcharts.datetimeFun.getBeforeDate(1));
+
+    $('.granularity-select').on('change', function(){
+        if ($(this).val() == 'Hourly') {
+            $(this).parent().find('.start-time-word').html('查询时间');
+            $(this).parent().find('.over-end-date').hide();
+        } else {
+            $(this).parent().find('.start-time-word').html('开始时间');
+            $(this).parent().find('.over-end-date').show();
+        }
+    });
 
     function showReport(form,url,reportbox,name,category,xAxisName) {
         var Btn=$(form).find(':button');
         Btn.click(function() {
             var dataFormat=$(form).serialize(),
-            reportBoxDOM=$('#'+reportbox);
+                reportBoxDOM=$('#'+reportbox);
             reportBoxDOM
                 .empty()
                 .removeAttr('_echarts_instance_')
@@ -94,16 +118,20 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 }
                 switch(category){
                     case 'Lines':
-                         option = loadEcharts.ChartOptionTemplates.Lines(data, name);
+                        option = loadEcharts.ChartOptionTemplates.Lines(data, name);
                         break;
                     case 'bar':
-                         option = loadEcharts.ChartOptionTemplates.Bar(data, name,xAxisName);
+                        option = loadEcharts.ChartOptionTemplates.Bar(data, name,xAxisName);
                         break;
                     case 'kBar':
                         option = loadEcharts.ChartOptionTemplates.kBar(data, name);
                         break;
                     case 'pie':
                         option = loadEcharts.ChartOptionTemplates.Pie(data, name);
+                        break;
+                    case 'repayLines':
+                        option = loadEcharts.ChartOptionTemplates.Lines(data, name);
+                        option.title.text = '';
                         break;
                     default:break;
                 }
@@ -149,5 +177,6 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*标的满标周期分布*/
     showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
 
-
+    /*平台待收 总待收-总入金+回款*/
+    showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','金额','repayLines');
 });

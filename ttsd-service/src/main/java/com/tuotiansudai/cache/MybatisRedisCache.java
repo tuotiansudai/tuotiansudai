@@ -2,7 +2,7 @@ package com.tuotiansudai.cache;
 
 import com.tuotiansudai.client.MybatisRedisCacheWrapperClient;
 import com.tuotiansudai.util.SerializeUtil;
-import com.tuotiansudai.util.SpringContextUtil;
+import com.tuotiansudai.spring.SpringContextUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.ibatis.cache.Cache;
 

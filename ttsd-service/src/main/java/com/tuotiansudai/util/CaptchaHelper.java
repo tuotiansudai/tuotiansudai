@@ -24,6 +24,8 @@ public class CaptchaHelper {
 
     public final static String LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
 
+    public final static String ASK_CAPTCHA = "ASK_CAPTCHA";
+
     public final static String REGISTER_CAPTCHA = "REGISTER_CAPTCHA";
 
     public final static String RETRIEVE_PASSWORD_CAPTCHA = "RETRIEVE_PASSWORD_CAPTCHA";
@@ -56,8 +58,6 @@ public class CaptchaHelper {
     }
 
     public void storeCaptcha(String attributeKey, String captcha, String deviceId) {
-        redisWrapperClient.setex(MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
-
         if (attributeKey.equals(CaptchaHelper.BASIC_CAPTCHA)) {
             redisWrapperClient.setex(MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey), second, captcha);
         } else {
@@ -82,7 +82,7 @@ public class CaptchaHelper {
 
     public String transferImageToBase64(BufferedImage bufferedImage) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        byte[] data = null;
+        byte[] data;
         InputStream in = null;
         try {
             ImageIO.write(bufferedImage, "png", os);
@@ -95,9 +95,7 @@ public class CaptchaHelper {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
-                if (os != null) {
-                    os.close();
-                }
+                os.close();
                 if (in != null) {
                     in.close();
                 }
@@ -121,9 +119,6 @@ public class CaptchaHelper {
 
     public boolean checkImageCaptcha(String attributeKey,String ip){
         String ipRedisKey = MOBILE_APP_IMAGE_CAPTCHA_IP_KEY.replace("{ip}", ip).replace("{type}", attributeKey);
-        if (redisWrapperClient.exists(ipRedisKey)) {
-            return true;
-        }
-        return false;
+        return redisWrapperClient.exists(ipRedisKey);
     }
 }

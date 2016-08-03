@@ -9,10 +9,12 @@
     <resultMap id="questionResultMap" type="QuestionModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/> <!--mobile is not table column-->
         <result column="question" property="question"/>
         <result column="addition" property="addition"/>
         <result column="tags" property="tags" typeHandler="com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler"/>
         <result column="answers" property="answers"/>
+        <result column="last_answered_time" property="lastAnsweredTime"/>
         <result column="approved" property="approved"/>
         <result column="approved_by" property="approvedBy"/>
         <result column="approved_time" property="approvedTime"/>
@@ -20,13 +22,9 @@
     </resultMap>
 
     <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
-        insert into ask_question (login_name, question, addition, tags, answers, approved, approved_by, approved_time, created_time)
-        value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{approved}, #{approvedBy}, #{approvedTime}, now())
+        insert into ask_question (login_name, question, addition, tags, answers, last_answered_time, approved, approved_by, approved_time, created_time)
+        value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approved}, #{approvedBy}, #{approvedTime}, now())
     </insert>
-
-    <select id="findByLoginName" parameterType="string" resultMap="questionResultMap">
-        select * from ask_question where login_name = #{loginName}
-    </select>
 
     <update id="update" parameterType="QuestionModel">
         update ask_question set
@@ -35,9 +33,51 @@
         addition = #{addition},
         tags = #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler},
         answers = #{answers},
+        last_answered_time = #{lastAnsweredTime},
         approved = #{approved},
         approved_by = #{approvedBy},
         approved_time = #{approvedTime}
         where id = #{id}
     </update>
+
+    <select id="findByLoginName" parameterType="string" resultMap="questionResultMap">
+        select *, (select mobile from user where user.login_name = #{loginName}) as mobile
+        from ask_question where login_name = #{loginName}
+    </select>
+
+    <select id="findAllQuestions" parameterType="map" resultMap="questionResultMap">
+        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        from ask_question
+        where approved is TRUE or login_name = #{loginName}
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countAllQuestions" parameterType="string" resultType="long">
+        select ifnull(count(1), 0)  from ask_question
+        where approved is TRUE or login_name = #{loginName}
+    </select>
+
+    <select id="findAllUnresolvedQuestions" parameterType="map" resultMap="questionResultMap">
+        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        from ask_question
+        where (approved is TRUE or login_name = #{loginName})
+        and not exists (select 1 from ask_answer where ask_question.id = ask_answer.question_id and best_answer is TRUE)
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countAllUnresolvedQuestions" parameterType="string" resultType="long">
+        select ifnull(count(1), 0) from ask_question
+        where (approved is TRUE or login_name = #{loginName})
+        and not exists (select 1 from ask_answer where ask_question.id = ask_answer.question_id and best_answer is TRUE)
+    </select>
+
+    <select id="findAllHotQuestions" parameterType="map" resultMap="questionResultMap">
+        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        from ask_question
+        where (approved is TRUE or login_name = #{loginName})
+        order by last_answered_time desc
+        limit #{index}, #{pageSize}
+    </select>
 </mapper>

@@ -10,7 +10,7 @@ import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
-import com.tuotiansudai.util.SpringContextUtil;
+import com.tuotiansudai.spring.SpringContextUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;

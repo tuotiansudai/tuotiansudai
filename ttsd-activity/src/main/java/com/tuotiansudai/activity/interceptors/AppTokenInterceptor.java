@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
-import com.tuotiansudai.util.MyAuthenticationManager;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,13 +24,13 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
     private final static String APP_SOURCE_FLAG = "app";
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        if(!APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source"))){
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (!APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source"))) {
             return true;
         }
-        String token = Strings.isNullOrEmpty(request.getHeader("token"))?request.getParameter("token"):request.getHeader("token");
+        String token = Strings.isNullOrEmpty(request.getHeader("token")) ? request.getParameter("token") : request.getHeader("token");
         if (Strings.isNullOrEmpty(token)) {
-            logger.debug(MessageFormat.format("url:{0},uri:{1} , token is null",request.getRequestURL(),request.getRequestURI()));
+            logger.debug(MessageFormat.format("url:{0},uri:{1} , token is null", request.getRequestURL(), request.getRequestURI()));
             myAuthenticationManager.removeAuthentication();
             return true;
         }

@@ -17,13 +17,13 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <aop:aspectj-autoproxy expose-proxy="true" />
+    <aop:aspectj-autoproxy expose-proxy="true"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.ask"/>
+    <context:component-scan base-package="com.tuotiansudai.ask,com.tuotiansudai.client,com.tuotiansudai.spring"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -49,8 +49,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.ask.repository.model,com.tuotiansudai.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -60,13 +59,15 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper,com.tuotiansudai.repository.mapper"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${web.jedis.pool.maxTotal}"/>
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
+
+    <bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
 </beans>

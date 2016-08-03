@@ -106,9 +106,7 @@ public class PointController {
                                                             @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                             @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
-        String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(loginName, index, pageSize, startTime, endTime, businessType);
-        dataDto.setStatus(true);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, pageSize, startTime, endTime, businessType);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
 

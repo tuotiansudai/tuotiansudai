@@ -10,6 +10,8 @@ public class AnswerModel implements Serializable {
 
     private String loginName;
 
+    private String mobile;
+
     private long questionId;
 
     private String answer;
@@ -49,6 +51,14 @@ public class AnswerModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public long getQuestionId() {

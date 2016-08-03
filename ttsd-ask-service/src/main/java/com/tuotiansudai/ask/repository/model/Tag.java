@@ -13,11 +13,15 @@ public enum Tag {
     CREDIT_CARD("信用卡"),
     FOREX("外汇"),
     STOCK("股票"),
-    OTHER("期限");
+    OTHER("其他");
 
     private final String description;
 
     Tag(String description) {
         this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

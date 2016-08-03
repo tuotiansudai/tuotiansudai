@@ -9,7 +9,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
-import com.tuotiansudai.util.SpringContextUtil;
+import com.tuotiansudai.spring.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;

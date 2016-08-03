@@ -1,14 +1,15 @@
 var path = require('path');
 var webpack = require('webpack');
-var basePath = path.join(__dirname, 'src/main/webapp/ask');
+var basePath = path.join(__dirname, 'src/main/webapp/ask/dist');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     output: {
-        filename: "[name].js",
-        path: path.join(basePath, 'dist'),
-        publicPath: '/js/'
-        //publicPath是静态资源图片的访问路径
+        filename: "main.js",
+        path: basePath,
+        publicPath: '/ask/dist/'
+        ////publicPath是静态资源图片的访问路径
+
     },
     module:{
         loaders:[
@@ -37,5 +38,4 @@ module.exports = {
         }),
         new ExtractTextPlugin('main.css')
     ]
-
 };

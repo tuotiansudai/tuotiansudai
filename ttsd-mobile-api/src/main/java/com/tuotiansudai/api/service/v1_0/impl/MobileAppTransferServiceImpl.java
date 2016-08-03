@@ -2,8 +2,8 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
+import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -156,7 +156,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
                 baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
                 baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
                 break;
-            case APPLICATION_IS_HIS_OWN:
+            case INVESTOR_IS_LOANER:
                 baseResponseDto.setCode(ReturnMessage.APPLICATION_IS_HIS_OWN.getCode());
                 baseResponseDto.setMessage(ReturnMessage.APPLICATION_IS_HIS_OWN.getMsg());
                 break;

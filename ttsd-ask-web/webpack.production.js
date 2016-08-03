@@ -15,8 +15,8 @@ module.exports = {
 	},
 	output: {
 		filename: "main.[hash:8].min.js",
-		path: path.join(basePath, 'dist'),
-		publicPath: '/dist/'
+		path: path.join(basePath, '/dist'),
+		publicPath: '/dist'
 	},
 	module:{
 		loaders:[

@@ -7,7 +7,8 @@
            <li class="re-title">通过认证手机找回密码</li>
            <li>
                <label for="" class="title">手机号：</label>
-               <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile!''}" placeholder="请输入手机号"/>
+               <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile!''}"
+                      placeholder="请输入手机号"/>
            </li>
            <li class="get-captcha">
                <label for="" class="title">验证码：</label>

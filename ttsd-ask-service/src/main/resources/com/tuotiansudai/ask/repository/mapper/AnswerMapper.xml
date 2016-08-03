@@ -9,6 +9,7 @@
     <resultMap id="answerResultMap" type="AnswerModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/> <!--mobile is not table column-->
         <result column="question_id" property="questionId"/>
         <result column="answer" property="answer"/>
         <result column="best_answer" property="bestAnswer"/>
@@ -25,7 +26,8 @@
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="answerResultMap">
-        select * from ask_answer where login_name = #{loginName}
+        select *, (select mobile from user where user.login_name = #{loginName}) as mobile
+        from ask_answer where login_name = #{loginName}
     </select>
 
     <update id="update" parameterType="AnswerModel">

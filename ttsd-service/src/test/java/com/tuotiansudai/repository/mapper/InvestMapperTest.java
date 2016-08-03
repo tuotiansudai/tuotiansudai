@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
+import com.tuotiansudai.repository.model.TransferableInvestView;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -149,6 +149,7 @@ public class InvestMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanStatus);
         loanMapper.create(loanModel);
@@ -498,6 +499,7 @@ public class InvestMapperTest {
         loanDto.setProductType(ProductType._180);
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanStatus);
         loanMapper.create(loanModel);
@@ -799,6 +801,7 @@ public class InvestMapperTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setProductType(ProductType.EXPERIENCE);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
 
         InvestModel investModel = this.getFakeInvestModel();

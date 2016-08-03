@@ -3,7 +3,10 @@ package com.tuotiansudai.api.dto.v2_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestAchievement;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 

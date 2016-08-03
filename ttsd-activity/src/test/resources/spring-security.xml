@@ -19,7 +19,7 @@
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="accessDeniedExceptionRedirect">
             <beans:map>
-                <beans:entry key="com.tuotiansudai.web.config.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="com.tuotiansudai.web.config.security.UserRoleAccessDeniedException" value="/register/account"/>
                 <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
             </beans:map>
         </beans:property>

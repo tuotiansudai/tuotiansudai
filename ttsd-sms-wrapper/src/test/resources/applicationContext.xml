@@ -62,7 +62,7 @@
         <property name="basePackage" value="com.tuotiansudai.smswrapper.repository.mapper"/>
     </bean>
 
-    <bean class="com.tuotiansudai.util.SpringContextUtil"/>
+    <bean class="com.tuotiansudai.spring.SpringContextUtil"/>
 
     <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
 
