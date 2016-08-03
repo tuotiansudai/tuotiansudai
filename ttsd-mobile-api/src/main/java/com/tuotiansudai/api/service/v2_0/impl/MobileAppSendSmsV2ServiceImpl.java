@@ -39,7 +39,7 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
 
         if(!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST) && captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(),remoteIp) && !Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
             if(!captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId())){
-                return new BaseResponseDto(ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode(),ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
+                return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
             }
         }
 
