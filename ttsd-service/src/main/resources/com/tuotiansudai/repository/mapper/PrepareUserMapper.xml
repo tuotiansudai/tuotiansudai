@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.PrepareMapper">
+<mapper namespace="com.tuotiansudai.repository.mapper.PrepareUserMapper">
     <resultMap id="prepareResultMap" type="PrepareModel">
         <id column="id" property="id"/>
         <result column="referrer_mobile" property="referrerMobile"/>

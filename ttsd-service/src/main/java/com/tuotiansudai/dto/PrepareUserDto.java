@@ -2,8 +2,8 @@ package com.tuotiansudai.dto;
 
 
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.PrepareChannel;
 import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ public class PrepareUserDto {
     private long id;
     private String mobile;
     private String referrerName;
-    private PrepareChannel channel;
+    private Source channel;
     private boolean register;
     private Date registerTime;
     private Date useTime;
@@ -53,11 +53,11 @@ public class PrepareUserDto {
         this.referrerName = referrerName;
     }
 
-    public PrepareChannel getChannel() {
+    public Source getChannel() {
         return channel;
     }
 
-    public void setChannel(PrepareChannel channel) {
+    public void setChannel(Source channel) {
         this.channel = channel;
     }
 

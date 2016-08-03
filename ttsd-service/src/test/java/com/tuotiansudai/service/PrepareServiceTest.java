@@ -1,15 +1,12 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.ActivityRegisterRequestDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.BaseMapperTest;
-import com.tuotiansudai.repository.mapper.PrepareMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.PrepareChannel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +19,7 @@ public class PrepareServiceTest extends BaseMapperTest {
     private UserMapper userMapper;
 
     @Autowired
-    private PrepareService prepareService;
+    private PrepareUserService prepareService;
 
     @Test
     public void buildPrepareRegister() {
@@ -31,7 +28,7 @@ public class PrepareServiceTest extends BaseMapperTest {
         PrepareRegisterRequestDto requestDto = new PrepareRegisterRequestDto();
         requestDto.setReferrerMobile(referrerUserModel.getMobile());
         requestDto.setMobile("18999999999");
-        requestDto.setChannel(PrepareChannel.IOS);
+        requestDto.setChannel(Source.IOS);
         prepareService.prepareRegister(requestDto);
     }
 
@@ -39,12 +36,12 @@ public class PrepareServiceTest extends BaseMapperTest {
     public void buildRegister() {
         UserModel referrerUserModel = fakeReferrerUserMobile("registerUser");
         userMapper.create(referrerUserModel);
-        ActivityRegisterRequestDto requestDto = new ActivityRegisterRequestDto();
+        RegisterUserDto requestDto = new RegisterUserDto();
         requestDto.setCaptcha("00000");
         requestDto.setChannel("tuotiansudai");
         requestDto.setMobile("18999999999");
         requestDto.setPassword("123abc");
-        requestDto.setReferrerMobile(referrerUserModel.getMobile());
+        requestDto.setReferrer(referrerUserModel.getMobile());
         requestDto.setSource(Source.MOBILE);
         prepareService.register(requestDto);
     }

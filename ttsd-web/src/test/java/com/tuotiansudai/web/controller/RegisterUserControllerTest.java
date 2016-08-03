@@ -3,7 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.service.PrepareService;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
@@ -49,7 +49,7 @@ public class RegisterUserControllerTest {
     private UserMapper userMapper;
 
     @Mock
-    private PrepareService prepareService;
+    private PrepareUserService prepareService;
 
     @Before
     public void init() {
@@ -82,7 +82,7 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegister() throws Exception {
         BaseDataDto dataDto = new BaseDataDto(true, null);
-        when(prepareService.register(any(ActivityRegisterRequestDto.class))).thenReturn(dataDto);
+        when(prepareService.register(any(RegisterUserDto.class))).thenReturn(dataDto);
         this.mockMvc.perform(post("/register/user/shared")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("referrerMobile", "18999999999")

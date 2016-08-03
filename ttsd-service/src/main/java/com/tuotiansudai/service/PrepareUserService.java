@@ -1,15 +1,15 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.dto.ActivityRegisterRequestDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.PrepareUserDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 
 import java.util.Date;
 import java.util.List;
 
-public interface PrepareService {
+public interface PrepareUserService {
 
     BaseDataDto prepareRegister(PrepareRegisterRequestDto requestDto);
 
@@ -17,5 +17,5 @@ public interface PrepareService {
 
     long findPrepareUserCount(String mobile, Date beginTime, Date endTime);
 
-    BaseDataDto register(ActivityRegisterRequestDto requestDto);
+    BaseDataDto register(RegisterUserDto requestDto);
 }

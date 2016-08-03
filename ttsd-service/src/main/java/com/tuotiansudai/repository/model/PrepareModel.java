@@ -8,8 +8,8 @@ public class PrepareModel implements Serializable {
     private long id;
     private String referrerMobile;
     private String mobile;
-    private PrepareChannel channel;
-    private Date createdTime = new Date();
+    private Source channel;
+    private Date createdTime;
 
     public long getId() {
         return id;
@@ -35,11 +35,11 @@ public class PrepareModel implements Serializable {
         this.mobile = mobile;
     }
 
-    public PrepareChannel getChannel() {
+    public Source getChannel() {
         return channel;
     }
 
-    public void setChannel(PrepareChannel channel) {
+    public void setChannel(Source channel) {
         this.channel = channel;
     }
 

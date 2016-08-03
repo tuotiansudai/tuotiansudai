@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.PrepareChannel;
+import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +16,7 @@ public class PrepareRegisterRequestDto implements Serializable {
     private String mobile;
 
     @NotNull(message = "渠道不能为空")
-    private PrepareChannel channel;
+    private Source channel;
 
     public String getReferrerMobile() {
         return referrerMobile;
@@ -34,11 +34,11 @@ public class PrepareRegisterRequestDto implements Serializable {
         this.mobile = mobile;
     }
 
-    public PrepareChannel getChannel() {
+    public Source getChannel() {
         return channel;
     }
 
-    public void setChannel(PrepareChannel channel) {
+    public void setChannel(Source channel) {
         this.channel = channel;
     }
 }

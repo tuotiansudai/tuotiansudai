@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 
 import com.tuotiansudai.dto.PrepareUserDto;
-import com.tuotiansudai.service.PrepareService;
+import com.tuotiansudai.service.PrepareUserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +23,7 @@ public class PrepareController {
     private static Logger logger = Logger.getLogger(CouponController.class);
 
     @Autowired
-    private PrepareService prepareService;
+    private PrepareUserService prepareService;
 
     @RequestMapping(value = "/prepare-users", method = RequestMethod.GET)
     public ModelAndView findPrepareUser(@RequestParam(name = "mobile", required = false) String mobile,

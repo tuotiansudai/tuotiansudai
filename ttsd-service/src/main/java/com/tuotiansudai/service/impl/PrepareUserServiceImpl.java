@@ -3,30 +3,34 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.PrepareRegisterRequestDto;
+import com.tuotiansudai.dto.PrepareUserDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.PrepareMapper;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.PrepareModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.PrepareService;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class PrepareServiceImpl implements PrepareService {
+public class PrepareUserServiceImpl implements PrepareUserService {
 
-    private static Logger logger = Logger.getLogger(PrepareServiceImpl.class);
+    private static Logger logger = Logger.getLogger(PrepareUserServiceImpl.class);
 
     @Autowired
-    private PrepareMapper prepareMapper;
+    private PrepareUserMapper prepareUserMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -38,6 +42,7 @@ public class PrepareServiceImpl implements PrepareService {
     private UserService userService;
 
     @Override
+    @Transactional
     public BaseDataDto prepareRegister(PrepareRegisterRequestDto requestDto) {
         boolean referrerMobileIsExist = userService.mobileIsExist(requestDto.getReferrerMobile());
         boolean mobileIsExist = userService.mobileIsExist(requestDto.getMobile());
@@ -50,8 +55,9 @@ public class PrepareServiceImpl implements PrepareService {
             PrepareModel prepareModel = new PrepareModel();
             prepareModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareModel.setMobile(requestDto.getMobile());
-            requestDto.setChannel(requestDto.getChannel());
-            prepareMapper.create(prepareModel);
+            prepareModel.setChannel(requestDto.getChannel());
+            prepareModel.setCreatedTime(new Date());
+            prepareUserMapper.create(prepareModel);
             return new BaseDataDto(true, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -61,13 +67,13 @@ public class PrepareServiceImpl implements PrepareService {
 
     @Override
     public List<PrepareUserDto> findPrepareUser(String mobile, Date beginTime, Date endTime, int index, int pageSize) {
-        List<PrepareModel> prepareModels = prepareMapper.findPrepares(null, mobile, null, beginTime, endTime, (index - 1) * pageSize, pageSize);
+        List<PrepareModel> prepareModels = prepareUserMapper.findPrepares(null, mobile, null, beginTime, endTime, (index - 1) * pageSize, pageSize);
         return fillPrepareUser(prepareModels);
     }
 
     @Override
     public long findPrepareUserCount(String mobile, Date beginTime, Date endTime) {
-        return prepareMapper.findPrepareCount(null, mobile, null, beginTime, endTime);
+        return prepareUserMapper.findPrepareCount(null, mobile, null, beginTime, endTime);
     }
 
     private List<PrepareUserDto> fillPrepareUser(List<PrepareModel> prepareModels) {
@@ -82,10 +88,11 @@ public class PrepareServiceImpl implements PrepareService {
         });
     }
 
-    public BaseDataDto register(ActivityRegisterRequestDto requestDto) {
-        RegisterUserDto userDto = requestDto.convertToRegisterUserDto();
+    @Override
+    @Transactional
+    public BaseDataDto register(RegisterUserDto requestDto) {
         try {
-            boolean isRegisterSuccess = userService.registerUser(userDto);
+            boolean isRegisterSuccess = userService.registerUser(requestDto);
             return new BaseDataDto(isRegisterSuccess, null);
         } catch (ReferrerRelationException e) {
             logger.error(e.getLocalizedMessage());

@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.service.PrepareService;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
@@ -42,7 +42,7 @@ public class RegisterUserController {
     private UserMapper userMapper;
 
     @Autowired
-    private PrepareService prepareService;
+    private PrepareUserService prepareService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
@@ -63,7 +63,7 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
-    public BaseDataDto register(@Valid @ModelAttribute ActivityRegisterRequestDto requestDto, BindingResult bindingResult) {
+    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);

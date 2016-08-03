@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.PrepareChannel;
 import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -11,20 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 import java.util.UUID;
 
-public class PrepareMapperTest extends BaseMapperTest {
+public class PrepareUserMapperTest extends BaseMapperTest {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private PrepareMapper prepareMapper;
+    private PrepareUserMapper prepareUserMapper;
 
     @Test
     public void shouldCreatePrepare() {
         UserModel userModel = fakeUserModel("prepareUser", "18999999999");
         userMapper.create(userModel);
         PrepareModel prepareModel = fakePrepareModel(userModel.getMobile(), "18998888888");
-        prepareMapper.create(prepareModel);
+        prepareUserMapper.create(prepareModel);
     }
 
 
@@ -44,7 +44,7 @@ public class PrepareMapperTest extends BaseMapperTest {
         PrepareModel prepareModel = new PrepareModel();
         prepareModel.setReferrerMobile(referrerMobile);
         prepareModel.setMobile(mobile);
-        prepareModel.setChannel(PrepareChannel.ANDROID);
+        prepareModel.setChannel(Source.ANDROID);
         return prepareModel;
     }
 }
