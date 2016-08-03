@@ -78,7 +78,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Override
-    public void repay(long loanRepayId,boolean isAdvanced) {
+    public void repay(long loanRepayId, boolean isAdvanced) {
         logger.debug(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
         LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
@@ -95,11 +95,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 continue;
             }
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
-            if(couponRepayModel == null){
+
+            if (couponRepayModel == null) {
                 logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
-                                currentLoanRepayModel.getLoanId(),
-                                userCouponModel.getId(),
-                                currentLoanRepayModel.getPeriod()));
+                        currentLoanRepayModel.getLoanId(),
+                        userCouponModel.getId(),
+                        currentLoanRepayModel.getPeriod()));
                 continue;
             }
 
@@ -144,7 +145,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
-                    this.updateCouponRepay(actualInterest,actualFee,investModel.getId(),couponRepayModel,loanRepayId,isAdvanced);
+                    this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, loanRepayId, isAdvanced);
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
@@ -195,7 +196,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
-            Date currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration).toDate();
+            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
             for (InvestModel successInvestModel : successInvestModels) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(successInvestModel.getId(), COUPON_TYPE_LIST);
                 for (UserCouponModel userCouponModel : userCouponModels) {
@@ -210,8 +211,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         continue;
                     }
 
-                    long expectedCouponInterest = InterestCalculator.estimateCouponExpectedInterest(successInvestModel.getAmount(),
-                            loanModel, couponModel);
+                    long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
+                            loanModel, couponModel, currentRepayDate, lastRepayDate);
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)
                             .multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
@@ -222,7 +223,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             expectedCouponInterest,
                             expectedFee,
                             period,
-                            currentRepayDate
+                            currentRepayDate.toDate()
                     ));
                 }
 
@@ -231,7 +232,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         couponRepayMapper.create(couponRepayModels);
     }
 
-    private void updateCouponRepay(long actualInterest,long actualFee,long investId,final CouponRepayModel couponRepayModel,long loanRepayId,boolean isAdvanced){
+    private void updateCouponRepay(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {
 
         couponRepayModel.setActualInterest(actualInterest);
         couponRepayModel.setActualFee(actualFee);
@@ -239,20 +240,20 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         couponRepayModel.setActualRepayDate(new Date());
         couponRepayModel.setStatus(RepayStatus.COMPLETE);
         couponRepayMapper.update(couponRepayModel);
-        if(isAdvanced){
+        if (isAdvanced) {
             List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
                 @Override
                 public boolean apply(CouponRepayModel input) {
                     return input.getPeriod() > couponRepayModel.getPeriod();
                 }
             }));
-            for(CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels){
+            for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
                 if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
                     advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
                     advancedCouponRepayModel.setActualRepayDate(new Date());
                     couponRepayMapper.update(advancedCouponRepayModel);
                     logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
-                            String.valueOf(loanRepayId),  String.valueOf(advancedCouponRepayModel.getId())));
+                            String.valueOf(loanRepayId), String.valueOf(advancedCouponRepayModel.getId())));
                 }
             }
         }

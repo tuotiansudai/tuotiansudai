@@ -203,8 +203,8 @@ public class CouponRepayServiceTest {
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
         for (CouponRepayModel value : values) {
             Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
-            assertEquals("369", String.valueOf(value.getExpectedInterest()));
-            assertEquals("36", String.valueOf(value.getExpectedFee()));
+            assertEquals("123", String.valueOf(value.getExpectedInterest()));
+            assertEquals("12", String.valueOf(value.getExpectedFee()));
             assertEquals("3", String.valueOf(values.size()));
             assertTrue(repayDate.equals(value.getRepayDate()));
         }
