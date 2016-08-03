@@ -589,6 +589,7 @@
         <div class="page-width project-transfer-frame margin-top25 media-hide">
             <h3 class="label-title">
                 <span class="project-transfer-icon"></span>
+                <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多>></a>
             </h3>
             <div class="loan-list-index">
                 <ul class="loan-box-inner loan-btn"> </ul>

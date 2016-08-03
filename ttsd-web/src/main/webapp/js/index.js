@@ -112,16 +112,21 @@ require(['jquery', 'underscore', 'layerWrapper','superslide','jquery.ajax.extens
                 area: ['500px'],
                 content: $('.book-invest-box')
             });
-            //window.location.href=$(this).attr('data-url');
 
         })
         $('.loan-btn').on('click', 'li',function(event) {
             event.preventDefault();
             window.location.href=$(this).data('url');
         });
-        $('.new-user-free,.product-box-tran').on('click', function (event) {
+
+        $('.project-transfer-mobile').on('click','.product-box-tran',function() {
+            window.location.href=$(this).data('url');
+        })
+
+        $('.new-user-free').on('click', function (event) {
             event.preventDefault();
-            window.location.href = $(this).attr('data-url');
+            window.location.href=$(this).data('url');
+            //window.location.href = $(this).attr('data-url');
         });
         $('.mask-btn').on('click', function (event) {
             event.preventDefault();
