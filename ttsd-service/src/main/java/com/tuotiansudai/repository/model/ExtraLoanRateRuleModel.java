@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
-public class ExtraLoanRateRuleModel implements Serializable{
+public class ExtraLoanRateRuleModel implements Serializable {
 
     private long id;
 

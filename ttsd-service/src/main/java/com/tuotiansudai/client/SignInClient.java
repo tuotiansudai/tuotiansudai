@@ -6,8 +6,10 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -63,6 +65,12 @@ public class SignInClient extends BaseClient {
 
     private final static String SIGN_OUT_URL = "/logout";
 
+    private final static String REQUEST_ID = "requestId";
+
+    private final static String ANONYMOUS = "anonymous";
+
+    private final static String USER_ID = "userId";
+
     public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
         FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder()
                 .add("username", dto.getUsername())
@@ -97,10 +105,15 @@ public class SignInClient extends BaseClient {
 
     protected String execute(String oldSessionId, String path, RequestBody requestBody) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+        String requestId = (MDC.get(REQUEST_ID) != null && MDC.get(REQUEST_ID) instanceof String) ? MDC.get(REQUEST_ID).toString() : UUIDGenerator.generate();
+        String userId = (MDC.get(USER_ID) != null && MDC.get(USER_ID) instanceof String) ? MDC.get(USER_ID).toString() : ANONYMOUS;
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .addHeader(REQUEST_ID, requestId)
+                .addHeader(USER_ID, userId);
+
         if (StringUtils.isNotEmpty(oldSessionId)) {
             request.addHeader("Cookie", MessageFormat.format("SESSION={0}", oldSessionId));
         }

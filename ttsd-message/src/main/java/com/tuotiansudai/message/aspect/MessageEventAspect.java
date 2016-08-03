@@ -95,7 +95,6 @@ public class MessageEventAspect {
     }
 
 
-
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
     public void afterReturningRegisterUser(JoinPoint joinPoint, boolean returnValue) {
         RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];

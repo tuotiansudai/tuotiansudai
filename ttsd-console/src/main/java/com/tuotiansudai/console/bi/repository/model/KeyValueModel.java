@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.bi.repository.model;
 
-public class KeyValueModel {
+import java.io.Serializable;
+
+public class KeyValueModel implements Serializable{
 
     private String name;
     private String value;
@@ -30,4 +32,12 @@ public class KeyValueModel {
         this.group = group;
     }
 
+    public KeyValueModel() {
+    }
+
+    public KeyValueModel(String name, String value, String group) {
+        this.name = name;
+        this.value = value;
+        this.group = group;
+    }
 }

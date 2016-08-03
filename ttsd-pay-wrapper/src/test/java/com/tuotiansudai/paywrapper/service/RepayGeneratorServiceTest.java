@@ -511,6 +511,7 @@ public class RepayGeneratorServiceTest {
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");
         fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         fakeLoanModel.setRecheckTime(recheckTime);
         return fakeLoanModel;
     }

@@ -12,6 +12,7 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build" id="formLoanList">
         <input type="hidden" class="status" name="status" value="<#if status??>${status}</#if>">
+
         <div class="form-group">
             <label for="number">编号</label>
             <input type="text" class="form-control loanId" name="loanId" placeholder=""
@@ -89,7 +90,7 @@
                                     <#list loanListDto.extraLoanRateModels as extraLoanRateModel>
                                     <tr>
                                         <td>${extraLoanRateModel.amountLower} ≤ 投资额
-                                            ${(extraLoanRateModel.amountUpper!="0.00")?string('<${extraLoanRateModel.amountUpper}','')}
+                                        ${(extraLoanRateModel.amountUpper!="0.00")?string('<${extraLoanRateModel.amountUpper}','')}
                                         </td>
                                         <td>${extraLoanRateModel.rate}</td>
                                     </tr>
@@ -109,7 +110,11 @@
                             class="loan_repay"
                             href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a>
                     </td>
-                    <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a></td>
+                    <#if loanListDto.pledgeType != 'NONE'>
+                        <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a>
+                        </td></#if>
+                    <#if loanListDto.pledgeType == 'NONE'>
+                        <td><a class="loan_edit" ${loanListDto.id?string('0')}">无</a></td></#if>
                 </tr>
                 </#list>
             </tbody>

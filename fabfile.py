@@ -203,6 +203,7 @@ def worker():
     pre_deploy()
     execute(deploy_worker)
 
+
 def pay():
     pre_deploy()
     execute(deploy_pay)

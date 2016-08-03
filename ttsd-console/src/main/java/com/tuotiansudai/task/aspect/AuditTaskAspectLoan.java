@@ -6,9 +6,11 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -33,6 +35,9 @@ public class AuditTaskAspectLoan {
     AccountService accountService;
 
     @Autowired
+    LoanService loanService;
+
+    @Autowired
     private AuditLogService auditLogService;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
@@ -42,26 +47,28 @@ public class AuditTaskAspectLoan {
         logger.debug("after create loan aspect.");
         try {
             if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
-                LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
+                long loanId = ((LoanDto) joinPoint.getArgs()[0]).getId();
+
+                LoanModel loanModel = loanService.findLoanById(loanId);
 
                 OperationTask<LoanDto> task = new OperationTask<>();
 
                 task.setTaskType(TaskType.TASK);
                 task.setOperationType(OperationType.PROJECT);
 
-                String taskId = task.getOperationType().toString() + "-" + loanDto.getId();
+                String taskId = task.getOperationType().toString() + "-" + loanModel.getId();
                 task.setId(taskId);
-                task.setObjId(String.valueOf(loanDto.getId()));
-                task.setObjName(loanDto.getProjectName());
+                task.setObjId(String.valueOf(loanModel.getId()));
+                task.setObjName(loanModel.getName());
                 task.setCreatedTime(new Date());
 
-                String senderLoginName = loanDto.getCreatedLoginName();
+                String senderLoginName = loanModel.getCreatedLoginName();
                 AccountModel sender = accountService.findByLoginName(senderLoginName);
                 String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
-                task.setOperateURL("/project-manage/loan/" + loanDto.getId());
-                task.setDescription(senderRealName + " 创建了新的标的［" + loanDto.getProjectName() + "］，请审核。");
+                task.setOperateURL("/project-manage/loan/" + loanModel.getId());
+                task.setDescription(senderRealName + " 创建了新的标的［" + loanModel.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
