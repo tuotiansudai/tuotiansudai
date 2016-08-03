@@ -5,16 +5,17 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.service.PrepareService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,6 +41,8 @@ public class RegisterUserController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PrepareService prepareService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
@@ -48,6 +51,24 @@ public class RegisterUserController {
         modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
         modelAndView.addObject("responsive", true);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
+    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            return new BaseDataDto(false, message);
+        }
+        return prepareService.prepareRegister(requestDto);
+    }
+
+    @RequestMapping(value = "/shared", method = RequestMethod.POST)
+    public BaseDataDto register(@Valid @ModelAttribute ActivityRegisterRequestDto requestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            return new BaseDataDto(false, message);
+        }
+        return prepareService.register(requestDto);
     }
 
     @RequestMapping(method = RequestMethod.POST)
