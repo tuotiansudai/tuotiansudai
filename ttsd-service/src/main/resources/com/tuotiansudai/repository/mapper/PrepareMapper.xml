@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.PrepareMapper">
-    <resultMap id="PrepareResultMap" type="PrepareModel">
+    <resultMap id="prepareResultMap" type="PrepareModel">
         <id column="id" property="id"/>
         <result column="referrer_mobile" property="referrerMobile"/>
         <result column="mobile" property="mobile"/>
@@ -15,4 +15,48 @@
         insert into prepare_user(referrer_mobile,mobile,channel,created_time)
         values (#{referrerMobile},#{mobile},#{channel},#{createdTime})
     </insert>
+
+    <select id="findPrepares" parameterType="map" resultMap="prepareResultMap">
+        select * from prepare_user p
+        <where>
+            <if test="referrerMobile != null and referrerMobile != ''">
+                and p.referrer_mobile = #{referrerMobile}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and p.mobile = #{mobile}
+            </if>
+            <if test="channel != null">
+                and p.channel = #{channel}
+            </if>
+            <if test="beginTime != null">
+                and p.created_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and p.created_time &lt;= #{endTime}
+            </if>
+        </where>
+        order by p.created_time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findPrepareCount" parameterType="map" resultType="long">
+        select count(1) from prepare_user p
+        <where>
+            <if test="referrerMobile != null and referrerMobile != ''">
+                and p.referrer_mobile = #{referrerMobile}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and p.mobile = #{mobile}
+            </if>
+            <if test="channel != null">
+                and p.channel = #{channel}
+            </if>
+            <if test="beginTime != null">
+                and p.created_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and p.created_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
 </mapper>
