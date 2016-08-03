@@ -98,7 +98,7 @@
             FROM
             user_role h
             WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
-            WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
+            WHERE gg.login_name = j.`login_name`)) u
         </if>
         <if test="roleStage.name() == 'OTHERS' ">
             (SELECT
@@ -266,7 +266,7 @@
                 FROM
                 user_role h
                 WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
-                WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
+                WHERE gg.login_name = j.`login_name`)) u
             </if>
             <if test="roleStage.name() == 'OTHERS' ">
                 (SELECT
