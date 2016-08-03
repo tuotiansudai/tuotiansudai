@@ -21,7 +21,7 @@ public interface UserMapper {
 
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
-    void create(UserModel userModel);
+    int create(UserModel userModel);
 
     void updateUser(UserModel userModel);
 
