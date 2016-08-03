@@ -94,11 +94,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             }
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel.getId(), currentLoanRepayModel.getPeriod());
 
-            if(couponRepayModel == null){
+            if (couponRepayModel == null) {
                 logger.error(MessageFormat.format("Coupon Repay loanRepayId:{0},userCouponId:{1},period:{2} is nonexistent",
-                                currentLoanRepayModel.getLoanId(),
-                                userCouponModel.getId(),
-                                currentLoanRepayModel.getPeriod()));
+                        currentLoanRepayModel.getLoanId(),
+                        userCouponModel.getId(),
+                        currentLoanRepayModel.getPeriod()));
                 continue;
             }
 
@@ -199,7 +199,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
-            Date currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration).toDate();
+            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
             for (InvestModel successInvestModel : successInvestModels) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(successInvestModel.getId(), COUPON_TYPE_LIST);
                 for (UserCouponModel userCouponModel : userCouponModels) {
@@ -214,8 +214,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         continue;
                     }
 
-                    long expectedCouponInterest = InterestCalculator.estimateCouponExpectedInterest(successInvestModel.getAmount(),
-                            loanModel, couponModel);
+                    long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
+                            loanModel, couponModel, currentRepayDate, lastRepayDate);
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)
                             .multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
@@ -226,7 +226,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             expectedCouponInterest,
                             expectedFee,
                             period,
-                            currentRepayDate
+                            currentRepayDate.toDate()
                     ));
                 }
 
