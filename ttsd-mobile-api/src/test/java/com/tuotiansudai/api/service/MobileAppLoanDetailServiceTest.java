@@ -52,6 +52,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     private LoanTitleMapper loanTitleMapper;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
     @Mock
     private LoanerDetailsMapper loanerDetailsMapper;

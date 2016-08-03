@@ -116,9 +116,9 @@ public class MobileAppRepayCalendarServiceTest {
         BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarYearResponseDtos();
         assertThat(repayCalendarYearResponseDtoList.size(),is(12));
-        assertEquals(repayCalendarYearResponseDtoList.get(10).getRepayAmount(),"3");
-        assertEquals(repayCalendarYearResponseDtoList.get(9).getRepayAmount(),"5");
-        assertEquals(repayCalendarYearResponseDtoList.get(8).getRepayAmount(),"2");
+        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(),"0.03");
+        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(),"0.05");
+        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(),"0.02");
     }
 
     @Test
@@ -162,7 +162,7 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayDate().size(),is(3));
-        assertEquals(baseResponseDto.getData().getRepayAmount(),"8");
+        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(),"0.08");
     }
 
     @Test
@@ -222,7 +222,6 @@ public class MobileAppRepayCalendarServiceTest {
         couponRepayModel.setExpectedInterest(1);
         couponRepayModel.setActualFee(0);
         couponRepayModel.setActualInterest(1);
-        couponRepayModel.setActualRepayDate(new Date());
         couponRepayModel.setCouponId(couponId);
         couponRepayModel.setCreatedTime(new Date());
         couponRepayModel.setLoginName(loginName);
@@ -258,7 +257,6 @@ public class MobileAppRepayCalendarServiceTest {
         investRepayModel.setInvestId(investId);
         investRepayModel.setId(idGenerator.generate());
         investRepayModel.setStatus(RepayStatus.REPAYING);
-        investRepayModel.setActualRepayDate(new Date());
         investRepayModel.setRepayDate(time);
         investRepayModel.setExpectedInterest(1);
         investRepayModel.setActualInterest(1);
@@ -277,6 +275,7 @@ public class MobileAppRepayCalendarServiceTest {
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         loanDto.setPeriods(30);
         loanDto.setActivityType(ActivityType.NEWBIE);
         loanDto.setContractId(123);
