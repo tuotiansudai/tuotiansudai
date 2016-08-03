@@ -4,7 +4,7 @@
   "description": "question answer projects",
   "main": "",
   "scripts": {
-    "start": "webpack-dev-server --hot --inline & npm run server",
+    "start": "webpack-dev-server --hot --inline",
     "server": "nodemon src/main/webapp/ask/feDev/server.js",
     "dist": "rm -rf ./src/main/webapp/ask/dist/ & webpack --progress --profile --colors --config webpack.production.js"
   },
