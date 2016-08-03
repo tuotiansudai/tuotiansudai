@@ -43,6 +43,10 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private LoanRepayMapper loanRepayMapper;
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -255,33 +259,28 @@ public class ContractServiceImpl implements ContractService {
             return dataModel;
         }
 
-        dataModel.put("period", transferApplicationModel.getPeriod());
-        dataModel.put("investAmount", transferApplicationModel.getInvestAmount());
-        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
-        dataModel.put("leftPeriod", transferApplicationModel.getLeftPeriod());
-
-        dataModel.put("loanId", String.valueOf(transferApplicationModel.getLoanId()));
-        AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
-        if (loanerAccountModel != null) {
-            dataModel.put("transferrerUserName", loanerAccountModel.getUserName());
-            dataModel.put("transferrerLoginName", loanerAccountModel.getLoginName());
-            dataModel.put("transferrerIdentityNumber", loanerAccountModel.getIdentityNumber());
+        AccountModel transferrerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        if (transferrerAccountModel != null) {
+            dataModel.put("transferrerUserName", transferrerAccountModel.getUserName());
+            dataModel.put("transferrerMobile", userMapper.findByLoginName(transferrerAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferrerIdentityNumber", transferrerAccountModel.getIdentityNumber());
         }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
             dataModel.put("transfereeUserName", investAccountModel.getUserName());
-            dataModel.put("transfereeLoginName", investAccountModel.getLoginName());
+            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
             dataModel.put("transfereeIdentityNumber", investAccountModel.getIdentityNumber());
         }
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         if (null != loanModel) {
-            dataModel.put("loanerLoginName", loanModel.getLoanerLoginName());
+            dataModel.put("loanerUserName", loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId()).getUserName());
             dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
             dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
             dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
+            dataModel.put("periods", loanModel.getPeriods());
         }
 
         if (transferApplicationModel.getLeftPeriod() != transferApplicationModel.getLeftPeriod()) {
@@ -297,6 +296,10 @@ public class ContractServiceImpl implements ContractService {
 
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod());
         dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
+
+        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
+        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
+        dataModel.put("leftPeriod", transferApplicationModel.getLeftPeriod());
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         dataModel.put("fee30", transferRuleModel.getLevelOneFee());

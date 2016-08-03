@@ -15,7 +15,8 @@
         style="font-family: 宋体, SimSun;">${transferrerUserName}</span></span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${transferrerLoginName}</span></span>
+<p><span style="font-family: 宋体, SimSun;">拓天速贷账号：<span
+        style="font-family: 宋体, SimSun;">${transferrerMobile}</span></span>
 </p>
 
 <p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transferrerIdentityNumber}</span></span></p>
@@ -25,7 +26,8 @@
 <p><span style="font-family: 宋体, SimSun;">乙方(受让人)：<span
         style="font-family: 宋体, SimSun;">${transfereeUserName}</span></span></p>
 
-<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${transfereeLoginName}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">拓天速贷账号：<span
+        style="font-family: 宋体, SimSun;">${transfereeMobile}</span></span></p>
 
 <p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transfereeIdentityNumber}</span></span></p>
 
@@ -45,7 +47,7 @@
     </tr>
     <tr>
         <td>借款人姓名</td>
-        <td colspan="3" style="word-break: break-all;">${loanerLoginName}</td>
+        <td colspan="3" style="word-break: break-all;">${loanerUserName}</td>
     </tr>
     <tr>
         <td>借款人身份证号</td>
@@ -57,7 +59,7 @@
     </tr>
     <tr>
         <td>原借款期限</td>
-        <td colspan="3" style="">${period * 30}天</td>
+        <td colspan="3" style="">${periods * 30}天</td>
     </tr>
     <tr>
         <td colspan="4" style="text-align:center;">受让债权明细</td>
