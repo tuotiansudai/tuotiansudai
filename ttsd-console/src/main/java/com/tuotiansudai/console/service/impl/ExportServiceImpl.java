@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
@@ -257,6 +258,19 @@ public class ExportServiceImpl implements ExportService {
             row.add(new BigDecimal(record.getExpectedAmount()).divide(new BigDecimal(100)).toString());
             row.add(new BigDecimal(record.getActualAmount()).divide(new BigDecimal(100)).toString());
             row.add("是");
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (PointPrizeWinnerViewDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getDescription());
+            row.add(String.valueOf(record.getNum()));
+            row.add(record.isActive() ? "已生效" : "未生效");
             rows.add(row);
         }
         return rows;

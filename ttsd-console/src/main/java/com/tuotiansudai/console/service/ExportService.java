@@ -4,6 +4,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface ExportService {
     List<List<String>> buildRedEnvelopeCoupons(List<CouponDto> records);
 
     List<List<String>> buildBirthdayCoupons(List<CouponDto> records);
+
+    List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records);
 
 }
