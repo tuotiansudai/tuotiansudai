@@ -112,6 +112,12 @@
         where id = #{id}
     </select>
 
+    <select id="lockById" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where id = #{id} for update
+    </select>
+
     <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
@@ -215,6 +221,7 @@
             <if test="loginName != null">
                 and login_name = #{loginName}
             </if>
+            and loan_id != 1
         </where>
         and status = 'SUCCESS'
     </select>
@@ -246,6 +253,9 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and u.mobile = #{investorMobile}
+        </if>
         left join account a on a.login_name = u.login_name
         left join user ru on ru.login_name = u.referrer
         left join account ra on ra.login_name = u.referrer
@@ -253,9 +263,6 @@
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -332,14 +339,14 @@
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
         select count(1)
-        from invest join loan on invest.loan_id = loan.id
+        from invest join loan on invest.loan_id = loan.id join user on invest.login_name = user.login_name
+        <if test="investorMobile != null and investorMobile != ''">
+            and user.mobile = #{investorMobile}
+        </if>
         <where>
             invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
-            </if>
-            <if test="investorLoginName != null and investorLoginName != ''">
-                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -542,6 +549,7 @@
           MAX(t.`trading_time`)
         LIMIT #{index}, #{pageSize}
     </select>
+
     <select id="findInvestAchievementsByLoanId" parameterType="map" resultMap="investResultMap">
         select * from invest where loan_id = #{loanId} and status = 'SUCCESS' and achievements is not null and achievements != '' order by LOCATE('MAX_AMOUNT', achievements) desc, LOCATE('FIRST_INVEST', achievements) desc
     </select>
@@ -584,18 +592,6 @@
             and loan.status in ('RAISING','RECHECK')
         </if>
         and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
-    </select>
-
-    <select id="countInvestSuccessExperienceToday" resultType="long">
-        SELECT
-          COUNT(*)
-        FROM
-          invest t
-          JOIN loan l
-            ON t.loan_id = l.id
-            AND l.product_type = 'EXPERIENCE'
-        WHERE t.status = 'SUCCESS'
-          AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
     </select>
 
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">

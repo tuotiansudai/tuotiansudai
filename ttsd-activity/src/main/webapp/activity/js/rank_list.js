@@ -16,10 +16,10 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         $tdgiftRecord = $('#tdChangeBtn li'),
         $cdgiftRecord = $('#cdChangeBtn li');
 
-    $('#linePro').attr('data-totalInvest')>=20000000?$('#linePro').parents('.progress-line').find('.gift-one').addClass('active').find('dt').html('当前奖池：</br>投资满<span>2,000万</span>奖励:'):false;
+    $('#linePro').attr('data-totalInvest') >= 20000000 ? $('#linePro').parents('.progress-line').find('.gift-one').addClass('active').find('dt').html('当前奖池：</br>投资满<span>2,000万</span>奖励:') : false;
     $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest')) / 1000000 / 2800 * 60000);
-    
-    $('#lineProPhone').attr('data-totalInvest')>=20000000?$('#lineProPhone').parents('.progress-line').find('.gift-one').addClass('active').find('dt').html('当前奖池：</br>投资满<span>2,000万</span>奖励:'):false;
+
+    $('#lineProPhone').attr('data-totalInvest') >= 20000000 ? $('#lineProPhone').parents('.progress-line').find('.gift-one').addClass('active').find('dt').html('当前奖池：</br>投资满<span>2,000万</span>奖励:') : false;
     $('#lineProPhone').height(Math.round($('#lineProPhone').attr('data-totalInvest')) / 1000000 / 2800 * 30000);
 
 
@@ -598,9 +598,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             var list={rank:data};
             $('#rankList').html(tpl('rankListTpl', list));
         });
@@ -612,9 +609,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data.other, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
         });
     }
@@ -638,9 +632,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             var list={cdgiftrecord:data};
             $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
         });
@@ -673,9 +664,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             var list={rank:data};
             $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
         });
@@ -687,9 +675,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data.other, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
         });
     }
@@ -713,9 +698,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $.each(data, function(index, val) {
-                val.loginName=val.loginName.slice(0,3)+'******';
-            });
             var list={cdgiftrecord:data};
             $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
         });

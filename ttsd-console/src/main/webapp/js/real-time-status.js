@@ -13,7 +13,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
         var queryParam = "type=" + type;
 
         if (type === 'user') {
-            queryParam += '&' + "loginName=" +  $('input[name="login-name"]').val();
+            queryParam += '&' + "mobile=" +  $('input[name="login-name"]').val();
         }
 
         if (type === 'loan') {
@@ -55,7 +55,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
         minLength: 0,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/account/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
         },

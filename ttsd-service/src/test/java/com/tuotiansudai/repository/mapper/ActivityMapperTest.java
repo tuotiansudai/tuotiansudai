@@ -61,6 +61,9 @@ public class ActivityMapperTest {
         activityModel.setUpdatedBy(userModel.getLoginName());
         activityModel.setUpdatedTime(DateTime.parse("2016-05-30T01:20").toDate());
         activityModel.setActivatedBy(userModel.getLoginName());
+        activityModel.setShareTitle("title");
+        activityModel.setShareUrl("shareUrl");
+        activityModel.setShareContent("content");
 
         activityMapper.create(activityModel);
 
@@ -133,7 +136,9 @@ public class ActivityMapperTest {
         updatedActivityModel.setUpdatedBy("updatedUser");
         updatedActivityModel.setUpdatedTime(DateTime.parse("2015-05-30T01:20").toDate());
         updatedActivityModel.setActivatedBy("updatedUser");
-
+        updatedActivityModel.setShareContent("content");
+        updatedActivityModel.setShareTitle("title");
+        updatedActivityModel.setShareUrl("url");
         activityMapper.update(updatedActivityModel);
 
         ActivityModel activityModel = activityMapper.findById(activityModels.get(0).getId());

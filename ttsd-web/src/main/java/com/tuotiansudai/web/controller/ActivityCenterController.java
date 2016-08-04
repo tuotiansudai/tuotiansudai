@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/web-activity-center")
+@RequestMapping(value = "/activity-center")
 public class ActivityCenterController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class ActivityCenterController {
         String loginName = LoginUserInfo.getLoginName();
         List<ActivityDto> activityDtos = activityService.getAllActiveActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 }

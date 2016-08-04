@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.interceptors;
 
 
-import com.tuotiansudai.api.security.BufferedRequestWrapper;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.log4j.MDC;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +21,15 @@ public class LogGenerateInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         MDC.put(REQUEST_ID, UUIDGenerator.generate());
-        HttpServletRequest webRequest = new BufferedRequestWrapper(request);
-        Object currentLoginName = webRequest.getAttribute("currentLoginName");
+        Object currentLoginName = request.getAttribute("currentLoginName");
         String loginName = (currentLoginName != null && currentLoginName instanceof String) ? currentLoginName.toString() : ANONYMOUS;
         MDC.put(USER_ID, loginName);
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        super.afterCompletion(request, response, handler, ex);
+        MDC.clear();
     }
 }

@@ -22,39 +22,39 @@
   .activity-container {
 
     .activity-box {
-      height:198px;
-      width:100%;
-      border:1px solid #e6e6e6;
+      height: 198px;
+      width: 100%;
+      border: 1px solid #e6e6e6;
       position: relative;
       margin-bottom: 10px;
       .activity-img {
-        width:689px;
-        height:198px;
+        width: 689px;
+        height: 198px;
         position: absolute;
         left: 0;
-        top:0;
+        top: 0;
         overflow: hidden;
         .img-inner {
-          height:100%;
+          height: 100%;
           img {
-            height:100%;
+            height: 100%;
             margin-left: -165px;
           }
         }
       }
       .icon-going {
         position: absolute;
-        right:20px;
-        top:-2px;
+        right: 20px;
+        top: -2px;
         background: url("/images/sign/activityCenter/going.png") left top no-repeat;
-        width:49px;
-        height:52px;
+        width: 49px;
+        height: 52px;
       }
       .activity-title {
         position: absolute;
-        width:309px;
-        right:0;
-        top:50px;
+        width: 309px;
+        right: 0;
+        top: 50px;
         text-align: center;
         font-size: 18px;
         color: #4c4c4c;
@@ -66,19 +66,19 @@
         .btn {
           border-radius: 0;
           background: #fff;
-          border:1px solid #bfbfbf;
+          border: 1px solid #bfbfbf;
           color: #808080;
         }
       }
       &:hover {
-        border:1px solid #ff752a;
-        -moz-box-shadow:1px 1px 10px #ccc;
-        -webkit-box-shadow:1px 1px 10px #ccc;
-        box-shadow:1px 1px 10px #ccc;
+        border: 1px solid #ff752a;
+        -moz-box-shadow: 1px 1px 10px #ccc;
+        -webkit-box-shadow: 1px 1px 10px #ccc;
+        box-shadow: 1px 1px 10px #ccc;
         cursor: pointer;
         .button-pos .btn {
           background: #ff752a;
-          border:1px solid #ff752a;
+          border: 1px solid #ff752a;
           color: #fff;
         }
       }
@@ -92,18 +92,18 @@
       display: none;
     }
     .activity-container {
-      padding:10px;
+      padding: 10px;
       .activity-box {
         border-width: 0;
         overflow: hidden;
         background: #fff;
-        height:235px;
+        height: 235px;
         margin-bottom: 10px;
         .activity-title {
           position: absolute;
-          width:100%;
-          left:0;
-          top:0px;
+          width: 100%;
+          left: 0;
+          top: 0px;
           text-align: left;
           font-size: 15px;
           color: #2e3033;
@@ -113,16 +113,16 @@
 
         }
         .activity-img {
-          height:145px;
+          height: 145px;
           overflow: hidden;
           position: absolute;
           top: 28px;
           width: calc(100% - 20px);
           margin: 10px;
           .img-inner {
-            height:100%;
+            height: 100%;
             img {
-              height:100%;
+              height: 100%;
               margin-left: -190px;
             }
             &.month-image {
@@ -145,8 +145,8 @@
           right: 10px;
           .hide {
             display: block;
-            font-size:11px;
-            color:#ec6229;
+            font-size: 11px;
+            color: #ec6229;
           }
         }
         .button-pos {
@@ -163,7 +163,7 @@
             padding-left: 0;
             padding-bottom: 12px;
             letter-spacing: 0;
-            font-size:15px;
+            font-size: 15px;
           }
           .hide {
             display: inline-block;
@@ -176,9 +176,9 @@
         }
         &:hover {
           border-width: 0;
-          -moz-box-shadow:none;
-          -webkit-box-shadow:none;
-          box-shadow:none;
+          -moz-box-shadow: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
           cursor: pointer;
           .button-pos .btn {
             background: #fff;

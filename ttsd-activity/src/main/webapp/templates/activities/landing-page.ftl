@@ -5,6 +5,7 @@
     <div class="landing-header">
         <a href="/">访问首页</a>
     </div>
+
     <div class="web-page-register">
         <div class="landing-top">
             <div class="landing-inner">
@@ -12,12 +13,12 @@
                     <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                         <ul class="reg-list tl register-step-one">
                             <li>
-                                <label for="" class="reg-title">用户名:</label>
-                                <i class="sprite-register-login-name"></i>
-                                <input type="text" id="login-name" class="login-name long" name="loginName"
-                                       placeholder="用户名" maxlength="25" value="">
+                                <label for="" class="reg-title">手机号:</label>
+                                <i class="sprite-register-ic-mobile"></i>
+                                <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
+                                       maxlength="11" value="">
                             </li>
-                            <li id="login-nameErr" class="height"></li>
+                            <li id="mobileErr" class="height"></li>
                             <li>
                                 <label for="" class="reg-title">密码:</label>
                                 <i class="sprite-register-ic-password"></i>
@@ -25,13 +26,7 @@
                                        class="password long" value="">
                             </li>
                             <li id="passwordErr" class="height"></li>
-                            <li>
-                                <label for="" class="reg-title">手机号:</label>
-                                <i class="sprite-register-ic-mobile"></i>
-                                <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号"
-                                       maxlength="11" value="">
-                            </li>
-                            <li id="mobileErr" class="height"></li>
+
                             <li class="code">
                                 <label for="" class="reg-title">验证码:</label>
                                 <i class="sprite-register-ic-img-code"></i>
@@ -47,27 +42,27 @@
                                 <label for="captcha" class="reg-title">手机验证码:</label>
                                 <i class="sprite-register-ic-captcha"></i>
                             <span class="captcha-tag" id="pcCaptcha">
-                                <input type="text"  class="captcha" autocomplete="off" name="captcha" id="captcha"
-                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" >
+                                <input type="text" class="captcha" autocomplete="off" name="captcha" id="captcha"
+                                       autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
-                            </li>
-                            <li id="captchaErr" class="height"></li>
-                            <li class="agree-last">
-                                <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
-                                <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                            </li>
-                            <li id="agreementInputErr" class="height"></li>
-                            <li  class="tc">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <input type="submit" class="register-user" value="立即注册">
-                            </li>
-                            <li class="tc mobile-agreement">
-                                <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
-                            </li>
-                        </ul>
-                    </form>
-                </div>
+                        </li>
+                        <li id="captchaErr" class="height"></li>
+                        <li class="agree-last">
+                            <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
+                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                        </li>
+                        <li id="agreementInputErr" class="height"></li>
+                        <li  class="tc">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="submit" class="register-user" value="立即注册">
+                        </li>
+                        <li class="tc mobile-agreement">
+                            <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                        </li>
+                    </ul>
+                </form>
+
             </div>
         </div>
     </div>
@@ -168,6 +163,7 @@
         </div>
     </div>
 </div>
+    </div>
 <div class="landing-phone-container">
     <div class="landing-phone-logo">
         <a href="/"><img src="${staticServer}/activity/images/icons/logo.png" class="landing-phone-logo-image"></a>
@@ -272,7 +268,7 @@
             <div class="mobile-page-register clearfix">
             </div>
         </#if>
-         </div>
+    </div>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
@@ -286,7 +282,8 @@
         </div>
     </form>
 </div>
-<div id="agreementBox" class="pad-m" style="display: none;">
+<div id="agreementBox"  style="display: none;">
+    <div class="pad-m">
     <p>
         本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
     <b>一、 本协议的签署与修改</b>
@@ -462,5 +459,6 @@
         12.3本协议不涉及您与本网站其他用户之间因网上交易而产生的法律关系及法律纠纷，但您须在此同意将全面接受和履行与本网站其他用户通过本网站签订的任何电子法律文本，并承诺按该法律文本享有和/或放弃相应的权利、承担和/或豁免相应的义务。</p>
 
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
+    </div>
 </div>
 </@global.main>

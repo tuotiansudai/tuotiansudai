@@ -10,6 +10,7 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.SignInService;
@@ -31,6 +32,8 @@ import java.util.List;
 public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     static Logger logger = Logger.getLogger(MobileAppPointServiceImpl.class);
+
+    private final static List<PointTask> NEWBIE_TASKS = Lists.newArrayList(PointTask.REGISTER, PointTask.BIND_BANK_CARD, PointTask.FIRST_RECHARGE, PointTask.FIRST_INVEST);
 
     @Autowired
     private SignInService signInService;
@@ -126,9 +129,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     }
 
     @Override
-    public BaseResponseDto queryPointTaskList(PointTaskRequestDto pointTaskRequestDto) {
+    public BaseResponseDto<PointTaskListResponseDataDto> queryPointTaskList(PointTaskRequestDto pointTaskRequestDto) {
         String loginName = pointTaskRequestDto.getBaseParam().getUserId();
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<PointTaskListResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = pointTaskRequestDto.getIndex();
         Integer pageSize = pointTaskRequestDto.getPageSize();
         if (index == null || index <= 0) {
@@ -137,15 +140,15 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        List<PointTaskRecordResponseDataDto> pointTaskRecordDtos = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination((index - 1) * pageSize, pageSize), loginName);
-        sortPointTaskRecord(pointTaskRecordDtos);
+        List<PointTaskRecordResponseDataDto> pointTaskRecords = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination(0, 100), loginName);
+        sortPointTaskRecord(pointTaskRecords);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         PointTaskListResponseDataDto pointTaskListResponseDataDto = new PointTaskListResponseDataDto();
         pointTaskListResponseDataDto.setIndex(index);
         pointTaskListResponseDataDto.setPageSize(pageSize);
-        pointTaskListResponseDataDto.setPointTasks(pointTaskRecordDtos);
-        pointTaskListResponseDataDto.setTotalCount(pointTaskMapper.findCountPointTaskPagination());
+        pointTaskListResponseDataDto.setPointTasks(pointTaskRecords);
+        pointTaskListResponseDataDto.setTotalCount((long) NEWBIE_TASKS.size());
         dto.setData(pointTaskListResponseDataDto);
         return dto;
     }
@@ -153,15 +156,17 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private List<PointTaskRecordResponseDataDto> convertPointTaskRecordDto(List<PointTaskModel> pointTaskList, String loginName) {
         List<PointTaskRecordResponseDataDto> pointTaskRecords = Lists.newArrayList();
         for (PointTaskModel pointTaskModel : pointTaskList) {
-            PointTaskRecordResponseDataDto pointTaskRecordResponseDataDto = new PointTaskRecordResponseDataDto();
-            UserPointTaskModel userPointTaskModel = userPointTaskMapper.findByLoginNameAndId(pointTaskModel.getId(), loginName);
-            pointTaskRecordResponseDataDto.setPointTaskId("" + pointTaskModel.getId());
-            pointTaskRecordResponseDataDto.setPointTaskTitle(pointTaskModel.getName().getTitle());
-            pointTaskRecordResponseDataDto.setPointTaskType(pointTaskModel.getName());
-            pointTaskRecordResponseDataDto.setPointTaskDesc(pointTaskModel.getName().getDescription());
-            pointTaskRecordResponseDataDto.setPoint("" + pointTaskModel.getPoint());
-            pointTaskRecordResponseDataDto.setCompleted(userPointTaskModel != null ? true : false);
-            pointTaskRecords.add(pointTaskRecordResponseDataDto);
+            if (NEWBIE_TASKS.contains(pointTaskModel.getName())) {
+                PointTaskRecordResponseDataDto pointTaskRecordResponseDataDto = new PointTaskRecordResponseDataDto();
+                List<UserPointTaskModel> userPointTaskModel = userPointTaskMapper.findByLoginNameAndTask(loginName, pointTaskModel.getName());
+                pointTaskRecordResponseDataDto.setPointTaskId(String.valueOf(pointTaskModel.getId()));
+                pointTaskRecordResponseDataDto.setPointTaskTitle(pointTaskModel.getName().getTitle());
+                pointTaskRecordResponseDataDto.setPointTaskType(pointTaskModel.getName());
+                pointTaskRecordResponseDataDto.setPointTaskDesc(pointTaskModel.getName().getDescription());
+                pointTaskRecordResponseDataDto.setPoint(String.valueOf(pointTaskModel.getPoint()));
+                pointTaskRecordResponseDataDto.setCompleted(userPointTaskModel != null);
+                pointTaskRecords.add(pointTaskRecordResponseDataDto);
+            }
         }
         return pointTaskRecords;
 

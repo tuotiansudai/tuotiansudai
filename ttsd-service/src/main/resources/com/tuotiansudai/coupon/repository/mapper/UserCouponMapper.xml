@@ -23,6 +23,7 @@
         <result column="invest_id" property="investId"/>
         <result column="status" property="status"/>
         <result column="exchange_code" property="exchangeCode"/>
+        <result column="achievement_loan_id" property="achievementLoanId"/>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -34,7 +35,8 @@
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
         <result column="loan_product_type" property="loanProductType"/>
-        <result column="product_types" property="productTypeList" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+        <result column="product_types" property="productTypeList"
+                typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
         <result column="invest_amount" property="investAmount"/>
@@ -47,8 +49,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time, exchange_code)
-        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime}, #{exchangeCode})
+        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time, exchange_code,achievement_loan_id)
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime}, #{exchangeCode}, #{achievementLoanId})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">
@@ -64,7 +66,8 @@
             default_interest = #{defaultInterest},
             created_time = #{createdTime},
             invest_id = #{investId},
-            status = #{status}
+            status = #{status},
+            achievement_loan_id = #{achievementLoanId}
         where id = #{id}
     </update>
 
@@ -173,6 +176,17 @@
         select * from user_coupon where invest_id = #{investId} and status = 'SUCCESS'
     </select>
 
+    <select id="findUserCouponSuccessAndCouponTypeByInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon uc
+        <if test="couponTypeList != null and couponTypeList.size != 0">
+            join coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
     <select id="findSumInvestAmountByCouponId" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(i.`amount`), 0)
@@ -254,4 +268,27 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
+    <select id="findSumBirthdayAndInterestByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(t.`actual_interest`- t.`actual_fee`), 0)
+        FROM
+        user_coupon t
+        JOIN coupon c
+        ON t.`coupon_id` = c.`id`
+        WHERE t.`login_name` = #{loginName}
+        AND t.`status` = 'SUCCESS'
+        and  c.`coupon_type` in ('INTEREST_COUPON','BIRTHDAY_COUPON','NEWBIE_COUPON','INVEST_COUPON');
+    </select>
+
+    <select id="findSumRedEnvelopeByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(t.`actual_interest`- t.`actual_fee`), 0)
+        FROM
+        user_coupon t
+        JOIN coupon c
+        ON t.`coupon_id` = c.`id`
+        WHERE t.`login_name` = #{loginName}
+        AND t.`status` = 'SUCCESS'
+        and  c.`coupon_type` = 'RED_ENVELOPE';
+    </select>
 </mapper>

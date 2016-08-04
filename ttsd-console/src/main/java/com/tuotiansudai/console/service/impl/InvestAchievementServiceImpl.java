@@ -24,20 +24,20 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     private InvestMapper investMapper;
 
     @Override
-    public long findInvestAchievementCount(String loginName) {
-        return loanMapper.findLoanAchievementCount(loginName);
+    public long findInvestAchievementCount(String mobile) {
+        return loanMapper.findLoanAchievementCount(mobile);
     }
 
     @Override
-    public List<LoanAchievementView> findInvestAchievement(int index, int pageSize, String loginName) {
-        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, loginName);
+    public List<LoanAchievementView> findInvestAchievement(int index, int pageSize, String mobile) {
+        List<LoanAchievementView> loanAchievementViews = loanMapper.findLoanAchievement((index - 1) * pageSize, pageSize, mobile);
         return Lists.transform(loanAchievementViews, new Function<LoanAchievementView, LoanAchievementView>() {
             @Override
             public LoanAchievementView apply(LoanAchievementView input) {
                 if (input.getRaisingCompleteTime() == null) {
                     input.setCompleteInvestDuration("/");
                 } else {
-                    input.setCompleteInvestDuration(hours(input.getFundraisingStartTime(),input.getRaisingCompleteTime()));
+                    input.setCompleteInvestDuration(hours(input.getFundraisingStartTime(), input.getRaisingCompleteTime()));
                 }
                 Date firstInvestDate = investMapper.findFirstTradeTimeInvestByLoanId(input.getLoanId());
                 input.setFirstInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
@@ -68,6 +68,6 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     }
 
     private String hours(Date startTime, Date endTime) {
-        return new DecimalFormat("0.00").format((double)(((endTime.getTime() - startTime.getTime()) / 1000) / 60) / 60) + "小时";
+        return new DecimalFormat("0.00").format((double) (((endTime.getTime() - startTime.getTime()) / 1000) / 60) / 60) + "小时";
     }
 }

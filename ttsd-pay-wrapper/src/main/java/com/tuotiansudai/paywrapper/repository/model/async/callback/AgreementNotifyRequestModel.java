@@ -2,9 +2,6 @@ package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
 import com.tuotiansudai.repository.model.AgreementType;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String userId;

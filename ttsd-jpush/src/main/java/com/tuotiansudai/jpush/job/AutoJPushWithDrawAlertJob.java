@@ -2,13 +2,13 @@ package com.tuotiansudai.jpush.job;
 
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import org.apache.log4j.Logger;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@PersistJobDataAfterExecution
+@DisallowConcurrentExecution
 public class AutoJPushWithDrawAlertJob implements Job {
     static Logger logger = Logger.getLogger(AutoJPushWithDrawAlertJob.class);
 

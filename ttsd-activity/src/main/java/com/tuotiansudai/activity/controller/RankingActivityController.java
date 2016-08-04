@@ -35,7 +35,7 @@ public class RankingActivityController {
     private AccountMapper accountMapper;
 
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
+    public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
@@ -116,7 +116,8 @@ public class RankingActivityController {
     @ResponseBody
     @RequestMapping(value = "/getTianDouTop15", method = RequestMethod.POST)
     public List<UserScoreDto> getTianDouTop15() {
-        List<UserScoreDto> tianDouTop15 = rankingActivityService.getTianDouTop15();
+        String loginName = LoginUserInfo.getLoginName();
+        List<UserScoreDto> tianDouTop15 = rankingActivityService.getTianDouTop15(loginName);
         return tianDouTop15;
     }
 }

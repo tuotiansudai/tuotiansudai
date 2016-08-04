@@ -2,6 +2,8 @@
 @import 'daterangepicker';
 @import "coupon_alert";
 @import "fancybox";
+@import "grid";
+@import "account/mybean";
 
 .layui-layer-btn {
   text-align: center !important;
@@ -58,7 +60,7 @@ body{
       margin-bottom:20px;
     }
     &.mb-0{
-      margin-bottom:20px;
+      margin-bottom:0px;
     }
     &.color-title{
       color:#4c4c4c;
@@ -187,13 +189,13 @@ body{
     line-height: 38px;
     border: 1px solid #ff7200;
     border-radius: 2px;
-      span {
-        background: #ff0000;
-        color: #fff;
-        padding: 3px 8px;
-        border-radius: 10px;
-        margin: 0 10px;
-      }
+    span {
+      background: #ff0000;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 10px;
+      margin: 0 10px;
+    }
   }
   .sign-layer {
     position: fixed;
@@ -536,7 +538,7 @@ body{
 .tMonthPayment {
   table {
     tr:nth-last-child(1) > td {
-      border-bottom-width: 0px;
+      border-bottom-width: 0;
     }
     tfoot tr td {
       border-top: 1px solid nth($CK1, 1);
@@ -700,6 +702,55 @@ body{
 }
 //recharge and bind-card pages
 .recharge-bind-card {
+  position: relative;
+  .bank-item{
+    position: absolute;
+    top:15px;
+    right:0;
+    width:380px;
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
+  }
+  }
   & ul.payment-mode {
     border-bottom: 1px solid #ccc;
 
@@ -887,12 +938,64 @@ body{
 }
 .bind-card-frame {
   border-top-width: 1px !important;
-
   .e-bank-recharge {
     display: block !important;
-
     .input-bankcard {
       width: 200px;
+    }
+  }
+  .bank-card-limit{
+    float:left;
+    width:100%;
+    padding-bottom:15px;
+    border-bottom: 1px solid #ddd;
+    .user-name{
+      float:left;
+      font-size:14px;
+      color:#4c4c4c;
+      line-height:30px;
+    }
+    .bank-list{
+      float:right;
+      width:380px;
+      position: relative;
+      label{
+        float:left;
+        line-height:30px;
+      }
+      .fa{
+        position: absolute;
+        top:12px;
+        right:5px;
+        z-index:999;
+      }
+      .list-item{
+        position: absolute;
+        top:0;
+        right:0;
+        width:260px;
+        height:30px;
+        background:#f9f9f9;
+        border:1px solid #e6e6e6;
+        overflow:hidden;
+        z-index: 9;
+        &.active{
+          height:auto;
+        }
+        li{
+          float:left;
+          width:240px;
+          padding:0 10px;
+          font-size:12px;
+          color:#4c4c4c;
+          line-height:30px;
+          &:hover{
+            cursor:pointer;
+            color:#fff;
+            background:#ff752a;
+          }
+        }
+      }
     }
   }
 }
@@ -1013,10 +1116,10 @@ body{
       }
     }
   }
-.wrapper-list {
-  li {
-    border-bottom: 1px solid #e6e6e6;
-    padding: 12px;
+  .wrapper-list {
+    li {
+      border-bottom: 1px solid #e6e6e6;
+      padding: 12px;
 
       span {
         padding-right: 10px;
@@ -1251,6 +1354,7 @@ body{
 }
 
 /* refer page */
+
 .invest-list-content {
   .column-title {
     em {
@@ -1380,6 +1484,12 @@ body{
   }
 }
 
+$gray: #e6e6e6;
+$grayLight: #b2b2b2;
+$gray2: #999;
+$orange: #ee7b2f;
+$orange2: #f1a03f;
+$red: #eb4a3e;
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
@@ -1390,170 +1500,144 @@ body{
     }
   }
   .loan-model{
-    float:left;
     width:100%;
+    display:table;
     .news-share {
-      width: 620px;
-      padding-bottom: 15px;
+      width: 616px;
+      display: table-cell;
+      vertical-align: top;
+      @media (max-width: 700px) {
+        width: 100%;
+      }
+      margin-right: 10px;
       position: relative;
-      border-right: 1px solid #ccc;
-      .hd {
-        margin: -3px 10px 0;
-        position: relative;
-        line-height: 55px;
-        padding-left: 40px;
-        border-bottom: 2px solid #ccc;
+      border: 1px solid #ccc;
+      .title-block {
+        border-bottom: 1px solid #ccc;
+        color: #808080;
+        padding: 0 20px;
+        line-height: 50px;
+        .title {
+          font-size: 20px;
+          color: #333;
+        }
+        &.new-free-tag {
+          .title {
+            padding-left: 41px;
+          }
+        }
+      }
+      .boilerplate {
         font-size: 14px;
-        &.new{
-          padding-left:50px;
-        }
-        .new-user{
-          position: absolute;
-          top: -2px;
-          left: -10px;
-          width: 56px;
-          height: 75px;
-          background: url("/images/sign/index_sprites_20160601.png") 0px -170px no-repeat;
-        }
-        .hot {
-          width: 55px;
-          height: 55px;
-          position: absolute;
-          left: -10px;
-          top: 0;
-          z-index: 99;
-          background: url("/images/icons/hot.png") no-repeat;
-        }
-      }
-      .chart-box {
-        width: 200px;
-        margin: 20px 50px;
-        border-collapse: collapse;
-        border-radius: 50%;
-        border: 1px solid #ff752a;
-        float: left;
-        display: inline-block;
-
-        .box {
-          width: 180px;
-          height: 180px;
-          position: relative;
-          margin: 10px;
-
-          div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 50%;
-            height: 160px;
-            width: 160px;
-            -webkit-transition: all .2s ease-in-out;
-            -moz-transition: all .2s ease-in-out;
-          }
-          .bg {
-            border: #ccc 10px solid
-          }
-          .bg2 {
-            border: #ccc 10px solid;
-            clip: rect(0, 90px, 180px, 0);
-          }
-          .rount {
-            border: #f24712 10px solid;
-            clip: rect(0, 90px, 180px, 0);
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-          }
-          .rount2 {
-            border: #f24712 10px solid;
-            clip: rect(0, 180px, 180px, 90px);
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-            display: none
-          }
-          .pr-square-in {
-            left: 13px;
-            top: 30px;
-            font-size: 15px;
-            display: inline-block;
-            text-align: center;
-
-            em {
-              color: #ff3333;
-              font-size: 17px;
-              line-height: 1;
-              font-weight: bold;
-              padding-top: 40px;
-              display: inline-block;
-
-              b {
-                font-size: 40px;
-                line-height: 0.5;
-              }
-            }
-            i {
-              color: #999;
-              clear: both;
-              display: block;
-              margin-top: -6px;
-            }
-          }
-        }
-      }
-      .chart-info {
-        float: left;
-        width: 315px;
-        color: #a4a4a4;
-        padding-top: 20px;
-        line-height: 30px;
-      }
-      .product-type-text {
-        position: absolute;
-        left: 100px;
-        bottom: 10px;
-        width: 120px;
-        text-align: center;
-        border: 1px dashed #ff752a;
-        border-radius: 34px;
-        font-size: 16px;
-        color: #ff752a;
-        line-height: 26px;
       }
       .extra-rate {
-        position: absolute;
-        width: auto;
-        padding: 0 .5em;
-        text-align: center;
-        border: 1px dashed #ff752a;
-        border-radius: 34px;
-        line-height: 26px;
-        font-size: 16px;
-        color: #ff752a;
-        left: 53px;
-        bottom: 35px;
-        .fa-question-circle-o {
-          transform: translate(0, -2px);
-          -webkit-transform: translate(0, -2px);
+        @media (max-width: 700px) {
+          display: none;
+        }
+        color: $orange;
+        font-size: 14px;
+        padding-left: 1em;
+        .fa {
+          font-size: 16px;
+        }
+      }
+      .loan-info {
+        color: #808080;
+        .title-block {
+          padding: 0 20px;
+          line-height: 50px;
+          .title {
+            font-size: 20px;
+          }
+        }
+        .boilerplate {
+          font-size: 14px;
+        }
+        .extra-rate {
+          font-size: 14px;
+          padding-left: 1em;
+          .fa {
+            font-size: 16px;
+          }
+        }
+        .content {
+          padding: 30px 40px;
+          @media (max-width: 700px) {
+            padding: 30px 10px;
+          }
+        }
+        .loan-number-detail {
+          border-bottom: 1px dashed $gray;
+          @media (max-width: 700px) {
+            text-align: center;
+          }
+          .title {
+            font-size: 18px;
+          }
+          .number {
+            font-size: 28px;
+            span {
+              font-size: 16px;
+            }
+          }
+          .data-extra-rate {
+            font-size: 14px;
+          }
+          .red {
+            color: $red;
+          }
+        }
+        .loan-active-detail {
+          .title {
+            color: $gray2;
+          }
+          > div {
+            margin-top: 20px;
+            line-height: 1;
+          }
+          .short-detail {
+            line-height: 24px;
+          }
+        }
+        .progress-bar {
+          display: inline-block;
+          width: 140px;
+          background: $gray;
+          height: 10px;
+          border-radius: 5px;
+          .progress-inner {
+            background: $orange2;
+            width: 40%;
+            height: 10px;
+            border-radius: 5px;
+          }
         }
       }
     }
+    .blank-middle {
+      display: table-cell;
+      width:10px;
+    }
     .account-info {
-      padding: 10px;
-      width: 350px;
+      width: 370px;
+      display: table-cell;
+      vertical-align: top;
       text-align: center;
       font-size: 12px;
       color: #949494;
+      border: 1px solid #ccc;
       .l-title {
-        padding: 10px 0;
-        border-bottom: 2px solid #ccc;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #ccc;
         font-size: 12px;
         text-align: right;
       }
       .account-list {
-        margin-left: 10px;
+        &.account-list-new {
+          margin-top:40px;
+        }
+        padding: 18px;
         &.new-text {
           font-size: 14px;
         }
@@ -1720,7 +1804,7 @@ body{
             margin-bottom: 0;
           }
           &.img-status {
-            padding: 30px 10px;
+            padding: 20px 10px;
           }
           &.time-item {
             display: inline-block;
@@ -1759,9 +1843,10 @@ body{
           .btn-normal {
             width: 100%;
             padding: 8px 0;
+            border-radius:0;
           }
           .account-amount {
-            color: #f24712;
+            padding-right: .5em;
           }
         }
       }
@@ -1863,7 +1948,6 @@ body{
     }
   }
   .loan-nav {
-    overflow: hidden;
     border-bottom: 1px solid #ccc;
     li {
       float: left;
@@ -1871,7 +1955,7 @@ body{
       border-right: 1px solid #ccc;
       position: relative;
       cursor: pointer;
-
+      background: #fff;
       i {
         display: none;
         position: absolute;
@@ -1881,14 +1965,12 @@ body{
         color: #ed9c30;
       }
       &.active {
-        border-bottom: 2px solid #ed9c30;
-
+        border-top: 2px solid #ff752a;
+        margin-top: -1px;
+        margin-bottom: -1px;
         i {
           display: block;
         }
-      }
-      &:nth-last-child(1) {
-        border-right-width: 0px;
       }
     }
   }
@@ -1898,38 +1980,170 @@ body{
     }
     .loan-list-con {
       display: none;
-
-      .b-title {
-        color: #000;
-        font-size: 14px;
-        padding-bottom: 10px;
-      }
-      .loan-material {
-        margin-top: 10px;
-        h3 {
-          padding: 10px;
-          background: #eaeaea;
-          color: #ed9c30;
-          font-size: 14px;
+      .content {
+        padding: 30px;
+        @media (max-width: 700px) {
+          padding: 0;
         }
-        .pic-list {
-          .title {
-            padding-top: 10px;
-            line-height: 36px;
-          }
-          img {
-            display: inline-block;
-            margin: 0px 10px 10px 0;
-            height: 100px;
-            cursor: pointer;
-          }
-          .gallery-list{
-            float:left;
-            width:100%;
-            li{
-              float:left;
+        &.detail {
+          .subtitle {
+            padding-left: 20px;
+            position: relative;
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              width: 5px;
+              background: #ff752a;
+              border-radius: 5px;
+            }
+            h3 {
+              background: #f5f5f5;
+              font-size: 16px;
+              text-indent: .5em;
             }
           }
+          .list-block {
+            padding: 15px 0 15px 25px;
+            color: #808080;
+            .row > div {
+              height: 35px;
+              line-height: 35px;
+            }
+          }
+          .danger-control {
+            padding-bottom: 20px;
+            .table {
+              padding: 0 30px;
+              text-align: center;
+              margin-top: 20px;
+              font-size: 14px;
+              .fa {
+                font-size: 16px;
+                color: $orange;
+                margin-right: .5em;
+              }
+              .bg {
+                background: #f2f6fa;
+                font-weight: 900;
+              }
+              .br-b {
+                border-bottom: 1px solid $gray;
+              }
+              .br-r {
+                border-right: 1px solid $gray;
+              }
+              .col-xs-6 {
+                text-align: center;
+                line-height: 40px;
+                border-top: 1px solid $gray;
+                border-left: 1px solid $gray;
+              }
+            }
+          }
+        }
+        &.record {
+          .title-list {
+            margin-bottom: 20px;
+            .br {
+              padding-right: 10px;
+            }
+            .item {
+              border: 1px solid #e6e6e6;
+              text-align: center;
+              padding: 10px 5px;
+              min-height:125px;
+
+              h4 {
+                font-size: 24px;
+                color: #808080;
+                span {
+                  padding: 15px 0 15px 50px;
+                  a {
+                    color: #808080;
+                    &:hover {
+                      color: #ff752a;
+                    }
+                  }
+                }
+                &.hammer {
+                  span {
+                    background: url("/images/icons/hammer.png") no-repeat left 50%;
+                  }
+                }
+                &.king {
+                  span {
+                    background: url("/images/icons/king.png") no-repeat left 50%;
+                  }
+                }
+                &.first {
+                  span {
+                    background: url("/images/icons/first.png") no-repeat left 50%;
+                  }
+                }
+              }
+              p {
+                font-size: 14px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+              }
+            }
+          }
+        }
+      }
+      .scroll-wrap {
+        padding: 0 39px;
+        position: relative;
+        .left-button {
+          width: 20px;
+          height: 100%;
+          background: #fafafa url("/images/icons/left-arrow.png") no-repeat 50% 50%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          &.disabled {
+            background: #fafafa url("/images/icons/left-arrow-disabled.png") no-repeat 50% 50%;
+          }
+        }
+        .right-button {
+          width: 20px;
+          height: 100%;
+          background: #fafafa url("/images/icons/right-arrow.png") no-repeat 50% 50%;
+          position: absolute;
+          top: 0;
+          right: 0;
+          &.disabled {
+            background: #fafafa url("/images/icons/right-arrow-disabled.png") no-repeat 50% 50%;
+          }
+        }
+        .scroll-content {
+          overflow: hidden;
+          > .row {
+            width: 1000%;
+          }
+          .col {
+            width: 200px;
+            float: left;
+            margin-right: 10px;
+            display: block;
+          }
+          .img {
+            display: block;
+            margin: 0 auto;
+            width: 198px;
+            height: 118px;
+            border: 1px solid #fafafa;
+          }
+        }
+      }
+      .apply-data {
+        padding-left: 20px;
+        h5 {
+          font-size: 14px;
+          color: #808080;
+          padding: 20px 0;
         }
       }
     }
@@ -2106,6 +2320,7 @@ body{
     }
   }
 }
+
 .bind-card-layer {
   width: 540px;
   height: 244px;
@@ -2320,12 +2535,13 @@ body{
     }
   }
 }
+
 .extra-rate-popup {
   background: #fff;
   position: absolute;
   z-index: 100;
   border: 1px solid #ffd4b2;
-  width: 200px;
+  width: 290px;
   text-align: center;
   > div {
     border-top: 1px solid #ffd4b2;
@@ -2341,10 +2557,10 @@ body{
     border-left: 1px solid #ffd4b2;
     line-height: 28px;
     text-align: center;
-    width: 49px;
-     &:first-child {
+    width: 60px;
+    &:first-child {
       border-left: none;
-      width: 150px;
+      width: 220px;
     }
   }
   &:before {
@@ -2352,7 +2568,7 @@ body{
     display: block;
     position: absolute;
     top: -7px;
-    right: 20px;
+    right: 80px;
     color: #ffd4b2;
     background: #fff;
     width: 12px;
@@ -3138,1032 +3354,40 @@ body{
   }
 }
 
-/*my choi beans*/
-.my-choi-beans {
-  .column-title {
-    em {
-      &.title-navli {
-        border-bottom: 4px solid #999;
-        color: #999;
-        cursor: pointer;
-        margin-right: 40px;
-      }
-      &.active {
-        border-bottom: 4px solid #ff7200;
-        color: #ff7200;
-      }
-    }
-  }
-  .icon-result {
-    background: url("/images/sign/choi-beans.png") no-repeat;
-  }
-  .content-list {
-    float: left;
-    width: 100%;
-    min-height: 500px;
-  }
-  .choi-beans-list {
-    float: left;
-    width: 100%;
-    display: none;
-
-    &.active {
-      display: block;
-    }
-    .beans-intro {
-      float: left;
-      width: 723px;
-      height: 188px;
-      padding: 20px;
-      border: 1px solid #f2f2f2;
-
-      .beans-list {
-        float: left;
-        width: 100%;
-
-        &.mt-20 {
-          margin-top: 20px;
-        }
-        i {
-          &.icon-beans {
-            float: left;
-            width: 30px;
-            height: 30px;
-            background-position: 0px -53px;
-          }
-          &.icon-dou {
-            float: left;
-            width: 21px;
-            height: 19px;
-            margin: 5px 0 0 5px;
-            background-position: 0px -120px;
-          }
-        }
-        span {
-          line-height: 30px;
-
-          &.title-text {
-            float: left;
-            font-size: 18px;
-            color: #ff7200;
-            margin-left: 5px;
-          }
-          &.title-href {
-            float: right;
-            font-size: 14px;
-            color: #4f8df5;
-            cursor: pointer;
-          }
-          &.beans-num {
-            float: left;
-            font-size: 18px;
-            color: #ff7200;
-          }
-        }
-        .beans-recent {
-          float: left;
-          width: 408px;
-          height: 13px;
-          border: 1px solid #f2f2f2;
-
-          li {
-            float: left;
-            width: 136px;
-            height: 13px;
-            position: relative;
-
-            &.one-day {
-              background: #ff7200;
-
-              p {
-                border-left: 1px dashed #ff7200;
-
-                .icon-circle {
-                  background: #ff7200;
-                }
-              }
-            }
-            &.two-day {
-              background: #ffa862;
-
-              p {
-                border-left: 1px dashed #ffa862;
-
-                .icon-circle {
-                  background: #ffa862;
-                }
-              }
-            }
-            &.three-day {
-              background: #feda7a;
-
-              p {
-                border-left: 1px dashed #feda7a;
-
-                .icon-circle {
-                  background: #feda7a;
-                }
-              }
-            }
-            p {
-              float: left;
-              width: 0;
-              height: 15px;
-              border-left: 1px dashed #ccc;
-              margin-top: 15px;
-              margin-left: 68px;
-              position: relative;
-
-              .icon-circle {
-                position: absolute;
-                top: 15px;
-                left: -3px;
-                width: 5px;
-                height: 5px;
-                background: #ff7200;
-                border-radius: 10px;
-              }
-              span {
-                position: absolute;
-                font-size: 12px;
-                color: #ffa862;
-
-                &.text-date {
-                  top: 20px;
-                  left: -20px;
-                  width: 100px;
-                }
-                &.text-money {
-                  top: 40px;
-                  left: -20px;
-                  width: 100px;
-                }
-                strong {
-                  float: left;
-                }
-                .icon-sm-dou {
-                  float: left;
-                  width: 18px;
-                  height: 18px;
-                  margin-top: 8px;
-                  background-position: 0px -94px;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    .beans-coupon {
-      float: left;
-      width: 723px;
-      padding: 20px;
-      border-bottom: 1px dashed #f2f2f2;
-
-      .beans-list {
-        float: left;
-        width: 100%;
-
-        i {
-          &.icon-beans {
-            float: left;
-            width: 30px;
-            height: 30px;
-            background-position: 0px -53px;
-          }
-          &.icon-dou {
-            float: left;
-            width: 21px;
-            height: 19px;
-            margin: 5px 0 0 5px;
-            background-position: 0px -120px;
-          }
-        }
-        span {
-          line-height: 30px;
-
-          &.beans-num {
-            float: left;
-            font-size: 18px;
-            color: #ff0000;
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-    .beans-operat {
-      float: left;
-      width: 100%;
-      margin-top: 50px;
-      border-top: 1px dashed #f2f2f2;
-
-      h3 {
-        float: left;
-        width: 100%;
-        margin: 30px 0;
-        text-align: left;
-        color: #ff0000;
-        font-size: 18px;
-      }
-      .object-list {
-        float: left;
-        width: 100%;
-
-        li {
-          float: left;
-          width: 200px;
-          margin-right: 50px;
-
-          p {
-            text-align: center;
-
-            &.invest-bg {
-              background: #ff7171;
-            }
-            &.sign-bg {
-              background: #53d7aa;
-            }
-            &.task-bg {
-              background: #feda7a;
-            }
-            &.icon-com {
-              float: left;
-              width: 100%;
-              height: 110px;
-              border-radius: 50px;
-
-              .icon-result {
-                float: left;
-                margin-left: 55px;
-                margin-top: 15px;
-
-                &.icon-invest {
-                  width: 83px;
-                  height: 76px;
-                  background-position: 0px -149px;
-                }
-                &.icon-sign {
-                  margin-top: 30px;
-                  width: 93px;
-                  height: 43px;
-                  background-position: 0px 0px;
-                }
-                &.icon-task {
-                  width: 85px;
-                  height: 86px;
-                  background-position: 0px -235px;
-                }
-              }
-            }
-            &.btn-list {
-              float: left;
-              width: 100%;
-              text-align: center;
-              margin-top: 10px;
-
-              span {
-                padding: 10px 25px;
-                color: #fff;
-                cursor: pointer;
-                font-size: 16px;
-                border-radius: 10px;
-
-                &.no-click {
-                  background: #ccc !important;
-                  cursor: no-drop;
-                }
-                &.btn-invest {
-                  background: #ff7171;
-                }
-                &.btn-sign {
-                  background: #53d7aa;
-                }
-                &.btn-task {
-                  background: #feda7a;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    .beans-infotext {
-      float: left;
-      width: 100%;
-      margin-top: 50px;
-      border: 1px dashed #f2f2f2;
-
-      dl {
-        padding: 20px;
-        color: #adafb2;
-
-        dt {
-          font-size: 14px;
-        }
-        dd {
-          font-size: 12px;
-        }
-      }
-    }
-    .coupon-list {
-      float: left;
-      width: 100%;
-
-      &.used-card {
-        li {
-          width: 100%;
-          margin-right: 0;
-        }
-      }
-      li {
-        float: left;
-        width: 285px;
-        margin-top: 35px;
-        margin-right: 90px;
-
-        &.yellow-type {
-          .top-com {
-            .left-name {
-              background: #ff752a;
-              color: #fff;
-
-              i {
-                border: 1px solid #ff752a;
-              }
-            }
-            .right-coupon {
-              border: 1px solid #ff752a;
-              background: url("/images/sign/yellow-bg.png") no-repeat;
-              background-position: 180px 10px;
-
-              .coupon-time {
-                color: #ff752a;
-              }
-              p {
-                color: #ff752a;
-
-                .pro-icon {
-                  border: 1px solid #ff752a;
-
-                  em {
-                    &.circle-com {
-                      background: #ff752a;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time {
-            a {
-              background: #ff752a;
-              cursor: pointer;
-            }
-          }
-          .detail-com {
-            p {
-              &.bottom-line {
-                border-bottom: 1px dashed #ff752a;
-              }
-              span {
-                color: #ff752a;
-              }
-              .see-detail {
-                background: #ff752a;
-              }
-            }
-          }
-        }
-        &.new-type {
-          .top-com {
-            .left-name {
-              background: #ffae00;
-              color: #fff;
-
-              i {
-                border: 1px solid #ffae00;
-              }
-            }
-            .right-coupon {
-              border: 1px solid #ffae00;
-              background: url("/images/sign/new-bg.png") no-repeat;
-              background-position: 180px 10px;
-
-              .coupon-time {
-                color: #ffae00;
-              }
-              p {
-                color: #ffae00;
-
-                .pro-icon {
-                  border: 1px solid #ffae00;
-
-                  em {
-                    &.circle-com {
-                      background: #ffae00;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time {
-            a {
-              background: #ffae00;
-              cursor: pointer;
-            }
-          }
-          .detail-com {
-            p {
-              &.bottom-line {
-                border-bottom: 1px dashed #ffae00;
-              }
-              span {
-                color: #ffae00;
-              }
-              .see-detail {
-                background: #ffae00;
-              }
-            }
-          }
-        }
-        &.bite-type {
-          .top-com {
-            .left-name {
-              background: #ff7b7b;
-              color: #fff;
-
-              i {
-                border: 1px solid #ff7b7b;
-              }
-            }
-            .right-coupon {
-              border: 1px solid #ff7b7b;
-              background: url("/images/sign/bite-bg.png") no-repeat;
-              background-position: 180px 10px;
-
-              .coupon-time {
-                color: #ff7b7b;
-              }
-              p {
-                color: #ff7b7b;
-
-                .pro-icon {
-                  border: 1px solid #ff7b7b;
-
-                  em {
-                    &.circle-com {
-                      background: #ff7b7b;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time {
-            a {
-              background: #ff7b7b;
-              cursor: pointer;
-            }
-          }
-          .detail-com {
-            p {
-              &.bottom-line {
-                border-bottom: 1px dashed #ff7b7b;
-              }
-              span {
-                color: #ff7b7b;
-              }
-              .see-detail {
-                background: #ff7b7b;
-              }
-            }
-          }
-        }
-        &.birth-type {
-          .top-com {
-            .left-name {
-              background: #ff5984;
-              color: #fff;
-
-              i {
-                border: 1px solid #ff5984;
-              }
-            }
-            .right-coupon {
-              border: 1px solid #ff5984;
-              background: url("/images/sign/birth-bg.png") no-repeat;
-              background-position: 180px 10px;
-
-              .coupon-time {
-                color: #ff5984;
-              }
-              p {
-                color: #ff5984;
-
-                .birth-text {
-                  font-size: 30px;
-                }
-                .pro-icon {
-                  border: 1px solid #ff5984;
-
-                  em {
-                    &.circle-com {
-                      background: #ff5984;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time {
-            a {
-              background: #ff5984;
-              cursor: pointer;
-            }
-          }
-          .detail-com {
-            p {
-              &.bottom-line {
-                border-bottom: 1px dashed #ff5984;
-              }
-              span {
-                color: #ff5984;
-              }
-              .see-detail {
-                background: #ff5984;
-              }
-            }
-          }
-        }
-        .top-com {
-          float: left;
-          width: 300px;
-          height: 125px;
-          overflow: hidden;
-
-          .left-name {
-            float: left;
-            width: 50px;
-            height: 125px;
-            background: #ccc;
-            color: #fff;
-            font-size: 16px;
-            text-align: center;
-            line-height: 22px;
-            border-radius: 5px;
-            position: relative;
-
-            span {
-              display: inline-block;
-              vertical-align: middle;
-              width: 30px;
-              margin-left: 5px;
-            }
-            em {
-              display: inline-block;
-              width: 1px;
-              height: 100%;
-              vertical-align: middle;
-            }
-            i {
-              position: absolute;
-              left: 45px;
-              width: 10px;
-              height: 10px;
-              border: 1px solid #ccc;
-              background: #fff;
-              border-radius: 50%;
-              z-index: 99;
-
-              &.circle-top {
-                top: -5px;
-              }
-              &.circle-bottom {
-                bottom: -5px;
-              }
-            }
-          }
-          .right-coupon {
-            float: left;
-            width: 227px;
-            height: 123px;
-            padding-left: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: url("/images/sign/default-bg.png") no-repeat;
-            background-position: 180px 10px;
-            position: relative;
-
-            .coupon-time {
-              position: absolute;
-              top: 10px;
-              right: 10px;
-              font-size: 12px;
-              color: #ccc;
-            }
-            p {
-              margin-bottom: 0;
-              color: #ccc;
-
-              &.mt-10 {
-                margin-top: 10px;
-              }
-              span {
-                line-height: 40px;
-
-                &.num-text {
-                  font-size: 40px;
-                }
-                &.unit-text {
-                  font-size: 16px;
-                }
-              }
-              .pro-icon {
-                border: 1px solid #ccc;
-                border-radius: 20px;
-                text-align: center;
-                margin: 0 2px;
-                line-height: 21px;
-                padding: 2px 4px;
-                position: relative;
-                overflow: hidden;
-
-                em {
-                  position: absolute;
-
-                  &.bg-com {
-                    bottom: -7px;
-                    right: -2px;
-                    width: 10px;
-                    height: 10px;
-                    background: #fff;
-                  }
-                  &.circle-com {
-                    bottom: 2px;
-                    right: 1px;
-                    width: 2px;
-                    height: 2px;
-                    background: #ccc;
-                    border-radius: 2px;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .bottom-time {
-          float: left;
-          width: 300px;
-          height: 30px;
-          padding: 15px 0;
-          line-height: 30px;
-
-          span {
-            float: left;
-            text-align: left;
-            font-size: 14px;
-            color: #ff0000;
-            padding-left: 50px;
-          }
-          a {
-            float: right;
-            width: 80px;
-            margin-right: 15px;
-            background: #ccc;
-            font-size: 12px;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            cursor: no-drop;
-          }
-          .icon-dou {
-            float: left;
-            width: 21px;
-            height: 19px;
-            margin: 5px 0 0 5px;
-            background: url("/images/sign/choi-beans.png") no-repeat;
-            background-position: 0px -120px;
-          }
-        }
-        .detail-com {
-          float: left;
-          width: 410px;
-          margin-left: 30px;
-
-          p {
-            float: left;
-            width: 100%;
-            margin-bottom: 0;
-            line-height: 30px;
-
-            &.bottom-line {
-              padding: 10px 0 15px 0;
-              border-bottom: 1px dashed #ff752a;
-              margin-bottom: 10px;
-            }
-            span {
-              font-size: 12px;
-              color: #ff752a;
-
-              &.status-text {
-                float: left;
-                color: #999;
-              }
-              &.left-text {
-                float: left;
-              }
-              &.right-text {
-                float: right;
-              }
-            }
-            .see-detail {
-              float: right;
-              width: 80px;
-              margin-left: 15px;
-              background: #ff752a;
-              font-size: 12px;
-              color: #fff;
-              line-height: 30px;
-              text-align: center;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-  }
-  .sign-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    z-index: 999;
-    display: none;
-
-    .sign-layer-list {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: -150px;
-      margin-left: -250px;
-      width: 500px;
-      height: 300px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      overflow: hidden;
-
-      .sign-top {
-        float: left;
-        width: 100%;
-        height: 250px;
-        position: relative;
-
-        .close-btn {
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          width: 15px;
-          height: 15px;
-          background: url("/images/sign/bean-bg.png") no-repeat;
-          background-position: 0px -23px;
-          cursor: pointer;
-        }
-        p {
-          text-align: center;
-
-          &.sign-text {
-            margin-top: 10px;
-            color: #ff7200;
-            font-size: 18px;
-            margin-bottom: 0;
-          }
-          &.tomorrow-text {
-            font-size: 14px;
-            color: #4c4c4c;
-          }
-          &.img-beans {
-            position: relative;
-
-            .add-dou {
-              position: absolute;
-              left: 50%;
-              margin-left: -30px;
-              bottom: 0;
-              width: 40px;
-              height: 30px;
-              padding-right: 20px;
-              font-size: 20px;
-              line-height: 25px;
-              color: #fff;
-              text-align: center;
-              background: url("/images/sign/add-bean.png") no-repeat right;
-            }
-          }
-          &.intro-text {
-            font-size: 14px;
-            color: #4d4d4d;
-            span {
-              color: #ff7200;
-            }
-          }
-        }
-      }
-      .sign-bottom {
-        float: left;
-        width: 100%;
-        height: 50px;
-
-        ul {
-          float: left;
-          width: 100%;
-          border-top: 1px solid #e6e6e6;
-
-          li {
-            float: left;
-            width: 59px;
-            height: 50px;
-            text-align: center;
-            border-right: 1px solid #e6e6e6;
-
-            &.last-day {
-              width: 79px;
-
-              .day-beans {
-                span {
-                  margin-left: 30px;
-                  line-height: 15px;
-                  margin-top: -5px;
-                }
-              }
-            }
-            p {
-              margin-bottom: 0;
-              line-height: 25px;
-
-              &.day-name {
-                font-size: 12px;
-                color: #7f7f7f;
-              }
-              &.day-beans {
-                font-size: 14px;
-                color: #4d4d4d;
-
-                span {
-                  float: left;
-                  width: 20px;
-                  text-align: right;
-                  line-height: 15px;
-                  margin-left: 10px;
-                }
-                .bean-img {
-                  float: left;
-                  width: 15px;
-                  height: 15px;
-                  background: url("/images/sign/bean-bg.png") no-repeat;
-                  background-position: 0 0;
-                  margin-top: 2px;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  .task-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    z-index: 999;
-    display: none;
-
-    .task-layer-list {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: -280px;
-      margin-left: -250px;
-      width: 460px;
-      height: 520px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      overflow: hidden;
-
-      h3 {
-        float: left;
-        width: 100%;
-        font-size: 18px;
-        color: #000;
-        text-align: center;
-
-        .close-btn {
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          width: 15px;
-          height: 15px;
-          background: url("/images/sign/bean-bg.png") no-repeat;
-          background-position: 0px -23px;
-          cursor: pointer;
-        }
-      }
-      ul {
-        float: left;
-        width: 100%;
-
-        li {
-          float: left;
-          width: 158px;
-          height: 108px;
-          margin: 15px 20px;
-          background: #fff7e9;
-          border: 1px solid #dadada;
-          padding: 10px 15px;
-
-          p {
-            float: left;
-            width: 100%;
-            margin-bottom: 0;
-            font-size: 12px;
-
-            a {
-              float: left;
-              padding: 3px 35px;
-              border-radius: 5px;
-              color: #fff;
-              margin: 5px 8px 0;
-              text-align: center;
-              background: #ff7200;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 @media screen and (max-width:700px) {
+
+  .loan-detail-content {
+    .loan-model {
+      display: block;
+      .blank-middle {
+        display: none;
+      }
+      .news-share,.account-info {
+        display: block;
+      }
+      .news-share {
+        border-left-width: 0;
+        border-bottom-width: 0;
+      }
+      .account-info {
+        width: 100%;
+        border-left-width: 0;
+        border-right-width: 0;
+        margin-bottom: 10px;
+        padding-bottom:15px;
+        .l-title {
+          display: none;
+        }
+        .account-list {
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
   .chart-info-responsive {
     display: block !important;
   }
-  .news-share {
-    width: 100% !important;
-    padding-bottom: 0 !important;
 
-    .hd {
-      margin: 0 !important;
-      padding-left: 0 !important;
-      text-align: center;
-      .new-user{
-        top:-6px!important;
-        left:0!important;
-      }
-    }
-    .chart-info {
-      display: none;
-    }
-    .product-type-text {
-      left: 50% !important;
-      bottom: 55px !important;
-      border: none !important;
-      margin-left: -58px !important;
-      font-size:12px!important;
-    }
-    .chart-box {
-      position: relative;
-      left: 50%;
-      margin-left: -100px !important;
-      float: none !important;
-    }
-    .extra-rate {
-      position: static !important;
-      width: 185px !important;
-      margin: 0 auto 20px !important;
-    }
-  }
-  .account-info {
-    width: 96% !important;
-    padding: 0 2% !important;
-    border-left: none !important;
-    border-top: 1px solid #ccc;
-
-    .l-title {
-      display: none;
-    }
-    .account-list {
-      margin-left: 0 !important;
-    }
-  }
   .loan-designation{
     display:none;
   }
@@ -4247,7 +3471,7 @@ body{
 .new-free {
   position: absolute;
   top: -3px;
-  left: -10px;
+  left: -3px;
   width: 56px;
   height: 75px;
   background: url("/images/icons/new-free.png") no-repeat center;

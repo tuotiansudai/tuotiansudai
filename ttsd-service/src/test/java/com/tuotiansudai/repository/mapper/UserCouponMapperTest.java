@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.UUIDGenerator;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
@@ -81,7 +83,7 @@ public class UserCouponMapperTest {
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90));
-
+        couponModel.setUserGroup(UserGroup.FIRST_INVEST_ACHIEVEMENT);
         return couponModel;
     }
 

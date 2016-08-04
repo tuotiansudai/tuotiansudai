@@ -1,6 +1,6 @@
 require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], function ($) {
 
-    var $login = $('#login-name');
+    var $mobile = $('#login-mobile');
     var $selectedYear = $('#selected-year');
     var $selectedMonth = $('#selected-month');
     var $status = $('#status');
@@ -9,11 +9,11 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
     $selectedYear.selectpicker();
     $selectedMonth.selectpicker();
 
-    $login.autocomplete({
+    $mobile.autocomplete({
         minLength: 3,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
         },
@@ -26,8 +26,8 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
 
     $('form .query').click(function () {
         var params = [];
-        if ($login.val()) {
-            params.push("loginName=" + $login.val());
+        if ($mobile.val()) {
+            params.push("mobile=" + $mobile.val());
         }
         params.push("selectedYear=" + $selectedYear.val());
         params.push("selectedMonth=" + $selectedMonth.val());
@@ -46,8 +46,8 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
         }
 
         var params = [];
-        if ($login.val()) {
-            params.push("loginName=" + $login.val());
+        if ($mobile.val()) {
+            params.push("mobile=" + $mobile.val());
         }
         params.push("index=" + (parseInt($('.current-page').data('index')) - 1));
         params.push("selectedYear=" + $selectedYear.val());
@@ -65,8 +65,8 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapSelect', 'bootstrap'], functio
         }
 
         var params = [];
-        if ($login.val()) {
-            params.push("loginName=" + $login.val());
+        if ($mobile.val()) {
+            params.push("mobile=" + $mobile.val());
         }
         params.push("index=" + (parseInt($('.current-page').data('index')) + 1));
         params.push("selectedYear=" + $selectedYear.val());

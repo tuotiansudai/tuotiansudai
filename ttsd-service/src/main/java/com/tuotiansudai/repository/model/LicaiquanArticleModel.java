@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -65,10 +66,12 @@ public class LicaiquanArticleModel implements Serializable {
      */
     private boolean deleted;
 
+    private Date timingTime;
+
     public LicaiquanArticleModel() {
     }
 
-    public LicaiquanArticleModel(long id, String title, String creatorLoginName, String checkerLoginName, String author, ArticleSectionType section, String source, boolean carousel, String thumb, String showPicture, String content, Date createdTime) {
+    public LicaiquanArticleModel(long id, String title, String creatorLoginName, String checkerLoginName, String author, ArticleSectionType section, String source, boolean carousel, String thumb, String showPicture, String content, Date createdTime,Date timingTime) {
         this.id = id;
         this.title = title;
         this.creatorLoginName = creatorLoginName;
@@ -83,6 +86,7 @@ public class LicaiquanArticleModel implements Serializable {
         this.createdTime = createdTime;
         this.updatedTime = createdTime;
         this.deleted = false;
+        this.timingTime = timingTime;
     }
 
     public LicaiquanArticleModel(LiCaiQuanArticleDto dto){
@@ -99,6 +103,7 @@ public class LicaiquanArticleModel implements Serializable {
         this.content = dto.getContent();
         this.createdTime = dto.getCreateTime();
         this.updatedTime = dto.getUpdateTime();
+        this.timingTime = dto.getTimingTime();
     }
 
     public long getId() {
@@ -212,4 +217,8 @@ public class LicaiquanArticleModel implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public Date getTimingTime() { return timingTime; }
+
+    public void setTimingTime(Date timingTime) { this.timingTime = timingTime; }
 }

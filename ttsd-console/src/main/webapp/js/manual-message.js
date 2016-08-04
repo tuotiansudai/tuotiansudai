@@ -1,5 +1,5 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelect','ueditor','jquery-ui','csrf'], function ($) {
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'ueditor', 'jquery-ui', 'csrf'], function ($) {
     $(function () {
         var $selectDom = $('.selectpicker'); //select表单
         var $submitBtn = $('.message-save'); //提交按钮
@@ -104,13 +104,13 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
         }
 
         //提交表单
-        $submitBtn.on('click', function(event) {
+        $submitBtn.on('click', function (event) {
             event.preventDefault();
             var boolFlag = check();
             var $self = $(this);
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
-                    $('.message-template').val(getContent());
+                    $('.message-template').val(getContentTxt());
                     $self.attr('disabled', 'disabled');
                     $messageForm[0].submit();
                 }

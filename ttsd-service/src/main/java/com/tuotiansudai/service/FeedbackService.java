@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
 import com.tuotiansudai.repository.model.Source;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -25,4 +26,8 @@ public interface FeedbackService {
                                                                int pageSize);
 
     void updateStatus(long feedbackId, ProcessStatus status);
+
+    void updateRemark(FeedbackModel feedbackModel);
+
+    FeedbackModel findById(long feedbackId);
 }

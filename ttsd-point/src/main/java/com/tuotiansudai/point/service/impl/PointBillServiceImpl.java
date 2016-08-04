@@ -3,15 +3,16 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
+import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -40,13 +41,7 @@ public class PointBillServiceImpl implements PointBillService {
     private PointBillMapper pointBillMapper;
 
     @Autowired
-    private PointTaskMapper pointTaskMapper;
-
-    @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -64,32 +59,13 @@ public class PointBillServiceImpl implements PointBillService {
         accountMapper.update(accountModel);
     }
 
-    private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
-        switch (businessType) {
-            case SIGN_IN:
-                return MessageFormat.format("{0} 签到", new DateTime().toString("yyyy-MM-dd"));
-            case TASK:
-                PointTaskModel pointTaskModel = pointTaskMapper.findById(orderId);
-                return pointTaskModel.getName().getDescription();
-            case EXCHANGE:
-                CouponModel couponModel = couponMapper.findById(orderId);
-                switch (couponModel.getCouponType()) {
-                    case INTEREST_COUPON:
-                        double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-                        return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
-                    case INVEST_COUPON:
-                        return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
-                    default:
-                        return null;
-                }
-            case INVEST:
-                LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
-                return MessageFormat.format("投资项目：{0}", loanModel.getName());
-            case LOTTERY:
-                return PointBusinessType.LOTTERY.getDescription();
-        }
-
-        return null;
+    @Override
+    @Transactional
+    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        accountModel.setPoint(accountModel.getPoint() + point);
+        pointBillMapper.create(new PointBillModel(loginName, pointTaskId, point, PointBusinessType.TASK, note));
+        accountMapper.update(accountModel);
     }
 
     @Override
@@ -98,7 +74,7 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                  int pageSize,
                                                                                  Date startTime,
                                                                                  Date endTime,
-                                                                                 List<PointBusinessType> businessTypes){
+                                                                                        List<PointBusinessType> businessTypes) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -132,8 +108,8 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize){
-        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int index, int pageSize){
+        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
 
         List<PointBillPaginationItemDataDto> pointBillPaginationItemDataDtoList = new ArrayList<>();
         for(PointBillModel pointBillModel : pointBillModels) {
@@ -146,6 +122,31 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     public long getPointBillCountByLoginName(String loginName){
         return pointBillMapper.findCountPointBillByLoginName(loginName);
+    }
+
+    private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
+        switch (businessType) {
+            case SIGN_IN:
+                return MessageFormat.format("{0} 签到", new DateTime().toString("yyyy-MM-dd"));
+            case EXCHANGE:
+                CouponModel couponModel = couponMapper.findById(orderId);
+                switch (couponModel.getCouponType()) {
+                    case INTEREST_COUPON:
+                        double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+                        return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
+                    case INVEST_COUPON:
+                        return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+                    default:
+                        return null;
+                }
+            case INVEST:
+                LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
+                return MessageFormat.format("投资项目：{0}", loanModel.getName());
+            case LOTTERY:
+                return PointBusinessType.LOTTERY.getDescription();
+        }
+
+        return null;
     }
 }
 

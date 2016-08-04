@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.google.common.base.Splitter;
+
 public enum LoanType {
 
     // LOAN_TYPE_1
@@ -28,12 +30,15 @@ public enum LoanType {
         return name;
     }
 
-    public String getInterestPointName(){
+    public String getInterestPointName() {
         return this.name.substring(name.indexOf("，") + 1);
     }
-    public String getRepayType(){
-        return this.name.substring(0,name.indexOf("，"));
+
+    public String getRepayType() {
+        return this.name.substring(0, name.indexOf("，"));
     }
+
+    public String getInterestType() {return Splitter.on('，').splitToList(this.name).get(2);}
 
     public InterestInitiateType getInterestInitiateType() {
         return interestInitiateType;

@@ -14,4 +14,6 @@ public interface UserMessageService {
     UserMessageModel readMessage(long userMessageId);
 
     boolean readAll(String loginName);
+
+    void generateUserMessages(String loginName);
 }

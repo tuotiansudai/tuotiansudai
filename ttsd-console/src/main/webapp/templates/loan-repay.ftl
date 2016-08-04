@@ -64,7 +64,8 @@
                 <th>应还本金(元)</th>
                 <th>应还利息(元)</th>
                 <th>应还总数(元)</th>
-                <th>还款状态(元)</th>
+                <th>实际还款总额(元)</th>
+                <th>还款状态</th>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +80,20 @@
                     <td>${loanRepay.corpus}</td>
                     <td>${loanRepay.expectedInterest}</td>
                     <td>${loanRepay.totalAmount}</td>
-                    <td>${loanRepay.loanRepayStatus.getDescription()}</td>
+                    <td>${loanRepay.actualRepayAmount!}</td>
+                    <td>
+                        <#if loanRepay.actualRepayDate??>
+                            <#assign actualRepayDate = loanRepay.actualRepayDate?string('yyyy-MM-dd')>
+                            <#assign repayDate = loanRepay.repayDate?string('yyyy-MM-dd')>
+                            <#if actualRepayDate?date('yyyy-MM-dd') lt repayDate?date('yyyy-MM-dd')>
+                                提前还款
+                            <#else>
+                                ${loanRepay.loanRepayStatus.getDescription()!}
+                            </#if>
+                        <#else>
+                            ${loanRepay.loanRepayStatus.getDescription()!}
+                        </#if>
+                   </td>
                 </tr>
 
                 </#list>

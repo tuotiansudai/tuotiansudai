@@ -149,6 +149,7 @@ def only_api():
     """
     fab_command("api")
 
+
 @task
 def only_pay():
     """
@@ -162,6 +163,7 @@ def only_sms():
     Deploy sms component to PROD from CI
     """
     fab_command("sms")
+
 
 @task
 def only_activity():

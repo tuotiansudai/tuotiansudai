@@ -77,7 +77,7 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
                 layer.open({
                     type: 1,
                     title: false,
-                    offset: '80px',
+                    //offset: '80px',
                     area: ['1000px'],
                     shadeClose: true,
                     content: html
@@ -185,11 +185,11 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
             area: 'auto',
             maxWidth: '500'
         });
-    })
-    .on('mouseenter','.extra-rate', function() {//extra-rate icon event
-        var num = $(this).data('benefit');
-        layer.closeAll('tips');
-        layer.tips('活动加息' + num + '%', $(this), {
+        })
+        .on('mouseenter', '.extra-rate', function () {//extra-rate icon event
+            var num = $(this).data('benefit');
+            layer.closeAll('tips');
+            layer.tips('活动加息' + num + '%', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,

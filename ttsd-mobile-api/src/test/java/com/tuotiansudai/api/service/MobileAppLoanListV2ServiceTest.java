@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListV2ServiceImpl;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -144,6 +144,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setProductType(productType);
         fakeLoanModel.setActivityType(activityType);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         return fakeLoanModel;
     }
 
