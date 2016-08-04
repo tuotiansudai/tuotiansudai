@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="送您5888元体验金" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="一次体验，受益终生，拓天速贷一周年，这是用心的回馈">
 
-<div class="landing-container-app" id="landingAppTag">
+<div class="landing-container-app landing-container-bus" id="landingAppTag">
     <div class="register-box">
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate" >
             <ul class="reg-list tl register-step-one">
@@ -53,10 +53,8 @@
         </form>
     </div>
     <div class="my-advantage">
-        <div class="adv-title">
-            <img src="${staticServer}/activity/images/landing-app/title.png">
-        </div>
-        <img src="${staticServer}/activity/images/landing-app/advantage.png" class="advantage">
+
+        <img src="${staticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">
 
         <div class="info-text">
             1. 在当前页面输入手机号等信息，点击“领取5888元体验金”； <br/>

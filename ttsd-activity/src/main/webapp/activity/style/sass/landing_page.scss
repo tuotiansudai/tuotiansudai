@@ -883,6 +883,20 @@ form label.error {
   height:auto;
   overflow: auto;
   padding-top:745px;
+  &.landing-container-bus {
+    background: #fdd901 url("/activity/images/landing-app/bg-bus.png") no-repeat left top;
+    background-size: 100%;
+  }
+  &.landing-container-game {
+    background: #fdd901 url("/activity/images/landing-app/bg-game.png") no-repeat left top;
+    background-size: 100%;
+
+  }
+  &.landing-container-tour {
+    background: #fdd901 url("/activity/images/landing-app/bg-tour.png") no-repeat left top;
+    background-size: 100%;
+
+  }
   .register-box {
     margin: 50px 150px;
     ul {
@@ -987,6 +1001,8 @@ form label.error {
   }
 
 }
+
+
 .pop-win-app {
   position: relative;
   img {
@@ -1126,6 +1142,16 @@ form label.error {
         }
       }
 
+    }
+  }
+  .landing-container-bus,.landing-container-game,.landing-container-tour {
+    padding-top:265px;
+    .my-advantage {
+      margin-top: 25px;
+      img.advantage {
+        width:100%;
+        margin: 10px auto;
+      }
     }
   }
 }
