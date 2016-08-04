@@ -105,8 +105,16 @@ public class BookingLoanServiceImpl implements BookingLoanService{
                 }
             });
             for (BookingLoanPaginationItemDataDto item : items) {
-                List<String> dtoStrings = ExportCsvUtil.dtoToStringList(item);
-                csvData.add(dtoStrings);
+                List<String> dataModel = Lists.newArrayList();
+                dataModel.add(item.getUserName());
+                dataModel.add(item.getMobile());
+                dataModel.add(item.getSource().name());
+                dataModel.add(new DateTime(item.getBookingTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                dataModel.add(item.getProductType().name());
+                dataModel.add(item.getAmount());
+                dataModel.add(item.getNoticeTime() == null ?"":new DateTime(item.getNoticeTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                dataModel.add(item.isStatus()?"已通知":"队列中");
+                csvData.add(dataModel);
             }
 
         }
