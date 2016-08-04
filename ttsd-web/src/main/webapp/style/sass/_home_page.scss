@@ -532,7 +532,12 @@
           height: auto;
           overflow: auto;
           line-height: 36px;
-          i {
+          span.book-info {
+            background: url("/images/icons/home/clock-tip-s.png") left center no-repeat;
+            display: inline-block;
+            padding-left: 30px;
+          }
+          i.btn-invest {
             margin-right: 13px;
             float: right;
             padding: 7px 0;
@@ -1212,10 +1217,10 @@
           border:1px solid #e6e6e6;
           padding:5px;
           color: #4c4c4c;
-        }
-        .product-type {
-          text-align: left;
-          padding-left:15px;
+          label {
+            display: block;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -1275,15 +1280,15 @@
 .success-info-tip {
   padding:20px 38px;
   .icon-tip {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     background: url("/images/icons/success-tip.png") 0px 0px  no-repeat;
     position: absolute;
     top: 30px;
     background-size: 100%;
   }
   .detail-word {
-    padding-left: 70px;
+    padding-left: 52px;
     color: #808080;
     font-size:12px;
     line-height: 18px;
@@ -1291,7 +1296,7 @@
     h2 {
       font-size:18px;
       color: #4c4c4c;
-      padding-bottom:20px;
+      padding-bottom:6px;
     }
   }
 }

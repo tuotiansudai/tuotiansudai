@@ -282,7 +282,7 @@
             <div class="loan-list-index fl">
 
                 <div class="web-book-box" data-url="/loan/1">
-                    <span>预约后当有相应项目我们会及时通知您</span>
+                    <span class="book-info">预约后当有相应项目我们会及时通知您</span>
                     <i class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">
                         我要预约
                     </i>
@@ -637,21 +637,37 @@
             <div class="fr">
                 <table class="book-invest-table">
                     <tr>
+                        <th></th>
                         <th>预约项目</th>
                         <th>预期年化收益</th>
                     </tr>
                     <tr>
-                        <td class="product-type"><input type="radio" name="productType" id="po1" value="_90"><label for="po1">90天项目</label>
+                        <td class="tc">
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po1" value="_90" class="radio-class">
+                            </span>
                         </td>
-                        <td>11%</td>
+                        <td class="product-type"><label for="po1">90天项目</label>
+                        </td>
+                        <td><label for="po1">11%</label></td>
                     </tr>
                     <tr>
-                        <td class="product-type"><input type="radio" name="productType" id="po2" value="_180"><label for="po2">180天项目</label></td>
-                        <td>12%</td>
+                        <td>
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po2" value="_180" class="radio-class">
+                            </span>
+                        </td>
+                        <td class="product-type"><label for="po2">180天项目</label></td>
+                        <td><label for="po2">12%</label></td>
                     </tr>
                     <tr>
-                        <td class="product-type"><input type="radio" name="productType" id="po3" value="_360"><label for="po3">360天项目</label></td>
-                        <td>13%</td>
+                        <td>
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po3" value="_360" class="radio-class">
+                            </span>
+                        </td>
+                        <td class="product-type"><label for="po3">360天项目</label></td>
+                        <td><label for="po3">13%</label></td>
                     </tr>
                 </table>
             </div>
