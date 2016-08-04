@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="feedback-list.js" headLab="announce-manage" sideLab="feedbackMan" title="意见反馈">
 <!-- content area begin -->
@@ -83,6 +84,8 @@
                 <th>内容</th>
                 <th>时间</th>
                 <th>是否处理</th>
+                <th>备注</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -100,11 +103,55 @@
                     <#else>
                         <td width="100"><input type="checkbox" class="feedback-status" data-id="${feedback.id?c}" checked/></td>
                     </#if>
+                    <td style="text-align:left;" width="160">
+                        <#if feedback.remark??>
+                                <span class="tooltip-list"
+                            <#if feedback.remark?length gt 20 && feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark?replace('|','—————————————————')!}">${(feedback.remark?replace('|',''))?substring(0,20)!}...
+                            <#elseif feedback.remark?length gt 20 && !feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark!}">${feedback.remark?substring(0,20)!}...
+                            <#elseif feedback.remark?length lt 20 && feedback.remark?contains('|')>
+                                      data-original-title="${feedback.remark?replace('|','—————————————————')!}">${(feedback.remark?replace('|',' '))!}
+                            <#else>
+                                      data-original-title="${feedback.remark!}">${feedback.remark!}
+                            </#if>
+                                </span>
+                        </#if>
+                    </td>
+                    <td>
+                        <@security.authorize access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')">
+                            <input type="button" class="feedback-remark" value="添加备注" data-feedback-id="${feedback.id?c}">
+                        </@security.authorize>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
         </table>
     </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">添加备注</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="feedbackId" id="feedbackId" />
+                    备注信息：<br/>
+                    <textarea class="form-control" name="remark" id="remark" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="update()">提交</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）end -->
 
     <div class="row">
         <!-- pagination  -->

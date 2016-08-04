@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="bankResultMap" type="BankModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="bank_code" property="bankCode"></result>
+        <result column="image_url" property="imageUrl"></result>
+        <result column="single_amount" property="singleAmount"></result>
+        <result column="single_day_amount" property="singleDayAmount"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="updated_by" property="updatedBy"></result>
+        <result column="updated_time" property="updatedTime"></result>
+    </resultMap>
+
+    <select id="findById" parameterType="map" resultMap="bankResultMap">
+        select * from bank where id = #{id}
+    </select>
+
+    <update id="update" parameterType="BankModel">
+        update bank set
+          single_amount = #{singleAmount},
+          single_day_amount = #{singleDayAmount},
+          updated_by = #{updatedBy},
+          updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
+
+    <select id="findBankList" resultMap="bankResultMap">
+        select * from bank order by single_day_amount desc, single_amount desc
+    </select>
+
+    <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">
+        select * from bank where bank_code = #{bankCode}
+    </select>
+
+</mapper>

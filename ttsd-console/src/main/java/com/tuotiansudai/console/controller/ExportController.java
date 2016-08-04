@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
@@ -11,7 +10,10 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.SystemBillOperationType;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.SystemBillService;
@@ -30,8 +32,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -136,7 +136,7 @@ public class ExportController {
         }
         response.setContentType("application/csv");
         List<PointPrizeWinnerViewDto> records = userPointPrizeMapper.findAllPointPrizeGroupPrize();
-        List<List<String>> pointPrize = buildPointPrize(records);
+        List<List<String>> pointPrize = exportService.buildPointPrize(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
     }
 
@@ -245,15 +245,4 @@ public class ExportController {
 
     }
 
-    private List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records) {
-        List<List<String>> rows = Lists.newArrayList();
-        for (PointPrizeWinnerViewDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getDescription());
-            row.add(String.valueOf(record.getNum()));
-            row.add(record.isActive() ? "已生效" : "未生效");
-            rows.add(row);
-        }
-        return rows;
-    }
 }

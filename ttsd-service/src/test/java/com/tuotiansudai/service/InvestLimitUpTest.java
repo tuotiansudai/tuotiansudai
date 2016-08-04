@@ -73,6 +73,7 @@ public class InvestLimitUpTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.RAISING);
         loanMapper.create(loanModel);

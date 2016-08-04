@@ -7,7 +7,6 @@ import java.util.List;
 public class UserInvestListRequestDto extends BaseParamDto {
     private Integer index;
     private Integer pageSize;
-
     private List<TransferStatus> transferStatus;
 
     public Integer  getIndex() {

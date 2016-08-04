@@ -76,6 +76,7 @@ public class InvestRepayServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         loanDto.setProductType(ProductType._30);
+        loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         loanModel.setStatus(LoanStatus.REPAYING);

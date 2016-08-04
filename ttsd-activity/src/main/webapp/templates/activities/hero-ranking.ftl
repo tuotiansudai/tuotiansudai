@@ -9,16 +9,15 @@
                 <div class="box-square-out">
                     <div class="square-title"><img src="${staticServer}/activity/images/sign/actor/anniver/head-title01.png" alt="投资抢排行，赢取每日神秘大奖"></div>
                     <p class="description clearfix">活动期间，每日根据用户当日的累计投资金额进行排名。第一名可得当日神秘大奖，前十名获得丰厚奖励</p>
-
                     <div class="clearfix">
                         <div class="fl tc">
                             <div class="dotted-normal-box">
                                 <h2>今日大奖</h2>
-                                <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>" alt="神秘大奖" class="mysterious-img" >
+                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward-07-31.jpg" alt="神秘大奖" class="mysterious-img">
                                 <span class="reward-name"><em><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></em></span>
                             </div>
                             <div class="tc">
-                                <a href="/loan-list?productType=JYF" class="get-rank button-big" target="_blank">我要上榜</a>
+                                <button href="/loan-list?productType=JYF" class="get-rank button-big" target="_blank" disabled>活动已结束</button>
                             </div>
                         </div>
                         <div class="fr">
@@ -28,67 +27,67 @@
                                     <span class="date-text " id="TodayAwards"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                                    <span class="my-order fr">
                                        <@global.isAnonymous>
-                                        我的排名：<a href="/login" target="_blank" class="get-rank">登录</a>
-                                    </@global.isAnonymous>
-                                    <@global.isNotAnonymous>
-                                        <#if investRanking??&&investRanking gt 0>
-                                            我的排名:&nbsp;<#if investRanking gte 20>20+ <#else >${investRanking} </#if>
-                                        <#else >
-                                            未参与排行
-                                        </#if>
-                                    </@global.isNotAnonymous>
+                                           我的排名：<a href="/login" target="_blank" class="get-rank">登录</a>
+                                       </@global.isAnonymous>
+                                       <@global.isNotAnonymous>
+                                           <#if investRanking??&&investRanking gt 0>
+                                               我的排名:&nbsp;<#if investRanking gte 20>20+ <#else >${investRanking} </#if>
+                                           <#else >
+                                               未参与排行
+                                           </#if>
+                                       </@global.isNotAnonymous>
                                 </span>
                                 </div>
-                                <div class="nodata-invest tc" style="display: none;">没有数据</div>
-                                    <table class="table-sort-border" style="display: none;">
-                                        <caption><span id="HistoryAwards"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>投资排行</caption>
-                                        <thead>
-                                        <tr>
-                                            <th>排名</th>
-                                            <th>用户名</th>
-                                            <th>投资金额（元）</th>
-                                            <th>奖励</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="investRanking-tbody">
-                                        </tbody>
-                                    </table>
+                                <div class="nodata-invest tc" style="display: none;">活动已结束</div>
+                                <table class="table-sort-border" style="display: none;">
+                                    <caption><span id="HistoryAwards"><em>2016-07-31</em></span>投资排行</caption>
+                                    <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>用户名</th>
+                                        <th>投资金额（元）</th>
+                                        <th>奖励</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="investRanking-tbody">
+                                    </tbody>
+                                </table>
 
                                 <script type="text/template" id="tplTable">
-                                        <% for(var i = 0; i < records.length; i++) { %>
-                                        <% var item = records[i];
-                                           var reward;
-                                            if(type=='invest') {
-                                                if(i==0) {
-                                                reward='神秘大奖＋1%加息券';
-                                                }
-                                                else if(i>0 && i<5) {
-                                                reward='200元红包＋1%加息券';
-                                                }
-                                                else {
-                                                reward='100元红包＋1%加息券';
-                                                }
-                                            }
-                                            else if(type=='referrer') {
-                                                if(i==0) {
-                                                reward='100元红包';
-                                                }
-                                                else if(i==1) {
-                                                reward='50元红包';
-                                                }
-                                                else if(i==2) {
-                                                reward='30元红包';
-                                                }
-                                            }
+                                    <% for(var i = 0; i < records.length; i++) { %>
+                                    <% var item = records[i];
+                                    var reward;
+                                    if(type=='invest') {
+                                    if(i==0) {
+                                    reward='神秘大奖＋1%加息券';
+                                    }
+                                    else if(i>0 && i<5) {
+                                    reward='200元红包＋1%加息券';
+                                    }
+                                    else {
+                                    reward='100元红包＋1%加息券';
+                                    }
+                                    }
+                                    else if(type=='referrer') {
+                                    if(i==0) {
+                                    reward='100元红包';
+                                    }
+                                    else if(i==1) {
+                                    reward='50元红包';
+                                    }
+                                    else if(i==2) {
+                                    reward='30元红包';
+                                    }
+                                    }
 
-                                        %>
-                                        <tr>
-                                            <td><%=i+1%></td>
-                                            <td><%=item.loginName%></td>
-                                            <td><%=item.centSumAmount%></td>
-                                            <td><%=reward%></td>
-                                        </tr>
-                                        <% } %>
+                                    %>
+                                    <tr>
+                                        <td><%=i+1%></td>
+                                        <td><%=item.loginName%></td>
+                                        <td><%=item.centSumAmount%></td>
+                                        <td><%=reward%></td>
+                                    </tr>
+                                    <% } %>
 
                                 </script>
 
@@ -116,7 +115,7 @@
                             <div class="dotted-normal-box">
                                 <div class="date-head">
                                     <i class="date-icon"></i>
-                                    <span class="date-text" ><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
+                                    <span class="date-text"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>
                            <span class="my-order fr">
                                <@global.isAnonymous>
                                    我的排名：<a href="/login" target="_blank" class="get-rank">登录</a>
@@ -125,15 +124,15 @@
                                    <#if referRanking??&&referRanking gt 0>
                                        我的排名:&nbsp;<#if referRanking gte 20>20+ <#else >${referRanking} </#if>
                                    <#else >
-                                      未参与排行
+                                       未参与排行
                                    </#if>
                                </@global.isNotAnonymous>
                            </span>
                                 </div>
 
-                                <div class="nodata-refer tc" style="display: none;">没有数据</div>
+                                <div class="nodata-refer tc" style="display: none;">活动已结束</div>
                                 <table class="table-sort-border" style="display: none;">
-                                    <caption><span id="ReferRankingDate"><em style="display: none"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if> </em><i>今日</i></span>推荐排行</caption>
+                                    <caption><span id="ReferRankingDate"><em>2016-07-31</em></span>推荐排行</caption>
                                     <thead>
                                     <tr>
                                         <th>排名</th>
@@ -154,13 +153,13 @@
                         </div>
                         <div class="fr tc">
                             <div class="dotted-normal-box">
-                              <img src="${staticServer}/activity/images/sign/actor/anniver/reward-img.png">
+                                <img src="${staticServer}/activity/images/sign/actor/anniver/reward-img.png">
                             </div>
                         </div>
 
-                        </div>
+                    </div>
                     <div class="tc clearfix">
-                        <a class="button-big" href="/referrer/refer-list" target="_blank">立即推荐</a>
+                        <button class="button-big" href="/referrer/refer-list" target="_blank" disabled>活动已结束</button>
                     </div>
                 </div>
             </div>
@@ -176,13 +175,13 @@
                             <div class="dotted-normal-box">
                                 <img src="${staticServer}/activity/images/sign/actor/anniver/zounian01.png">
                             </div>
-                         </div>
+                        </div>
                         <div class="fr">
                             <div class="dotted-normal-box">
                                 <img src="${staticServer}/activity/images/sign/actor/anniver/zounian02.png">
                             </div>
                         </div>
-                     </div>
+                    </div>
                     <div class="tc">
                         <a class="button-big get-vip" id="getVip" href="javascript:void(0)">
                             免费领取 <br/>
@@ -190,7 +189,7 @@
                     </div>
                 </div>
 
-             </div>
+            </div>
 
             <div class="step-section-four">
                 <div class="box-square-out">
@@ -203,10 +202,10 @@
                         4. 特别提示：活动期间一旦提交债权转让申请，则不可在活动期间继续参与投资英雄榜。即使发起债权转让申请的当天，累计投资额已入围当日前10名，也不可参与当日投资英雄榜排名及获取奖励；<br/>
                         5. 拓天速贷会根据活动的情况，以等值，增值为基础调整奖品类型；<br/>
                         6. 本活动最终解释权归拓天速贷所有。
-                        </div>
+                    </div>
                 </div>
 
-                </div>
+            </div>
         </div>
     </div>
 
@@ -216,8 +215,8 @@
         <p class="des-text"><%=data.description%></p>
         <%  var content;
         if(data.url=='')  {
-            content='<a href="javascript:void(0)" class="btn" id="closeTip">返回</a>';
-          }
+        content='<a href="javascript:void(0)" class="btn" id="closeTip">返回</a>';
+        }
         else {
 
         content='<a href="'+data.url+'" class="btn">'+data.btnName+'</a>';

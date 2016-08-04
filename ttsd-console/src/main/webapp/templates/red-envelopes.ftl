@@ -12,6 +12,7 @@
             <span class="txt"></span>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>

@@ -47,4 +47,9 @@ require(['jquery', 'csrf', 'jquery-ui', 'autoNumeric', 'bootstrapSelect', 'boots
 
     $("#amount").autoNumeric("init");
 
+    $("#amount").on("blur", function(){
+        var amount = $(this).val().replace(/,/g,"");
+        $(this).val(amount);
+    });
+
 });

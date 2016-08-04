@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`feedback` ADD COLUMN `remark` VARCHAR(500) AFTER `content`;
