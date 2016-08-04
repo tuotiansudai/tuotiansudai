@@ -10,7 +10,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
-        var $bookInvestForm = $('.book-invest-form');
+    var $bookInvestForm=$('.book-invest-form'),
+        $projectTransfer=$('.project-transfer-frame');
 
         $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
@@ -215,6 +216,31 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             $this.find('input:radio').prop('checked',true);
         });
 
+    //转让项目
+    $.ajax({
+        url:'/transfer-list/homePage',
+        data:{"index":1,"pageSize":2},
+        type:'GET',
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8'
+    })
+        .done(function (response) {
+            var transerTpl=$('#transerTpl').html(),
+                transerTplMobile=$('#transerTplMobile').html();
+
+            var render = _.template(transerTpl),
+                renderMobile=_.template(transerTplMobile);
+            var data={};
+            data.list=response;
+            var html = render(data),
+                htmlMobile=renderMobile(data);
+
+            var $element=$projectTransfer.find('.loan-box-inner'),
+                $elementMobile=$('.project-transfer-mobile');
+            $element.html(html);
+            $elementMobile.html(htmlMobile);
+
+        });
         function cnzzCount() {
             var url = $(this).data('name');
             switch (url) {

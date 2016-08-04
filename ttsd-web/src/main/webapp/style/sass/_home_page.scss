@@ -299,6 +299,9 @@
             width: 722px;
             background: url("/images/sign/home-title-new.png") -10px -153px no-repeat;
           }
+          &.project-transfer-icon {
+            background: url("/images/sign/home-title-new.png") -10px -233px no-repeat;
+          }
         }
         .hot-more {
           float: right;
@@ -1269,6 +1272,27 @@
     }
   }
 
+  .project-transfer-frame {
+    .loan-info-frame {
+      .loan-info-dl dl {
+        &.transfer-one {
+          width:30%!important;
+        }
+        &.transfer-two {
+          width:20%!important;
+        }
+        dd em{
+          color: #ff7200!important;
+        }
+      }
+    }
+    .loan-process {
+      .deadline {
+        display: inline-block;
+        padding-top:15px;
+      }
+    }
+  }
   .book-box-layer {
     .layui-layer-title {
       font-size:20px;
@@ -1516,7 +1540,58 @@
         }
       }
     }
-
+    .project-transfer-frame {
+      .label-title {
+        display: none;
+      }
+    }
+    .project-transfer-mobile {
+      margin: 0 auto auto 10px;
+      width: 100%;
+      color: #999;
+      .product-box-tran {
+        background: #fff;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        .l-title {
+          font-size:15px;
+        }
+        .loan-info-dl {
+          dl {
+            float: left;
+            width:33%;
+            em {
+              color: #ff3333;
+              font-weight: bold;
+              font-size:20px;
+            }
+          }
+          .btn-normal {
+            width: auto;
+            border: 1px solid #ff6400;
+            background: #fff;
+            color: #ff6400;
+            letter-spacing: 0;
+            padding: 7px 11px;
+            float: right;
+            border-radius: 5px;
+            &[disabled] {
+              color: #fff;
+            }
+          }
+        }
+        .transer-bottom {
+          border-top:1px solid #e5e5e5;
+          line-height: 35px;
+          em {
+            color: #ff3333;
+            font-size:15px;
+          }
+        }
+      }
+    }
     .book-box-layer {
       .layui-layer-title {
         font-size:14px;
@@ -1527,6 +1602,5 @@
       left: 1%!important;
     }
   }
-
 
 }

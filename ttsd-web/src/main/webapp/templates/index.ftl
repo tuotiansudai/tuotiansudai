@@ -573,10 +573,25 @@
                             </div>
                         </#if>
                     </#list>
+
+                <#--转让项目-->
+
+                    <div class="project-transfer-mobile">
+
+                    </div>
                 </div>
             </div>
         </div>
-
+    <#--转让项目-->
+        <div class="page-width project-transfer-frame margin-top25 media-hide">
+            <h3 class="label-title">
+                <span class="project-transfer-icon"></span>
+                <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多>></a>
+            </h3>
+            <div class="loan-list-index">
+                <ul class="loan-box-inner loan-btn"> </ul>
+            </div>
+        </div>
         <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
             <h3 class="label-title">
                 <span class="media-coverage-icon"></span>
@@ -694,7 +709,91 @@
         </dl>
         </form>
     </div>
+    <script type="text/template" id="transerTpl">
+        <% for(var i = 0; i < list.length; i++) {
+        var item = list[i],button;
+        if(item.transferStatus=='TRANSFERRING') {
+        button='<button class="btn-invest btn-normal">马上投资</button>';
+        }
+        else {
+        button='<button class="btn-invest btn-normal" disabled>已转让</button>';
+        }
+        %>
+        <li data-url="/transfer/<%=item.transferApplicationId%>" class="clearfix">
+            <div class="loan-info-frame fl">
+                <div class="loan-top">
+                    <span class="l-title fl"><%=item.name%></span>
+                </div>
+                <div class="loan-info-dl">
+                    <dl class="transfer-one">
+                        <dt>转让价格</dt>
+                        <dd>
+                            <em><%=item.transferAmount.split('.')[0]%>.</em>
+                            <i><%=item.transferAmount.split('.')[1]%></i> 元
+                        </dd>
+                    </dl>
 
+                    <dl class="transfer-one">
+                        <dt>待收本金</dt>
+                        <dd><em><%=item.investAmount.split('.')[0]%>.</em><i><%=item.investAmount.split('.')[1]%></i> 元</dd>
+                    </dl>
+                    <dl class="transfer-two">
+                        <dt>年化收益</dt>
+                        <dd><em><%=item.baseRate%></em><i>%</i></dd>
+                    </dl>
+                    <dl class="transfer-two">
+                        <dt>剩余期数</dt>
+                        <dd><em><%=item.leftPeriod%></em></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="loan-process ">
+
+                <span class="deadline"> 截止时间：<%=item.deadLine%></span>
+                <div class="rest-amount">
+                    <%=button%>
+                </div>
+            </div>
+        </li>
+        <% } %>
+    </script>
+
+    <script type="text/template" id="transerTplMobile">
+        <% for(var i = 0; i < list.length; i++) {
+        var item = list[i],
+        button;
+        if(item.transferStatus=='TRANSFERRING') {
+        button='<button class="btn-invest btn-normal">马上投资</button>';
+        }
+        else {
+        button='<button class="btn-invest btn-normal" disabled>已转让</button>';
+        }
+        %>
+        <div class="product-box-tran" data-url="/transfer/<%=item.transferApplicationId%>">
+            <div class="loan-top clearfix">
+                <span class="l-title fl"><%=item.name%></span>
+            </div>
+            <div class="loan-info-dl clearfix">
+                <dl>
+                    <dt>年化收益</dt>
+                    <dd><em><%=item.baseRate%>%</em></dd>
+                </dl>
+                <dl>
+                    <dt class="tc">剩余期数</dt>
+                    <dd class="tc"><em><%=item.leftPeriod%></em></dd>
+                </dl>
+                <dl>
+                    <dd><%=button%></dd>
+                </dl>
+            </div>
+            <div class="transer-bottom clearfix">
+                转让价格：<em><%=item.transferAmount%>元</em> / <%=item.investAmount%>元
+            </div>
+        </div>
+
+        <% } %>
+    </script>
     <#include "coupon-alert.ftl" />
 </div>
 
