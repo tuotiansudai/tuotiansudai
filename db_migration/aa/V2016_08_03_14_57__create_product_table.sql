@@ -11,14 +11,16 @@ CREATE TABLE `aa`.`product` (
   `start_time`    DATETIME  NOT NULL,
   `end_time`      DATETIME  NOT NULL,
   `active`        TINYINT(1)  NOT NULL DEFAULT 0,
-  `created_user`  VARCHAR(25) NOT NULL,
+  `created_by`  VARCHAR(25) NOT NULL,
   `created_time`  DATETIME NOT NULL,
-  `active_user`   VARCHAR(25),
+  `active_by`   VARCHAR(25),
   `active_time`   DATETIME,
-  `updated_user`  VARCHAR(25),
+  `updated_by`  VARCHAR(25),
   `updated_time`  DATETIME,
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_PRODUCT_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_user`) REFERENCES  `aa`.`user` (`login_name`)
+  CONSTRAINT `FK_PRODUCT_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES  `aa`.`user` (`login_name`),
+  CONSTRAINT `FK_PRODUCT_ACTIVE_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES  `aa`.`user` (`login_name`),
+  CONSTRAINT `FK_PRODUCT_UPDATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES  `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1001

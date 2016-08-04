@@ -17,18 +17,18 @@ public class ProductModel implements Serializable{
     private Date startTime;
     private Date endTime;
     private boolean active;
-    private String createdUser;
+    private String createdBy;
     private Date createdTime;
-    private String activeUser;
+    private String activeBy;
     private Date activeTime;
-    private String updatedUser;
+    private String updatedBy;
     private Date updatedTime;
 
     public ProductModel(){
 
     }
 
-    public ProductModel(GoodsType goodsType, String productName, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long productPrice, Date startTime, Date endTime, boolean active, String createdUser, Date createdTime) {
+    public ProductModel(GoodsType goodsType, String productName, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long productPrice, Date startTime, Date endTime, boolean active, String createdBy, Date createdTime) {
         this.goodsType = goodsType;
         this.productName = productName;
         this.seq = seq;
@@ -40,7 +40,7 @@ public class ProductModel implements Serializable{
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
-        this.createdUser = createdUser;
+        this.createdBy = createdBy;
         this.createdTime = createdTime;
     }
 
@@ -140,12 +140,12 @@ public class ProductModel implements Serializable{
         this.active = active;
     }
 
-    public String getCreatedUser() {
-        return createdUser;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreatedUser(String createdUser) {
-        this.createdUser = createdUser;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getCreatedTime() {
@@ -156,12 +156,12 @@ public class ProductModel implements Serializable{
         this.createdTime = createdTime;
     }
 
-    public String getActiveUser() {
-        return activeUser;
+    public String getActiveBy() {
+        return activeBy;
     }
 
-    public void setActiveUser(String activeUser) {
-        this.activeUser = activeUser;
+    public void setActiveBy(String activeBy) {
+        this.activeBy = activeBy;
     }
 
     public Date getActiveTime() {
@@ -172,12 +172,12 @@ public class ProductModel implements Serializable{
         this.activeTime = activeTime;
     }
 
-    public String getUpdatedUser() {
-        return updatedUser;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setUpdatedUser(String updatedUser) {
-        this.updatedUser = updatedUser;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public Date getUpdatedTime() {

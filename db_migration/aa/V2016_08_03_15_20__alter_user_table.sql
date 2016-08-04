@@ -1,1 +1,0 @@
-ALTER TABLE `aa`.user ADD COLUMN address VARCHAR(500);

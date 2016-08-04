@@ -9,22 +9,27 @@
     <resultMap id="productOrderResultMap" type="ProductOrderModel">
         <id column="id" property="id"/>
         <result column="product_id" property="productId"/>
+        <result column="product_price" property="productPrice"/>
         <result column="num" property="num"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="real_name" property="realName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="address" property="address"/>
         <result column="consignment" property="consignment"/>
+        <result column="consignment_time" property="consignmentTime"/>
         <result column="created_user" property="createdUser"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product_order (`product_id`, `num`, `consignment`, `created_user`, `created_time`)
-        value(#{productId}, #{num}, #{consignment}, #{createdUser}, #{createdTime})
+        insert into product_order (`product_id`, `product_price`, `num`, `total_price`, `real_name`, `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
+        value(#{productId}, #{productPrice},  #{num},  #{totalPrice},  #{realName},  #{mobile},  #{address}, #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="ProductOrderModel">
         update product_order
-        set `product_id` = #{productId},
-            `num` = #{num},
-            `consignment` = #{consignment}
+        set `consignment` = #{consignment},
+            `consignment_time` = #{consignment_time}
         where `id` = #{id}
     </update>
 

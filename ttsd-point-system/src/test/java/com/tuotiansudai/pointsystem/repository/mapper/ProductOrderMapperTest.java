@@ -46,7 +46,7 @@ public class ProductOrderMapperTest {
         productOrderModel.setId(10001);
         productOrderModel.setConsignment(true);
         productOrderModel.setCreatedTime(new Date());
-        productOrderModel.setCreatedUser(fakeUserModel.getLoginName());
+        productOrderModel.setCreatedBy(fakeUserModel.getLoginName());
         productOrderModel.setNum(2);
         productOrderModel.setProductId(productModel.getId());
 
@@ -77,7 +77,7 @@ public class ProductOrderMapperTest {
         fakeProductModel.setProductName("虚拟商品");
         fakeProductModel.setDescription("充值卡");
         fakeProductModel.setActive(true);
-        fakeProductModel.setCreatedUser(loginName);
+        fakeProductModel.setCreatedBy(loginName);
         fakeProductModel.setCreatedTime(new Date());
         fakeProductModel.setStartTime(new Date());
         fakeProductModel.setEndTime(new DateTime().plusDays(7).toDate());
