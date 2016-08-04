@@ -70,4 +70,6 @@ public interface UserService {
     boolean resetUmpayPassword(String loginName, String identityNumber);
 
     long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax);
+
+    boolean mobileIsRegister(String mobile);
 }

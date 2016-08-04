@@ -88,8 +88,7 @@ public class RegisterUserControllerTest {
                 .param("referrerMobile", "18999999999")
                 .param("mobile", "18988888888")
                 .param("password", "123abc")
-                .param("captcha", "98765")
-                .param("channel", "ANDROID"))
+                .param("captcha", "98765"))
                 .andExpect(status().isOk());
     }
 

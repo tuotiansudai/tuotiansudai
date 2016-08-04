@@ -31,4 +31,8 @@ public interface PrepareUserMapper {
             @Param(value = "beginTime") Date beginTime,
             @Param(value = "endTime") Date endTime
     );
+
+    PrepareModel findByMobile(
+            @Param(value = "mobile") String mobile
+    );
 }

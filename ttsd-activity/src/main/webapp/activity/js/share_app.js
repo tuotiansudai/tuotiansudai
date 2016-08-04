@@ -23,7 +23,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					}, 1000);
 				},
 				anCaptcha: function(state) { //安卓-获取手机验证码
-					if (state == '1') {
+					if (state == false) {
 						$.ajax({
 								url: '/register/user/send-register-captcha',
 								type: 'POST',
@@ -42,8 +42,6 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 							.fail(function() {
 								layer.msg('请求失败，请重试！');
 							});
-					} else if(state=='2'){
-						XQ.oldTip();
 					}else {
 						location.href = '/share-app';
 					}
@@ -60,27 +58,25 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					}, 1000);
 				},
 				iosCaptcha: function(state) { //ios-获取手机验证码
-					if (state == '1') {
+					if (state == false) {
 						$.ajax({
-								url: '/register/user/send-register-captcha',
-								type: 'POST',
-								dataType: 'json',
-								data: {
-									mobile: $('#mobile').val()
-								}
-							})
-							.done(function(data) {
-								if (data.data.status && !data.data.isRestricted) {
-									XQ.iosCount();
-								} else if (!data.data.status && data.data.isRestricted) {
-									layer.msg('短信发送频繁,请稍后再试');
-								}
-							})
-							.fail(function() {
-								layer.msg('请求失败，请重试！');
-							});
-					} else if(state=='2'){
-						XQ.oldTip();
+							url: '/register/user/send-register-captcha',
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								mobile: $('#mobile').val()
+							}
+						})
+						.done(function(data) {
+							if (data.data.status && !data.data.isRestricted) {
+								XQ.iosCount();
+							} else if (!data.data.status && data.data.isRestricted) {
+								layer.msg('短信发送频繁,请稍后再试');
+							}
+						})
+						.fail(function() {
+							layer.msg('请求失败，请重试！');
+						});
 					}else {
 						location.href = '/share-app';
 					}
@@ -94,17 +90,6 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 						area: ['240px', 'auto'],
 						shadeClose: true,
 						content: '<div class="tip-item tc"><p>哇，真的拿到了5888体验金，快去体验那更多奖励吧！</p><a href="/app/download">下载APP开始赚钱</a></div>'
-					});
-				},
-				oldTip: function() {//老用户弹框
-					layer.open({
-						type:1,
-						title: false,
-						closeBtn: 0,
-						btn: 0,
-						area: ['250px', 'auto'],
-						shadeClose: true,
-						content: '<div class="tip-item tc"><p>您已经是拓天速贷注册用户，更多精彩活动等您参与，快来看看吧</p><a href="/app/download">下载APP去赚钱</a></div>'
 					});
 				}
 			};
@@ -177,18 +162,22 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 			},
 			submitHandler: function(form) {
 				$.ajax({
-					url: '/path/to/file',
+					url: '/register/user/shared',
 					type: 'POST',
 					dataType: 'json',
 					data: {
-						param1: 'value1'
+						mobile: $('#mobile').val(),
+						password:$('#password').val(),
+						captcha: $('#captchaText').val(),
+						referrer:$('#referrer').attr('data-referrer'),
+						source:'MOBILE'
 					}
 				})
 				.done(function(data) {
-					if(data=='1'){
+					if(data.status==true){
 						XQ.showTip();
-					}else if(data=='2'){
-						XQ.oldTip();
+					}else{
+						layer.msg('请求失败，请重试！');
 					}
 				})
 				.fail(function() {
@@ -251,25 +240,26 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 			},
 			submitHandler: function(form) {
 				$.ajax({
-						url: '/path/to/file',
-						type: 'POST',
-						dataType: 'json',
-						data: {
-							mobile: 'value1',
-							captcha: $('#captchaText').val(),
-						}
-					})
-					.done(function(data) {
-						if(data=='1'){
-							XQ.showTip();
-						}else if(data=='2'){
-							XQ.oldTip();
-						}
-					})
-					.fail(function() {
+					url: '/register/user/shared-prepare',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						mobile: $('#mobile').val(),
+						captcha: $('#captchaText').val(),
+						referrerMobile:$('#referrer').attr('data-referrer'),
+						channel:'IOS'
+					}
+				})
+				.done(function(data) {
+					if(data.status==true){
+						XQ.showTip();
+					}else{
 						layer.msg('请求失败，请重试！');
-					});
-
+					}
+				})
+				.fail(function() {
+					layer.msg('请求失败，请重试！');
+				});
 			}
 		});
 
@@ -277,7 +267,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/path/to/file', //获取手机验证码接口
+				url: '/register/user/mobile/'+$('#mobile').val()+'/is-exist', //获取手机验证码接口
 				type: 'POST',
 				dataType: 'json',
 				data: {
@@ -296,7 +286,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$iosBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/path/to/file', //获取手机验证码接口
+				url: '/register/user/mobile/'+$('#mobile').val()+'/is-register', //判断手机号是否存在
 				type: 'POST',
 				dataType: 'json',
 				data: {

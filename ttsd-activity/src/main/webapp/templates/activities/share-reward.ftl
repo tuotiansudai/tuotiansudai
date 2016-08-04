@@ -52,15 +52,13 @@
     <div class="wp clearfix">
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
-		<#if !isAppSource>
 	    <div class="share-recommend">
 			<#if referrer??>
-                <a href="/register/user?referrer=${referrer}">立即注册</a>
+        <a href="/register/user?referrer=${referrer}">立即注册</a>
 			<#else>
-                <a href="/referrer/refer-list">立即推荐</a>
+        <a href="/referrer/refer-list" onclick="cnzzPush.trackClick('推荐奖励落地页','立即推荐')">立即推荐</a>
 			</#if>
 	    </div>
-		</#if>
 	    <div class="share-rules"></div>
 	</div>
 </div>
