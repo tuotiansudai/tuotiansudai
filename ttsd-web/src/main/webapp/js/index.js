@@ -1,5 +1,4 @@
 require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric'], function ($, _, layer) {
-    $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
             $registerBox = $('.register-ad-box', $bannerBox),
@@ -127,6 +126,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                 return;
             }
             if ($(this).find('a').hasClass('is-user')) {
+                $bookInvestForm.find('.init-radio-style').removeClass('on');
+                $bookInvestForm.find('input[name="bookingAmount"]').val('');
                 layer.open({
                     title: '预约投资',
                     type: 1,
@@ -223,6 +224,14 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                 return false;
             }
         });
+
+        //初始化radio
+        $bookInvestForm.find('.init-radio-style').on('click',function() {
+            var $this=$(this);
+            $bookInvestForm.find('.init-radio-style').removeClass('on');
+            $this.addClass("on");
+        });
+
         function cnzzCount() {
             var url = $(this).data('name');
             switch (url) {
@@ -253,7 +262,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
 
         $('.banner-img-list a').on('click', cnzzCount);
 
-    });
+
 
 
     function GetSlideAngle(dx, dy) {
