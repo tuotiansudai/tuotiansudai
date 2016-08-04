@@ -31,6 +31,13 @@
             </div>
         </div>
 
+        <div class="form-group coupon-hide red-envelope">
+            <label  class="col-sm-2 control-label">现金红包(元): </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-red" name="amount" placeholder="" datatype="*" errormsg="现金红包金额不能为空">
+            </div>
+        </div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label ">活动期限: </label>
             <div class="col-sm-2">

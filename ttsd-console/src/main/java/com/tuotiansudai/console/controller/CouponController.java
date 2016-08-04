@@ -502,7 +502,7 @@ public class CouponController {
     public ModelAndView couponExchange() {
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE));
         return modelAndView;
     }
 
@@ -515,7 +515,7 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
         modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE));
         return modelAndView;
     }
 
