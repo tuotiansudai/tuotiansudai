@@ -4,7 +4,7 @@
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-                <span>${userMobile}</span>
+                <span>${registerMobile}</span>
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">

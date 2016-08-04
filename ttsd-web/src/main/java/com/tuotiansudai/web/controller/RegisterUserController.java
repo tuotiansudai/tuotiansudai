@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -63,12 +64,16 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
-    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult) {
+    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);
         }
-        return prepareService.register(requestDto);
+        BaseDataDto baseDataDto = prepareService.register(requestDto);
+        if(baseDataDto.getStatus()){
+            response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
+        }
+        return baseDataDto;
     }
 
     @RequestMapping(method = RequestMethod.POST)

@@ -28,6 +28,15 @@ public class AppShareController {
     @Autowired
     private PrepareUserMapper prepareUserMapper;
 
+    private String getReferrerInfo(UserModel referrer) {
+        AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
+        if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
+            return referrerAccount.getUserName().substring(0, 1) + "某";
+        } else {
+            return referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10);
+        }
+    }
+
     @RequestMapping(value = "/ios", method = RequestMethod.GET)
     public ModelAndView getIOSPage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
@@ -44,22 +53,18 @@ public class AppShareController {
                 registerMobile = cookie.getValue();
             }
         }
+
         if (!StringUtils.isEmpty(registerMobile)) {
             PrepareModel prepareUser = prepareUserMapper.findByMobile(referrerMobile);
             if (null != prepareUser) {
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
-                modelAndView.addObject("userMobile", prepareUser.getMobile());
+                modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
             }
         }
 
-        ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
-        AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
-        if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "某");
-        } else {
-            modelAndView.addObject("referrerInfo", referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10));
-        }
+        ModelAndView modelAndView = new ModelAndView("/activities/share-app-ios");
+        modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
 
@@ -83,18 +88,13 @@ public class AppShareController {
             UserModel user = userMapper.findByMobile(registerMobile);
             if (null != user) {
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
-                modelAndView.addObject("userMobile", user.getMobile());
+                modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
             }
         }
 
         ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
-        AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
-        if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "某");
-        } else {
-            modelAndView.addObject("referrerInfo", referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10));
-        }
+        modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
 }
