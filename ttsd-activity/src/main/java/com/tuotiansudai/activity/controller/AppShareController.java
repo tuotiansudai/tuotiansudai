@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "/app-share")
@@ -37,9 +37,15 @@ public class AppShareController {
             return modelAndView;
         }
 
-        HttpSession httpSession = httpServletRequest.getSession();
-        if (!httpSession.isNew()) {
-            PrepareModel prepareUser = prepareUserMapper.findByMobile((String) httpSession.getAttribute("registerMobile"));
+        String registerMobile = null;
+        Cookie[] cookies = httpServletRequest.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("registerMobile")) {
+                registerMobile = cookie.getValue();
+            }
+        }
+        if (!StringUtils.isEmpty(registerMobile)) {
+            PrepareModel prepareUser = prepareUserMapper.findByMobile(referrerMobile);
             if (null != prepareUser) {
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
                 modelAndView.addObject("userMobile", prepareUser.getMobile());
@@ -66,9 +72,15 @@ public class AppShareController {
             return modelAndView;
         }
 
-        HttpSession httpSession = httpServletRequest.getSession();
-        if (!httpSession.isNew()) {
-            UserModel user = userMapper.findByMobile((String) httpSession.getAttribute("registerMobile"));
+        String registerMobile = null;
+        Cookie[] cookies = httpServletRequest.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("registerMobile")) {
+                registerMobile = cookie.getValue();
+            }
+        }
+        if (!StringUtils.isEmpty(registerMobile)) {
+            UserModel user = userMapper.findByMobile(registerMobile);
             if (null != user) {
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
                 modelAndView.addObject("userMobile", user.getMobile());
