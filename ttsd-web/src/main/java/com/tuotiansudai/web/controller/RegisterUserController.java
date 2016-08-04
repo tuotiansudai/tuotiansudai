@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -55,22 +54,20 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
-    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);
         }
-        response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
         return prepareService.prepareRegister(requestDto);
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
-    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             return new BaseDataDto(false, message);
         }
-        response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
         return prepareService.register(requestDto);
     }
 
@@ -148,6 +145,20 @@ public class RegisterUserController {
         if (result) {
             return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }
+        return baseDto;
+    }
+
+    @RequestMapping(path = "/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile) {
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+        boolean result = userService.mobileIsRegister(mobile);
+        if (!result) {
+            return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
+        }
+
         return baseDto;
     }
 
