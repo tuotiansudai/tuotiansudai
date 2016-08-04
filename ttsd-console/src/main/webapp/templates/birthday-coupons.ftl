@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsBirthdayCoupon" title="生日红包管理">
 
@@ -158,7 +159,9 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
-                <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+                <@security.authorize access="hasAnyAuthority('DATA')">
+                    <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+                </@security.authorize>
             </ul>
         </#if>
     </nav>
