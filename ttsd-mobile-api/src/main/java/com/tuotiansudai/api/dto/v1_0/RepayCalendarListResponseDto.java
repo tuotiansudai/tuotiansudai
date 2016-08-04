@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import java.util.List;
 
-public class RepayCalendarListResponseDto extends BaseResponseDataDto{
+public class RepayCalendarListResponseDto extends BaseResponseDataDto {
     private String totalRepayAmount;
     private String totalExpectedRepayAmount;
     List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtos;

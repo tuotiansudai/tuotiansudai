@@ -1,4 +1,4 @@
-require(['jquery', 'csrf','bootstrap', 'bootstrapSelect','bootstrapDatetimepicker','jquery-ui'], function($) {
+require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'jquery-ui'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});

@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-public class RepayCalendarRequestDto extends BaseParamDto{
+public class RepayCalendarRequestDto extends BaseParamDto {
     private String year;
     private String month;
     private String date;

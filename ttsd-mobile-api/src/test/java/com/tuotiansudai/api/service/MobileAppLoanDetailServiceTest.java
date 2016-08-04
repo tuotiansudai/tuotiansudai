@@ -26,10 +26,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -115,7 +112,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
         loanerDetailsModel.setUserName("UserName");
         when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(loanerDetailsModel);
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(),"declaration");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration");
         when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();
@@ -176,7 +173,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
         assertNotNull(baseResponseDto.getData().getRaisingPeriod());
-        assertNotNull("loanDetail",baseResponseDto.getData().getLoanDetail());
+        assertNotNull("loanDetail", baseResponseDto.getData().getLoanDetail());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {

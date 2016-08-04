@@ -26,19 +26,19 @@ public class MobileAppBookingLoanControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldGetBookingLoanIsOk() throws Exception {
-        BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new  BaseResponseDto<>();
+        BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         when(mobileAppBookingLoanService.getBookingLoan()).thenReturn(baseResponseDto);
-        doRequestWithServiceMockedTest("/get/booking-loan",new BaseParamDto());
+        doRequestWithServiceMockedTest("/get/booking-loan", new BaseParamDto());
     }
 
     @Test
     public void shouldBookingLoanIsOk() throws Exception {
-        BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new  BaseResponseDto<>();
+        BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         when(mobileAppBookingLoanService.bookingLoan(any(BookingLoanRequestDto.class))).thenReturn(baseResponseDto);
-        doRequestWithServiceMockedTest("/booking-loan",new BaseParamDto());
+        doRequestWithServiceMockedTest("/booking-loan", new BaseParamDto());
     }
 }

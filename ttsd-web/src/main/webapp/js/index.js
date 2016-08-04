@@ -10,7 +10,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
-        var $bookInvestForm = $('.book-invest-form');
+    var $bookInvestForm = $('.book-invest-form'),
+            $projectTransfer=$('.project-transfer-frame');
 
         $dlAmount.find('i').filter(function (index) {
             var value = $(this).text(),
@@ -100,30 +101,30 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             })
         }
 
-        $('.web-book-box,.book-text-tip').on('click', function (event) {
+    $('.web-book-box,.book-text-tip').on('click', function (event) {
             event.preventDefault();
-            if ($(this).find('a.btn-normal').hasClass('not-anonymous')) {
-                location.href = '/login';
-                return;
-            }
-            if ($(this).find('a').hasClass('is-user')) {
-                $bookInvestForm.find('.init-radio-style').removeClass('on');
-                $bookInvestForm.find('input[name="bookingAmount"]').val('');
-                layer.open({
-                    title: '预约投资',
-                    type: 1,
-                    skin: 'book-box-layer',
-                    area: ['680px'],
-                    content: $('.book-invest-box')
-                });
-                return;
-            }
-            location.href = '/register/account';
-        });
+        if ($(this).find('a.btn-normal').hasClass('not-anonymous')) {
+            location.href = '/login';
+            return;
+        }
+        if ($(this).find('a').hasClass('is-user')) {
+            $bookInvestForm.find('.init-radio-style').removeClass('on');
+            $bookInvestForm.find('input[name="bookingAmount"]').val('');
+            layer.open({
+                title: '预约投资',
+                type: 1,
+                skin: 'book-box-layer',
+                area: ['680px'],
+                content: $('.book-invest-box')
+            });
+            return;
+        }
+        location.href = '/register/account';
+    });
 
-        $('.loan-btn li').on('click', function (event) {
+    $('.loan-btn li').on('click', function (event) {
             event.preventDefault();
-            window.location.href = $(this).attr('data-url');
+        window.location.href = $(this).attr('data-url');
         });
         $('.new-user-free').on('click', function (event) {
             event.preventDefault();
@@ -169,27 +170,27 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
 
             },
             submitHandler: function (form) {
-                var amount=$(form).find('input[name="bookingAmount"]').val().replace(/,/gi,'');
+                var amount = $(form).find('input[name="bookingAmount"]').val().replace(/,/gi, '');
 
                 $(form).find('input[name="bookingAmount"]').val(amount);
                 var data = $(form).serialize();
                 //form.submit();
                 $.ajax({
-                        url: '/booking-loan/invest?' + data,
-                        //data:data,
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
-                    })
+                    url: '/booking-loan/invest?' + data,
+                    //data:data,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
                     .done(function (response) {
                         if (response.data.status) {
                             layer.closeAll();
 
                             layer.open({
                                 type: 1,
-                                title:'&nbsp',
-                                area:['400px','185px'],
-                                content:'<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
+                                title: '&nbsp',
+                                area: ['400px', '185px'],
+                                content: '<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
                             });
 
                             //layer.msg('', {
@@ -206,15 +207,41 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             }
         });
 
-        //初始化radio
-        $bookInvestForm.find('.init-radio-style').on('click',function() {
-            var $this=$(this);
-            $bookInvestForm.find('.init-radio-style').removeClass('on');
-            $bookInvestForm.find('input:radio').prop('checked',false);
-            $this.addClass("on");
-            $this.find('input:radio').prop('checked',true);
-        });
+    //初始化radio
+    $bookInvestForm.find('.init-radio-style').on('click', function () {
+        var $this = $(this);
+        $bookInvestForm.find('.init-radio-style').removeClass('on');
+        $bookInvestForm.find('input:radio').prop('checked', false);
+        $this.addClass("on");
+        $this.find('input:radio').prop('checked', true);
+    });
 
+
+    //转让项目
+    $.ajax({
+        url: '/transfer-list/homePage',
+        data: {"index": 1, "pageSize": 2},
+        type: 'GET',
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8'
+    })
+        .done(function (response) {
+            var transerTpl = $('#transerTpl').html(),
+                transerTplMobile = $('#transerTplMobile').html();
+
+            var render = _.template(transerTpl),
+                renderMobile = _.template(transerTplMobile);
+            var data = {};
+            data.list = response;
+            var html = render(data),
+                htmlMobile = renderMobile(data);
+
+            var $element = $projectTransfer.find('.loan-box-inner'),
+                $elementMobile = $('.project-transfer-mobile');
+            $element.html(html);
+            $elementMobile.html(htmlMobile);
+
+        });
         function cnzzCount() {
             var url = $(this).data('name');
             switch (url) {
@@ -244,8 +271,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
         }
 
         $('.banner-img-list a').on('click', cnzzCount);
-
-
 
 
     function GetSlideAngle(dx, dy) {

@@ -7,7 +7,6 @@ import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
