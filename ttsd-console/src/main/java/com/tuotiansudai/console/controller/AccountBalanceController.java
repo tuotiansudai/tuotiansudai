@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -25,7 +26,7 @@ public class AccountBalanceController {
     static Logger logger = Logger.getLogger(AccountBalanceController.class);
 
     @Autowired
-    private UserService userService;
+    private UserServiceConsole userServiceConsole;
 
 
     @RequestMapping(value = "/account-balance")
@@ -44,7 +45,7 @@ public class AccountBalanceController {
                 logger.error(e.getLocalizedMessage(), e);
             }
             response.setContentType("application/csv");
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(mobile, balanceMin, balanceMax, 1, Integer.MAX_VALUE);
+            List<UserItemDataDto> userItemDataDtoList = userServiceConsole.findUsersAccountBalance(mobile, balanceMin, balanceMax, null, null);
             List<List<String>> data = Lists.newArrayList();
             for (UserItemDataDto itemDataDto : userItemDataDtoList) {
                 List<String> dataModel = Lists.newArrayList();
@@ -65,10 +66,10 @@ public class AccountBalanceController {
             ModelAndView modelAndView = new ModelAndView("/account-balance");
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+            List<UserItemDataDto> userItemDataDtoList = userServiceConsole.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
             modelAndView.addObject("userAccountList", userItemDataDtoList);
-            long count = userService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
-            modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
+            long count = userServiceConsole.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
+            modelAndView.addObject("sumBalance", userServiceConsole.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
             long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;

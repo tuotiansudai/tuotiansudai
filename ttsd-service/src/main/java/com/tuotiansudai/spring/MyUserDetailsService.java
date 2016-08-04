@@ -57,7 +57,7 @@ public class MyUserDetailsService implements UserDetailsService {
             userMapper.updateUser(userModel);
         }
 
-        boolean enabled = userModel.isActive();
+        boolean enabled = userModel.getStatus() == UserStatus.ACTIVE;
 
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
 

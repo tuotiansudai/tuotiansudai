@@ -25,9 +25,6 @@ public class ActivitiesController {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private CouponAlertService couponAlertService;
 
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|landing-page-app|invest-achievement|loan-hike$}", method = RequestMethod.GET)
@@ -36,7 +33,7 @@ public class ActivitiesController {
         String loginName = httpServletRequest.getParameter("loginName");
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
-            modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(loginName));
+            modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
 
         return modelAndView;

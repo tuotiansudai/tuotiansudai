@@ -18,5 +18,4 @@ public class MobileAppLoanListController extends MobileAppBaseController {
     public BaseResponseDto queryLoanList(@RequestBody LoanListRequestDto loanListRequestDto) {
         return mobileAppLoanListService.generateLoanList(loanListRequestDto);
     }
-
 }

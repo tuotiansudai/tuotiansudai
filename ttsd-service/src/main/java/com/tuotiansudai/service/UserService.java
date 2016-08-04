@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface UserService {
 
+    String getMobile(String loginName);
+
     boolean emailIsExist(String email);
 
     boolean mobileIsExist(String mobile);
@@ -39,21 +41,7 @@ public interface UserService {
 
     EditUserDto getEditUser(String loginName);
 
-    List<String> findStaffNameFromUserLike(String loginName);
-
-    List<String> findAllLoanerLikeLoginName(String loginName);
-
-    List<String> findAccountLikeLoginName(String loginName);
-
-    List<String> findLoginNameLike(String loginName);
-
-    List<String> findMobileLike(String mobile);
-
-    List<String> findAccountMobileLike(String mobile);
-
     boolean verifyPasswordCorrect(String loginName, String password);
-
-    List<String> findAllChannels();
 
     List<String> findAllUserChannels();
 
@@ -61,13 +49,5 @@ public interface UserService {
 
     void refreshAreaByMobileInJob();
 
-    List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber);
-
-    List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
-
-    long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax);
-
     boolean resetUmpayPassword(String loginName, String identityNumber);
-
-    long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax);
 }

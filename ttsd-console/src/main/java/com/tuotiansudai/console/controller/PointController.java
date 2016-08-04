@@ -3,7 +3,6 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +14,6 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/point-manage")
 public class PointController {
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private PointBillService pointBillService;
@@ -32,9 +28,9 @@ public class PointController {
         ModelAndView modelAndView = new ModelAndView("/user-point-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        List<AccountItemDataDto> accountItemDataDtoList = accountService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
+        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
         modelAndView.addObject("userPointList", accountItemDataDtoList);
-        int count = accountService.findUsersAccountPointCount(loginName, userName, mobile);
+        int count = pointBillService.findUsersAccountPointCount(loginName, userName, mobile);
         long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;

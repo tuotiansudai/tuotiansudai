@@ -30,6 +30,7 @@ dependencies {
     def springSecurityVersion = '4.0.2.RELEASE'
 
     compile project(":ttsd-membership"),
+            project(":ttsd-user-service"),
             fileTree(dir: 'libs', include: '**/*.jar'),
             "org.springframework.security:spring-security-config:$springSecurityVersion",
             "org.springframework.security:spring-security-taglibs:$springSecurityVersion"

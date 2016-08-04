@@ -194,7 +194,7 @@ public class ContractServiceImpl implements ContractService {
             AccountModel accountModel = accountMapper.findByLoginName(invest.getLoginName());
             String rowsString = insertRow(6);
             String deadLine = loanModel.getPeriods() + "(" + loanModel.getType().getLoanPeriodUnit().getDesc() + ")";
-            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType,userMapper.findUsersMobileByLoginName(invest.getLoginName())))
+            rowsString = rowsString.replace("#{0}", encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType,userMapper.findByLoginName(invest.getLoginName()).getMobile()))
                     .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName, contractType,""))
                     .replace("#{2}", encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType,""))
                     .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))

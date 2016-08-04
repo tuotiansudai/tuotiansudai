@@ -29,7 +29,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 
     @Override
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String mobile, Boolean success, int index, int pageSize, int year, int month) {
-        String loginLogTableName = this.getLoginLogTableName(new Date());
+        String loginLogTableName = this.getLoginLogTableName(new DateTime(year, month, 1, 0 ,0).toDate());
         long count = loginLogMapper.count(mobile, success, loginLogTableName);
 
         List<LoginLogView> data = Lists.newArrayList();

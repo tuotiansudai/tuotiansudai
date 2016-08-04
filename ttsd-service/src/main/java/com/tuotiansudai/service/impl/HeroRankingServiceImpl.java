@@ -179,7 +179,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         }
 
         long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
-        Date registerTime = accountMapper.findAccountRegisterTimeByLoginName(loginName);
+        Date registerTime = accountMapper.findByLoginName(loginName).getRegisterTime();
         if (registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000) {
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }

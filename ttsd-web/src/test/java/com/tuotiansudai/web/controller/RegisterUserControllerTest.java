@@ -114,6 +114,7 @@ public class RegisterUserControllerTest {
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
         doNothing().when(myAuthenticationManager).createAuthentication(anyString());
+
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))
@@ -188,14 +189,5 @@ public class RegisterUserControllerTest {
 
         this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void shouldDisplayRegisterUserTemplate() throws Exception {
-        when(userMapper.findUsersMobileByLoginName(anyString())).thenReturn("");
-
-        this.mockMvc.perform(get("/register/user"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/register-user"));
     }
 }

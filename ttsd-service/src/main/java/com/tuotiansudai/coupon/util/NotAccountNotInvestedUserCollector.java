@@ -20,7 +20,7 @@ public class NotAccountNotInvestedUserCollector implements UserCollector {
     @Override
     public List<String> collect(long couponId) {
         List<String> investorLoginNames = investMapper.findInvestorLoginNames();
-        List<String> userLoginNames = userMapper.findLoginNames();
+        List<String> userLoginNames = userMapper.findAllLoginNames();
         userLoginNames.removeAll(investorLoginNames);
         return userLoginNames;
     }

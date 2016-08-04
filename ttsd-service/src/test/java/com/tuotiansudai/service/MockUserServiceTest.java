@@ -49,9 +49,6 @@ public class MockUserServiceTest {
     private SmsCaptchaService smsCaptchaService;
 
     @Mock
-    private MyAuthenticationManager myAuthenticationManager;
-
-    @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Mock
@@ -144,13 +141,12 @@ public class MockUserServiceTest {
         registerUserDto.setMobile(mobile);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword("password");
-        doNothing().when(userMapper).create(any(UserModel.class));
+        when(userMapper.create(any(UserModel.class))).thenReturn(1);
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         doNothing().when(referrerRelationService).generateRelation(null, loginName);
-        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);
