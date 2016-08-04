@@ -373,7 +373,7 @@
                                     </#if>
                                 </#list>
                             </#list>
-                            <h5>声明：${loan.declaration}</h5>
+                            <h5>声明：${loan.declaration!}</h5>
                         </div>
                     </div>
                 </div>

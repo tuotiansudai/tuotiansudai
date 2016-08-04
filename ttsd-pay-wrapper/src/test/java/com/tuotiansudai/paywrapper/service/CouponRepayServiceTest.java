@@ -131,7 +131,6 @@ public class CouponRepayServiceTest {
         when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
-        doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(idGenerator.generate(), false);
 
@@ -172,7 +171,6 @@ public class CouponRepayServiceTest {
         when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
-        doNothing().when(couponRepayMapper).update(any(CouponRepayModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(idGenerator.generate(), true);
 

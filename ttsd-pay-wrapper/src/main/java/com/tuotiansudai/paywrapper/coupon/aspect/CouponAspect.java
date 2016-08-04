@@ -44,17 +44,21 @@ public class CouponAspect {
 
     @Autowired
     private CouponInvestService couponInvestService;
-    @Autowired
-    private LoanMapper loanMapper;
-    @Autowired
-    private CouponMapper couponMapper;
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
-    @Autowired
-    private InvestMapper investMapper;
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
@@ -201,6 +205,7 @@ public class CouponAspect {
 
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
         for (CouponModel couponModel : couponModelList) {
+
             if (couponModel.getUserGroup().equals(userGroup) && DateTime.now().toDate().before(couponModel.getEndTime())
                                                              && DateTime.now().toDate().after(couponModel.getStartTime())) {
                 couponAssignmentService.assignUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId());

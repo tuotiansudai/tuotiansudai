@@ -13,8 +13,13 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.service.impl.ContractServiceImpl;
+
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.Version;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -50,10 +56,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
+
     @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
+
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
@@ -274,7 +282,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         return null;
 
     }
-
     private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
         Map<String, Object> dataModel = new HashMap<>();
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
@@ -318,4 +325,5 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         return dataModel;
     }
+
 }

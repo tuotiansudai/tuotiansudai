@@ -60,4 +60,11 @@ public interface InvestRepayMapper {
     List<InvestRepayModel> findByLoanId(long loanId);
 
     int findLeftPeriodByTransferInvestIdAndPeriod(@Param(value = "transferInvestId") long transferInvestId,@Param(value = "period") int period);
+
+    List<InvestRepayModel> findInvestRepayByLoginNameAndRepayTime(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "year") String year,
+                                                                  @Param(value = "month") String month,
+                                                                  @Param(value = "day") String day);
+
+
 }

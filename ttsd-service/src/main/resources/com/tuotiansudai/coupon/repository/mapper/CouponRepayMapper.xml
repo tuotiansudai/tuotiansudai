@@ -59,8 +59,28 @@
         where id = #{id}
     </update>
 
+    <select id="findCouponRepayByInvestIdAndRepayDate" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay
+        WHERE login_name = #{loginName}
+        AND status IN ('REPAYING','COMPLETE')
+        <if test="investId != null and investId > 0">
+            AND invest_id = #{investId}
+        </if>
+        <if test="year != null and year != ''">
+            AND (DATE_FORMAT(repay_date, '%Y') = #{year} or DATE_FORMAT(actual_repay_date, '%Y') = #{year})
+        </if>
+        <if test="month != null and month != ''">
+            AND (DATE_FORMAT(repay_date, '%m') = #{month} or DATE_FORMAT(actual_repay_date, '%m') = #{month})
+        </if>
+        <if test="day != null and day != ''">
+            AND (DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day} or DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day})
+        </if>
+        ORDER BY repay_date
+    </select>
+
     <select id="findByUserCouponByInvestId" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay where invest_id = #{investId}
+
     </select>
 
     <select id="findCouponRepayByLoanIdAndPeriod" parameterType="map" resultMap="couponRepayResultMap">
