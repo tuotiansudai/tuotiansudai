@@ -80,12 +80,14 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setBankId(bankCard.getBankCode());
             personalInfoDataDto.setIsFastPayment(bankCard.isFastPayOn());
             personalInfoDataDto.setFastPaymentEnable(BankCardUtil.canEnableFastPay(bankCard.getBankCode()));
+            personalInfoDataDto.setBankName(BankCardUtil.getBankName(bankCard.getBankCode()));
         } else {
             personalInfoDataDto.setIsBoundBankCard(false);
             personalInfoDataDto.setBankCardNo("");
             personalInfoDataDto.setBankId("");
             personalInfoDataDto.setIsFastPayment(false);
             personalInfoDataDto.setFastPaymentEnable(false);
+            personalInfoDataDto.setBankName("");
         }
         return personalInfoDataDto;
     }
