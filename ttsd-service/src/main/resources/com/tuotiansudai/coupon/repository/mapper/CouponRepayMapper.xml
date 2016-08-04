@@ -62,6 +62,9 @@
         select * from coupon_repay
         WHERE login_name = #{loginName}
         AND status IN ('REPAYING','COMPLETE')
+        <if test="investId != null and investId > 0">
+            AND invest_id = #{investId}
+        </if>
         <if test="year != null and year != ''">
             AND (DATE_FORMAT(repay_date, '%Y') = #{year} or DATE_FORMAT(actual_repay_date, '%Y') = #{year})
         </if>

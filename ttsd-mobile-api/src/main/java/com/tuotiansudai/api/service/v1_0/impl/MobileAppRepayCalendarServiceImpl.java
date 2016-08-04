@@ -124,7 +124,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 totalAmount += repayExpectedInterest;
             }
 
-            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findByUserCouponByInvestId(investRepayModel.getInvestId());
+            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),investRepayModel.getInvestId(),null,null,repayCalendarRequestDto.getDate());
             for(CouponRepayModel couponRepayModel: couponRepayModelList){
                 if(couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0) {
                     continue;
@@ -183,13 +183,13 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(),String.valueOf(investRepayModel.getRepayAmount())));
             }else{
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(sdf.format(investRepayModel.getRepayDate()));
-                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),String.valueOf(investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
+                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(),String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
             }
         }
 
         Map<String,RepayCalendarYearResponseDto> couponRepayCalendarResponseDtoMaps = Maps.newConcurrentMap();
         RepayCalendarYearResponseDto couponRepayCalendarYearResponseDto;
-        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),repayCalendarRequestDto.getYear(),replenishMonth(repayCalendarRequestDto.getMonth()),null);
+        List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),0l,repayCalendarRequestDto.getYear(),replenishMonth(repayCalendarRequestDto.getMonth()),null);
         for(CouponRepayModel couponRepayModel : couponRepayModelList){
             if(couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0){
                 continue;
