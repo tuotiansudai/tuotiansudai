@@ -208,9 +208,9 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
-                <@global.role hasRole="'DATA'">
+                <@security.authorize access="hasAnyAuthority('DATA')">
                     <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-                </@global.role>
+                </@security.authorize>
             </ul>
         </#if>
     </nav>

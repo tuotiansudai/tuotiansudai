@@ -12,7 +12,6 @@
             <span class="txt"></span>
         </div>
     </div>
-<<<<<<< HEAD
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -191,9 +190,9 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
-                <@global.role hasRole="'DATA'">
+                <@security.authorize access="hasAnyAuthority('DATA')">
                     <button class="btn btn-default pull-left export-red-envelopes" type="button">导出Excel</button>
-                </@global.role>
+                </@security.authorize>
             </ul>
         </#if>
     </nav>

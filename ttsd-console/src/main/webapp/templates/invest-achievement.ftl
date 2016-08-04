@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="invest-achievement.js" headLab="activity-manage" sideLab="investAchievement" title="投资称号管理">
 
@@ -88,9 +89,9 @@
                 </a>
             </li>
         </ul>
-        <@global.role hasRole="'DATA'">
+        <@security.authorize access="hasAnyAuthority('DATA')">
             <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-        </@global.role>
+        </@security.authorize>
     </nav>
 </div>
 

@@ -147,9 +147,9 @@
                 </a>
                 </li>
             </ul>
-            <@global.role hasRole="'DATA'">
+            <@security.authorize access="hasAnyAuthority('DATA')">
                 <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-            </@global.role>
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->

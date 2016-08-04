@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="ranking-point-prize.js" headLab="activity-manage" sideLab="pointPrize" title="财豆奖品管理">
 
@@ -24,9 +25,9 @@
             </#list>
         </tbody>
     </table>
-    <@global.role hasRole="'DATA'">
+    <@security.authorize access="hasAnyAuthority('DATA')">
         <button class="btn btn-default pull-left export-ranking-point-prize" type="button">导出Excel</button>
-    </@global.role>
+    </@security.authorize>
 </div>
 
 </@global.main>
