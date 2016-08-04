@@ -28,11 +28,16 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        MDC.put(REQUEST_ID, UUIDGenerator.generate());
-        Object currentLoginName = request.getAttribute("currentLoginName");
-        String loginName = (currentLoginName != null && currentLoginName instanceof String) ? currentLoginName.toString() : ANONYMOUS;
-        MDC.put(USER_ID, loginName);
-        chain.doFilter(request, response);
+        try {
+            MDC.put(REQUEST_ID, UUIDGenerator.generate());
+            Object currentLoginName = request.getAttribute("currentLoginName");
+            String loginName = (currentLoginName != null && currentLoginName instanceof String) ? currentLoginName.toString() : ANONYMOUS;
+            MDC.put(USER_ID, loginName);
+            chain.doFilter(request, response);
+        } finally {
+            MDC.remove(REQUEST_ID);
+            MDC.remove(USER_ID);
+        }
     }
 
     @Override

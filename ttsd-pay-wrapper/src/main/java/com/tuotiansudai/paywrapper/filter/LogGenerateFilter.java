@@ -26,12 +26,17 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String requestIdHeader = StringUtils.isNotEmpty(httpServletRequest.getHeader(REQUEST_ID)) ? httpServletRequest.getHeader(REQUEST_ID) : UUIDGenerator.generate();
-        String userIdHeader = StringUtils.isNotEmpty(httpServletRequest.getHeader(USER_ID)) ? httpServletRequest.getHeader(USER_ID) : ANONYMOUS;
-        MDC.put(REQUEST_ID, requestIdHeader);
-        MDC.put(USER_ID, userIdHeader);
-        chain.doFilter(request, response);
+        try {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            String requestIdHeader = StringUtils.isNotEmpty(httpServletRequest.getHeader(REQUEST_ID)) ? httpServletRequest.getHeader(REQUEST_ID) : UUIDGenerator.generate();
+            String userIdHeader = StringUtils.isNotEmpty(httpServletRequest.getHeader(USER_ID)) ? httpServletRequest.getHeader(USER_ID) : ANONYMOUS;
+            MDC.put(REQUEST_ID, requestIdHeader);
+            MDC.put(USER_ID, userIdHeader);
+            chain.doFilter(request, response);
+        } finally {
+            MDC.remove(REQUEST_ID);
+            MDC.remove(USER_ID);
+        }
     }
 
     @Override
