@@ -119,11 +119,16 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
             if(investRepayModel.getActualRepayDate() != null){
                 repayActualInterest = investRepayModel.getRepayAmount();
+                totalAmount += repayActualInterest;
             }else{
                 repayExpectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
+                totalAmount += repayExpectedInterest;
             }
 
             for(CouponRepayModel couponRepayModel: couponRepayModelList){
+                if(couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0) {
+                    continue;
+                }
                 if(couponRepayModel.getActualRepayDate() != null){
                     repayActualInterest += couponRepayModel.getRepayAmount();
                     totalAmount += repayActualInterest;
