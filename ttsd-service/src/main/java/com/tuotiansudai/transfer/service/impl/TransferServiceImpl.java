@@ -58,9 +58,6 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private TransferRuleMapper transferRuleMapper;
 
-    @Autowired
-    UserMapper userMapper;
-
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
         this.checkTransferPurchase(investDto);
@@ -258,5 +255,4 @@ public class TransferServiceImpl implements TransferService {
         }
         return transferApplicationDetailDto;
     }
-
 }

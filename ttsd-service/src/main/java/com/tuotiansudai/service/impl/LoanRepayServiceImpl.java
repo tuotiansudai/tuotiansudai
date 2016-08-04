@@ -5,6 +5,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +58,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
@@ -153,6 +159,14 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
+        }
+        logger.debug(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+        for (CouponRepayModel couponRepayModel : couponRepayModels) {
+            if (couponRepayModel.getRepayDate().before(new Date())) {
+                couponRepayModel.setStatus(RepayStatus.OVERDUE);
+                couponRepayMapper.update(couponRepayModel);
+            }
         }
     }
 

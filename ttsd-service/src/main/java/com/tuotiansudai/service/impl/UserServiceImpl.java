@@ -20,7 +20,10 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.MobileLocationUtils;
+import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -167,8 +170,6 @@ public class UserServiceImpl implements UserService {
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = new UserMembershipModel(userModel.getLoginName(), membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
-
-        myAuthenticationManager.createAuthentication(userModel.getLoginName());
 
         return true;
     }
@@ -447,11 +448,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
-        Long min = StringUtils.isNotEmpty(balanceMin)?AmountConverter.convertStringToCent(balanceMin):null;
-        Long max = StringUtils.isNotEmpty(balanceMax)?AmountConverter.convertStringToCent(balanceMax):null;
+        long min = AmountConverter.convertStringToCent(balanceMin);
+        long max = AmountConverter.convertStringToCent(balanceMax);
         return Lists.newArrayList(min, max);
     }
-
-
 
 }
