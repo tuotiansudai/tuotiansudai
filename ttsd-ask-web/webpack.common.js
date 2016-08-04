@@ -3,13 +3,13 @@ var webpack = require('webpack');
 var basePath = path.join(__dirname, 'src/main/webapp/ask/dist');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-//var extractCSS = new ExtractTextPlugin('[name].css');
 module.exports = {
     output: {
         filename: "main.js",
         path: basePath,
         publicPath: '/ask/dist/'
-        //上线后的文件目录
+        ////publicPath是静态资源图片的访问路径
+
     },
     module:{
         loaders:[

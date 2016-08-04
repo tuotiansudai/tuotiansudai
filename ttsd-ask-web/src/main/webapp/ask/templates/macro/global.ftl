@@ -57,17 +57,17 @@
 <div class="main-frame full-screen clearfix">
 <#--banner-->
     <div class="borderBox tc mobile-menu">
-        <a href="#" class="btn-main want-question">我要提问</a>
-        <a href="#" class="btn-main my-question">我的提问</a>
-        <a href="#" class="btn-main my-answer">我的回答</a>
+        <a href="/askQuestion" class="btn-main want-question">我要提问</a>
+        <a href="/qaAnswer" class="btn-main my-question">我的提问</a>
+        <a href="/qaAnswer" class="btn-main my-answer">我的回答</a>
     </div>
     <div class="download-mobile">
         <a href="#"> <img src="${staticServer}/images/sign/downloadApp.jpg"></a>
     </div>
+
 <#--banner-->
     <div class="question-container answer-container">
         <#nested>
-
     <#--left content-->
         <div class="aside-frame fr">
             <#include "../user.ftl"/>

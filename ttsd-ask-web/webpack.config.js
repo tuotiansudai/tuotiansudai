@@ -25,6 +25,7 @@ module.exports = objectAssign(commonOptions, {
         inline: true,
         progress: true,
         publicPath: '/ask/dist/'
-        //线下调试的虚拟目录，本地用
+       //线下调试的虚拟目录，本地用,需要与服务器环境配置保持一致
+
     }
 });

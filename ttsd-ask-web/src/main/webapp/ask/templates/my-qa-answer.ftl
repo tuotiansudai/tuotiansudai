@@ -6,9 +6,9 @@
             <li><a href="javascript:void(0)">我的回答</a></</li>
         </ul>
         <div class="borderBox clearfix">
-            <div class="answers-box" style="display: none">
+            <div class="answers-box">
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -17,7 +17,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -26,7 +26,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -35,7 +35,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -44,7 +44,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -53,7 +53,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="/questionDetail" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -72,9 +72,9 @@
                 </dl>
             </div>
 
-            <div class="answers-box">
+            <div class="answers-box"  style="display: none">
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="answers" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -88,7 +88,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="answers" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -102,7 +102,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="answers" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>
@@ -116,7 +116,7 @@
                     </dd>
                 </dl>
                 <dl class="answers-list">
-                    <dt>拓天速贷靠谱吗？</dt>
+                    <dt><a href="answers" target="_blank">拓天速贷靠谱吗？</a></dt>
                     <dd>这个平台活动好多啊！！！</dd>
                     <dd><span>miaojiahang</span>
                         <span>回答：2</span>

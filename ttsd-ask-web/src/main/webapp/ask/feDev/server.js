@@ -12,7 +12,7 @@ var fm = new Freemarker({
 		/** for fmpp */
 	}
 });
-
+debugger
 var getData = function(fileName) {
 	return _.compose(JSON.parse, fs.readFileSync, path.join)(__dirname, 'data/' + fileName + '.json');
 };
@@ -22,11 +22,11 @@ var config = [
 	{
 		route: '/',
 		template: 'footer',
-		data: 'questions'
+		data: 'question'
 	},
 	{
-		route: '/questions',
-		template: 'questions',
+		route: '/question',
+		template: 'question',
 		data: 'questions'
 	},
 	{
