@@ -151,6 +151,20 @@ public class RegisterUserController {
         return baseDto;
     }
 
+    @RequestMapping(path = "/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest,@PathVariable String mobile){
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+        boolean result = userService.mobileIsRegister(mobile);
+        if(!result){
+            return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
+        }
+
+        return baseDto;
+    }
+
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
