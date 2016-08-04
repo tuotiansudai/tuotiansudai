@@ -210,7 +210,9 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
         $bookInvestForm.find('.init-radio-style').on('click',function() {
             var $this=$(this);
             $bookInvestForm.find('.init-radio-style').removeClass('on');
+            $bookInvestForm.find('input:radio').prop('checked',false);
             $this.addClass("on");
+            $this.find('input:radio').prop('checked',true);
         });
 
         function cnzzCount() {
