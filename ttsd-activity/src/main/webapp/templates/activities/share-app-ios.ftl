@@ -4,7 +4,7 @@
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-				<span>133****5387</span>
+                <span>${referrerInfo}</span>
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
@@ -15,7 +15,7 @@
 			<div class="item-form">
 				<form action="#" method="post" id="iosForm">
 					<div class="item-int">
-						<input type="text" class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
+                        <input type="text" class="item-text " name="mobile" placeholder="请输入您的手机号码" id="mobile">
 					</div>
 					<div class="item-int">
 						<input type="text" class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
