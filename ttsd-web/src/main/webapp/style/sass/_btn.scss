@@ -221,5 +221,23 @@ label.checkbox {
   }
 }
 
+.init-radio-style {
+    width: 24px;
+    height: 24px;
+    padding-top: 3px;
+    cursor: pointer;
+    text-align: center;
+    background: url("/images/icons/spr.png") no-repeat 0 -209px;
+    &.on {
+      background-position: 0 -233px;
+    }
+  .radio-class {
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+}
+
 
 
