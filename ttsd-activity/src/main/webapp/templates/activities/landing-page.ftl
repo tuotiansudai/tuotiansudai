@@ -3,7 +3,8 @@
 
 <div class="landing-container">
     <div class="landing-header">
-        <a href="/">访问首页</a>
+        <a href="/" class="logo"></a>
+        <a href="/" class="to-home">访问首页</a>
     </div>
 
     <div class="web-page-register">
