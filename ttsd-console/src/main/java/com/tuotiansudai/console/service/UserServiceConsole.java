@@ -31,4 +31,8 @@ public interface UserServiceConsole {
     List<String> findMobileLike(String mobile);
 
     long findUsersCountByChannel(String channel);
+
+    List<String> findAllLoanerLikeLoginName(String loginName);
+
+    List<String> findAccountLikeLoginName(String loginName);
 }

@@ -316,16 +316,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findAllLoanerLikeLoginName(String loginName) {
-        return accountMapper.findAllLoanerLikeLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findAccountLikeLoginName(String loginName) {
-        return accountMapper.findAccountLikeLoginName(loginName);
-    }
-
-    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));

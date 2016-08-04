@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AccountModel implements Serializable {
+public class AccountModel implements Serializable{
 
     private static final long serialVersionUID = -1887375479975954346L;
 
@@ -25,8 +25,6 @@ public class AccountModel implements Serializable {
 
     private long point;
 
-    private long membershipPoint;
-
     private Date registerTime;
 
     private boolean autoInvest;
@@ -34,6 +32,8 @@ public class AccountModel implements Serializable {
     private boolean autoRepay;
 
     private boolean noPasswordInvest;
+
+    private long membershipPoint;
 
     public AccountModel() {
     }
@@ -115,9 +115,7 @@ public class AccountModel implements Serializable {
         this.autoRepay = autoRepay;
     }
 
-    public boolean isNoPasswordInvest() {
-        return noPasswordInvest;
-    }
+    public boolean isNoPasswordInvest() {return noPasswordInvest;}
 
     public void setNoPasswordInvest(boolean noPasswordInvest) {
         this.noPasswordInvest = noPasswordInvest;

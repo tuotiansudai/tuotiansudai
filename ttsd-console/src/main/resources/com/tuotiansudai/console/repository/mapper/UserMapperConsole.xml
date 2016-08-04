@@ -316,4 +316,14 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
+    <select id="findAllLoanerLikeLoginName" parameterType="string" resultType="string">
+        select t.login_name from user t JOIN user_role r ON t.`login_name` = r.`login_name` AND r.`role` = 'LOANER' where t.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
+
+    <select id="findAccountLikeLoginName" parameterType="string" resultType="string">
+        select login_name
+        from user
+        where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        and exists (select 1 from account where account.login_name = user.login_name)
+    </select>
 </mapper>

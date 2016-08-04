@@ -34,4 +34,6 @@ public interface PointBillMapper {
                                                   @Param(value = "pageSize") int pageSize);
 
     PointBillModel findLatestSignInPointBillByLoginName(@Param(value = "loginName") String loginName);
+
+    long findUserTotalPoint(@Param(value = "loginName") String loginName);
 }

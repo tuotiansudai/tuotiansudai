@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -14,9 +15,7 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -33,6 +32,9 @@ import java.util.List;
 
 @Service
 public class PointBillServiceImpl implements PointBillService {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -122,6 +124,25 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     public long getPointBillCountByLoginName(String loginName){
         return pointBillMapper.findCountPointBillByLoginName(loginName);
+    }
+
+    @Override
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
+        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
+
+        List<AccountItemDataDto> accountItemDataDtoList = new ArrayList<>();
+        for(AccountModel accountModel : accountModels) {
+            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
+            accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
+            accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());
+            accountItemDataDtoList.add(accountItemDataDto);
+        }
+        return accountItemDataDtoList;
+    }
+
+    @Override
+    public int findUsersAccountPointCount(String loginName, String userName, String mobile){
+        return accountMapper.findUsersAccountPointCount(loginName, userName, mobile);
     }
 
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {

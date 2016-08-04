@@ -55,9 +55,6 @@ public class UserController {
     private UserMapperConsole userMapperConsole;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private ImpersonateService impersonateService;
 
     @Autowired
@@ -118,15 +115,14 @@ public class UserController {
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@PathVariable String loginName) {
-        return userService.findAllLoanerLikeLoginName(loginName);
+        return userServiceConsole.findAllLoanerLikeLoginName(loginName);
     }
 
     @RequestMapping(value = "/account/{loginName}/query", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findAllLoanerLikeLoginName(@PathVariable String loginName) {
-        return userService.findAccountLikeLoginName(loginName);
+        return userServiceConsole.findAccountLikeLoginName(loginName);
     }
-
 
     @RequestMapping(value = "/user/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody

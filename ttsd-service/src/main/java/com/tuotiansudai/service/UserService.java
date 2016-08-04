@@ -39,10 +39,6 @@ public interface UserService {
 
     EditUserDto getEditUser(String loginName);
 
-    List<String> findAllLoanerLikeLoginName(String loginName);
-
-    List<String> findAccountLikeLoginName(String loginName);
-
     boolean verifyPasswordCorrect(String loginName, String password);
 
     List<String> findAllUserChannels();

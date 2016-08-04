@@ -120,6 +120,16 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
         return userMapperConsole.findUsersCountByChannel(channel);
     }
 
+    @Override
+    public List<String> findAllLoanerLikeLoginName(String loginName) {
+        return userMapperConsole.findAllLoanerLikeLoginName(loginName);
+    }
+
+    @Override
+    public List<String> findAccountLikeLoginName(String loginName) {
+        return userMapperConsole.findAccountLikeLoginName(loginName);
+    }
+
     private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
         long min = AmountConverter.convertStringToCent(balanceMin);
         long max = AmountConverter.convertStringToCent(balanceMax);

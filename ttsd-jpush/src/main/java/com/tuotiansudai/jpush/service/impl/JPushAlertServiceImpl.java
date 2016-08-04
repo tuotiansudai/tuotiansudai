@@ -245,7 +245,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
         if (jPushAlertModel != null) {
-            List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
+            List<String> loginNames = accountMapper.findBirthMonthUsers();
             if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
                 return;
@@ -260,7 +260,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     public void autoJPushAlertBirthDay() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
         if (jPushAlertModel != null) {
-            List<String> loginNames = accountMapper.findBirthOfAccountInDay();
+            List<String> loginNames = accountMapper.findBirthDayUsers();
             if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
                 return;

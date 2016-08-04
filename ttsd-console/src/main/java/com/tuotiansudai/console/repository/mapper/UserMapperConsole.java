@@ -61,4 +61,8 @@ public interface UserMapperConsole {
     List<String> findMobileLike(String mobile);
 
     List<String> findLoginNameLike(String loginName);
+
+    List<String> findAllLoanerLikeLoginName(String loginName);
+
+    List<String> findAccountLikeLoginName(String loginName);
 }
