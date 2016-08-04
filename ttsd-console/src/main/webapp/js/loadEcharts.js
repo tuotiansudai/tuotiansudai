@@ -102,6 +102,8 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 $.each(bar_datas.data,function (i,item){
                     total += Number(item.value);
                 });
+
+                total=parseFloat(total).toFixed(2);
                 var option = {
                     title:{
                         text: '总计:' + total,
@@ -110,8 +112,10 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: name+":{c}"
-                        //formatter: xAxisName+"为{b}:{c}"
+                        formatter: function(option) {
+                            console.log(option);
+                            return option.seriesName + ':' + option.value;
+                        }
                     },
                     xAxis: [{
                         type: 'category',

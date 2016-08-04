@@ -5,11 +5,11 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -40,6 +40,9 @@ public class RegisterUserController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MyAuthenticationManager myAuthenticationManager;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
@@ -53,20 +56,20 @@ public class RegisterUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess;
+        boolean isRegisterSuccess = false;
         try {
             if (request.getSession().getAttribute("channel") != null) {
                 registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
             }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
         } catch (ReferrerRelationException e) {
-            isRegisterSuccess = false;
-        }
-        if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);
         }
 
+        if (isRegisterSuccess) {
+            myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
+        }
         return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", registerUserDto.getRedirectToAfterRegisterSuccess()) : "redirect:/register/user");
     }
 
