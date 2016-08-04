@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.PrepareModel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,15 +32,17 @@ public class AppShareController {
     public ModelAndView getIOSPage(@RequestParam String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
-            return null;//TODO invalid
+            ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
+            modelAndView.addObject("errorInfo", "无效推荐链接");
+            return modelAndView;
         }
 
         HttpSession httpSession = httpServletRequest.getSession();
         if (!httpSession.isNew()) {
-
-            if (null != user) {
+            PrepareModel prepareUser = prepareUserMapper.findByMobile((String) httpSession.getAttribute("registerMobile"));
+            if (null != prepareUser) {
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
-                modelAndView.addObject("userMobile", user.getMobile());
+                modelAndView.addObject("userMobile", prepareUser.getMobile());
                 return modelAndView;
             }
         }
@@ -58,7 +61,9 @@ public class AppShareController {
     public ModelAndView getAndroidPage(@RequestParam String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
-            return null;//TODO invalid
+            ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
+            modelAndView.addObject("errorInfo", "无效推荐链接");
+            return modelAndView;
         }
 
         HttpSession httpSession = httpServletRequest.getSession();

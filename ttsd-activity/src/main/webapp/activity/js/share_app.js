@@ -67,16 +67,16 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								mobile: $('#mobile').val()
 							}
 						})
-						.done(function(data) {
-							if (data.data.status && !data.data.isRestricted) {
-								XQ.iosCount();
-							} else if (!data.data.status && data.data.isRestricted) {
-								layer.msg('短信发送频繁,请稍后再试');
-							}
-						})
-						.fail(function() {
-							layer.msg('请求失败，请重试！');
-						});
+							.done(function (data) {
+								if (data.data.status && !data.data.isRestricted) {
+									XQ.iosCount();
+								} else if (!data.data.status && data.data.isRestricted) {
+									layer.msg('短信发送频繁,请稍后再试');
+								}
+							})
+							.fail(function () {
+								layer.msg('请求失败，请重试！');
+							});
 					}else {
 						location.href = '/share-app';
 					}
@@ -167,17 +167,17 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					dataType: 'json',
 					data: {
 						mobile: $('#mobile').val(),
-						password:$('#password').val(),
+						password: $('#password').val(),
 						captcha: $('#captchaText').val(),
-						referrer:$('#referrer').attr('data-referrer'),
-						source:'MOBILE'
+						referrer: $('#referrer').attr('data-referrer'),
+						source: 'MOBILE'
 					}
 				})
 				.done(function(data) {
-					if(data.status==true){
+						if (data.status == true) {
 						XQ.showTip();
-					}else{
-						layer.msg('请求失败，请重试！');
+						} else {
+							layer.msg('请求失败，请重试！');
 					}
 				})
 				.fail(function() {
@@ -246,20 +246,20 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					data: {
 						mobile: $('#mobile').val(),
 						captcha: $('#captchaText').val(),
-						referrerMobile:$('#referrer').attr('data-referrer'),
-						channel:'IOS'
+						referrerMobile: $('#referrer').attr('data-referrer'),
+						channel: 'IOS'
 					}
 				})
-				.done(function(data) {
-					if(data.status==true){
-						XQ.showTip();
-					}else{
+					.done(function (data) {
+						if (data.status == true) {
+							XQ.showTip();
+						} else {
 						layer.msg('请求失败，请重试！');
-					}
-				})
-				.fail(function() {
-					layer.msg('请求失败，请重试！');
-				});
+						}
+					})
+					.fail(function () {
+						layer.msg('请求失败，请重试！');
+					});
 			}
 		});
 
@@ -267,7 +267,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/register/user/mobile/'+$('#mobile').val()+'/is-exist', //获取手机验证码接口
+				url: '/register/user/mobile/' + $('#mobile').val() + '/is-exist', //获取手机验证码接口
 				type: 'POST',
 				dataType: 'json',
 				data: {
@@ -286,7 +286,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$iosBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/register/user/mobile/'+$('#mobile').val()+'/is-register', //判断手机号是否存在
+				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在
 				type: 'POST',
 				dataType: 'json',
 				data: {
