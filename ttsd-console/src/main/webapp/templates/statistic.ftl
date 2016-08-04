@@ -11,30 +11,30 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserDateReport">
-                                <select class="form-control search-category granularity-select" name="granularity">
-                                    <option value="Daily" selected>日</option>
-                                    <option value="Weekly">周</option>
-                                    <option value="Monthly">月</option>
-                                    <option value="Hourly">小时</option>
-                                </select>
-                                    <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
-                                    <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
-                                <select class="form-control" name="province"></select>
-                                <select class="form-control" name="userStage">
-                                    <option value="ALL" selected>全部</option>
-                                    <option value="Certification">实名认证</option>
-                                    <option value="BindCard">绑卡</option>
-                                </select>
-                                <select class="form-control" name="roleStage">
-                                    <option value="ALL" selected>全部用户</option>
-                                    <option value="STAFF">业务员</option>
-                                    <option value="RECOMMENDATION">业务员的一级推荐</option>
-                                    <option value="AGENT">渠道用户</option>
-                                    <option value="NORMAL_USER">自然用户</option>
-                                    <option value="OTHERS">其他用户</option>
-                                </select>
-                                <select class="form-control" name="channel"></select>
-                        <#--<select class="form-control" name=""></select>-->
+                        <select class="form-control search-category granularity-select" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                            <option value="Hourly">小时</option>
+                        </select>
+                        <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
+                        <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
+                        <select class="form-control" name="province"></select>
+                        <select class="form-control" name="userStage">
+                            <option value="ALL" selected>全部</option>
+                            <option value="Certification">实名认证</option>
+                            <option value="BindCard">绑卡</option>
+                        </select>
+                        <select class="form-control" name="roleStage">
+                            <option value="ALL" selected>全部用户</option>
+                            <option value="STAFF">业务员</option>
+                            <option value="RECOMMENDATION">业务员的一级推荐</option>
+                            <option value="AGENT">渠道用户</option>
+                            <option value="NORMAL_USER">自然用户</option>
+                            <option value="OTHERS">其他用户</option>
+                        </select>
+                        <select class="form-control" name="channel"></select>
+                    <#--<select class="form-control" name=""></select>-->
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
@@ -53,14 +53,14 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserRechargeReport">
-                            <select class="form-control search-category granularity-select" name="granularity">
-                                <option value="Daily" selected>日</option>
-                                <option value="Weekly">周</option>
-                                <option value="Monthly">月</option>
-                                <option value="Hourly">小时</option>
-                            </select>
-                            <em class="start-time-word">开始时间</em>：<input type="text" class="form-control start-date" name="startTime">
-                            <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
+                        <select class="form-control search-category granularity-select" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                            <option value="Hourly">小时</option>
+                        </select>
+                        <em class="start-time-word">开始时间</em>：<input type="text" class="form-control start-date" name="startTime">
+                        <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
                             <option>北京</option>
@@ -71,9 +71,9 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                   <div id="UserRechargeDistribution" style="width:100%; height:400px;">
+                    <div id="UserRechargeDistribution" style="width:100%; height:400px;">
 
-                   </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,8 +93,8 @@
                             <option value="Hourly">小时</option>
                         </select>
 
-                            <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
-                            <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
+                        <em class="start-time-word">开始时间</em>： <input type="text" class="form-control start-date" name="startTime">
+                        <span class="over-end-date">结束时间：<input type="text" class="form-control end-date" name="endTime"></span>
                         <select class="form-control" name="province">
                             <option value="">请选择</option>
                             <option>北京</option>
@@ -157,34 +157,34 @@
                     </div>
 
                     <div class="row" id="boxUserInvest" style="display: none">
-                    <div class="title-list">
-                        <span>合计投资金额： <em class="sumAmount"></em> 元</span>
-                    </div>
-                    <table class="table table-bordered" >
-                        <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>真实姓名</th>
-                            <th>电话</th>
-                            <th>推荐人id</th>
-                            <th>推荐人姓名</th>
-                            <th>投资总金额(元)</th>
-                            <th>投资标的数</th>
-                            <th>上次投资时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td class="pageNumber" colspan="10">
-                                <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                        <div class="title-list">
+                            <span>合计投资金额： <em class="sumAmount"></em> 元</span>
+                        </div>
+                        <table class="table table-bordered" >
+                            <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>电话</th>
+                                <th>推荐人id</th>
+                                <th>推荐人姓名</th>
+                                <th>投资总金额(元)</th>
+                                <th>投资标的数</th>
+                                <th>上次投资时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="pageNumber" colspan="10">
+                                    <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
 
-                    <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
+                        <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
                     </div>
                 </div>
             </div>
@@ -348,25 +348,27 @@
 
     </div>
 
-    <div class="col-lg-12 col-sm-12">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">平台待收</h3>
-            </div>
-            <div class="panel-body" id="">
-                <form class="form-inline" id="platformSumRepayByTimeReport">
-                    <select class="form-control search-category granularity-select" name="granularity">
-                        <option value="Daily">日</option>
-                        <option value="Monthly" selected>月</option>
-                        <option value="Weekly">周</option>
-                    </select>
-                    开始时间： <input type="text" class="form-control start-date repay_date" name="startTime">
-                    结束时间：<input type="text" class="form-control end-date" name="endTime">
-                    <button class="btn btn-primary" type="button">查询</button>
-                </form>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">平台待收</h3>
+                </div>
+                <div class="panel-body" id="">
+                    <form class="form-inline" id="platformSumRepayByTimeReport">
+                        <select class="form-control search-category granularity-select" name="granularity">
+                            <option value="Daily">日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly" selected>月</option>
+                        </select>
+                        开始时间： <input type="text" class="form-control start-date" id="repayStartTime" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime" id="repayEndTime">
+                        <button class="btn btn-primary" type="button">查询</button>
+                    </form>
 
-                <div id="platformSumRepayByTimeDistribution" style="width:100%; height:400px;">
-                    <span class="loading-report">加载中...</span>
+                    <div id="platformSumRepayByTimeDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>

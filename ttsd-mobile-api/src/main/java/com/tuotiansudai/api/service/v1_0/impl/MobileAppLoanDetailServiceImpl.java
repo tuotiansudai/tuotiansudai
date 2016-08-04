@@ -287,7 +287,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
         if(loanerDetailsModel != null){
-            dataModel.put("loaner",loanerDetailsModel.getUserName());
+            if(StringUtils.isNotEmpty(loanerDetailsModel.getUserName())){
+
+                dataModel.put("loaner",MessageFormat.format("{0}某", loanerDetailsModel.getUserName().substring(0,1)));
+            }
             dataModel.put("marriage",loanerDetailsModel.getMarriage());
 
         }

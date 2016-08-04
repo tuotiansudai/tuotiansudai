@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -46,12 +45,8 @@ public class CouponAspect {
     @Autowired
     private CouponInvestService couponInvestService;
 
-
     @Autowired
     private JobManager jobManager;
-
-    @Autowired
-    private UserCouponService userCouponService;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -72,7 +67,7 @@ public class CouponAspect {
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
 
         if (returnValue) {
-            couponRepayService.repay(loanRepayId, false);
+            couponRepayService.repay(loanRepayId,false);
         }
 
         logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",

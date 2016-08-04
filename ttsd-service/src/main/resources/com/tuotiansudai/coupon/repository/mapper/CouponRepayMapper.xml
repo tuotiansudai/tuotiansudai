@@ -78,4 +78,15 @@
         select * from coupon_repay where invest_id = #{investId}
 
     </select>
+
+    <select id="findCouponRepayByLoanIdAndPeriod" parameterType="map" resultMap="couponRepayResultMap">
+        SELECT
+        cr.*
+        FROM
+        coupon_repay cr
+        JOIN invest i
+        ON cr.`invest_id` = i.`id`
+        AND i.`loan_id` = #{loanId}
+        WHERE cr.`period` = #{period} AND cr.`status` != 'COMPLETE'
+    </select>
 </mapper>
