@@ -30,6 +30,9 @@ public class ProductOrderMapperTest {
     private UserMapper userMapper;
 
     @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
     private ProductOrderMapper productOrderMapper;
 
 
@@ -49,9 +52,9 @@ public class ProductOrderMapperTest {
 
         productOrderMapper.create(productOrderModel);
 
+        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList();
 
-
-       // assertThat(productModelList.size(), is(1));
+        assertThat(productOrderModelList.size(), is(1));
     }
 
     private UserModel createFakeUserModel() {
@@ -83,6 +86,7 @@ public class ProductOrderMapperTest {
         fakeProductModel.setImageUrl("upload/images/a.png");
         fakeProductModel.setProductPrice(2000);
         fakeProductModel.setSeq(1);
+        productMapper.create(fakeProductModel);
         return fakeProductModel;
     }
 

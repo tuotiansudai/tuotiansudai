@@ -40,11 +40,16 @@ public class ProductMapperTest {
 
         productMapper.create(productModel);
 
-       // List<ProductModel> productModelList = productMapper.findProductList();
-        //ProductModel pdo = productMapper.findById(11);
+        List<ProductModel> productModelList = productMapper.findProductList();
 
-        //System.out.println(pdo);
-        //assertThat(productModelList.size(), is(1));
+        assertThat(productModelList.size(), is(1));
+
+        long productCount = productMapper.findProductCount();
+
+        assertThat(productCount, is(1L));
+
+        ProductModel productModel1 = productMapper.findById(productModel.getId());
+
     }
 
     private UserModel createFakeUserModel() {
@@ -59,6 +64,5 @@ public class ProductMapperTest {
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
-
 
 }

@@ -28,15 +28,15 @@
         where `id` = #{id}
     </update>
 
-    <select id="findById" parameterType="long" resultMap="ProductOrderModel">
+    <select id="findById" parameterType="long" resultMap="productOrderResultMap">
         select * from product_order where id = #{id};
     </select>
 
-    <select id="findProductCount" parameterType="map" resultType="long">
+    <select id="findProductOrderCount" resultType="long">
         select count(id) from product_order
     </select>
 
-    <select id="findProductList" parameterType="map" resultMap="productResultMap">
+    <select id="findProductOrderList" resultMap="productOrderResultMap">
         select * from product_order
         order by created_time desc
     </select>
