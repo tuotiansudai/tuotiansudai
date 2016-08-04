@@ -20,7 +20,7 @@
             名称
         </th>
         <th>
-            券额(元)
+            金额(元)
         </th>
         <th>
             利率
@@ -32,7 +32,7 @@
             已兑换数量
         </th>
         <th>
-            所需财豆
+            所需积分
         </th>
         <th>
             有效期限
@@ -62,7 +62,7 @@
             <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${exchangeCoupon.couponType.getName()}">${exchangeCoupon.couponType.getName()}</span>
         </td>
         <td>
-            <#if exchangeCoupon.couponType == 'INVEST_COUPON'>
+            <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>
                 ${exchangeCoupon.amount}
             <#else>
                 -

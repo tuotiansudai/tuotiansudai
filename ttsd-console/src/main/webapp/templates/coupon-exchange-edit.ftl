@@ -16,11 +16,11 @@
             </div>
         </div>
 
-        <#if exchangeCouponDto?? && exchangeCouponDto.couponType.name() == "INVEST_COUPON">
+        <#if exchangeCouponDto?? && (exchangeCouponDto.couponType.name() == "INVEST_COUPON" || exchangeCouponDto.couponType.name() == "RED_ENVELOPE") >
             <div class="form-group invest-coupon">
-                <label  class="col-sm-2 control-label">体验券金额(元): </label>
+                <label  class="col-sm-2 control-label">金额(元): </label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control coupon-number" name="amount" <#if exchangeCouponDto??>value="${exchangeCouponDto.amount!}"</#if> placeholder="" datatype="*" errormsg="体验券金额不能为空">
+                    <input type="text" class="form-control coupon-number" name="amount" <#if exchangeCouponDto??>value="${exchangeCouponDto.amount!}"</#if> placeholder="" datatype="*" errormsg="金额不能为空">
                 </div>
             </div>
         </#if>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">所需财豆</label>
+            <label class="col-sm-2 control-label">所需积分</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
             </div>

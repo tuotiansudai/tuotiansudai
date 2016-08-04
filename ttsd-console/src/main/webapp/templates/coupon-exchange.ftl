@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-group invest-coupon">
-            <label  class="col-sm-2 control-label">体验券金额(元): </label>
+            <label  class="col-sm-2 control-label">金额(元): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-number" name="amount" placeholder="" datatype="*" errormsg="体验券金额不能为空">
             </div>
@@ -28,13 +28,6 @@
             <label  class="col-sm-2 control-label">加息券利率(%): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-rate" name="rate" placeholder="" datatype="*" errormsg="加息劵利率不能为空">
-            </div>
-        </div>
-
-        <div class="form-group coupon-hide red-envelope">
-            <label  class="col-sm-2 control-label">现金红包(元): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-red" name="amount" placeholder="" datatype="*" errormsg="现金红包金额不能为空">
             </div>
         </div>
 
@@ -65,7 +58,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">所需财豆</label>
+            <label class="col-sm-2 control-label">所需积分</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
             </div>

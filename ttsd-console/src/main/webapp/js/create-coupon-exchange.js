@@ -73,26 +73,15 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                         showErrorMessage('加息券利息需要大于等于0.1且只能保留1位小数', $('.coupon-rate', curform));
                         return false;
                     }
-                } else if(couponType == 'RED_ENVELOPE' || couponType == '现金红包') {
-                    var periods = parseInt($('.coupon-red', curform).val());
-                    if (periods <= 0) {
-                        showErrorMessage('现金红包金额最小为1', $('.coupon-red', curform));
-                        return false;
-                    }
-                    var investLimit = parseInt($('.invest_limit', curform).val());
-                    if (investLimit <= 0) {
-                        showErrorMessage('现金红包下限最小为1', $('.invest_limit', curform));
-                        return false;
-                    }
-                }else{
+                } else{
                     var periods = parseInt($('.coupon-number', curform).val());
                     if (periods <= 0) {
-                        showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                        showErrorMessage('金额最小为1', $('.coupon-number', curform));
                         return false;
                     }
                     var investLimit = parseInt($('.invest_limit', curform).val());
                     if (investLimit <= 0) {
-                        showErrorMessage('投资体验券下限最小为1', $('.invest_limit', curform));
+                        showErrorMessage('金额下限最小为1', $('.invest_limit', curform));
                         return false;
                     }
                 }
@@ -149,18 +138,12 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
         $('.couponType').change(function(){
             var couponType = this.value;
             iniForm();
-            if(couponType == "INVEST_COUPON"){
-                $('.interest-coupon').hide();
-                $('.red-envelope').hide();
-                $('.invest-coupon').show();
-            }else if(couponType == "INTEREST_COUPON"){
+            if(couponType == "INTEREST_COUPON"){
                 $('.interest-coupon').show();
-                $('.red-envelope').hide();
                 $('.invest-coupon').hide();
             }else{
                 $('.interest-coupon').hide();
-                $('.red-envelope').show();
-                $('.invest-coupon').hide();
+                $('.invest-coupon').show();
             }
         });
 
