@@ -109,7 +109,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         long repayActualInterest = 0;
         long totalAmount = 0;
         for(InvestRepayModel investRepayModel : investRepayModelList){
-            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(repayCalendarRequestDto.getBaseParam().getUserId(),null,null,repayCalendarRequestDto.getDate());
             if(investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())){
                 continue;
             }
@@ -125,16 +124,17 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 totalAmount += repayExpectedInterest;
             }
 
+            List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findByUserCouponByInvestId(investRepayModel.getInvestId());
             for(CouponRepayModel couponRepayModel: couponRepayModelList){
                 if(couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0) {
                     continue;
                 }
                 if(couponRepayModel.getActualRepayDate() != null){
                     repayActualInterest += couponRepayModel.getRepayAmount();
-                    totalAmount += repayActualInterest;
+                    totalAmount += couponRepayModel.getRepayAmount();
                 }else{
                     repayExpectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-                    totalAmount += repayExpectedInterest;
+                    totalAmount += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                 }
             }
             int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
