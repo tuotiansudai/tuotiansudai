@@ -1,8 +1,14 @@
 @import "./daterangepicker";
 
 .nav-container {
+  margin-right: 10px;
+  .nav .logo{
+    width:370px;
+  }
   .nav ul {
-    margin-right: 120px;
+    li{
+      width:90px;
+    }
     li a.active, li a:hover {
       color: #428edf;
       border-top: #428edf 3px solid;

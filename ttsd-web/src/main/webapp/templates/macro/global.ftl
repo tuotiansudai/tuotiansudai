@@ -52,9 +52,11 @@
     ]/>
 
     <#local membershipMenus=[
-        {"title":"会员中心", "url":"/membership","category":""},
+        {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""},
+        {"title":"积分商城", "url":"/membership/store","category":""},
+        {"title":"积分任务", "url":"/membership/task","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +131,13 @@
 </div>
 
 <#if !isAppSource>
-    <#include "../footer.ftl" />
+    <#switch site>
+        <#case "membership">
+            <#include "../membership-footer.ftl"/>
+            <#break>
+        <#default>
+            <#include "../footer.ftl" />
+    </#switch>
 </#if>
 
 <script type="text/javascript" charset="utf-8">
@@ -225,10 +233,11 @@
     };
 
     phoneLoadFun();
-
-    document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');
-        toggleClass(obj,"active");
+    if(window.$('getMore')){
+        document.getElementById('getMore').onclick=function(){
+            var obj = document. getElementById('getMore');
+            toggleClass(obj,"active");
+        }
     }
 
     function hasClass(obj, cls) {
