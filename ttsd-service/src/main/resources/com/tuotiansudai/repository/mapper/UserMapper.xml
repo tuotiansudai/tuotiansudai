@@ -27,6 +27,7 @@
         <result column="auto_invest_status" property="autoInvestStatus"></result>
         <result column="last_bill_time" property="lastBillTime"></result>
         <result column="sign_in_count" property="signInCount"></result>
+        <result column="address" property="address"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"/>
             <result column="login_name" property="loginName"/>

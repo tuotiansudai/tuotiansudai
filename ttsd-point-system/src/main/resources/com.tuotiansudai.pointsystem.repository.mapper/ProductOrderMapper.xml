@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.pointsystem.repository.mapper.ProductOrderMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="productOrderResultMap" type="ProductOrderModel">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="num" property="num"/>
+        <result column="consignment" property="consignment"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
+        insert into product_order (`product_id`, `num`, `consignment`, `created_user`, `created_time`)
+        value(#{productId}, #{num}, #{consignment}, #{createdUser}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="ProductOrderModel">
+        update product_order
+        set `product_id` = #{productId},
+            `num` = #{num},
+            `consignment` = #{consignment}
+        where `id` = #{id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="ProductOrderModel">
+        select * from product_order where id = #{id};
+    </select>
+
+    <select id="findProductCount" parameterType="map" resultType="long">
+        select count(id) from product_order
+    </select>
+
+    <select id="findProductList" parameterType="map" resultMap="productResultMap">
+        select * from product_order
+        order by created_time desc
+    </select>
+
+</mapper>

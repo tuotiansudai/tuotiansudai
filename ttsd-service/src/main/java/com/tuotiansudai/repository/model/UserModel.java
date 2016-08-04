@@ -47,6 +47,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private int signInCount;
 
+    private String address;
+
     public String getSalt() {
         return salt;
     }
@@ -217,6 +219,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setSignInCount(int signInCount) {
         this.signInCount = signInCount;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
