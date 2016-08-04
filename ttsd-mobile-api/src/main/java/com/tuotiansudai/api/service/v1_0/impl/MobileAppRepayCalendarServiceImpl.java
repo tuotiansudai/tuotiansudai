@@ -121,7 +121,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 repayActualInterest = investRepayModel.getRepayAmount();
                 totalAmount += repayActualInterest;
             }else{
-                repayExpectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
+                repayExpectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
                 totalAmount += repayExpectedInterest;
             }
 
