@@ -13,7 +13,6 @@ import java.io.IOException;
 public class LogGenerateFilter implements Filter {
 
 
-    FilterConfig filterConfig = null;
 
     private static final String REQUEST_ID = "requestId";
 
@@ -23,7 +22,6 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.filterConfig = filterConfig;
     }
 
     @Override
@@ -42,6 +40,5 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void destroy() {
-        this.filterConfig = null;
     }
 }

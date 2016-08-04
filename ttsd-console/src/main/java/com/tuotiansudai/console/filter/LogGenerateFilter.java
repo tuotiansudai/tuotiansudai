@@ -21,7 +21,6 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.filterConfig = filterConfig;
     }
 
 
@@ -41,6 +40,5 @@ public class LogGenerateFilter implements Filter {
 
     @Override
     public void destroy() {
-        this.filterConfig = null;
     }
 }
