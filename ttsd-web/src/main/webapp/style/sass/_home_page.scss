@@ -1494,30 +1494,39 @@
       }
       .book-table-column {
         .fl {
-          width:24%;
+          width:100%;
           font-size:13px;
-          padding-right:1%;
+          padding-right:0;
+          text-align: left;
         }
         .fr {
-          width:75%;
+          width:100%;
         }
       }
       .book-dl {
         margin-bottom:10px;
         dt {
-          width:24%;
+          width:100%;
           font-size:13px;
-          padding-right:1%;
+          padding-right:0;
+          text-align: left;
         }
         dd {
-          width:75%;
+          width:100%;
         }
       }
     }
+
+    .book-box-layer {
+      .layui-layer-title {
+        font-size:14px;
+        color: #ff752a;
+        padding-left:10px;
+      }
+      width:98%!important;
+      left: 1%!important;
+    }
   }
 
-  .book-box-layer {
-    left: 5%!important;
-    width:90%!important;
-  }
+
 }
