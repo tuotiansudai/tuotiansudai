@@ -100,13 +100,15 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             })
         }
 
-        $('.web-book-box').on('click', function (event) {
+        $('.web-book-box,.book-text-tip').on('click', function (event) {
             event.preventDefault();
-            if ($(this).find('i').hasClass('not-anonymous')) {
+            if ($(this).find('a.btn-normal').hasClass('not-anonymous')) {
                 location.href = '/login';
                 return;
             }
-            if ($(this).find('i').hasClass('is-user')) {
+            if ($(this).find('a').hasClass('is-user')) {
+                $bookInvestForm.find('.init-radio-style').removeClass('on');
+                $bookInvestForm.find('input[name="bookingAmount"]').val('');
                 layer.open({
                     title: '预约投资',
                     type: 1,
@@ -118,27 +120,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             }
             location.href = '/register/account';
         });
-
-        $('.book-text-tip').on('click', function (event) {
-            event.preventDefault();
-            if ($(this).find('a').hasClass('not-anonymous')) {
-                location.href = '/login';
-                return;
-            }
-            if ($(this).find('a').hasClass('is-user')) {
-                $bookInvestForm.find('.init-radio-style').removeClass('on');
-                $bookInvestForm.find('input[name="bookingAmount"]').val('');
-                layer.open({
-                    title: '预约投资',
-                    type: 1,
-                    skin: 'book-box-layer',
-                    area: ['500px'],
-                    content: $('.book-invest-box')
-                });
-                return;
-            }
-            location.href = '/register/account';
-        })
 
         $('.loan-btn li').on('click', function (event) {
             event.preventDefault();

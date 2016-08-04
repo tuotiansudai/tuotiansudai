@@ -283,9 +283,9 @@
 
                 <div class="web-book-box" data-url="/loan/1">
                     <span class="book-info">预约后当有相应项目我们会及时通知您</span>
-                    <i class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">
+                    <a class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">
                         我要预约
-                    </i>
+                    </a>
                 </div>
 
                 <ul class="loan-box-inner loan-btn">
