@@ -44,11 +44,17 @@ public class ProductOrderMapperTest {
 
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
+        productOrderModel.setProductId(productModel.getId());
+        productOrderModel.setProductPrice(2000);
+        productOrderModel.setNum(2);
+        productOrderModel.setTotalPrice(4000);
+        productOrderModel.setConsignment(false);
+        productOrderModel.setRealName("张山");
+        productOrderModel.setMobile("13999999999");
+        productOrderModel.setAddress("北京市北京市");
         productOrderModel.setConsignment(true);
         productOrderModel.setCreatedTime(new Date());
         productOrderModel.setCreatedBy(fakeUserModel.getLoginName());
-        productOrderModel.setNum(2);
-        productOrderModel.setProductId(productModel.getId());
 
         productOrderMapper.create(productOrderModel);
 
