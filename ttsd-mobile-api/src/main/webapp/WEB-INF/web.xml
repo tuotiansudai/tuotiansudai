@@ -57,6 +57,47 @@
     </filter-mapping>
 
     <filter>
+        <filter-name>MobileXssFilter</filter-name>
+        <filter-class>com.tuotiansudai.api.filter.MobileXssFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v1.0/get/loans</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v2.0/get/loans</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v1.0/get/userinvests</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v2.0/get/userinvests</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v1.0/get/transferrer-transfer-application-list</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MobileXssFilter</filter-name>
+        <url-pattern>/v2.0/get/transferrer-transfer-application-list</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
