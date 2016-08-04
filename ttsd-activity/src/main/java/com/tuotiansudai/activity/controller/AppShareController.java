@@ -56,7 +56,7 @@ public class AppShareController {
         ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
         AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
         if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "**");
+            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "某");
         } else {
             modelAndView.addObject("referrerInfo", referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10));
         }
@@ -91,7 +91,7 @@ public class AppShareController {
         ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
         AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
         if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "**");
+            modelAndView.addObject("referrerInfo", referrerAccount.getUserName().substring(0, 1) + "某");
         } else {
             modelAndView.addObject("referrerInfo", referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10));
         }
