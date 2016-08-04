@@ -34,7 +34,7 @@
 
     <filter>
         <filter-name>logGenerateFilter</filter-name>
-        <filter-class>com.tuotiansudai.signin.loggenerate.LogGenerateFilter</filter-class>
+        <filter-class>com.tuotiansudai.signin.filter.LogGenerateFilter</filter-class>
     </filter>
 
     <filter>
