@@ -71,9 +71,11 @@ public class ContractServiceTest {
         transferApplicationMapper.create(transferApplicationModel);
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
-        InvestRepayModel investRepayModel = new InvestRepayModel(1L, investModel.getId(), 2, 233L, 2000L, 2L,
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, investModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
-        investRepayMapper.create(Lists.newArrayList(investRepayModel));
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+                DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
         assertNotNull(pdfStr);
