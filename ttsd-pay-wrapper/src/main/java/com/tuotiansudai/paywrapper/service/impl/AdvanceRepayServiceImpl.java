@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -97,6 +98,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    protected CouponRepayMapper couponRepayMapper;
 
     /**
      * 生成借款人还款form data
@@ -349,7 +353,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             BaseDto<PayDataDto> dto = loanService.updateLoanStatus(loanId, LoanStatus.COMPLETE);
             logger.info(MessageFormat.format("[Advance Repay {0}] update loan({1}) status to COMPLETE is {2}",
                     String.valueOf(loanRepayId), String.valueOf(loanId), String.valueOf(dto.getData().getStatus())));
-            return  dto.getData().getStatus();
+            return dto.getData().getStatus();
         }
 
         try {
