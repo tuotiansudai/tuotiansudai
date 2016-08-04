@@ -190,7 +190,9 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
-                <button class="btn btn-default pull-left export-red-envelopes" type="button">导出Excel</button>
+                <@global.role hasRole="'DATA'">
+                    <button class="btn btn-default pull-left export-red-envelopes" type="button">导出Excel</button>
+                </@global.role>
             </ul>
         </#if>
     </nav>

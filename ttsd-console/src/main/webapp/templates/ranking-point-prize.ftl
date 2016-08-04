@@ -24,7 +24,9 @@
             </#list>
         </tbody>
     </table>
-    <button class="btn btn-default pull-left export-ranking-point-prize" type="button">导出Excel</button>
+    <@global.role hasRole="'DATA'">
+        <button class="btn btn-default pull-left export-ranking-point-prize" type="button">导出Excel</button>
+    </@global.role>
 </div>
 
 </@global.main>

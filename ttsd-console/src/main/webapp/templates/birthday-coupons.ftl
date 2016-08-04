@@ -158,7 +158,9 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
-                <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+                <@global.role hasRole="'DATA'">
+                    <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+                </@global.role>
             </ul>
         </#if>
     </nav>

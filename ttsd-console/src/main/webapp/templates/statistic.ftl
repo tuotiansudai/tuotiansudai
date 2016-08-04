@@ -183,8 +183,9 @@
                         </tr>
                         </tfoot>
                     </table>
-
-                    <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
+                        <@global.role hasRole="'DATA'">
+                            <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
+                        </@global.role>
                     </div>
                 </div>
             </div>

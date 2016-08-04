@@ -147,7 +147,9 @@
                 </a>
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            <@global.role hasRole="'DATA'">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@global.role>
         </#if>
     </nav>
     <!-- pagination -->
