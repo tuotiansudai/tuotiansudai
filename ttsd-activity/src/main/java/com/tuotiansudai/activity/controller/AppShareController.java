@@ -29,7 +29,7 @@ public class AppShareController {
     private PrepareUserMapper prepareUserMapper;
 
     @RequestMapping(value = "/ios", method = RequestMethod.GET)
-    public ModelAndView getIOSPage(@RequestParam String referrerMobile, HttpServletRequest httpServletRequest) {
+    public ModelAndView getIOSPage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
@@ -64,7 +64,7 @@ public class AppShareController {
     }
 
     @RequestMapping(value = "/android", method = RequestMethod.GET)
-    public ModelAndView getAndroidPage(@RequestParam String referrerMobile, HttpServletRequest httpServletRequest) {
+    public ModelAndView getAndroidPage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
