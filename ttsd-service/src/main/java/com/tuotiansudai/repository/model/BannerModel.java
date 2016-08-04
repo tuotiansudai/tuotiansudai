@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class BannerModel implements Serializable{
+public class BannerModel implements Serializable {
 
     private long id;
 

@@ -114,6 +114,7 @@ public class LoanDetailServiceTest {
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
         loanModel.setLoanerLoginName(fakeUserName);
         loanModel.setLoanerUserName("借款人");
+        loanModel.setPledgeType(PledgeType.HOUSE);
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanMapper.create(loanModel);
         LoanTitleModel loanTitleModel = new LoanTitleModel();

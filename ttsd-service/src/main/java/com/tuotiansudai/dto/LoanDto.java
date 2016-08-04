@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +71,12 @@ public class LoanDto extends BaseDataDto implements Serializable {
      ***/
     @NotEmpty
     private String descriptionHtml;
+
+    /***
+     * 抵押物类型
+     */
+    @NotEmpty
+    private PledgeType pledgeType;
 
     /***
      * 最小投资金额
@@ -172,9 +179,9 @@ public class LoanDto extends BaseDataDto implements Serializable {
     /***
      * 申请材料
      ***/
-    private List<LoanTitleRelationModel> loanTitles;
+    private List<LoanTitleRelationModel> loanTitles = new ArrayList<>();
 
-    private List<LoanTitleModel> loanTitleDto;
+    private List<LoanTitleModel> loanTitleDto = new ArrayList<>();
 
     /**
      * 可投金额
@@ -295,6 +302,14 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setDescriptionHtml(String descriptionHtml) {
         this.descriptionHtml = descriptionHtml;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 
     public String getMinInvestAmount() {

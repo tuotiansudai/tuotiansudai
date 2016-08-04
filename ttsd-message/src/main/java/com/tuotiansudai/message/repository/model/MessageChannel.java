@@ -14,5 +14,7 @@ public enum MessageChannel {
         this.description = description;
     }
 
-    MessageChannel(String description){this.description = description; }
+    MessageChannel(String description) {
+        this.description = description;
+    }
 }

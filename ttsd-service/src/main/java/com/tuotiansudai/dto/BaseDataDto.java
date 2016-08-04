@@ -11,6 +11,10 @@ public class BaseDataDto implements Serializable {
     public BaseDataDto() {
     }
 
+    public BaseDataDto(boolean status) {
+        this.status = status;
+    }
+
     public BaseDataDto(boolean status, String message) {
         this.status = status;
         this.message = message;

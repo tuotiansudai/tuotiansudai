@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,10 +56,10 @@ public class MembershipController {
                                        @RequestParam(value = "levels", required = false, defaultValue = "") List<Integer> selectedLevels) {
 
         int count = userMembershipMapper.findCountUserMembershipItemViews(loginName,
-                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels,(index - 1) * 10,pageSize);
+                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels, (index - 1) * 10, pageSize);
 
         List<UserMembershipItemDto> userMembershipItemDtos = userMembershipService.getUserMembershipItems(loginName,
-                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels,(index - 1) * 10,pageSize);
+                mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels, (index - 1) * 10, pageSize);
 
         BasePaginationDataDto<UserMembershipItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userMembershipItemDtos);
 

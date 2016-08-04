@@ -1395,4 +1395,19 @@
             year(created_time), month(created_time)
         </if>
     </select>
+
+    <select id="queryRepayByRecheckTimeAndActualRepayDate" parameterType="map" resultMap="keyValueMap">
+        SELECT
+            ROUND(IFNULL(SUM(r.corpus + r.expected_interest + r.default_interest),0)/ 100, 2) AS `value`,
+            DATE(#{startTime}) AS `name`,
+            '待收' as `group`
+        FROM
+            loan l
+                LEFT JOIN
+            loan_repay r ON l.id = r.loan_id
+        WHERE
+            l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
+            AND l.recheck_time &lt; #{startTime}
+            AND (r.actual_repay_date > #{startTime} or actual_repay_date is null)
+    </select>
 </mapper>

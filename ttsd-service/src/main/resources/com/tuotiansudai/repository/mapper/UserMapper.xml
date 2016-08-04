@@ -357,7 +357,7 @@
         <if test="balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax > 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
         ORDER BY `account`.`balance` DESC
@@ -376,7 +376,7 @@
         <if test="balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax > 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
@@ -393,7 +393,7 @@
         <if test="balanceMin >= 0">
             AND `account`.`balance` >= #{balanceMin}
         </if>
-        <if test="balanceMax >= 0">
+        <if test="balanceMax > 0">
             AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
