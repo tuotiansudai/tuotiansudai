@@ -122,14 +122,17 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
         location.href = '/register/account';
     });
 
-    $('.loan-btn li').on('click', function (event) {
-            event.preventDefault();
-        window.location.href = $(this).attr('data-url');
-        });
+    $('.loan-btn').on('click', 'li', function (event) {
+        event.preventDefault();
+        window.location.href = $(this).data('url');
+    });
         $('.new-user-free').on('click', function (event) {
             event.preventDefault();
             window.location.href = $(this).attr('data-url');
         });
+    $('.project-transfer-mobile').on('click', '.product-box-tran', function () {
+        window.location.href = $(this).data('url');
+    });
         $('.mask-btn').on('click', function (event) {
             event.preventDefault();
             $('.new-user-free').removeClass('active');
