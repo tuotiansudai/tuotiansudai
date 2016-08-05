@@ -136,6 +136,12 @@ public class MembershipController {
 
         return modelAndView;
     }
+    @RequestMapping(path = "/integral", method = RequestMethod.GET)
+    public ModelAndView integral() {
+        ModelAndView modelAndView = new ModelAndView("/membership-integral");
+
+        return modelAndView;
+    }
 
 
     @ResponseBody

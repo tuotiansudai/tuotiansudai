@@ -101,12 +101,116 @@
             margin-bottom:30px;
             border-bottom:1px solid #e6e6e6;
           }
-          .orfer-table{
+          .order-table{
             float:left;
             width:100%;
+            padding-bottom:20px;
+            border-bottom:1px solid #e6e6e6;
+            p{
+              font-size:16px;
+              color:#808080;
+              line-height:25px;
+              margin-bottom:0;
+              &.name-text{
+                margin-bottom:10px;
+                font-size:18px;
+                color:#4d4d4d;
+              }
+              &.title-text{
+                font-size:16px;
+                color:#808080;
+                margin-bottom:15px;
+              }
+            }
             .order-picture{
               float:left;
-              width:190px;
+              width:140px;
+              margin-right:50px;
+            }
+            .order-name{
+              float:left;
+              width:240px;
+
+            }
+            .order-price{
+              float:left;
+              width:180px;
+              i{
+                color:#fc4a52;
+              }
+            }
+            .order-number{
+              float:left;
+              width:210px;
+              span{
+                float:left;
+                &.count-btn{
+                  width:26px;
+                  height:24px;
+                  font-size:22px;
+                  text-align:center;
+                  line-height:24px;
+                  cursor:pointer;
+                  border:1px solid #d1d6de;
+                  &:active{
+                    background:#ccc;
+                  }
+                }
+                &.total-num{
+                  font-size:14px;
+                  color:#808080;
+                  i{
+                    color:#fc4a52;
+                  }
+                }
+              }
+              .count-list{
+                float:left;
+                width:100%;
+                margin-bottom:0;
+                .num-text{
+                  float:left;
+                  width: 50px;
+                  height: 24px;
+                  line-height: 25px;
+                  text-align: center;
+                  padding: 0;
+                  border: none;
+                  border-top: 1px solid #d1d1d1;
+                  border-bottom: 1px solid #d1d1d1;
+                }
+              }
+            }
+            .order-count{
+              float:left;
+              width:120px;
+            }
+          }
+        }
+        .order-total{
+          float:left;
+          width:100%;
+          padding-top:30px;
+          p{
+            text-align:right;
+            span{
+              font-size:18px;
+              color:#4d4d4d;
+              i{
+                color:#fc4a52;
+              }
+            }
+            .order-btn{
+              display:inline-block;
+              width: 160px;
+              height: 40px;
+              line-height: 20px;
+              color: #fff;
+              font-size: 16px;
+              text-align: center;
+              border: none;
+              cursor: pointer;
+              background: #fc4a52;
             }
           }
         }
