@@ -114,7 +114,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 } else if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
                     transferStatus = "";
                 } else {
-                    transferStatus = investModel.getTransferStatus().name();
+                    transferStatus = "";
                 }
                 dto.setTransferStatus(transferStatus);
 
