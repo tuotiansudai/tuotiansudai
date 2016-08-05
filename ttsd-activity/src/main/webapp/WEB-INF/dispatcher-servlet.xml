@@ -35,7 +35,6 @@
 
 
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.activity.interceptors.LogGenerateInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.ChannelInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.AppTokenInterceptor"/>
         <bean class="com.tuotiansudai.activity.interceptors.LinkExchangeInterceptor"/>
