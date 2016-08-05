@@ -1,9 +1,9 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.tuotiansudai.ask.dto.BaseDto;
+import com.tuotiansudai.ask.dto.BasePaginationDataDto;
 import com.tuotiansudai.ask.service.QuestionService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

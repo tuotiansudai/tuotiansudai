@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;

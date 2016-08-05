@@ -9,7 +9,6 @@
     <resultMap id="questionResultMap" type="QuestionModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
-        <result column="mobile" property="mobile"/> <!--mobile is not table column-->
         <result column="question" property="question"/>
         <result column="addition" property="addition"/>
         <result column="tags" property="tags" typeHandler="com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler"/>
@@ -41,12 +40,12 @@
     </update>
 
     <select id="findByLoginName" parameterType="string" resultMap="questionResultMap">
-        select *, (select mobile from user where user.login_name = #{loginName}) as mobile
+        select *
         from ask_question where login_name = #{loginName}
     </select>
 
     <select id="findAllQuestions" parameterType="map" resultMap="questionResultMap">
-        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        select *
         from ask_question
         where approved is TRUE or login_name = #{loginName}
         order by created_time desc
@@ -59,7 +58,7 @@
     </select>
 
     <select id="findAllUnresolvedQuestions" parameterType="map" resultMap="questionResultMap">
-        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        select *
         from ask_question
         where (approved is TRUE or login_name = #{loginName})
         and not exists (select 1 from ask_answer where ask_question.id = ask_answer.question_id and best_answer is TRUE)
@@ -74,7 +73,7 @@
     </select>
 
     <select id="findAllHotQuestions" parameterType="map" resultMap="questionResultMap">
-        select *, (select mobile from user where user.login_name = ask_question.login_name) as mobile
+        select *
         from ask_question
         where (approved is TRUE or login_name = #{loginName})
         order by last_answered_time desc

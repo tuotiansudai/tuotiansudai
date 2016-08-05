@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;

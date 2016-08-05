@@ -14,4 +14,7 @@ include "ttsd-service",
         'ttsd-web-common-config',
         'ttsd-ask-web',
         'ttsd-ask-service',
-        'ttsd-user-service'
+        'ttsd-user-service',
+        'ttsd-config',
+        'ttsd-client',
+        'ttsd-spring-extension'

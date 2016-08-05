@@ -2,15 +2,12 @@ package com.tuotiansudai.ask.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.QuestionPaginationItemDto;
-import com.tuotiansudai.ask.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public BaseDto<BaseDataDto> createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
@@ -59,7 +59,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionPaginationItemDto> items = Lists.transform(allQuestions, new Function<QuestionModel, QuestionPaginationItemDto>() {
             @Override
             public QuestionPaginationItemDto apply(QuestionModel input) {
-                return new QuestionPaginationItemDto(input);
+                return new QuestionPaginationItemDto(input, userMapper.findByLoginName(input.getLoginName()).getMobile());
             }
         });
 

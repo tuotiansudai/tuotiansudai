@@ -41,13 +41,13 @@ public class MobileAppLoginController{
         String deviceId = loginRequestDto.getJ_deviceId() == null ? loginRequestDto.getDeviceId():loginRequestDto.getJ_deviceId();
         if(captchaHelper.isNeedImageCaptcha(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getRemoteAddr()) && StringUtils.isEmpty(captcha) ){
             logger.debug("Authentication failed: need image captcha but image captcha is null");
-           return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
+           return new BaseResponseDto<>(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
         SignInDto signInDto = new SignInDto(username, password, captcha, source, deviceId);
-        BaseDto<LoginDto> baseDto = signInClient.sendSignIn(null, signInDto);
+        LoginDto baseDto = signInClient.sendSignIn(null, signInDto);
         BaseResponseDto<LoginResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
-        if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
+        if (baseDto.getStatus()) {
             loginResponseDataDto.setToken(mobileAppTokenProvider.refreshToken(username));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -55,9 +55,9 @@ public class MobileAppLoginController{
         } else {
 
             ReturnMessage errorMsg = ReturnMessage.LOGIN_FAILED;
-            if (baseDto.getData().isLocked()) {
+            if (baseDto.isLocked()) {
                 errorMsg = ReturnMessage.USER_IS_DISABLED;
-            } else if (baseDto.getData().isCaptchaNotMatch()) {
+            } else if (baseDto.isCaptchaNotMatch()) {
                 errorMsg = ReturnMessage.IMAGE_CAPTCHA_IS_WRONG;
             }
             baseResponseDto = mobileAppTokenProvider.generateResponseDto(errorMsg,username);

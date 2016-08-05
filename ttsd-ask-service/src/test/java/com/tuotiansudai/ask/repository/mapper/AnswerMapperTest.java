@@ -26,44 +26,40 @@ public class AnswerMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldCreateAnswer() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("asker", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
-        UserModel answerer = this.createUser("answerer");
-        AnswerModel answerModel = new AnswerModel(answerer.getLoginName(), questionModel.getId(), "answer");
+        AnswerModel answerModel = new AnswerModel("answerer", questionModel.getId(), "answer");
         answerMapper.create(answerModel);
 
-        List<AnswerModel> savedAnswers = answerMapper.findByLoginName(answerer.getLoginName());
+        List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer");
         assertThat(savedAnswers.size(), is(1));
         assertThat(savedAnswers.get(0).getId(), is(answerModel.getId()));
     }
 
     @Test
     public void shouldUpdateAnswer() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
-        UserModel answerer = this.createUser("answerer");
-        AnswerModel answerModel = new AnswerModel(answerer.getLoginName(), questionModel.getId(), "answer");
+        AnswerModel answerModel = new AnswerModel("answerer", questionModel.getId(), "answer");
         answerMapper.create(answerModel);
 
         answerModel.setBestAnswer(true);
         answerModel.setFavorite(1);
         answerModel.setApproved(true);
-        answerModel.setApprovedBy(answerer.getLoginName());
+        answerModel.setApprovedBy("answerer");
         answerModel.setApprovedTime(new Date());
         answerMapper.update(answerModel);
 
-        List<AnswerModel> updatedAnswers = answerMapper.findByLoginName(answerer.getLoginName());
+        List<AnswerModel> updatedAnswers = answerMapper.findByLoginName("answerer");
 
         AnswerModel updatedAnswer = updatedAnswers.get(0);
         assertThat(updatedAnswer.getId(), is(answerModel.getId()));
         assertThat(updatedAnswer.isBestAnswer(), is(true));
         assertThat(updatedAnswer.getFavorite(), is(1));
         assertThat(updatedAnswer.isApproved(), is(true));
-        assertThat(updatedAnswer.getApprovedBy(), is(answerer.getLoginName()));
+        assertThat(updatedAnswer.getApprovedBy(), is("answerer"));
         assertNotNull(updatedAnswer.getApprovedTime());
     }
 }

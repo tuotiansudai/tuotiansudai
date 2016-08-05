@@ -6,7 +6,7 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.repository.model.CouponType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

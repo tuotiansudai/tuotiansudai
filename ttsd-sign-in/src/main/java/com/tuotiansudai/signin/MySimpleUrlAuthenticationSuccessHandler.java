@@ -40,9 +40,6 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     private LoginLogService loginLogService;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Value("${web.login.max.failed.times}")
@@ -55,20 +52,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
 
-        BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
-        loginDto.setRoles(Lists.transform(userRoleMapper.findByLoginName(loginName), new Function<UserRoleModel, Role>() {
-            @Override
-            public Role apply(UserRoleModel input) {
-                return input.getRole();
-            }
-        }));
         loginDto.setNewSessionId(request.getSession().getId());
-        baseDto.setData(loginDto);
 
         clearFailHistory(loginName);
-        String jsonBody = objectMapper.writeValueAsString(baseDto);
+        String jsonBody = objectMapper.writeValueAsString(loginDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = null;

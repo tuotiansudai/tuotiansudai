@@ -73,8 +73,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                     beforeSubmit: function (arr, $form, options) {
                         loginSubmitElement.addClass('loading');
                     },
-                    success: function (response) {
-                        var data = response.data;
+                    success: function (data) {
                         if (data.status) {
                             window.location.href = _.difference(data.roles, ['USER']).length > 0 ? loginFormElement.data('redirect-url') : "/register/account";
                         } else {

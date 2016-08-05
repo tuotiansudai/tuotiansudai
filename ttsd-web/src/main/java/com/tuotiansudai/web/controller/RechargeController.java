@@ -13,7 +13,7 @@ import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

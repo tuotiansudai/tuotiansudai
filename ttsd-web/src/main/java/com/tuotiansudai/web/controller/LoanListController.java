@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

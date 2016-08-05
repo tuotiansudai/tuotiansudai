@@ -26,7 +26,7 @@
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="answerResultMap">
-        select *, (select mobile from user where user.login_name = #{loginName}) as mobile
+        select *
         from ask_answer where login_name = #{loginName}
     </select>
 

@@ -54,9 +54,8 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(request.getParameter("username"), source, RequestIPParser.parse(request), request.getParameter("deviceId"), false);
 
-        BaseDto<LoginDto> baseDto = new BaseDto<>();
+        LoginDto baseDto = new LoginDto();
         LoginDto loginDto = new LoginDto();
-        baseDto.setData(loginDto);
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
 

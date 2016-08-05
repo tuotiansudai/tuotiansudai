@@ -16,7 +16,7 @@ public class QuestionPaginationItemDto implements Serializable {
 
     private String question;
 
-    private String addtion;
+    private String addition;
 
     private int answers;
 
@@ -27,12 +27,12 @@ public class QuestionPaginationItemDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 
-    public QuestionPaginationItemDto(QuestionModel questionModel) {
+    public QuestionPaginationItemDto(QuestionModel questionModel, String mobile) {
         this.id = questionModel.getId();
         this.question = questionModel.getQuestion();
-        this.addtion = questionModel.getAddition();
+        this.addition = questionModel.getAddition();
         this.answers = questionModel.getAnswers();
-        this.mobile = questionModel.getMobile();
+        this.mobile = mobile;
         this.tags = Lists.transform(questionModel.getTags(), new Function<Tag, String>() {
             @Override
             public String apply(Tag input) {
@@ -50,8 +50,8 @@ public class QuestionPaginationItemDto implements Serializable {
         return question;
     }
 
-    public String getAddtion() {
-        return addtion;
+    public String getAddition() {
+        return addition;
     }
 
     public int getAnswers() {

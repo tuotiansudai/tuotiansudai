@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.repository.model.ContractType;
 import com.tuotiansudai.service.ContractService;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

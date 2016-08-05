@@ -22,17 +22,13 @@ public class QuestionMapperTest extends BaseMapperTest {
     @Autowired
     private QuestionMapper questionMapper;
 
-    @Autowired
-    private AnswerMapper answerMapper;
-
     @Test
     public void shouldCreateQuestion() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
-        List<QuestionModel> savedQuestions = questionMapper.findByLoginName(asker.getLoginName());
+        List<QuestionModel> savedQuestions = questionMapper.findByLoginName("ask");
 
         assertThat(savedQuestions.size(), is(1));
         assertThat(savedQuestions.get(0).getId(), is(questionModel.getId()));
@@ -40,8 +36,7 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldUpdateQuestion() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
@@ -49,13 +44,13 @@ public class QuestionMapperTest extends BaseMapperTest {
         questionModel.setAddition("newAddition");
         questionModel.setAnswers(1);
         questionModel.setApproved(true);
-        questionModel.setApprovedBy(asker.getLoginName());
+        questionModel.setApprovedBy("ask");
         questionModel.setApprovedTime(new Date());
         questionModel.setTags(Lists.newArrayList(Tag.OTHER));
 
         questionMapper.update(questionModel);
 
-        List<QuestionModel> updatedQuestions = questionMapper.findByLoginName(asker.getLoginName());
+        List<QuestionModel> updatedQuestions = questionMapper.findByLoginName("ask");
 
         QuestionModel updatedQuestionModel = updatedQuestions.get(0);
         assertThat(updatedQuestionModel.getId(), is(questionModel.getId()));
@@ -63,20 +58,19 @@ public class QuestionMapperTest extends BaseMapperTest {
         assertThat(updatedQuestionModel.getAddition(), is("newAddition"));
         assertThat(updatedQuestionModel.getAnswers(), is(1));
         assertThat(updatedQuestionModel.isApproved(), is(true));
-        assertThat(updatedQuestionModel.getApprovedBy(), is(asker.getLoginName()));
+        assertThat(updatedQuestionModel.getApprovedBy(), is("ask"));
         assertThat(updatedQuestionModel.getTags(), Is.<List<Tag>>is(Lists.newArrayList(Tag.OTHER)));
         assertNotNull(updatedQuestionModel.getApprovedTime());
     }
 
     @Test
     public void shouldFindAllQuestions() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
-        assertThat(questionMapper.findAllQuestions(asker.getLoginName(), 0, 1).get(0).getId(), is(questionModel.getId()));
-        assertThat(questionMapper.countAllQuestions(asker.getLoginName()), is(1L));
+        assertThat(questionMapper.findAllQuestions("ask", 0, 1).get(0).getId(), is(questionModel.getId()));
+        assertThat(questionMapper.countAllQuestions("ask"), is(1L));
 
         assertThat(questionMapper.findAllQuestions(null, 0, 1).size(), is(0));
         assertThat(questionMapper.countAllQuestions(null), is(0L));
@@ -84,12 +78,11 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldFindAllUnresolvedQuestions() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
-        assertThat(questionMapper.findAllUnresolvedQuestions(asker.getLoginName(), 0, 1).get(0).getId(), is(questionModel.getId()));
-        assertThat(questionMapper.countAllUnresolvedQuestions(asker.getLoginName()), is(1L));
+        assertThat(questionMapper.findAllUnresolvedQuestions("ask", 0, 1).get(0).getId(), is(questionModel.getId()));
+        assertThat(questionMapper.countAllUnresolvedQuestions("ask"), is(1L));
 
         assertThat(questionMapper.findAllUnresolvedQuestions(null, 0, 1).size(), is(0));
         assertThat(questionMapper.countAllUnresolvedQuestions(null), is(0L));
@@ -97,16 +90,15 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldFindAllHotQuestions() throws Exception {
-        UserModel asker = this.createUser("asker");
-        QuestionModel questionModel1 = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel1 = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionModel1.setLastAnsweredTime(new DateTime().minusDays(1).toDate());
-        QuestionModel questionModel2 = new QuestionModel(asker.getLoginName(), "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel2 = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionModel2.setLastAnsweredTime(new DateTime().minusDays(2).toDate());
         questionMapper.create(questionModel1);
         questionMapper.create(questionModel2);
 
-        assertThat(questionMapper.findAllHotQuestions(asker.getLoginName(), 0, 2).get(0).getId(), is(questionModel1.getId()));
-        assertThat(questionMapper.findAllHotQuestions(asker.getLoginName(), 0, 2).get(1).getId(), is(questionModel2.getId()));
+        assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(0).getId(), is(questionModel1.getId()));
+        assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(1).getId(), is(questionModel2.getId()));
 
         assertThat(questionMapper.findAllHotQuestions(null, 0, 1).size(), is(0));
     }

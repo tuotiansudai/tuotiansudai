@@ -14,7 +14,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.ask.utils.CaptchaGenerator;
+import com.tuotiansudai.ask.utils.CaptchaHelper;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,10 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.tuotiansudai.ask.dto.BaseDataDto;
+import com.tuotiansudai.ask.dto.BaseDto;
 import com.tuotiansudai.ask.dto.QuestionRequestDto;
 import com.tuotiansudai.ask.service.QuestionService;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.web.http.HttpSessionManager;
 import org.springframework.stereotype.Controller;

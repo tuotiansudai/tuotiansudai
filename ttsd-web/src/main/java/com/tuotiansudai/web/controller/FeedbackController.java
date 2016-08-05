@@ -8,7 +8,7 @@ import com.tuotiansudai.service.FeedbackService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;

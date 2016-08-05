@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

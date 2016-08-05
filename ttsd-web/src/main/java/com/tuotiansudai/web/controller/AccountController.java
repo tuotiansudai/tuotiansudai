@@ -5,11 +5,9 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.RandomUtils;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,6 @@ import java.util.Date;
 @Controller
 @RequestMapping(value = "/account")
 public class AccountController {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AccountService accountService;
@@ -62,7 +57,7 @@ public class AccountController {
         Date endTime = DateUtils.addMonths(startTime, 1);
         String loginName = LoginUserInfo.getLoginName();
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        modelAndView.addObject("mobile", userService.getMobile(loginName));
+        modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
         modelAndView.addObject("balance", accountService.getBalance(loginName));
         modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));

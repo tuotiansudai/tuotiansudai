@@ -2,8 +2,7 @@ package com.tuotiansudai.web.config.interceptors;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.MDC;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

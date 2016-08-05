@@ -3,7 +3,7 @@ package com.tuotiansudai.api.controller;
 import com.tuotiansudai.api.dto.TaskCenterResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.MobileAppTaskCenterService;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

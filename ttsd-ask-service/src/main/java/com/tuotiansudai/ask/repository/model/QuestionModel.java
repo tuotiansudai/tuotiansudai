@@ -10,8 +10,6 @@ public class QuestionModel implements Serializable {
 
     private String loginName;
 
-    private String mobile;
-
     private String question;
 
     private String addition;
@@ -54,14 +52,6 @@ public class QuestionModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getQuestion() {

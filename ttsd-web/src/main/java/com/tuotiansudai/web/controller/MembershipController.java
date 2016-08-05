@@ -17,7 +17,7 @@ import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.config.security.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -66,7 +66,7 @@ public class MembershipController {
             AccountModel accountModel = accountService.findByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
             UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
-            modelAndView.addObject("mobile", userService.getMobile(loginName));
+            modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
             modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - membershipPoint));

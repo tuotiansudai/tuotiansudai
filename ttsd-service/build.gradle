@@ -31,6 +31,7 @@ dependencies {
 
     compile project(":ttsd-membership"),
             project(":ttsd-user-service"),
+            project(":ttsd-client"),
             fileTree(dir: 'libs', include: '**/*.jar'),
             "org.springframework.security:spring-security-config:$springSecurityVersion",
             "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
@@ -42,44 +43,6 @@ dependencies {
 }
 
 processResources.outputs.upToDateWhen { false }
-
-/**
- * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
- */
-processResources {
-    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
-    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
-        innerConfigPath = configPath
-    } else if (new File(outerConfigPath).isDirectory()) {
-        innerConfigPath = outerConfigPath
-    }
-    from("${innerConfigPath}/ttsd-env.properties") {
-        filter { String line ->
-            if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
-                return "common.jdbc.host=${dbhost}"
-            }
-
-            if (project.hasProperty("dbport") && line.startsWith("common.jdbc.port=")) {
-                return "common.jdbc.port=${dbport}"
-            }
-
-            if (project.hasProperty("redishost") && line.startsWith("common.redis.host=")) {
-                return "common.redis.host=${redishost}"
-            }
-
-            if (project.hasProperty("redisport") && line.startsWith("common.redis.port=")) {
-                return "common.redis.port=${redisport}"
-            }
-            line
-        }
-        into '/'
-    }
-    from("${innerConfigPath}/ttsd-biz.properties") {
-        into '/'
-    }
-}
 
 /**
  * parameter: dbhost dbport database
@@ -176,6 +139,7 @@ task flywaySms(type: FlywayMigrateTask) {
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }
+
 task flywayWorker(type: FlywayMigrateTask) {
     def properties = getEnvProperties()
     def defaultHost = properties.getProperty("common.jdbc.host")
@@ -191,6 +155,27 @@ task flywayWorker(type: FlywayMigrateTask) {
     extension.validateOnMigrate = false
     extension.locations = ["filesystem:db_migration/job_worker"]
     extension.schemas = ["job_worker"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("common.jdbc.username")
+    extension.password = properties.getProperty("common.jdbc.password")
+}
+
+task flywayAsk(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/ask"]
+    extension.schemas = ["ask"]
 
     extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
