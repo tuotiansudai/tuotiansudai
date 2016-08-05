@@ -65,6 +65,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
                 return input.name();
             }
         });
+        this.couponSource = userCouponView.getCouponSource();
 
     }
 

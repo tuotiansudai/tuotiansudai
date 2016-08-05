@@ -46,6 +46,7 @@
         <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="status" property="status"/>
         <result column="user_group" property="userGroup"/>
+        <result column="coupon_source" property="couponSource"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -137,7 +138,8 @@
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
-            c.user_group
+            c.user_group,
+            c.coupon_source
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
