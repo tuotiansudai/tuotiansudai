@@ -26,15 +26,6 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">备注</label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-comment" name="comment"
-                       <#if coupon??>value="${coupon.comment!}"</#if>>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="col-sm-2 control-label">体验券金额(元): </label>
 
             <div class="col-sm-4">
@@ -197,6 +188,15 @@
                 </div>
             </div>
         </#if>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
+            </div>
+        </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 

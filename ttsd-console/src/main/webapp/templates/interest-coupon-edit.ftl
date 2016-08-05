@@ -22,15 +22,6 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">备注</label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-comment" name="comment"
-                       <#if coupon??>value="${coupon.comment!}"</#if>>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label  class="col-sm-2 control-label">加息券利率(%): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${(coupon.rate*100)!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
@@ -155,6 +146,15 @@
                               <#if coupon??&&coupon.smsAlert>checked</#if> />
                 </label>
 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
             </div>
         </div>
 
