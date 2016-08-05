@@ -29,45 +29,45 @@ public class BookingLoanController {
     @Autowired
     private BookingLoanService bookingLoanService;
 
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ModelAndView bookingLoanList(@RequestParam(value = "productType",required = false) ProductType productType,
-                                        @RequestParam(value="bookingTimeStartTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeStartTime,
-                                        @RequestParam(value="bookingTimeEndTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeEndTime,
-                                        @RequestParam(value="mobile",required = false) String mobile,
-                                        @RequestParam(value="noticeTimeStartTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeStartTime,
-                                        @RequestParam(value="noticeTimeEndTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeEndTime,
-                                        @RequestParam(value="source",required = false) Source source,
-                                        @RequestParam(value="status",required = false) Boolean status,
-                                        @RequestParam(value="index",required = false,defaultValue = "1") int index,
-                                        @RequestParam(value="pageSize",required = false,defaultValue = "10") int pageSize){
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ModelAndView bookingLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
+                                        @RequestParam(value = "bookingTimeStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeStartTime,
+                                        @RequestParam(value = "bookingTimeEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeEndTime,
+                                        @RequestParam(value = "mobile", required = false) String mobile,
+                                        @RequestParam(value = "noticeTimeStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeStartTime,
+                                        @RequestParam(value = "noticeTimeEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeEndTime,
+                                        @RequestParam(value = "source", required = false) Source source,
+                                        @RequestParam(value = "status", required = false) Boolean status,
+                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan",bookingLoanService.bookingLoanList(productType,bookingTimeStartTime,bookingTimeEndTime,mobile,noticeTimeStartTime,noticeTimeEndTime,source,status,index,pageSize));
-        mv.addObject("productType",productType);
-        mv.addObject("productTypeList", Lists.newArrayList(ProductType._180,ProductType._90,ProductType._360));
-        mv.addObject("bookingTimeStartTime",bookingTimeStartTime);
-        mv.addObject("bookingTimeEndTime",bookingTimeEndTime);
-        mv.addObject("mobile",mobile);
-        mv.addObject("noticeTimeStartTime",noticeTimeStartTime);
-        mv.addObject("noticeTimeEndTime",noticeTimeEndTime);
-        mv.addObject("source",source);
-        mv.addObject("sourceList",Lists.newArrayList(Source.values()));
-        mv.addObject("status",status);
-        mv.addObject("index",index);
-        mv.addObject("pageSize",pageSize);
+        mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
+        mv.addObject("productType", productType);
+        mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
+        mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
+        mv.addObject("bookingTimeEndTime", bookingTimeEndTime);
+        mv.addObject("mobile", mobile);
+        mv.addObject("noticeTimeStartTime", noticeTimeStartTime);
+        mv.addObject("noticeTimeEndTime", noticeTimeEndTime);
+        mv.addObject("source", source);
+        mv.addObject("sourceList", Lists.newArrayList(Source.values()));
+        mv.addObject("status", status);
+        mv.addObject("index", index);
+        mv.addObject("pageSize", pageSize);
         return mv;
     }
 
-    @RequestMapping(value = "/export",method = RequestMethod.GET)
-    public ModelAndView exportBookingLoanList(@RequestParam(value = "productType",required = false) ProductType productType,
-                                              @RequestParam(value="bookingTimeStartTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeStartTime,
-                                              @RequestParam(value="bookingTimeEndTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeEndTime,
-                                              @RequestParam(value="mobile",required = false) String mobile,
-                                              @RequestParam(value="noticeTimeStartTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeStartTime,
-                                              @RequestParam(value="noticeTimeEndTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeEndTime,
-                                              @RequestParam(value="source",required = false) Source source,
-                                              @RequestParam(value="status",required = false) Boolean status,
-                                              @RequestParam(value="index",required = false,defaultValue = "1") int index,
-                                              @RequestParam(value="pageSize",required = false,defaultValue = "10") int pageSize,
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public ModelAndView exportBookingLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
+                                              @RequestParam(value = "bookingTimeStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeStartTime,
+                                              @RequestParam(value = "bookingTimeEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingTimeEndTime,
+                                              @RequestParam(value = "mobile", required = false) String mobile,
+                                              @RequestParam(value = "noticeTimeStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeStartTime,
+                                              @RequestParam(value = "noticeTimeEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeEndTime,
+                                              @RequestParam(value = "source", required = false) Source source,
+                                              @RequestParam(value = "status", required = false) Boolean status,
+                                              @RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                               HttpServletResponse httpServletResponse) throws IOException {
 
         httpServletResponse.setCharacterEncoding("UTF-8");
@@ -77,27 +77,27 @@ public class BookingLoanController {
             logger.error(e.getMessage());
         }
         httpServletResponse.setContentType("application/csv");
-        List<List<String>> csvData = bookingLoanService.getBookingLoanReportCsvData(productType,bookingTimeStartTime,bookingTimeEndTime,mobile,noticeTimeStartTime,noticeTimeEndTime,source,status);
+        List<List<String>> csvData = bookingLoanService.getBookingLoanReportCsvData(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BookingLoanHeader, csvData, httpServletResponse.getOutputStream());
         ModelAndView mv = new ModelAndView("/booking-loan-list");
-        mv.addObject("bookingLoan",bookingLoanService.bookingLoanList(productType,bookingTimeStartTime,bookingTimeEndTime,mobile,noticeTimeStartTime,noticeTimeEndTime,source,status,index,pageSize));
-        mv.addObject("productType",productType);
-        mv.addObject("productTypeList", Lists.newArrayList(ProductType._180,ProductType._90,ProductType._360));
-        mv.addObject("bookingTimeStartTime",bookingTimeStartTime);
-        mv.addObject("bookingTimeEndTime",bookingTimeEndTime);
-        mv.addObject("mobile",mobile);
-        mv.addObject("noticeTimeStartTime",noticeTimeStartTime);
-        mv.addObject("noticeTimeEndTime",noticeTimeEndTime);
-        mv.addObject("source",source);
-        mv.addObject("sourceList",Lists.newArrayList(Source.values()));
-        mv.addObject("status",status);
-        mv.addObject("index",index);
-        mv.addObject("pageSize",pageSize);
+        mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
+        mv.addObject("productType", productType);
+        mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
+        mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
+        mv.addObject("bookingTimeEndTime", bookingTimeEndTime);
+        mv.addObject("mobile", mobile);
+        mv.addObject("noticeTimeStartTime", noticeTimeStartTime);
+        mv.addObject("noticeTimeEndTime", noticeTimeEndTime);
+        mv.addObject("source", source);
+        mv.addObject("sourceList", Lists.newArrayList(Source.values()));
+        mv.addObject("status", status);
+        mv.addObject("index", index);
+        mv.addObject("pageSize", pageSize);
         return mv;
     }
 
-    @RequestMapping(value = "/{bookingLoanId}/notice",method = RequestMethod.GET)
-    public String noticeBookingLoan(@PathVariable long bookingLoanId){
+    @RequestMapping(value = "/{bookingLoanId}/notice", method = RequestMethod.GET)
+    public String noticeBookingLoan(@PathVariable long bookingLoanId) {
         bookingLoanService.noticeBookingLoan(bookingLoanId);
 
         return "redirect:/booking-loan-manage/list";

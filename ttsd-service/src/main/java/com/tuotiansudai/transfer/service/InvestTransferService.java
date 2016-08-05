@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.dto.TransferApplicationFormDto;
@@ -33,10 +34,11 @@ public interface InvestTransferService {
                                                                                                           String transferrerMobile,
                                                                                                           String transfereeMobile,
                                                                                                           Long loanId,
+                                                                                                          Source source,
                                                                                                           Integer index,
                                                                                                           Integer pageSize);
 
-    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize);
+    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName, List<TransferStatus> statusList, Integer index, Integer pageSize);
 
     BaseDto<BaseDataDto> isInvestTransferable(long transferApplicationId);
 
@@ -46,5 +48,4 @@ public interface InvestTransferService {
                                                                          Date startTime,
                                                                          Date endTime,
                                                                          LoanStatus loanStatus);
-
 }

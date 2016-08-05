@@ -90,7 +90,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.countdown = Seconds.secondsBetween(new DateTime(), new DateTime(loanModel.getFundraisingStartTime())).getSeconds();
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
         this.investor = investorDto;
-        this.declaration = loanDetails == null?null:loanDetails.getDeclaration();
+        this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
     }
 
     public long getId() {

@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -25,7 +24,7 @@ public class BookingLoanController {
     @ResponseBody
     public BaseDto<BaseDataDto> invest(@RequestParam(value = "productType", required = false) ProductType productType,
                                        @RequestParam(value = "bookingAmount", required = false) String bookingAmount) {
-        bookingLoanService.create(LoginUserInfo.getLoginName(),productType,bookingAmount);
+        bookingLoanService.create(LoginUserInfo.getLoginName(), productType, bookingAmount);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDataDto.setStatus(true);

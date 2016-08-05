@@ -4,9 +4,7 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 
-import java.text.SimpleDateFormat;
-
-public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
+public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 
     private String month;
     private String repayAmount;
@@ -18,22 +16,22 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto{
         this.expectedRepayAmount = expectedRepayAmount;
     }
 
-    public RepayCalendarYearResponseDto(String month,InvestRepayModel investRepayModel){
+    public RepayCalendarYearResponseDto(String month, InvestRepayModel investRepayModel) {
         this.month = month;
-        if(investRepayModel.getActualRepayDate() != null){
+        if (investRepayModel.getActualRepayDate() != null) {
             this.repayAmount = String.valueOf(investRepayModel.getRepayAmount());
             this.expectedRepayAmount = "0";
-        }else{
+        } else {
             this.repayAmount = "0";
             this.expectedRepayAmount = String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest());
         }
     }
 
-    public RepayCalendarYearResponseDto(String month,CouponRepayModel couponRepayModel){
+    public RepayCalendarYearResponseDto(String month, CouponRepayModel couponRepayModel) {
         this.month = month;
-        if(couponRepayModel.getActualRepayDate() != null){
+        if (couponRepayModel.getActualRepayDate() != null) {
             this.repayAmount = String.valueOf(couponRepayModel.getRepayAmount());
-        }else if(couponRepayModel.getExpectedInterest() > 0){
+        } else if (couponRepayModel.getExpectedInterest() > 0) {
             this.expectedRepayAmount = String.valueOf(couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee());
         }
     }

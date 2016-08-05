@@ -67,7 +67,7 @@ public class CouponAspect {
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
 
         if (returnValue) {
-            couponRepayService.repay(loanRepayId,false);
+            couponRepayService.repay(loanRepayId, false);
         }
 
         logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",

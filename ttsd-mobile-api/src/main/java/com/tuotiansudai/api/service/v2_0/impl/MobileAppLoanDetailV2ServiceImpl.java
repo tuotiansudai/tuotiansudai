@@ -13,7 +13,6 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -141,7 +140,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setBaseRatePercent(decimalFormat.format(loanModel.getBaseRate() * 100));
         dataDto.setActivityRatePercent(decimalFormat.format(loanModel.getActivityRate() * 100));
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
-        if(loanDetailsModel != null){
+        if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
         }
 
