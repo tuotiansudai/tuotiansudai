@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserRoleMapper {
 
-    void create(@Param("userRoles") List<UserRoleModel> userRoleModels);
+    int create(@Param("userRoles") List<UserRoleModel> userRoleModels);
 
     List<UserRoleModel> findByLoginName(String loginName);
 

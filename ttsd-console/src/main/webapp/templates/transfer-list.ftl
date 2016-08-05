@@ -57,6 +57,16 @@
             <input type="text" class="form-control" name="loanId" placeholder=""
                    value="${(loanId?string.computer)!}">
         </div>
+        <div class="form-group">
+            <label>来源</label>
+            <select class="selectpicker" name="source">
+                <option value="" <#if !(selectedSource??)>selected</#if>>全部</option>
+                <#list sourceList as source>
+                    <option value="${source}"
+                            <#if selectedSource?? && selectedSource==source>selected</#if>>${source}</option>
+                </#list>
+            </select>
+        </div>
 
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
@@ -68,11 +78,13 @@
                 <th>编号</th>
                 <th>原始项目</th>
                 <th>转让人</th>
+                <th>原债权本金(元)</th>
                 <th>转让价格(元)</th>
                 <th>剩余期限</th>
                 <th>转让状态</th>
                 <th>转让发起时间</th>
                 <th>承接人</th>
+                <th>来源</th>
                 <th>转让手续费(元)</th>
             </tr>
             </thead>
@@ -86,6 +98,7 @@
                         <a href="${webServer}/loan/${transferApplication.loanId?string.computer}" target="_blank"><span class="text-success">${transferApplication.loanId?string.computer}</span></a>
                     </td>
                     <td>${transferApplication.transferrerMobile!}</td>
+                    <td>${transferApplication.investAmount}</td>
                     <td>${transferApplication.transferAmount}</td>
                     <td>${transferApplication.leftPeriod!}</td>
                     <td>
@@ -110,6 +123,7 @@
                     </td>
                     <td>${transferApplication.applicationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${transferApplication.transfereeMobile!}</td>
+                    <td>${transferApplication.source!}</td>
                     <td>${transferApplication.transferFee}</td>
                 </tr>
                 </#list>
@@ -127,7 +141,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>"
+                    <a href="?index=${data.index - 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerMobile??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if selectedSource??>source=${selectedSource}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -138,7 +152,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if>    <#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerLoginName??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if>"
+                    <a href="?index=${data.index + 1}&<#if transferApplicationId??>transferApplicationId=${transferApplicationId?string.computer}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if status??>status=${status}&</#if><#if transferrerMobile??>transferrerMobile=${transferrerMobile}&</#if><#if transfereeMobile??>transfereeMobile=${transfereeMobile}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if selectedSource??>source=${selectedSource}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

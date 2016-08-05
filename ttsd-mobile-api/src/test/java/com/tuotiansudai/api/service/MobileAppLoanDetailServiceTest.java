@@ -21,13 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,7 +49,6 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     private LoanTitleMapper loanTitleMapper;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
-
     @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
     @Mock
@@ -111,6 +109,17 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         when(loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(anyLong())).thenReturn(loanTitleRelationModels);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
+        LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
+        loanerDetailsModel.setUserName("UserName");
+        when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(loanerDetailsModel);
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration");
+        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(loanDetailsModel);
+
+        PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();
+        pledgeHouseModel.setAuthenticAct("AuthenticAct");
+        when(pledgeHouseMapper.getPledgeHouseDetailByLoanId(anyLong())).thenReturn(pledgeHouseModel);
+        when(contractService.getContract(anyString(), any(HashMap.class))).thenReturn("loanDetail");
+
         InvestModel investModel1 = getFakeInvestModel(id, "loginName1");
         investModel1.setStatus(InvestStatus.SUCCESS);
         InvestModel investModel2 = getFakeInvestModel(id, "loginName2");
@@ -164,6 +173,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
         assertNotNull(baseResponseDto.getData().getRaisingPeriod());
+        assertNotNull("loanDetail", baseResponseDto.getData().getLoanDetail());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
