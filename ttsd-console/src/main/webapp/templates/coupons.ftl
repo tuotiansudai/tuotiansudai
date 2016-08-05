@@ -20,6 +20,9 @@
                 名称
             </th>
             <th>
+                来源描述
+            </th>
+            <th>
                 金额
             </th>
             <th>
@@ -55,6 +58,9 @@
             <th>
                 已发放收益(元)
             </th>
+            <th>
+                备注
+            </th>
             <th colspan="2">
                 操作
             </th>
@@ -68,6 +74,9 @@
             <td>
 
                 <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
+            </td>
+            <td>
+            ${coupon.couponSource}
             </td>
             <td>
                 ${coupon.amount}
@@ -111,6 +120,9 @@
             <td>
                 ${coupon.actualAmount/100}
             </td>
+    <td>
+    ${coupon.comment!}
+    </td>
             <td>
                 <#if coupon.deleted>
                     已删除

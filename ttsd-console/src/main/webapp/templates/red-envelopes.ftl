@@ -20,6 +20,9 @@
             名称
         </th>
         <th>
+            来源描述
+        </th>
+        <th>
             金额(元)
         </th>
         <th>
@@ -55,6 +58,9 @@
         <th>
             是否共用
         </th>
+        <th>
+            备注
+        </th>
         <th colspan="2">
             操作
         </th>
@@ -67,6 +73,9 @@
     <tr>
         <td>
             <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
+        </td>
+        <td>
+        ${coupon.couponSource}
         </td>
         <td>
             ${coupon.amount}
@@ -108,6 +117,9 @@
             ${coupon.actualAmount/100}
         </td>
         <td><#if coupon.shared>是<#else>否</#if></td>
+    <td>
+    ${coupon.comment!}
+    </td>
         <td>
         <#if coupon.deleted>
             已删除

@@ -13,8 +13,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         //渲染select表单
         $selectDom.selectpicker();
 
-
-
         //起始时间绑定插件
         $dateStart.datetimepicker({
             format: 'YYYY-MM-DD'

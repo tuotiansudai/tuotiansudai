@@ -12,6 +12,25 @@
                 <input class="couponType" name="couponType" value="RED_ENVELOPE" type="hidden">
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">红包来源描述</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""
+                       <#if coupon??>value="${coupon.couponSource!}"</#if> datatype="*" errormsg="红包来源描述不能为空">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
+            </div>
+        </div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">红包金额(元): </label>
             <div class="col-sm-4">

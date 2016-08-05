@@ -11,6 +11,25 @@
                 <input class="couponType" name="couponType" value="INTEREST_COUPON" type="hidden">
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">红包来源描述</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""
+                       <#if coupon??>value="${coupon.couponSource!}"</#if> datatype="*" errormsg="创建失败，请输入来源描述">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
+            </div>
+        </div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">加息券利率(%): </label>
             <div class="col-sm-4">
@@ -41,7 +60,11 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
             <div class="col-sm-8">
-                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+                <div class="item-invest">用户收到优惠券后</div>
+                <input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder=""
+                       <#if coupon??>value="${coupon.deadline?c!}"</#if> datatype="n" errormsg="有效天数需要填写数字">
+
+                <div class="item-invest">天内有效</div>
             </div>
         </div>
         <div class="form-group">
