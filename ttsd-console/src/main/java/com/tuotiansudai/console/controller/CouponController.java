@@ -11,7 +11,6 @@ import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
@@ -220,14 +219,19 @@ public class CouponController {
     public ModelAndView edit(@PathVariable long id, Model model) {
         CouponModel couponModel = couponService.findCouponById(id);
         ModelAndView modelAndView;
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
-            modelAndView = new ModelAndView("/interest-coupon-edit");
-        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
-            modelAndView = new ModelAndView("/red-envelope-edit");
-        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            modelAndView = new ModelAndView("/birthday-coupon-edit");
-        } else {
-            modelAndView = new ModelAndView("/coupon-edit");
+        switch (couponModel.getCouponType()) {
+            case INTEREST_COUPON:
+                modelAndView = new ModelAndView("/interest-coupon-edit");
+                break;
+            case RED_ENVELOPE:
+                modelAndView = new ModelAndView("/red-envelope-edit");
+                break;
+            case BIRTHDAY_COUPON:
+                modelAndView = new ModelAndView("/birthday-coupon-edit");
+                break;
+            default:
+                modelAndView = new ModelAndView("/coupon-edit");
+                break;
         }
         if (!model.containsAttribute("coupon")) {
             CouponDto couponDto = new CouponDto(couponModel);
@@ -238,7 +242,6 @@ public class CouponController {
                 modelAndView.addObject(modelKey.toString(), modelMap.get(modelKey));
             }
         }
-
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());

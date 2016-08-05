@@ -15,6 +15,16 @@
                        <#if coupon??>value="${coupon.couponType.name()!}"</#if> />
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">红包来源描述</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""
+                       <#if coupon??>value="${coupon.couponSource!}"</#if> datatype="*" errormsg="创建失败，请输入来源描述">
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">体验券金额(元): </label>
 
@@ -178,6 +188,15 @@
                 </div>
             </div>
         </#if>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
+            </div>
+        </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
