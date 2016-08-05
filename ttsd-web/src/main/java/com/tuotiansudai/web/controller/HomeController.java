@@ -65,8 +65,8 @@ public class HomeController {
         List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB), new Function<BannerModel, BannerModel>() {
             @Override
             public BannerModel apply(BannerModel input) {
-                input.setAppImageUrl(bannerServer + "/" + input.getAppImageUrl());
-                input.setWebImageUrl(bannerServer + "/" + input.getWebImageUrl());
+                input.setAppImageUrl(bannerServer + input.getAppImageUrl());
+                input.setWebImageUrl(bannerServer + input.getWebImageUrl());
                 return input;
             }
         });

@@ -116,8 +116,9 @@
     </select>
 
     <select id="findUserFundsCount" parameterType="map" resultType="int">
-        select count(*) from user_bill join user on user_bill.login_name = user.login_name
+        select count(*) from user_bill
         <if test="mobile != null and mobile != ''">
+            join user on user_bill.login_name = user.login_name
             and user.mobile = #{mobile}
         </if>
         <where>
