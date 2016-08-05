@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.BookingLoanMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="bookingLoanMap" type="BookingLoanModel">
         <id column="id" property="id"/>
@@ -25,7 +25,7 @@
         VALUES
         (#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime})
     </insert>
-    
+
     <update id="update" parameterType="BookingLoanModel">
         UPDATE booking_loan SET notice_time = #{noticeTime},status = #{status},update_time = #{updateTime} where id = #{id}
     </update>

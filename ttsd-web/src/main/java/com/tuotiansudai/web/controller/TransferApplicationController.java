@@ -1,15 +1,17 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,9 @@ public class TransferApplicationController {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
+    @Autowired
+    private LoanService loanService;
+
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getTransferApplicationDetail(@PathVariable long transferApplicationId) {
@@ -42,8 +47,17 @@ public class TransferApplicationController {
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
-        ModelAndView modelAndView = new ModelAndView("/transfer-detail", "responsive", true);
+        LoanModel loanModel = loanService.findLoanById(dto.getLoanId());
+        LoanDto loanDto = new LoanDto();
+        loanDto.setBasicRate(String.valueOf(loanModel.getBaseRate()));
+        loanDto.setActivityRate(String.valueOf(loanModel.getActivityRate()));
+        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        loanDto.setType(loanModel.getType());
+        loanDto.setPeriods(loanModel.getPeriods());
+
+        ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
+        modelAndView.addObject("loanDto", loanDto);
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         return modelAndView;
     }

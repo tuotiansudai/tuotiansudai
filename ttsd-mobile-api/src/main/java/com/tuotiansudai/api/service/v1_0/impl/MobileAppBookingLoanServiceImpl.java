@@ -4,9 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanService{
+public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanService {
 
     @Autowired
     private BookingLoanMapper bookingLoanMapper;
@@ -29,9 +27,9 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
         BaseResponseDto<BookingLoanResponseListsDto> baseResponseDto = new BaseResponseDto();
         BookingLoanResponseListsDto bookingLoanListsDto = new BookingLoanResponseListsDto();
         List<BookingLoanResponseDto> bookingLoanResponseDtoList = Lists.newArrayList();
-        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._90.toString(),String.valueOf(ProductType._90.getDuration()),"11"));
-        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._180.toString(),String.valueOf(ProductType._180.getDuration()),"12"));
-        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._360.toString(),String.valueOf(ProductType._360.getDuration()),"13"));
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._90.toString(), String.valueOf(ProductType._90.getDuration()), "11"));
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._180.toString(), String.valueOf(ProductType._180.getDuration()), "12"));
+        bookingLoanResponseDtoList.add(new BookingLoanResponseDto(ProductType._360.toString(), String.valueOf(ProductType._360.getDuration()), "13"));
         bookingLoanListsDto.setBookingLoans(bookingLoanResponseDtoList);
         baseResponseDto.setData(bookingLoanListsDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -40,7 +38,7 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
     }
 
     @Override
-    public BaseResponseDto bookingLoan(BookingLoanRequestDto bookingLoanRequestDto){
+    public BaseResponseDto bookingLoan(BookingLoanRequestDto bookingLoanRequestDto) {
         BookingLoanModel bookingLoanModel = new BookingLoanModel(bookingLoanRequestDto.getBaseParam().getPhoneNum(),
                 Source.valueOf(bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)),
                 DateTime.now().toDate(),
