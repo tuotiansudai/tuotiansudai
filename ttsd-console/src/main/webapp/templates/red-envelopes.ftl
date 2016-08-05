@@ -26,19 +26,10 @@
             金额(元)
         </th>
         <th>
-            总投资金额(元)
-        </th>
-        <th>
             活动期限
         </th>
         <th>
             有效天数
-        </th>
-        <th>
-            已发放(张)
-        </th>
-        <th>
-            已使用(张)
         </th>
         <th>
             发放对象
@@ -50,13 +41,22 @@
             起投金额
         </th>
         <th>
+            是否共用
+        </th>
+        <th>
+            已发放(张)
+        </th>
+        <th>
+            已使用(张)
+        </th>
+        <th>
+            总投资金额(元)
+        </th>
+        <th>
             应发放总收益(元)
         </th>
         <th>
             已发放收益(元)
-        </th>
-        <th>
-            是否共用
         </th>
         <th>
             备注
@@ -72,100 +72,105 @@
     <#list coupons as coupon>
     <tr>
         <td>
-            <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
+            <span class="add-tooltip" data-placement="top" data-toggle="tooltip"
+                  data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
         </td>
         <td>
         ${coupon.couponSource}
         </td>
         <td>
-            ${coupon.amount}
+        ${coupon.amount}
         </td>
         <td>
-            ${coupon.totalInvestAmount/100}
+        ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
-            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-        </td>
-        <td>
-            ${coupon.deadline?string('0')}天
-        </td>
-        <td>
-        ${coupon.issuedCount?string('0')}
-        </td>
-        <td>
-        ${coupon.usedCount?string('0')}
+        ${coupon.deadline?string('0')}天
         </td>
         <td>
             <#if coupon.userGroup == "EXCHANGER_CODE">
-                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code" class="btn-link">${coupon.userGroup.getDescription()}</a>
+                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
+                   class="btn-link">${coupon.userGroup.getDescription()}</a>
             <#else>
-                ${coupon.userGroup.getDescription()}
+            ${coupon.userGroup.getDescription()}
             </#if>
         </td>
-        <td>
-            <#list coupon.productTypes as productType>
-            ${productType.getName()}<#sep>, </#sep>
-            </#list>
-        </td>
-        <td>
-            ${coupon.investLowerLimit}
-        </td>
-        <td>
-            ${coupon.expectedAmount/100}
-        </td>
-        <td>
-            ${coupon.actualAmount/100}
-        </td>
-        <td><#if coupon.shared>是<#else>否</#if></td>
+    <td>
+        <#list coupon.productTypes as productType>
+        ${productType.getName()}<#sep>, </#sep>
+</#list>
+</td>
+    <td>
+    ${coupon.investLowerLimit}
+    </td>
+    <td><#if coupon.shared>是<#else>否</#if></td>
+    <td>
+    ${coupon.issuedCount?string('0')}
+    </td>
+    <td>
+    ${coupon.usedCount?string('0')}
+    </td>
+    <td>
+    ${coupon.totalInvestAmount/100}
+    </td>
+    <td>
+    ${coupon.expectedAmount/100}
+    </td>
+    <td>
+    ${coupon.actualAmount/100}
+    </td>
     <td>
     ${coupon.comment!}
     </td>
-        <td>
-        <#if coupon.deleted>
-            已删除
-        <#else>
-        <#if coupon.active>
-            -
-        <#else>
-            <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                -
-            </@security.authorize>
-            <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
-                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
-                </#if>
-                <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
-            </@security.authorize>
-        </#if>
-        </#if>
-        </td>
-        <td>
-            <#if coupon.deleted>
-                -
-            <#else>
-            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                <#if coupon.active>
-                    <label>
-                        <i class="check-btn add-check"></i>
-                        <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
-                    </label>
-                <#else>
-                    <label>
-                        <i class="check-btn"></i>
-                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
-                    </label>
-                </#if>
-            </@security.authorize>
-            <@security.authorize access="hasAuthority('OPERATOR')">
-                -
-            </@security.authorize>
-            </#if>
-        </td>
-        <td>
-            <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
-        </td>
-    </tr>
-    </#list>
+    <td>
+    <#if coupon.deleted>
+        已删除
+    <#else>
+    <#if coupon.active>
+        -
+    <#else>
+    <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+        -
+    </@security.authorize>
+    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+    <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
+        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
+    </#if>
+        <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+    </@security.authorize>
+    </#if>
+    </#if>
+    </td>
+    <td>
+    <#if coupon.deleted>
+        -
+    <#else>
+    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+    <#if coupon.active>
+        <label>
+            <i class="check-btn add-check"></i>
+            <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}"
+                    data-type="${coupon.couponType}">已生效
+            </button>
+        </label>
+    <#else>
+        <label>
+            <i class="check-btn"></i>
+            <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}"
+               data-type="${coupon.couponType}">确认生效</a>
+        </label>
+    </#if>
+    </@security.authorize>
+    <@security.authorize access="hasAuthority('OPERATOR')">
+        -
+    </@security.authorize>
+    </#if>
+    </td>
+    <td>
+        <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
+    </td>
+</tr>
+</#list>
 </tbody>
 </table>
 </div>
