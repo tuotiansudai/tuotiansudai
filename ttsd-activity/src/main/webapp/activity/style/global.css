@@ -2497,7 +2497,7 @@ h5 {
   background: #999 none;
   color: #fff; }
   .btn:hover, .btn-normal:hover, .btn-success:hover, .btn-primary:hover, .btn-action:hover, .btn-link:hover, .btn:focus, .btn-normal:focus, .btn-success:focus, .btn-primary:focus, .btn-action:focus, .btn-link:focus, .btn.focus, .focus.btn-normal, .focus.btn-success, .focus.btn-primary, .focus.btn-action, .focus.btn-link {
-    color: #333;
+    color: #fff;
     text-decoration: none; }
   .btn:active, .btn-normal:active, .btn-success:active, .btn-primary:active, .btn-action:active, .btn-link:active, .btn.active, .active.btn-normal, .active.btn-success, .active.btn-primary, .active.btn-action, .active.btn-link {
     background-image: none;
@@ -2577,7 +2577,7 @@ select {
   border-color: #ccc;
   border-style: solid;
   border-width: 1px;
-  color: #333; }
+  color: #fff; }
 
 input {
   font-size: 14px;
