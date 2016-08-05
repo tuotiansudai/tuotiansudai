@@ -73,6 +73,10 @@ public class CouponDto implements Serializable {
 
     private Boolean deleted;
 
+    private String couponSource;
+
+    private String comment;
+
     public String getAmount() {
         return amount;
     }
@@ -277,6 +281,22 @@ public class CouponDto implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getCouponSource() {
+        return couponSource;
+    }
+
+    public void setCouponSource(String couponSource) {
+        this.couponSource = couponSource;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public CouponDto(){
 
     }
@@ -309,5 +329,7 @@ public class CouponDto implements Serializable {
         this.multiple = couponModel.isMultiple();
         this.agents = couponModel.getAgents();
         this.channels = couponModel.getChannels();
+        this.couponSource = couponModel.getCouponSource();
+        this.comment = couponModel.getComment();
     }
 }

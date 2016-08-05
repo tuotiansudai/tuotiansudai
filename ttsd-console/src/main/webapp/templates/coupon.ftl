@@ -20,7 +20,17 @@
 
 			</div>
 		</div>
-		<div class="form-group">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">红包来源描述</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""
+                       <#if coupon??>value="${coupon.couponSource!}"</#if> datatype="*" errormsg="红包来源描述不能为空">
+            </div>
+        </div>
+
+        <div class="form-group">
 			<label  class="col-sm-2 control-label">体验券金额(元): </label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control coupon-number" name="amount" placeholder="" <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
@@ -129,6 +139,15 @@
                     <label><input type="checkbox" name="smsAlert" class="smsAlert"/>
                     </label>
 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
             </div>
         </div>
 

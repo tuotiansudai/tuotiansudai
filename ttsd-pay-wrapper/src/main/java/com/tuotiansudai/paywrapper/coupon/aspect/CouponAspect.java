@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -50,9 +49,6 @@ public class CouponAspect {
     private JobManager jobManager;
 
     @Autowired
-    private UserCouponService userCouponService;
-
-    @Autowired
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
@@ -64,17 +60,31 @@ public class CouponAspect {
     @Autowired
     private InvestMapper investMapper;
 
-    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
-    public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningNormalRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
         long loanRepayId = (Long) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
 
         if (returnValue) {
-            couponRepayService.repay(loanRepayId);
+            couponRepayService.repay(loanRepayId, false);
         }
 
-        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+        logger.info(MessageFormat.format("[normal repay Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+    }
+
+    @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningAdvanceRepayPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+        long loanRepayId = (Long) joinPoint.getArgs()[0];
+        logger.info(MessageFormat.format("[advance repay Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+
+        if (returnValue) {
+            couponRepayService.repay(loanRepayId, true);
+        }
+
+        logger.info(MessageFormat.format("[advance repay  Coupon Repay {0}] after returning payback invest({1}) aspect is done",
                 String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
@@ -195,6 +205,7 @@ public class CouponAspect {
 
         List<CouponModel> couponModelList = couponMapper.findAllActiveCoupons();
         for (CouponModel couponModel : couponModelList) {
+
             if (couponModel.getUserGroup().equals(userGroup) && DateTime.now().toDate().before(couponModel.getEndTime())
                                                              && DateTime.now().toDate().after(couponModel.getStartTime())) {
                 couponAssignmentService.assignUserCoupon(loanId, investMapper.findById(investId).getLoginName(), couponModel.getId());

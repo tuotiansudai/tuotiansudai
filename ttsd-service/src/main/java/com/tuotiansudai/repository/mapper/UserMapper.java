@@ -21,7 +21,7 @@ public interface UserMapper {
 
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
-    void create(UserModel userModel);
+    int create(UserModel userModel);
 
     void updateUser(UserModel userModel);
 
@@ -47,19 +47,19 @@ public interface UserMapper {
     List<UserModel> findUserByProvince();
 
     List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
-                                           @Param(value = "balanceMin") long balanceMin,
-                                           @Param(value = "balanceMax") long balanceMax,
+                                           @Param(value = "balanceMin") Long balanceMin,
+                                           @Param(value = "balanceMax") Long balanceMax,
                                            @Param(value = "startLimit") int startLimit,
                                            @Param(value = "endLimit") int endLimit);
 
 
     long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
-                                    @Param(value = "balanceMin") long balanceMin,
-                                    @Param(value = "balanceMax") long balanceMax);
+                                    @Param(value = "balanceMin") Long balanceMin,
+                                    @Param(value = "balanceMax") Long balanceMax);
 
     long findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
-                                      @Param(value = "balanceMin") long balanceMin,
-                                      @Param(value = "balanceMax") long balanceMax);
+                                      @Param(value = "balanceMin") Long balanceMin,
+                                      @Param(value = "balanceMax") Long balanceMax);
 
     List<String> findAllUsers(Map<String, Object> params);
 
