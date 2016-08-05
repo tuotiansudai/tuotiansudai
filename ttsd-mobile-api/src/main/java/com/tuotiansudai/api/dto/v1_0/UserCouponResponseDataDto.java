@@ -37,7 +37,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.name = userCouponView.getCouponType().getName();
         this.type = userCouponView.getCouponType();
-        this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount());
+        this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount()).replaceAll(".00","");
         this.investLowerLimit = AmountConverter.convertCentToString(userCouponView.getInvestLowerLimit());
         this.productTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
             @Override
