@@ -1,17 +1,20 @@
 package com.tuotiansudai.web.service;
 
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,7 +24,6 @@ import java.text.ParseException;
 import java.util.Date;
 
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -33,6 +35,8 @@ public class ContractServiceTest {
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+    @Autowired
     private InvestMapper investMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -42,6 +46,16 @@ public class ContractServiceTest {
     private IdGenerator idGenerator;
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Mock
+    private TransferRuleMapper transferRuleMapper;
 
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
@@ -49,19 +63,22 @@ public class ContractServiceTest {
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel();
         loanMapper.create(loanModel);
+        LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
+        loanerDetailsMapper.create(loanerDetailsModel);
         InvestModel investModel = getInvest(loanModel.getId());
         investMapper.create(investModel);
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), investModel.getId());
         transferApplicationMapper.create(transferApplicationModel);
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
-
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, investModel.getId(), 1, 233L, 2000L, 2L,
+                DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+                DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
         assertNotNull(pdfStr);
-        assertTrue(pdfStr.indexOf("testUserModel") != -1);
-        assertTrue(pdfStr.indexOf("5天") != -1);
-        assertTrue(pdfStr.indexOf("1%") != -1);
     }
 
     private LoanModel getLoanModel() throws ParseException {
@@ -97,6 +114,12 @@ public class ContractServiceTest {
         lm.setPledgeType(PledgeType.HOUSE);
         lm.setUpdateTime(new Date());
         return lm;
+    }
+
+    private LoanerDetailsModel getLoanerDetailsModel(LoanModel loanModel) {
+        return new LoanerDetailsModel(loanModel.getId(), loanModel.getLoanerLoginName(),
+                loanModel.getLoanerUserName(), Gender.FEMALE, 12, loanModel.getLoanerIdentityNumber(), Marriage.MARRIED,
+                "", "", "");
     }
 
     private InvestModel getInvest(long loanId) throws ParseException {

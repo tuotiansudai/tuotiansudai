@@ -25,9 +25,9 @@ public interface BookingLoanMapper {
                                                @Param(value = "bookingTimeEndTime") Date bookingTimeEndTime,
                                                @Param(value = "mobile") String mobile,
                                                @Param(value = "noticeTimeStartTime") Date noticeTimeStartTime,
-                                               @Param(value="noticeTimeEndTime") Date noticeTimeEndTime,
+                                               @Param(value = "noticeTimeEndTime") Date noticeTimeEndTime,
                                                @Param(value = "source") Source source,
-                                               @Param(value = "status" ) Boolean status,
+                                               @Param(value = "status") Boolean status,
                                                @Param(value = "index") Integer index,
                                                @Param(value = "pageSize") Integer pageSize);
 
@@ -36,8 +36,8 @@ public interface BookingLoanMapper {
                                   @Param(value = "bookingTimeEndTime") Date bookingTimeEndTime,
                                   @Param(value = "mobile") String mobile,
                                   @Param(value = "noticeTimeStartTime") Date noticeTimeStartTime,
-                                  @Param(value="noticeTimeEndTime") Date noticeTimeEndTime,
+                                  @Param(value = "noticeTimeEndTime") Date noticeTimeEndTime,
                                   @Param(value = "source") Source source,
-                                  @Param(value = "status" ) Boolean status);
+                                  @Param(value = "status") Boolean status);
 
 }

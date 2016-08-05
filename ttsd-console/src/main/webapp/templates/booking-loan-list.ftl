@@ -10,21 +10,25 @@
             <select class="selectpicker" name="productType">
                 <option value="">全部</option>
                 <#list productTypeList as productItem>
-                    <option value="${productItem}" <#if productType??&& productType==productItem>selected</#if>>${productItem.getName()}</option>
+                    <option value="${productItem}"
+                            <#if productType??&& productType==productItem>selected</#if>>${productItem.getName()}</option>
                 </#list>
             </select>
         </div>
         <div class="form-group">
             <label>预约时间</label>
+
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="bookingTimeStartTime" value="${(bookingTimeStartTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="bookingTimeStartTime"
+                       value="${(bookingTimeStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker2'>
-                <input type='text' class="form-control" name="bookingTimeEndTime" value="${(bookingTimeStartTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="bookingTimeEndTime"
+                       value="${(bookingTimeStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -36,15 +40,18 @@
         </div>
         <div class="form-group">
             <label>通知时间</label>
+
             <div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" name="noticeTimeStartTime" value="${(noticeTimeStartTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="noticeTimeStartTime"
+                       value="${(noticeTimeStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker4'>
-                <input type='text' class="form-control" name="noticeTimeEndTime" value="${(noticeTimeEndTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="noticeTimeEndTime"
+                       value="${(noticeTimeEndTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -53,10 +60,11 @@
         <div class="form-group">
             <label>预约渠道</label>
             <select class="selectpicker" name="source">
-                <option value="" >全部</option>
+                <option value="">全部</option>
                 <#list sourceList as sourceItem >
                     <#if sourceItem != 'MOBILE' && sourceItem != 'AUTO'>
-                        <option value="${sourceItem}" <#if source??&& source == sourceItem>selected</#if>>${sourceItem.name()}</option>
+                        <option value="${sourceItem}"
+                                <#if source??&& source == sourceItem>selected</#if>>${sourceItem.name()}</option>
 
                     </#if>
                 </#list>
@@ -148,7 +156,8 @@
             <ul class="pagination">
                 <li>
                     <#if bookingLoan.hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>"
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -158,7 +167,8 @@
                 <li><a>${bookingLoan.index}</a></li>
                 <li>
                     <#if bookingLoan.hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize}<#if productType??>&productType=${productType}</#if><#if bookingTimeStartTime??>&bookingTimeStartTime=${bookingTimeStartTime?string('yyyy-MM-dd')}</#if><#if bookingTimeEndTime??>&bookingTimeEndTime=${bookingTimeEndTime?string('yyyy-MM-dd')}</#if><#if mobile??>&mobile=${mobile}</#if><#if noticeTimeStartTime??>&noticeTimeStartTime=${noticeTimeStartTime?string('yyyy-MM-dd')}</#if><#if noticeTimeEndTime??>&noticeTimeEndTime=${noticeTimeEndTime?string('yyyy-MM-dd')}</#if><#if source??>&source=${source}</#if><#if status??>&status=${status?c}</#if>"
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

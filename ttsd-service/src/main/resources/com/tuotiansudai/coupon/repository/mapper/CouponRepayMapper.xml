@@ -30,7 +30,8 @@
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.loginName}, #{item.couponId}, #{item.userCouponId}, #{item.investId}, #{item.period},
-            #{item.expectedInterest}, #{item.actualInterest},#{item.expectedFee}, #{item.actualFee},#{item.repayAmount}, #{item.repayDate},
+            #{item.expectedInterest}, #{item.actualInterest},#{item.expectedFee}, #{item.actualFee},#{item.repayAmount},
+            #{item.repayDate},
             #{item.actualRepayDate}, #{item.isTransferred}, #{item.status}, now())
         </foreach>
     </insert>

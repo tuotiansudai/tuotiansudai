@@ -452,7 +452,7 @@ public class InvestTransferPurchaseServiceTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeInvest.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
         userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
         userMembershipMapper.create(userMembershipModel);
-        CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1,"transferrer");
+        CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1, "transferrer");
         UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeTransferInvest.getId());
         couponRepayMapper.create(Lists.newArrayList(new CouponRepayModel(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeTransferInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate())));
 
@@ -476,7 +476,7 @@ public class InvestTransferPurchaseServiceTest {
         return userCouponModel;
     }
 
-    public CouponModel createFakeInterestCoupon(double rate,String loginName){
+    public CouponModel createFakeInterestCoupon(double rate, String loginName) {
         CouponModel couponModel = new CouponModel();
         couponModel.setRate(rate);
         couponModel.setActive(true);

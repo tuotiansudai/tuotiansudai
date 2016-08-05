@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BookingLoanRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BookingLoanResponseListsDto;
@@ -18,12 +17,12 @@ public class MobileAppBookingLoanController extends MobileAppBaseController {
     private MobileAppBookingLoanService mobileAppBookingLoanService;
 
     @RequestMapping(value = "/get/booking-loan", method = RequestMethod.POST)
-    public BaseResponseDto<BookingLoanResponseListsDto> getBookingLoan(){
+    public BaseResponseDto<BookingLoanResponseListsDto> getBookingLoan() {
         return mobileAppBookingLoanService.getBookingLoan();
     }
 
     @RequestMapping(value = "/booking-loan", method = RequestMethod.POST)
-    public BaseResponseDto bookingLoan(@RequestBody BookingLoanRequestDto bookingLoanRequestDto){
+    public BaseResponseDto bookingLoan(@RequestBody BookingLoanRequestDto bookingLoanRequestDto) {
         return mobileAppBookingLoanService.bookingLoan(bookingLoanRequestDto);
     }
 
