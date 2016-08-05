@@ -29,7 +29,7 @@ public class BookingLoanMapperTest {
     private UserMapper userMapper;
 
     @Test
-    public void shouldCreateIsOk(){
+    public void shouldCreateIsOk() {
         UserModel userModel = getUserModelTest();
         BookingLoanModel bookingLoanModel = new BookingLoanModel(userModel.getMobile(),
                 Source.WEB,
@@ -41,7 +41,7 @@ public class BookingLoanMapperTest {
                 DateTime.now().toDate());
         bookingLoanMapper.create(bookingLoanModel);
 
-        List<BookingLoanModel> bookingLoanModels =  bookingLoanMapper.selectBookingLoanByMobile(userModel.getMobile());
+        List<BookingLoanModel> bookingLoanModels = bookingLoanMapper.selectBookingLoanByMobile(userModel.getMobile());
         assertTrue(CollectionUtils.isNotEmpty(bookingLoanModels));
         assertTrue(bookingLoanModels.size() == 1);
         assertTrue(bookingLoanModels.get(0).getMobile().equals(bookingLoanModel.getMobile()));

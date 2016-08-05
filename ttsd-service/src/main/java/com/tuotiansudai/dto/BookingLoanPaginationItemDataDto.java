@@ -9,7 +9,7 @@ import com.tuotiansudai.util.AmountConverter;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BookingLoanPaginationItemDataDto implements Serializable{
+public class BookingLoanPaginationItemDataDto implements Serializable {
     private long bookingLoanId;
     private String userName;
     private String mobile;
@@ -20,10 +20,11 @@ public class BookingLoanPaginationItemDataDto implements Serializable{
     private Date noticeTime;
     private boolean status;
 
-    public BookingLoanPaginationItemDataDto(){
+    public BookingLoanPaginationItemDataDto() {
 
     }
-    public BookingLoanPaginationItemDataDto(BookingLoanModel bookingLoanModel){
+
+    public BookingLoanPaginationItemDataDto(BookingLoanModel bookingLoanModel) {
         this.bookingLoanId = bookingLoanModel.getId();
         this.mobile = bookingLoanModel.getMobile();
         this.source = bookingLoanModel.getSource();

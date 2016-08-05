@@ -7,54 +7,55 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
     <resultMap id="transferApplicationResultMap" type="TransferApplicationModel">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="loan_id" property="loanId"></result>
-        <result column="transfer_invest_id" property="transferInvestId"></result>
-        <result column="invest_id" property="investId"></result>
-        <result column="period" property="period"></result>
-        <result column="login_name" property="loginName"></result>
-        <result column="invest_amount" property="investAmount"></result>
-        <result column="transfer_amount" property="transferAmount"></result>
-        <result column="transfer_fee" property="transferFee"></result>
-        <result column="status" property="status"></result>
-        <result column="deadline" property="deadline"></result>
-        <result column="transfer_time" property="transferTime"></result>
-        <result column="application_time" property="applicationTime"></result>
-        <result column="left_period" property="leftPeriod"></result>
-        <result column="source" property="source"></result>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="transfer_invest_id" property="transferInvestId"/>
+        <result column="invest_id" property="investId"/>
+        <result column="period" property="period"/>
+        <result column="login_name" property="loginName"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="transfer_amount" property="transferAmount"/>
+        <result column="transfer_fee" property="transferFee"/>
+        <result column="status" property="status"/>
+        <result column="deadline" property="deadline"/>
+        <result column="transfer_time" property="transferTime"/>
+        <result column="application_time" property="applicationTime"/>
+        <result column="left_period" property="leftPeriod"/>
+        <result column="source" property="source"/>
     </resultMap>
 
     <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
-        <result column="id" property="transferApplicationId"></result>
-        <result column="name" property="name"></result>
-        <result column="transfer_amount" property="transferAmount"></result>
-        <result column="invest_amount" property="investAmount"></result>
-        <result column="transfer_time" property="transferTime"></result>
-        <result column="base_rate" property="baseRate"></result>
-        <result column="activity_rate" property="activityRate"></result>
-        <result column="status" property="transferStatus"></result>
-        <result column="loan_id" property="loanId"></result>
-        <result column="transferrer_mobile" property="transferrerMobile"></result>
-        <result column="transferee_mobile" property="transfereeMobile"></result>
-        <result column="transfer_fee" property="transferFee"></result>
-        <result column="transfer_invest_id" property="transferInvestId"></result>
-        <result column="period" property="period"></result>
-        <result column="left_period" property="leftPeriod"></result>
-        <result column="deadline" property="deadLine"></result>
-        <result column="application_time" property="applicationTime"></result>
+        <result column="id" property="transferApplicationId"/>
+        <result column="name" property="name"/>
+        <result column="transfer_amount" property="transferAmount"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="transfer_time" property="transferTime"/>
+        <result column="base_rate" property="baseRate"/>
+        <result column="activity_rate" property="activityRate"/>
+        <result column="status" property="transferStatus"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="transferrer_mobile" property="transferrerMobile"/>
+        <result column="transferee_mobile" property="transfereeMobile"/>
+        <result column="transfer_fee" property="transferFee"/>
+        <result column="transfer_invest_id" property="transferInvestId"/>
+        <result column="period" property="period"/>
+        <result column="left_period" property="leftPeriod"/>
+        <result column="deadline" property="deadLine"/>
+        <result column="application_time" property="applicationTime"/>
+        <result column="source" property="source"/>
     </resultMap>
 
     <resultMap id="transferableInvestPaginationItemDataDtoMap" type="TransferableInvestPaginationItemDataDto">
-        <result column="loan_id" property="loanId"></result>
-        <result column="invest_id" property="investId"></result>
-        <result column="loan_name" property="loanName"></result>
-        <result column="amount" property="amount"></result>
-        <result column="next_repay_date" property="nextRepayDate"></result>
-        <result column="next_repay_amount" property="nextRepayAmount"></result>
-        <result column="create_time" property="createdTime"></result>
-        <result column="base_rate" property="baseRate"></result>
-        <result column="activity_rate" property="activityRate"></result>
+        <result column="loan_id" property="loanId"/>
+        <result column="invest_id" property="investId"/>
+        <result column="loan_name" property="loanName"/>
+        <result column="amount" property="amount"/>
+        <result column="next_repay_date" property="nextRepayDate"/>
+        <result column="next_repay_amount" property="nextRepayAmount"/>
+        <result column="create_time" property="createdTime"/>
+        <result column="base_rate" property="baseRate"/>
+        <result column="activity_rate" property="activityRate"/>
     </resultMap>
 
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
@@ -143,7 +144,7 @@
         SELECT ta.id, ta.name, ta.transfer_amount, ta.invest_amount, ta.transfer_time, ta.status, ta.loan_id, u1.mobile
         AS transferrer_mobile,
         ta.transfer_fee, ta.transfer_invest_id, ta.period, ta.left_period, ta.deadline, ta.application_time, u2.mobile
-        AS transferee_mobile
+        AS transferee_mobile, ta.source AS source
         FROM
         (transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name)
         left JOIN
@@ -170,6 +171,14 @@
             </if>
             <if test="loanId != null">
                 AND i.loan_id = #{loanId}
+            </if>
+            <if test="source != null">
+                <if test="source.name() == 'MOBILE'">
+                    AND (ta.source = 'IOS' OR ta.source = 'ANDROID')
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    AND ta.source = #{source}
+                </if>
             </if>
         </where>
         ORDER BY application_time
@@ -270,7 +279,14 @@
             <if test="loanId != null">
                 and i.loan_id = #{loanId}
             </if>
-
+            <if test="source != null">
+                <if test="source.name() == 'MOBILE'">
+                    and (ta.source = 'IOS' or ta.source = 'ANDROID')
+                </if>
+                <if test="source.name() != 'MOBILE'">
+                    and ta.source = #{source}
+                </if>
+            </if>
         </where>
     </select>
 

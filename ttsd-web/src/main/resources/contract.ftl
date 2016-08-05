@@ -7,7 +7,7 @@
     </style>
 
 </head>
-<body >
+<body>
 <p><span style="font-family: 宋体, SimSun;">编号：${loanId}</span></p>
 
 <p style="text-align: center;"><span style="font-family: 宋体, SimSun;"><strong><span
@@ -33,7 +33,28 @@
 
 <p><span style="font-family: 宋体, SimSun;">乙方（出借人）：</span></p>
 
-<p><span style="font-family: 宋体, SimSun;">${investList}</span></p>
+<#--<p><span style="font-family: 宋体, SimSun;">${investList}</span></p>-->
+
+<table width="686px" cellspacing="0" border="1" cellpadding="4">
+    <tr>
+        <th>平台账号</th>
+        <th>真实姓名</th>
+        <th>身份证号</th>
+        <th>出借金额</th>
+        <th>借款期限</th>
+        <th>投资确认日期</th>
+    </tr>
+<#list investList as investor>
+    <tr>
+        <td>${investor.loginName}</td>
+        <td>${investor.userName}</td>
+        <td>${investor.identityNumber}</td>
+        <td>${investor.investAmount}</td>
+        <td>${investor.period}</td>
+        <td>${investor.investTime}</td>
+    </tr>
+</#list>
+</table>
 
 <p><span style="font-family: 宋体, SimSun;"><br/></span></p>
 
@@ -80,65 +101,48 @@
 <p><br/></p>
 
 <p><strong>二、甲方向乙方借款，借款信息如下：&nbsp;</strong></p>
-<table data-sort="sortDisabled" style="margin-top: 60px;table-layout:fixed; word-break:break-strict;width: 80%;">
-    <tbody>
-    <tr class="firstRow">
-        <td width="142" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">借款用途<br/>
-        </td>
-        <td width="229" valign="top"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">${loanPurpose}</td>
-        <td width="32" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">十</td>
-        <td width="27" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">万</td>
-        <td width="30" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">千</td>
-        <td width="29" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">百</td>
-        <td width="26" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">十</td>
-        <td width="31" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">元</td>
-        <td width="31" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">角</td>
-        <td width="33" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">分</td>
+
+<table border="1" cellspacing="0" cellpadding="4" width="686">
+    <tr>
+        <th>借款用途</th>
+        <th>${loanPurpose}</th>
+        <th>百</th>
+        <th>十</th>
+        <th>万</th>
+        <th>千</th>
+        <th>百</th>
+        <th>十</th>
+        <th>元</th>
+        <th>角</th>
+        <th>分</th>
     </tr>
     <tr>
-        <td width="142" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">借款本金数额</td>
-        <td width="229" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">
-            ￥${actualMoney}</td>
-        <td width="32" valign="top"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">${hundredThousand}</td>
-        <td width="27" valign="top"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">${tenThousand}</td>
-        <td width="30" valign="top"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">${thousand}</td>
-        <td width="29" valign="top"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">${hundred}</td>
-        <td width="26" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">${ten}</td>
-        <td width="31" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">${yuan}</td>
-        <td width="31" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">${bugle}</td>
-        <td width="33" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">${fen}</td>
+        <td>借款本金数额</td>
+        <td>¥${actualMoney}</td>
+        <td>${million}</td>
+        <td>${hundredThousand}</td>
+        <td>${tenThousand}</td>
+        <td>${thousand}</td>
+        <td>${hundred}</td>
+        <td>${ten}</td>
+        <td>${yuan}</td>
+        <td>${bugle}</td>
+        <td>${fen}</td>
     </tr>
     <tr>
-        <td width="142" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">还款分期月数</td>
-        <td width="229" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">${deadline}
-            月
-        </td>
-        <td valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;" rowspan="1" colspan="3"
-            width="131">还款日
-        </td>
-        <td valign="top" rowspan="1" colspan="5" style="word-break: break-all; border-width: 1px; border-style: solid;"
-            width="234">${repayDay}日(24:00前，节假日不
-            顺延)
-        </td>
+        <td>还款分期月数</td>
+        <td>${deadline}</td>
+        <td colspan="2">还款日</td>
+    <#--<td colspan="7">${repayDay}日(24:00前，节假日不顺延)</td>-->
+        <td colspan="7">详见回款详情</td>
     </tr>
     <tr>
-        <td width="142" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">还款起止时间</td>
-        <td valign="top" rowspan="1" colspan="9" width="636"
-            style="word-break: break-all; border-width: 1px; border-style: solid;">&nbsp; &nbsp;${interestBeginTime}
-            起，至 ${interestEndTime}止
-        </td>
+        <td>还款起止时间</td>
+        <td colspan="10">${interestBeginTime}起，至 ${interestEndTime}止</td>
     </tr>
-    </tbody>
 </table>
 
-<p>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br/></p>
-
-<p>&nbsp; &nbsp;&nbsp;</p>
+<p><br/></p>
 
 <p>三、<span class="Apple-tab-span" style="white-space: pre;"></span>资金出借方式</p>
 
@@ -147,11 +151,11 @@
 
 <p>3.2 乙方进行出借资金操作之前，有义务仔细阅读本协议，充分了解并清楚知晓相应权利义务，在确认
     同意本协议各条款后,乙方点击“确认投资”选项即视为同意签署本协议,以及视为乙方已向丙方发出不
-    可撤销的授权指令，同意授权丙方委托其指定的第三方支付机构冻结乙方确定出借的资金；冻结将在
-    本协议生效或本协议失效时解除。</p>
+    可撤销的授权指令，同意授权丙方委托其指定的第三方支付机构冻结乙方确定出借的资金；冻结将
+    在本协议生效或本协议失效时解除。</p>
 
-<p>3.3 本协议在借款项目所需的债权金额已全部认缴，且所有出借人的出借资金均已全部冻结时立即生效。
-    若借款项目所需债权金额在规定时间内未被全部认缴，则本协议失效，冻结立即解除。</p>
+<p>3.3 本协议在借款项目所需的债权金额已全部认缴，且所有出借人的出借资金均已全部冻结时立即生
+    效。若借款项目所需债权金额在规定时间内未被全部认缴，则本协议失效，冻结立即解除。</p>
 
 <p>3.4 本协议生效时，即视为乙方不可撤销地同意授权丙方委托其指定的第三方支付机构将冻结资金划转
     至甲方或其代理人在第三方支付机构的账户，从而完成资金的投资。</p>
@@ -206,6 +210,10 @@
     行保密。如乙方未经允许、不恰当地向第三方透露借款人的信用信息或甲方个人信用信息及甲方代
     理人、丙方的商业秘密，由此对甲方、甲方代理人或丙方造成损失的，由乙方承担全部责任。</p>
 
+<p>5.9 如乙方有效持有的甲方债权符合丙方平台相关债权转让标准的，乙方可以在丙方平台依照丙方平
+    台相关债权转让规则转让其持有的甲方债权，乙方承诺除上述约定的债权转让渠道外，其不会通过
+    丙方平台以外的任何方式向任何第三方转让其持有的甲方债权。</p>
+
 <p><br/></p>
 
 <p>六、<span class="Apple-tab-span" style="white-space: pre;"></span>丙方的权利与义务</p>
@@ -240,8 +248,8 @@
     认后方可变更；如因乙方未及时书面通知丙方而引发的损失由乙方自行承担。</p>
 
 <p>7.5 甲方为多人时，任何一位借款人均应履行本协议项下的义务，对全部借款承担连带清偿责任，乙方
-    有权向任何一位借款人追偿本合同项下全部应付款项，包括但不限于本金、利息、违约金等。乙方（出
-    借人）为多人时，每人按比例享有债权。</p>
+    有权向任何一位借款人追偿本合同项下全部应付款项，包括但不限于本金、利息、违约金等。乙方
+    （出借人）为多人时，每人按比例享有债权。</p>
 
 <p>7.6 乙方从其在丙方授权的第三方支付机构注册账户内申请提现，乙方资金将在其提现申请后三个工作
     日内到达。</p>
@@ -279,8 +287,8 @@
 <p>8.5 当甲方未按照本协议的约定，连续三期均未足额清偿单期借款本金及利息时，乙方有权宣告借款提
     前到期，并可以选择以下一种方式追索本息：</p>
 
-<p>（1）乙方授权委托丙方或授权丙方委托律师，代理乙方依法追究甲方的违约责任。甲方违约所应支
-    付的本金及违约金归乙方所有，违约金的收取标准为借款本金的<span
+<p>（1）乙方授权委托丙方或授权丙方委托律师，代理乙方依法追究甲方的违约责任。甲方违约所应
+    支付的本金及违约金归乙方所有，违约金的收取标准为借款本金的<span
         style="text-decoration: underline;">${overdue_repay_investor}&nbsp;<span id="_baidu_bookmark_start_6"
                                                                                  style="display: none; line-height: 0px;">‍</span></span><span
         id="_baidu_bookmark_start_8" style="display: none; line-height: 0px;">‍</span><span
@@ -294,9 +302,9 @@
         style="text-decoration: underline;"><span id="_baidu_bookmark_end_7"
                                                   style="display: none; line-height: 0px;">‍</span></span>；</p>
 
-<p>（2）甲方代理人协助乙方受让甲方抵押物的抵押权，如依法须办理抵押登记手续，甲方代理人有义
-    务配合乙方完成；乙方受让抵押物抵押权后应自行委托律师，依法追究甲方违约责任。甲方违约所
-    应支付的本金及违约金归乙方所有
+<p>（2）甲方代理人协助乙方受让甲方抵押物的抵押权，如依法须办理抵押登记手续，甲方代理人有
+    义务配合乙方完成；乙方受让抵押物抵押权后应自行委托律师，依法追究甲方违约责任。甲方违约
+    所应支付的本金及违约金归乙方所有
     ，违约金的收取标准为借款本金的<span style="text-decoration: underline;">${overdue_repay_investor}&nbsp;</span><span
             style="text-decoration: underline;"></span>/日。</p>
 
@@ -346,8 +354,8 @@
 
 <p><br/>任何一方违反本协议的约定，使得本协议的全部或部分不能履行，均应承担违约责任，并应赔偿因
     其违约而给守约方造成的损失，包括但不限于由此产生的诉讼费和律师费、协议履行后可以获得的
-    利益等，但不得超过违反协议一方订立协议时可以预见或应当预见的因违反协议可能造成的损失。如
-    多方违约，根据实际情况各自承担相应的责任。
+    利益等，但不得超过违反协议一方订立协议时可以预见或应当预见的因违反协议可能造成的损失。
+    如多方违约，根据实际情况各自承担相应的责任。
 </p>
 
 <p><br/></p>
