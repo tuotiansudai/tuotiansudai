@@ -19,15 +19,6 @@
                        <#if coupon??>value="${coupon.couponSource!}"</#if> datatype="*" errormsg="创建失败，请输入来源描述">
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">备注</label>
-
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-comment" name="comment"
-                       <#if coupon??>value="${coupon.comment!}"</#if>>
-            </div>
-        </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">红包金额(元): </label>
             <div class="col-sm-4">
@@ -151,6 +142,15 @@
                 <label><input type="checkbox" name="shared" class="shared" <#if coupon??&&coupon.shared>checked</#if>/>
                 </label>
 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">备注</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-comment" name="comment"
+                       <#if coupon??>value="${coupon.comment!}"</#if>>
             </div>
         </div>
 
