@@ -276,28 +276,28 @@
         height: 45px;
         margin-bottom: 10px;
         span {
-          float: left;
           font-size: 20px;
           color: #999;
           line-height: 45px;
           height:45px;
+          width: 722px;
+          display: inline-block;
           &.product-icon {
-            width: 722px;
             padding-left: 38px;
-            background: url("/images/sign/home-title-new.png") -10px -10px  no-repeat;
+            background: url("/images/sign/home-title-new.png") -10px -10px no-repeat;
           }
           &.hot-product {
-            width: 722px;
             padding-left: 38px;
             background: url("/images/sign/home-title-new.png") -10px -53px no-repeat;
           }
           &.media-coverage-icon {
-            width: 722px;
             background: url("/images/sign/home-title-new.png") -10px -110px no-repeat;
           }
           &.partner-icon {
-            width: 722px;
             background: url("/images/sign/home-title-new.png") -10px -153px no-repeat;
+          }
+          &.project-transfer-icon {
+            background: url("/images/sign/home-title-new.png") -10px -233px no-repeat;
           }
         }
         .hot-more {
@@ -640,7 +640,7 @@
 
                     em {
                       font-size: 26px;
-                      color:808080;
+                      color: #808080;
                       &.active{
                         color: #ff7200;
                       }
@@ -1191,11 +1191,31 @@
       }
     }
   }
-
+  .project-transfer-frame {
+    .loan-info-frame {
+      .loan-info-dl dl {
+        &.transfer-one {
+          width:30%!important;
+        }
+        &.transfer-two {
+          width:20%!important;
+        }
+        dd em{
+          color: #ff7200!important;
+        }
+      }
+    }
+    .loan-process {
+      .deadline {
+        display: inline-block;
+        padding-top:15px;
+      }
+    }
+  }
   .book-invest-box {
-    padding:30px;
+    padding: 30px;
     .book-invest-form {
-      margin:0 100px 0px 40px;
+      margin: 0 100px 0px 40px;
     }
     .book-table-column {
       .fl {
@@ -1206,7 +1226,7 @@
         padding-right: 3%;
       }
       .fr {
-        width:73%;
+        width: 73%;
       }
       .book-invest-table {
         margin-bottom:10px;
@@ -1214,7 +1234,7 @@
           background: #f2f3f5;
         }
         th,td {
-          border:1px solid #e6e6e6;
+          border: 1px solid #e6e6e6;
           padding:5px;
           color: #4c4c4c;
           label {
@@ -1236,28 +1256,28 @@
         padding-right: 3%;
       }
       dd {
-        width:73%;
+        width: 73%;
         float: left;
-         span {
-           display: block;
-           border:1px solid #e6e6e6;
-           height: 35px;
-           line-height: 35px;
-           text-align: right;
-           padding-right: 10px;
-           input {
-             float: left;
-             height: 33px;
-             padding: 0;
-             width: 90%;
-             border: 0;
-             vertical-align: middle;
-             text-align: center;
-           }
-         }
+        span {
+          display: block;
+          border: 1px solid #e6e6e6;
+          height: 35px;
+          line-height: 35px;
+          text-align: right;
+          padding-right: 10px;
+          input {
+            float: left;
+            height: 33px;
+            padding: 0;
+            width: 90%;
+            border: 0;
+            vertical-align: middle;
+            text-align: center;
+          }
+        }
       }
       &.book-bottom-notice {
-        margin-top:30px;
+        margin-top: 30px;
         dt {
           color: #808080;
         }
@@ -1271,18 +1291,18 @@
 
   .book-box-layer {
     .layui-layer-title {
-      font-size:20px;
+      font-size: 20px;
       color: #ff752a;
     }
   }
 }
 
 .success-info-tip {
-  padding:20px 38px;
+  padding: 20px 38px;
   .icon-tip {
     width: 32px;
     height: 32px;
-    background: url("/images/icons/success-tip.png") 0px 0px  no-repeat;
+    background: url("/images/icons/success-tip.png") 0px 0px no-repeat;
     position: absolute;
     top: 30px;
     background-size: 100%;
@@ -1290,13 +1310,13 @@
   .detail-word {
     padding-left: 52px;
     color: #808080;
-    font-size:12px;
+    font-size: 12px;
     line-height: 18px;
-    margin-top:10px;
+    margin-top: 10px;
     h2 {
-      font-size:18px;
+      font-size: 18px;
       color: #4c4c4c;
-      padding-bottom:6px;
+      padding-bottom: 6px;
     }
   }
 }
@@ -1488,43 +1508,94 @@
       display:none;
     }
     .book-invest-box {
-      padding:10px;
+      padding: 10px;
       .book-invest-form {
-        margin:0;
+        margin: 0;
       }
       .book-table-column {
         .fl {
-          width:100%;
-          font-size:13px;
-          padding-right:0;
+          width: 100%;
+          font-size: 13px;
+          padding-right: 0;
           text-align: left;
         }
         .fr {
-          width:100%;
+          width: 100%;
         }
       }
       .book-dl {
         margin-bottom:10px;
         dt {
-          width:100%;
-          font-size:13px;
-          padding-right:0;
+          width: 100%;
+          font-size: 13px;
+          padding-right: 0;
           text-align: left;
         }
         dd {
-          width:100%;
+          width: 100%;
         }
       }
     }
-
+    .project-transfer-frame {
+      .label-title {
+        display: none;
+      }
+    }
+    .project-transfer-mobile {
+      margin: 0 auto auto 10px;
+      width: 100%;
+      color: #999;
+      .product-box-tran {
+        background: #fff;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        .l-title {
+          font-size: 15px;
+        }
+        .loan-info-dl {
+          dl {
+            float: left;
+            width: 33%;
+            em {
+              color: #ff3333;
+              font-weight: bold;
+              font-size: 20px;
+            }
+          }
+          .btn-normal {
+            width: auto;
+            border: 1px solid #ff6400;
+            background: #fff;
+            color: #ff6400;
+            letter-spacing: 0;
+            padding: 7px 11px;
+            float: right;
+            border-radius: 5px;
+            &[disabled] {
+              color: #fff;
+            }
+          }
+        }
+        .transer-bottom {
+          border-top: 1px solid #e5e5e5;
+          line-height: 35px;
+          em {
+            color: #ff3333;
+            font-size: 15px;
+          }
+        }
+      }
+    }
     .book-box-layer {
       .layui-layer-title {
-        font-size:14px;
+        font-size: 14px;
         color: #ff752a;
-        padding-left:10px;
+        padding-left: 10px;
       }
-      width:98%!important;
-      left: 1%!important;
+      width: 98% !important;
+      left: 1% !important;
     }
   }
 

@@ -4,7 +4,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BookingLoanModel implements Serializable{
+public class BookingLoanModel implements Serializable {
     private long id;
     private String mobile;
     private Source source;
@@ -25,7 +25,8 @@ public class BookingLoanModel implements Serializable{
         this.status = status;
         this.createTime = createTime;
     }
-    public BookingLoanModel(){
+
+    public BookingLoanModel() {
 
     }
 

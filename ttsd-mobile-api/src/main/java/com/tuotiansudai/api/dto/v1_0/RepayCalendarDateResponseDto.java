@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-public class RepayCalendarDateResponseDto extends BaseResponseDataDto{
+public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
 
     private String loanName;
     private String repayAmount;

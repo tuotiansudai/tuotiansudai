@@ -8,7 +8,8 @@ public class BookingLoanRequestDto extends BaseParamDto {
     private ProductType productType;
     private String bookingAmount;
 
-    public BookingLoanRequestDto(){}
+    public BookingLoanRequestDto() {
+    }
 
     public BookingLoanRequestDto(ProductType productType, String bookingAmount) {
         this.productType = productType;

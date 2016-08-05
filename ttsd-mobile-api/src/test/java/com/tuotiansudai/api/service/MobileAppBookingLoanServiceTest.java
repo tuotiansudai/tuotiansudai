@@ -19,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class MobileAppBookingLoanServiceTest extends ServiceTestBase{
+public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppBookingLoanService mobileAppBookingLoanService;
@@ -29,13 +29,13 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase{
     private AccountMapper accountMapper;
 
     @Test
-    public void shouldGetBookingLoanIsOk(){
+    public void shouldGetBookingLoanIsOk() {
         BaseResponseDto<BookingLoanResponseListsDto> bookingLoan = mobileAppBookingLoanService.getBookingLoan();
-        assertThat(bookingLoan.getData().getBookingLoans().size(),is(3));
+        assertThat(bookingLoan.getData().getBookingLoans().size(), is(3));
     }
 
     @Test
-    public void shouldBookingLoanIsOk(){
+    public void shouldBookingLoanIsOk() {
         String loginName = "testBookingLoanUser";
         BookingLoanRequestDto bookingLoanRequestDto = new BookingLoanRequestDto();
         bookingLoanRequestDto.setBookingAmount("100");
@@ -65,7 +65,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase{
         return userModelTest;
     }
 
-    public AccountModel getAccountModel(String loginName){
+    public AccountModel getAccountModel(String loginName) {
         AccountModel model = new AccountModel(loginName, "哈哈", "identityNumber", "payUserId", "payAccountId", new Date());
         accountMapper.create(model);
         return model;
