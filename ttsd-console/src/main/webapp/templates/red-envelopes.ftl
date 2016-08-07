@@ -4,6 +4,18 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="see-detail">
+        <table border="1"></table>
+        <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
+    </div>
+    <div class="tip-container">
+        <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="txt"></span>
+        </div>
+    </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -88,12 +100,15 @@
         ${coupon.deadline?string('0')}天
         </td>
         <td>
-            <#if coupon.userGroup == "EXCHANGER_CODE">
-                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
-                   class="btn-link">${coupon.userGroup.getDescription()}</a>
-            <#else>
-            ${coupon.userGroup.getDescription()}
-            </#if>
+        <#if coupon.userGroup == 'IMPORT_USER'>
+            <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
+                class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+        <#elseif coupon.userGroup == "EXCHANGER_CODE">
+            <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
+               class="btn-link">${coupon.userGroup.getDescription()}</a>
+        <#else>
+        ${coupon.userGroup.getDescription()}
+        </#if>
         </td>
     <td>
         <#list coupon.productTypes as productType>

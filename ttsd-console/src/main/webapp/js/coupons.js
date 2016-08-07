@@ -93,7 +93,42 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                         $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
                     });
             }
-        })
+        });
+        $('.detail-redis').on('click',function(){
+            var $this = $(this);
+            var link = $this.attr('data-url');
+            $.ajax({
+                url:link,
+                type:'POST',
+                dataType:'JSON'
+            })
+                .done(function(res){
+                    $('.see-detail').show();
+                    var $table = $('.see-detail').find('table');
+                    $table.find('tr').remove();
+                    if (res[0]) {
+                        var failed = new Array();
+                        failed = res[0].split(',');
+                        for (i=0;i<failed.length;i++) {
+                            $table.append('<tr><td class="text-red">'+failed[i]+'</td></tr>');
+                        }
+                    }
+                    if (res[1]) {
+                        var success = new Array();
+                        success = res[1].split(',');
+                        for (i=0;i<success.length;i++) {
+                            $table.append('<tr><td>'+success[i]+'</td></tr>');
+                        }
+                    }
+                })
+                .fail(function(res) {
+                    $this.addClass('confirm-btn').text('操作失败');
+                });
+        });
+
+        $('.close-btn').on('click',function(){
+            $(this).parents('.see-detail').hide();
+        });
         
     });
 });
