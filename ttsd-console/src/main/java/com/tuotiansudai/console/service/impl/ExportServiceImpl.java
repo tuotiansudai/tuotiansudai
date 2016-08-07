@@ -5,12 +5,14 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
@@ -271,6 +273,26 @@ public class ExportServiceImpl implements ExportService {
             row.add(record.getDescription());
             row.add(String.valueOf(record.getNum()));
             row.add(record.isActive() ? "已生效" : "未生效");
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildConsoleLoanList(List<LoanListDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for(LoanListDto loanListDto:records){
+            List<String> row = Lists.newArrayList();
+            row.add(String.valueOf(loanListDto.getId()));
+            row.add(loanListDto.getName());
+            row.add(loanListDto.getProductType() == null ?"" : loanListDto.getProductType().getName());
+            row.add(loanListDto.getLoanerUserName());
+            row.add(loanListDto.getAgentLoginName());
+            row.add(AmountConverter.convertCentToString(loanListDto.getLoanAmount()));
+            row.add(loanListDto.getBasicRate() + "/" + loanListDto.getActivityRate());
+            row.add("-");
+            row.add(loanListDto.getStatus().getDescription());
+            row.add(new DateTime(loanListDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             rows.add(row);
         }
         return rows;
