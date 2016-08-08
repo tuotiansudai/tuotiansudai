@@ -1042,7 +1042,9 @@ body{
   .info-list {
     color: nth($CK2, 6);
     line-height: 38px;
-
+    em.info {
+      display: inline-block;
+    }
     .fa {
       font-size: nth($fontSize, 4);
       padding-right: 5px;
