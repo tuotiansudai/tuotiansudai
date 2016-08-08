@@ -14,6 +14,8 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -176,6 +178,8 @@ public class MobileAppRepayCalendarServiceTest {
         InvestModel investModel5 = createInvest(loginName, loanId);
         InvestModel investModel6 = createInvest(loginName, loanId);
 
+        getTransferApplicationModel(loginName,investModel1.getId(),investModel2.getTransferInvestId(),loanId,new DateTime("2016-01-02").toDate());
+
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
         UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(), loginName);
@@ -206,6 +210,22 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setDate("2200-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
+    }
+
+    private TransferApplicationModel getTransferApplicationModel(String userId,long investId,long transferInvestId,long loanId,Date date){
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(userId);
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(date);
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanId);
+        transferApplicationModel.setTransferInvestId(transferInvestId);
+        transferApplicationModel.setInvestId(investId);
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        return transferApplicationModel;
     }
 
     private UserCouponModel fakeUserCouponModel(long couponId, String loginName) {
