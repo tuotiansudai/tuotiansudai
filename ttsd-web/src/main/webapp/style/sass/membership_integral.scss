@@ -1,3 +1,5 @@
+@import 'variables';
+@import 'daterangepicker';
 .nav-container {
   margin-right: 10px;
   .nav .logo{
@@ -17,143 +19,89 @@
 .main-frame{
   width:100%;
   margin:0;
-  .global-member-detail {
+  .global-member-integral {
     float:left;
     width:100%;
     .wp{
       width:1000px;
       margin:0 auto;
       position: relative;
-      &.detail-model{
-        background:#fff;
-        margin-top:20px;
+      .detail-top{
+        float:left;
+        width:100%;
+        color:#808080;
+        font-size:16px;
+        margin-top:10px;
         margin-bottom:20px;
+        span{
+          color:#fc4a52;
+        }
       }
       .container-detail{
         float:left;
-        width:940px;
-        margin:0 30px;
-        .detail-top{
+        background:#fff;
+        width:100%;
+        .type-list{
           float:left;
           width:100%;
-          color:#808080;
-          font-size:16px;
-          margin-top:10px;
-          margin-bottom:20px;
+          margin-bottom:10px;
           span{
-            color:#fc4a52;
+            float:left;
+            padding:10px 0;
+            &.active{
+              border-bottom:3px solid #fc4a52;
+              a{
+                color:#fc4a52;
+              }
+            }
+            a{
+              float:left;
+              width:100px;
+              font-size:16px;
+              color:#808080;
+              text-align:center;
+            }
           }
         }
-        .detail-info{
+        .item-block {
           float:left;
-          width:100%;
-          .detail-left{
-            float:left;
-            width:300px;
-            height:244px;
-            margin:60px 120px 100px 60px;
+          width:960px;
+          padding:0 20px;
+          margin: 10px 0 20px 0;
+          line-height: 30px;
+          font-size: 16px;
+          color:#808080;
+          .select-item {
+            display: inline-block;
+            padding: 0 10px;
+            margin-left: 10px;
+            color: #808080;
+            cursor: pointer;
+            &.current {
+              background: #fc4a52;
+              color: #fff;
+              border-radius: 3px;
+            }
           }
-          .detail-right{
-            float:left;
-            width:460px;
-            h3{
-              float:left;
-              width:100%;
-              font-size:26px;
-              color:#4c4c4c;
-            }
-            .info-text{
-              float:left;
-              width:100%;
-              &.mt-price{
-                margin:20px 0;
-                padding-bottom:20px;
-                border-bottom:1px solid #e6e6e6;
-              }
-              &.mt-20{
-                margin-top:20px;
-              }
-              .info-name{
-                float:left;
-                width:80px;
-                font-size:16px;
-                color:#999999;
-              }
-              .info-content{
-                float:left;
-                width:360px;
-                p{
-                  font-size:12px;
-                  color:#4c4c4c;
-                  margin-bottom:0;
-                }
-                .price-text{
-                  float:left;
-                  width:100%;
-                  font-size:16px;
-                  color:#4c4c4c;
-                  line-height:30px;
-                  span{
-                    font-size:26px;
-                    color:#fc4a52;
-                  }
-                }
-                .count-list{
-                  float:left;
-                  width:100%;
-                  span{
-                    float:left;
-                    &.count-btn{
-                      width:26px;
-                      height:24px;
-                      font-size:22px;
-                      text-align:center;
-                      line-height:24px;
-                      cursor:pointer;
-                      border:1px solid #d1d6de;
-                      &:active{
-                        background:#ccc;
-                      }
-                    }
-                    &.total-num{
-                      margin-left:20px;
-                      font-size:14px;
-                      color:#4c4c4c;
-                      i{
-                        color:#fc4a52;
-                      }
-                    }
-                  }
-                  .num-text{
-                    float:left;
-                    width: 50px;
-                    height: 24px;
-                    line-height: 25px;
-                    text-align: center;
-                    padding: 0;
-                    border: none;
-                    border-top: 1px solid #d1d1d1;
-                    border-bottom: 1px solid #d1d1d1;
-                  }
-                }
-              }
-              .tip-text{
-                color:#fc4a52;
-                font-size:14px;
-              }
-              .get-btn{
-                float:left;
-                width:160px;
-                height:40px;
-                line-height:20px;
-                color:#fff;
-                font-size:16px;
-                text-align:center;
-                border:none;
-                cursor:pointer;
-                background:#fc4a52;
-              }
-            }
+        }
+        .data-list{
+          table>thead>tr>th{
+            font-size:16px;
+            color:#4c4c4c;
+          }
+          table>tbody>tr>td{
+            font-size:14px;
+            color:#808080;
+          }
+        }
+      }
+      .pagination{
+        float:left;
+        width:100%;
+        span{
+          font-size:16px;
+          &.count{
+            color:#4c4c4c;
           }
         }
       }

@@ -61,6 +61,26 @@
             }
           }
         }
+        .data-list{
+          table>thead>tr>th{
+            font-size:16px;
+            color:#4c4c4c;
+          }
+          table>tbody>tr>td{
+            font-size:14px;
+            color:#808080;
+          }
+        }
+      }
+      .pagination{
+        float:left;
+        width:100%;
+        span{
+          font-size:16px;
+          &.count{
+            color:#4c4c4c;
+          }
+        }
       }
     }
     .container-ad{
