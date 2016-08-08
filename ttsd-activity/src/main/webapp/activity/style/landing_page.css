@@ -1019,6 +1019,8 @@ form label.error {
       font-size: 17px;
       text-align: center;
       padding: 5px; }
+      .landing-container-app .my-advantage .contact-tel a {
+        color: #fff; }
 
 .pop-win-app {
   position: relative; }
