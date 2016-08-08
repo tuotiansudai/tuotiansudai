@@ -3,9 +3,11 @@ package com.tuotiansudai.ask.utils;
 import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Component
 public class CaptchaHelper {
 
     static Logger logger = Logger.getLogger(CaptchaHelper.class);

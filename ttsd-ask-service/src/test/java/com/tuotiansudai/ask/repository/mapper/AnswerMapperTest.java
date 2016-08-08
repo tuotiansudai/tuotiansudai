@@ -15,6 +15,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class AnswerMapperTest extends BaseMapperTest {
 
@@ -32,7 +33,7 @@ public class AnswerMapperTest extends BaseMapperTest {
         AnswerModel answerModel = new AnswerModel("answerer", questionModel.getId(), "answer");
         answerMapper.create(answerModel);
 
-        List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer");
+        List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer", 0, 1);
         assertThat(savedAnswers.size(), is(1));
         assertThat(savedAnswers.get(0).getId(), is(answerModel.getId()));
     }
@@ -46,18 +47,18 @@ public class AnswerMapperTest extends BaseMapperTest {
         answerMapper.create(answerModel);
 
         answerModel.setBestAnswer(true);
-        answerModel.setFavorite(1);
+        answerModel.getFavoredBy().add("user");
         answerModel.setApproved(true);
         answerModel.setApprovedBy("answerer");
         answerModel.setApprovedTime(new Date());
         answerMapper.update(answerModel);
 
-        List<AnswerModel> updatedAnswers = answerMapper.findByLoginName("answerer");
+        List<AnswerModel> updatedAnswers = answerMapper.findByLoginName("answerer", 0, 1);
 
         AnswerModel updatedAnswer = updatedAnswers.get(0);
         assertThat(updatedAnswer.getId(), is(answerModel.getId()));
         assertThat(updatedAnswer.isBestAnswer(), is(true));
-        assertThat(updatedAnswer.getFavorite(), is(1));
+        assertTrue(updatedAnswer.getApprovedBy().contains("user"));
         assertThat(updatedAnswer.isApproved(), is(true));
         assertThat(updatedAnswer.getApprovedBy(), is("answerer"));
         assertNotNull(updatedAnswer.getApprovedTime());

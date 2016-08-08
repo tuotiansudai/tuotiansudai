@@ -16,7 +16,7 @@ public class AnswerModel implements Serializable {
 
     private boolean bestAnswer;
 
-    private int favorite;
+    private List<String> favoredBy;
 
     private boolean approved;
 
@@ -75,12 +75,12 @@ public class AnswerModel implements Serializable {
         this.bestAnswer = bestAnswer;
     }
 
-    public int getFavorite() {
-        return favorite;
+    public List<String> getFavoredBy() {
+        return favoredBy;
     }
 
-    public void setFavorite(int favorite) {
-        this.favorite = favorite;
+    public void setFavoredBy(List<String> favoredBy) {
+        this.favoredBy = favoredBy;
     }
 
     public boolean isApproved() {

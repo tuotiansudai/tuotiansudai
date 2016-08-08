@@ -13,10 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TagListTypeHandler extends BaseTypeHandler<List<Tag>> {
+public class StringListTypeHandler extends BaseTypeHandler<List<String>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<Tag> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, List<String> parameter, JdbcType jdbcType) throws SQLException {
         if (jdbcType == null) {
             ps.setString(i, Joiner.on(",").join(parameter));
         } else {
@@ -25,33 +25,28 @@ public class TagListTypeHandler extends BaseTypeHandler<List<Tag>> {
     }
 
     @Override
-    public List<Tag> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public List<String> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String s = rs.getString(columnName);
-        return this.convertToTags(s);
+        return this.convertToStrings(s);
     }
 
     @Override
-    public List<Tag> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public List<String> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String s = rs.getString(columnIndex);
-        return this.convertToTags(s);
+        return this.convertToStrings(s);
     }
 
     @Override
-    public List<Tag> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public List<String> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String s = cs.getString(columnIndex);
-        return this.convertToTags(s);
+        return this.convertToStrings(s);
     }
 
-    private List<Tag> convertToTags(String s) {
+    private List<String> convertToStrings(String s) {
         if (Strings.isNullOrEmpty(s)) {
             return Lists.newArrayList();
         }
 
-        List<Tag> tags = Lists.newArrayList();
-        String[] tagsStr = s.split(",");
-        for (String type : tagsStr) {
-            tags.add(Tag.valueOf(type));
-        }
-        return tags;
+        return Lists.newArrayList(s.split(","));
     }
 }

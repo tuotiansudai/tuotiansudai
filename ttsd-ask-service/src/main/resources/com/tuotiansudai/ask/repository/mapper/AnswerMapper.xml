@@ -13,7 +13,7 @@
         <result column="question_id" property="questionId"/>
         <result column="answer" property="answer"/>
         <result column="best_answer" property="bestAnswer"/>
-        <result column="favorite" property="favorite"/>
+        <result column="favored_by" property="favoredBy" typeHandler="com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler"/>
         <result column="approved" property="approved"/>
         <result column="approved_by" property="approvedBy"/>
         <result column="approved_time" property="approvedTime"/>
@@ -21,25 +21,58 @@
     </resultMap>
 
     <insert id="create" parameterType="AnswerModel" useGeneratedKeys="true" keyProperty="id">
-        insert into ask_answer (login_name, question_id, answer, best_answer, favorite, approved, approved_by, approved_time, created_time)
-        value(#{loginName}, #{questionId}, #{answer}, #{bestAnswer}, #{favorite}, #{approved}, #{approvedBy}, #{approvedTime}, now())
+        insert into answer (login_name, question_id, answer, best_answer, favored_by, approved, approved_by, approved_time, created_time)
+        value(#{loginName}, #{questionId}, #{answer}, #{bestAnswer}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler} #{approved}, #{approvedBy}, #{approvedTime}, now())
     </insert>
 
-    <select id="findByLoginName" parameterType="string" resultMap="answerResultMap">
-        select *
-        from ask_answer where login_name = #{loginName}
-    </select>
-
     <update id="update" parameterType="AnswerModel">
-        update ask_answer set
+        update answer set
         login_name = #{loginName},
         question_id = #{questionId},
         answer = #{answer},
         best_answer = #{bestAnswer},
-        favorite = #{favorite},
+        favored_by = #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler},
         approved = #{approved},
         approved_by = #{approvedBy},
         approved_time = #{approvedTime}
         where id = #{id}
     </update>
+
+    <select id="lockById" parameterType="long" resultMap="answerResultMap">
+        select *
+        from answer
+        where id = #{id}
+        for update
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="answerResultMap">
+        select *
+        from answer
+        where login_name = #{loginName}
+        order by creatd_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countByLoginName" parameterType="string" resultMap="answerResultMap">
+        select ifnull(count(1), 0)
+        from answer
+        where login_name = #{loginName}
+    </select>
+
+    <select id="findByQuestionId" parameterType="long" resultMap="answerResultMap">
+        select *
+        from answer
+        where question_id = #{questionId}
+        and approved is TRUE
+        order by creatd_time desc
+    </select>
+
+    <select id="findBestAnswerByQuestionId" parameterType="long" resultMap="answerResultMap">
+        select *
+        from answer
+        where question_id = #{questionId}
+        and approved is TRUE
+        and best_answer is TRUE
+        for update
+    </select>
 </mapper>

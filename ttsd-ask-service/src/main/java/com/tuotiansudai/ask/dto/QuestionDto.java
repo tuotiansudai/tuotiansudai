@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class QuestionPaginationItemDto implements Serializable {
+public class QuestionDto implements Serializable {
 
     private long id;
 
@@ -27,7 +27,7 @@ public class QuestionPaginationItemDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 
-    public QuestionPaginationItemDto(QuestionModel questionModel, String mobile) {
+    public QuestionDto(QuestionModel questionModel, String mobile) {
         this.id = questionModel.getId();
         this.question = questionModel.getQuestion();
         this.addition = questionModel.getAddition();

@@ -21,12 +21,12 @@
     </resultMap>
 
     <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
-        insert into ask_question (login_name, question, addition, tags, answers, last_answered_time, approved, approved_by, approved_time, created_time)
+        insert into question (login_name, question, addition, tags, answers, last_answered_time, approved, approved_by, approved_time, created_time)
         value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approved}, #{approvedBy}, #{approvedTime}, now())
     </insert>
 
     <update id="update" parameterType="QuestionModel">
-        update ask_question set
+        update question set
         login_name = #{loginName},
         question = #{question},
         addition = #{addition},
@@ -39,44 +39,82 @@
         where id = #{id}
     </update>
 
-    <select id="findByLoginName" parameterType="string" resultMap="questionResultMap">
+    <select id="findById" parameterType="long" resultMap="questionResultMap">
         select *
-        from ask_question where login_name = #{loginName}
+        from question
+        where id = #{id}
+    </select>
+
+    <select id="lockById" parameterType="long" resultMap="questionResultMap">
+        select *
+        from question
+        where id = #{id}
+        for update
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where login_name = #{loginName}
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countByLoginName" parameterType="string" resultType="long">
+        select ifnull(count(1), 0)
+        from question
+        where login_name = #{loginName}
     </select>
 
     <select id="findAllQuestions" parameterType="map" resultMap="questionResultMap">
         select *
-        from ask_question
+        from question
         where approved is TRUE or login_name = #{loginName}
         order by created_time desc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="countAllQuestions" parameterType="string" resultType="long">
-        select ifnull(count(1), 0)  from ask_question
+        select ifnull(count(1), 0)  from question
         where approved is TRUE or login_name = #{loginName}
     </select>
 
     <select id="findAllUnresolvedQuestions" parameterType="map" resultMap="questionResultMap">
         select *
-        from ask_question
+        from question
         where (approved is TRUE or login_name = #{loginName})
-        and not exists (select 1 from ask_answer where ask_question.id = ask_answer.question_id and best_answer is TRUE)
+        and not exists (select 1 from ask_answer where question.id = ask_answer.question_id and best_answer is TRUE)
         order by created_time desc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="countAllUnresolvedQuestions" parameterType="string" resultType="long">
-        select ifnull(count(1), 0) from ask_question
+        select ifnull(count(1), 0) from question
         where (approved is TRUE or login_name = #{loginName})
-        and not exists (select 1 from ask_answer where ask_question.id = ask_answer.question_id and best_answer is TRUE)
+        and not exists (select 1 from ask_answer where question.id = ask_answer.question_id and best_answer is TRUE)
     </select>
 
     <select id="findAllHotQuestions" parameterType="map" resultMap="questionResultMap">
         select *
-        from ask_question
+        from question
         where (approved is TRUE or login_name = #{loginName})
         order by last_answered_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countByTag" parameterType="map" resultType="long">
+        select ifnull(count(1), 0)
+        from question
+        where (approved is TRUE or login_name = #{loginName})
+        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+    </select>
+
+    <select id="findByTag" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where (approved is TRUE or login_name = #{loginName})
+        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+        order by created_time desc
         limit #{index}, #{pageSize}
     </select>
 </mapper>

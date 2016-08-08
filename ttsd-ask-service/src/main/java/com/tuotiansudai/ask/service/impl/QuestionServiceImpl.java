@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -35,6 +36,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public QuestionDto getQuestion(long questionId) {
+        QuestionModel questionModel = questionMapper.findById(questionId);
+        if (questionModel == null) {
+            return null;
+        }
+
+        return new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
+    }
+
+    @Override
     public BaseDto<BasePaginationDataDto> findAllQuestions(String loginName, int index, int pageSize) {
         long count = questionMapper.countAllQuestions(loginName);
         List<QuestionModel> allQuestions = questionMapper.findAllQuestions(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
@@ -55,15 +66,29 @@ public class QuestionServiceImpl implements QuestionService {
         return generatePaginationData(index, pageSize, count, allHotQuestions);
     }
 
-    private BaseDto<BasePaginationDataDto> generatePaginationData(int index, int pageSize, long count, List<QuestionModel> allQuestions) {
-        List<QuestionPaginationItemDto> items = Lists.transform(allQuestions, new Function<QuestionModel, QuestionPaginationItemDto>() {
+    @Override
+    public BaseDto<BasePaginationDataDto> findMyQuestions(String loginName, int index, int pageSize) {
+        long count = questionMapper.countByLoginName(loginName);
+        List<QuestionModel> myQuestions = questionMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generatePaginationData(index, pageSize, count, myQuestions);
+    }
+
+    @Override
+    public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
+        long count = questionMapper.countByTag(loginName, tag);
+        List<QuestionModel> myQuestions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generatePaginationData(index, pageSize, count, myQuestions);
+    }
+
+    private BaseDto<BasePaginationDataDto> generatePaginationData(int index, int pageSize, long count, List<QuestionModel> questionModels) {
+        List<QuestionDto> items = Lists.transform(questionModels, new Function<QuestionModel, QuestionDto>() {
             @Override
-            public QuestionPaginationItemDto apply(QuestionModel input) {
-                return new QuestionPaginationItemDto(input, userMapper.findByLoginName(input.getLoginName()).getMobile());
+            public QuestionDto apply(QuestionModel input) {
+                return new QuestionDto(input, userMapper.findByLoginName(input.getLoginName()).getMobile());
             }
         });
 
-        BasePaginationDataDto<QuestionPaginationItemDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         data.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(data);
     }

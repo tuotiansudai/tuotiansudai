@@ -41,7 +41,7 @@ public class MyAnswersDirective implements TemplateDirectiveModel {
         @Override
         public void write(char[] chars, int off, int len) throws IOException {
             String loginName = new String(chars, off, len);
-            long myAnswers = answerMapper.findByLoginName(loginName).size();
+            long myAnswers = answerMapper.countByLoginName(loginName);
             out.write(String.valueOf(myAnswers));
         }
 

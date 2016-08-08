@@ -28,7 +28,7 @@ public class QuestionMapperTest extends BaseMapperTest {
 
         questionMapper.create(questionModel);
 
-        List<QuestionModel> savedQuestions = questionMapper.findByLoginName("ask");
+        List<QuestionModel> savedQuestions = questionMapper.findByLoginName("ask", 0, 1);
 
         assertThat(savedQuestions.size(), is(1));
         assertThat(savedQuestions.get(0).getId(), is(questionModel.getId()));
@@ -50,7 +50,7 @@ public class QuestionMapperTest extends BaseMapperTest {
 
         questionMapper.update(questionModel);
 
-        List<QuestionModel> updatedQuestions = questionMapper.findByLoginName("ask");
+        List<QuestionModel> updatedQuestions = questionMapper.findByLoginName("ask", 0, 1);
 
         QuestionModel updatedQuestionModel = updatedQuestions.get(0);
         assertThat(updatedQuestionModel.getId(), is(questionModel.getId()));

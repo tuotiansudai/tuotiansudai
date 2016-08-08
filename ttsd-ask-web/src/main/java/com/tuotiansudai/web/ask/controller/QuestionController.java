@@ -1,21 +1,19 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.dto.BaseDataDto;
-import com.tuotiansudai.ask.dto.BaseDto;
-import com.tuotiansudai.ask.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.web.http.HttpSessionManager;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/question")
@@ -24,16 +22,41 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView ask(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        HttpSessionManager sessionManager = (HttpSessionManager) httpServletRequest.getAttribute(HttpSessionManager.class.getName());
+    @Autowired
+    private AnswerService answerService;
 
-        ModelAndView modelAndView = new ModelAndView("/question");
-        return modelAndView;
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView question() {
+        return new ModelAndView("/question");
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> ask(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
+    public BaseDto<BaseDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
         return questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto);
+    }
+
+    @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView question(@PathVariable long questionId) {
+        QuestionDto question = questionService.getQuestion(questionId);
+        if (question == null) {
+            return new ModelAndView("/error/404");
+        }
+
+        AnswerDto bestAnswer = answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId);
+        List<AnswerDto> answers = answerService.getAnswers(LoginUserInfo.getLoginName(), questionId);
+
+        ModelAndView modelAndView = new ModelAndView("/question-detail");
+        modelAndView.addObject("question", question);
+        modelAndView.addObject("bestAnswer", bestAnswer);
+        modelAndView.addObject("answers", answers);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BasePaginationDataDto> findAllHotQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize);
     }
 }

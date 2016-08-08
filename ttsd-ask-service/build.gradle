@@ -16,18 +16,9 @@ dependencies {
     compile project(':ttsd-config'),
             project(':ttsd-client'),
             project(':ttsd-user-service'),
-            project(':ttsd-spring-extension'),
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
 processResources.outputs.upToDateWhen { false }
-
-processResources {
-    println "${rootDir.getPath()}/config.properties"
-    println new File("${rootDir.getPath()}/config.properties").isFile()
-    from ("${rootDir.getPath()}/config.properties") {
-        into "/"
-    }
-}

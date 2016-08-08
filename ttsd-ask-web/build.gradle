@@ -4,6 +4,7 @@ dependencies {
 
     compile project(':ttsd-ask-service'),
             project(':ttsd-web-common-config'),
+            project(':ttsd-spring-extension'),
             'org.springframework.data:spring-data-redis:1.7.1.RELEASE',
             'org.springframework.session:spring-session:1.2.1.RELEASE'
 
