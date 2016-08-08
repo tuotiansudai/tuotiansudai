@@ -83,7 +83,7 @@
         select *
         from question
         where (approved is TRUE or login_name = #{loginName})
-        and not exists (select 1 from ask_answer where question.id = ask_answer.question_id and best_answer is TRUE)
+        and not exists (select 1 from answer where question.id = answer.question_id and best_answer is TRUE)
         order by created_time desc
         limit #{index}, #{pageSize}
     </select>
@@ -91,7 +91,7 @@
     <select id="countAllUnresolvedQuestions" parameterType="string" resultType="long">
         select ifnull(count(1), 0) from question
         where (approved is TRUE or login_name = #{loginName})
-        and not exists (select 1 from ask_answer where question.id = ask_answer.question_id and best_answer is TRUE)
+        and not exists (select 1 from answer where question.id = answer.question_id and best_answer is TRUE)
     </select>
 
     <select id="findAllHotQuestions" parameterType="map" resultMap="questionResultMap">

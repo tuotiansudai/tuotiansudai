@@ -12,6 +12,8 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
 
     private long count;
 
+    private int maxPage;
+
     private boolean hasPreviousPage;
 
     private boolean hasNextPage;
@@ -19,12 +21,12 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
     protected List<T> records;
 
     public BasePaginationDataDto(int index, int pageSize, long count, List<T> records) {
-        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         this.index = index;
+        this.maxPage = PaginationUtil.calculateMaxPage(count, pageSize);
         this.pageSize = pageSize;
         this.count = count;
-        this.hasPreviousPage = index > 1 && index <= totalPages;
-        this.hasNextPage = index < totalPages;
+        this.hasPreviousPage = index > 1 && index <= maxPage;
+        this.hasNextPage = index < maxPage;
         this.records = records;
     }
 
@@ -32,20 +34,48 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
         return index;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public int getPageSize() {
         return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
     public long getCount() {
         return count;
     }
 
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    public int getMaxPage() {
+        return maxPage;
+    }
+
+    public void setMaxPage(int maxPage) {
+        this.maxPage = maxPage;
+    }
+
     public boolean isHasPreviousPage() {
         return hasPreviousPage;
     }
 
+    public void setHasPreviousPage(boolean hasPreviousPage) {
+        this.hasPreviousPage = hasPreviousPage;
+    }
+
     public boolean isHasNextPage() {
         return hasNextPage;
+    }
+
+    public void setHasNextPage(boolean hasNextPage) {
+        this.hasNextPage = hasNextPage;
     }
 
     public List<T> getRecords() {

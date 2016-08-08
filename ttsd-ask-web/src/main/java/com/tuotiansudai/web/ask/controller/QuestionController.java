@@ -27,7 +27,7 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView question() {
-        return new ModelAndView("/question");
+        return new ModelAndView("/create-question");
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -45,7 +45,7 @@ public class QuestionController {
         AnswerDto bestAnswer = answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId);
         List<AnswerDto> answers = answerService.getAnswers(LoginUserInfo.getLoginName(), questionId);
 
-        ModelAndView modelAndView = new ModelAndView("/question-detail");
+        ModelAndView modelAndView = new ModelAndView("/question");
         modelAndView.addObject("question", question);
         modelAndView.addObject("bestAnswer", bestAnswer);
         modelAndView.addObject("answers", answers);
@@ -54,9 +54,8 @@ public class QuestionController {
     }
 
     @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto<BasePaginationDataDto> findAllHotQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize);
+    public ModelAndView findAllHotQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize));
     }
 }

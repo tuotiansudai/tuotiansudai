@@ -15,8 +15,8 @@
     </ul>
     <div class="button-layer">
     <@global.isNotAnonymous>
-        <a href="#" class="btn">我的提问<em>(4)</em></a>
-        <a href="#" class="btn">我的回答<em>(8)</em></a>
+        <a href="/question/my-questions" class="btn">我的提问<em>(<@myQuestions><@global.security.authentication property="principal.username"/></@myQuestions>)</em></a>
+        <a href="/answer/my-answers" class="btn">我的回答<em>(<@myAnswers><@global.security.authentication property="principal.username"/></@myAnswers>)</em></a>
     </@global.isNotAnonymous>
     <@global.isAnonymous>
         <a href="${webServer}/login" class="btn">登录</a>

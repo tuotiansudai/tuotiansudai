@@ -1,39 +1,76 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
-<div class="article-content fl">
-    <div class="ask-question-box clearfix">
-        <div class="m-title">我要提问</div>
-        <div class="ask-question-con">
-            <form name="askQuestion" class="form-question">
-                <dl class="ask-question-list">
-                    <dt>一句话描述您的问题</dt>
-                    <dd class="clearfix">
-                        <input name="question" placeholder="请 登录 或 注册 后再进行提问" class="ask-con">
-                        <span class="words-tip fr">0/30</span>
-                    </dd>
-                    <dt>问题补充（选填）</dt>
-                    <dd class="clearfix">
-                        <textarea name="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
-                        <span class="words-tip fr">0/10000</span>
-                    </dd>
-                    <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
-                    <dd class="tag-list">
-                        <span class="tag checked">证券</span>
-                        <#list tags as tag>
-                            <span class="tag">${tag.description}</span>
-                        </#list>
-                    </dd>
-                    <dd class="dd-captcha">
-                        <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
-                        <img src="${askServer}/captcha" alt="">
-                    </dd>
-                    <dd class="tc ask-button">
-                        <button class="btn">提问</button>
-                    </dd>
-                </dl>
-            </form>
+<div class="article-content fl answer-container">
+    <div class="borderBox clearfix">
+        <div class="answers-box">
+            <dl class="answers-list">
+                <dt>${question.question}</dt>
+                <dd><span>${question.mobile}</span>
+                    <span>回答：${question.answers}</span>
+                    <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span> <br/>
+
+                </dd>
+                <dd class="tag-answer">
+                    <#list question.tags as tag>
+                        <span class="tag">${tag}</span>
+                    </#list>
+                <dd>${question.addition!}</dd>
+            </dl>
         </div>
     </div>
-</div>
 
+    <div class="to-answer-box">
+        <div class="m-title">我来回答</div>
+        <form name="formAnswer" class="formAnswer">
+            <dl class="form-answer-in">
+                <dd>
+                    <textarea rows="4" class="text-area" placeholder="请 登陆 或 注册 后再进行回答"></textarea>
+                    <i class="error text-area-error fa fa-times-circle">您的回答过于简短</i>
+                </dd>
+                <dd>
+                    <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
+                    <img src="${askServer}/captcha" alt="">
+                    <button type="button" class="btn fr" disabled >提交答案</button>
+                    <i class="error">验证码不正确</i>
+                </dd>
+            </dl>
+        </form>
+    </div>
+
+    <#if bestAnswer??>
+        <div class="borderBox clearfix margin-top-10">
+            <div class="answers-box ">
+                <dl class="answers-list">
+                    <dd>${bestAnswer.answer}</dd>
+                    <dd class="date-time-answer"><span>${bestAnswer.mobile}</span>
+                        <span class="datetime">${bestAnswer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
+                        <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </#if>
+
+<#--ad-->
+    <div class="ad-answer"><img src="${staticServer}/images/sign/ad-answer.jpg"></div>
+
+    <div class="borderBox clearfix margin-top-10">
+        <div class="answers-box ">
+            <div class="other-title">共${question.answers}个回答</div>
+            <#list answers as answer>
+                <#if bestAnswer?? && answer.id != bestAnswer.id>
+                    <dl class="answers-list">
+                        <dd>${answer.answer}</dd>
+                        <dd class="date-time-answer"><span>${answer.mobile}</span>
+                            <span class="datetime">${answer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
+                            <span class="agree-ok ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
+                            <span class="btn fr">采纳此条信息</span>
+                        </dd>
+                    </dl>
+                </#if>
+            </#list>
+        </div>
+    </div>
+
+</div>
 </@global.main>

@@ -16,7 +16,7 @@ public class AnswerDto {
 
     private int favorite;
 
-    private boolean isFavored;
+    private boolean favored;
 
     private Date createdTime;
 
@@ -26,7 +26,7 @@ public class AnswerDto {
         this.answer = answerModel.getAnswer();
         this.bestAnswer = answerModel.isBestAnswer();
         this.favorite = answerModel.getFavoredBy().size();
-        this.isFavored = isFavored;
+        this.favored = isFavored;
         this.createdTime = answerModel.getCreatedTime();
     }
 
@@ -50,8 +50,8 @@ public class AnswerDto {
         return favorite;
     }
 
-    public boolean isFavored() {
-        return isFavored;
+    public boolean getFavored() {
+        return favored;
     }
 
     public Date getCreatedTime() {

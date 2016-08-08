@@ -1,11 +1,9 @@
 <#import "macro/global.ftl" as global>
-
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
-<div class="article-content fl">
-    <ul class="switch-menu clearfix">
-        <li class="active"><a href="/">全部问题</a></li>
-        <li><a href="/?group=UNRESOLVED&index=1">待解决问题</a></li>
-        <li><a href="/?group=HOT&index=1">热门问题</a></li>
+<div class="article-content fl" id="myQAnswer">
+    <ul class="switch-menu clearfix" id="my-questions-tab">
+        <li class="active"><a href="/question/my-questions">我的提问</a></li>
+        <li><a href="/answer/my-answers">我的回答</a></li>
     </ul>
     <div class="borderBox clearfix">
         <div class="answers-box">
@@ -29,11 +27,11 @@
 
     <div class="pagination">
         <#if questions.data.hasPreviousPage>
-            <a href="/?group=${group}">首页</a>
+            <a href="/question/my-questions">首页</a>
         </#if>
 
         <#if questions.data.index &gt; 3>
-            <a href="/?group=${group}&index=${questions.data.index-1}"> < </a>
+            <a href="/question/my-questions?index=${questions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
@@ -46,16 +44,18 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/?group=${group}&index=${page}"> ${page} </a>
+            <a href="/question/my-questions?index=${page}"> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>
-            <a href="/?group=${group}&index=${questions.data.index+1}"> > </a>
+            <a href="/question/my-questions?index=${questions.data.index+1}"> > </a>
         </#if>
 
         <#if questions.data.hasNextPage>
-            <a href="/?group=${group}&index=${questions.data.maxPage}">末页</a>
+            <a href="/question/my-questions?index=${questions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>
+
+
 </@global.main>

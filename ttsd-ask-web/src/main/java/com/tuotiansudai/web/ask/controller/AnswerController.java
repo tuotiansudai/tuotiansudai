@@ -7,10 +7,8 @@ import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -40,5 +38,11 @@ public class AnswerController {
         BaseDataDto dataDto = new BaseDataDto(answerService.favor(LoginUserInfo.getLoginName(), answerId));
 
         return new BaseDto<>(dataDto);
+    }
+
+    @RequestMapping(path = "/my-answers", method = RequestMethod.GET)
+    public ModelAndView findAllHotQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return new ModelAndView("/my-answers", "answers", answerService.findMyAnswers(LoginUserInfo.getLoginName(), index, pageSize));
     }
 }

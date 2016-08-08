@@ -49,11 +49,11 @@
         select *
         from answer
         where login_name = #{loginName}
-        order by creatd_time desc
+        order by created_time desc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="countByLoginName" parameterType="string" resultMap="answerResultMap">
+    <select id="countByLoginName" parameterType="string" resultType="long">
         select ifnull(count(1), 0)
         from answer
         where login_name = #{loginName}
@@ -64,7 +64,7 @@
         from answer
         where question_id = #{questionId}
         and approved is TRUE
-        order by creatd_time desc
+        order by created_time desc
     </select>
 
     <select id="findBestAnswerByQuestionId" parameterType="long" resultMap="answerResultMap">
