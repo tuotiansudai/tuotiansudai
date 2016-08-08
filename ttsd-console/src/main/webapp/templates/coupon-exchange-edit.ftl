@@ -63,9 +63,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">所需积分</label>
+            <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需积分需要填写数字">
             </div>
         </div>
 
@@ -96,6 +96,21 @@
             <div class="col-sm-8">
                 <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number invest_limit" name="investLowerLimit"
                                                          <#if exchangeCouponDto??>value="${exchangeCouponDto.investLowerLimit}"</#if> placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">来源: </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" <#if exchangeCouponDto??>value="${exchangeCouponDto.couponSource!}"</#if> placeholder="" datatype="*" errormsg="来源不能为空">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">备注: </label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control coupon-comment" name="comment" <#if exchangeCouponDto??>value="${exchangeCouponDto.comment!}"</#if> placeholder="">
             </div>
         </div>
 
