@@ -94,4 +94,12 @@ public class RandomUtils {
         return mobile.substring(0, 3) + RandomUtils.showChar(2) + mobile.substring(9);
     }
 
+    public String encryptMobile(String mobile) {
+        final int mobileLength = 11;
+        if (mobile.length() != mobileLength) {
+            return mobile;
+        } else {
+            return mobile.substring(0, 3) + RandomUtils.showChar(6) + mobile.substring(9, 11);
+        }
+    }
 }

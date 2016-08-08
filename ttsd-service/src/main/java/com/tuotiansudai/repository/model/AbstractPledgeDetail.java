@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
+
 public abstract class AbstractPledgeDetail implements Serializable {
     protected long id;
     protected long loanId;

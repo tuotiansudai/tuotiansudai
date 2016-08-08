@@ -55,7 +55,7 @@ public class CouponAspect {
 
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
     public void afterReturningUserRegister(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after user register pointcut");
+        logger.info("after user register pointcut");
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
@@ -69,7 +69,7 @@ public class CouponAspect {
 
     @AfterReturning(value = "loginSuccessPointcut()", returning = "returnValue")
     public void afterReturningUserLogin(JoinPoint joinPoint, BaseDto<LoginDto> returnValue) {
-        logger.debug("assign coupon after user login");
+        logger.info("assign coupon after user login");
         try {
             if(returnValue.getData().getStatus()) {
                 SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
@@ -83,7 +83,7 @@ public class CouponAspect {
 
     @AfterReturning(value = "refreshTokenPointcut()")
     public void afterReturningRefreshTokenPointcut(JoinPoint joinPoint) {
-        logger.debug("assign coupon after refresh token success");
+        logger.info("assign coupon after refresh token success");
         try {
             String loginName = (String) joinPoint.getArgs()[0];
             couponAssignmentService.assignUserCoupon(loginName, userGroups);
