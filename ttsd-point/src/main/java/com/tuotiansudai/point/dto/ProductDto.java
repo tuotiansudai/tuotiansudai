@@ -2,33 +2,31 @@ package com.tuotiansudai.point.dto;
 
 
 import com.tuotiansudai.point.repository.model.GoodsType;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class GoodsRequestDto implements Serializable {
-    private String userId;
+public class ProductDto implements Serializable {
+    @NotNull(message = "商品类型不能为空")
     private GoodsType goodsType;
+    @NotEmpty(message = "商品名称不能为空")
     private String productName;
+    @NotNull(message = "排序不能为空")
     private Integer seq;
     private String imageUrl;
+    @NotEmpty(message = "描述不能为空")
     private String description;
-    private long totalCount;
+    @NotNull(message = "描述不能为空")
+    private Long totalCount;
+    @NotNull(message = "商品价格不能为空")
     private long productPrice;
+    @NotNull(message = "起始时间不能为空")
     private Date startTime;
+    @NotNull(message = "结束时间不能为空")
     private Date endTime;
-    private String createdBy;
-    private Date createdTime;
-    private String updatedBy;
-    private Date updatedTime;
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public GoodsType getGoodsType() {
         return goodsType;
@@ -102,35 +100,4 @@ public class GoodsRequestDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
 }

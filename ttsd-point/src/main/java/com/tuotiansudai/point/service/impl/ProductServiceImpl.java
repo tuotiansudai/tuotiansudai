@@ -1,10 +1,10 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.point.dto.GoodsRequestDto;
+import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.point.service.GoodsManageService;
+import com.tuotiansudai.point.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,26 +12,26 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class GoodsManageServiceImpl implements GoodsManageService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;
 
     @Override
-    public void createGoods(GoodsRequestDto requestDto) {
+    public void createGoods(ProductDto productDto, String loginName) {
         ProductModel productModel = new ProductModel();
-        productModel.setGoodsType(requestDto.getGoodsType());
-        productModel.setProductName(requestDto.getProductName());
-        productModel.setSeq(requestDto.getSeq());
-        productModel.setImageUrl(requestDto.getImageUrl());
-        productModel.setDescription(requestDto.getDescription());
-        productModel.setTotalCount(requestDto.getTotalCount());
-        productModel.setProductPrice(requestDto.getProductPrice());
-        productModel.setStartTime(requestDto.getStartTime());
-        productModel.setEndTime(requestDto.getEndTime());
-        productModel.setCreatedBy(requestDto.getUserId());
+        productModel.setGoodsType(productDto.getGoodsType());
+        productModel.setProductName(productDto.getProductName());
+        productModel.setSeq(productDto.getSeq());
+        productModel.setImageUrl(productDto.getImageUrl());
+        productModel.setDescription(productDto.getDescription());
+        productModel.setTotalCount(productDto.getTotalCount());
+        productModel.setProductPrice(productDto.getProductPrice());
+        productModel.setStartTime(productDto.getStartTime());
+        productModel.setEndTime(productDto.getEndTime());
+        productModel.setCreatedBy(loginName);
         productModel.setCreatedTime(new Date());
-        productModel.setUpdatedBy(requestDto.getUserId());
+        productModel.setUpdatedBy(loginName);
         productModel.setUpdatedTime(new Date());
         productMapper.create(productModel);
     }

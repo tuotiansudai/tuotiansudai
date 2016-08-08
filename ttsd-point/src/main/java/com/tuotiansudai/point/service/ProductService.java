@@ -1,14 +1,14 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.point.dto.GoodsRequestDto;
+import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 
 import java.util.List;
 
-public interface GoodsManageService {
-    void createGoods(GoodsRequestDto requestDto);
+public interface ProductService {
+    void createGoods(ProductDto productDto, String loginName);
 
     List<ProductModel> findGoods(GoodsType goodsType);
 
