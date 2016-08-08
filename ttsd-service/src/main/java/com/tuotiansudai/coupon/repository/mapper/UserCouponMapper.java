@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.repository.mapper;
 
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -36,6 +35,11 @@ public interface UserCouponMapper {
     long findSumRedEnvelopeByLoginName(@Param("loginName") String loginName);
 
     List<UserCouponModel> findUserCouponSuccessByInvestId(@Param("investId") long investId);
+
+    List<UserCouponModel> findUserCouponSuccessAndCouponTypeByInvestId(
+            @Param("investId") long investId,
+            @Param("couponTypeList") List<CouponType> couponTypeList
+    );
 
     long findSumInvestAmountByCouponId(@Param("couponId") long couponId);
 

@@ -5,14 +5,13 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyAuthenticationManager;
+import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -48,9 +46,6 @@ public class MockUserServiceTest {
 
     @Mock
     private SmsCaptchaService smsCaptchaService;
-
-    @Mock
-    private MyAuthenticationManager myAuthenticationManager;
 
     @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -145,13 +140,12 @@ public class MockUserServiceTest {
         registerUserDto.setMobile(mobile);
         registerUserDto.setCaptcha(captcha);
         registerUserDto.setPassword("password");
-        doNothing().when(userMapper).create(any(UserModel.class));
+        when(userMapper.create(any(UserModel.class))).thenReturn(1);
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         doNothing().when(referrerRelationService).generateRelation(null, loginName);
-        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);

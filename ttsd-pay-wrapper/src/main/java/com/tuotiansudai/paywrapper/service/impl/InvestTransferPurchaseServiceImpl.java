@@ -5,6 +5,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
@@ -106,6 +109,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -309,6 +318,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         try {
             this.updateInvestRepay(transferApplicationModel);
+            this.updateCouponRepay(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update invest repay failed", String.valueOf(investModel.getId())), e);
             this.sendFatalNotify(MessageFormat.format("债权转让({0})更新回款计划失败", String.valueOf(investId)));
@@ -367,6 +377,25 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             //sms notify
             this.sendFatalNotify(MessageFormat.format("债权转让(0)返款转让人失败", String.valueOf(transferApplicationModel.getInvestId())));
         }
+    }
+
+    private void updateCouponRepay(long investId, final int period) {
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investId);
+        List<CouponRepayModel> transferredCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
+            @Override
+            public boolean apply(CouponRepayModel input) {
+                return input.getPeriod() >= period;
+            }
+        }));
+
+        for (CouponRepayModel couponRepayModel : transferredCouponRepayModels) {
+            couponRepayModel.setExpectedInterest(0);
+            couponRepayModel.setExpectedFee(0);
+            couponRepayModel.setTransferred(true);
+            couponRepayModel.setStatus(RepayStatus.COMPLETE);
+            couponRepayMapper.update(couponRepayModel);
+        }
+
     }
 
     private void updateInvestRepay(TransferApplicationModel transferApplicationModel) {

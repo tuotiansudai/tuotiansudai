@@ -440,4 +440,14 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
             }
         });
     }
+
+    public Long hsetSeri(final String key, final String field, final Object value, final int lifeSecond) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                jedis.expire(key.getBytes(), lifeSecond);
+                return jedis.hset(key.getBytes(), field.getBytes(), SerializeUtil.serialize(value));
+            }
+        });
+    }
 }

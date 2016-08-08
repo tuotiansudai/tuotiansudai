@@ -74,7 +74,7 @@
   @extend .btn;
   background: rgba(255,117,42,1);
   border: 1px solid nth($CK1,3);
-  color: #fff!important;
+  color: #fff;
   &:hover {
     background: rgba(255,117,42,0.8);
   }
@@ -95,7 +95,7 @@
   @extend .btn;
   background: rgba(244,105,22,1);
   border: 1px solid nth($CK1,3);
-  color: #fff!important;
+  color: #fff;
   &:hover {
     background: rgba(244,105,22,0.8);
   }
@@ -218,6 +218,24 @@ label.checkbox {
   background: url("/images/icons/spr.png") no-repeat 0 -258px;
   &.checked {
     background: url("/images/icons/spr.png") no-repeat 0 -284px;
+  }
+}
+
+.init-radio-style {
+  width: 24px;
+  height: 24px;
+  padding-top: 3px;
+  cursor: pointer;
+  text-align: center;
+  background: url("/images/icons/spr.png") no-repeat 0 -209px;
+  &.on {
+    background-position: 0 -233px;
+  }
+  .radio-class {
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
   }
 }
 

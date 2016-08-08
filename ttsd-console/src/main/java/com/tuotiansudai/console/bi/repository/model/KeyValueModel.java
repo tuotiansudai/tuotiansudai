@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.bi.repository.model;
 
-public class KeyValueModel {
+import java.io.Serializable;
+
+public class KeyValueModel implements Serializable{
 
     private String name;
     private String value;
