@@ -21,7 +21,7 @@ public class HomeController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-        return new ModelAndView("/index");
+        return new ModelAndView("/home");
     }
 
     @RequestMapping(path = "/all-questions", method = RequestMethod.GET)
