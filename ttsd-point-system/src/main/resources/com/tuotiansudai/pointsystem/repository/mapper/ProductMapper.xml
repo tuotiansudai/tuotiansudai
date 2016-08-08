@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.pointsystem.repository.mapper.ProductMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="productResultMap" type="ProductModel">
         <id column="id" property="id"/>
@@ -56,11 +56,21 @@
     </select>
 
     <select id="findProductCount" resultType="long">
-        select count(id) from product
+        select count(id) from product p
+        <where>
+            <if test="productType != null">
+                and p.goods_type = #{goodsType}
+            </if>
+        </where>
     </select>
 
     <select id="findProductList" resultMap="productResultMap">
-        select * from product
+        select * from product p
+        <where>
+            <if test="productType != null">
+                and p.goods_type = #{goodsType}
+            </if>
+        </where>
         order by seq, updated_time desc
     </select>
 
