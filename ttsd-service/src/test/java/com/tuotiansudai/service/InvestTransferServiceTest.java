@@ -318,7 +318,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(null, null, null, null, null, transfereeModel.getMobile(), null, 1, 10);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(null, null, null, null, null, transfereeModel.getMobile(), null, null, 1, 10);
 
         assertTrue(basePaginationDataDto.getStatus());
         assertNotNull(basePaginationDataDto.getRecords().get(0));

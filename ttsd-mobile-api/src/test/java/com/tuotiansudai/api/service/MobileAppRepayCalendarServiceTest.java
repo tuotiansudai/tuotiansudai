@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -25,7 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -72,27 +69,27 @@ public class MobileAppRepayCalendarServiceTest {
     private CouponRepayMapper couponRepayMapper;
 
     @Test
-    public void shouldGetYearRepayCalendarByIsOk(){
+    public void shouldGetYearRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
-        InvestModel investModel1 = createInvest(loginName,loanId);
-        InvestModel investModel2 = createInvest(loginName,loanId);
-        InvestModel investModel3 = createInvest(loginName,loanId);
-        InvestModel investModel4 = createInvest(loginName,loanId);
-        InvestModel investModel5 = createInvest(loginName,loanId);
-        InvestModel investModel6 = createInvest(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
+        InvestModel investModel1 = createInvest(loginName, loanId);
+        InvestModel investModel2 = createInvest(loginName, loanId);
+        InvestModel investModel3 = createInvest(loginName, loanId);
+        InvestModel investModel4 = createInvest(loginName, loanId);
+        InvestModel investModel5 = createInvest(loginName, loanId);
+        InvestModel investModel6 = createInvest(loginName, loanId);
 
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(),loginName);
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(), loginName);
         userCouponMapper.create(userCouponModel);
-        CouponRepayModel couponRepayModel = createCouponRepay(investModel4.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-11-01").toDate());
-        CouponRepayModel couponRepayModel2 = createCouponRepay(investModel2.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-10-02").toDate());
-        CouponRepayModel couponRepayModel3 = createCouponRepay(investModel2.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-10-02").toDate());
-        CouponRepayModel couponRepayModel4 = createCouponRepay(investModel1.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-09-03").toDate());
+        CouponRepayModel couponRepayModel = createCouponRepay(investModel4.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
+        CouponRepayModel couponRepayModel2 = createCouponRepay(investModel2.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-10-02").toDate());
+        CouponRepayModel couponRepayModel3 = createCouponRepay(investModel2.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-10-02").toDate());
+        CouponRepayModel couponRepayModel4 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-09-03").toDate());
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel2));
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel3));
@@ -113,34 +110,34 @@ public class MobileAppRepayCalendarServiceTest {
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
-        BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto =  mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
+        BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto = mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarYearResponseDtos();
-        assertThat(repayCalendarYearResponseDtoList.size(),is(12));
-        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(),"0.03");
-        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(),"0.05");
-        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(),"0.02");
+        assertThat(repayCalendarYearResponseDtoList.size(), is(12));
+        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(), "0.03");
+        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(), "0.05");
+        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(), "0.02");
     }
 
     @Test
-    public void shouldGetMonthRepayCalendarByIsOk(){
+    public void shouldGetMonthRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
-        InvestModel investModel1 = createInvest(loginName,loanId);
-        InvestModel investModel2 = createInvest(loginName,loanId);
-        InvestModel investModel3 = createInvest(loginName,loanId);
-        InvestModel investModel4 = createInvest(loginName,loanId);
-        InvestModel investModel5 = createInvest(loginName,loanId);
-        InvestModel investModel6 = createInvest(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
+        InvestModel investModel1 = createInvest(loginName, loanId);
+        InvestModel investModel2 = createInvest(loginName, loanId);
+        InvestModel investModel3 = createInvest(loginName, loanId);
+        InvestModel investModel4 = createInvest(loginName, loanId);
+        InvestModel investModel5 = createInvest(loginName, loanId);
+        InvestModel investModel6 = createInvest(loginName, loanId);
 
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(),loginName);
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(), loginName);
         userCouponMapper.create(userCouponModel);
-        CouponRepayModel couponRepayModel = createCouponRepay(investModel1.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-11-01").toDate());
-        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-11-01").toDate());
+        CouponRepayModel couponRepayModel = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
+        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel1));
 
@@ -161,30 +158,30 @@ public class MobileAppRepayCalendarServiceTest {
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
-        assertThat(baseResponseDto.getData().getRepayDate().size(),is(3));
-        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(),"0.08");
+        assertThat(baseResponseDto.getData().getRepayDate().size(), is(3));
+        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(), "0.08");
     }
 
     @Test
-    public void shouldGetDateRepayCalendarIsOk(){
+    public void shouldGetDateRepayCalendarIsOk() {
         String loginName = "testRepayCalender";
         long loanId = idGenerator.generate();
         createUserByUserId(loginName);
         createAccountByUserId(loginName);
-        createLoanByUserId(loginName,loanId);
-        InvestModel investModel1 = createInvest(loginName,loanId);
-        InvestModel investModel2 = createInvest(loginName,loanId);
-        InvestModel investModel3 = createInvest(loginName,loanId);
-        InvestModel investModel4 = createInvest(loginName,loanId);
-        InvestModel investModel5 = createInvest(loginName,loanId);
-        InvestModel investModel6 = createInvest(loginName,loanId);
+        createLoanByUserId(loginName, loanId);
+        InvestModel investModel1 = createInvest(loginName, loanId);
+        InvestModel investModel2 = createInvest(loginName, loanId);
+        InvestModel investModel3 = createInvest(loginName, loanId);
+        InvestModel investModel4 = createInvest(loginName, loanId);
+        InvestModel investModel5 = createInvest(loginName, loanId);
+        InvestModel investModel6 = createInvest(loginName, loanId);
 
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(),loginName);
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(), loginName);
         userCouponMapper.create(userCouponModel);
-        CouponRepayModel couponRepayModel = createCouponRepay(investModel6.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-11-02").toDate());
-        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(),userCouponModel.getId(),couponModel.getId(),loginName,DateTime.parse("2200-11-01").toDate());
+        CouponRepayModel couponRepayModel = createCouponRepay(investModel6.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-02").toDate());
+        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel1));
 
@@ -204,18 +201,18 @@ public class MobileAppRepayCalendarServiceTest {
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
-        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(),is(1));
-        assertEquals(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().get(0).getStatus(),RepayStatus.REPAYING.name());
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(1));
+        assertEquals(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().get(0).getStatus(), RepayStatus.REPAYING.name());
         repayCalendarRequestDto.setDate("2200-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
-        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(),is(5));
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
     }
 
-    private UserCouponModel fakeUserCouponModel(long couponId,String loginName) {
+    private UserCouponModel fakeUserCouponModel(long couponId, String loginName) {
         return new UserCouponModel(loginName, couponId, new Date(), new Date());
     }
 
-    private CouponRepayModel createCouponRepay(long investId,long userCouponId,long couponId,String loginName,Date date){
+    private CouponRepayModel createCouponRepay(long investId, long userCouponId, long couponId, String loginName, Date date) {
         CouponRepayModel couponRepayModel = new CouponRepayModel();
         couponRepayModel.setId(idGenerator.generate());
         couponRepayModel.setInvestId(investId);
@@ -234,7 +231,7 @@ public class MobileAppRepayCalendarServiceTest {
         return couponRepayModel;
     }
 
-    private CouponModel fakeCouponModel(String loginName){
+    private CouponModel fakeCouponModel(String loginName) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1000L);
         couponModel.setActivatedBy(loginName);
@@ -252,7 +249,7 @@ public class MobileAppRepayCalendarServiceTest {
         return couponModel;
     }
 
-    private InvestRepayModel createInvestRepay(long investId,Date time){
+    private InvestRepayModel createInvestRepay(long investId, Date time) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investId);
         investRepayModel.setId(idGenerator.generate());

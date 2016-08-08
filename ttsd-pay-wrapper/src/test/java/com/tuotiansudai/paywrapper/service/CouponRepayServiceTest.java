@@ -47,6 +47,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.anyListOf;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -131,7 +132,7 @@ public class CouponRepayServiceTest {
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate(),false);
+        couponRepayService.repay(idGenerator.generate(), false);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
@@ -167,11 +168,11 @@ public class CouponRepayServiceTest {
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(),anyLong())).thenReturn(couponRepayModel);
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate(),true);
+        couponRepayService.repay(idGenerator.generate(), true);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
@@ -294,7 +295,6 @@ public class CouponRepayServiceTest {
         AccountModel model = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         return model;
     }
-
 
 
 }
