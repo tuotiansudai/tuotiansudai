@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.util.List;
@@ -35,4 +34,3 @@ public class TransferApplicationRequestDto extends BaseParamDto {
         this.transferStatus = transferStatus;
     }
 }
-

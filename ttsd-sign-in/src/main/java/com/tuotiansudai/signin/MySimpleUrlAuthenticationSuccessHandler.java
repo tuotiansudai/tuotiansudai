@@ -46,7 +46,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String loginName = userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
+        String loginName = userMapper.findByLoginNameOrMobile(request.getParameter("username").trim()).getLoginName();
         String strSource = request.getParameter("source");
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
