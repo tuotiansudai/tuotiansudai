@@ -97,7 +97,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     long eachSumInvestTaskLevel = this.getEachSumInvestTaskLevel(investMapper.sumSuccessInvestAmountByLoginName(null, loginName));
                     for (long level = maxTaskLevel + 1; level <= eachSumInvestTaskLevel; level++) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), this.getEachSumInvestTaskPointByLevel(level), level));
-                        pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}财豆", AmountConverter.convertCentToString(this.getEachSumInvestTaskAmountByLevel(level)), String.valueOf(this.getEachSumInvestTaskPointByLevel(level)));
+                        pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(this.getEachSumInvestTaskAmountByLevel(level)), String.valueOf(this.getEachSumInvestTaskPointByLevel(level)));
                         pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), this.getEachSumInvestTaskPointByLevel(level), pointBillNote);
                     }
                     break;
@@ -105,7 +105,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                     int eachSingleInvestTaskLevel = this.getFirstSingleInvestTaskLevel(investMapper.findLatestSuccessInvest(loginName).getAmount());
                     for (long level = maxTaskLevel + 1; level <= eachSingleInvestTaskLevel; level++) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), this.getFirstSingleInvestTaskPointByLevel(level), level));
-                        pointBillNote = MessageFormat.format("单笔投资满{0}元奖励{1}财豆", AmountConverter.convertCentToString(this.getFirstSingleInvestTaskAmountByLevel(level)), String.valueOf(this.getFirstSingleInvestTaskPointByLevel(level)));
+                        pointBillNote = MessageFormat.format("单笔投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(this.getFirstSingleInvestTaskAmountByLevel(level)), String.valueOf(this.getFirstSingleInvestTaskPointByLevel(level)));
                         pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), this.getFirstSingleInvestTaskPointByLevel(level), pointBillNote);
                     }
                     break;
@@ -115,12 +115,12 @@ public class PointTaskServiceImpl implements PointTaskService {
                     String referrer = userMapper.findByLoginName(loginName).getReferrer();
                     long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
                     userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
-                    pointBillNote = MessageFormat.format("{0}奖励{1}财豆", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
+                    pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
                 default:
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
-                    pointBillNote = MessageFormat.format("{0}奖励{1}财豆", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
+                    pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
                     pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
             }
         }
