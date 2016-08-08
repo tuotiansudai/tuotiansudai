@@ -295,7 +295,7 @@
         select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
     </select>
 
-    <select id="findByInvestIdAndTransferTime" parameterType="long" resultMap="transferApplicationResultMap">
+    <select id="findByTransferInvestIdAndTransferTime" parameterType="long" resultMap="transferApplicationResultMap">
         SELECT * FROM transfer_application WHERE status = 'SUCCESS'
             AND login_name = #{loginName}
         <if test="year != null and year != ''">
