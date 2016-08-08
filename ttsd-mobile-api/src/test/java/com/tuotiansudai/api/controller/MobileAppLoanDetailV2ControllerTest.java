@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-public class MobileAppLoanDetailControllerTest extends ControllerTestBase {
+public class MobileAppLoanDetailV2ControllerTest extends ControllerTestBase {
 
     @InjectMocks
     private MobileAppLoanDetailController controller;

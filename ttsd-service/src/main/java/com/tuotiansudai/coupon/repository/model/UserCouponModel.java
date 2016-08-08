@@ -37,8 +37,10 @@ public class UserCouponModel implements Serializable{
 
     private InvestStatus status;
 
+    //TODO: Remove
     private String loanName;
 
+    //TODO: Remove
     private Long investAmount;
 
     private String exchangeCode;
