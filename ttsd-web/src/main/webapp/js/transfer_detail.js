@@ -1,10 +1,17 @@
 require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, pagination,layer) {
+    var $transferDetailCon=$('.transfer-detail-content'),
+        $errorTip = $('.errorTip',$transferDetailCon),
+        $questionList=$('.question-list',$transferDetailCon),
+        $detailRecord=$('.detail-record',$transferDetailCon);
 
-    $(function() {
+    $detailRecord.find('li').on('click',function() {
+        var $this=$(this),
+            num=$this.index();
+        $this.addClass('active').siblings('li').removeClass('active');
+        $('.detail-record-info',$transferDetailCon).eq(num).show().siblings('.detail-record-info').hide();
 
-        var $errorTip = $('.errorTip');
-
-        function showInputErrorTips(message) {
+    })
+    function showInputErrorTips(message) {
             layer.msg(message);
         }
 
@@ -92,5 +99,18 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                     layer.msg('请求失败');
                 });
         });
-    });
+
+    $questionList.find('dl dd').hide();
+    $questionList.find('dl dd').eq(0).show();
+    $questionList.find('dl dt').eq(0).find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down')
+    $questionList.find('dt').on('click',function(index) {
+        var $this=$(this);
+        $this.next('dd').toggle();
+        if($this.next('dd').is(':hidden')) {
+            $this.find('i').removeClass('fa-chevron-circle-up').addClass('fa-chevron-circle-down');
+        }
+        else {
+            $this.find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down');
+        }
+    })
 });

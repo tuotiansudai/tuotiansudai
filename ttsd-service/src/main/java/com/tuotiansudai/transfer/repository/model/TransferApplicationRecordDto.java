@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private int leftPeriod;
     private Date deadLine;
     private Date applicationTime;
+    private Source source;
 
     public String getSumRatePercent() {
         return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
@@ -173,5 +175,13 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setApplicationTime(Date applicationTime) {
         this.applicationTime = applicationTime;
+    }
+    
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }
