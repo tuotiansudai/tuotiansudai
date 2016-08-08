@@ -24,7 +24,7 @@
         <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
         <result column="invest_fee_rate" property="investFeeRate"/>
     </resultMap>
-    
+
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
         <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
@@ -626,9 +626,6 @@
           loan ON invest.loan_id = loan.id
         LEFT JOIN
           loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
-
         WHERE
             invest.login_name = #{loginName}
             AND loan.status = 'REPAYING'
@@ -654,11 +651,10 @@
                     FROM
                     transfer_rule
                 )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                    OR EXISTS (SELECT * FROM `transfer_application` ta2 where ta2.status = 'CANCEL' and ta2.`transfer_invest_id` = invest.id
                     AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+                    DATE_FORMAT(ta2.application_time, '%Y-%m-%d')) &lt;&gt; 0)
                 )
             ORDER BY invest.created_time DESC
             limit #{index}, #{pageSize}
@@ -673,9 +669,6 @@
           loan ON invest.loan_id = loan.id
         LEFT JOIN
           loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
-
         WHERE
             invest.login_name = #{loginName}
             AND loan.status = 'REPAYING'
@@ -701,12 +694,11 @@
                     FROM
                     transfer_rule
                 )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                OR EXISTS (SELECT * FROM `transfer_application` ta2 where ta2.status = 'CANCEL' and ta2.`transfer_invest_id` = invest.id
+                AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                DATE_FORMAT(ta2.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+            )
     </select>
 
 
@@ -729,8 +721,6 @@
           loan ON invest.loan_id = loan.id
         LEFT JOIN
           loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -757,12 +747,11 @@
                     FROM
                     transfer_rule
                 )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                OR EXISTS (SELECT * FROM `transfer_application` ta2 where ta2.status = 'CANCEL' and ta2.`transfer_invest_id` = invest.id
+                AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                DATE_FORMAT(ta2.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+            )
             ORDER BY invest.created_time DESC
             limit #{index}, #{pageSize}
     </select>
@@ -776,8 +765,6 @@
           loan ON invest.loan_id = loan.id
         LEFT JOIN
           loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -804,11 +791,10 @@
                     FROM
                     transfer_rule
                 )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                OR EXISTS (SELECT * FROM `transfer_application` ta2 where ta2.status = 'CANCEL' and ta2.`transfer_invest_id` = invest.id
+                AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
+                DATE_FORMAT(ta2.application_time, '%Y-%m-%d')) &lt;&gt; 0)
                 )
     </select>
 
