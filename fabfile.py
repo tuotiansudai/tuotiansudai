@@ -39,6 +39,7 @@ def mk_war():
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-post-system:war -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_worker_zip():
@@ -150,6 +151,14 @@ def deploy_sign_in():
     upload_project(local_dir='./ttsd-sign-in/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
+@roles('point-system')
+@parallel
+def deploy_point_system():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-point_system/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sign_in)
@@ -160,6 +169,7 @@ def deploy_all():
     execute(deploy_api)
     execute(deploy_web)
     execute(deploy_activity)
+    execute(deploy_point_system)
 
 
 def pre_deploy():
@@ -209,6 +219,10 @@ def pay():
     execute(deploy_pay)
 
 def signin():
+    pre_deploy()
+    execute(deploy_sign_in)
+
+def point-system():
     pre_deploy()
     execute(deploy_sign_in)
 
