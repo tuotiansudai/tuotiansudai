@@ -2,6 +2,7 @@ package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
@@ -30,5 +31,7 @@ public interface ExportService {
     List<List<String>> buildBirthdayCoupons(List<CouponDto> records);
 
     List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records);
+
+    List<List<String>> buildConsoleLoanList(List<LoanListDto> records);
 
 }

@@ -65,6 +65,10 @@ require(['jquery', 'jquery-ui',
         $('.Previous').click(pageinationView);
         $('.Next').click(pageinationView);
 
+        $('.down-load').click(function () {
+            location.href = "/export/loan-repay?" + $('form').serialize();
+        });
+
 
     });
 });
