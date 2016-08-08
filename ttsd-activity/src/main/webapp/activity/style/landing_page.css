@@ -1110,7 +1110,7 @@ form label.error {
     display: none; }
 
   .landing-container-app {
-    padding-top: 245px; }
+    padding-top: 425px; }
     .landing-container-app .register-box {
       margin: 0 45px; }
       .landing-container-app .register-box ul {
@@ -1133,12 +1133,24 @@ form label.error {
             border: 0; }
 
   .landing-container-bus, .landing-container-game, .landing-container-tour {
-    padding-top: 265px; }
+    padding-top: 460px; }
     .landing-container-bus .my-advantage, .landing-container-game .my-advantage, .landing-container-tour .my-advantage {
       margin-top: 25px; }
       .landing-container-bus .my-advantage img.advantage, .landing-container-game .my-advantage img.advantage, .landing-container-tour .my-advantage img.advantage {
         width: 100%;
         margin: 10px auto; } }
+@media screen and (max-width: 420px) {
+  .landing-container-app {
+    padding-top: 245px; }
+
+  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 285px; } }
+@media screen and (max-width: 380px) {
+  .landing-container-app {
+    padding-top: 245px; }
+
+  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 265px; } }
 @media screen and (max-width: 350px) {
   .landing-container-app {
     padding-top: 200px; }
