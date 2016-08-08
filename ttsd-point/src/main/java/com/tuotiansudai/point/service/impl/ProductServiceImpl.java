@@ -18,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public void createGoods(ProductDto productDto, String loginName) {
+    public void createProduct(ProductDto productDto, String loginName) {
         ProductModel productModel = new ProductModel();
         productModel.setGoodsType(productDto.getGoodsType());
         productModel.setProductName(productDto.getProductName());

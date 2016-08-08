@@ -15,6 +15,7 @@ public class ProductDto implements Serializable {
     private String productName;
     @NotNull(message = "排序不能为空")
     private Integer seq;
+    @NotEmpty(message = "商品图片不能为空")
     private String imageUrl;
     @NotEmpty(message = "描述不能为空")
     private String description;

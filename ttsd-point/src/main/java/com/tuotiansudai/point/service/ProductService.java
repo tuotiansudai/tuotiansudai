@@ -8,9 +8,11 @@ import com.tuotiansudai.point.repository.model.ProductModel;
 import java.util.List;
 
 public interface ProductService {
-    void createGoods(ProductDto productDto, String loginName);
+
+    void createProduct(ProductDto productDto, String loginName);
 
     List<ProductModel> findGoods(GoodsType goodsType);
 
     long findGoodsCount(GoodsType goodsType);
+
 }

@@ -15,22 +15,31 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/activity-manage")
-public class GoodsManageController {
-    private static Logger logger = Logger.getLogger(GoodsManageController.class);
+public class ProductManageController {
+    private static Logger logger = Logger.getLogger(ProductManageController.class);
 
     @Autowired
     private ProductService goodsManageService;
 
-    @RequestMapping(value = "/create/goods", method = RequestMethod.POST)
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView createGoods(@Valid @RequestBody ProductDto productDto) {
+    public ModelAndView createProduct(@Valid @RequestBody ProductDto productDto) {
         String loginName = LoginUserInfo.getLoginName();
         try {
-            goodsManageService.createGoods(productDto, loginName);
+            goodsManageService.createProduct(productDto, loginName);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return getRedirectPage(productDto.getGoodsType());
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView createProduct(@RequestParam(value = "goodsType", required = false) GoodsType goodsType) {
+        ModelAndView modelAndView = getRedirectPage(goodsType);
+        modelAndView.addObject("productType", goodsType);
+        modelAndView.addObject("productTypeDesc", goodsType.getDescription());
+        return modelAndView;
     }
 
 
@@ -55,14 +64,11 @@ public class GoodsManageController {
     private ModelAndView getRedirectPage(GoodsType goodsType) {
         ModelAndView modelAndView = new ModelAndView();
         switch (goodsType) {
-            case COUPON:
-                modelAndView.setViewName("redirect:/activity-manage/coupon");
-                break;
             case PHYSICAL:
-                modelAndView.setViewName("redirect:/activity-manage/physical");
+                modelAndView.setViewName("/create-product");
                 break;
             case VIRTUAL:
-                modelAndView.setViewName("redirect:/activity-manage/virtual");
+                modelAndView.setViewName("/create-product");
                 break;
         }
         return modelAndView;
