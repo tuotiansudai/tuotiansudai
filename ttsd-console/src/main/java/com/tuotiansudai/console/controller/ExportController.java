@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -207,7 +206,8 @@ public class ExportController {
                                    @RequestParam(name = "status", required = false) TransferStatus status,
                                    @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
                                    @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
-                                   @RequestParam(name = "loanId", required = false) Long loanId, HttpServletResponse httpServletResponse) throws IOException {
+                                   @RequestParam(name = "loanId", required = false) Long loanId,
+                                   @RequestParam(name = "source", required = false) Source source, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.TransferListHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -215,7 +215,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, 1, Integer.MAX_VALUE);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildOriginListToCsvData(basePaginationDataDto.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, httpServletResponse.getOutputStream());
     }
@@ -245,11 +245,11 @@ public class ExportController {
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public void ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
-                                        @RequestParam(value = "loanId", required = false) Long loanId,
-                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "loanName", required = false) String loanName,HttpServletResponse httpServletResponse) throws IOException {
+                                @RequestParam(value = "loanId", required = false) Long loanId,
+                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                @RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                @RequestParam(value = "loanName", required = false) String loanName, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ConsoleLoanList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -262,10 +262,9 @@ public class ExportController {
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildConsoleLoanList(loanListDtos);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList,csvData,httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
 
     }
-
 
 
 }
