@@ -1,12 +1,9 @@
-package com.tuotiansudai.pointsystem.repository.mapper;
+package com.tuotiansudai.point.repository.mapper;
 
-import com.tuotiansudai.pointsystem.repository.model.GoodsType;
-import com.tuotiansudai.pointsystem.repository.model.ProductModel;
-import com.tuotiansudai.pointsystem.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;

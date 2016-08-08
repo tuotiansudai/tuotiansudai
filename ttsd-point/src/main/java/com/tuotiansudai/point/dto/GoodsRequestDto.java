@@ -1,55 +1,33 @@
-package com.tuotiansudai.pointsystem.repository.model;
+package com.tuotiansudai.point.dto;
+
+
+import com.tuotiansudai.point.repository.model.GoodsType;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ProductModel implements Serializable{
-
-    private long id;
+public class GoodsRequestDto implements Serializable {
+    private String userId;
     private GoodsType goodsType;
     private String productName;
     private Integer seq;
     private String imageUrl;
     private String description;
     private long totalCount;
-    private long usedCount;
     private long productPrice;
     private Date startTime;
     private Date endTime;
-    private boolean active;
     private String createdBy;
     private Date createdTime;
-    private String activeBy;
-    private Date activeTime;
     private String updatedBy;
     private Date updatedTime;
 
-    public ProductModel(){
-
+    public String getUserId() {
+        return userId;
     }
 
-    public ProductModel(GoodsType goodsType, String productName, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long productPrice, Date startTime, Date endTime, boolean active, String createdBy, Date createdTime) {
-        this.goodsType = goodsType;
-        this.productName = productName;
-        this.seq = seq;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.totalCount = totalCount;
-        this.usedCount = usedCount;
-        this.productPrice = productPrice;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.active = active;
-        this.createdBy = createdBy;
-        this.createdTime = createdTime;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public GoodsType getGoodsType() {
@@ -100,14 +78,6 @@ public class ProductModel implements Serializable{
         this.totalCount = totalCount;
     }
 
-    public long getUsedCount() {
-        return usedCount;
-    }
-
-    public void setUsedCount(long usedCount) {
-        this.usedCount = usedCount;
-    }
-
     public long getProductPrice() {
         return productPrice;
     }
@@ -132,14 +102,6 @@ public class ProductModel implements Serializable{
         this.endTime = endTime;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }
@@ -154,22 +116,6 @@ public class ProductModel implements Serializable{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public String getActiveBy() {
-        return activeBy;
-    }
-
-    public void setActiveBy(String activeBy) {
-        this.activeBy = activeBy;
-    }
-
-    public Date getActiveTime() {
-        return activeTime;
-    }
-
-    public void setActiveTime(Date activeTime) {
-        this.activeTime = activeTime;
     }
 
     public String getUpdatedBy() {

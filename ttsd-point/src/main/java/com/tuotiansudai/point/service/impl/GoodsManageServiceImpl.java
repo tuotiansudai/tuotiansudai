@@ -1,10 +1,10 @@
-package com.tuotiansudai.pointsystem.service.impl;
+package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.pointsystem.dto.GoodsRequestDto;
-import com.tuotiansudai.pointsystem.repository.mapper.ProductMapper;
-import com.tuotiansudai.pointsystem.repository.model.GoodsType;
-import com.tuotiansudai.pointsystem.repository.model.ProductModel;
-import com.tuotiansudai.pointsystem.service.GoodsManageService;
+import com.tuotiansudai.point.dto.GoodsRequestDto;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.service.GoodsManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

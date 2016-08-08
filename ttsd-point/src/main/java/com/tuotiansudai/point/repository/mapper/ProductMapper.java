@@ -1,8 +1,8 @@
-package com.tuotiansudai.pointsystem.repository.mapper;
+package com.tuotiansudai.point.repository.mapper;
 
 
-import com.tuotiansudai.pointsystem.repository.model.GoodsType;
-import com.tuotiansudai.pointsystem.repository.model.ProductModel;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ProductModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
