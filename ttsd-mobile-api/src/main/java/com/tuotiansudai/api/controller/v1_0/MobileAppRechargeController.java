@@ -20,7 +20,7 @@ public class MobileAppRechargeController extends MobileAppBaseController {
         return mobileAppRechargeService.recharge(bankCardRequestDto);
     }
 
-    @RequestMapping(value = "/v1.0/get/bank-limit", method = RequestMethod.POST)
+    @RequestMapping(value = "/get/bank-limit", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto getRechargeLimit(@RequestBody BankLimitRequestDto bankLimitRequestDto) {
         return mobileAppRechargeService.getBankLimit(bankLimitRequestDto);
