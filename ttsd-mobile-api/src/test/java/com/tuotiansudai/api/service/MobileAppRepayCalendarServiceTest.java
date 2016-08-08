@@ -70,6 +70,9 @@ public class MobileAppRepayCalendarServiceTest {
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     @Test
     public void shouldGetYearRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
@@ -178,7 +181,8 @@ public class MobileAppRepayCalendarServiceTest {
         InvestModel investModel5 = createInvest(loginName, loanId);
         InvestModel investModel6 = createInvest(loginName, loanId);
 
-        getTransferApplicationModel(loginName,investModel1.getId(),investModel2.getTransferInvestId(),loanId,new DateTime("2016-01-02").toDate());
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loginName,investModel6.getId(),investModel6.getId(),loanId,new DateTime("2200-11-03").toDate());
+        transferApplicationMapper.create(transferApplicationModel);
 
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
@@ -206,10 +210,9 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(1));
-        assertEquals(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().get(0).getStatus(), RepayStatus.REPAYING.name());
         repayCalendarRequestDto.setDate("2200-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
-        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(0));
     }
 
     private TransferApplicationModel getTransferApplicationModel(String userId,long investId,long transferInvestId,long loanId,Date date){
@@ -219,7 +222,7 @@ public class MobileAppRepayCalendarServiceTest {
         transferApplicationModel.setTransferAmount(1000l);
         transferApplicationModel.setInvestAmount(1200l);
         transferApplicationModel.setTransferTime(date);
-        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationModel.setLoanId(loanId);
         transferApplicationModel.setTransferInvestId(transferInvestId);
         transferApplicationModel.setInvestId(investId);

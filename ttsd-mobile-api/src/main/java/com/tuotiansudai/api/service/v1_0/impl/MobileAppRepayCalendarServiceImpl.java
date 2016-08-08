@@ -120,6 +120,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         long repayActualInterest = 0;
         long totalAmount = 0;
         for (InvestRepayModel investRepayModel : investRepayModelList) {
+            if(CollectionUtils.isNotEmpty(transferApplicationMapper.findByTransferInvestId(investRepayModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS)))){
+                continue;
+            }
 
             if (investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())) {
                 continue;
