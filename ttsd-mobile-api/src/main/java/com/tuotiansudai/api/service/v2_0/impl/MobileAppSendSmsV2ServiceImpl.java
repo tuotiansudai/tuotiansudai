@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 
 @Service
@@ -32,14 +31,14 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
 
     @Override
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
-        if(!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST) && captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(),remoteIp) && Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
+        if (!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST) && captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(), remoteIp) && Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())) {
             logger.debug("Authentication failed: need image captcha but image captcha is null");
             return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
 
-        if(!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST) && captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(),remoteIp) && !Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())){
-            if(!captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId())){
-                return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(),ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
+        if (!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST) && captchaHelper.isNeedImageCaptcha(sendSmsCompositeRequestDto.getType().name(), remoteIp) && !Strings.isNullOrEmpty(sendSmsCompositeRequestDto.getImageCaptcha())) {
+            if (!captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId())) {
+                return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
             }
         }
 
