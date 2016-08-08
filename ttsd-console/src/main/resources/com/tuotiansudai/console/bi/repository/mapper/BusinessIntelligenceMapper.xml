@@ -1400,7 +1400,7 @@
                 LEFT JOIN
             loan_repay r ON l.id = r.loan_id
         WHERE
-            l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
+            r.`status` != 'COMPLETE'
             AND l.recheck_time &lt; #{startTime}
             AND (r.actual_repay_date > #{repayDate} or actual_repay_date is null)
     </select>
