@@ -15,10 +15,6 @@
         <mvc:path-matching suffix-pattern="false"/>
     </mvc:annotation-driven>
 
-    <mvc:interceptors>
-        <bean class="com.tuotiansudai.paywrapper.interceptors.LogGenerateInterceptor"/>
-    </mvc:interceptors>
-
     <context:component-scan base-package="com.tuotiansudai.paywrapper.controller"/>
 
     <!-- freemarker config -->

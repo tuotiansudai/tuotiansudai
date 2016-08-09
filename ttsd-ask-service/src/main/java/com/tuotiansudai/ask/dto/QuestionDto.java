@@ -1,10 +1,8 @@
 package com.tuotiansudai.ask.dto;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,9 +20,18 @@ public class QuestionDto implements Serializable {
 
     private String mobile;
 
-    private List<String> tags;
+    private List<Tag> tags;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private String approvedBy;
+
+    private Date approvedTime;
+
+    private String rejectedBy;
+
+    private Date rejectedTime;
+
+    private QuestionStatus status;
+
     private Date createdTime;
 
     public QuestionDto(QuestionModel questionModel, String mobile) {
@@ -33,12 +40,12 @@ public class QuestionDto implements Serializable {
         this.addition = questionModel.getAddition();
         this.answers = questionModel.getAnswers();
         this.mobile = mobile;
-        this.tags = Lists.transform(questionModel.getTags(), new Function<Tag, String>() {
-            @Override
-            public String apply(Tag input) {
-                return input.getDescription();
-            }
-        });
+        this.tags = questionModel.getTags();
+        this.approvedBy = questionModel.getApprovedBy();
+        this.approvedTime = questionModel.getApprovedTime();
+        this.rejectedBy = questionModel.getRejectedBy();
+        this.rejectedTime = questionModel.getRejectedTime();
+        this.status = questionModel.getStatus();
         this.createdTime = questionModel.getCreatedTime();
     }
 
@@ -62,8 +69,28 @@ public class QuestionDto implements Serializable {
         return mobile;
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public String getRejectedBy() {
+        return rejectedBy;
+    }
+
+    public Date getRejectedTime() {
+        return rejectedTime;
+    }
+
+    public QuestionStatus getStatus() {
+        return status;
     }
 
     public Date getCreatedTime() {

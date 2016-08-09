@@ -20,11 +20,15 @@ public class QuestionModel implements Serializable {
 
     private Date lastAnsweredTime;
 
-    private boolean approved;
-
     private String approvedBy;
 
     private Date approvedTime;
+
+    private String rejectedBy;
+
+    private Date rejectedTime;
+
+    private QuestionStatus status;
 
     private Date createdTime;
 
@@ -35,6 +39,7 @@ public class QuestionModel implements Serializable {
         this.loginName = loginName;
         this.question = question;
         this.addition = addition;
+        this.status = QuestionStatus.UNAPPROVED;
         this.tags = tags;
     }
 
@@ -94,14 +99,6 @@ public class QuestionModel implements Serializable {
         this.lastAnsweredTime = lastAnsweredTime;
     }
 
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
-
     public String getApprovedBy() {
         return approvedBy;
     }
@@ -116,6 +113,30 @@ public class QuestionModel implements Serializable {
 
     public void setApprovedTime(Date approvedTime) {
         this.approvedTime = approvedTime;
+    }
+
+    public String getRejectedBy() {
+        return rejectedBy;
+    }
+
+    public void setRejectedBy(String rejectedBy) {
+        this.rejectedBy = rejectedBy;
+    }
+
+    public Date getRejectedTime() {
+        return rejectedTime;
+    }
+
+    public void setRejectedTime(Date rejectedTime) {
+        this.rejectedTime = rejectedTime;
+    }
+
+    public QuestionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(QuestionStatus status) {
+        this.status = status;
     }
 
     public Date getCreatedTime() {

@@ -34,7 +34,6 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.web.interceptors.LogGenerateInterceptor"/>
         <bean class="com.tuotiansudai.web.interceptors.ChannelInterceptor"/>
         <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>

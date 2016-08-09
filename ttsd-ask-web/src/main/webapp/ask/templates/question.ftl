@@ -12,7 +12,7 @@
                 </dd>
                 <dd class="tag-answer">
                     <#list question.tags as tag>
-                        <span class="tag">${tag}</span>
+                        <span class="tag">${tag.description}</span>
                     </#list>
                 <dd>${question.addition!}</dd>
             </dl>

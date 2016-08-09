@@ -43,7 +43,6 @@ public class QuestionMapperTest extends BaseMapperTest {
         questionModel.setQuestion("newQuestion");
         questionModel.setAddition("newAddition");
         questionModel.setAnswers(1);
-        questionModel.setApproved(true);
         questionModel.setApprovedBy("ask");
         questionModel.setApprovedTime(new Date());
         questionModel.setTags(Lists.newArrayList(Tag.OTHER));
@@ -57,7 +56,6 @@ public class QuestionMapperTest extends BaseMapperTest {
         assertThat(updatedQuestionModel.getQuestion(), is("newQuestion"));
         assertThat(updatedQuestionModel.getAddition(), is("newAddition"));
         assertThat(updatedQuestionModel.getAnswers(), is(1));
-        assertThat(updatedQuestionModel.isApproved(), is(true));
         assertThat(updatedQuestionModel.getApprovedBy(), is("ask"));
         assertThat(updatedQuestionModel.getTags(), Is.<List<Tag>>is(Lists.newArrayList(Tag.OTHER)));
         assertNotNull(updatedQuestionModel.getApprovedTime());

@@ -13,7 +13,7 @@ public interface UserMapper {
 
     int create(UserModel userModel);
 
-    void updateUser(UserModel userModel);
+    int updateUser(UserModel userModel);
 
     UserModel findByLoginName(String loginName);
 
