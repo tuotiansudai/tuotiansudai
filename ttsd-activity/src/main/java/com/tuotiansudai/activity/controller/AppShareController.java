@@ -5,7 +5,9 @@ import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -16,9 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @Controller
-@RequestMapping(value = "/app-share")
+@RequestMapping(value = "/activity/app-share")
 public class AppShareController {
 
     @Autowired
@@ -26,7 +29,8 @@ public class AppShareController {
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private PrepareUserMapper prepareUserMapper;
+    private UserService userService;
+
 
     private String getReferrerInfo(UserModel referrer) {
         AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
@@ -51,12 +55,12 @@ public class AppShareController {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("registerMobile")) {
                 registerMobile = cookie.getValue();
+                break;
             }
         }
 
         if (!StringUtils.isEmpty(registerMobile)) {
-            PrepareModel prepareUser = prepareUserMapper.findByMobile(referrerMobile);
-            if (null != prepareUser) {
+            if(userService.mobileIsRegister(registerMobile)){
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
@@ -82,11 +86,11 @@ public class AppShareController {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("registerMobile")) {
                 registerMobile = cookie.getValue();
+                break;
             }
         }
         if (!StringUtils.isEmpty(registerMobile)) {
-            UserModel user = userMapper.findByMobile(registerMobile);
-            if (null != user) {
+            if(userService.mobileIsRegister(registerMobile)){
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
@@ -97,4 +101,22 @@ public class AppShareController {
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
+
+    @RequestMapping( method = RequestMethod.GET)
+    public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile,@RequestParam(value = "mobile") String mobile) {
+        UserModel referrer = userMapper.findByMobile(referrerMobile);
+        ModelAndView modelAndView = new ModelAndView();
+        if (null == referrer) {
+            modelAndView.setViewName("/error/error-info-page");
+            modelAndView.addObject("errorInfo", "无效推荐链接");
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("/activities/share-app");
+        modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
+        modelAndView.addObject("isAppShareUser",prepareUserMapper.findByMobile(mobile) != null);
+        return modelAndView;
+    }
+
+
 }

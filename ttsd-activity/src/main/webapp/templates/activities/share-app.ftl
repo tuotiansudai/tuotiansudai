@@ -4,7 +4,7 @@
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-                <#--<span>${registerMobile}</span>-->
+                <span>${referrerInfo!}</span>
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
@@ -67,7 +67,7 @@
 			</div>
 			<div class="info-item">
 				<p class="title-text">便捷</p>
-				<p class="intro-text">手机APP随时随地放心理财</p>
+				<p class="intro-text">手机APP随时随地放心投资</p>
 			</div>
 		</li>
 	</ul>

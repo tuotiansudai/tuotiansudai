@@ -55,25 +55,44 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
-    public BaseDataDto prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult) {
+    @ResponseBody
+    public BaseDto<BaseDataDto> prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult,HttpServletResponse response) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            return new BaseDataDto(false, message);
+            baseDataDto = new BaseDataDto(false,message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
         }
-        return prepareService.prepareRegister(requestDto);
+        baseDataDto = prepareService.prepareRegister(requestDto);
+        if(baseDataDto.getStatus()){
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
+        }
+        baseDto.setData(baseDataDto);
+        return baseDto;
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
-    public BaseDataDto register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
-            return new BaseDataDto(false, message);
+            baseDataDto = new BaseDataDto(false,message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
         }
-        BaseDataDto baseDataDto = prepareService.register(requestDto);
+        baseDataDto = prepareService.register(requestDto);
         if(baseDataDto.getStatus()){
-            response.addCookie(new Cookie("shareIsRegistered", requestDto.getMobile()));
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
         }
-        return baseDataDto;
+        baseDto.setData(baseDataDto);
+        return baseDto;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -156,15 +175,8 @@ public class RegisterUserController {
     @RequestMapping(path = "/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile) {
-        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
-        SmsDataDto dataDto = new SmsDataDto();
-        baseDto.setData(dataDto);
-        boolean result = userService.mobileIsRegister(mobile);
-        if (!result) {
-            return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
-        }
 
-        return baseDto;
+        return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)

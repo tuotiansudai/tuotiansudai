@@ -4,7 +4,8 @@
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-                <span data-referrer="" id="referrer">${referrerInfo}</span>
+                <span data-referrer="" id="referrer">${referrerInfo!}</span>
+
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
@@ -32,7 +33,7 @@
 						<label for="agree" class="agree">同意拓天速贷<span>《服务协议》</span></label>
 					</div>
 					<div class="item-int">
-						<p class="tc">好友<span>133****2082</span>邀请你来拓天速贷理财</p>
+						<p class="tc">好友<span>133****2082</span>邀请你来拓天速贷投资</p>
 						<p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
 					</div>
 				</form>
@@ -79,7 +80,7 @@
 			</div>
 			<div class="info-item">
 				<p class="title-text">便捷</p>
-				<p class="intro-text">手机APP随时随地放心理财</p>
+				<p class="intro-text">手机APP随时随地放心投资</p>
 			</div>
 		</li>
 	</ul>

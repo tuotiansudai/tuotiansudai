@@ -136,6 +136,10 @@ public class UserServiceImpl implements UserService {
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
+        PrepareModel prepareModel = prepareUserMapper.findByMobile(dto.getMobile());
+        if(prepareModel != null){
+            dto.setReferrer(prepareModel.getReferrerMobile());
+        }
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 

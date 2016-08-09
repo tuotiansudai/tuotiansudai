@@ -10,7 +10,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 			$androidBtn = $('#androidBtn'),
 			$iosBtn = $('#iosBtn'),
 			countdown = 60,
-			XQ = {
+			sendSms = {
 				androidCount: function() { //安卓倒计时
 					timer = setInterval(function() {
 						$androidBtn.prop('disabled', true).val(countdown + 's');
@@ -25,16 +25,14 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				anCaptcha: function(state) { //安卓-获取手机验证码
 					if (state == false) {
 						$.ajax({
-								url: '/register/user/send-register-captcha',
-								type: 'POST',
-								dataType: 'json',
-								data: {
-									mobile: $('#mobile').val()
-								}
+								url: '/register/user/'+ $('#mobile').val() +'/send-register-captcha',
+								type: 'get',
+								dataType: 'json'
+
 							})
 							.done(function(data) {
 								if (data.data.status && !data.data.isRestricted) {
-									XQ.androidCount();
+									sendSms.androidCount();
 								} else if (!data.data.status && data.data.isRestricted) {
 									layer.msg('短信发送频繁,请稍后再试');
 								}
@@ -43,7 +41,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/share-app';
+						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile=' + $('#mobile').val();
 					}
 				},
 				iosCount: function() { //ios倒计时
@@ -60,16 +58,13 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				iosCaptcha: function(state) { //ios-获取手机验证码
 					if (state == false) {
 						$.ajax({
-							url: '/register/user/send-register-captcha',
-							type: 'POST',
-							dataType: 'json',
-							data: {
-								mobile: $('#mobile').val()
-							}
+							url: '/register/user/' + $('#mobile').val() + '/send-register-captcha',
+							type: 'get',
+							dataType: 'json'
 						})
 							.done(function (data) {
 								if (data.data.status && !data.data.isRestricted) {
-									XQ.iosCount();
+									sendSms.iosCount();
 								} else if (!data.data.status && data.data.isRestricted) {
 									layer.msg('短信发送频繁,请稍后再试');
 								}
@@ -78,19 +73,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/share-app';
+						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile=' + $('#mobile').val();
 					}
-				},
-				showTip: function() {//新注册用户弹框
-					layer.open({
-						type:1,
-						title: false,
-						closeBtn: 0,
-						btn: 0,
-						area: ['240px', 'auto'],
-						shadeClose: true,
-						content: '<div class="tip-item tc"><p>哇，真的拿到了5888体验金，快去体验那更多奖励吧！</p><a href="/app/download">下载APP开始赚钱</a></div>'
-					});
 				}
 			};
 
@@ -174,8 +158,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					}
 				})
 				.done(function(data) {
-						if (data.status == true) {
-						XQ.showTip();
+						if (data.data.status == true) {
+							location.href = '/activity/app-share';
 						} else {
 							layer.msg('请求失败，请重试！');
 					}
@@ -245,14 +229,14 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					dataType: 'json',
 					data: {
 						mobile: $('#mobile').val(),
-						captcha: $('#captchaText').val(),
-						referrerMobile: $('#referrer').attr('data-referrer'),
+						captcha: $('#captcha').val(),
+						referrerMobile: location.href.split('referrerMobile=')[1],
 						channel: 'IOS'
 					}
 				})
 					.done(function (data) {
-						if (data.status == true) {
-							XQ.showTip();
+						if (data.data.status == true) {
+							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
 						} else {
 						layer.msg('请求失败，请重试！');
 						}
@@ -275,7 +259,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				}
 			})
 			.done(function(data) {
-				XQ.anCaptcha(data.status);
+				sendSms.anCaptcha(data.status);
 			})
 			.fail(function(data) {
 				layer.msg('请求失败，请重试');
@@ -287,14 +271,11 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 			event.preventDefault();
 			$.ajax({
 				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					mobile: $('#mobile').val()
-				}
+				type: 'get',
+				dataType: 'json'
 			})
 			.done(function(data) {
-				XQ.iosCaptcha(data.status);
+				sendSms.iosCaptcha(data.data.status);
 			})
 			.fail(function(data) {
 				layer.msg('请求失败，请重试');
