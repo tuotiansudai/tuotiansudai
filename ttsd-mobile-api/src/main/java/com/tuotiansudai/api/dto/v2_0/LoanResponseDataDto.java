@@ -20,6 +20,11 @@ public class LoanResponseDataDto {
     private String maxInvestMoney;
     private String productNewType;
     private String investFeeRate;
+    public String minInvestMoneyMinute;
+    public String cardinalNumberMinute;
+    public String maxInvestMoneyMinute;
+    public String investedMoneyMinute;
+    public String loanMoneyMinute;
     private List<ExtraRateListResponseDataDto> extraRates;
 
     public String getLoanId() { return loanId; }
