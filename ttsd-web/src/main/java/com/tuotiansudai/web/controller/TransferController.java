@@ -2,9 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -28,8 +26,6 @@ public class TransferController {
     private InvestTransferService investTransferService;
     @Autowired
     private TransferService transferService;
-    @Autowired
-    private InvestService investService;
 
     @RequestMapping(value = "/transfer-application-list/{transferStatus}",method = RequestMethod.GET)
     public ModelAndView getTransferrerTransferApplicationList(@PathVariable TransferStatus transferStatus){
@@ -43,7 +39,6 @@ public class TransferController {
         ModelAndView modelAndView = new ModelAndView("/transfer-record");
         return modelAndView;
     }
-
 
     @RequestMapping(value = "/transfer-application-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody

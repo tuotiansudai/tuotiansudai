@@ -95,7 +95,7 @@ public abstract class BaseMapperTest {
         return fakeInvestModel;
     }
 
-    public CouponModel createFakeInterestCoupon(double rate){
+    public CouponModel createFakeInterestCoupon(double rate) {
         if (userMapper.findByLoginName("couponCreator") == null) {
             this.createFakeUser("couponCreator");
         }

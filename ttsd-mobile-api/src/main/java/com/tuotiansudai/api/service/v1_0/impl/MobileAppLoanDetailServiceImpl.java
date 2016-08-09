@@ -50,10 +50,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
+
     @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
+
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
@@ -274,7 +276,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         return null;
 
     }
-
     private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
         Map<String, Object> dataModel = new HashMap<>();
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
@@ -318,4 +319,5 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         return dataModel;
     }
+
 }

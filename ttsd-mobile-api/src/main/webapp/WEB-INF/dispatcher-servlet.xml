@@ -12,10 +12,6 @@
 
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
-    <mvc:interceptors>
-        <bean class="com.tuotiansudai.api.interceptors.LogGenerateInterceptor"/>
-    </mvc:interceptors>
-
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
