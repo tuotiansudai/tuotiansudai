@@ -9,11 +9,12 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Aspect
@@ -37,9 +38,19 @@ public class AdvancedRepayAspect {
     @Autowired
     SmsService smsService;
 
-    @After(value = "execution(* *..AdvanceRepayService.paybackInvest(..))")
-    public void afterReturningInvestSuccess(JoinPoint joinPoint) {
+    @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningInvestSuccess(JoinPoint joinPoint, boolean returnValue) {
         long loanRepayId = (Long) joinPoint.getArgs()[0];
+
+        logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is starting...",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+
+        if (!returnValue) {
+            logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",
+                    String.valueOf(loanRepayId), String.valueOf(returnValue)));
+            return;
+        }
+
         long loanId = loanRepayMapper.findById(loanRepayId).getLoanId();
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanId);
@@ -47,8 +58,14 @@ public class AdvancedRepayAspect {
         for (TransferApplicationModel transferApplicationModel : transferApplicationModels) {
             transferApplicationModel.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferApplicationModel);
+
+            logger.info(MessageFormat.format("Transfer Loan id: {0} is Canceled because of advanced repay.", transferApplicationModel.getId()));
+
             String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
             smsService.cancelTransferLoan(mobile, transferApplicationModel.getName());
         }
+
+        logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 }

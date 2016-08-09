@@ -13,11 +13,11 @@
     </resultMap>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="SmsModel">
-        insert into transfer_loan_notify_mapper (mobile, content, send_time, result_code)
+        insert into transfer_loan_notify (mobile, content, send_time, result_code)
         values (#{mobile}, #{content}, #{sendTime}, #{resultCode})
     </insert>
 
     <select id="findByMobile" resultMap="smsModelMap" parameterType="map">
-        select * from transfer_loan_notify_mapper where mobile = #{mobile} order by send_time desc
+        select * from transfer_loan_notify where mobile = #{mobile} order by send_time desc
     </select>
 </mapper>
