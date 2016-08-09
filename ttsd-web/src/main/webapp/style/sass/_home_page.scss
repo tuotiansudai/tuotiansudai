@@ -886,11 +886,6 @@
             .btn-normal {
               padding: 13px 0;
               width: 100%;
-              border-bottom-left-radius: 10px;
-              border-bottom-right-radius: 10px;
-              border-top-left-radius: 0;
-              border-top-right-radius: 0;
-
               border: 0 !important;
               &:hover {
                 background: #ff9e69;
@@ -1478,7 +1473,6 @@
                 position: absolute;
                 right: 11px;
                 top: 38px;
-                border-radius: 5px;
                 &:hover {
                   background: #ff9e69;
                   border-color: #ff9e69;
@@ -1572,7 +1566,6 @@
             letter-spacing: 0;
             padding: 7px 11px;
             float: right;
-            border-radius: 5px;
             &[disabled] {
               color: #fff;
             }
