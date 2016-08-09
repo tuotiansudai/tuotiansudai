@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
-<div class="article-content fl">
+<div class="article-content fl" id="createQuestion">
     <div class="ask-question-box clearfix">
         <div class="m-title">我要提问</div>
         <div class="ask-question-con">

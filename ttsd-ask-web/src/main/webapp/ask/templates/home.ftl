@@ -11,14 +11,14 @@
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">
-                    <dt>${question.question}</dt>
-                    <dd class="detail">${question.addition}</dd>
+                    <dt><a href="" target="_blank">${question.question}</a></dt>
+                    <dd class="detail"><a href="" target="_blank">${question.addition}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
                         <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span>
                         <span class="fr tag">
                             <#list question.tags as tag>
-                                <a class="" href="">${tag}</a>
+                                <a  href="javascript:void(0);">${tag}</a>
                             </#list>
                         </span>
                     </dd>
