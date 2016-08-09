@@ -235,7 +235,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         if (redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY).size() == 0) {
             while (queryStartTime.before(queryEndTime)) {
                 KeyValueModel keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(queryStartTime, 1),queryStartTime);
-                logger.debug(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+                logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
                 keyValueModelLists.add(keyValueModel);
                 queryStartTime = DateUtils.addDays(queryStartTime, 1);
             }
@@ -247,13 +247,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             }
 
             KeyValueModel keyValueModel = keyValueModelLists.get(keyValueModelLists.size() - 1);
-            logger.debug(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+            logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
             Date redisLastDate = DateTime.parse(keyValueModel.getName()).toDate();
             Date nowDate = DateTime.now().withTimeAtStartOfDay().toDate();
             redisLastDate = DateUtils.addDays(redisLastDate, 1);
             while (redisLastDate.before(nowDate)) {
                 keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(redisLastDate, 1),redisLastDate);
-                logger.debug(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+                logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
                 keyValueModelLists.add(keyValueModel);
                 redisLastDate = DateUtils.addDays(redisLastDate, 1);
             }
