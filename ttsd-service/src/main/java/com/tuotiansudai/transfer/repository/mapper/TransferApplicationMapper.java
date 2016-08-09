@@ -86,5 +86,5 @@ public interface TransferApplicationMapper {
 
     long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
 
-
+    List<TransferApplicationModel> findAllTransferringApplicationsByLoanId(@Param("loanId") long loanId);
 }
