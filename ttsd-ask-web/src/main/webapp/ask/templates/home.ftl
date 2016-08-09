@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
 
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
-<div class="article-content fl">
+<div class="article-content fl" id="homeTagContainer">
     <ul class="switch-menu clearfix">
-        <li class="active"><a href="/">全部问题</a></li>
+        <li><a href="/">全部问题</a></li>
         <li><a href="/?group=UNRESOLVED&index=1">待解决问题</a></li>
         <li><a href="/?group=HOT&index=1">热门问题</a></li>
     </ul>
