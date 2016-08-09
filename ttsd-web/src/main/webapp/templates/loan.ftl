@@ -353,6 +353,20 @@
                             <h3>申请资料</h3>
                         </div>
                         <div class="apply-data">
+                            <h5>test</h5>
+                            <div class="scroll-wrap" scroll-carousel>
+                                <div class="scroll-content">
+                                    <div class="row" style="margin-left: 0px;">
+                                        <a class="col" href="https://tuotiansudai.com/loan/upload/20160728/91901469685949939.jpg" rel="example_group">
+                                            <img class="img" layer-src="https://tuotiansudai.com/loan/upload/20160728/91901469685949939.jpg" src="https://tuotiansudai.com/loan/upload/20160728/91901469685949939.jpg" alt="结婚证">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="left-button disabled"></div>
+                                <div class="right-button"></div>
+                            </div>
+                            </div>
+                        <div class="apply-data">
                             <#list loan.loanTitleDto as loanTitle>
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>

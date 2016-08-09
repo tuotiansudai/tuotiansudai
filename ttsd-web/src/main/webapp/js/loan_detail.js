@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','underscore', 'fancybox','jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','underscore', 'fancybox','jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form','commonFun'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -20,6 +20,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+
+    var viewport = commonFun.browserRedirect();
 
     function showInputErrorTips(message) {
         layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -664,6 +666,20 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var len = $col.length;
             var record = 0;
             var eachShowAmount = $(window).width() > 700 ? 5 : 2;
+            var imgNum=$scrollEle.find('img').length;
+            switch(viewport) {
+                case 'pc':
+                    if(imgNum<=5) {
+                        $rightBtn.addClass('disabled');
+                    }
+                    break;
+                case 'mobile':
+                    if(imgNum<=2) {
+                        $rightBtn.addClass('disabled');
+                    }
+                    break;
+            }
+
             $rightBtn.on('click', function () {
                 if ($rightBtn.hasClass('disabled')) {
                     return false;
