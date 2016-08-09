@@ -6,7 +6,7 @@
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate" >
             <ul class="reg-list tl register-step-one">
                 <li class="bg-col">
-                    <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/landing-page-app">
+                    <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/landing-tour">
                     <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="请输入手机号"
                            maxlength="11" value="">
                 </li>
