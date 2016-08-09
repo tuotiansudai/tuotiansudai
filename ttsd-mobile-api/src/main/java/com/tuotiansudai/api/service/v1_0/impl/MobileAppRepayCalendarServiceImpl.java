@@ -120,7 +120,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         long repayActualInterest = 0;
         long totalAmount = 0;
         for (InvestRepayModel investRepayModel : investRepayModelList) {
-            if(CollectionUtils.isNotEmpty(transferApplicationMapper.findByTransferInvestId(investRepayModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS)))){
+            if(investRepayModel.isTransferred()){
                 continue;
             }
 
@@ -156,7 +156,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getName(),
                     AmountConverter.convertCentToString(repayActualInterest),
                     AmountConverter.convertCentToString(repayExpectedInterest),
-                    investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayAmount() > 0 ? String.valueOf(periods) : String.valueOf(investRepayModel.getPeriod()),
+                    investRepayModel.getActualRepayDate() != null && investRepayModel.getCorpus() > 0 ? String.valueOf(periods) : String.valueOf(investRepayModel.getPeriod()),
                     String.valueOf(periods),
                     investRepayModel.getStatus().name()));
         }
