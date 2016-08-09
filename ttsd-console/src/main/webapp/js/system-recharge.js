@@ -2,8 +2,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
     $(function () {
         var errorMessage = $('.console-error-message');
         $("#amount").autoNumeric("init");
-        $("#amount").on("blur", function(){
-            var amount = $(this).val().replace(/,/g,"");
+        $("#amount").on("blur", function () {
+            var amount = $(this).val().replace(/,/g, "");
             $(this).val(amount);
         });
 
