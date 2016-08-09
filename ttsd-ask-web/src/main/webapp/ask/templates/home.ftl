@@ -18,7 +18,7 @@
                         <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span>
                         <span class="fr tag">
                             <#list question.tags as tag>
-                                <a class="" href="">${tag}</a>
+                                <a class="" href="">${tag.description}</a>
                             </#list>
                         </span>
                     </dd>

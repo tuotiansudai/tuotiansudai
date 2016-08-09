@@ -5,13 +5,17 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +37,28 @@ public class QuestionServiceImpl implements QuestionService {
         questionMapper.create(questionModel);
 
         return new BaseDto<>(new BaseDataDto(true, null));
+    }
+
+    @Override
+    public void approve(String loginName, List<Long> questionIds) {
+        for (long questionId : questionIds) {
+            QuestionModel questionModel = questionMapper.findById(questionId);
+            questionModel.setApprovedBy(loginName);
+            questionModel.setApprovedTime(new Date());
+            questionModel.setStatus(QuestionStatus.UNRESOLVED);
+            questionMapper.update(questionModel);
+        }
+    }
+
+    @Override
+    public void reject(String loginName, List<Long> questionIds) {
+        for (long questionId : questionIds) {
+            QuestionModel questionModel = questionMapper.findById(questionId);
+            questionModel.setRejectedBy(loginName);
+            questionModel.setRejectedTime(new Date());
+            questionModel.setStatus(QuestionStatus.REJECTED);
+            questionMapper.update(questionModel);
+        }
     }
 
     @Override
@@ -77,6 +103,15 @@ public class QuestionServiceImpl implements QuestionService {
     public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
         long count = questionMapper.countByTag(loginName, tag);
         List<QuestionModel> myQuestions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generatePaginationData(index, pageSize, count, myQuestions);
+    }
+
+    @Override
+    public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = userModel != null ? userModel.getLoginName() : null;
+        long count = questionMapper.countQuestionsForConsole(question, loginName, status);
+        List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         return generatePaginationData(index, pageSize, count, myQuestions);
     }
 

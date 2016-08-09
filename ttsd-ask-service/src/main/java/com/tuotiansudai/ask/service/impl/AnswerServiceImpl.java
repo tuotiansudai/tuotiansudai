@@ -6,14 +6,18 @@ import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
+import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,6 +46,28 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
+    public void approve(String loginName, List<Long> questionIds) {
+        for (long questionId : questionIds) {
+            AnswerModel answerModel = answerMapper.findById(questionId);
+            answerModel.setApprovedBy(loginName);
+            answerModel.setApprovedTime(new Date());
+            answerModel.setStatus(AnswerStatus.UNADOPTED);
+            answerMapper.update(answerModel);
+        }
+    }
+
+    @Override
+    public void reject(String loginName, List<Long> questionIds) {
+        for (long questionId : questionIds) {
+            AnswerModel answerModel = answerMapper.findById(questionId);
+            answerModel.setRejectedBy(loginName);
+            answerModel.setRejectedTime(new Date());
+            answerModel.setStatus(AnswerStatus.REJECTED);
+            answerMapper.update(answerModel);
+        }
+    }
+
+    @Override
     public AnswerDto getBestAnswer(String loginName, long questionId) {
         AnswerModel bestAnswerModel = answerMapper.findBestAnswerByQuestionId(questionId);
         if (bestAnswerModel == null) {
@@ -50,7 +76,8 @@ public class AnswerServiceImpl implements AnswerService {
 
         return new AnswerDto(bestAnswerModel,
                 userMapper.findByLoginName(bestAnswerModel.getLoginName()).getMobile(),
-                bestAnswerModel.getFavoredBy().contains(loginName));
+                bestAnswerModel.getFavoredBy() != null && bestAnswerModel.getFavoredBy().contains(loginName),
+                null);
     }
 
     @Override
@@ -61,7 +88,8 @@ public class AnswerServiceImpl implements AnswerService {
             public AnswerDto apply(AnswerModel input) {
                 return new AnswerDto(input,
                         userMapper.findByLoginName(input.getLoginName()).getMobile(),
-                        input.getFavoredBy().contains(loginName));
+                        input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
+                        null);
             }
         });
     }
@@ -73,13 +101,19 @@ public class AnswerServiceImpl implements AnswerService {
         if (answerModel == null) {
             return false;
         }
+
         AnswerModel bestAnswer = answerMapper.findBestAnswerByQuestionId(answerModel.getQuestionId());
         if (bestAnswer != null) {
             return false;
         }
 
         answerModel.setBestAnswer(true);
+        answerModel.setStatus(AnswerStatus.ADOPTED);
         answerMapper.update(answerModel);
+
+        QuestionModel questionModel = questionMapper.findById(answerModel.getQuestionId());
+        questionModel.setStatus(QuestionStatus.RESOLVED);
+        questionMapper.update(questionModel);
         return true;
     }
 
@@ -95,11 +129,16 @@ public class AnswerServiceImpl implements AnswerService {
             return false;
         }
 
-        if (answerModel.getFavoredBy().contains(loginName)) {
+        List<String> favoredBy = answerModel.getFavoredBy();
+        if (favoredBy != null && favoredBy.contains(loginName)) {
             return false;
         }
 
-        answerModel.getFavoredBy().add(loginName);
+        if (favoredBy == null) {
+            answerModel.setFavoredBy(Lists.newArrayList(loginName));
+        } else {
+            answerModel.getFavoredBy().add(loginName);
+        }
         answerMapper.update(answerModel);
         return true;
     }
@@ -108,20 +147,32 @@ public class AnswerServiceImpl implements AnswerService {
     public BaseDto<BasePaginationDataDto> findMyAnswers(String loginName, int index, int pageSize) {
         long count = answerMapper.countByLoginName(loginName);
         List<AnswerModel> myAnswers = answerMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, myAnswers);
+        return generatePaginationData(loginName, index, pageSize, count, myAnswers);
     }
 
-    private BaseDto<BasePaginationDataDto> generatePaginationData(int index, int pageSize, long count, List<AnswerModel> answers) {
-        List<MyAnswerDto> items = Lists.transform(answers, new Function<AnswerModel, MyAnswerDto>() {
+    @Override
+    public BaseDto<BasePaginationDataDto> findAnswersForConsole(String question, String mobile, AnswerStatus status, int index, int pageSize) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = userModel != null ? userModel.getLoginName() : null;
+        long count = answerMapper.countAnswersForConsole(question, loginName, status);
+        List<AnswerModel> answerModels = answerMapper.findAnswersForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generatePaginationData(null, index, pageSize, count, answerModels);
+    }
+
+    private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<AnswerModel> answers) {
+        List<AnswerDto> items = Lists.transform(answers, new Function<AnswerModel, AnswerDto>() {
             @Override
-            public MyAnswerDto apply(AnswerModel input) {
+            public AnswerDto apply(AnswerModel input) {
                 QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
                 QuestionDto questionDto = new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
-                return new MyAnswerDto(input, questionDto);
+                return new AnswerDto(input,
+                        userMapper.findByLoginName(input.getLoginName()).getMobile(),
+                        input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
+                        questionDto);
             }
         });
 
-        BasePaginationDataDto<MyAnswerDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        BasePaginationDataDto<AnswerDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         data.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(data);
     }

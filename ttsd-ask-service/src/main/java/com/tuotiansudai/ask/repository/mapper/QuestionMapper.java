@@ -1,6 +1,7 @@
 package com.tuotiansudai.ask.repository.mapper;
 
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -48,4 +49,14 @@ public interface QuestionMapper {
                                   @Param(value = "tag") Tag tag,
                                   @Param(value = "index") int index,
                                   @Param(value = "pageSize") int pageSize);
+
+    List<QuestionModel> findQuestionsForConsole(@Param(value = "question") String question,
+                                                @Param(value = "loginName") String loginName,
+                                                @Param(value = "status") QuestionStatus status,
+                                                @Param(value = "index") int index,
+                                                @Param(value = "pageSize") int pageSize);
+
+    long countQuestionsForConsole(@Param(value = "question") String question,
+                                  @Param(value = "loginName") String loginName,
+                                  @Param(value = "status") QuestionStatus status);
 }
