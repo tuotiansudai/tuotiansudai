@@ -118,9 +118,9 @@ public class MobileAppRepayCalendarServiceTest {
         BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto = mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarYearResponseDtos();
         assertThat(repayCalendarYearResponseDtoList.size(), is(12));
-        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(), "0.03");
-        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(), "0.05");
-        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(), "0.02");
+        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(), "0.02");
+        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(), "0.03");
+        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(), "0.01");
     }
 
     @Test
@@ -164,7 +164,7 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayDate().size(), is(3));
-        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(), "0.08");
+        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(), "0.06");
     }
 
     @Test
@@ -212,7 +212,7 @@ public class MobileAppRepayCalendarServiceTest {
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(1));
         repayCalendarRequestDto.setDate("2200-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
-        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(0));
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
     }
 
     private TransferApplicationModel getTransferApplicationModel(String userId,long investId,long transferInvestId,long loanId,Date date){
