@@ -17,6 +17,7 @@
         .bodyCon {
             height:auto;
             overflow: auto;
+            transform:translate3d(0,0,0);
         }
         
         .loading {
@@ -41,63 +42,53 @@
             height:414px;         
             background:url('task_banner.png') no-repeat;
             background-size: cover;
+            -webkit-transform: translate3d(0, 0, 0);
             // position:relative;
         }
-
-        // .MenuBox {
-        //     width: 100%;
-        //     height:414px;         
-        //     background:url('task_banner.png') no-repeat;
-        //     background-size: cover;
-        //     position:relative;
-        // }
-
-
         .MenuBox ul {
             // position:absolute;
             border-radius: 5px;
             border: 1px solid #ff5959;
             height: 50px;  /*px*/
-            // left: 3rem;
-            // bottom: 20px;
             width:302px;
-
-             margin: 0px auto;
-             margin-top: -20px;
+            margin: 0px auto;
+            margin-top: -35px; /*px*/
         }
         .MenuBox ul .MenuBoxItemNormal {
             float: left;
             display: block;
             width: 50%;
             height:100%;
-            padding-top: 4px;  /*px*/
+            line-height: 50px;  /*px*/
             text-align: center;
             color: #ff5959;
             background-color: #0f3d70;
             font-size: 28px;  /*px*/
             font-style: normal;
-
             &.active {
                 color: #ffffff;
             background-color: #ff5959;
             }
+            -webkit-transform: translate3d(0, 0, 0);
         }
         .fixTopMenu {
             position:absolute;
-            top:10px;
+            top:328px;
+            height:70px; /*px*/
             width:100%;
-            background:red;
             z-index: 100;
                 
         }
         .fixTopMenu ul {
             width:100%;
-            height: 1rem!important;
+            height:70px; /*px*/
+            border-width:0;
+            margin-top: 0!important; /*px*/
         }
         .fixTopMenu ul li {
             width:50%;
-            height:1rem;
-            line-height:1rem;
+            height:70px; /*px*/
+            line-height:70px!important; /*px*/
         }
 
         .ContentBox {
@@ -112,6 +103,7 @@
             margin-bottom: 20px;
             border-radius: 15px;
             font-style: normal;
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
         .HeaderTitle {
@@ -126,10 +118,10 @@
         }
 
         .TaskItemNewbie {
-            float: left;
+            -webkit-transform: translate3d(0, 0, 0);
             width: 100%;
             margin-top: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             background-color: #ffe9b9;
             border-radius: 15px;
             color: #ffffff;
@@ -138,6 +130,8 @@
             -webkit-box-shadow:0px 8px 0px #ecd4a3; 
             box-shadow:0px 8px 0px #ecd4a3;
             position:relative;
+            height:auto;
+            overflow:auto;
             .TaskItemLine {
                 border: 0.5px solid #ff5959;
                 margin-top: -3px;
@@ -162,8 +156,7 @@
             }
 
              .TaskItemBtn,.TaskItemCompleteBtn {
-                float: right;
-                margin-right:20px;
+              
                 display: inline-block;
                 width: 132px;
                 height: 72px;
@@ -177,6 +170,8 @@
                 -moz-box-shadow:0px 5px 0px #e45050; 
                 -webkit-box-shadow:0px 5px 0px #e45050; 
                 box-shadow:0px 5px 0px #e45050;
+                position:absolute;
+                right:10px;
                 &.column-one {
                     margin-top: 20px;
                 }
@@ -236,19 +231,14 @@
             margin-left: 5px;
         }
 
-        .AdvanceTaskGroup {
-            float: left;
-            display: block;
-        }
-
         .TaskAdvanceRewardGroup {
             float: left;
             display: block;
-            margin-left: 5%;
+            margin-left: 15px; /*px*/
         }
 
         .TaskAdvanceContent {
-            width: 76%;
+            width: 85%;
             float: left;
             display: block;
             margin-top: 15px;
@@ -257,7 +247,6 @@
 
         .TaskAdvanceItemTitle {
             float: left;
-            display: inline-block;
             text-align: left;
             font-size: 30px; /*px*/
             margin-top: 5%;
@@ -267,7 +256,6 @@
 
         .TaskAdvanceReward {
             float: left;
-            display: inline-block;
             color: #ff5959;
             font-size: 30px; /*px*/
             text-align: left;
@@ -291,7 +279,7 @@
             font-size: 26px;  /*px*/
             margin-top: 5px;
             margin-bottom: 15px;
-            margin-left: 5%;
+            margin-left: 15px;/*px*/
             color: #34312b;
         }
     }
