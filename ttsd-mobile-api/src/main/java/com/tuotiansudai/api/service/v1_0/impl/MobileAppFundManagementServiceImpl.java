@@ -99,7 +99,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
         fundManagementResponseDataDto.setMembershipLevel(String.valueOf(level));
         fundManagementResponseDataDto.setMembershipPoint(String.valueOf(accountModel == null ? 0 : accountModel.getMembershipPoint()));
-        fundManagementResponseDataDto.setAvailableMoneyMinute(String.valueOf(accountBalance));
+        fundManagementResponseDataDto.setAvailableMoneyCert(String.valueOf(accountBalance));
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

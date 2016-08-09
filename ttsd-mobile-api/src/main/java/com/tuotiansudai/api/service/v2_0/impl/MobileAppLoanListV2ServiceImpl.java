@@ -106,11 +106,11 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
 
-            loanResponseDataDto.setMinInvestMoneyMinute(String.valueOf(loan.getMinInvestAmount()));
-            loanResponseDataDto.setCardinalNumberMinute(String.valueOf(loan.getInvestIncreasingAmount()));
-            loanResponseDataDto.setMaxInvestMoneyMinute(String.valueOf(loan.getMaxInvestAmount()));
-            loanResponseDataDto.setInvestedMoneyMinute(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
-            loanResponseDataDto.setLoanMoneyMinute(String.valueOf(loan.getLoanAmount()));
+            loanResponseDataDto.setMinInvestMoneyCent(String.valueOf(loan.getMinInvestAmount()));
+            loanResponseDataDto.setCardinalNumberCent(String.valueOf(loan.getInvestIncreasingAmount()));
+            loanResponseDataDto.setMaxInvestMoneyCent(String.valueOf(loan.getMaxInvestAmount()));
+            loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
+            loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 

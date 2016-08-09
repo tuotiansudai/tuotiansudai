@@ -155,11 +155,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
         dataDto.setInvestedCount(investMapper.countSuccessInvest(loanModel.getId()));
 
-        dataDto.setMinInvestMoneyMinute(String.valueOf(loanModel.getMinInvestAmount()));
-        dataDto.setCardinalNumberMinute(String.valueOf(loanModel.getInvestIncreasingAmount()));
-        dataDto.setMaxInvestMoneyMinute(String.valueOf(loanModel.getMaxInvestAmount()));
-        dataDto.setInvestedMoneyMinute(String.valueOf(investedAmount));
-        dataDto.setLoanMoneyMinute(String.valueOf(loanModel.getLoanAmount()));
+        dataDto.setMinInvestMoneyCent(String.valueOf(loanModel.getMinInvestAmount()));
+        dataDto.setCardinalNumberCent(String.valueOf(loanModel.getInvestIncreasingAmount()));
+        dataDto.setMaxInvestMoneyCent(String.valueOf(loanModel.getMaxInvestAmount()));
+        dataDto.setInvestedMoneyCent(String.valueOf(investedAmount));
+        dataDto.setLoanMoneyCent(String.valueOf(loanModel.getLoanAmount()));
         if (loanModel.getRaisingCompleteTime() != null) {
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }

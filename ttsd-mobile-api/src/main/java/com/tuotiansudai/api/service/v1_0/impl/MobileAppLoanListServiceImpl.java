@@ -144,11 +144,11 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
 
-            loanResponseDataDto.setMinInvestMoneyMinute(String.valueOf(loan.getMinInvestAmount()));
-            loanResponseDataDto.setCardinalNumberMinute(String.valueOf(loan.getInvestIncreasingAmount()));
-            loanResponseDataDto.setMaxInvestMoneyMinute(String.valueOf(loan.getMaxInvestAmount()));
-            loanResponseDataDto.setInvestedMoneyMinute(String.valueOf(investedAmount));
-            loanResponseDataDto.setLoanMoneyMinute(String.valueOf(loan.getLoanAmount()));
+            loanResponseDataDto.setMinInvestMoneyCent(String.valueOf(loan.getMinInvestAmount()));
+            loanResponseDataDto.setCardinalNumberCent(String.valueOf(loan.getInvestIncreasingAmount()));
+            loanResponseDataDto.setMaxInvestMoneyCent(String.valueOf(loan.getMaxInvestAmount()));
+            loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investedAmount));
+            loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
             List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
                 loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));

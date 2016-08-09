@@ -31,11 +31,11 @@ public class LoanResponseDataDto {
     private String duration;
     private String productNewType;
     private String activityType;
-    public String minInvestMoneyMinute;
-    public String cardinalNumberMinute;
-    public String maxInvestMoneyMinute;
-    public String investedMoneyMinute;
-    public String loanMoneyMinute;
+    public String minInvestMoneyCent;
+    public String cardinalNumberCent;
+    public String maxInvestMoneyCent;
+    public String investedMoneyCent;
+    public String loanMoneyCent;
     private List<ExtraLoanRateDto> extraRates;
 
     public String getLoanId() {
@@ -245,43 +245,43 @@ public class LoanResponseDataDto {
         this.extraRates = extraRates;
     }
 
-    public String getMinInvestMoneyMinute() {
-        return minInvestMoneyMinute;
+    public String getMinInvestMoneyCent() {
+        return minInvestMoneyCent;
     }
 
-    public void setMinInvestMoneyMinute(String minInvestMoneyMinute) {
-        this.minInvestMoneyMinute = minInvestMoneyMinute;
+    public void setMinInvestMoneyCent(String minInvestMoneyCent) {
+        this.minInvestMoneyCent = minInvestMoneyCent;
     }
 
-    public String getCardinalNumberMinute() {
-        return cardinalNumberMinute;
+    public String getCardinalNumberCent() {
+        return cardinalNumberCent;
     }
 
-    public void setCardinalNumberMinute(String cardinalNumberMinute) {
-        this.cardinalNumberMinute = cardinalNumberMinute;
+    public void setCardinalNumberCent(String cardinalNumberCent) {
+        this.cardinalNumberCent = cardinalNumberCent;
     }
 
-    public String getMaxInvestMoneyMinute() {
-        return maxInvestMoneyMinute;
+    public String getMaxInvestMoneyCent() {
+        return maxInvestMoneyCent;
     }
 
-    public void setMaxInvestMoneyMinute(String maxInvestMoneyMinute) {
-        this.maxInvestMoneyMinute = maxInvestMoneyMinute;
+    public void setMaxInvestMoneyCent(String maxInvestMoneyCent) {
+        this.maxInvestMoneyCent = maxInvestMoneyCent;
     }
 
-    public String getInvestedMoneyMinute() {
-        return investedMoneyMinute;
+    public String getInvestedMoneyCent() {
+        return investedMoneyCent;
     }
 
-    public void setInvestedMoneyMinute(String investedMoneyMinute) {
-        this.investedMoneyMinute = investedMoneyMinute;
+    public void setInvestedMoneyCent(String investedMoneyCent) {
+        this.investedMoneyCent = investedMoneyCent;
     }
 
-    public String getLoanMoneyMinute() {
-        return loanMoneyMinute;
+    public String getLoanMoneyCent() {
+        return loanMoneyCent;
     }
 
-    public void setLoanMoneyMinute(String loanMoneyMinute) {
-        this.loanMoneyMinute = loanMoneyMinute;
+    public void setLoanMoneyCent(String loanMoneyCent) {
+        this.loanMoneyCent = loanMoneyCent;
     }
 }
