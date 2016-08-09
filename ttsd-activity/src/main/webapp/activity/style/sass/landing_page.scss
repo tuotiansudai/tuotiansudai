@@ -980,7 +980,6 @@ form label.error {
         }
       }
     }
-
   }
   &.landing-container-tour {
     background: #fdd901 url("/activity/images/landing-app/bg-tour.png") no-repeat left top;
@@ -994,6 +993,17 @@ form label.error {
       }
     }
 
+  }
+  .notice-weixin {
+    text-align: center;
+    img {
+      display: block;
+      width: 40%;
+      margin: 10px auto;
+    }
+    span {
+      color: #de3936;
+    }
   }
   .my-advantage {
     margin-top:50px;
@@ -1173,7 +1183,7 @@ form label.error {
   .landing-container-bus,.landing-container-game,.landing-container-tour {
     padding-top:460px;
     .my-advantage {
-      margin-top: 25px;
+      margin-top: 15px;
       img.advantage {
         width:100%;
         margin: 10px auto;
@@ -1213,7 +1223,7 @@ form label.error {
       }
     }
     .my-advantage {
-      margin-top:30px;
+      margin-top:10px;
     }
   }
   .landing-container-bus,.landing-container-game,.landing-container-tour {

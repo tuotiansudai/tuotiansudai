@@ -52,6 +52,11 @@
             </ul>
         </form>
     </div>
+
+    <div class="notice-weixin">
+        <img src="${staticServer}/activity/images/landing-app/weixin.png" >
+        <span>关注微信，一大波红包等你抢！</span>
+    </div>
     <div class="my-advantage">
 
         <img src="${staticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">

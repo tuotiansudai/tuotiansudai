@@ -997,6 +997,14 @@ form label.error {
     .landing-container-app.landing-container-tour .register-box ul li .register-user {
       background: url(/activity/images/landing-app/button2.png) center top no-repeat;
       background-size: 100%; }
+  .landing-container-app .notice-weixin {
+    text-align: center; }
+    .landing-container-app .notice-weixin img {
+      display: block;
+      width: 40%;
+      margin: 10px auto; }
+    .landing-container-app .notice-weixin span {
+      color: #de3936; }
   .landing-container-app .my-advantage {
     margin-top: 50px;
     text-align: center; }
@@ -1135,7 +1143,7 @@ form label.error {
   .landing-container-bus, .landing-container-game, .landing-container-tour {
     padding-top: 460px; }
     .landing-container-bus .my-advantage, .landing-container-game .my-advantage, .landing-container-tour .my-advantage {
-      margin-top: 25px; }
+      margin-top: 15px; }
       .landing-container-bus .my-advantage img.advantage, .landing-container-game .my-advantage img.advantage, .landing-container-tour .my-advantage img.advantage {
         width: 100%;
         margin: 10px auto; } }
@@ -1161,7 +1169,7 @@ form label.error {
       .landing-container-app .register-box ul li.bg-col-captcha button {
         width: 100px; }
     .landing-container-app .my-advantage {
-      margin-top: 30px; }
+      margin-top: 10px; }
 
   .landing-container-bus, .landing-container-game, .landing-container-tour {
     padding-top: 217px; } }

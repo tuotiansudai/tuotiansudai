@@ -52,11 +52,12 @@
             </ul>
         </form>
     </div>
+    <div class="notice-weixin">
+        <img src="${staticServer}/activity/images/landing-app/weixin.png" >
+        <span>关注微信，一大波红包等你抢！</span>
+    </div>
     <div class="my-advantage">
-        <div class="adv-title">
-            <img src="${staticServer}/activity/images/landing-app/title.png">
-        </div>
-        <img src="${staticServer}/activity/images/landing-app/advantage.png" class="advantage">
+        <img src="${staticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">
 
         <div class="info-text">
             1. 新用户注册后，即可获得5888元体验金，可投资新手体验项目；<br/>
