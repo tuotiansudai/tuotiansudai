@@ -3,6 +3,9 @@ package com.tuotiansudai.api.dto.v1_0;
 public class AdvertisementPictureResponseDataDto extends BaseResponseDataDto {
 
     private String title;
+    private String linkedUrl;
+    private String sharedUrl;
+    private String content;
     private String picture640960;
     private String picture6401136;
     private String picture7501334;
@@ -55,5 +58,29 @@ public class AdvertisementPictureResponseDataDto extends BaseResponseDataDto {
 
     public void setPicture7201280(String picture7201280) {
         this.picture7201280 = picture7201280;
+    }
+
+    public String getLinkedUrl() {
+        return linkedUrl;
+    }
+
+    public void setLinkedUrl(String linkedUrl) {
+        this.linkedUrl = linkedUrl;
+    }
+
+    public String getSharedUrl() {
+        return sharedUrl;
+    }
+
+    public void setSharedUrl(String sharedUrl) {
+        this.sharedUrl = sharedUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
