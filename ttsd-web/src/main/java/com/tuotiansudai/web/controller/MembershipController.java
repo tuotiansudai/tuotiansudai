@@ -105,6 +105,43 @@ public class MembershipController {
 
         return modelAndView;
     }
+    @RequestMapping(path = "/store", method = RequestMethod.GET)
+    public ModelAndView store() {
+        ModelAndView modelAndView = new ModelAndView("/membership-store");
+
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/task", method = RequestMethod.GET)
+    public ModelAndView task() {
+        ModelAndView modelAndView = new ModelAndView("/membership-task");
+
+        return modelAndView;
+    }
+    @RequestMapping(path = "/detail", method = RequestMethod.GET)
+    public ModelAndView detail() {
+        ModelAndView modelAndView = new ModelAndView("/membership-detail");
+
+        return modelAndView;
+    }
+    @RequestMapping(path = "/order", method = RequestMethod.GET)
+    public ModelAndView order() {
+        ModelAndView modelAndView = new ModelAndView("/membership-order");
+
+        return modelAndView;
+    }
+    @RequestMapping(path = "/record", method = RequestMethod.GET)
+    public ModelAndView record() {
+        ModelAndView modelAndView = new ModelAndView("/membership-record");
+
+        return modelAndView;
+    }
+    @RequestMapping(path = "/integral", method = RequestMethod.GET)
+    public ModelAndView integral() {
+        ModelAndView modelAndView = new ModelAndView("/membership-integral");
+
+        return modelAndView;
+    }
 
 
     @ResponseBody
