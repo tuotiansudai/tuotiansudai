@@ -25,8 +25,8 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
     public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
 
-        int index = requestDto.getIndex();
-        int pageSize = requestDto.getPageSize();
+        int index = requestDto.getIndex() == null?1:requestDto.getIndex();
+        int pageSize = requestDto.getPageSize() == null?10:requestDto.getPageSize();
 
         MembershipResponseDataDto dataDto = fillMembershipDataDto(loginName, index, pageSize);
         BaseResponseDto responseDto = new BaseResponseDto<>();
