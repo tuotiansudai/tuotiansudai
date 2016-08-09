@@ -9,6 +9,7 @@ import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
+import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public BaseDto<BaseDataDto> createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
         QuestionModel questionModel = new QuestionModel(loginName,
-                questionRequestDto.getQuestion(),
-                questionRequestDto.getAddition(),
+                SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
+                SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
                 questionRequestDto.getTags());
 
         questionMapper.create(questionModel);

@@ -11,6 +11,7 @@ import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
+import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,9 @@ public class AnswerServiceImpl implements AnswerService {
             return false;
         }
 
-        AnswerModel answerModel = new AnswerModel(loginName, questionId, answerRequestDto.getAnswer());
+        AnswerModel answerModel = new AnswerModel(loginName,
+                questionId,
+                SensitiveWordsFilter.replace(answerRequestDto.getAnswer()));
         answerMapper.create(answerModel);
         return false;
     }
