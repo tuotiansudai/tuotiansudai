@@ -19,6 +19,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     private String rewardAmount;
     private String membershipLevel;
     private String membershipPoint;
+    private String availableMoneyMinute;
 
     public String getTotalAssets() {
         return totalAssets;
@@ -144,5 +145,13 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
 
     public void setMembershipPoint(String membershipPoint) {
         this.membershipPoint = membershipPoint;
+    }
+
+    public String getAvailableMoneyMinute() {
+        return availableMoneyMinute;
+    }
+
+    public void setAvailableMoneyMinute(String availableMoneyMinute) {
+        this.availableMoneyMinute = availableMoneyMinute;
     }
 }

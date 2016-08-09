@@ -31,6 +31,11 @@ public class LoanResponseDataDto {
     private String duration;
     private String productNewType;
     private String activityType;
+    public String minInvestMoneyMinute;
+    public String cardinalNumberMinute;
+    public String maxInvestMoneyMinute;
+    public String investedMoneyMinute;
+    public String loanMoneyMinute;
     private List<ExtraLoanRateDto> extraRates;
 
     public String getLoanId() {
@@ -238,5 +243,45 @@ public class LoanResponseDataDto {
 
     public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
         this.extraRates = extraRates;
+    }
+
+    public String getMinInvestMoneyMinute() {
+        return minInvestMoneyMinute;
+    }
+
+    public void setMinInvestMoneyMinute(String minInvestMoneyMinute) {
+        this.minInvestMoneyMinute = minInvestMoneyMinute;
+    }
+
+    public String getCardinalNumberMinute() {
+        return cardinalNumberMinute;
+    }
+
+    public void setCardinalNumberMinute(String cardinalNumberMinute) {
+        this.cardinalNumberMinute = cardinalNumberMinute;
+    }
+
+    public String getMaxInvestMoneyMinute() {
+        return maxInvestMoneyMinute;
+    }
+
+    public void setMaxInvestMoneyMinute(String maxInvestMoneyMinute) {
+        this.maxInvestMoneyMinute = maxInvestMoneyMinute;
+    }
+
+    public String getInvestedMoneyMinute() {
+        return investedMoneyMinute;
+    }
+
+    public void setInvestedMoneyMinute(String investedMoneyMinute) {
+        this.investedMoneyMinute = investedMoneyMinute;
+    }
+
+    public String getLoanMoneyMinute() {
+        return loanMoneyMinute;
+    }
+
+    public void setLoanMoneyMinute(String loanMoneyMinute) {
+        this.loanMoneyMinute = loanMoneyMinute;
     }
 }
