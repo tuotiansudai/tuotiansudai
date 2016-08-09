@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -43,16 +44,17 @@ public class ExportServiceImpl implements ExportService {
             row.add(String.valueOf(loanRepayDataItemDto.getLoanId()));
             row.add(loanRepayDataItemDto.getLoanName());
             row.add(loanRepayDataItemDto.getAgentLoginName());
-            row.add(loanRepayDataItemDto.getRepayDate() == null ? "-" : loanRepayDataItemDto.getRepayDate().toString());
-            row.add(loanRepayDataItemDto.getActualRepayDate() == null ? "-" : loanRepayDataItemDto.getActualRepayDate().toString());
-            row.add(String.valueOf(loanRepayDataItemDto.getPeriod()));
+            row.add(loanRepayDataItemDto.getRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getRepayDate()).toString("yyyy-MM-dd"));
+            row.add(loanRepayDataItemDto.getActualRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd"));
+            row.add(String.valueOf("第" + loanRepayDataItemDto.getPeriod()+"期"));
             row.add(loanRepayDataItemDto.getCorpus());
             row.add(loanRepayDataItemDto.getExpectedInterest());
             row.add(loanRepayDataItemDto.getTotalAmount());
             row.add(loanRepayDataItemDto.getActualRepayAmount());
-            row.add(loanRepayDataItemDto.getLoanRepayStatus().getDescription());
             if (loanRepayDataItemDto.getActualRepayDate() != null && loanRepayDataItemDto.getActualRepayDate().before(loanRepayDataItemDto.getRepayDate())) {
                 row.add("提前还款");
+            }else{
+                row.add(loanRepayDataItemDto.getLoanRepayStatus().getDescription());
             }
             rows.add(row);
 
@@ -61,19 +63,21 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public List<List<String>> buildTransferListCsvData(List<TransferApplicationRecordDto> transferApplicationRecordDtos) {
+    public List<List<String>> buildTransferListCsvData(List<TransferApplicationPaginationItemDataDto> transferApplicationPaginationItemDataDtos) {
         List<List<String>> rows = Lists.newArrayList();
-        for (TransferApplicationRecordDto transferApplicationRecordDto : transferApplicationRecordDtos) {
+        for (TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto : transferApplicationPaginationItemDataDtos) {
             List<String> row = Lists.newArrayList();
-            row.add(String.valueOf(transferApplicationRecordDto.getTransferApplicationId()));
-            row.add(String.valueOf(transferApplicationRecordDto.getLoanId()));
-            row.add(transferApplicationRecordDto.getTransferrerMobile());
-            row.add(String.valueOf(transferApplicationRecordDto.getTransferAmount()));
-            row.add(String.valueOf(transferApplicationRecordDto.getLeftPeriod()));
-            row.add(transferApplicationRecordDto.getTransferStatus().getDescription());
-            row.add(transferApplicationRecordDto.getTransferTime().toString());
-            row.add(transferApplicationRecordDto.getTransfereeMobile());
-            row.add(String.valueOf(transferApplicationRecordDto.getTransferFee()));
+            row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferApplicationId()));
+            row.add(String.valueOf(transferApplicationPaginationItemDataDto.getLoanId()));
+            row.add(transferApplicationPaginationItemDataDto.getTransferrerMobile());
+            row.add(transferApplicationPaginationItemDataDto.getInvestAmount());
+            row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferAmount()));
+            row.add(String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod()));
+            row.add(transferApplicationPaginationItemDataDto.getTransferStatus());
+            row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(transferApplicationPaginationItemDataDto.getTransfereeMobile());
+            row.add(transferApplicationPaginationItemDataDto.getSource() == null ?"":transferApplicationPaginationItemDataDto.getSource().name());
+            row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferFee()));
             rows.add(row);
         }
         return rows;
@@ -84,7 +88,7 @@ public class ExportServiceImpl implements ExportService {
         List<List<String>> rows = Lists.newArrayList();
         for (SystemBillPaginationItemDataDto systemBillPaginationItemDataDto : systemBillPaginationItemDataDtos) {
             List<String> row = Lists.newArrayList();
-            row.add(systemBillPaginationItemDataDto.getCreatedTime().toString());
+            row.add(new DateTime(systemBillPaginationItemDataDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
             row.add(systemBillPaginationItemDataDto.getOperationType());
             row.add(systemBillPaginationItemDataDto.getBusinessType());
             row.add(systemBillPaginationItemDataDto.getAmount());

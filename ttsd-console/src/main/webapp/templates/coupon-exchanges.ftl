@@ -137,7 +137,7 @@
 </table>
 </div>
 
-    <nav>
+    <nav class="pagination-control">
         <div>
             <span class="bordern">总共${exchangeCouponCount}条,每页显示${pageSize}条</span>
         </div>

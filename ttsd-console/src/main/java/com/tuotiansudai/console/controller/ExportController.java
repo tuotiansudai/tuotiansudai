@@ -168,7 +168,7 @@ public class ExportController {
         httpServletResponse.setContentType("application/csv");
         List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
 
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(exchangeCouponDtos);
+        List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, httpServletResponse.getOutputStream());
 
     }
@@ -216,7 +216,7 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(basePaginationDataDto.getRecords());
+        List<List<String>> csvData = exportService.buildTransferListCsvData(basePaginationDataDto.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, httpServletResponse.getOutputStream());
     }
 
