@@ -58,7 +58,7 @@
     <select id="findProductCount" resultType="long">
         select count(id) from product p
         <where>
-            <if test="productType != null">
+            <if test="goodsType != null">
                 and p.goods_type = #{goodsType}
             </if>
         </where>
@@ -67,7 +67,7 @@
     <select id="findProductList" resultMap="productResultMap">
         select * from product p
         <where>
-            <if test="productType != null">
+            <if test="goodsType != null">
                 and p.goods_type = #{goodsType}
             </if>
         </where>

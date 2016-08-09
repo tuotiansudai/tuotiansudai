@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    void createProduct(ProductDto productDto, String loginName);
+    void createProduct(ProductDto productDto);
 
     List<ProductModel> findGoods(GoodsType goodsType);
 

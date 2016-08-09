@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ProductDto implements Serializable {
+    private String loginName;
     @NotNull(message = "商品类型不能为空")
     private GoodsType goodsType;
     @NotEmpty(message = "商品名称不能为空")
@@ -19,7 +20,7 @@ public class ProductDto implements Serializable {
     private String imageUrl;
     @NotEmpty(message = "描述不能为空")
     private String description;
-    @NotNull(message = "描述不能为空")
+    @NotNull(message = "商品数量不能为空")
     private Long totalCount;
     @NotNull(message = "商品价格不能为空")
     private long productPrice;
@@ -28,6 +29,13 @@ public class ProductDto implements Serializable {
     @NotNull(message = "结束时间不能为空")
     private Date endTime;
 
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 
     public GoodsType getGoodsType() {
         return goodsType;
@@ -69,11 +77,11 @@ public class ProductDto implements Serializable {
         this.description = description;
     }
 
-    public long getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(long totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -100,5 +108,4 @@ public class ProductDto implements Serializable {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-
 }

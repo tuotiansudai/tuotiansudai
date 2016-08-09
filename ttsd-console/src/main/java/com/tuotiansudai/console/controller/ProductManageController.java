@@ -14,26 +14,26 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/activity-manage")
+@RequestMapping(value = "/product-manage")
 public class ProductManageController {
     private static Logger logger = Logger.getLogger(ProductManageController.class);
 
     @Autowired
-    private ProductService goodsManageService;
+    private ProductService productService;
 
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createProduct(@Valid @RequestBody ProductDto productDto) {
-        String loginName = LoginUserInfo.getLoginName();
+        productDto.setLoginName(LoginUserInfo.getLoginName());
         try {
-            goodsManageService.createProduct(productDto, loginName);
+            productService.createProduct(productDto);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return getRedirectPage(productDto.getGoodsType());
     }
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView createProduct(@RequestParam(value = "goodsType", required = false) GoodsType goodsType) {
         ModelAndView modelAndView = getRedirectPage(goodsType);
@@ -47,17 +47,20 @@ public class ProductManageController {
     public ModelAndView findVirtualGoods(@RequestParam(value = "goodsType", required = false) GoodsType goodsType,
                                          @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        ModelAndView modelAndView = getRedirectPage(goodsType);
-        modelAndView.addObject("products", goodsManageService.findGoods(goodsType));
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("products", productService.findGoods(goodsType));
+        modelAndView.addObject("productTypeDesc", goodsType.getDescription());
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        long goodsCount = goodsManageService.findGoodsCount(goodsType);
+        modelAndView.addObject("goodsType", goodsType);
+        long goodsCount = productService.findGoodsCount(goodsType);
         long totalPages = goodsCount / pageSize + (goodsCount % pageSize > 0 || goodsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("investAchievementCount", goodsCount);
+        modelAndView.addObject("goodsCount", goodsCount);
+        modelAndView.setViewName("/product-list");
         return modelAndView;
     }
 

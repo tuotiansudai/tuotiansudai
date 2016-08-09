@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.service.impl;
 
+
 import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
@@ -18,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
-    public void createProduct(ProductDto productDto, String loginName) {
+    public void createProduct(ProductDto productDto) {
         ProductModel productModel = new ProductModel();
         productModel.setGoodsType(productDto.getGoodsType());
         productModel.setProductName(productDto.getProductName());
@@ -29,9 +30,9 @@ public class ProductServiceImpl implements ProductService {
         productModel.setProductPrice(productDto.getProductPrice());
         productModel.setStartTime(productDto.getStartTime());
         productModel.setEndTime(productDto.getEndTime());
-        productModel.setCreatedBy(loginName);
+        productModel.setCreatedBy(productDto.getLoginName());
         productModel.setCreatedTime(new Date());
-        productModel.setUpdatedBy(loginName);
+        productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.create(productModel);
     }
