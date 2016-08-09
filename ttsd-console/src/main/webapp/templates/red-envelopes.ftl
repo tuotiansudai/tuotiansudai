@@ -47,10 +47,13 @@
             发放对象
         </th>
         <th>
+            预计发放数量(张)
+        </th>
+        <th>
             可投标的
         </th>
         <th>
-            起投金额
+            使用条件
         </th>
         <th>
             是否共用
@@ -100,15 +103,18 @@
         ${coupon.deadline?string('0')}天
         </td>
         <td>
-        <#if coupon.userGroup == 'IMPORT_USER'>
-            <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
-                class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
-        <#elseif coupon.userGroup == "EXCHANGER_CODE">
-            <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
-               class="btn-link">${coupon.userGroup.getDescription()}</a>
-        <#else>
-        ${coupon.userGroup.getDescription()}
-        </#if>
+            <#if coupon.userGroup == 'IMPORT_USER'>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
+                   class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+            <#elseif coupon.userGroup == "EXCHANGER_CODE">
+                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
+                   class="btn-link">${coupon.userGroup.getDescription()}</a>
+            <#else>
+            ${coupon.userGroup.getDescription()}
+            </#if>
+        </td>
+        <td>
+        ${coupon.totalCount?c}
         </td>
     <td>
         <#list coupon.productTypes as productType>
@@ -118,7 +124,9 @@
     <td>
     ${coupon.investLowerLimit}
     </td>
-    <td><#if coupon.shared>是<#else>否</#if></td>
+    <td>
+    <#if coupon.shared>是<#else>否</#if>
+    </td>
     <td>
     ${coupon.issuedCount?string('0')}
     </td>
