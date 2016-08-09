@@ -241,6 +241,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         RepayCalendarYearResponseDto couponRepayCalendarYearResponseDto;
         List<CouponRepayModel> couponRepayModelList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(userId, 0l, yearDate, replenishMonth(monthDate), null);
         for (CouponRepayModel couponRepayModel : couponRepayModelList) {
+            if(couponRepayModel.isTransferred()){
+                continue;
+            }
             if (couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0) {
                 continue;
             }
@@ -269,8 +272,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         RepayCalendarYearResponseDto repayCalendarYearResponseDto;
         Map<String, RepayCalendarYearResponseDto> repayCalendarResponseDtoMaps = Maps.newConcurrentMap();
         for (InvestRepayModel investRepayModel : investRepayModelList) {
-            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investRepayModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS));
-            if(CollectionUtils.isNotEmpty(transferApplicationModels)){
+            if(investRepayModel.isTransferred()){
                 continue;
             }
             if (investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayAmount() == 0) {
