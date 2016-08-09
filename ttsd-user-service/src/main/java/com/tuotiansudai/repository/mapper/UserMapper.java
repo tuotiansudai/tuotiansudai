@@ -11,9 +11,9 @@ import java.util.Map;
 @Repository
 public interface UserMapper {
 
-    void create(UserModel userModel);
+    int create(UserModel userModel);
 
-    void updateUser(UserModel userModel);
+    int updateUser(UserModel userModel);
 
     UserModel findByLoginName(String loginName);
 
