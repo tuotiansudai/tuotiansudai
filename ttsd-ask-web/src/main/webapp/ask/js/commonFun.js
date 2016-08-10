@@ -15,4 +15,38 @@ comm.pathNameKey=function(key) {
     }
 }
 
+comm.serializeObject= function (formData) {
+
+            var o = {};
+            $.each(formData, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+    }
+    comm.initToken=function() {
+        var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        debugger
+        xhr.setRequestHeader(header, token);
+    });
+
+    $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
+        if (jqXHR.status == 403) {
+            if (jqXHR.responseText) {
+                var data = JSON.parse(jqXHR.responseText);
+                window.location.href = data.directUrl + (data.refererUrl ? "?redirect=" + data.refererUrl : '');
+            }
+        }
+    });
+    }
+
+
 module.exports = comm;

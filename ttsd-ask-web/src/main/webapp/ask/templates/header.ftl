@@ -29,7 +29,7 @@
 
         <@global.isAnonymous>
             <li>
-                <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
+                <a href="${webServer}/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
             <li>
                 <a href="<#if channel??>${webServer}/register/user?channel=${channel}<#else>${webServer}/register/user</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>

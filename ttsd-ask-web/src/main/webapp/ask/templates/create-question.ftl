@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
 <div class="article-content fl" id="createQuestion">
+
     <div class="ask-question-box clearfix">
         <div class="m-title">我要提问</div>
         <div class="ask-question-con">
@@ -8,28 +9,61 @@
                 <dl class="ask-question-list">
                     <dt>一句话描述您的问题</dt>
                     <dd class="clearfix">
+                    <@global.isAnonymous>
+                        <span class="isAnonymous ask-con">请 <a href="${webServer}/login">登录</a> 或 <a href="${webServer}/register/user">注册</a> 后再进行提问</span>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
                         <input type="text" name="question" placeholder="请 登录 或 注册 后再进行提问" class="ask-con">
-                        <span class="error fl">sds</span> <span class="words-tip fr">0/30</span>
+                    </@global.isNotAnonymous>
+                        
+                        <span class="error fl" style="display: none">请描述您的问题</span> <span class="words-tip fr">0/30</span>
                     </dd>
                     <dt>问题补充（选填）</dt>
                     <dd class="clearfix">
-                        <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
+                        <@global.isAnonymous>
+                        <span class="isAnonymous addition">请注意不要随意透漏您的个人信息</span>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                         <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
+                        </@global.isNotAnonymous>
+                       
                         <span class="words-tip fr">0/10000</span>
                     </dd>
                     <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
                     <dd class="tag-list">
-                        <span class="tag checked">证券</span>
+                     <@global.isAnonymous>
+                         <#list tags as tag>
+                            <span class="isAnonymous tag"> ${tag.description}</span>
+                         </#list>
+                      </@global.isAnonymous>
+
+                     <@global.isNotAnonymous>
                         <#list tags as tag>
-                            <span class="tag">${tag.description}</span>
+                       <input type="checkbox" class="tag hide" name="tags" value="${tag.name()}" id="${tag.name()}"> <label for='${tag.name()}' class="tag">${tag.description}</label>
+                        
                         </#list>
+                        </@global.isNotAnonymous>
+                        <div class="error tag-category clearfix" style="display: none">请选择分类</div>
                     </dd>
                     <dd class="dd-captcha">
+                        <@global.isAnonymous>
+                            <span class="isAnonymous captcha">请输入验证码</span>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
                         <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
+                        </@global.isNotAnonymous>
                         <img src="${askServer}/captcha" alt="">
-                        <span class="error ">sds</span>
+                        <span class="error " style="display: none">请请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">
-                        <button class="btn formSubmit">提问</button>
+                    <@global.isAnonymous>
+                        <span class="btn">提问</span>
+                    </@global.isAnonymous>
+
+    <@global.isNotAnonymous>
+        <button class="btn formSubmit" type="button">提问</button>
+    </@global.isNotAnonymous>
+
                     </dd>
                 </dl>
             </form>
