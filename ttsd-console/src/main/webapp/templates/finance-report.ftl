@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="finance-report.js" headLab="finance-manage" sideLab="financeReport" title="债券财务数据">
 
@@ -142,7 +143,9 @@
                 </a>
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->
