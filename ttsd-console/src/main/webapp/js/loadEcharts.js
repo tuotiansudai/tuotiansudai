@@ -142,6 +142,64 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 };
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             },
+            mBar: function (data, name,xAxisName) {
+                var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var total = 0;
+                var annual = [];
+                $.each(bar_datas.data,function (i,item){
+                    total += Number(item.value);
+                    switch (item.name){
+                        case '1':
+                            annual[i] = (Number(item.value) / 12).toFixed(2) || 0;
+                            break;
+                        case '3':
+                            annual[i] = (Number(item.value) / 4).toFixed(2) || 0;
+                            break;
+                        case '6':
+                            annual[i] = (Number(item.value) / 2).toFixed(2) || 0;
+                            break;
+                        case '12':
+                            annual[i] = Number(item.value) || 0;
+                            break;
+                    }
+                });
+
+                total=parseFloat(total).toFixed(2);
+                var option = {
+                    title:{
+                        text: '总计:' + total,
+                        x:'50',
+                        y:'15'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        name:xAxisName,
+                        data: bar_datas.category
+                    }],
+                    yAxis: [{
+                        name: name || '',
+                        type: 'value',
+                        nameLocation: 'end',
+                        boundaryGap: [0, 0.01]
+                    }],
+                    series: [{
+                        name: name || '',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: bar_datas.data
+                    },{
+                        name: '年化金额',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: annual
+                    }]
+
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+            },
             kBar:function(data, name) {
                 var xAxisdata=_.pluck(data, 'name'),
                     valueOBJ=_.pluck(data, 'value'),
