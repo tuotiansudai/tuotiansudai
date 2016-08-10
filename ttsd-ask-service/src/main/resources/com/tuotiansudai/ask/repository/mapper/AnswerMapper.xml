@@ -62,7 +62,6 @@
         from answer
         where login_name = #{loginName}
         order by created_time desc
-        order by created_time desc
         <if test="index != null and pageSize != null ">
             limit #{index}, #{pageSize}
         </if>

@@ -4,7 +4,6 @@ var comm = require("./commonFun");
 var $createQuestion=$('#createQuestion');
 
 if($createQuestion.length) {
-    comm.initToken();
     var $formQuestion=$('.form-question',$createQuestion),
         $question=$('.ask-con',$createQuestion),
         $addition=$('.addition',$createQuestion),
