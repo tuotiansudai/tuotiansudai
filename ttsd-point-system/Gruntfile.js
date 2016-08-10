@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         // Metadata.
         meta: {
             basePath: '../',
-            baseSassPath: 'src/main/webapp/style/sass',
-            baseCssPath: 'src/main/webapp/style',
-            baseCssMinPath: 'src/main/webapp/style/dest',
-            baseJsPath: 'src/main/webapp/js',
-            baseJsMinPath: 'src/main/webapp/js/dest'
+            baseSassPath: 'src/main/webapp/pointsystem/style/sass',
+            baseCssPath: 'src/main/webapp/pointsystem/style',
+            baseCssMinPath: 'src/main/webapp/pointsystem/style/dest',
+            baseJsPath: 'src/main/webapp/pointsystem/js',
+            baseJsMinPath: 'src/main/webapp/pointsystem/js/dest'
         },
         clean: {
             css: {
@@ -115,9 +115,9 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8088,
+                    port:6088,
                     hostname: '*',
-                    base: 'src/main/webapp/',
+                    base: 'src/main/webapp',
                     middleware: function(connect, options, middlewares) {
                         middlewares.unshift(function(req, res, next) {
                             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -133,10 +133,10 @@ module.exports = function(grunt) {
                 src: ['<%= meta.baseCssPath %>/*.css'],
                 dest: '<%= meta.baseCssPath %>/base64',
                 options: {
-                    target: ['./src/main/webapp/images/**/*.*'],
+                    target: ['./src/main/webapp/pointsystem/images/**/*.*'],
                     fixDirLevel: false,
                     maxBytes: 1024 * 8,
-                    baseDir: './src/main/webapp'
+                    baseDir: './src/main/webapp/pointsystem'
                 }
             }
         }
