@@ -1,4 +1,5 @@
 /* create question */
+var _ = require('underscore');
 var $createQuestion=$('#createQuestion');
 if ($createQuestion.length) {
     //return true;
