@@ -20,8 +20,8 @@ public interface QuestionMapper {
     QuestionModel findById(@Param(value = "id") long id);
 
     List<QuestionModel> findByLoginName(@Param(value = "loginName") String loginName,
-                                        @Param(value = "index") int index,
-                                        @Param(value = "pageSize") int pageSize);
+                                        @Param(value = "index") Integer index,
+                                        @Param(value = "pageSize") Integer pageSize);
 
     long countByLoginName(@Param(value = "loginName") String loginName);
 

@@ -55,6 +55,12 @@
                 <entry key="myAnswers">
                     <bean class="com.tuotiansudai.web.ask.freemarker.directive.MyAnswersDirective"/>
                 </entry>
+                <entry key="newAnswerAlert">
+                    <bean class="com.tuotiansudai.web.ask.freemarker.directive.NewAnswerAlertDirective"/>
+                </entry>
+                <entry key="newAnswerAdoptedAlert">
+                    <bean class="com.tuotiansudai.web.ask.freemarker.directive.NewAnswerAdoptedAlertDirective"/>
+                </entry>
                 <entry key="tags">
                     <list>
                         <value type="com.tuotiansudai.ask.repository.model.Tag">SECURITIES</value>

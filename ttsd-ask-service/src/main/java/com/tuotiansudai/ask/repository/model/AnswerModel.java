@@ -16,6 +16,8 @@ public class AnswerModel implements Serializable {
 
     private boolean bestAnswer;
 
+    private Date adoptedTime;
+
     private List<String> favoredBy;
 
     private String approvedBy;
@@ -78,6 +80,14 @@ public class AnswerModel implements Serializable {
 
     public void setBestAnswer(boolean bestAnswer) {
         this.bestAnswer = bestAnswer;
+    }
+
+    public Date getAdoptedTime() {
+        return adoptedTime;
+    }
+
+    public void setAdoptedTime(Date adoptedTime) {
+        this.adoptedTime = adoptedTime;
     }
 
     public List<String> getFavoredBy() {

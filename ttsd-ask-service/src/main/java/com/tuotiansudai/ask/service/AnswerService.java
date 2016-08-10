@@ -27,4 +27,6 @@ public interface AnswerService {
     BaseDto<BasePaginationDataDto> findMyAnswers(String loginName, int index, int pageSize);
 
     BaseDto<BasePaginationDataDto> findAnswersForConsole(String question, String mobile, AnswerStatus status, int index, int pageSize);
+
+    boolean isNewAnswerAdoptedExists(String loginName);
 }

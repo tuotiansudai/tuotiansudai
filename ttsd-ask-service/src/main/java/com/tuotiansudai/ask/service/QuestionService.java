@@ -27,4 +27,6 @@ public interface QuestionService {
     BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize);
 
     BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize);
+
+    boolean isNewAnswerExists(String loginName);
 }

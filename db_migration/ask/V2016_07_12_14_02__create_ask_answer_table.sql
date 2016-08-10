@@ -4,6 +4,7 @@ CREATE TABLE `ask`.`answer` (
   `question_id`   BIGINT UNSIGNED NOT NULL,
   `answer`        TEXT,
   `best_answer`   BOOLEAN         NOT NULL DEFAULT FALSE,
+  `adopted_time`  DATETIME,
   `favored_by`    TEXT,
   `approved_by`   VARCHAR(25),
   `approved_time` DATETIME,

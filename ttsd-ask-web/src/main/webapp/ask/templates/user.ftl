@@ -2,16 +2,19 @@
 <div class="profile-box">
     <i class="profile"></i>
     <ul class="welcome-info">
-        <@global.isNotAnonymous>
+    <@global.isNotAnonymous>
         <li class="username"><@global.security.authentication property="principal.mobile"/>，您好</li>
-        <li>提问有新回答 <br/>
-            <a href="#"> 点击查看</a>
+        <li class="new-answer-alert <@newAnswerAlert><@global.security.authentication property="principal.username"/></@newAnswerAlert>">
+            提问有新回答，<a href="/question/my-questions">点击查看</a>
         </li>
-        </@global.isNotAnonymous>
+        <li class="new-answer-adopted-alert <@newAnswerAdoptedAlert><@global.security.authentication property="principal.username"/></@newAnswerAdoptedAlert>">
+            回答被采纳为最佳答案，<a href="/question/my-answers">点击查看</a>
+        </li>
+    </@global.isNotAnonymous>
 
-        <@global.isAnonymous>
-            <li class="username">游客</li>
-        </@global.isAnonymous>
+    <@global.isAnonymous>
+        <li class="username">游客</li>
+    </@global.isAnonymous>
     </ul>
     <div class="button-layer">
     <@global.isNotAnonymous>

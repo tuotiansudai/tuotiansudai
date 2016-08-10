@@ -13,6 +13,7 @@
         <result column="question_id" property="questionId"/>
         <result column="answer" property="answer"/>
         <result column="best_answer" property="bestAnswer"/>
+        <result column="adopted_time" property="adoptedTime"/>
         <result column="favored_by" property="favoredBy" typeHandler="com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler"/>
         <result column="approved_by" property="approvedBy"/>
         <result column="approved_time" property="approvedTime"/>
@@ -23,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="AnswerModel" useGeneratedKeys="true" keyProperty="id">
-        insert into answer (login_name, question_id, answer, best_answer, favored_by, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
-        value(#{loginName}, #{questionId}, #{answer}, #{bestAnswer}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
+        insert into answer (login_name, question_id, answer, best_answer, adopted_time, favored_by, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
+        value(#{loginName}, #{questionId}, #{answer}, #{bestAnswer}, #{adoptedTime}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
     </insert>
 
     <update id="update" parameterType="AnswerModel">
@@ -33,6 +34,7 @@
         question_id = #{questionId},
         answer = #{answer},
         best_answer = #{bestAnswer},
+        adopted_time = #{adoptedTime},
         favored_by = #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler},
         approved_by = #{approvedBy},
         approved_time = #{approvedTime},
@@ -60,7 +62,10 @@
         from answer
         where login_name = #{loginName}
         order by created_time desc
-        limit #{index}, #{pageSize}
+        order by created_time desc
+        <if test="index != null and pageSize != null ">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="countByLoginName" parameterType="string" resultType="long">
