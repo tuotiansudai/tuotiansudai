@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.repository.model.Source;
+
 public class SignInDto extends BaseDataDto {
 
     private String username;
@@ -9,7 +11,7 @@ public class SignInDto extends BaseDataDto {
 
     private String captcha;
 
-    private String source;
+    private Source source;
 
     private String deviceId;
 
@@ -41,7 +43,7 @@ public class SignInDto extends BaseDataDto {
 
     }
 
-    public SignInDto(String username, String password, String captcha, String source, String deviceId) {
+    public SignInDto(String username, String password, String captcha, Source source, String deviceId) {
         this.username = username;
         this.password = password;
         this.captcha = captcha;
@@ -49,11 +51,11 @@ public class SignInDto extends BaseDataDto {
         this.deviceId = deviceId;
     }
 
-    public String getSource() {
+    public Source getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(Source source) {
         this.source = source;
     }
 
