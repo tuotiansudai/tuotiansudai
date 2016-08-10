@@ -45,19 +45,27 @@ public class UserMessageServiceTest {
         userMapper.create(creator);
 
 
-        MessageModel messageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
+        MessageModel webSiteMessageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
                 Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
-        messageModel.setReadCount(10);
 
-        messageMapper.create(messageModel);
+        MessageModel appMessageModel = new MessageModel("app title", "app hello message!", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.APP_MESSAGE),
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+
+        webSiteMessageModel.setReadCount(10);
+
+        messageMapper.create(webSiteMessageModel);
+        messageMapper.create(appMessageModel);
 
 
         UserModel userTest = getFakeUserTest("userTest");
         userMapper.create(userTest);
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userTest.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(webSiteMessageModel.getId(),
+                userTest.getLoginName(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTitle(), webSiteMessageModel.getTemplate());
 
         userMessageMapper.create(userMessageModel);
 
