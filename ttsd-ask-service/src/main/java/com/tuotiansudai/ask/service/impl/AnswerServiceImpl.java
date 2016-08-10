@@ -35,7 +35,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @Value(value = "newAnswerAdoptedAlert")
+    @Value(value = "${newAnswerAdoptedAlert}")
     private String newAnswerAdoptedAlertKey;
 
     @Autowired

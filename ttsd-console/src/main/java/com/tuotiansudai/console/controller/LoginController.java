@@ -47,7 +47,7 @@ public class LoginController {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
-        SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB, null);
+        SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         LoginDto baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         Map<String, String> sessionIds = new HashMap<>();
         sessionIds.put("SESSION", baseDto.getNewSessionId() != null ? baseDto.getNewSessionId() : httpServletRequest.getSession().getId());

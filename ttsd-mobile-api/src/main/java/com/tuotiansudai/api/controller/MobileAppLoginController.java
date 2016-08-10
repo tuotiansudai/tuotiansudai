@@ -44,7 +44,7 @@ public class MobileAppLoginController {
             logger.debug("Authentication failed: need image captcha but image captcha is null");
             return new BaseResponseDto<>(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(), ReturnMessage.NEED_IMAGE_CAPTCHA.getMsg());
         }
-        SignInDto signInDto = new SignInDto(username, password, captcha, Source.valueOf(source.toUpperCase()), deviceId);
+        SignInDto signInDto = new SignInDto(username, password, captcha, Source.valueOf(source.toUpperCase()).name(), deviceId);
         LoginDto baseDto = signInClient.sendSignIn(null, signInDto);
         BaseResponseDto<LoginResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();

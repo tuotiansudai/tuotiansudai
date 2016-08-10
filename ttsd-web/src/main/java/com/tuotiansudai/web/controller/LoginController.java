@@ -30,7 +30,7 @@ public class LoginController {
 
     static Logger logger = Logger.getLogger(LoginController.class);
 
-    @Value(value = "web.domain")
+    @Value(value = "${web.domain}")
     private String domain;
 
     @Autowired
@@ -52,7 +52,7 @@ public class LoginController {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
-        SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB, null);
+        SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         LoginDto loginDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
 
         Cookie cookie = this.createSessionCookie(httpServletRequest, loginDto);
