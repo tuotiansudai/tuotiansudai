@@ -66,13 +66,16 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public void approve(String loginName, List<Long> questionIds) {
-        for (long questionId : questionIds) {
-            AnswerModel answerModel = answerMapper.findById(questionId);
+    public void approve(String loginName, List<Long> answerIds) {
+        for (long answerId : answerIds) {
+            AnswerModel answerModel = answerMapper.findById(answerId);
             answerModel.setApprovedBy(loginName);
             answerModel.setApprovedTime(new Date());
             answerModel.setStatus(AnswerStatus.UNADOPTED);
             answerMapper.update(answerModel);
+            QuestionModel questionModel = questionMapper.findById(answerModel.getQuestionId());
+            questionModel.setAnswers(questionModel.getAnswers() + 1);
+            questionMapper.update(questionModel);
         }
     }
 
