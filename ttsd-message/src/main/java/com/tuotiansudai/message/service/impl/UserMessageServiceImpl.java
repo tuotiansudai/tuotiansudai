@@ -17,7 +17,6 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,9 +99,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     public long getUnreadMessageCount(String loginName) {
-        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
-        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
-        return unreadManualMessages.size() + unreadCount;
+        return userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
     }
 
     @Override
