@@ -5,6 +5,28 @@
  */
 require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, layer, _) {
 	$(function() {
+		$('#shareAPP')?cnzzPush.trackClick('208APP分享', '注册或者预注册成功页面', '页面加载'):false;
+
+		//判断访问终端
+		var browser = {
+			versions: function() {
+				var u = navigator.userAgent,
+					app = navigator.appVersion;
+				return {
+					ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+					android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 //android终端
+				};
+			}(),
+			language: (navigator.browserLanguage || navigator.language).toLowerCase()
+		}
+		//判断是否ios
+		if(browser.versions.ios){
+			cnzzPush.trackClick('203APP分享', '分享链接IOS', '页面加载');
+		}
+		//判断是否android
+		if(browser.versions.android){
+			cnzzPush.trackClick('202APP分享', '分享链接ANDROID', '页面加载');
+		}
 
 		var $androidForm = $('#androidForm'),
 			$iosForm = $('#iosForm'),
@@ -252,6 +274,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		//get code event
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
+			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 			$.ajax({
 				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //获取手机验证码接口
 				type: 'get',
@@ -267,6 +290,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 
 		//get code event
 		$iosBtn.on('click', function(event) {
+			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 			event.preventDefault();
 			$.ajax({
 				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在

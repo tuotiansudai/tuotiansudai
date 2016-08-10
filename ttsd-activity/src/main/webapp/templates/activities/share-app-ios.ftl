@@ -22,7 +22,7 @@
 						<input type="button" class="ignore get-code" value="获取验证码" id="iosBtn">
 					</div>
 					<div class="item-int">
-						<input type="submit" class="item-submit" value="领取5888元体验金">
+						<input type="submit" class="item-submit" onclick="cnzzPush.trackClick('206APP分享', '注册或者预注册页面', '领取5888体验金')" value="领取5888元体验金">
 					</div>
 					<div class="item-int">
 	      				<input type="checkbox" class="checkbox" id="agreement" name="agreement" checked>
