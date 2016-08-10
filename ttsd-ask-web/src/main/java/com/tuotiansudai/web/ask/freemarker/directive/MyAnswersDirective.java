@@ -24,17 +24,17 @@ public class MyAnswersDirective implements TemplateDirectiveModel {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
         if (body != null) {
-            body.render(new myAnswersWriter(env.getOut()));
+            body.render(new MyAnswersWriter(env.getOut()));
         } else {
             throw new RuntimeException("missing body");
         }
     }
 
-    private class myAnswersWriter extends Writer {
+    private class MyAnswersWriter extends Writer {
 
         private final Writer out;
 
-        myAnswersWriter(Writer out) {
+        MyAnswersWriter(Writer out) {
             this.out = out;
         }
 

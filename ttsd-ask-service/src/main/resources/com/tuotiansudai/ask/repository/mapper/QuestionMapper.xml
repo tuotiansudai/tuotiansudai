@@ -61,7 +61,9 @@
         from question
         where login_name = #{loginName}
         order by created_time desc
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null ">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="countByLoginName" parameterType="string" resultType="long">

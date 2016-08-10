@@ -162,6 +162,12 @@
           font-size:18px;
           font-weight: bold;
         }
+        .new-answer-alert.false {
+          display: none;
+        }
+        .new-answer-adopted-alert.false {
+          display: none;
+        }
         a {
           color: nth($linkColor,2);
           text-decoration: underline;

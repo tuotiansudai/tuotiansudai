@@ -1,6 +1,8 @@
 package com.tuotiansudai.ask.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
@@ -12,17 +14,29 @@ import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
+
+    private static final Logger logger = Logger.getLogger(AnswerServiceImpl.class);
+
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    @Value(value = "newAnswerAdoptedAlert")
+    private String newAnswerAdoptedAlertKey;
 
     @Autowired
     private UserMapper userMapper;
@@ -32,6 +46,9 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public boolean createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
@@ -111,6 +128,7 @@ public class AnswerServiceImpl implements AnswerService {
         }
 
         answerModel.setBestAnswer(true);
+        answerModel.setAdoptedTime(new Date());
         answerModel.setStatus(AnswerStatus.ADOPTED);
         answerMapper.update(answerModel);
 
@@ -148,8 +166,10 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public BaseDto<BasePaginationDataDto> findMyAnswers(String loginName, int index, int pageSize) {
+        redisWrapperClient.hset(newAnswerAdoptedAlertKey, loginName, SIMPLE_DATE_FORMAT.format(new Date()));
         long count = answerMapper.countByLoginName(loginName);
         List<AnswerModel> myAnswers = answerMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+
         return generatePaginationData(loginName, index, pageSize, count, myAnswers);
     }
 
@@ -160,6 +180,37 @@ public class AnswerServiceImpl implements AnswerService {
         long count = answerMapper.countAnswersForConsole(question, loginName, status);
         List<AnswerModel> answerModels = answerMapper.findAnswersForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         return generatePaginationData(null, index, pageSize, count, answerModels);
+    }
+
+
+
+    @Override
+    public boolean isNewAnswerAdoptedExists(String loginName) {
+        Date now = new Date();
+        boolean isKeyExists = redisWrapperClient.hexists(newAnswerAdoptedAlertKey, loginName);
+        if (!isKeyExists) {
+            redisWrapperClient.hset(newAnswerAdoptedAlertKey, loginName, SIMPLE_DATE_FORMAT.format(now));
+            return false;
+        }
+
+        String value = redisWrapperClient.hget(newAnswerAdoptedAlertKey, loginName);
+        final Date lastAlertTime;
+        try {
+            lastAlertTime = SIMPLE_DATE_FORMAT.parse(value);
+        } catch (ParseException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            redisWrapperClient.hset(newAnswerAdoptedAlertKey, loginName, SIMPLE_DATE_FORMAT.format(now));
+            return false;
+        }
+
+        List<AnswerModel> answerModels = answerMapper.findByLoginName(loginName, null, null);
+
+        return Iterators.tryFind(answerModels.iterator(), new Predicate<AnswerModel>() {
+            @Override
+            public boolean apply(AnswerModel input) {
+                return input.isBestAnswer() && input.getAdoptedTime().after(lastAlertTime);
+            }
+        }).isPresent();
     }
 
     private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<AnswerModel> answers) {
