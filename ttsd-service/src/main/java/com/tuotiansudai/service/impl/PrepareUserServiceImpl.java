@@ -13,7 +13,7 @@ import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -59,12 +59,11 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         }
 
         try {
-            PrepareModel prepareModel = new PrepareModel();
-            prepareModel.setReferrerMobile(requestDto.getReferrerMobile());
-            prepareModel.setMobile(requestDto.getMobile());
-            prepareModel.setChannel(requestDto.getChannel());
-            prepareModel.setCreatedTime(new Date());
-            prepareUserMapper.create(prepareModel);
+            PrepareUserModel prepareUserModel = new PrepareUserModel();
+            prepareUserModel.setReferrerMobile(requestDto.getReferrerMobile());
+            prepareUserModel.setMobile(requestDto.getMobile());
+            prepareUserModel.setCreatedTime(new Date());
+            prepareUserMapper.create(prepareUserModel);
             return new BaseDataDto(true, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -74,8 +73,8 @@ public class PrepareUserServiceImpl implements PrepareUserService {
 
     @Override
     public List<PrepareUserDto> findPrepareUser(String mobile, Date beginTime, Date endTime, int index, int pageSize) {
-        List<PrepareModel> prepareModels = prepareUserMapper.findPrepares(null, mobile, null, beginTime, endTime, (index - 1) * pageSize, pageSize);
-        return fillPrepareUser(prepareModels);
+        List<PrepareUserModel> prepareUserModels = prepareUserMapper.findPrepares(null, mobile, null, beginTime, endTime, (index - 1) * pageSize, pageSize);
+        return fillPrepareUser(prepareUserModels);
     }
 
     @Override
@@ -83,14 +82,14 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         return prepareUserMapper.findPrepareCount(null, mobile, null, beginTime, endTime);
     }
 
-    private List<PrepareUserDto> fillPrepareUser(List<PrepareModel> prepareModels) {
-        return Lists.transform(prepareModels, new Function<PrepareModel, PrepareUserDto>() {
+    private List<PrepareUserDto> fillPrepareUser(List<PrepareUserModel> prepareUserModels) {
+        return Lists.transform(prepareUserModels, new Function<PrepareUserModel, PrepareUserDto>() {
             @Override
-            public PrepareUserDto apply(PrepareModel prepareModel) {
-                UserModel referrerUserModel = userMapper.findByMobile(prepareModel.getReferrerMobile());
+            public PrepareUserDto apply(PrepareUserModel prepareUserModel) {
+                UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
                 AccountModel referrerAccountModel = accountMapper.findByLoginName(referrerUserModel.getLoginName());
-                UserModel useUserModel = userMapper.findByMobile(prepareModel.getMobile());
-                return new PrepareUserDto(prepareModel, referrerAccountModel, useUserModel);
+                UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
+                return new PrepareUserDto(prepareUserModel, referrerAccountModel, useUserModel);
             }
         });
     }
@@ -106,5 +105,11 @@ public class PrepareUserServiceImpl implements PrepareUserService {
             return new BaseDataDto(false, e.getLocalizedMessage());
         }
     }
+
+    @Override
+    public PrepareUserModel findPrepareUserModelByModel(String mobile) {
+        return prepareUserMapper.findByMobile(mobile);
+    }
+
 
 }

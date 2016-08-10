@@ -13,6 +13,7 @@ import com.tuotiansudai.util.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,7 +30,7 @@ import java.text.MessageFormat;
 @Controller
 @RequestMapping(path = "/register/user")
 public class RegisterUserController {
-
+    private static Logger logger = Logger.getLogger(RegisterUserController.class);
     @Autowired
     private UserService userService;
 
@@ -61,6 +62,7 @@ public class RegisterUserController {
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.debug("[APP SHARE IOS] :" + message);
             baseDataDto = new BaseDataDto(false,message);
             baseDto.setData(baseDataDto);
             return baseDto;
@@ -76,11 +78,13 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/shared", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.debug("[APP SHARE ANDROID] :" + message);
             baseDataDto = new BaseDataDto(false,message);
             baseDto.setData(baseDataDto);
             return baseDto;

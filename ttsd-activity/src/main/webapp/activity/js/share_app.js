@@ -41,7 +41,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile=' + $('#mobile').val();
+						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
 					}
 				},
 				iosCount: function() { //ios倒计时
@@ -73,7 +73,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile=' + $('#mobile').val();
+						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
 					}
 				}
 			};
@@ -152,14 +152,14 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					data: {
 						mobile: $('#mobile').val(),
 						password: $('#password').val(),
-						captcha: $('#captchaText').val(),
-						referrer: $('#referrer').attr('data-referrer'),
-						source: 'MOBILE'
+						captcha: $('#captcha').val(),
+						referrer: location.href.split('referrerMobile=')[1],
+						agreement:$('#agreement').attr("checked")=="checked"
 					}
 				})
 				.done(function(data) {
 						if (data.data.status == true) {
-							location.href = '/activity/app-share';
+							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
 						} else {
 							layer.msg('请求失败，请重试！');
 					}
@@ -230,8 +230,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					data: {
 						mobile: $('#mobile').val(),
 						captcha: $('#captcha').val(),
-						referrerMobile: location.href.split('referrerMobile=')[1],
-						channel: 'IOS'
+						referrerMobile: location.href.split('referrerMobile=')[1]
 					}
 				})
 					.done(function (data) {
@@ -251,15 +250,12 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '/register/user/mobile/' + $('#mobile').val() + '/is-exist', //获取手机验证码接口
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					mobile: $('#mobile').val()
-				}
+				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //获取手机验证码接口
+				type: 'get',
+				dataType: 'json'
 			})
 			.done(function(data) {
-				sendSms.anCaptcha(data.status);
+				sendSms.anCaptcha(data.data.status);
 			})
 			.fail(function(data) {
 				layer.msg('请求失败，请重试');

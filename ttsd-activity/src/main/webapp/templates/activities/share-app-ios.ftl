@@ -25,8 +25,8 @@
 						<input type="submit" class="item-submit" value="领取5888元体验金">
 					</div>
 					<div class="item-int">
-	      				<input type="checkbox" class="checkbox" id="agree" name="agree">
-						<label for="agree" class="agree">同意拓天速贷<span>《服务协议》</span></label>
+	      				<input type="checkbox" class="checkbox" id="agreement" name="agreement" checked>
+						<label for="agreement" class="agree">同意拓天速贷<span>《服务协议》</span></label>
 					</div>
 					<div class="item-int">
 						<p class="tc">好友<span>133****2082</span>邀请你来拓天速贷投资</p>

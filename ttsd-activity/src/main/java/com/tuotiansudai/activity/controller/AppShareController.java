@@ -1,16 +1,14 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.PrepareModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(value = "/activity/app-share")
@@ -30,6 +27,8 @@ public class AppShareController {
     private AccountMapper accountMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PrepareUserService prepareUserService;
 
 
     private String getReferrerInfo(UserModel referrer) {
@@ -103,7 +102,7 @@ public class AppShareController {
     }
 
     @RequestMapping( method = RequestMethod.GET)
-    public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile,@RequestParam(value = "mobile") String mobile) {
+    public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         ModelAndView modelAndView = new ModelAndView();
         if (null == referrer) {
@@ -114,7 +113,6 @@ public class AppShareController {
 
         modelAndView.setViewName("/activities/share-app");
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-        modelAndView.addObject("isAppShareUser",prepareUserMapper.findByMobile(mobile) != null);
         return modelAndView;
     }
 

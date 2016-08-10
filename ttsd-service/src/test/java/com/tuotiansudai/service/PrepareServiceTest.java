@@ -28,7 +28,6 @@ public class PrepareServiceTest extends BaseMapperTest {
         PrepareRegisterRequestDto requestDto = new PrepareRegisterRequestDto();
         requestDto.setReferrerMobile(referrerUserModel.getMobile());
         requestDto.setMobile("18999999999");
-        requestDto.setChannel(Source.IOS);
         prepareService.prepareRegister(requestDto);
     }
 

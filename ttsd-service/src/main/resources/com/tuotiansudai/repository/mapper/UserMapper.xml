@@ -461,7 +461,6 @@
             </foreach>
         </if>
     </select>
-
     <select id="findAllByRole" parameterType="map" resultType="java.lang.String">
         SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
         <if test="districtName != null and districtName.size != 0">
