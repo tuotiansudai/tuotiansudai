@@ -1,4 +1,4 @@
-package com.tuotiansudai.pointsystem.repository.model;
+package com.tuotiansudai.point.repository.model;
 
 public enum GoodsType {
 

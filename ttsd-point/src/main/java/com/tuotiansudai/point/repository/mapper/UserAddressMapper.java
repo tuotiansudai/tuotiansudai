@@ -1,7 +1,7 @@
-package com.tuotiansudai.pointsystem.repository.mapper;
+package com.tuotiansudai.point.repository.mapper;
 
 
-import com.tuotiansudai.pointsystem.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.UserAddressModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

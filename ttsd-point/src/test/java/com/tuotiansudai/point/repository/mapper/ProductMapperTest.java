@@ -1,8 +1,7 @@
-package com.tuotiansudai.pointsystem.repository.mapper;
+package com.tuotiansudai.point.repository.mapper;
 
-import com.tuotiansudai.pointsystem.repository.model.GoodsType;
-import com.tuotiansudai.pointsystem.repository.model.ProductModel;
-import com.tuotiansudai.pointsystem.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -24,33 +23,38 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class UserAddressMapperTest {
+public class ProductMapperTest {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private UserAddressMapper userAddressMapper;
+    private ProductMapper productMapper;
 
 
     @Test
-    public void shouldCreateUserAddressModel() throws Exception {
+    public void shouldCreateProductModel() throws Exception {
         UserModel fakeUserModel = this.createFakeUserModel();
 
-        UserAddressModel userAddressModel = new UserAddressModel(10001,fakeUserModel.getLoginName(), "张山", "13999999999", "北京市北京市", fakeUserModel.getLoginName(), new Date());
+        ProductModel productModel = new ProductModel(GoodsType.VIRTUAL, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, fakeUserModel.getLoginName(), new Date());
 
-        userAddressMapper.create(userAddressModel);
+        productMapper.create(productModel);
 
-        UserAddressModel userAddressModel1 = userAddressMapper.findByLoginName(fakeUserModel.getLoginName());
+        List<ProductModel> productModelList = productMapper.findProductList(GoodsType.VIRTUAL);
 
-        assertThat(userAddressModel1.getRealName(), is("张山"));
+        assertThat(productModelList.size(), is(1));
 
+        long productCount = productMapper.findProductCount(GoodsType.VIRTUAL);
+
+        assertThat(productCount, is(1L));
+
+        ProductModel productModel1 = productMapper.findById(productModel.getId());
 
     }
 
     private UserModel createFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
-        fakeUserModel.setLoginName("userAddressUser");
+        fakeUserModel.setLoginName("productCreateUser");
         fakeUserModel.setPassword("123abc");
         fakeUserModel.setEmail("12345@abc.com");
         fakeUserModel.setMobile("13900000000");
