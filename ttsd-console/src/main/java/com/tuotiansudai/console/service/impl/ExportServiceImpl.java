@@ -109,9 +109,9 @@ public class ExportServiceImpl implements ExportService {
             row.add(String.valueOf(exchangeCouponDto.getTotalCount()));
             row.add(String.valueOf(exchangeCouponDto.getIssuedCount()));
             row.add(String.valueOf(exchangeCouponDto.getExchangePoint()));
-            row.add(MessageFormat.format("{0}至{1}", exchangeCouponDto.getStartTime().toString(), exchangeCouponDto.getEndTime().toString()));
+            row.add(MessageFormat.format("{0}至{1}", new DateTime(exchangeCouponDto.getStartTime()).toString("yyyy-MM-dd HH:mm"), new DateTime(exchangeCouponDto.getEndTime()).toString("yyyy-MM-dd HH:mm")));
             row.add(String.valueOf(exchangeCouponDto.getDeadline()));
-            row.add(Joiner.on(",").join(exchangeCouponDto.getProductTypes()));
+            row.add(Joiner.on(" ").join(exchangeCouponDto.getProductTypes()));
             row.add(exchangeCouponDto.getInvestLowerLimit());
             rows.add(row);
         }
