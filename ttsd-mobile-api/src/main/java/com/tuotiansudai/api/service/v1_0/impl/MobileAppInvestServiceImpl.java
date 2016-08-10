@@ -61,6 +61,11 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
             BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
+            if(formDto.getData() == null){
+                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
+                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg());
+                return responseDto;
+            }
             if (formDto.getData().getStatus()) {
                 PayFormDataDto formDataDto = formDto.getData();
                 String requestData = CommonUtils.mapToFormData(formDataDto.getFields(), true);
