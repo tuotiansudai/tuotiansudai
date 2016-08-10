@@ -30,7 +30,7 @@
   @include user-select(none);
   @include touch-action(manipulation);
   border: 1px solid nth($CK2,3);
-  border-radius: 4px;
+  border-radius: 0px;
   background: #999 none;
   color: #fff;
   &:focus,
@@ -138,21 +138,21 @@
   padding: 5px 10px;
   font-size: nth($fontSize, 1);
   line-height: nth($baseLineHeight, 2);
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 .btn-xs {
   padding: 1px 5px;
   font-size: nth($fontSize, 1);
   line-height: nth($baseLineHeight, 2);
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 .btn-lg {
   padding: 10px 16px;
   font-size: nth($fontSize, 5);
   line-height: nth($baseLineHeight, 2);
-  border-radius: 6px;
+  border-radius: 0px;
 }
 
 select {
@@ -186,7 +186,7 @@ input[type="checkbox"] {
 
 .input-control {
   width: 200px;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .planSwitch {
