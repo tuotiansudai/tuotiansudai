@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var comm={};
 comm.pathNameKey=function(key) {
     var parm = location.search.split('?')[1], parmObj;
