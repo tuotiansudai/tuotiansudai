@@ -36,7 +36,9 @@ require(['jquery', 'jquery-ui',
         });
 
 
-
+        $('.down-load').click(function () {
+            location.href = "/export/loan-repay?" + $('form').serialize();
+        });
         function pageinationView(e){
             var index = $(e.target).attr("pageIndex");
 
@@ -62,6 +64,10 @@ require(['jquery', 'jquery-ui',
         $('#btnRepayQuery').click(pageinationView);
         $('.Previous').click(pageinationView);
         $('.Next').click(pageinationView);
+
+        $('.down-load').click(function () {
+            location.href = "/export/loan-repay?" + $('form').serialize();
+        });
 
 
     });
