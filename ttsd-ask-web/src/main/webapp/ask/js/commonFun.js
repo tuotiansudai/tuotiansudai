@@ -1,6 +1,6 @@
 var comm={};
 comm.pathNameKey=function(key) {
-    var parm = location.hash.split('?')[1], parmObj;
+    var parm = location.search.split('?')[1], parmObj;
     if (_.isUndefined(parm)) {
         return '';
     }
@@ -14,4 +14,4 @@ comm.pathNameKey=function(key) {
     }
 }
 
-alert('ddd');
+module.exports = comm;
