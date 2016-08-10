@@ -62,9 +62,6 @@
                 <entry key="amount">
                     <bean class="com.tuotiansudai.pointsystem.directive.AmountDirective"/>
                 </entry>
-                <entry key="unreadMessageCount">
-                    <bean class="com.tuotiansudai.web.freemarker.directive.UnreadMessageCountDirective"/>
-                </entry>
             </map>
         </property>
     </bean>
