@@ -259,9 +259,6 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             }
             redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }
-
-
-
         return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
     }
 
