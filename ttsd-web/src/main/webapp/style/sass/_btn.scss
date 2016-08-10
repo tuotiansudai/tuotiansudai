@@ -46,7 +46,7 @@
   &:hover,
   &:focus,
   &.focus {
-    color: nth($btnColor, 1);
+    color: #fff;
     text-decoration: none;
   }
   &:active,
@@ -114,7 +114,6 @@
   &:hover {
     background: rgba(255,172,42,0.8);
     border:1px solid rgba(255,172,42,0.8);
-    color: #fff!important;
   }
 }
 
