@@ -22,23 +22,22 @@ public class ProductManageController {
     private ProductService productService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView createProduct(@Valid @RequestBody ProductDto productDto) {
+    public ModelAndView createProduct(@Valid @ModelAttribute ProductDto productDto) {
         productDto.setLoginName(LoginUserInfo.getLoginName());
         try {
             productService.createProduct(productDto);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return getRedirectPage(productDto.getGoodsType());
+        return new ModelAndView("redirect:find-goods?goodsType=" + productDto.getGoodsType());
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView createProduct(@RequestParam(value = "goodsType", required = false) GoodsType goodsType) {
         ModelAndView modelAndView = getRedirectPage(goodsType);
-        modelAndView.addObject("productType", goodsType);
-        modelAndView.addObject("productTypeDesc", goodsType.getDescription());
+        modelAndView.addObject("goodsType", goodsType);
+        modelAndView.addObject("goodsTypeDesc", goodsType.getDescription());
         return modelAndView;
     }
 
@@ -49,7 +48,7 @@ public class ProductManageController {
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("products", productService.findGoods(goodsType));
-        modelAndView.addObject("productTypeDesc", goodsType.getDescription());
+        modelAndView.addObject("goodsTypeDesc", goodsType.getDescription());
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("goodsType", goodsType);

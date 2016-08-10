@@ -8,6 +8,7 @@ import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
+    @Transactional
     public void createProduct(ProductDto productDto) {
         ProductModel productModel = new ProductModel();
         productModel.setGoodsType(productDto.getGoodsType());

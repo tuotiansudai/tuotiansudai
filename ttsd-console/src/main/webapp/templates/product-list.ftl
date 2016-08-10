@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="${productTypeDesc!}" title="添加商品">
+<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="${goodsTypeDesc!}" title="添加商品">
 <div class="col-md-10">
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -30,15 +30,15 @@
             <tbody>
                 <#list products as product>
                 <tr>
-                    <td>${productTypeDesc!}</td>
+                    <td>${goodsTypeDesc!}</td>
                     <td>${product.seq}</td>
                     <td>${product.productName}</td>
                     <td>${product.imageUrl}</td>
                     <td>${product.totalCount}</td>
                     <td>${product.usedCount}</td>
                     <td>${product.productPrice}</td>
-                    <td>${(product.endTime?string('yyyy-MM-dd'))!}</td>
-                    <td>${product.active}</td>
+                    <td>${(product.endTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>${product.active?string('是','否')}</td>
                 </#list>
             </tbody>
         </table>

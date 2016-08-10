@@ -3,6 +3,7 @@ package com.tuotiansudai.point.dto;
 
 import com.tuotiansudai.point.repository.model.GoodsType;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -25,8 +26,10 @@ public class ProductDto implements Serializable {
     @NotNull(message = "商品价格不能为空")
     private long productPrice;
     @NotNull(message = "起始时间不能为空")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     @NotNull(message = "结束时间不能为空")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     public String getLoginName() {

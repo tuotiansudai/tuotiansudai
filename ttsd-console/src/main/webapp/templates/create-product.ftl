@@ -7,8 +7,8 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>
             <div class="col-sm-4">
-                <span class="form-control">${productTypeDesc!}</span>
-                <input class="productType" name="productType" value="${productType!}" type="hidden">
+                <span class="form-control">${goodsTypeDesc!}</span>
+                <input class="goodsType" name="goodsType" value="${goodsType!}" type="hidden">
             </div>
         </div>
 
@@ -17,7 +17,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control product-name" name="productName" placeholder=""
-                       <#if product??>value="${product.productName!}"</#if> datatype="*" errormsg="商品名称不能为空" nullmsg="商品名称不能为空">
+                       <#if product??>value="${product.productName!}"</#if> datatype="*" nullmsg="商品名称不能为空">
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             <label class="col-sm-2 control-label">商品图片:</label>
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if product??>${banner.imageUrl!}</#if>" datatype="*" errormsg="商品图片">
+                       value="<#if product??>${banner.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
             </div>
             <div class="col-sm-6">
                 <div class="imageUrlProduct">
@@ -49,7 +49,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control total-count" name="totalCount" placeholder=""
-                       <#if product??>value="${product.totalCount!}"</#if> datatype="*" errormsg="商品数量不能为空">
+                       <#if product??>value="${product.totalCount!}"</#if> datatype="*" nullmsg="商品数量不能为空">
             </div>
         </div>
 
@@ -57,7 +57,7 @@
             <label class="col-sm-2 control-label">商品介绍</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control description" name="description" placeholder=""
-                       <#if product??>value="${product.description!}"</#if> datatype="*" errormsg="商品介绍不能为空">
+                       <#if product??>value="${product.description!}"</#if> datatype="*" nullmsg="商品介绍不能为空">
             </div>
         </div>
 
@@ -65,8 +65,9 @@
             <label class="col-sm-2 control-label">商品顺序</label>
 
             <div class="col-sm-4">
-                <input data-type="${productType!}" class="order-number input-sm" name="seq" value="1" disabled>- <input type="text" class="form-control seq" name="seq" placeholder=""
-                       <#if product??>value="${product.seq!}"</#if> datatype="*" errormsg="商品顺序不能为空">
+                <input data-type="${goodsType!}" class="order-number input-sm" name="seq" value="1" disabled>- <input
+                    type="text" class="form-control seq" name="seq" placeholder=""
+                    <#if product??>value="${product.seq!}"</#if> datatype="*" nullmsg="商品顺序不能为空">
             </div>
         </div>
 
@@ -75,8 +76,8 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control product-start" name="startTime"
-                           <#if coupon??>value="${(product.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>
-                           datatype="date" errormsg="请选择商品开始时间"/>
+                           <#if coupon??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
+                           datatype="date" nullmsg="请选择商品开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -86,8 +87,8 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
                     <input type='text' class="form-control product-end" name="endTime"
-                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm"))!}"</#if> datatype="date"
-                           errormsg="请选择商品结束时间" nullmsg="请选择商品结束时间"/>
+                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if> datatype="date"
+                           nullmsg="请选择商品结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -99,15 +100,19 @@
             <label class="col-sm-2 control-label">商品价格</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control seq" name="seq" placeholder=""
-                       <#if product??>value="${product.seq!}"</#if> datatype="*" errormsg="商品价格不能为空">财豆
+                <input type="text" class="form-control productPrice" name="productPrice" placeholder=""
+                       <#if product??>value="${product.productPrice!}"</#if> datatype="*" nullmsg="商品价格不能为空">财豆
             </div>
         </div>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label">操作: </label>
+            <label class="col-sm-2 control-label">操作: </label>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="col-sm-4">
-                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>确认创建</button>
+                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave"
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>
+                    确认创建
+                </button>
             </div>
         </div>
 
