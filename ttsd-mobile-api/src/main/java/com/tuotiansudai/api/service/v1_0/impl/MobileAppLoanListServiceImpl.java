@@ -143,6 +143,12 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setProductNewType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setActivityType(loan.getActivityType() != null ? loan.getActivityType().name() : "");
+
+            loanResponseDataDto.setMinInvestMoneyCent(String.valueOf(loan.getMinInvestAmount()));
+            loanResponseDataDto.setCardinalNumberCent(String.valueOf(loan.getInvestIncreasingAmount()));
+            loanResponseDataDto.setMaxInvestMoneyCent(String.valueOf(loan.getMaxInvestAmount()));
+            loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investedAmount));
+            loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
             List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
                 loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));
