@@ -665,18 +665,23 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var $col = $scrollEle.find('.col');
             var len = $col.length;
             var record = 0;
-            var eachShowAmount = $(window).width() > 700 ? 5 : 2;
-            var imgNum=$scrollEle.find('img').length;
+            var eachShowAmount = $(window).width() > 700 ? 4 : 1;
+            var imgNum=$scrollEle.find('img').length,
+                moveWid;
             switch(viewport) {
                 case 'pc':
-                    if(imgNum<=5) {
+                    if(imgNum<=4) {
                         $rightBtn.addClass('disabled');
                     }
+                    moveWid=200;
                     break;
                 case 'mobile':
-                    if(imgNum<=2) {
+                    if(imgNum<=1) {
                         $rightBtn.addClass('disabled');
                     }
+                    moveWid=$ele.find('.scroll-content').width();
+                    $scrollEle.find('img').width(moveWid);
+                    $col.width(moveWid);
                     break;
             }
 
@@ -686,11 +691,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
                 $rightBtn.add($leftBtn).removeClass('disabled');
                 record++;
-                if (record > len - eachShowAmount) {
+                if (record >= (len - eachShowAmount)) {
                     $rightBtn.addClass('disabled');
                 }
                 $scrollEle.stop().animate({
-                    marginLeft: (-200 - 10) * record
+                    marginLeft: (-moveWid - 10) * record
                 });
             });
             $leftBtn.on('click', function () {
@@ -703,7 +708,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     $leftBtn.addClass('disabled');
                 }
                 $scrollEle.stop().animate({
-                    marginLeft: (-200 - 10) * record
+                    marginLeft: (-moveWid - 10) * record
                 });
             });
         });
