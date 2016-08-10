@@ -43,6 +43,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String EXPERIENCE_REPAY_NOTIFY_URL = "/sms/experience-repay-notify";
 
+    private final static String CANCEL_TRANSFER_LOAN = "/sms/cancel-transfer-loan";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -81,6 +83,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendBirthdayNotify(SmsCouponNotifyDto dto) {
         return send(dto, BIRTHDAY_NOTIFY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {
+        return send(dto, CANCEL_TRANSFER_LOAN);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

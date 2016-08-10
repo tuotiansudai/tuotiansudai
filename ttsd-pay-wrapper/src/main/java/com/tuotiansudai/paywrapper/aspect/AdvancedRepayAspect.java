@@ -1,10 +1,11 @@
 package com.tuotiansudai.paywrapper.aspect;
 
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.SmsCancelTransferLoanNotifyDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.smswrapper.service.SmsService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
@@ -36,7 +37,7 @@ public class AdvancedRepayAspect {
     UserMapper userMapper;
 
     @Autowired
-    SmsService smsService;
+    SmsWrapperClient smsWrapperClient;
 
     @AfterReturning(value = "execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningInvestSuccess(JoinPoint joinPoint, boolean returnValue) {
@@ -62,7 +63,7 @@ public class AdvancedRepayAspect {
             logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of advanced repay.", transferApplicationModel.getId()));
 
             String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-            smsService.cancelTransferLoan(mobile, transferApplicationModel.getName());
+            smsWrapperClient.sendCancelTransferLoanNotify(new SmsCancelTransferLoanNotifyDto(mobile, transferApplicationModel.getName()));
         }
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",
