@@ -9,7 +9,7 @@
 <body onload="jump()">
 <div id="wxPic" style="display:none">
     <div style="position: fixed;width:100%;height:100%;top:0;left:0;background:rgba(0,0,0,.8);text-align: right;">
-        <img style="width: 90%;" src="${staticServer}/images/sign/actor/wxDownload-new.png"/>
+        <img style="width: 90%;margin-right:5%" src="${staticServer}/images/sign/actor/wxDownload-new.png"/>
     </div>
 </div>
 

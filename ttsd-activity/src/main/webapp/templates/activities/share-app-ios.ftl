@@ -29,7 +29,7 @@
 						<label for="agreement" class="agree">同意拓天速贷<span>《服务协议》</span></label>
 					</div>
 					<div class="item-int">
-						<p class="tc">好友<span>133****2082</span>邀请你来拓天速贷投资</p>
+						<p class="tc">好友<span>${referrerInfo!}</span>邀请你来拓天速贷投资</p>
 						<p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
 					</div>
 				</form>

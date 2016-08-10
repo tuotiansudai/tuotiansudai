@@ -5,6 +5,7 @@
  */
 require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, layer, _) {
 	$(function() {
+
 		var $androidForm = $('#androidForm'),
 			$iosForm = $('#iosForm'),
 			$androidBtn = $('#androidBtn'),
@@ -41,7 +42,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
 					}
 				},
 				iosCount: function() { //ios倒计时
@@ -73,7 +75,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
 					}
 				}
 			};
@@ -81,7 +84,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 
 		// isphone validate
 		jQuery.validator.addMethod("isPhone", function(value, element) {
-			var tel = /0?(13|14|15|18)[0-9]{9}/;
+			var tel = /0?(13|14|15|18|17)[0-9]{9}/;
 			return this.optional(element) || (tel.test(value));
 		}, "请正确填写您的手机号码");
 
@@ -153,7 +156,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 						mobile: $('#mobile').val(),
 						password: $('#password').val(),
 						captcha: $('#captcha').val(),
-						referrer: location.href.split('referrerMobile=')[1],
+						referrer: JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')["referrerMobile"],
 						agreement:$('#agreement').attr("checked")=="checked"
 					}
 				})
@@ -230,7 +233,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					data: {
 						mobile: $('#mobile').val(),
 						captcha: $('#captcha').val(),
-						referrerMobile: location.href.split('referrerMobile=')[1]
+						referrerMobile: JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')["referrerMobile"]
 					}
 				})
 					.done(function (data) {

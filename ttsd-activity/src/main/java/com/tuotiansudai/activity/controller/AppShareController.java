@@ -61,12 +61,14 @@ public class AppShareController {
         if (!StringUtils.isEmpty(registerMobile)) {
             if(userService.mobileIsRegister(registerMobile)){
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
+                modelAndView.addObject("responsive", true);
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
             }
         }
 
         ModelAndView modelAndView = new ModelAndView("/activities/share-app-ios");
+        modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
@@ -91,12 +93,14 @@ public class AppShareController {
         if (!StringUtils.isEmpty(registerMobile)) {
             if(userService.mobileIsRegister(registerMobile)){
                 ModelAndView modelAndView = new ModelAndView("/activities/share-app");
+                modelAndView.addObject("responsive", true);
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
             }
         }
 
         ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
+        modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
@@ -112,6 +116,7 @@ public class AppShareController {
         }
 
         modelAndView.setViewName("/activities/share-app");
+        modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
