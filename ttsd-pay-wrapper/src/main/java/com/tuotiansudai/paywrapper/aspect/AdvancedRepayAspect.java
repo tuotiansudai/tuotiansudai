@@ -59,7 +59,7 @@ public class AdvancedRepayAspect {
             transferApplicationModel.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferApplicationModel);
 
-            logger.info(MessageFormat.format("Transfer Loan id: {0} is Canceled because of advanced repay.", transferApplicationModel.getId()));
+            logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of advanced repay.", transferApplicationModel.getId()));
 
             String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
             smsService.cancelTransferLoan(mobile, transferApplicationModel.getName());
