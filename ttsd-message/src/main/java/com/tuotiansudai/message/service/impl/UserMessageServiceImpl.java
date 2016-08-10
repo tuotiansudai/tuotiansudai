@@ -42,7 +42,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     public BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize) {
-        this.generateUserMessages(loginName);
+        this.generateUserMessages(loginName, MessageChannel.WEBSITE);
 
         long count = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.WEBSITE);
         pageSize = pageSize < 1 ? 10 : pageSize;
@@ -98,15 +98,17 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public long getUnreadMessageCount(String loginName) {
-        return userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
+    public long getUnreadMessageCount(String loginName, MessageChannel messageChannel) {
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, messageChannel);
+        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
+        return unreadManualMessages.size() + unreadCount;
     }
 
     @Override
     @Transactional
-    public void generateUserMessages(String loginName) {
+    public void generateUserMessages(String loginName, MessageChannel messageChannel) {
         userMapper.lockByLoginName(loginName);
-        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName);
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, messageChannel);
         for (MessageModel message : unreadManualMessages) {
             userMessageMapper.create(new UserMessageModel(message.getId(),
                     loginName,
@@ -116,7 +118,7 @@ public class UserMessageServiceImpl implements UserMessageService {
         }
     }
 
-    private List<MessageModel> getUnreadManualMessages(String loginName) {
+    private List<MessageModel> getUnreadManualMessages(String loginName, final MessageChannel messageChannel) {
         List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
 
@@ -124,8 +126,8 @@ public class UserMessageServiceImpl implements UserMessageService {
         for (final MessageModel message : messages) {
             Optional<UserMessageModel> userMessageModelOptional = Iterators.tryFind(userMessageModels.iterator(), new Predicate<UserMessageModel>() {
                 @Override
-                public boolean apply(UserMessageModel input) {
-                    return input.getMessageId() == message.getId();
+                public boolean apply(UserMessageModel model) {
+                    return model.getMessageId() == message.getId() && messageChannel.equals(message.getChannels());
                 }
             });
 
