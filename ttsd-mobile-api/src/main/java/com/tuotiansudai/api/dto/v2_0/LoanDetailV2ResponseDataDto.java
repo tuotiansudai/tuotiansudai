@@ -84,6 +84,16 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private String deadline;
 
+    public String minInvestMoneyCent;
+
+    public String cardinalNumberCent;
+
+    public String maxInvestMoneyCent;
+
+    public String investedMoneyCent;
+
+    public String loanMoneyCent;
+
     private List<ExtraLoanRateDto> extraRates;
 
     private List<EvidenceResponseDataDto> evidence;
@@ -398,5 +408,45 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
         this.extraRates = extraRates;
+    }
+
+    public String getMinInvestMoneyCent() {
+        return minInvestMoneyCent;
+    }
+
+    public void setMinInvestMoneyCent(String minInvestMoneyCent) {
+        this.minInvestMoneyCent = minInvestMoneyCent;
+    }
+
+    public String getCardinalNumberCent() {
+        return cardinalNumberCent;
+    }
+
+    public void setCardinalNumberCent(String cardinalNumberCent) {
+        this.cardinalNumberCent = cardinalNumberCent;
+    }
+
+    public String getMaxInvestMoneyCent() {
+        return maxInvestMoneyCent;
+    }
+
+    public void setMaxInvestMoneyCent(String maxInvestMoneyCent) {
+        this.maxInvestMoneyCent = maxInvestMoneyCent;
+    }
+
+    public String getInvestedMoneyCent() {
+        return investedMoneyCent;
+    }
+
+    public void setInvestedMoneyCent(String investedMoneyCent) {
+        this.investedMoneyCent = investedMoneyCent;
+    }
+
+    public String getLoanMoneyCent() {
+        return loanMoneyCent;
+    }
+
+    public void setLoanMoneyCent(String loanMoneyCent) {
+        this.loanMoneyCent = loanMoneyCent;
     }
 }

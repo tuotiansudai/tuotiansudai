@@ -1,39 +1,39 @@
-require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
-    $(function() {
-        var $body=$('body'),
-            $confirmBtn=$('.confirm-btn'),//conirm button
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($) {
+    $(function () {
+        var $body = $('body'),
+            $confirmBtn = $('.confirm-btn'),//conirm button
             $inactiveBtn = $('.inactive-btn'),
             $tooltip = $('.add-tooltip'),
             $couponDelete = $('.coupon-delete'),
-            $tipCom=$('.tip-container');
+            $tipCom = $('.tip-container');
 
-        $tooltip.length?$tooltip.tooltip():false;
+        $tooltip.length ? $tooltip.tooltip() : false;
 
-        $couponDelete.on('click',function(){
+        $couponDelete.on('click', function () {
             var $self = $(this),
                 thisLink = $self.attr('data-link');
             if (!confirm("是否确认执行此操作?")) {
                 return;
             } else {
                 $.ajax({
-                    url: thisLink,
-                    type: 'DELETE',
-                    dataType: 'json'
-                })
-                .done(function(res){
-                    if (res.data.status) {
-                        $self.closest('tr').remove();
-                    } else {
-                        $tipCom.show().find('.txt').text('操作失败！');
-                    }
-                })
-                .fail(function(res){
-                     $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
-                });
+                        url: thisLink,
+                        type: 'DELETE',
+                        dataType: 'json'
+                    })
+                    .done(function (res) {
+                        if (res.data.status) {
+                            $self.closest('tr').remove();
+                        } else {
+                            $tipCom.show().find('.txt').text('操作失败！');
+                        }
+                    })
+                    .fail(function (res) {
+                        $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
+                    });
             }
         });
 
-        $('body').delegate('.inactive-btn','click',function(e) {
+        $('body').delegate('.inactive-btn', 'click', function (e) {
             e.preventDefault();
             var $self = $(this),
                 $parentTd = $self.parents('td'),
@@ -43,52 +43,52 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 return;
             } else {
                 $.ajax({
-                    url:'/activity-manage/coupon/'+thisId+'/inactive',
-                    type:'POST',
-                    dataType:'json'
-                })
-                .done(function(res) {
-                    if (res.data.status) {
-                        $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="'+couponType+'" data-id="'+thisId+'">确认生效</a>');
-                        $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/'+thisId+'" >删除</button>');
-                    } else {
-                        $tipCom.show().find('.txt').text('操作失败！');
-                    }
-                })
-                .fail(function(res) {
-                    $self.addClass('confirm-btn').text('操作失败');
-                    $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
-                });
+                        url: '/activity-manage/coupon/' + thisId + '/inactive',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function (res) {
+                        if (res.data.status) {
+                            $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="' + couponType + '" data-id="' + thisId + '">确认生效</a>');
+                            $parentTd.prev().html('<a href="/activity-manage/coupon/' + thisId + '/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/' + thisId + '" >删除</button>');
+                        } else {
+                            $tipCom.show().find('.txt').text('操作失败！');
+                        }
+                    })
+                    .fail(function (res) {
+                        $self.addClass('confirm-btn').text('操作失败');
+                        $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
+                    });
             }
         });
 
         //confirm event
-        $('body').delegate('.confirm-btn','click',function(e) {
+        $('body').delegate('.confirm-btn', 'click', function (e) {
             e.preventDefault();
-            var $self=$(this),
+            var $self = $(this),
                 $parentTd = $self.parents('td'),
-                thisId=$self.attr('data-id');//data id
+                thisId = $self.attr('data-id');//data id
             var couponType = $self.attr('data-type');
             if (!confirm("是否确认执行此操作?")) {
                 return;
-            }else{
+            } else {
                 $.ajax({
-                    url: '/activity-manage/coupon/'+thisId+'/active',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                    .done(function(res) {
-                        if(res.data.status){
-                            $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
+                        url: '/activity-manage/coupon/' + thisId + '/active',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function (res) {
+                        if (res.data.status) {
+                            $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已生效</button>');
                             if (couponType != 'NEWBIE_COUPON' && couponType != 'RED_ENVELOPE' && couponType != 'BIRTHDAY_COUPON') {
-                                $parentTd.find('button').prop('disabled',true);
+                                $parentTd.find('button').prop('disabled', true);
                             }
                             $parentTd.prev().html('-');
-                        }else{
+                        } else {
                             $tipCom.show().find('.txt').text('操作失败！');
                         }
                     })
-                    .fail(function(res) {
+                    .fail(function (res) {
                         $self.addClass('confirm-btn').text('操作失败');
                         $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
                     });
@@ -130,5 +130,19 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             $(this).parents('.see-detail').hide();
         });
         
+        })
+
+        $('.down-load').click(function () {
+            location.href = "/export/coupons";
+        });
+
+        $('.export-red-envelopes').click(function () {
+            location.href = "/export/red-envelopes";
+        });
+
+        $('.export-birthday-coupons').click(function () {
+            location.href = "/export/birthday-coupons";
+        });
+
     });
 });

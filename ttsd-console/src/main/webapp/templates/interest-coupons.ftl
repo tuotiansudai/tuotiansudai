@@ -196,29 +196,32 @@
         <div>
             <span class="bordern">总共${couponsCount}条,每页显示${pageSize}条</span>
         </div>
-    <#if coupons?has_content>
-        <ul class="pagination">
-            <li>
-            <#if hasPreviousPage>
-                <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
-                <#else>
+        <#if coupons?has_content>
+            <ul class="pagination">
+                <li>
+                    <#if hasPreviousPage>
+                    <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
+                    <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
-                        <span aria-hidden="true">&laquo; Prev</span>
-                    </a>
-            </li>
-            <li><a>${index}</a></li>
-            <li>
-            <#if hasNextPage>
-                <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
-                <#else>
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+                </li>
+                <li><a>${index}</a></li>
+                <li>
+                    <#if hasNextPage>
+                    <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
+                    <#else>
                     <a href="#" aria-label="Next">
                     </#if>
-                        <span aria-hidden="true">Next &raquo;</span>
-                    </a>
-            </li>
-        </ul>
-    </#if>
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+                </li>
+                <@security.authorize access="hasAnyAuthority('DATA')">
+                    <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+                </@security.authorize>
+            </ul>
+        </#if>
     </nav>
     <!-- pagination -->
 </div>
