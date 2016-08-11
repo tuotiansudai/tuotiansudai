@@ -14,6 +14,8 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -68,6 +70,9 @@ public class MobileAppRepayCalendarServiceTest {
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     @Test
     public void shouldGetYearRepayCalendarByIsOk() {
         String loginName = "testRepayCalender";
@@ -113,9 +118,9 @@ public class MobileAppRepayCalendarServiceTest {
         BaseResponseDto<RepayCalendarListResponseDto> repayCalendarListResponseDtoBaseResponseDto = mobileAppRepayCalendarService.getYearRepayCalendar(repayCalendarRequestDto);
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = repayCalendarListResponseDtoBaseResponseDto.getData().getRepayCalendarYearResponseDtos();
         assertThat(repayCalendarYearResponseDtoList.size(), is(12));
-        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(), "0.03");
-        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(), "0.05");
-        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(), "0.02");
+        assertEquals(repayCalendarYearResponseDtoList.get(10).getExpectedRepayAmount(), "0.02");
+        assertEquals(repayCalendarYearResponseDtoList.get(9).getExpectedRepayAmount(), "0.03");
+        assertEquals(repayCalendarYearResponseDtoList.get(8).getExpectedRepayAmount(), "0.01");
     }
 
     @Test
@@ -159,7 +164,7 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = mobileAppRepayCalendarService.getMonthRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayDate().size(), is(3));
-        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(), "0.08");
+        assertEquals(baseResponseDto.getData().getExpectedRepayAmount(), "0.06");
     }
 
     @Test
@@ -175,6 +180,9 @@ public class MobileAppRepayCalendarServiceTest {
         InvestModel investModel4 = createInvest(loginName, loanId);
         InvestModel investModel5 = createInvest(loginName, loanId);
         InvestModel investModel6 = createInvest(loginName, loanId);
+
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loginName, investModel6.getId(), investModel6.getId(), loanId, new DateTime("2200-11-03").toDate());
+        transferApplicationMapper.create(transferApplicationModel);
 
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
@@ -202,10 +210,25 @@ public class MobileAppRepayCalendarServiceTest {
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(1));
-        assertEquals(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().get(0).getStatus(), RepayStatus.REPAYING.name());
         repayCalendarRequestDto.setDate("2200-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
+    }
+
+    private TransferApplicationModel getTransferApplicationModel(String userId, long investId, long transferInvestId, long loanId, Date date) {
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(userId);
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(date);
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setLoanId(loanId);
+        transferApplicationModel.setTransferInvestId(transferInvestId);
+        transferApplicationModel.setInvestId(investId);
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        return transferApplicationModel;
     }
 
     private UserCouponModel fakeUserCouponModel(long couponId, String loginName) {
