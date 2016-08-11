@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var comm = require("./commonFun");
-console.log(comm);
 
 /* home page for switch menu to show different page */
 var $homeTagContainer=$('#homeTagContainer');
@@ -19,6 +18,13 @@ if($homeTagContainer.length) {
             break;
     }
 }
+
+
+if($questionDetailTag.length) {
+    $questionDetailTag.find('')
+}
+
+
 
 
 

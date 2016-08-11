@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
-<div class="article-content fl answer-container">
+<div class="article-content fl answer-container" id="questionDetailTag">
     <div class="borderBox clearfix">
         <div class="answers-box">
             <dl class="answers-list">
@@ -22,16 +22,36 @@
     <div class="to-answer-box">
         <div class="m-title">我来回答</div>
         <form name="formAnswer" class="formAnswer">
+            <input type="hidden" name="questionId" value="${question.id?string.computer}">
             <dl class="form-answer-in">
                 <dd>
-                    <textarea rows="4" class="text-area" placeholder="请 登陆 或 注册 后再进行回答"></textarea>
-                    <i class="error text-area-error fa fa-times-circle">您的回答过于简短</i>
+                    <@global.isAnonymous>
+                        <span class="isAnonymous text-area">请 <a href="${webServer}/login">登录</a> 或 <a href="${webServer}/register/user">注册</a> 后再进行回答</span>
+                    </@global.isAnonymous>
+
+                    <@global.isNotAnonymous>
+                        <textarea rows="4" class="text-area" placeholder="请回答" name="answer"></textarea>
+                        <i class="error text-area-error fa fa-times-circle" style="display: none">您的回答过于简短</i>
+                    </@global.isNotAnonymous>
+
+
                 </dd>
                 <dd>
-                    <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
-                    <img src="/captcha" alt="">
-                    <button type="button" class="btn fr" disabled >提交答案</button>
-                    <i class="error">验证码不正确</i>
+                    <@global.isAnonymous>
+                        <span class="isAnonymous captcha">请输入验证码</span>
+                        <img src="/captcha" alt="">
+                        <span class="is-nologn-btn btn fr">提交答案</span>
+                    </@global.isAnonymous>
+
+                    <@global.isNotAnonymous>
+                        <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
+                        <img src="/captcha" alt="">
+                        <button type="button" class="btn fr" disabled >提交答案</button>
+                        <i class="error" style="display: none">验证码不正确</i>
+                    </@global.isNotAnonymous>
+
+
+
                 </dd>
             </dl>
         </form>

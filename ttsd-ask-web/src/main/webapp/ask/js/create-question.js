@@ -1,9 +1,119 @@
 /* create question */
 var _ = require('underscore');
 var comm = require("./commonFun");
-
 var $createQuestion=$('#createQuestion');
+var $questionDetailTag=$('#questionDetailTag');
+var utils = {
+    showError:function(element,value) {
+        element.parent().find('.error').text(value).show();
+    },
+    hideError:function(element,value) {
+        element.parent().find('.error').hide();
+    },
+    validLen:function(element,num) {
+        var len=element.val().split('').length;
+        var name=element[0].name;
+        var $wordstip=element.parent().find('.words-tip');
+        var errorMsg='';
 
+        switch (name) {
+            case 'question':
+                errorMsg = '请描述您的问题';
+                $wordstip.removeClass('error')
+                    .find('em')
+                    .text(len);
+
+                if (len > num) {
+                    errorMsg = '您的问题不能超过' + num + '个字符';
+                    $wordstip.addClass('error');
+                }
+
+                if(len<=num && len>0) {
+                    this.hideError(element);
+                    questionValid = true;
+                }
+                else {
+                    questionValid = false;
+                    this.showError(element, errorMsg);
+                }
+                break;
+
+            case 'addition':
+                $wordstip.removeClass('error')
+                    .find('em')
+                    .text(len);
+                if (len > num) {
+                    errorMsg = '问题补充' + num + '个字符';
+                    $wordstip.addClass('error');
+                }
+                if(len<=num && len>0) {
+                    this.hideError(element);
+                    additionValid=true;
+                }
+                else {
+                    additionValid = false;
+                    this.showError(element, errorMsg);
+                }
+                break;
+            case 'captcha':
+                errorMsg = '请输入正确的验证码';
+                if(!/^\d{5}$/.test(element.val())) {
+                    captchaValid = false;
+                    this.showError(element, errorMsg);
+                }
+                else {
+                    this.hideError(element);
+                    captchaValid = true;
+                }
+                break;
+            case 'answer':
+                errorMsg='回答不得少于10个字';
+
+                break;
+            default:
+                break;
+
+        }
+        //switch end
+
+        if(tagValid && questionValid && additionValid && captchaValid) {
+            $formSubmit.prop('disabled',false);
+        }
+        else {
+            $formSubmit.prop('disabled',true);
+        }
+
+    },
+    radioChecked:function(element) {
+        var checkLen=$('input.tag:checked').length;
+
+        if(checkLen>0) {
+            this.hideError(element);
+            tagValid=true;
+            if(checkLen>3) {
+                element.prop('checked',false);
+            }
+        }
+        else {
+            this.showError(element)
+            tagValid=false;
+        }
+        if(tagValid && questionValid && additionValid && captchaValid) {
+            $formSubmit.prop('disabled',false);
+        }
+        else {
+            $formSubmit.prop('disabled',true);
+        }
+    }
+};
+
+//我来回答
+if($questionDetailTag.length) {
+    var qanswerValid=false,
+        qcaptchaValid=false;
+}
+
+//我要提问
 if($createQuestion.length) {
     var $formQuestion=$('.form-question',$createQuestion),
         $question=$('.ask-con',$createQuestion),
@@ -14,102 +124,6 @@ if($createQuestion.length) {
         questionValid=false,
         additionValid=false,
         captchaValid=false;
-
-    var utils = {
-        showError:function(element,value) {
-            element.parent().find('.error').text(value).show();
-        },
-        hideError:function(element,value) {
-            element.parent().find('.error').hide();
-        },
-        validLen:function(element,num) {
-            var len=element.val().split('').length;
-            var name=element[0].name;
-            var $wordstip=element.parent().find('.words-tip');
-            var errorMsg='';
-
-            switch (name) {
-                case 'question':
-                    errorMsg = '请描述您的问题';
-                    $wordstip.removeClass('error')
-                        .find('em')
-                        .text(len);
-
-                    if (len > num) {
-                        errorMsg = '您的问题不能超过' + num + '个字符';
-                        $wordstip.addClass('error');
-                    }
-
-                    if(len<=num && len>0) {
-                        this.hideError(element);
-                        questionValid = true;
-                    }
-                    else {
-                        questionValid = false;
-                        this.showError(element, errorMsg);
-                    }
-                    break;
-
-                case 'addition':
-                    $wordstip.removeClass('error')
-                        .find('em')
-                        .text(len);
-                    if (len > num) {
-                        errorMsg = '问题补充' + num + '个字符';
-                        $wordstip.addClass('error');
-                    }
-                    if(len<=num && len>0) {
-                        this.hideError(element);
-                        additionValid=true;
-                    }
-                    else {
-                        additionValid = false;
-                        this.showError(element, errorMsg);
-                    }
-                    break;
-                case 'captcha':
-                    errorMsg = '请输入正确的验证码';
-                    if(!/^\d{5}$/.test(element.val())) {
-                        captchaValid = false;
-                        this.showError(element, errorMsg);
-                    }
-                    else {
-                        this.hideError(element);
-                        captchaValid = true;
-                    }
-            }
-            //switch end
-
-            if(tagValid && questionValid && additionValid && captchaValid) {
-                $formSubmit.prop('disabled',false);
-            }
-            else {
-                $formSubmit.prop('disabled',true);
-            }
-
-        },
-        radioChecked:function(element) {
-            var checkLen=$('input.tag:checked').length;
-
-            if(checkLen>0) {
-                this.hideError(element);
-                tagValid=true;
-                if(checkLen>3) {
-                    element.prop('checked',false);
-                }
-            }
-            else {
-                this.showError(element)
-                tagValid=false;
-            }
-            if(tagValid && questionValid && additionValid && captchaValid) {
-                $formSubmit.prop('disabled',false);
-            }
-            else {
-                $formSubmit.prop('disabled',true);
-            }
-        }
-    };
     $.fn.checkFrom = function () {
         return this.each(function () {
             var $ele = $(this);
@@ -153,29 +167,18 @@ if($createQuestion.length) {
     $formSubmit.on('click',function() {
         $formQuestion.find('input').checkFrom();
         if(tagValid && questionValid && additionValid && captchaValid) {
-
-            //$formQuestion.ajaxSubmit({
-            //    success: function (data) {
-            //        if (data.status) {
-            //            console.log(data)
-            //        }
-            //    },
-            //    error: function () {
-            //    }
-            //});
-
             $.ajax({
-
                     url: "/question",
                     data: $formQuestion.serialize(),
                     type: 'POST'
                 }).done(function(data) {
+                
                     if (data.status) {
-                        location.href='/myquestion';
+                        location.href='question/my-questions';
                     }
                 })
                 .fail(function(data) {
-
+                        comm.popWindow('error','error',{ width:'300px'});
                 });
 
         }

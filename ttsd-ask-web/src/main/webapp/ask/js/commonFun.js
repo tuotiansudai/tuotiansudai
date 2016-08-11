@@ -47,5 +47,43 @@ comm.initToken = function () {
     });
 };
 
+comm.popWindow=function(title,content,size) {
+
+    if(!$('.popWindow').length) {
+            var popW=[];
+            popW.push('<div class="popWindow">ddd</div>');
+            
+            $('body').append(popW.join(''));
+            var $popWindow=$('.popWindow'),
+                size= $.extend({width:'560px'},size);
+            $popWindow.css({
+                width:size.width
+            });
+            var adjustPOS=function() {
+                var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
+                    pTop=$(window).height()-$popWindow.height(),
+                    pLeft=$(window).width()-$popWindow.width();
+                $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
+                $popWindow.find('.bd').empty().append(content);
+            }
+            adjustPOS();
+            $(window).resize(function() {
+                adjustPOS();
+            });
+            var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
+            $(window).bind('mousewheel',function() {
+                adjustPOS();
+            })
+        }
+        else {
+            // $('.ecope-overlay,.popWindow').show();
+        }
+
+        // $popWindow.delegate('.close','click',function() {
+        //     $('.ecope-overlay,.popWindow').hide();
+        // })
+}
+
+
 
 module.exports = comm;
