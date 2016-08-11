@@ -37,7 +37,7 @@ h5 {
 .sprite-global-logo-tip,
 .sprite-global-close,
 .sprite-global-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/pointsystem/images/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top {
@@ -133,7 +133,7 @@ h5 {
   .sprite-global-logo-tip,
   .sprite-global-close,
   .sprite-global-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/pointsystem/images/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -203,10 +203,10 @@ h5 {
           z-index: 999; }
       .header-container .header ul li.header-membership {
         padding-right: 19px;
-        background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%; }
+        background: #333 url("/pointsystem/images/icons/top-icon.png") no-repeat 100% 50%; }
       .header-container .header ul li.membership-store {
         padding-left: 19px;
-        background: #333 url("/images/membership/icon-shop.png") no-repeat 2px 50%; }
+        background: #333 url("/pointsystem/images/icon-shop.png") no-repeat 2px 50%; }
         .header-container .header ul li.membership-store a {
           padding-left: 0;
           color: #FC4A52;
@@ -337,7 +337,7 @@ h5 {
     position: relative;
     margin: 0 auto; }
     .nav-container .nav .logo {
-      background: url("/images/icons/logo-index.png") left center no-repeat;
+      background: url("/pointsystem/images/icons/logo-index.png") left center no-repeat;
       width: 420px;
       height: 50px;
       display: block;
@@ -443,7 +443,7 @@ h5 {
         float: left;
         width: 100px;
         height: 100px;
-        background-image: url(/images/compress/global_20160523.png);
+        background-image: url("/pointsystem/images/global_20160523.png");
         background-position: -308px -100px;
         -webkit-background-size: 408px 290px;
         -moz-background-size: 408px 290px;

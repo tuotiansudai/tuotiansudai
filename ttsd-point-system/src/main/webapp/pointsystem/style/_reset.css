@@ -41,7 +41,7 @@ h5 {
 .sprite-global-close,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/pointsystem/images/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top {
@@ -141,7 +141,7 @@ h5 {
   .sprite-global-close,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/pointsystem/images/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
