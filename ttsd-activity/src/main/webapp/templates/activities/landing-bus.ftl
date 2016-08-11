@@ -3,7 +3,8 @@
 
 <div class="landing-container-app landing-container-bus" id="landingAppTag">
     <div class="register-box">
-        <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate" >
+        <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
+              novalidate="novalidate">
             <ul class="reg-list tl register-step-one">
                 <li class="bg-col">
                     <input type="hidden" name="redirectToAfterRegisterSuccess" value="/activity/landing-bus">
@@ -22,7 +23,7 @@
                     <em class="image-captcha img-change">
                         <img src="" alt=""/>
                     </em>
-                    <#--<span class="img-change">换一张</span>-->
+                <#--<span class="img-change">换一张</span>-->
 
                 </li>
                 <li id="appCaptchaErr" class="appCaptchaErr"></li>
@@ -38,7 +39,8 @@
                 <li id="captchaErr" class="height"></li>
                 <li class="tc">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" class="register-user" value="" onclick="cnzzPush.trackClick('154landingPage2','领取5888体验金')">
+                    <input type="submit" class="register-user" value=""
+                           onclick="cnzzPush.trackClick('154landingPage2','领取5888体验金')">
                 </li>
                 <li class="agree-last">
                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check" checked>
@@ -54,7 +56,7 @@
     </div>
 
     <div class="notice-weixin">
-        <img src="${staticServer}/activity/images/landing-app/weixin.png" >
+        <img src="${staticServer}/activity/images/landing-app/weixin.png">
         <span>关注微信，一大波红包等你抢！</span>
     </div>
     <div class="my-advantage">
@@ -74,7 +76,7 @@
         </div>
     </div>
 </div>
-<div id="agreementBox"  style="display: none;">
+<div id="agreementBox" style="display: none;">
     <div class="pad-m">
         <p>
             本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
@@ -255,8 +257,10 @@
 
 </div>
 <#---->
-<div class="pop-win-app" id="popWinBox" style="display: none" data-show-coupon-alert="${couponAlert?string('true', 'false')}">
+<div class="pop-win-app" id="popWinBox" style="display: none"
+     data-show-coupon-alert="${couponAlert?string('true', 'false')}">
     <img src="${staticServer}/activity/images/landing-app/pop-win.png">
+
     <div class="app-close"></div>
     <div class="app-button"></div>
 </div>

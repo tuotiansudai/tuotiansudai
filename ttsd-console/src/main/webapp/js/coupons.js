@@ -16,10 +16,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: thisLink,
-                        type: 'DELETE',
-                        dataType: 'json'
-                    })
+                    url: thisLink,
+                    type: 'DELETE',
+                    dataType: 'json'
+                })
                     .done(function (res) {
                         if (res.data.status) {
                             $self.closest('tr').remove();
@@ -43,10 +43,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: '/activity-manage/coupon/' + thisId + '/inactive',
-                        type: 'POST',
-                        dataType: 'json'
-                    })
+                    url: '/activity-manage/coupon/' + thisId + '/inactive',
+                    type: 'POST',
+                    dataType: 'json'
+                })
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="' + couponType + '" data-id="' + thisId + '">确认生效</a>');
@@ -73,10 +73,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: '/activity-manage/coupon/' + thisId + '/active',
-                        type: 'POST',
-                        dataType: 'json'
-                    })
+                    url: '/activity-manage/coupon/' + thisId + '/active',
+                    type: 'POST',
+                    dataType: 'json'
+                })
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已生效</button>');
@@ -129,20 +129,20 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         $('.close-btn').on('click',function(){
             $(this).parents('.see-detail').hide();
         });
-        
-        })
 
-        $('.down-load').click(function () {
-            location.href = "/export/coupons";
-        });
+    })
 
-        $('.export-red-envelopes').click(function () {
-            location.href = "/export/red-envelopes";
-        });
+    $('.down-load').click(function () {
+        location.href = "/export/coupons";
+    });
 
-        $('.export-birthday-coupons').click(function () {
-            location.href = "/export/birthday-coupons";
-        });
+    $('.export-red-envelopes').click(function () {
+        location.href = "/export/red-envelopes";
+    });
+
+    $('.export-birthday-coupons').click(function () {
+        location.href = "/export/birthday-coupons";
+    });
 
     });
 });

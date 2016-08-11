@@ -174,132 +174,40 @@
 </#list>
 </tbody>
 </table>
-</div>
 
-                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
-            </td>
-            <td>
-                ${coupon.amount}
-            </td>
-            <td>
-                ${coupon.totalInvestAmount/100}
-            </td>
-            <td>
-                ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-            </td>
-            <td>
-                ${coupon.deadline?string('0')}天
-            </td>
-            <td>
-                ${coupon.totalCount?string('0')}
-            </td>
-            <td>
-                ${coupon.issuedCount?string('0')}
-            </td>
-            <td>
-                ${coupon.usedCount?string('0')}
-            </td>
-            <td>
-                <#if coupon.userGroup == "EXCHANGER_CODE">
-                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code" class="btn-link">${coupon.userGroup.getDescription()}</a>
+    <!-- pagination  -->
+    <nav>
+        <div>
+            <span class="bordern">总共${couponsCount}条,每页显示${pageSize}条</span>
+        </div>
+    <#if coupons?has_content>
+        <ul class="pagination">
+            <li>
+            <#if hasPreviousPage>
+                <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
                 <#else>
-                ${coupon.userGroup.getDescription()}
-                </#if>
-            </td>
-            <td>
-                <#list coupon.productTypes as productType>
-                ${productType.getName()}<#sep>, </#sep>
-                </#list>
-            </td>
-            <td>
-                投资满${coupon.investLowerLimit}元
-            </td>
-            <td>
-                ${coupon.expectedAmount/100}
-            </td>
-            <td>
-                ${coupon.actualAmount/100}
-            </td>
-            <td>
-                <#if coupon.deleted>
-                    已删除
-                <#else>
-                    <#if coupon.active>
-                        -
-                    <#else>
-                        <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                            -
-                        </@security.authorize>
-                        <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                            <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
-                        </@security.authorize>
+                    <a href="#" aria-label="Previous">
                     </#if>
-                </#if>
-            </td>
-            <td>
-                <#if coupon.deleted>
-                    -
+                        <span aria-hidden="true">&laquo; Prev</span>
+                    </a>
+            </li>
+            <li><a>${index}</a></li>
+            <li>
+            <#if hasNextPage>
+                <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
                 <#else>
-                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <#if coupon.active>
-                        <label>
-                            <i class="check-btn add-check"></i>
-                            <button class="loan_repay already-btn btn-link inactive-btn" <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
-                        </label>
-                    <#else>
-                        <label>
-                            <i class="check-btn"></i>
-                            <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
-                        </label>
+                    <a href="#" aria-label="Next">
                     </#if>
-                </@security.authorize>
-                <@security.authorize access="hasAuthority('OPERATOR')">
-                    -
-                </@security.authorize>
-                </#if>
-            </td>
-            <td>
-                <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
-            </td>
-        </tr>
-        </#list>
-        </tbody>
-        </table>
-    </div>
-
-<!-- pagination  -->
-<nav>
-    <div>
-        <span class="bordern">总共${couponsCount}条,每页显示${pageSize}条</span>
-    </div>
-<#if coupons?has_content>
-    <ul class="pagination">
-        <li>
-        <#if hasPreviousPage>
-            <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
-            <#else>
-                <a href="#" aria-label="Previous">
-                </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-        </li>
-        <li><a>${index}</a></li>
-        <li>
-        <#if hasNextPage>
-            <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
-            <#else>
-                <a href="#" aria-label="Next">
-                </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-        </li>
-    <@security.authorize access="hasAnyAuthority('DATA')">
-        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-    </@security.authorize>
-    </ul>
-</#if>
-</nav>
-<!-- pagination -->
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+            </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+        </@security.authorize>
+        </ul>
+    </#if>
+    </nav>
+    <!-- pagination -->
 </div>
 <!-- content area end -->
 </@global.main>
