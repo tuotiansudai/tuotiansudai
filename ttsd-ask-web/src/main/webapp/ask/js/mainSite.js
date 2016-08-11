@@ -4,7 +4,7 @@ comm.initToken();
 
 require('./answer');
 require('./questions');
-require('./createQuestion');
+require('./create-question');
 
 
 

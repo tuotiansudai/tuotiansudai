@@ -1,6 +1,7 @@
 /* create question */
 var _ = require('underscore');
 var comm = require("./commonFun");
+require("jquery-form");
 var $createQuestion=$('#createQuestion');
 
 if($createQuestion.length) {
@@ -78,26 +79,16 @@ if($createQuestion.length) {
 
     $formSubmit.on('click',function() {
         $formQuestion.find('input').checkFrom();
-
         if(tagValid) {
-            //var data=$formQuestion.serialize();
-            var serializeData=$formQuestion.serializeArray(),
-                jsonData=comm.serializeObject(serializeData),
-                jsnData;
-            //jsnData=JSON.stringify(jsonData);
-            $.ajax({
-                url: "/question",
-                //data: {"question":"oop","addition":"oop","tags":"SECURITIES","captcha":"123456"},
-                data: '{"question":"oop","addition":"oop","tags":"SECURITIES","captcha":"123456"}',
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8'
-            }).done(function(resData) {
-                    console.log(resData);
-                })
-                .fail(function(data) {
-                    console.log(data);
-                });
+            $formQuestion.ajaxSubmit({
+                success: function (data) {
+                    if (data.status) {
+                        console.log(data)
+                    }
+                },
+                error: function () {
+                }
+            });
         }
 
     });

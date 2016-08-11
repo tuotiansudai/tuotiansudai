@@ -10,16 +10,16 @@ import java.util.List;
 public class QuestionRequestDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "^\\.{1,30}$")
+    @Pattern(regexp = "^.{1,30}$")
     private String question;
 
-    @Pattern(regexp = "^\\.{10000}$")
+    @Pattern(regexp = "^.{0,10000}$")
     private String addition;
 
     private List<Tag> tags;
 
     @NotEmpty
-    @Pattern(regexp = "^[0-9]{6}$")
+    @Pattern(regexp = "^[0-9]{5}$")
     private String captcha;
 
     public String getQuestion() {

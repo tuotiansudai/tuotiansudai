@@ -54,9 +54,7 @@ public class LoginController {
         String captcha = httpServletRequest.getParameter("captcha");
         SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         LoginDto loginDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
-
-        Cookie cookie = this.createSessionCookie(httpServletRequest, loginDto);
-        httpServletResponse.addCookie(cookie);
+        httpServletResponse.addCookie(this.createSessionCookie(httpServletRequest, loginDto));
         return loginDto;
     }
 
@@ -78,15 +76,12 @@ public class LoginController {
 
     private Cookie createSessionCookie(HttpServletRequest request, LoginDto loginDto) {
         String sessionId = loginDto.getNewSessionId() != null ? loginDto.getNewSessionId() : request.getSession().getId();
-
         Cookie cookie = new Cookie("SESSION", sessionId);
         cookie.setSecure(request.isSecure());
         cookie.setPath(MessageFormat.format("{0}/", request.getContextPath()));
         cookie.setDomain(MessageFormat.format(".{0}", domain));
-        cookie.setMaxAge(0);
-        if (this.isServlet3()) {
-            cookie.setHttpOnly(true);
-        }
+        cookie.setHttpOnly(this.isServlet3());
+
         return cookie;
     }
 
