@@ -52,11 +52,11 @@
     ]/>
 
     <#local membershipMenus=[
-    {"title":"我的会员", "url":"/membership","category":""},
-    {"title":"成长体系", "url":"/membership/structure","category":""},
-    {"title":"会员特权", "url":"/membership/privilege","category":""},
-    {"title":"积分商城", "url":"/membership/store","category":""},
-    {"title":"积分任务", "url":"/membership/task","category":""}
+    {"title":"我的会员", "url":"${webServer}/membership","category":""},
+    {"title":"成长体系", "url":"${webServer}/membership/structure","category":""},
+    {"title":"会员特权", "url":"${webServer}/membership/privilege","category":""},
+    {"title":"积分商城", "url":"/pointsystem","category":""},
+    {"title":"积分任务", "url":"/pointsystem/task","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,9 +116,7 @@
     </#if>
 
 <div class="main-frame full-screen clearfix">
-    <#if !isAppSource>
-        <#include "../left-menus.ftl"/>
-    </#if>
+
     <#nested>
 </div>
 

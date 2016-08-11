@@ -8,7 +8,7 @@
             <#list membershipMenus as menu>
                 <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}">${menu.title}</a></li>
             </#list>
-            <li><a href="/">返回首页</a></li>
+            <li><a href="${webServer}/">返回首页</a></li>
         </ul>
     </#if>
     </div>

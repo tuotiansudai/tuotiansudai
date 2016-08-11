@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/pointsystem")
 public class PointSystemController {
 
     @RequestMapping(method = RequestMethod.GET)
