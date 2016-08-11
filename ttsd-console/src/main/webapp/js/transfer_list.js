@@ -39,4 +39,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstra
         }
 
     });
+    $('.down-load').click(function () {
+        location.href = "/export/transfer-list?" + $('form').serialize();
+    });
 });

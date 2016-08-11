@@ -10,7 +10,8 @@ public enum Role {
     CUSTOMER_SERVICE("客服"),
     AGENT("代理商"),
     ADMIN("管理员"),
-    EDITOR("编辑");
+    EDITOR("编辑"),
+    DATA("数据专员");
 
     private String description;
 
