@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -164,4 +165,9 @@ public class TransferRuleUtilTest {
         userMapper.create(userModelTest);
     }
 
+    @Test
+    public void shouldName() throws Exception {
+        System.out.println(MessageFormat.format("{0}", 1));
+
+    }
 }
