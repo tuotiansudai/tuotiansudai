@@ -291,10 +291,4 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
-
-    @Override
-    public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
-        return businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime,endTime,granularity);
-    }
-
 }
