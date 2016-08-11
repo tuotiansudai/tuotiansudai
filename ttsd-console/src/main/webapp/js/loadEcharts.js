@@ -154,7 +154,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 total=parseFloat(total).toFixed(2);
                 var option = {
                     title:{
-                        text: '总计:' + total+'\n年化总计:' + annualMoney.toFixed(2),
+                        text: '标的金额总计:' + total+'\n年化金额总计:' + annualMoney.toFixed(2),
                         x:40,
                         y:5,
                         textStyle:{
