@@ -9,19 +9,23 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
 
     <!-- enable autowire -->
     <context:annotation-config/>
     <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
         <property name="cookieSerializer">
             <bean class="org.springframework.session.web.http.DefaultCookieSerializer">
-                <property name="domainName" value=".ttsddev.com"/>
+                <property name="domainName" value=".${web.domain}"/>
             </bean>
         </property>
     </bean>
 
     <!--<bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>-->
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:hostName="${common.redis.host}" p:port="${common.redis.port}" p:database="${common.session.db}"/>
-    
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:hostName="${common.redis.host}"
+          p:port="${common.redis.port}"
+          p:database="${common.session.db}"/>
+
 </beans>

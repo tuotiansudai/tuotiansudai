@@ -34,7 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @Value(value = "newAnswerAlert")
+    @Value(value = "${newAnswerAlert}")
     private String newAnswerAlertKey;
 
     @Autowired

@@ -1,11 +1,10 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
 <div class="article-content fl" id="createQuestion">
-
     <div class="ask-question-box clearfix">
         <div class="m-title">我要提问</div>
         <div class="ask-question-con">
-            <form name="askQuestion" class="form-question">
+            <form id="questionForm" name="questionForm" class="form-question" method="post">
                 <dl class="ask-question-list">
                     <dt>一句话描述您的问题</dt>
                     <dd class="clearfix">
@@ -18,31 +17,32 @@
                         
                         <span class="error fl" style="display: none">请描述您的问题</span> 
                         <span class="words-tip fr"><em>0</em>/30</span>
+
                     </dd>
                     <dt>问题补充（选填）</dt>
                     <dd class="clearfix">
                         <@global.isAnonymous>
-                        <span class="isAnonymous addition">请注意不要随意透漏您的个人信息</span>
+                            <span class="isAnonymous addition">请注意不要随意透漏您的个人信息</span>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                         <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
+                            <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
                         </@global.isNotAnonymous>
                        
                         <span class="words-tip fr"><em>0</em>/10000</span>
                     </dd>
                     <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
                     <dd class="tag-list">
-                     <@global.isAnonymous>
-                         <#list tags as tag>
-                            <span class="isAnonymous tag"> ${tag.description}</span>
-                         </#list>
-                      </@global.isAnonymous>
+                        <@global.isAnonymous>
+                            <#list tags as tag>
+                                <span class="isAnonymous tag"> ${tag.description}</span>
+                            </#list>
+                        </@global.isAnonymous>
 
-                     <@global.isNotAnonymous>
-                        <#list tags as tag>
-                       <input type="checkbox" class="tag hide" name="tags" value="${tag.name()}" id="${tag.name()}"> <label for='${tag.name()}' class="tag">${tag.description}</label>
-                        
-                        </#list>
+                        <@global.isNotAnonymous>
+                            <#list tags as tag>
+                                <input type="checkbox" class="tag hide" name="tags" value="${tag.name()}" id="${tag.name()}">
+                                <label for='${tag.name()}' class="tag">${tag.description}</label>
+                            </#list>
                         </@global.isNotAnonymous>
                         <div class="error tag-category clearfix" style="display: none">请选择分类</div>
                     </dd>
@@ -51,19 +51,19 @@
                             <span class="isAnonymous captcha">请输入验证码</span>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                        <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
+                            <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
                         </@global.isNotAnonymous>
                         <img src="${askServer}/captcha" alt="">
                         <span class="error " style="display: none">请请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">
-                    <@global.isAnonymous>
-                        <span class="btn">提问</span>
-                    </@global.isAnonymous>
+                        <@global.isAnonymous>
+                            <span class="btn">提问</span>
+                        </@global.isAnonymous>
 
-    <@global.isNotAnonymous>
-        <button class="btn formSubmit" type="button">提问</button>
-    </@global.isNotAnonymous>
+                        <@global.isNotAnonymous>
+                            <button class="btn formSubmit" type="button">提问</button>
+                        </@global.isNotAnonymous>
 
                     </dd>
                 </dl>

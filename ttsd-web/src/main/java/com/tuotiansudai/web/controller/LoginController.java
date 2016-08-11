@@ -1,7 +1,6 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.client.SignInClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
 import com.tuotiansudai.repository.model.Source;
@@ -11,6 +10,7 @@ import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,14 +22,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
 
     static Logger logger = Logger.getLogger(LoginController.class);
+
+    @Value(value = "${web.domain}")
+    private String domain;
 
     @Autowired
     private CaptchaHelper captchaHelper;
@@ -46,17 +48,14 @@ public class LoginController {
 
     @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
-    public LoginDto loginIn(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public LoginDto login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
         SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
-        LoginDto baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
-        Map<String, String> sessionIds = new HashMap<>();
-        sessionIds.put("SESSION", baseDto.getNewSessionId() != null ? baseDto.getNewSessionId() : httpServletRequest.getSession().getId());
-        Cookie cookie = createSessionCookie(httpServletRequest, sessionIds);
-        httpServletResponse.addCookie(cookie);
-        return baseDto;
+        LoginDto loginDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
+        httpServletResponse.addCookie(this.createSessionCookie(httpServletRequest, loginDto));
+        return loginDto;
     }
 
     @RequestMapping(value = "/sign-out", method = RequestMethod.POST)
@@ -75,32 +74,22 @@ public class LoginController {
         this.captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer());
     }
 
-    private static String cookiePath(HttpServletRequest request) {
-        return request.getContextPath() + "/";
-    }
+    private Cookie createSessionCookie(HttpServletRequest request, LoginDto loginDto) {
+        String sessionId = loginDto.getNewSessionId() != null ? loginDto.getNewSessionId() : request.getSession().getId();
+        Cookie cookie = new Cookie("SESSION", sessionId);
+        cookie.setSecure(request.isSecure());
+        cookie.setPath(MessageFormat.format("{0}/", request.getContextPath()));
+        cookie.setDomain(MessageFormat.format(".{0}", domain));
+        cookie.setHttpOnly(this.isServlet3());
 
-    private Cookie createSessionCookie(HttpServletRequest request, Map<String, String> sessionIds) {
-        Cookie sessionCookie = new Cookie("SESSION","");
-        if(this.isServlet3()) {
-            sessionCookie.setHttpOnly(true);
-        }
-        sessionCookie.setSecure(request.isSecure());
-        sessionCookie.setPath(cookiePath(request));
-        sessionCookie.setDomain(".ttsddev.com");
-        if(sessionIds.isEmpty()) {
-            sessionCookie.setMaxAge(0);
-            return sessionCookie;
-        }
-        String cookieValue = sessionIds.values().iterator().next();
-        sessionCookie.setValue(cookieValue);
-        return sessionCookie;
+        return cookie;
     }
 
     private boolean isServlet3() {
         try {
             ServletRequest.class.getMethod("startAsync");
             return true;
-        } catch(NoSuchMethodException ignored) {
+        } catch (NoSuchMethodException ignored) {
             logger.error(ignored.getLocalizedMessage(), ignored);
         }
         return false;

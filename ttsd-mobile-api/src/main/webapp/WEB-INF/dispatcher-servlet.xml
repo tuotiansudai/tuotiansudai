@@ -53,9 +53,9 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${api.static.server}"/>
-        <property name="javascriptLocation" value="${api.js.path}"/>
-        <property name="cssLocation" value="${api.css.path}"/>
+        <property name="staticServer" value="${mobile.static.server}"/>
+        <property name="javascriptLocation" value="${mobile.js.path}"/>
+        <property name="cssLocation" value="${mobile.css.path}"/>
         <property name="sourceMap">
             <map>
             </map>

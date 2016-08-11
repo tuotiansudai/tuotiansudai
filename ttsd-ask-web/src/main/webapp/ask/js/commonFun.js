@@ -1,6 +1,6 @@
 var _ = require('underscore');
-var comm={};
-comm.pathNameKey=function(key) {
+var comm = {};
+comm.pathNameKey = function (key) {
     var parm = location.search.split('?')[1], parmObj;
     if (_.isUndefined(parm)) {
         return '';
@@ -13,28 +13,27 @@ comm.pathNameKey=function(key) {
             }
         }
     }
-}
+};
 
-comm.serializeObject= function (formData) {
+comm.serializeObject = function (formData) {
 
-            var o = {};
-            $.each(formData, function () {
-                if (o[this.name]) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-    }
-comm.initToken=function() {
-        var token = $("meta[name='_csrf']").attr("content");
+    var o = {};
+    $.each(formData, function () {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+comm.initToken = function () {
+    var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     $(document).ajaxSend(function (e, xhr, options) {
-        debugger
         xhr.setRequestHeader(header, token);
     });
 
@@ -46,7 +45,7 @@ comm.initToken=function() {
             }
         }
     });
-    }
+};
 
 
 module.exports = comm;

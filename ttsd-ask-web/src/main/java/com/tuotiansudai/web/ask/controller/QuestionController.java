@@ -31,6 +31,7 @@ public class QuestionController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
         return questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto);
     }

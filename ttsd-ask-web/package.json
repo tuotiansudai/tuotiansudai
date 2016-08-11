@@ -29,7 +29,8 @@
     "webpack-dev-server": "^1.14.0",
     "express": "^4.13.4",
     "freemarker.js": "^1.2.2",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "jquery-form": "3.50.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
