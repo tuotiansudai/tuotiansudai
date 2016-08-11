@@ -259,7 +259,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             }
             redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }
-        return getMonthKeyValue(keyValueModelLists, granularity, startTime, endTime);
+        return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
     }
 
     private List<KeyValueModel> getMonthKeyValue(List<KeyValueModel> keyValueModels, Granularity granularity,Date queryStartTime,Date queryEndTime){
@@ -291,4 +291,5 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
+
 }

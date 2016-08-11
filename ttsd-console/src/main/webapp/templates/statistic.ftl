@@ -373,7 +373,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 </@global.main>
