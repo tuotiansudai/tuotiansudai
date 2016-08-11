@@ -183,4 +183,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*平台待收 总待收-总入金+回款*/
     showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','金额','repayLines');
+
+    /*平台支出*/
+    showReport('#platformOut','/bi/platform-out','platformOutDistribution','金额','Lines');
 });

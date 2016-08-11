@@ -218,6 +218,6 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-        return businessIntelligenceService.queryPlatformSumRepay(startTime, endTime,granularity);
+        return businessIntelligenceService.queryPlatformOut(startTime, endTime,granularity);
     }
 }

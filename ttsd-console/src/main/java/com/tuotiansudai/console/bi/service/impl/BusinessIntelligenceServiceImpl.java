@@ -294,7 +294,6 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Override
     public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
-        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime, endTime, granularity);
         return businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime,endTime,granularity);
     }
 
