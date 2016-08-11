@@ -98,8 +98,8 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public long getUnreadMessageCount(String loginName, MessageChannel messageChannel) {
-        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, messageChannel);
+    public long getUnreadMessageCount(String loginName) {
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, MessageChannel.WEBSITE);
         long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
         return unreadManualMessages.size() + unreadCount;
     }
@@ -124,15 +124,16 @@ public class UserMessageServiceImpl implements UserMessageService {
 
         List<MessageModel> unreadManualMessages = Lists.newArrayList();
         for (final MessageModel message : messages) {
-            Optional<UserMessageModel> userMessageModelOptional = Iterators.tryFind(userMessageModels.iterator(), new Predicate<UserMessageModel>() {
-                @Override
-                public boolean apply(UserMessageModel model) {
-                    return model.getMessageId() == message.getId() && messageChannel.equals(message.getChannels());
+            if (message.getChannels().contains(messageChannel)) {
+                Optional<UserMessageModel> userMessageModelOptional = Iterators.tryFind(userMessageModels.iterator(), new Predicate<UserMessageModel>() {
+                    @Override
+                    public boolean apply(UserMessageModel model) {
+                        return model.getMessageId() == message.getId();
+                    }
+                });
+                if (!userMessageModelOptional.isPresent() && messageUserGroupDecisionManager.decide(loginName, message.getId())) {
+                    unreadManualMessages.add(message);
                 }
-            });
-
-            if (!userMessageModelOptional.isPresent() && messageUserGroupDecisionManager.decide(loginName, message.getId())) {
-                unreadManualMessages.add(message);
             }
         }
 

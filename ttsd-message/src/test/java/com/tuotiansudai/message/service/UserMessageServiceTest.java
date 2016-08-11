@@ -50,17 +50,9 @@ public class UserMessageServiceTest {
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
-
-        MessageModel appMessageModel = new MessageModel("app title", "app hello message!", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.APP_MESSAGE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
-
         webSiteMessageModel.setReadCount(10);
 
         messageMapper.create(webSiteMessageModel);
-        messageMapper.create(appMessageModel);
-
 
         UserModel userTest = getFakeUserTest("userTest");
         userMapper.create(userTest);
@@ -75,6 +67,28 @@ public class UserMessageServiceTest {
         assertThat(11L, is(messageMapper.findById(userMessageModel1.getMessageId()).getReadCount()));
 
 
+    }
+
+    @Test
+    public void shouldGetUnreadMessageCount() {
+        UserModel creator = getFakeUser("messageCreator");
+        userMapper.create(creator);
+
+        MessageModel webSiteMessageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+
+        messageMapper.create(webSiteMessageModel);
+
+        MessageModel appMessageModel = new MessageModel("app title", "app hello message!", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.APP_MESSAGE),
+                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+
+        messageMapper.create(appMessageModel);
+
+        assertThat(1L, is(userMessageService.getUnreadMessageCount(creator.getLoginName())));
     }
 
     private UserModel getFakeUser(String loginName) {
