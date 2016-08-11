@@ -58,7 +58,7 @@ public class ProductOrderMapperTest {
 
         productOrderMapper.create(productOrderModel);
 
-        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList();
+        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList(productModel.getId(), null);
 
         assertThat(productOrderModelList.size(), is(1));
     }
@@ -76,7 +76,7 @@ public class ProductOrderMapperTest {
         return fakeUserModel;
     }
 
-    private ProductModel createFakeProductModel(String loginName){
+    private ProductModel createFakeProductModel(String loginName) {
         ProductModel fakeProductModel = new ProductModel();
         fakeProductModel.setId(100001);
         fakeProductModel.setGoodsType(GoodsType.VIRTUAL);
@@ -95,7 +95,6 @@ public class ProductOrderMapperTest {
         productMapper.create(fakeProductModel);
         return fakeProductModel;
     }
-
 
 
 }

@@ -38,11 +38,27 @@
     </select>
 
     <select id="findProductOrderCount" resultType="long">
-        select count(id) from product_order
+        select count(id) from product_order p
+        <where>
+            <if test="productId != null">
+                and p.product_id = #{productId}
+            </if>
+            <if test="createdBy != null">
+                and p.created_by = ${createdBy}
+            </if>
+        </where>
     </select>
 
     <select id="findProductOrderList" resultMap="productOrderResultMap">
-        select * from product_order
+        select * from product_order p
+        <where>
+            <if test="productId != null">
+                and p.product_id = #{productId}
+            </if>
+            <if test="createdBy != null">
+                and p.created_by = ${createdBy}
+            </if>
+        </where>
         order by created_time desc
     </select>
 

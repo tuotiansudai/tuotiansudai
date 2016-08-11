@@ -3,7 +3,7 @@
 <@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="createProduct" title="添加商品">
 
 <div class="col-md-10">
-    <form action="/product-manage/create" method="post" class="form-horizontal form-list">
+    <form action="/product-manage/edit" method="put" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>
             <div class="col-sm-4">
@@ -87,7 +87,8 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
                     <input type='text' class="form-control product-end" name="endTime"
-                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if> datatype="date"
+                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
+                           datatype="date"
                            nullmsg="请选择商品结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>

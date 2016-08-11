@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ProductDto implements Serializable {
+    private long id;
     private String loginName;
     @NotNull(message = "商品类型不能为空")
     private GoodsType goodsType;
@@ -31,6 +32,14 @@ public class ProductDto implements Serializable {
     @NotNull(message = "结束时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getLoginName() {
         return loginName;

@@ -1,6 +1,7 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
+<@global.main pageCss="" pageJavascript="orders-list.js" headLab="point-manage" title="商品详情">
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="${goodsTypeDesc!}" title="添加商品">
 <div class="col-md-10">
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -14,35 +15,27 @@
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
-                <th>商品类别</th>
-                <th>当前顺序</th>
-                <th>名称</th>
-                <th>商品图片</th>
-                <th>商品介绍</th>
-                <th>总数量</th>
-                <th>已兑换数量</th>
-                <th>商品价格</th>
-                <th>商品有效期限</th>
-                <th/>
-                <th/>
+                <th>用户名</th>
+                <th>兑换时间</th>
+                <th>兑换数量</th>
+                <th>姓名</th>
+                <th>手机号码</th>
+                <th>收货地址</th>
+                <th>操作</th>
+                <th>发货时间</th>
             </tr>
             </thead>
             <tbody>
-                <#list products as product>
+                <#list orders as order>
                 <tr>
-                    <td>${goodsTypeDesc!}</td>
-                    <td>${product.seq}</td>
-                    <td>${product.productName}</td>
-                    <td>${product.imageUrl}</td>
-                    <td>${product.description}</td>
-                    <td>${product.totalCount}</td>
-                    <td>${product.usedCount}</td>
-                    <td>${product.productPrice}</td>
-                    <td>${(product.endTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <td>
-                        <a href="/product-manage/find-orders?productId=${product.id!}">查看明细</a>
-                    </td>
-                    <td>${product.active?string('是','编辑/删除')}</td>
+                    <td>${order.loginName}</td>
+                    <td>${order.createdTime}</td>
+                    <td>${order.usedCount}</td>
+                    <td>${order.realName}</td>
+                    <td>${order.mobile}</td>
+                    <td>${order.address!}</td>
+                    <a href=""></a>
+                    <td>${order.consignmentTime}</td>
                 </#list>
             </tbody>
         </table>
@@ -50,14 +43,14 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${goodsCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${ordersCount}条,每页显示${pageSize}条</span>
         </div>
-        <#if products?has_content>
+        <#if orders?has_content>
             <ul class="pagination">
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?goodsType=${goodsType}"
+                    <a href="?productId=${productId}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -68,18 +61,18 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?goodsType=${goodsType}"
+                    <a href="?productId=${productId}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
-
                 </li>
             </ul>
         </#if>
     </nav>
     <!-- pagination -->
 </div>
+<!-- content area end -->
 </@global.main>

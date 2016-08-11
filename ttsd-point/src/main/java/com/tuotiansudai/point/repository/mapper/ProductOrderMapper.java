@@ -2,6 +2,7 @@ package com.tuotiansudai.point.repository.mapper;
 
 
 import com.tuotiansudai.point.repository.model.ProductOrderModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,9 +14,15 @@ public interface ProductOrderMapper {
 
     void update(ProductOrderModel productModel);
 
-    List<ProductOrderModel> findProductOrderList();
+    List<ProductOrderModel> findProductOrderList(
+            @Param("productId") long productId,
+            @Param("createdBy") String createdBy
+    );
 
-    long findProductOrderCount();
+    long findProductOrderCount(
+            @Param("productId") long productId,
+            @Param("createdBy") String createdBy
+    );
 
     ProductOrderModel findById(long id);
 
