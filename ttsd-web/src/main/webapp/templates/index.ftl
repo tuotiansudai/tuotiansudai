@@ -1,5 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
+
 <div class="home-page-container">
     <div class="banner-box" id="bannerBox">
         <div class="banner-img-list bd">
@@ -9,10 +10,15 @@
                         <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
                             <img src="${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
+                        </a>
+                        <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_self"
+                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
                             <img src="${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
                         </a>
+
                     </li>
                 </#list>
+
             </ul>
         </div>
         <div class="hd">

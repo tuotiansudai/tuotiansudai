@@ -35,5 +35,9 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             }
         })
 
+        $('.down-load').click(function () {
+            location.href = "/export/coupon-exchange?" + $('form').serialize();
+        });
+
     });
 });
