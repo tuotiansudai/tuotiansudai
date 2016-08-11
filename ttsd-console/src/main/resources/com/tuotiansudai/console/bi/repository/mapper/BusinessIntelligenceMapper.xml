@@ -1404,5 +1404,4 @@
             AND l.recheck_time &lt; #{startTime}
             AND (r.actual_repay_date > #{repayDate} or actual_repay_date is null)
     </select>
-
 </mapper>
