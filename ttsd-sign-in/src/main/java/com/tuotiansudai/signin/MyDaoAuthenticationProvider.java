@@ -48,7 +48,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (enableCaptchaVerify) {
+            if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = StringUtils.isEmpty(httpServletRequest.getParameter("j_deviceId"))?httpServletRequest.getParameter("deviceId"):httpServletRequest.getParameter("j_deviceId");
             if(StringUtils.isNotEmpty(captcha)) {

@@ -90,10 +90,10 @@ public class CouponController {
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/coupon/{couponId}/exchange-code", method = RequestMethod.GET)
-    public ModelAndView expertExchangeCode(@PathVariable long couponId, HttpServletResponse response) throws IOException{
+    public ModelAndView expertExchangeCode(@PathVariable long couponId, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("兑换码"+ new DateTime().toString("yyyyMMdd")+".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("兑换码" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -102,17 +102,17 @@ public class CouponController {
         CouponModel couponModel = couponService.findCouponById(couponId);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
 
-        for (int i=0; i<exchangeCodes.size(); i++) {
+        for (int i = 0; i < exchangeCodes.size(); i++) {
             List<String> dataModel = Lists.newArrayList();
             if (i == 0) {
                 dataModel.add(couponModel.getCouponType().getName());
                 dataModel.add(new DateTime(couponModel.getCreatedTime()).toString("yyyy-MM-dd"));
                 dataModel.add(couponModel.getCouponType() == CouponType.INVEST_COUPON ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
-                dataModel.add(couponModel.getCouponType() == CouponType.INTEREST_COUPON ? couponModel.getRate()*100 + "%" : "");
+                dataModel.add(couponModel.getCouponType() == CouponType.INTEREST_COUPON ? couponModel.getRate() * 100 + "%" : "");
                 dataModel.add(couponModel.getCouponType() == CouponType.RED_ENVELOPE ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
                 dataModel.add(new DateTime(couponModel.getStartTime()).toString("yyyy-MM-dd") + "至" + new DateTime(couponModel.getEndTime()).toString("yyyy-MM-dd"));
-                dataModel.add(couponModel.getTotalCount()+"个");
-                dataModel.add("满"+ AmountConverter.convertCentToString(couponModel.getInvestLowerLimit())+"元");
+                dataModel.add(couponModel.getTotalCount() + "个");
+                dataModel.add("满" + AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()) + "元");
                 dataModel.add(StringUtils.join(Lists.transform(couponModel.getProductTypes(), new Function<ProductType, Object>() {
                     @Override
                     public Object apply(ProductType input) {
@@ -260,7 +260,7 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request){
+    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         couponActivationService.active(loginName, couponId, ip);

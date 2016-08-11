@@ -30,7 +30,7 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|landing-page-app|invest-achievement|loan-hike$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = httpServletRequest.getParameter("loginName");
@@ -42,12 +42,14 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/landing-page-app", method = RequestMethod.GET)
-    public ModelAndView promoteNewbie() {
-        ModelAndView modelAndView = new ModelAndView("/activities/landing-page-app", "responsive", true);
+    @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game$}", method = RequestMethod.GET)
+    public ModelAndView promoteNewbie(@PathVariable String item) {
+        ModelAndView modelAndView = new ModelAndView("/activities/"+item, "responsive", true);
         CouponAlertDto couponAlert = couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
     }
+
+
 }

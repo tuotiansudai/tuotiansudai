@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="account-balance.js" headLab="finance-manage" sideLab="userBalance" title="用户余额">
 
@@ -72,7 +73,9 @@
                     <span>Next »</span></a>
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </nav>
     </div>
 </div>
