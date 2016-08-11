@@ -6,13 +6,10 @@ import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.session.web.http.HttpSessionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class QuestionController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
-        return questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto);
+        return new BaseDto<>(new BaseDataDto(questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto)));
     }
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)

@@ -47,13 +47,13 @@ public class AnswerService {
     private QuestionMapper questionMapper;
 
     @Autowired
-    private CaptchaHelperService captchaHelper;
+    private CaptchaHelperService captchaHelperService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     public boolean createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
-        if (!captchaHelper.captchaVerify(answerRequestDto.getCaptcha())) {
+        if (!captchaHelperService.captchaVerify(answerRequestDto.getCaptcha())) {
             return false;
         }
 

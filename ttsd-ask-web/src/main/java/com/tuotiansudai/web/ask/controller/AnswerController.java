@@ -21,9 +21,7 @@ public class AnswerController {
 
     @RequestMapping(method = RequestMethod.POST)
     public BaseDto<BaseDataDto> answer(@Valid @ModelAttribute AnswerRequestDto answerRequestDto) {
-        BaseDataDto dataDto = new BaseDataDto(answerService.createAnswer(LoginUserInfo.getLoginName(), answerRequestDto));
-
-        return new BaseDto<>(dataDto);
+        return new BaseDto<>(new BaseDataDto(answerService.createAnswer(LoginUserInfo.getLoginName(), answerRequestDto)));
     }
 
     @RequestMapping(path = "/{answerId:^\\d+$}/best", method = RequestMethod.POST)

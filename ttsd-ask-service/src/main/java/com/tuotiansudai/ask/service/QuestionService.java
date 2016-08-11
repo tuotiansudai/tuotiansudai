@@ -48,7 +48,14 @@ public class QuestionService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public BaseDto<BaseDataDto> createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    @Autowired
+    private CaptchaHelperService captchaHelperService;
+
+    public boolean createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+        if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
+            return false;
+        }
+
         QuestionModel questionModel = new QuestionModel(loginName,
                 SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
                 SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
@@ -56,7 +63,7 @@ public class QuestionService {
 
         questionMapper.create(questionModel);
 
-        return new BaseDto<>(new BaseDataDto(true, null));
+        return true;
     }
 
     public void approve(String loginName, List<Long> questionIds) {

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping
+@RequestMapping(path = "/")
 public class HomeController {
 
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                               @RequestParam(value = "page-size", defaultValue = "1", required = false) int pageSize) {
