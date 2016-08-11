@@ -6,8 +6,8 @@
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url("/style/fonts/fontawesome-webfont.eot?v=4.6.1");
-  src: url("/style/fonts/fontawesome-webfont.eot?#iefix&v=4.6.1") format("embedded-opentype"), url("/style/fonts/fontawesome-webfont.woff2?v=4.6.1") format("woff2"), url("/style/fonts/fontawesome-webfont.woff?v=4.6.1") format("woff"), url("/style/fonts/fontawesome-webfont.ttf?v=4.6.1") format("truetype"), url("/style/fonts/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular") format("svg");
+  src: url("/pointsystem/style/fonts/fontawesome-webfont.eot?v=4.6.1");
+  src: url("/pointsystem/style/fonts/fontawesome-webfont.eot?#iefix&v=4.6.1") format("embedded-opentype"), url("/pointsystem/style/fonts/fontawesome-webfont.woff2?v=4.6.1") format("woff2"), url("/pointsystem/style/fonts/fontawesome-webfont.woff?v=4.6.1") format("woff"), url("/pointsystem/style/fonts/fontawesome-webfont.ttf?v=4.6.1") format("truetype"), url("/pointsystem/style/fonts/fontawesome-webfont.svg?v=4.6.1#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
 .fa {
@@ -2121,7 +2121,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/pointsystem/images/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2229,7 +2229,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/pointsystem/images/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -2766,7 +2766,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/images/compress/global_20160523.png");
+  background-image: url("/pointsystem/images/global_20160523.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2874,7 +2874,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/images/compress/global_20160523.png");
+    background-image: url("/pointsystem/images/global_20160523.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -2944,10 +2944,10 @@ h5 {
           z-index: 999; }
       .header-container .header ul li.header-membership {
         padding-right: 19px;
-        background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%; }
+        background: #333 url("/pointsystem/images/icons/top-icon.png") no-repeat 100% 50%; }
       .header-container .header ul li.membership-store {
         padding-left: 19px;
-        background: #333 url("/images/membership/icon-shop.png") no-repeat 2px 50%; }
+        background: #333 url("/pointsystem/images/icon-shop.png") no-repeat 2px 50%; }
         .header-container .header ul li.membership-store a {
           padding-left: 0;
           color: #FC4A52;
@@ -3078,7 +3078,7 @@ h5 {
     position: relative;
     margin: 0 auto; }
     .nav-container .nav .logo {
-      background: url("/images/icons/logo-index.png") left center no-repeat;
+      background: url("/pointsystem/images/icons/logo-index.png") left center no-repeat;
       width: 420px;
       height: 50px;
       display: block;
@@ -3184,7 +3184,7 @@ h5 {
         float: left;
         width: 100px;
         height: 100px;
-        background-image: url(/images/compress/global_20160523.png);
+        background-image: url("/pointsystem/images/global_20160523.png");
         background-position: -308px -100px;
         -webkit-background-size: 408px 290px;
         -moz-background-size: 408px 290px;
@@ -3573,7 +3573,7 @@ h5 {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/pointsystem/images/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -3677,7 +3677,7 @@ h5 {
       height: 24px;
       margin: 13px 20px;
       cursor: pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/pointsystem/images/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -3702,16 +3702,6 @@ h5 {
         font-size: 16px;
         padding: 8px 85px;
         border: 1px solid #ff9c1b; }
-
-.hero-actor {
-  position: fixed;
-  bottom: 380px;
-  right: 5px;
-  width: 92px;
-  height: 124px;
-  z-index: 1000;
-  background: url("/images/sign/actor/anniversary/hero-icon.png") no-repeat center;
-  background-size: 100%; }
 
 /********************** Responsive Page ****************************/
 @media screen and (max-width: 700px) {
