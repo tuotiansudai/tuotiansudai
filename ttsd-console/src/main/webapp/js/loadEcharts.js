@@ -148,13 +148,13 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 var annualMoney = 0;
                 $.each(bar_datas.data,function (i,item){
                     total += Number(item.value);
-                    annualMoney += MyChartsObject.datetimeFun.getAnnualMoney(item.name,item.value);
+                    annualMoney += Number(MyChartsObject.datetimeFun.getAnnualMoney(item.name,item.value));
                 });
 
                 total=parseFloat(total).toFixed(2);
                 var option = {
                     title:{
-                        text: '标的金额总计:' + total+'\n年化金额总计:' + annualMoney.toFixed(2),
+                        text: '金额总计:' + total+'\n年化金额总计:' + annualMoney.toFixed(2),
                         x:40,
                         y:5,
                         textStyle:{
@@ -173,7 +173,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
                             return "<ul style='list-style:none;text-align: left;padding-left: inherit'>" +
                                     "<li>"+option.seriesName + ':' + filterData.value + "</li>" +
-                                    "<li>年化金额(元):" + annual.toFixed(2) + "</li>" +
+                                    "<li>年化金额(元):" + annual + "</li>" +
                                     "<ul>";
                         }
                     },
@@ -595,13 +595,13 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             getAnnualMoney:function(name,value){
                 switch (name){
                     case '1':
-                        return (Number(value) / 12) || 0;
+                        return (Number(value) / 12).toFixed(2) || 0;
                     case '3':
-                        return (Number(value) / 4) || 0;
+                        return (Number(value) / 4).toFixed(2) || 0;
                     case '6':
-                        return (Number(value) / 2) || 0;
+                        return (Number(value) / 2).toFixed(2) || 0;
                     case '12':
-                        return Number(value) || 0;
+                        return value || 0;
                 }
                 return 0;
             }
