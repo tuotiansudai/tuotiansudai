@@ -1,8 +1,7 @@
 <div class="layer-content">
 <div class="pad-s tc color-note">
-<p class="mb-0">应回款金额 = 应收本金 + 应收利息 - 服务费</p>
-<p class="mb-0">实收金额 = 应收本金 + 实收利息 + 实收罚息 - 实扣服务费</p>
-<p class="mb-0" style='color:red'>应收优惠奖励： {{expectedInterest}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已收优惠奖励：{{actualInterest}} </p>
+<div class="tl" style="font-size:20px;font-weight:bold;color:#000000">回款详情</div>
+<div class="tl" style="color:#000000">已收回款总额:399元  &nbsp;&nbsp; 待收回款总额:1111元  &nbsp;&nbsp;  现金红包奖励:50元</div>
 </div>
     <table class="table table-hover">
         <thead>
@@ -59,4 +58,6 @@
         </tbody>
 
     </table>
+<p class="mb-0">应收回款=应收本金+应收利息+应收奖励-应缴服务费</p>
+<p class="tl" style='color:red'>应收优惠奖励： {{expectedInterest}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已收优惠奖励：{{actualInterest}} </p>
 </div>
