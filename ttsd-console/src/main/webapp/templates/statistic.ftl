@@ -339,7 +339,7 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                    <div id="loanAmountDistribution" style="width:100%; height:400px;">
+                    <div id="loanAmountDistribution" style="width:100%; height:8100px;">
                         <span class="loading-report">加载中...</span>
                     </div>
                 </div>

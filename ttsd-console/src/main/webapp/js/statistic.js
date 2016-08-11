@@ -124,7 +124,6 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                         option = loadEcharts.ChartOptionTemplates.Bar(data, name,xAxisName);
                         break;
                     case 'mBar':
-
                         option = loadEcharts.ChartOptionTemplates.mBar(data, name,xAxisName);
                         break;
                     case 'kBar':

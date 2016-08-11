@@ -145,34 +145,37 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
             mBar: function (data, name,xAxisName) {
                 var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
                 var total = 0;
-                var annual = [];
+                var annualMoney = 0;
                 $.each(bar_datas.data,function (i,item){
                     total += Number(item.value);
-                    switch (item.name){
-                        case '1':
-                            annual[i] = (Number(item.value) / 12).toFixed(2) || 0;
-                            break;
-                        case '3':
-                            annual[i] = (Number(item.value) / 4).toFixed(2) || 0;
-                            break;
-                        case '6':
-                            annual[i] = (Number(item.value) / 2).toFixed(2) || 0;
-                            break;
-                        case '12':
-                            annual[i] = Number(item.value) || 0;
-                            break;
-                    }
+                    annualMoney += MyChartsObject.datetimeFun.getAnnualMoney(item.name,item.value);
                 });
 
                 total=parseFloat(total).toFixed(2);
                 var option = {
                     title:{
-                        text: '总计:' + total,
-                        x:'50',
-                        y:'15'
+                        text: '       总计:' + total+'\n年化总计:' + annualMoney.toFixed(2),
+                        x:40,
+                        y:5,
+                        textStyle:{
+                            fontSize:15
+                        }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'item',
+                        padding: [2, 2, 2, 2],
+                        formatter: function(option) {
+                            console.log(option);
+                            var data=bar_datas.data,
+                                keyName=option.name;
+                            var filterData=_.where(data,{name: keyName})[0];
+                            var annual = MyChartsObject.datetimeFun.getAnnualMoney(keyName,filterData.value);
+
+                            return "<ul style='list-style:none;text-align: left;padding-left: inherit'>" +
+                                    "<li>"+option.seriesName + ':' + filterData.value + "</li>" +
+                                    "<li>年化金额(元):" + annual.toFixed(2) + "</li>" +
+                                    "<ul>";
+                        }
                     },
                     xAxis: [{
                         type: 'category',
@@ -190,11 +193,6 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         axisLabel: { interval: 0 },
                         type: 'bar',
                         data: bar_datas.data
-                    },{
-                        name: '年化金额',
-                        axisLabel: { interval: 0 },
-                        type: 'bar',
-                        data: annual
                     }]
 
                 };
@@ -593,6 +591,19 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
                 var duration=this.getNowFormatDate(beginDate) + " 至 "+ this.getNowFormatDate(endDate);
                 return duration;
+            },
+            getAnnualMoney:function(name,value){
+                switch (name){
+                    case '1':
+                        return (Number(value) / 12) || 0;
+                    case '3':
+                        return (Number(value) / 4) || 0;
+                    case '6':
+                        return (Number(value) / 2) || 0;
+                    case '12':
+                        return Number(value) || 0;
+                }
+                return 0;
             }
         }
     };
