@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
 <#if status??>
@@ -122,7 +123,7 @@
     </div>
 
     <!-- pagination  -->
-    <nav>
+    <nav class="pagination-control">
         <div>
             <span class="bordern">总共${loanListCount}条,每页显示${pageSize}条</span>
         </div>
@@ -152,6 +153,9 @@
 
                 </li>
             </ul>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->
