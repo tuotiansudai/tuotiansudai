@@ -37,7 +37,7 @@ public interface TransferApplicationMapper {
                                                                                       @Param(value = "pageSize") Integer pageSize);
 
     int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName") String loginName);
-    
+
     List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
                                                                              @Param("startTime") Date startTime,
                                                                              @Param("endTime") Date endTime,
@@ -57,7 +57,7 @@ public interface TransferApplicationMapper {
                                                @Param("transfereeMobile") String transfereeMobile,
                                                @Param("loanId") Long loanId,
                                                @Param("source") Source source);
-    
+
     List<TransferInvestDetailDto> findTransferInvestList(@Param(value = "investorLoginName") String investorLoginName,
                                                          @Param(value = "index") int index,
                                                          @Param(value = "pageSize") int pageSize,
@@ -72,21 +72,22 @@ public interface TransferApplicationMapper {
 
 
     List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("transferStatus") List<TransferStatus> transferStatus,
-                                                                             @Param("rateStart") double rateStart,
-                                                                             @Param("rateEnd") double rateEnd,
-                                                                             @Param(value = "index") Integer index,
-                                                                             @Param(value = "pageSize") Integer pageSize);
-    
+                                                                                @Param("rateStart") double rateStart,
+                                                                                @Param("rateEnd") double rateEnd,
+                                                                                @Param(value = "index") Integer index,
+                                                                                @Param(value = "pageSize") Integer pageSize);
+
     int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 
-    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName,@Param("tradingTime") Date tradingTime,@Param("activityBeginTime") String activityBeginTime);
+    long findCountTransferApplicationByApplicationTime(@Param("loginName") String loginName, @Param("tradingTime") Date tradingTime,
+                                                       @Param("activityBeginTime") String activityBeginTime);
 
     List<TransferApplicationModel> findAllTransferringApplicationsByLoanId(@Param("loanId") long loanId);
-    
+
     List<TransferApplicationModel> findByTransferInvestIdAndTransferTime(@Param(value = "loginName") String loginName,
-                                                                 @Param(value = "year") String year,
-                                                                 @Param(value = "month") String month,
-                                                                 @Param(value = "day") String day);
+                                                                         @Param(value = "year") String year,
+                                                                         @Param(value = "month") String month,
+                                                                         @Param(value = "day") String day);
 }

@@ -297,7 +297,7 @@
 
     <select id="findByTransferInvestIdAndTransferTime" parameterType="long" resultMap="transferApplicationResultMap">
         SELECT * FROM transfer_application WHERE status = 'SUCCESS'
-            AND login_name = #{loginName}
+        AND login_name = #{loginName}
         <if test="year != null and year != ''">
             AND DATE_FORMAT(transfer_time, '%Y') = #{year}
         </if>
