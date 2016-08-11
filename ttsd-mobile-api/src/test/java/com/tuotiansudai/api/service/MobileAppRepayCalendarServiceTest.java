@@ -181,7 +181,7 @@ public class MobileAppRepayCalendarServiceTest {
         InvestModel investModel5 = createInvest(loginName, loanId);
         InvestModel investModel6 = createInvest(loginName, loanId);
 
-        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loginName,investModel6.getId(),investModel6.getId(),loanId,new DateTime("2200-11-03").toDate());
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loginName, investModel6.getId(), investModel6.getId(), loanId, new DateTime("2200-11-03").toDate());
         transferApplicationMapper.create(transferApplicationModel);
 
         CouponModel couponModel = fakeCouponModel(loginName);
@@ -215,7 +215,7 @@ public class MobileAppRepayCalendarServiceTest {
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
     }
 
-    private TransferApplicationModel getTransferApplicationModel(String userId,long investId,long transferInvestId,long loanId,Date date){
+    private TransferApplicationModel getTransferApplicationModel(String userId, long investId, long transferInvestId, long loanId, Date date) {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setLoginName(userId);
         transferApplicationModel.setName("name");
