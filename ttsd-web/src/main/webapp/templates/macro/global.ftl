@@ -70,7 +70,7 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <meta name="360-site-verification" content="bb9961471c642723a7c1672b8840b371" />
+    <meta name="360-site-verification" content="8f78c77592779bad6fb5acc422271b6f" />
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
