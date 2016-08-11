@@ -20,19 +20,49 @@ if($createQuestion.length) {
         },
         validLen:function(element,num) {
             var len=element.val().split('').length;
-            if(len<=num && len>0) {
-                this.hideError(element);
-            }
-            else {
-                var errorMsg='请描述您的问题';
+            var name=element[0].name;
+            var $wordstip=element.parent().find('.words-tip');
+            var errorMsg='';  
+                
+            switch (name) {
+                case 'question':
+                    errorMsg = '请描述您的问题';
+                    $wordstip.removeClass('error')
+                             .find('em')
+                             .text(len);
+                   
+                     if (len > num) {
+                        errorMsg = '您的问题不能超过' + num + '个字符';                    
+                        $wordstip.addClass('error');                        
+                    }
+                    break;
 
-                if(len>num) {
-                    errorMsg='您的问题不能超过'+num+'个字符'
-                }
-                this.showError(element,errorMsg);
-                tagValid=false;
-
+                case 'addition':
+                    $wordstip.removeClass('error')
+                             .find('em')
+                             .text(len);
+                     if (len > num) {
+                        errorMsg = '问题补充' + num + '个字符';
+                        $wordstip.addClass('error');                      
+                    }
+                    break;
+                case 'captcha':
+                    errorMsg = '验证码不能为空'; 
+                    if (len > num) {
+                        errorMsg = '请输入正确的验证码';                                 
+                    }
             }
+                if(len<=num && len>0) {
+                        this.hideError(element);
+                    }
+                 else {
+                        tagValid = false;
+                        this.showError(element, errorMsg);
+                    }
+
+        },
+        updateLimitedNumber:function(element) {
+
         },
         radioChecked:function(element) {
             var checkLen=$('input.tag:checked').length;
@@ -72,7 +102,7 @@ if($createQuestion.length) {
         });
     };
 
-    $formQuestion.find('input').on('blur change',function(event) {
+    $formQuestion.find('input').on('blur change keydown',function(event) {
         $(this).checkFrom();
     });
 

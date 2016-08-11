@@ -13,10 +13,11 @@
                         <span class="isAnonymous ask-con">请 <a href="${webServer}/login">登录</a> 或 <a href="${webServer}/register/user">注册</a> 后再进行提问</span>
                     </@global.isAnonymous>
                     <@global.isNotAnonymous>
-                        <input type="text" name="question" placeholder="请 登录 或 注册 后再进行提问" class="ask-con">
+                        <input type="text" name="question" placeholder="请描述您的问题" class="ask-con">
                     </@global.isNotAnonymous>
                         
-                        <span class="error fl" style="display: none">请描述您的问题</span> <span class="words-tip fr">0/30</span>
+                        <span class="error fl" style="display: none">请描述您的问题</span> 
+                        <span class="words-tip fr"><em>0</em>/30</span>
                     </dd>
                     <dt>问题补充（选填）</dt>
                     <dd class="clearfix">
@@ -27,7 +28,7 @@
                          <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
                         </@global.isNotAnonymous>
                        
-                        <span class="words-tip fr">0/10000</span>
+                        <span class="words-tip fr"><em>0</em>/10000</span>
                     </dd>
                     <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
                     <dd class="tag-list">
