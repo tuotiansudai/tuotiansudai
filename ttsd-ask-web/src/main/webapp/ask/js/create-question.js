@@ -109,8 +109,13 @@ var utils = {
 
 //我来回答
 if($questionDetailTag.length) {
+    var $answerButton=$('.answer-button',$questionDetailTag),
+        $toAnswerBox=$('.to-answer-box',$questionDetailTag);
     var qanswerValid=false,
         qcaptchaValid=false;
+    $answerButton.find('button').on('click',function(index) {
+        $toAnswerBox.toggle();
+    });
 }
 
 //我要提问

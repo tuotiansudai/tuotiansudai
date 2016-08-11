@@ -1,6 +1,12 @@
 var _ = require('underscore');
 var comm = require("./commonFun");
 
+/* hot question for mobile */
+var $hotCategory=$('.hot-question-category');
+$hotCategory.find('.m-title').on('click',function() {
+    $hotCategory.find('.qa-list').toggle();
+});
+
 /* home page for switch menu to show different page */
 var $homeTagContainer=$('#homeTagContainer');
 if($homeTagContainer.length) {
@@ -20,9 +26,6 @@ if($homeTagContainer.length) {
 }
 
 
-if($questionDetailTag.length) {
-    $questionDetailTag.find('')
-}
 
 
 

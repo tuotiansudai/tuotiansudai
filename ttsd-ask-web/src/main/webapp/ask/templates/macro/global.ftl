@@ -28,9 +28,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="keywords" content="${keywords}"/>
     <meta name="description" content="${description}"/>
-    <#if responsive??>
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    </#if>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <title>${title}</title>

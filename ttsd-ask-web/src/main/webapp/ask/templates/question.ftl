@@ -15,6 +15,7 @@
                         <span class="tag">${tag.description}</span>
                     </#list>
                 <dd>${question.addition!}</dd>
+                <dd class="fr clearfix answer-button"><button type="button" class="btn">我来回答</button> </dd>
             </dl>
         </div>
     </div>
@@ -58,7 +59,7 @@
     </div>
 
     <#if bestAnswer??>
-        <div class="borderBox clearfix margin-top-10">
+        <div class="borderBox clearfix best-answer">
             <div class="answers-box ">
                 <dl class="answers-list">
                     <dd>${bestAnswer.answer}</dd>
@@ -67,6 +68,7 @@
                         <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
                     </dd>
                 </dl>
+                <div class="best-answer-sign"></div>
             </div>
         </div>
     </#if>
