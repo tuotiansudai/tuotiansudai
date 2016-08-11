@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ask-redis-key-template.properties"/>
 
     <!-- enable autowire -->
     <context:annotation-config />
@@ -24,11 +24,28 @@
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.ask,com.tuotiansudai.client"/>
+    <context:component-scan base-package="com.tuotiansudai.ask,com.tuotiansudai.client,com.tuotiansudai.cache"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ask?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${common.jdbc.username}"/>
+        <property name="password" value="${common.jdbc.password}"/>
+        <property name="minimumIdle" value="${ask.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${ask.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="aaHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
         <property name="minimumIdle" value="${ask.aa.minimumIdle}"/>
@@ -48,18 +65,28 @@
         <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="hikariCPDataSource" />
-        <property name="typeAliasesPackage" value="com.tuotiansudai.ask.repository.model"/>
+    <bean id="aaTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="aaHikariCPDataSource"/>
     </bean>
 
-    <!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory" />
+    <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="aaHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="hikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.ask.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="aaSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.ask.repository.mapper"/>
     </bean>
 
@@ -68,4 +95,7 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <!--for test-->
+    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 </beans>

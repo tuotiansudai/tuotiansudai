@@ -57,5 +57,4 @@ public class LoginDto implements Serializable {
     public void setNewSessionId(String newSessionId) {
         this.newSessionId = newSessionId;
     }
-
 }

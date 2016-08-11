@@ -87,11 +87,7 @@ public class JPushAlertServiceTest {
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
-    @Autowired
-    private JPushScheduleAlertService jPushScheduleAlertService ;
-
     private static final long loanId = 10000000001L;
-    private static final long loanRepayId = 100000003L;
     private static final long investId = 3939399323434L;
 
     private static final long loanId2 = 20000000001L;
@@ -386,6 +382,8 @@ public class JPushAlertServiceTest {
 
         publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", null);
 
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+
         jPushAlertService.autoJPushReferrerRewardAlert(10001);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
@@ -460,6 +458,8 @@ public class JPushAlertServiceTest {
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
 
         when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
 
         jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
 

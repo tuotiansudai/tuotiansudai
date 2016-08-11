@@ -12,11 +12,11 @@ public class AnswerRequestDto implements Serializable {
     private long questionId;
 
     @NotEmpty
-    @Pattern(regexp = "^\\.{1,30}$")
+    @Pattern(regexp = "^.{1,30}$")
     private String answer;
 
     @NotEmpty
-    @Pattern(regexp = "^[0-9]{6}$")
+    @Pattern(regexp = "^[0-9]{5}$")
     private String captcha;
 
     public long getQuestionId() {

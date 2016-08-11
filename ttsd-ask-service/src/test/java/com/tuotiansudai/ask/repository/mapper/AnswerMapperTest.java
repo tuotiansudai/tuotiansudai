@@ -47,7 +47,7 @@ public class AnswerMapperTest extends BaseMapperTest {
         answerMapper.create(answerModel);
 
         answerModel.setBestAnswer(true);
-        answerModel.getFavoredBy().add("user");
+        answerModel.setFavoredBy(Lists.newArrayList("user"));
         answerModel.setApprovedBy("answerer");
         answerModel.setApprovedTime(new Date());
         answerMapper.update(answerModel);
@@ -57,7 +57,7 @@ public class AnswerMapperTest extends BaseMapperTest {
         AnswerModel updatedAnswer = updatedAnswers.get(0);
         assertThat(updatedAnswer.getId(), is(answerModel.getId()));
         assertThat(updatedAnswer.isBestAnswer(), is(true));
-        assertTrue(updatedAnswer.getApprovedBy().contains("user"));
+        assertTrue(updatedAnswer.getFavoredBy().contains("user"));
         assertThat(updatedAnswer.getApprovedBy(), is("answerer"));
         assertNotNull(updatedAnswer.getApprovedTime());
     }

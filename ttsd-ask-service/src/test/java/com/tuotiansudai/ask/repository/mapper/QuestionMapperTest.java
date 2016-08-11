@@ -63,27 +63,25 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldFindAllQuestions() throws Exception {
+        long count = questionMapper.countAllQuestions("ask");
+
         QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
         assertThat(questionMapper.findAllQuestions("ask", 0, 1).get(0).getId(), is(questionModel.getId()));
-        assertThat(questionMapper.countAllQuestions("ask"), is(1L));
-
-        assertThat(questionMapper.findAllQuestions(null, 0, 1).size(), is(0));
-        assertThat(questionMapper.countAllQuestions(null), is(0L));
+        assertThat(questionMapper.countAllQuestions("ask"), is(count + 1L));
     }
 
     @Test
     public void shouldFindAllUnresolvedQuestions() throws Exception {
+        long count = questionMapper.countAllUnresolvedQuestions("ask");
+
         QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
         assertThat(questionMapper.findAllUnresolvedQuestions("ask", 0, 1).get(0).getId(), is(questionModel.getId()));
-        assertThat(questionMapper.countAllUnresolvedQuestions("ask"), is(1L));
-
-        assertThat(questionMapper.findAllUnresolvedQuestions(null, 0, 1).size(), is(0));
-        assertThat(questionMapper.countAllUnresolvedQuestions(null), is(0L));
+        assertThat(questionMapper.countAllQuestions("ask"), is(count + 1L));
     }
 
     @Test
@@ -97,7 +95,5 @@ public class QuestionMapperTest extends BaseMapperTest {
 
         assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(0).getId(), is(questionModel1.getId()));
         assertThat(questionMapper.findAllHotQuestions("ask", 0, 2).get(1).getId(), is(questionModel2.getId()));
-
-        assertThat(questionMapper.findAllHotQuestions(null, 0, 1).size(), is(0));
     }
 }

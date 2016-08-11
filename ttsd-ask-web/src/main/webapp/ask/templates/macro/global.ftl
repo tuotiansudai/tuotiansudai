@@ -57,9 +57,9 @@
 <div class="main-frame full-screen clearfix">
 <#--banner-->
     <div class="borderBox tc mobile-menu">
-        <a href="#" class="btn-main want-question">我要提问</a>
-        <a href="#" class="btn-main my-question">我的提问</a>
-        <a href="#" class="btn-main my-answer">我的回答</a>
+        <a href="/question" class="btn-main want-question">我要提问</a>
+        <a href="/question/my-questions" class="btn-main my-question">我的提问</a>
+        <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
     </div>
     <div class="download-mobile">
         <a href="#"> <img src="${staticServer}/images/sign/downloadApp.jpg"></a>

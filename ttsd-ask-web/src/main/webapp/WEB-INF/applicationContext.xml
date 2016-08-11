@@ -17,9 +17,11 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties,classpath*:redis-key-template.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties,classpath*:ask-redis-key-template.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="aaTransactionManager"/>
+    
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->

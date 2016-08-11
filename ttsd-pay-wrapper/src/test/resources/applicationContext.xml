@@ -21,7 +21,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.jpush, com.tuotiansudai.point, com.tuotiansudai.transfer,com.tuotiansudai.membership"/>
+            base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.jpush, com.tuotiansudai.point, com.tuotiansudai.transfer,com.tuotiansudai.membership"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
     <tx:annotation-driven transaction-manager="transactionManager"/>

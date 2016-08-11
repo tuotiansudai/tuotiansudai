@@ -29,7 +29,7 @@
                 </dd>
                 <dd>
                     <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
-                    <img src="${askServer}/captcha" alt="">
+                    <img src="/captcha" alt="">
                     <button type="button" class="btn fr" disabled >提交答案</button>
                     <i class="error">验证码不正确</i>
                 </dd>

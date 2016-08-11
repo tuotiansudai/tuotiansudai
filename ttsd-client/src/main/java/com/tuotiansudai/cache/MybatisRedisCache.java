@@ -21,8 +21,6 @@ public class MybatisRedisCache implements ApplicationContextAware, Cache {
 
     private final static Logger logger = Logger.getLogger(MybatisRedisCache.class);
 
-    private static ApplicationContext applicationContext;
-
     private static MybatisRedisCacheWrapperClient mybatisRedisCacheWrapperClient;
 
     private final static String MYBATIS_CACHE_KEY = "mybatis:{0}:{1}";
@@ -30,13 +28,6 @@ public class MybatisRedisCache implements ApplicationContextAware, Cache {
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     private String id;
-
-    private static MybatisRedisCacheWrapperClient getRedisClient() {
-        if (mybatisRedisCacheWrapperClient == null) {
-            mybatisRedisCacheWrapperClient = applicationContext.getBean(MybatisRedisCacheWrapperClient.class);
-        }
-        return mybatisRedisCacheWrapperClient;
-    }
 
     public MybatisRedisCache() {
 
@@ -53,32 +44,32 @@ public class MybatisRedisCache implements ApplicationContextAware, Cache {
 
     @Override
     public void putObject(Object key, Object value) {
-        getRedisClient().set(getKey(key).getBytes(StandardCharsets.UTF_8), serialize(value));
-        getRedisClient().expire(getKey(key).getBytes(StandardCharsets.UTF_8), getRedisClient().getSecond());
+        mybatisRedisCacheWrapperClient.set(getKey(key).getBytes(StandardCharsets.UTF_8), serialize(value));
+        mybatisRedisCacheWrapperClient.expire(getKey(key).getBytes(StandardCharsets.UTF_8), mybatisRedisCacheWrapperClient.getSecond());
     }
 
     @Override
     public Object getObject(Object key) {
-        return deserialize(getRedisClient().get(getKey(key).getBytes(StandardCharsets.UTF_8)));
+        return deserialize(mybatisRedisCacheWrapperClient.get(getKey(key).getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override
     public Object removeObject(Object key) {
-        return getRedisClient().expire(getKey(key).getBytes(StandardCharsets.UTF_8), 0);
+        return mybatisRedisCacheWrapperClient.expire(getKey(key).getBytes(StandardCharsets.UTF_8), 0);
     }
 
     @Override
     public void clear() {
-        Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(StandardCharsets.UTF_8));
+        Set<byte[]> keys = mybatisRedisCacheWrapperClient.keys(getKeys().getBytes(StandardCharsets.UTF_8));
         for (byte[] key : keys) {
-            getRedisClient().expire(key, 0);
+            mybatisRedisCacheWrapperClient.expire(key, 0);
         }
     }
 
     @Override
     public int getSize() {
         int result = 0;
-        Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(StandardCharsets.UTF_8));
+        Set<byte[]> keys = mybatisRedisCacheWrapperClient.keys(getKeys().getBytes(StandardCharsets.UTF_8));
         if (null != keys && !keys.isEmpty()) {
             result = keys.size();
         }
@@ -151,6 +142,6 @@ public class MybatisRedisCache implements ApplicationContextAware, Cache {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        MybatisRedisCache.applicationContext = applicationContext;
+        mybatisRedisCacheWrapperClient = applicationContext.getBean(MybatisRedisCacheWrapperClient.class);
     }
 }

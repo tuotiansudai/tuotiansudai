@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
 import com.tuotiansudai.ask.utils.CaptchaGenerator;
-import com.tuotiansudai.ask.utils.CaptchaHelper;
+import com.tuotiansudai.ask.service.CaptchaHelperService;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CaptchaController {
 
     @Autowired
-    private CaptchaHelper captchaHelper;
+    private CaptchaHelperService captchaHelper;
 
     @RequestMapping(method = RequestMethod.GET)
     public void generateCaptcha(HttpServletResponse response) {
@@ -26,6 +25,6 @@ public class CaptchaController {
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(CaptchaHelper.ASK_CAPTCHA, captcha.getAnswer());
+        this.captchaHelper.storeCaptcha(captcha.getAnswer());
     }
 }

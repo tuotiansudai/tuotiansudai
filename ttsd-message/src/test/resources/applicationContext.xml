@@ -73,7 +73,4 @@
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="loginLogService" class="com.tuotiansudai.service.impl.LoginLogServiceImpl"/>
-
-    <bean id="springContextUtil" class="com.tuotiansudai.spring.SpringContextUtil"/>
-
 </beans>

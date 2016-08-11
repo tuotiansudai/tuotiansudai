@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
 import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -55,8 +56,18 @@ public class QuestionController {
     }
 
     @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
-    public ModelAndView findAllHotQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public ModelAndView getMyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize));
+    }
+
+    @RequestMapping(path = "/category", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByCategory(@RequestParam(value = "tag", required = true) Tag tag,
+                                               @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                               @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/question-category");
+        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, pageSize));
+        modelAndView.addObject("tag", tag);
+        return modelAndView;
     }
 }
