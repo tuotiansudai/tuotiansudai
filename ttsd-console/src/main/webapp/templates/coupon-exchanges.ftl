@@ -20,6 +20,9 @@
                     名称
                 </th>
                 <th>
+                    当前顺序
+                </th>
+                <th>
                     金额(元)
                 </th>
                 <th>
@@ -61,6 +64,9 @@
                     <td>
                         <span class="add-tooltip" data-placement="top" data-toggle="tooltip"
                               data-original-title="${exchangeCoupon.couponType.getName()}">${exchangeCoupon.couponType.getName()}</span>
+                    </td>
+                    <td>
+                        1-${exchangeCoupon.seq!}
                     </td>
                     <td>
                         <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>

@@ -515,6 +515,7 @@ public class CouponController {
         CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
         exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+        exchangeCouponDto.setSeq(couponExchangeModel.getSeq());
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
         modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));

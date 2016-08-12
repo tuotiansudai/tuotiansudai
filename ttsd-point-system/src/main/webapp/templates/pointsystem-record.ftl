@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership_record}" pageJavascript="${js.membership_record}" activeNav="兑换记录" activeLeftNav="" title="兑换记录" site="membership">
+<@global.main pageCss="${css.pointsystem_record}" pageJavascript="${js.pointsystem_record}" activeNav="兑换记录" activeLeftNav="" title="兑换记录">
 
 <div class="global-member-record">
 	<div class="wp clearfix">

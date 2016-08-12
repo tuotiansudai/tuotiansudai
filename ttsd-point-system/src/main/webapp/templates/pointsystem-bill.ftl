@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership_integral}" pageJavascript="${js.membership_integral}" activeNav="积分明细" activeLeftNav="" title="积分明细" site="membership">
+<@global.main pageCss="${css.pointsystem_bill}" pageJavascript="${js.pointsystem_bill}" activeNav="积分明细" activeLeftNav="" title="积分明细">
 
 <div class="global-member-integral">
 	<div class="wp clearfix">
@@ -9,11 +9,11 @@
 		<div class="container-detail">
 			<div class="type-list">
 				<span>
-					<a href="/membership/record">兑换记录</a>
+					<a href="/pointsystem/record">兑换记录</a>
 				</span>
 				<span>|</span>
 				<span class="active">
-					<a href="/membership/integral">积分明细</a>
+					<a href="/pointsystem/bill">积分明细</a>
 				</span>
 			</div>
 			<div class="item-block date-filter">
@@ -27,13 +27,21 @@
 		    </div>
 
 		    <div class="item-block status-filter">
-		        <span class="sub-hd">交易状态:</span>
-		        <span class="select-item current" data-status="">全部</span>
-		        <span class="select-item" data-status="RAISING">正在招募</span>
-		        <span class="select-item" data-status="RECHECK">招募成功</span>
-		        <span class="select-item" data-status="REPAYING">正在回款</span>
-		        <span class="select-item" data-status="COMPLETE">回款完毕</span>
+                <span class="sub-hd">往来类型:</span>
+                <span class="select-item current" data-status="">全部</span>
+                <span class="select-item" data-status="SIGN_IN,TASK,INVEST">已获取</span>
+                <span class="select-item" data-status="EXCHANGE,LOTTERY">已使用</span>
 		    </div>
+
+            <div class="clear-blank"></div>
+            <div class="bill-list">
+            </div>
+            <div class="data-list" data-url="/pointsystem/bill-list-data" data-page-size="10">
+            </div>
+
+
+
+
 			<div class="data-list" id="dataList">
 				<table class="table">
 					<thead>
