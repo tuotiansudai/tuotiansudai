@@ -67,7 +67,7 @@ public class AnswerService {
                 questionId,
                 SensitiveWordsFilter.replace(answerRequestDto.getAnswer()));
         answerMapper.create(answerModel);
-        return false;
+        return true;
     }
 
     public void approve(String loginName, List<Long> answerIds) {

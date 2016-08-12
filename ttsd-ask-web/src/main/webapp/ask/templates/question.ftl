@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="to-answer-box">
+    <div class="to-answer-box" style="display: none;">
         <div class="m-title">我来回答</div>
         <form name="formAnswer" class="formAnswer">
             <input type="hidden" name="questionId" value="${question.id?string.computer}">
@@ -31,10 +31,9 @@
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
-                        <textarea rows="4" class="text-area" placeholder="请回答" name="answer"></textarea>
+                        <textarea rows="4" class="text-area answer" placeholder="请回答" name="answer" ></textarea>
                         <i class="error text-area-error fa fa-times-circle" style="display: none">您的回答过于简短</i>
                     </@global.isNotAnonymous>
-
 
                 </dd>
                 <dd>
@@ -45,13 +44,11 @@
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
-                        <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
+                        <input type="text" placeholder="请输入验证码" class="captcha captchaImg" name="captcha">
                         <img src="/captcha" alt="">
-                        <button type="button" class="btn fr" disabled >提交答案</button>
+                        <button type="button" class="btn fr formSubmit" disabled >提交答案</button>
                         <i class="error" style="display: none">验证码不正确</i>
                     </@global.isNotAnonymous>
-
-
 
                 </dd>
             </dl>
@@ -80,7 +77,7 @@
         <div class="answers-box ">
             <div class="other-title">共${question.answers}个回答</div>
             <#list answers as answer>
-                <#if bestAnswer?? && answer.id != bestAnswer.id>
+                <#if (bestAnswer?? && answer.id != bestAnswer.id) || !(bestAnswer??)>
                     <dl class="answers-list">
                         <dd>${answer.answer}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>

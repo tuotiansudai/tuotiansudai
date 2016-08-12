@@ -240,7 +240,7 @@
       margin-bottom: 10px;
       span.isAnonymous {
         @include border-color(#e5e5e5);
-        width:calc(100% - 20px);
+        width:96%;
         padding: 6px 10px;
         font-size:14px;
         display: inline-block;
@@ -313,7 +313,7 @@
     color: #666666;
     span.isAnonymous {
       @include border-color(#e5e5e5);
-      width:calc(100% - 20px);
+      width:96%;
       padding: 6px 10px;
       font-size:14px;
       display: inline-block;
@@ -391,13 +391,21 @@
   }
 }
 
+.popWindow-overlay {
+  background: rgba(0,0,0,0.2);
+  width:100%;
+  height:100%;
+  position: absolute;
+  left: 0;
+  top:0;
+}
 .popWindow {
   position:absolute;
   border:1px solid #ccc;
   background:#fff;
   border-radius:8px;
   padding:10px;
-  box-shaddow:2px 2px rgba(0,0,0,0.2) -2px -2px rgba(0,0,0,0.2);
+  box-shadow:2px 2px 5px rgba(0,0,0,0.2), -2px -2px 5px rgba(0,0,0,0.2);
 }
 
 @media screen and (max-width: 700px) {

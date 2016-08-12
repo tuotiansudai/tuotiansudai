@@ -63,6 +63,18 @@
         <a href="#"> <img src="${staticServer}/images/sign/downloadApp.jpg"></a>
     </div>
 <#--banner-->
+
+    <#--hot question-->
+    <div class="hot-question-category" >
+        <div class="m-title">热门问题分类  <i></i></div>
+        <ul class="qa-list clearfix" style="display: none">
+            <#list tags as tagItem>
+                <li>
+                    <a href="/question/category?tag=${tagItem.name()}" <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
+                </li>
+            </#list>
+        </ul>
+    </div>
     <div class="question-container answer-container">
         <#nested>
 

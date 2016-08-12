@@ -51,8 +51,9 @@ comm.popWindow=function(title,content,size) {
 
     if(!$('.popWindow').length) {
             var popW=[];
-            popW.push('<div class="popWindow">ddd</div>');
-            
+            popW.push('<div class="popWindow-overlay"></div>');
+            popW.push('<div class="popWindow">'+content+'</div>');
+            popW.push('<em class="close" ></em>');
             $('body').append(popW.join(''));
             var $popWindow=$('.popWindow'),
                 size= $.extend({width:'560px'},size);
@@ -64,7 +65,8 @@ comm.popWindow=function(title,content,size) {
                     pTop=$(window).height()-$popWindow.height(),
                     pLeft=$(window).width()-$popWindow.width();
                 $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                $popWindow.find('.bd').empty().append(content);
+                $('.popWindow-overlay').css({'height':$('body').height()});
+
             }
             adjustPOS();
             $(window).resize(function() {

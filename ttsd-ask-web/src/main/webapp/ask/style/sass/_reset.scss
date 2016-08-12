@@ -46,7 +46,7 @@ input[type='checkbox'] {
 }
 input,textarea,select {
   @include border-color(#e5e5e5);
-  width:calc(100% - 20px);
+  width:96%;
   padding: 6px 10px;
   font-size:14px;
 

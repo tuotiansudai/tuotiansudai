@@ -3,6 +3,12 @@ var _ = require('underscore');
 var comm = require("./commonFun");
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
+
+//刷新验证码
+$('.captchaImg').on('click',function() {
+    $(this).attr('src', '/captcha?' + new Date().getTime().toString());
+});
+
 var utils = {
     showError:function(element,value) {
         element.parent().find('.error').text(value).show();
@@ -12,8 +18,10 @@ var utils = {
     },
     validLen:function(element,num) {
         var len=element.val().split('').length;
-        var name=element[0].name;
+        var name=element[0].name,
+            value=$.trim(element.val());
         var $wordstip=element.parent().find('.words-tip');
+        var $formSubmit=element.parents('form').find('.formSubmit');
         var errorMsg='';
 
         switch (name) {
@@ -57,7 +65,7 @@ var utils = {
                 break;
             case 'captcha':
                 errorMsg = '请输入正确的验证码';
-                if(!/^\d{5}$/.test(element.val())) {
+                if(!/^\d{5}$/.test(value)) {
                     captchaValid = false;
                     this.showError(element, errorMsg);
                 }
@@ -68,6 +76,14 @@ var utils = {
                 break;
             case 'answer':
                 errorMsg='回答不得少于10个字';
+                if(/^(\S){0,10}$/.test(value)){
+                    answerValid=false;
+                    this.showError(element, errorMsg);
+                }
+                else {
+                    answerValid=true;
+                    this.hideError(element);
+                }
 
                 break;
             default:
@@ -77,6 +93,13 @@ var utils = {
         //switch end
 
         if(tagValid && questionValid && additionValid && captchaValid) {
+            $formSubmit.prop('disabled',false);
+        }
+        else {
+            $formSubmit.prop('disabled',true);
+        }
+
+        if(captchaValid && answerValid) {
             $formSubmit.prop('disabled',false);
         }
         else {
@@ -106,15 +129,72 @@ var utils = {
         }
     }
 };
+$.fn.checkFrom = function () {
+    return this.each(function () {
+        var $ele = $(this);
+        var name=this.name,
+            value=$ele.val();
+        switch(name) {
+            case 'question':
+                return utils.validLen($ele,30);
+                break;
+            case 'addition':
+                return utils.validLen($ele,10000);
+                break;
+            case 'captcha':
+                return utils.validLen($ele,5);
+                break;
+            case 'answer':
+                return utils.validLen($ele,5);
+                break;
+            default:
+                return utils.radioChecked($ele)
+                break;
+        }
 
+    });
+};
 //我来回答
 if($questionDetailTag.length) {
-    var $answerButton=$('.answer-button',$questionDetailTag),
-        $toAnswerBox=$('.to-answer-box',$questionDetailTag);
-    var qanswerValid=false,
-        qcaptchaValid=false;
+    var $formAnswer=$('.formAnswer',$questionDetailTag),
+        $answerButton=$('.answer-button',$questionDetailTag),
+        $toAnswerBox=$('.to-answer-box',$questionDetailTag),
+        $formAnswerSubmit=$('.formSubmit',$formAnswer);
+    var answerValid=false,
+        captchaValid=false;
     $answerButton.find('button').on('click',function(index) {
         $toAnswerBox.toggle();
+    });
+
+    $formAnswer.find('input.captcha').on('blur',function() {
+        $(this).checkFrom();
+    });
+
+    $formAnswer.find('textarea.answer').on('blur',function() {
+        $(this).checkFrom();
+    });
+
+    $formAnswerSubmit.on('click',function() {
+
+        if(answerValid && captchaValid) {
+            $.ajax({
+                url: "/answer",
+                data: $formAnswer.serialize(),
+                type: 'POST'
+            }).done(function(data) {
+                if (data.data.status) {
+                    comm.popWindow('','回答成功!',{ width:'200px'});
+                    setTimeout(function() {
+                        $('.popWindow,.popWindow-overlay').fadeOut();
+                        window.location.reload();
+                    },3000);
+                }
+            })
+                .fail(function(data) {
+                    //comm.popWindow('error','接口错误',{ width:'300px'});
+                });
+        }
+
     });
 }
 
@@ -129,28 +209,6 @@ if($createQuestion.length) {
         questionValid=false,
         additionValid=false,
         captchaValid=false;
-    $.fn.checkFrom = function () {
-        return this.each(function () {
-            var $ele = $(this);
-            var name=this.name,
-                value=$ele.val();
-            switch(name) {
-                case 'question':
-                    return utils.validLen($ele,30);
-                    break;
-                case 'addition':
-                    return utils.validLen($ele,10000);
-                    break;
-                case 'captcha':
-                    return utils.validLen($ele,5);
-                    break;
-                default:
-                    return utils.radioChecked($ele)
-                    break;
-            }
-
-        });
-    };
 
     $formQuestion.find('input.ask-con,input.tag').on('change keyup',function(event) {
         $(this).checkFrom();
@@ -164,20 +222,14 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    //刷新验证码
-    $('.captchaImg',$formQuestion).on('click',function() {
-        $(this).attr('src', '/captcha?' + new Date().getTime().toString());
-    });
-
     $formSubmit.on('click',function() {
-        $formQuestion.find('input').checkFrom();
+        //$formQuestion.find('input').checkFrom();
         if(tagValid && questionValid && additionValid && captchaValid) {
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
                     type: 'POST'
                 }).done(function(data) {
-                
                     if (data.status) {
                         location.href='question/my-questions';
                     }
@@ -185,7 +237,6 @@ if($createQuestion.length) {
                 .fail(function(data) {
                         comm.popWindow('error','error',{ width:'300px'});
                 });
-
         }
 
     });

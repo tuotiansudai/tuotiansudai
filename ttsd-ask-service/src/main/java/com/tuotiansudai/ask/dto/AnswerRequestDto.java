@@ -7,12 +7,10 @@ import java.io.Serializable;
 
 public class AnswerRequestDto implements Serializable {
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d+$")
     private long questionId;
 
     @NotEmpty
-    @Pattern(regexp = "^.{1,30}$")
+    @Pattern(regexp = "^.{10,30}$")
     private String answer;
 
     @NotEmpty

@@ -20,6 +20,7 @@ public class AnswerController {
     private AnswerService answerService;
 
     @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> answer(@Valid @ModelAttribute AnswerRequestDto answerRequestDto) {
         return new BaseDto<>(new BaseDataDto(answerService.createAnswer(LoginUserInfo.getLoginName(), answerRequestDto)));
     }
