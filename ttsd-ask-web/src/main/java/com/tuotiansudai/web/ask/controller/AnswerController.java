@@ -26,6 +26,7 @@ public class AnswerController {
     }
 
     @RequestMapping(path = "/{answerId:^\\d+$}/best", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> markBestAnswer(@PathVariable long answerId) {
         BaseDataDto dataDto = new BaseDataDto(answerService.makeBestAnswer(answerId));
 
@@ -33,6 +34,7 @@ public class AnswerController {
     }
 
     @RequestMapping(path = "/{answerId:^\\d+$}/favor", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> favor(@PathVariable long answerId) {
         BaseDataDto dataDto = new BaseDataDto(answerService.favor(LoginUserInfo.getLoginName(), answerId));
 
