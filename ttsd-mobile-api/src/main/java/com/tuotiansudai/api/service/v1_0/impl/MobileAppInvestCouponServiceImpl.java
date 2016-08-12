@@ -81,7 +81,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             @Override
             public boolean apply(UserCouponModel userCouponModel) {
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus()
-                        || (userCouponModel.getUsedTime() != null && new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isBefore(new DateTime()));
+                        || (userCouponModel.getUsedTime() != null && new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isAfter(new DateTime()));
                 boolean expired = !used && userCouponModel.getEndTime().before(new Date());
                 return !used && !expired;
 
