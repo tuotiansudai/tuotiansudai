@@ -208,6 +208,7 @@ if($questionDetailTag.length) {
     });
 
     $('.agree-ok',$questionDetailTag).on('click',function() {
+
         var $this=$(this),
             value=$.trim($this.text());
         var answerId=$this.parent().find('.answerId').data('id');
@@ -217,7 +218,7 @@ if($questionDetailTag.length) {
         }).done(function(data) {
             if(data.data.status) {
                 $this.addClass('active');
-                $this.val(value-0+1);
+                $this.text(value-0+1);
             }
         });
     });

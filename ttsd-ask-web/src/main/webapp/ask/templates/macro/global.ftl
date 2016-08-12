@@ -82,7 +82,7 @@
         <div class="aside-frame fr">
             <#include "../user.ftl"/>
             <#include "../tags.ftl"/>
-            <img src="${staticServer}/ask/images/welfare.jpg" alt="新人送福利" class="margin-top-10">
+            <a href="#" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
     </div>
@@ -91,7 +91,6 @@
     <#include "../footer.ftl" />
 
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
-
 
 </body>
 </html>
