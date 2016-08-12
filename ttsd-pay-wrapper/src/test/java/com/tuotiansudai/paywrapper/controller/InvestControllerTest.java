@@ -438,7 +438,8 @@ public class InvestControllerTest {
         this.generateMockResponse_fail(1);
         this.jobAsyncInvestNotify();
 
-        InvestModel investModel4_b = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
+        InvestModel investModel4_b = investMapper.findById(orderId4);
+
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
