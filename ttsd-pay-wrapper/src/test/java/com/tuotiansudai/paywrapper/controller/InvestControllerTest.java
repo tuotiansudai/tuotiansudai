@@ -24,6 +24,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -398,6 +399,7 @@ public class InvestControllerTest {
 
     // case6: 超投，返款失败，当投资成功处理
     @Test
+    @Ignore
     public void overInvestPaybackFail() throws Exception {
         long mockLoanId = 66666666L;
         long mockInitAmount = 1000000;
