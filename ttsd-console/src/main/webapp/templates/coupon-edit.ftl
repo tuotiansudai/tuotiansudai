@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">红包来源描述</label>
+            <label class="col-sm-2 control-label">体验券来源描述</label>
 
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""
@@ -145,7 +145,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
             <div class="col-sm-8">
-                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline?c!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
             </div>
         </div>
 

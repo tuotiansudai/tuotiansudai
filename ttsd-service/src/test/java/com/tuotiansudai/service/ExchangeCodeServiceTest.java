@@ -208,6 +208,7 @@ public class ExchangeCodeServiceTest {
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType._180);
         exchangeCouponDto.setProductTypes(productTypes);
+        exchangeCouponDto.setCouponSource("couponSource");
         return exchangeCouponDto;
     }
 

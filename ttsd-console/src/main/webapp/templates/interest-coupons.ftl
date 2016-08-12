@@ -51,7 +51,7 @@
             短信提醒
         </th>
         <th>
-            实际发放张数(张)
+            已发放(张)
         </th>
         <th>
             已使用(张)
@@ -217,6 +217,9 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
             </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+        </@security.authorize>
         </ul>
     </#if>
     </nav>
