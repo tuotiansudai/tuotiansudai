@@ -117,6 +117,7 @@ public enum ReturnMessage {
     EXCHANGE_CODE_IS_USED("0106","兑换码已被使用"),
     EXCHANGE_CODE_OVER_DAILY_COUNT("0107","当天兑换次数达到上限"),
     USER_COUPON_IS_NOT_EXIST("0108",""),
+    EXCHANGE_CODE_IS_FAIL("0109","兑换码兑换失败"),
 
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),

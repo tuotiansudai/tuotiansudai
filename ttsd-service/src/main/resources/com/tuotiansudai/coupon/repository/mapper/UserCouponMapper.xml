@@ -295,4 +295,10 @@
         AND t.`status` = 'SUCCESS'
         and  c.`coupon_type` = 'RED_ENVELOPE';
     </select>
+
+    <select id="findByExchangeCode" parameterType="string" resultType="int">
+        select count(*) from user_coupon where exchange_code = #{exchangeCode}
+    </select>
+
+
 </mapper>
