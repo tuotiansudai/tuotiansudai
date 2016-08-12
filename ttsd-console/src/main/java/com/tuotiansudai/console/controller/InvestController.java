@@ -87,10 +87,8 @@ public class InvestController {
                 dataModel.add(new DateTime(itemDataDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
                 dataModel.add(itemDataDto.isAutoInvest() ? "是" : "否");
                 dataModel.add(itemDataDto.getAmount());
+                dataModel.add(itemDataDto.getRate()+"/"+itemDataDto.getExpectedFee()+"/"+itemDataDto.getActualFee());
                 dataModel.add(itemDataDto.getStatus());
-                dataModel.add(itemDataDto.getRate());
-                dataModel.add(itemDataDto.getExpectedFee());
-                dataModel.add(itemDataDto.getActualFee());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());

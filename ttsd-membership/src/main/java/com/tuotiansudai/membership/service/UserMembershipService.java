@@ -26,6 +26,4 @@ public interface UserMembershipService {
                                                        int pageSize);
 
     List<Integer> getAllLevels();
-
-    void createUserMemberByLevel(long level,String loginName);
 }

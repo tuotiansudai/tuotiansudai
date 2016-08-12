@@ -91,7 +91,6 @@
             user_role o
             RIGHT JOIN referrer_relation k
             ON o.`login_name` = k.`referrer_login_name`
-            AND k.`level` = 1
             WHERE o.`role` = 'STAFF'
             UNION
             SELECT
@@ -99,7 +98,7 @@
             FROM
             user_role h
             WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
-            WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
+            WHERE gg.login_name = j.`login_name`)) u
         </if>
         <if test="roleStage.name() == 'OTHERS' ">
             (SELECT
@@ -260,7 +259,6 @@
                 user_role o
                 RIGHT JOIN referrer_relation k
                 ON o.`login_name` = k.`referrer_login_name`
-                AND k.`level` = 1
                 WHERE o.`role` = 'STAFF'
                 UNION
                 SELECT
@@ -268,7 +266,7 @@
                 FROM
                 user_role h
                 WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
-                WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
+                WHERE gg.login_name = j.`login_name`)) u
             </if>
             <if test="roleStage.name() == 'OTHERS' ">
                 (SELECT
@@ -981,7 +979,6 @@
             user_role o
             RIGHT JOIN referrer_relation k
             ON o.`login_name` = k.`referrer_login_name`
-            AND k.`level` = 1
             WHERE o.`role` = 'STAFF'
             UNION
             SELECT
@@ -1069,7 +1066,6 @@
                             user_role o
                             RIGHT JOIN referrer_relation k
                             ON o.`login_name` = k.`referrer_login_name`
-                            AND k.`level` = 1
                             WHERE o.`role` = 'STAFF'
                             UNION
                             SELECT
@@ -1182,7 +1178,6 @@
                 user_role o
                 RIGHT JOIN referrer_relation k
                 ON o.`login_name` = k.`referrer_login_name`
-                AND k.`level` = 1
                 WHERE o.`role` = 'STAFF'
                 UNION
                 SELECT
@@ -1265,7 +1260,6 @@
                         user_role o
                         RIGHT JOIN referrer_relation k
                         ON o.`login_name` = k.`referrer_login_name`
-                        AND k.`level` = 1
                         WHERE o.`role` = 'STAFF'
                         UNION
                         SELECT
@@ -1399,7 +1393,7 @@
     <select id="queryRepayByRecheckTimeAndActualRepayDate" parameterType="map" resultMap="keyValueMap">
         SELECT
             ROUND(IFNULL(SUM(r.corpus + r.expected_interest + r.default_interest),0)/ 100, 2) AS `value`,
-            DATE(#{startTime}) AS `name`,
+            DATE(#{repayDate}) AS `name`,
             '待收' as `group`
         FROM
             loan l
@@ -1408,6 +1402,6 @@
         WHERE
             l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
             AND l.recheck_time &lt; #{startTime}
-            AND (r.actual_repay_date > #{startTime} or actual_repay_date is null)
+            AND (r.actual_repay_date > #{repayDate} or actual_repay_date is null)
     </select>
 </mapper>

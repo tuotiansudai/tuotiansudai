@@ -110,5 +110,4 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         userMessageMapper.update(userMessageModel);
         return baseDto;
     }
-
 }

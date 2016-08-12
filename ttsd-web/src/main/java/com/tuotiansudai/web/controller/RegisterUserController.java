@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -13,6 +14,7 @@ import com.tuotiansudai.util.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import java.text.MessageFormat;
 @Controller
 @RequestMapping(path = "/register/user")
 public class RegisterUserController {
+
+    private static Logger logger = Logger.getLogger(RegisterUserController.class);
 
     @Autowired
     private UserService userService;
@@ -61,16 +65,23 @@ public class RegisterUserController {
             if (request.getSession().getAttribute("channel") != null) {
                 registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
             }
+            logger.info(MessageFormat.format("[Register User {0}] controller starting...", registerUserDto.getMobile()));
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
+            logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
         } catch (ReferrerRelationException e) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);
         }
 
         if (isRegisterSuccess) {
+            logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
             myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
+            logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
-        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", registerUserDto.getRedirectToAfterRegisterSuccess()) : "redirect:/register/user");
+        String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
+        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
+        logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
+        return new ModelAndView(url);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)

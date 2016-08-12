@@ -106,7 +106,7 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
-            (c.birthday_benefit + 1) as birthday_benefit,
+            c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
             c.user_group
@@ -134,7 +134,7 @@
             i.amount as invest_amount,
             uc.used_time as used_time,
             uc.expected_interest - uc.expected_fee as expected_income,
-            (c.birthday_benefit + 1) as birthday_benefit,
+            c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
             c.user_group
@@ -156,7 +156,7 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
-            (c.birthday_benefit + 1) as birthday_benefit,
+            c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
             c.user_group
