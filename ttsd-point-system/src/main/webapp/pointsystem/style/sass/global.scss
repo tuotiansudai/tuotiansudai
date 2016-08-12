@@ -358,7 +358,7 @@
       height:24px;
       margin:13px 20px;
       cursor:pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/pointsystem/images/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -478,7 +478,7 @@
       height:24px;
       margin:13px 20px;
       cursor:pointer;
-      background-image: url("/images/compress/global_20160523.png");
+      background-image: url("/pointsystem/images/global_20160523.png");
       -webkit-background-size: 408px 290px;
       -moz-background-size: 408px 290px;
       background-size: 408px 290px;
@@ -511,16 +511,7 @@
     }
   }
 }
-.hero-actor{
-  position: fixed;
-  bottom:380px;
-  right:5px;
-  width:92px;
-  height:124px;
-  z-index:1000;
-  background:url("/images/sign/actor/anniversary/hero-icon.png") no-repeat center;
-  background-size:100%;
-}
+
 
 /********************** Responsive Page ****************************/
 
