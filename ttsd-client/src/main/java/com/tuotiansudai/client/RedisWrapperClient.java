@@ -97,7 +97,7 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
                 return jedis.keys(pattern);
             }
         });
-        return keys.size() == 0 || this.del(keys.toArray(new String[]{}));
+        return keys.size() == 0 || this.del(keys.toArray(new String[keys.size()]));
     }
 
     public boolean del(final String... keys) {

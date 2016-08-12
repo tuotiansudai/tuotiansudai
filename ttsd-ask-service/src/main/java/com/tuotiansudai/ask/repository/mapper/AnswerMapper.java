@@ -25,7 +25,8 @@ public interface AnswerMapper {
     long countByLoginName(@Param(value = "loginName") String loginName);
 
 
-    List<AnswerModel> findByQuestionId(@Param(value = "questionId") long questionId);
+    List<AnswerModel> findByQuestionId(@Param(value = "loginName") String loginName,
+                                       @Param(value = "questionId") long questionId);
 
     AnswerModel findBestAnswerByQuestionId(@Param(value = "questionId") long questionId);
 

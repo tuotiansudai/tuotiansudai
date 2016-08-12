@@ -49,13 +49,6 @@
         where id = #{id}
     </select>
 
-    <select id="lockById" parameterType="long" resultMap="questionResultMap">
-        select *
-        from question
-        where id = #{id}
-        for update
-    </select>
-
     <select id="findByLoginName" parameterType="map" resultMap="questionResultMap">
         select *
         from question
