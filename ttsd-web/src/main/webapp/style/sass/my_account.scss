@@ -105,20 +105,6 @@ body{
     }
   }
 }
-//.layui-layer-content {
-//  //loaner record
-//  .layer-content {
-//    .repay-total {
-//      vertical-align: bottom;
-//      color: #666;
-//    }
-//    .repay-alert {
-//      vertical-align: bottom;
-//      margin-left: 180px;
-//      color: red;
-//    }
-//  }
-//}
 .popLayer {
   text-align: center;
   overflow: auto;
@@ -226,7 +212,6 @@ body{
         width: 100%;
         height: 250px;
         position: relative;
-
         .close-btn {
           position: absolute;
           top: 15px;
@@ -380,7 +365,7 @@ body{
           padding: 5px 0;
           background: #ff7200;
           color: #fff;
-          border-radius: 5px;
+          border-radius: 0px;
           width: 80px;
           height: 20px;
           line-height: 20px;
@@ -1019,7 +1004,6 @@ body{
 .withdraw {
   line-height: 3 !important;
   font-size: 15px;
-
   .calculate {
     font-size: 14px;
     color: #979797;
@@ -1042,7 +1026,9 @@ body{
   .info-list {
     color: nth($CK2, 6);
     line-height: 38px;
-
+    em.info {
+      display: inline-block;
+    }
     .fa {
       font-size: nth($fontSize, 4);
       padding-right: 5px;
@@ -2394,12 +2380,12 @@ body{
             p {
               margin-bottom: 0;
               color: #ccc;
-
+              line-height:20px;
               &.mt-10 {
                 margin-top: 10px;
               }
               span {
-                line-height: 40px;
+                line-height: 36px;
 
                 &.num-text {
                   font-size: 40px;
@@ -2518,35 +2504,6 @@ body{
 }
 
 @media screen and (max-width:700px) {
-
-  .loan-detail-content {
-    .loan-model {
-      display: block;
-      .blank-middle {
-        display: none;
-      }
-      .news-share,.account-info {
-        display: block;
-      }
-      .news-share {
-        border-left-width: 0;
-        border-bottom-width: 0;
-      }
-      .account-info {
-        width: 100%;
-        border-left-width: 0;
-        border-right-width: 0;
-        margin-bottom: 10px;
-        padding-bottom:15px;
-        .l-title {
-          display: none;
-        }
-        .account-list {
-          margin-left: 0 !important;
-        }
-      }
-    }
-  }
   .chart-info-responsive {
     display: block !important;
   }

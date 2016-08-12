@@ -295,6 +295,20 @@
         select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
     </select>
 
+    <select id="findByTransferInvestIdAndTransferTime" parameterType="long" resultMap="transferApplicationResultMap">
+        SELECT * FROM transfer_application WHERE status = 'SUCCESS'
+        AND login_name = #{loginName}
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(transfer_time, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(transfer_time, '%m') = #{month}
+        </if>
+        <if test="day != null and day != ''">
+            AND DATE_FORMAT(transfer_time, '%Y-%m-%d') = #{day}
+        </if>
+    </select>
+
     <update id="update" parameterType="TransferApplicationModel">
         update transfer_application
         set name = #{name},
@@ -387,4 +401,14 @@
                 AND application_time between #{activityBeginTime} and #{tradingTime}
     </select>
 
+    <select id="findAllTransferringApplicationsByLoanId" resultMap="transferApplicationResultMap"
+            parameterType="java.lang.Long">
+        SELECT
+          *
+        FROM
+          `aa`.`transfer_application`
+        WHERE
+          loan_id = #{loanId} AND
+          status = 'TRANSFERRING'
+    </select>
 </mapper>

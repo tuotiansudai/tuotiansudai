@@ -25,5 +25,9 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
 
     });
 
+    $('.down-load').click(function () {
+        location.href = "/export/loan-list?" + $('form').serialize();
+    });
+
 });
 
