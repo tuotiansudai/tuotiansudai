@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.UserBirthdayUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,10 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Override
     @Transactional
     public void invest(long investId, List<Long> userCouponIds) {
+        if (CollectionUtils.isEmpty(userCouponIds)) {
+            return;
+        }
+
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 

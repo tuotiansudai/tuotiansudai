@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
@@ -507,6 +508,7 @@ public class InvestControllerTest {
         investDto.setSource(Source.WEB);
         investDto.setAmount(AmountConverter.convertCentToString(mockInvestAmount));
         investDto.setLoginName(mockInvestLoginName);
+        investDto.setUserCouponIds(Lists.<Long>newArrayList());
 
         String requestJson = objectMapper.writeValueAsString(investDto);
 
