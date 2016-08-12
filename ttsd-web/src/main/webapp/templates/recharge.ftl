@@ -35,7 +35,6 @@
                             <input type="submit" class="btn btn-normal" value="立即绑卡" data-url="${requestContext.getContextPath()}/bind-card"/>
                         </div>
                     </#if>
-
                     <#if !isFastPayOn && isBindCard>
                         <div class="turn-on-fast-form pad-s">
                             <form action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
