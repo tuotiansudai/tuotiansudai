@@ -119,7 +119,7 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     private List<MessageModel> getUnreadManualMessages(String loginName, final MessageChannel messageChannel) {
-        List<MessageModel> messages = this.messageMapper.findAssignableManualMessages(loginName);
+        List<MessageModel> messages = this.messageMapper.findAssignableMessages(loginName);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, null, null, null);
 
         List<MessageModel> unreadManualMessages = Lists.newArrayList();

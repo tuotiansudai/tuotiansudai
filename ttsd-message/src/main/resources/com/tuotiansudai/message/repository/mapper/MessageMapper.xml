@@ -105,10 +105,9 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findAssignableManualMessages" parameterType="string" resultMap="messageResultMap">
+    <select id="findAssignableMessages" parameterType="string" resultMap="messageResultMap">
         select * from message
         where deleted = 0
-        and message.type = 'MANUAL'
         and message.status = 'APPROVED'
         and message.expired_time > NOW()
         and not exists (select 1 from user_message where message.id = user_message.message_id and user_message.login_name = #{loginName})
