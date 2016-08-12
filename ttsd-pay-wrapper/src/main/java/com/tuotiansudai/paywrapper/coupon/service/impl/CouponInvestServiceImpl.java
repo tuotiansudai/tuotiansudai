@@ -62,7 +62,8 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             if (userCouponModel != null) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-                if (InvestStatus.SUCCESS == userCouponModel.getStatus()
+                if (!investModel.getLoginName().equalsIgnoreCase(userCouponModel.getLoginName())
+                        || InvestStatus.SUCCESS == userCouponModel.getStatus()
                         || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(investModel.getLoginName()))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
@@ -88,10 +89,11 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         }
 
         for (Long userCouponId : userCouponIds) {
-            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+            UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
             userCouponModel.setStatus(InvestStatus.WAIT_PAY);
             userCouponModel.setInvestId(investId);
             userCouponModel.setLoanId(loanModel.getId());
+            userCouponModel.setUsedTime(new Date());
             userCouponMapper.update(userCouponModel);
         }
     }
