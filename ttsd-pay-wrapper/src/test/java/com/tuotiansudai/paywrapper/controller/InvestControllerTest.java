@@ -508,7 +508,6 @@ public class InvestControllerTest {
         investDto.setSource(Source.WEB);
         investDto.setAmount(AmountConverter.convertCentToString(mockInvestAmount));
         investDto.setLoginName(mockInvestLoginName);
-        investDto.setUserCouponIds(Lists.<Long>newArrayList());
 
         String requestJson = objectMapper.writeValueAsString(investDto);
 
