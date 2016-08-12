@@ -29,6 +29,44 @@ buildscript {
 processResources.outputs.upToDateWhen { false }
 
 /**
+ * parameter: configPath
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
+ */
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        innerConfigPath = configPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+    from("${innerConfigPath}/ttsd-env.properties") {
+        filter { String line ->
+            if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
+                return "common.jdbc.host=${dbhost}"
+            }
+
+            if (project.hasProperty("dbport") && line.startsWith("common.jdbc.port=")) {
+                return "common.jdbc.port=${dbport}"
+            }
+
+            if (project.hasProperty("redishost") && line.startsWith("common.redis.host=")) {
+                return "common.redis.host=${redishost}"
+            }
+
+            if (project.hasProperty("redisport") && line.startsWith("common.redis.port=")) {
+                return "common.redis.port=${redisport}"
+            }
+            line
+        }
+        into '/'
+    }
+    from("${innerConfigPath}/ttsd-biz.properties") {
+        into '/'
+    }
+}
+
+/**
  * parameter: dbhost dbport database
  * dbhost default value: ttsd-env.properties common.jdbc.host
  * dbport default value: ttsd-env.properties common.jdbc.port
