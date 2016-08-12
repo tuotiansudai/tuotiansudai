@@ -154,7 +154,7 @@ public class QuestionService {
 
         List<QuestionModel> questions = questionMapper.findByLoginName(loginName, null, null);
         for (QuestionModel question : questions) {
-            List<AnswerModel> answerModels = answerMapper.findByQuestionId(question.getId());
+            List<AnswerModel> answerModels = answerMapper.findByQuestionId(loginName, question.getId());
             if (Iterators.tryFind(answerModels.iterator(), new Predicate<AnswerModel>() {
                 @Override
                 public boolean apply(AnswerModel input) {

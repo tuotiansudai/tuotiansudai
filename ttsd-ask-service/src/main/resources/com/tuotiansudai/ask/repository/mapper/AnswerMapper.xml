@@ -73,7 +73,7 @@
         where login_name = #{loginName}
     </select>
 
-    <select id="findByQuestionId" parameterType="long" resultMap="answerResultMap">
+    <select id="findByQuestionId" parameterType="map" resultMap="answerResultMap">
         select *
         from answer
         where question_id = #{questionId}
@@ -85,7 +85,6 @@
         select *
         from answer
         where question_id = #{questionId}
-        and (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
         and best_answer is TRUE
         for update
     </select>

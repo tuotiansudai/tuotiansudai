@@ -106,7 +106,7 @@ public class AnswerService {
     }
 
     public List<AnswerDto> getAnswers(final String loginName, long questionId) {
-        List<AnswerModel> answerModels = answerMapper.findByQuestionId(questionId);
+        List<AnswerModel> answerModels = answerMapper.findByQuestionId(loginName, questionId);
         return Lists.transform(answerModels, new Function<AnswerModel, AnswerDto>() {
             @Override
             public AnswerDto apply(AnswerModel input) {
