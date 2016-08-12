@@ -34,7 +34,7 @@
 
     <update id="update" parameterType="ProductModel">
         update product
-        set `product_type` = #{productType},
+        set `goods_type` = #{goodsType},
         `product_name` = #{productName},
         `seq` = #{seq},
         `image_url` = #{imageUrl},
@@ -73,5 +73,9 @@
         </where>
         order by seq, updated_time desc
     </select>
+
+    <delete id="delete" parameterType="long">
+        delete from product where id = #{id}
+    </delete>
 
 </mapper>

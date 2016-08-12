@@ -122,8 +122,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDataDto updateProduct(ProductDto productDto) {
         ProductModel productModel = productMapper.findById(productDto.getId());
+        if (productModel == null) {
+            return new BaseDataDto(false, null);
+        }
         if (productModel.isActive()) {
-            return new BaseDataDto(false, "以生效的商品不能更新");
+            return new BaseDataDto(false, null);
         }
         productModel.setGoodsType(productDto.getGoodsType());
         productModel.setProductName(productDto.getProductName());
@@ -137,6 +140,19 @@ public class ProductServiceImpl implements ProductService {
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.update(productModel);
+        return new BaseDataDto(true, null);
+    }
+
+    @Override
+    public BaseDataDto deleteProduct(long id) {
+        ProductModel productModel = productMapper.findById(id);
+        if (productModel == null) {
+            return new BaseDataDto(false, null);
+        }
+        if (productModel.isActive()) {
+            return new BaseDataDto(false, null);
+        }
+        productMapper.delete(id);
         return new BaseDataDto(true, null);
     }
 }

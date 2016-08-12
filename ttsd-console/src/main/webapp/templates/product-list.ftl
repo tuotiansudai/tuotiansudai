@@ -10,7 +10,7 @@
             <span class="txt"></span>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive" id="productListContainer">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
@@ -40,9 +40,21 @@
                     <td>${product.productPrice}</td>
                     <td>${(product.endTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>
-                        <a href="/product-manage/find-orders?productId=${product.id!}">查看明细</a>
+                        <input type="hidden" data-id="${product.id!}">
+                        <#if product.active>
+                            <a href="/product-manage/find-orders?productId=${product.id!}">查看详情</a>
+                        <#else>
+                            <a href="/product-manage/edit/${product.id!}">编辑</a>
+                            <a href="javascript:void(0);" class="delete-record">删除</a>
+                        </#if>
                     </td>
-                    <td>${product.active?string('是','编辑/删除')}</td>
+                    <td>
+                        <#if product.active>
+                            <input type="radio" checked="checked" disabled="disabled"> 已生效
+                        <#else>
+                            <input type="radio"> 确认生效
+                        </#if>
+                    </td>
                 </#list>
             </tbody>
         </table>

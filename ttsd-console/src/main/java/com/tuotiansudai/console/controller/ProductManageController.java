@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 
 import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.point.dto.GoodsActiveDto;
 import com.tuotiansudai.point.dto.GoodsConsignmentDto;
 import com.tuotiansudai.point.dto.ProductDto;
@@ -50,12 +51,28 @@ public class ProductManageController {
     public ModelAndView editProduct(@PathVariable long id) {
         ProductModel productModel = productService.findById(id);
         ModelAndView modelAndView = new ModelAndView("/edit-product");
+        modelAndView.addObject("goodsType", productModel.getGoodsType());
+        modelAndView.addObject("goodsTypeDesc", productModel.getGoodsType().getDescription());
         modelAndView.addObject("product", productModel);
         return modelAndView;
     }
 
+    @RequestMapping(value = "/delete/{id:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDataDto deleteProduct(@PathVariable long id) {
+        try {
+            productService.deleteProduct(id);
+            return new BaseDataDto(true, null);
+        } catch (Exception e) {
+            logger.error("delete product failed product id = (" + id + ")");
+            return new BaseDataDto(false, e.getLocalizedMessage());
+        }
+    }
+
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView updateProduct(@ModelAttribute ProductDto productDto) {
+        productDto.setLoginName(LoginUserInfo.getLoginName());
         productService.updateProduct(productDto);
         return new ModelAndView("redirect:find-goods?goodsType=" + productDto.getGoodsType());
     }

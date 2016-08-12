@@ -23,5 +23,11 @@ public interface ProductMapper {
             @Param(value = "goodsType") GoodsType goodsType
     );
 
-    ProductModel findById(long id);
+    ProductModel findById(
+            @Param(value = "id") long id
+    );
+
+    void delete(
+            @Param(value = "id") long id
+    );
 }

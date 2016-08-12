@@ -1,9 +1,9 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="createProduct" title="添加商品">
+<@global.main pageCss="" pageJavascript="edit-product.js" headLab="point-manage" title="添加商品">
 
 <div class="col-md-10">
-    <form action="/product-manage/edit" method="put" class="form-horizontal form-list">
+    <form action="/product-manage/edit" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>
             <div class="col-sm-4">
@@ -25,10 +25,10 @@
             <label class="col-sm-2 control-label">商品图片:</label>
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if product??>${banner.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
+                       value="<#if product??>${product.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
                 <div class="imageUrlImage" style="margin-top: 10px">
-                    <#if banner?? && banner.imageUrl??>
-                        <img style="width:100%" src="/${banner.imageUrl!}" alt="缩略图" width="300" height="244"/>
+                    <#if product?? && product.imageUrl??>
+                        <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="300" height="244"/>
                     </#if>
                 </div>
             </div>
@@ -76,7 +76,7 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control product-start" name="startTime"
-                           <#if coupon??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
+                           <#if product??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
                            datatype="date" nullmsg="请选择商品开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
@@ -87,7 +87,7 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
                     <input type='text' class="form-control product-end" name="endTime"
-                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
+                           <#if product??>value="${(product.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
                            datatype="date"
                            nullmsg="请选择商品结束时间"/>
 					<span class="input-group-addon">
@@ -106,18 +106,17 @@
             </div>
             <div class="col-sm-2"><span style="line-height: 34px">财豆</span></div>
         </div>
-
         <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
+            <input type="hidden" name="id" value="${product.id}">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave"
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>
-                    确认创建
+                    确认修改
                 </button>
             </div>
         </div>
-
     </form>
 </div>
 <!-- content area end -->

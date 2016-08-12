@@ -25,10 +25,10 @@
             <label class="col-sm-2 control-label">商品图片:</label>
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if product??>${banner.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
+                       value="<#if product??>${product.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
                 <div class="imageUrlImage" style="margin-top: 10px">
-                    <#if banner?? && banner.imageUrl??>
-                        <img style="width:100%" src="/${banner.imageUrl!}" alt="缩略图" width="300" height="244"/>
+                    <#if product?? && product.imageUrl??>
+                        <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="300" height="244"/>
                     </#if>
                 </div>
             </div>
@@ -76,7 +76,7 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
                     <input type='text' class="form-control product-start" name="startTime"
-                           <#if coupon??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
+                           <#if product??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
                            datatype="date" nullmsg="请选择商品开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
@@ -87,7 +87,7 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
                     <input type='text' class="form-control product-end" name="endTime"
-                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if> datatype="date"
+                           <#if product??>value="${(product.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if> datatype="date"
                            nullmsg="请选择商品结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
