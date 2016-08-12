@@ -15,8 +15,6 @@ public interface QuestionMapper {
 
     long update(QuestionModel questionModel);
 
-    QuestionModel lockById(@Param(value = "id") long id);
-
     QuestionModel findById(@Param(value = "id") long id);
 
     List<QuestionModel> findByLoginName(@Param(value = "loginName") String loginName,
