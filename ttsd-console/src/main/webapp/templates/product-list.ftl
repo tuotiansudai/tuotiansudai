@@ -50,14 +50,22 @@
                     </td>
                     <td>
                         <#if product.active>
-                            <input type="radio" checked="checked" disabled="disabled"> 已生效
+                            <input type="checkbox" checked="checked" disabled="disabled"> 已生效
                         <#else>
-                            <input type="radio"> 确认生效
+                            <input class="confirm-btn" type="checkbox" data-id="${product.id}"> 确认生效
                         </#if>
                     </td>
                 </#list>
             </tbody>
         </table>
+    </div>
+    <div class="table-responsive">
+        <div class="col-sm-1 col-md-offset-11">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button type="button" class="btn btn-sm btn-primary" id="btnSave">
+                确认创建
+            </button>
+        </div>
     </div>
     <!-- pagination  -->
     <nav>
@@ -87,7 +95,6 @@
                     </#if>
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
-
                 </li>
             </ul>
         </#if>

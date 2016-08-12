@@ -12,6 +12,7 @@ import com.tuotiansudai.point.service.ProductService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -113,19 +114,24 @@ public class ProductManageController {
     }
 
     @RequestMapping(value = "/goods-active", method = RequestMethod.POST)
-    public ModelAndView goodsActive(GoodsActiveDto activeDto) {
+    @ResponseBody
+    public BaseDataDto goodsActive(@Valid @RequestBody GoodsActiveDto activeDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new BaseDataDto(false, bindingResult.getFieldError().getDefaultMessage());
+        }
         try {
             productService.goodsActive(activeDto);
+            return new BaseDataDto(true, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
+            return new BaseDataDto(false, e.getLocalizedMessage());
         }
-        return new ModelAndView();
     }
 
     @RequestMapping(value = "/consignment", method = RequestMethod.POST)
+    @ResponseBody
     public ModelAndView goodsConsignment(@Valid @ModelAttribute GoodsConsignmentDto consignmentDto) {
         consignmentDto.setLoginName(LoginUserInfo.getLoginName());
-
         try {
             productService.goodsConsignment(consignmentDto);
         } catch (Exception e) {

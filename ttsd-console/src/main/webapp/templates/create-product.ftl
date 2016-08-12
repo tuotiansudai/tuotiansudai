@@ -108,11 +108,11 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="col-sm-4">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave"
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>
-                    确认创建
+                    确认生效
                 </button>
             </div>
         </div>
