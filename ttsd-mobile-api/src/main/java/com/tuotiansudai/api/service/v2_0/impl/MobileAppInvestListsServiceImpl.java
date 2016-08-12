@@ -119,12 +119,10 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 }
                 dto.setLastRepayDate(StringUtils.trimToEmpty(lastRepayDate));
 
-                String transferStatus;
+                String transferStatus = "";
                 if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE) {
                     transferStatus = investTransferService.isTransferable(investModel.getId()) ? investModel.getTransferStatus().name() : "";
-                } else if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    transferStatus = "";
-                } else {
+                } else if(investModel.getTransferStatus() == TransferStatus.SUCCESS){
                     transferStatus = investModel.getTransferStatus().name();
                 }
                 dto.setTransferStatus(transferStatus);

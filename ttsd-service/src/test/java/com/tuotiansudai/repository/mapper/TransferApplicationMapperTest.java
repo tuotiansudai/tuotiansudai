@@ -62,7 +62,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, null, loanId, 0, 10);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, null, loanId, null, 0, 10);
 
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());
@@ -73,6 +73,7 @@ public class TransferApplicationMapperTest {
         assertEquals(transfereeModel.getMobile(), transferApplicationRecordDto.get(0).getTransfereeMobile());
         assertEquals(transferrerModel.getMobile(), transferApplicationRecordDto.get(0).getTransferrerMobile());
     }
+
     @Test
     public void shouldFindTransferApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
@@ -128,7 +129,7 @@ public class TransferApplicationMapperTest {
         transferApplicationModel.setTransferFee(1300l);
         transferApplicationMapper.create(transferApplicationModel);
 
-        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName().length() > 10 ? "m" + transfereeInvestModel.getLoginName().substring(0, 10) : "m" + transfereeInvestModel.getLoginName(), null, 0, 1);
+        List<TransferApplicationRecordDto> transferApplicationRecordDto = transferApplicationMapper.findTransferApplicationPaginationList(null, null, null, null, null, transfereeInvestModel.getLoginName().length() > 10 ? "m" + transfereeInvestModel.getLoginName().substring(0, 10) : "m" + transfereeInvestModel.getLoginName(), null, null, 0, 1);
         assertNotNull(transferApplicationRecordDto.get(0));
         assertEquals("name", transferApplicationRecordDto.get(0).getName());
         assertEquals(1000, transferApplicationRecordDto.get(0).getTransferAmount());
@@ -285,5 +286,40 @@ public class TransferApplicationMapperTest {
         long count2 = transferApplicationMapper.findCountTransferApplicationByApplicationTime(transferModel.getLoginName(),new DateTime(2016,7,4,23,59,59).toDate(),heroRankingActivityPeriod.get(0));
 
         assertEquals(0, count2);
+    }
+
+    @Test
+    public void testFindAllTransferringApplicationsByLoanId() throws Exception {
+        long loanId = idGenerator.generate();
+        UserModel transferModel = createUserByUserId("transfer");
+        UserModel transfereeModel = createUserByUserId("transferee");
+        LoanModel loanModel = createLoanByUserId("transfer", loanId);
+        InvestModel transferInvestModel = createInvest("transfer", loanId);
+        InvestModel transfereeInvestModel = createInvest("transferee", loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setTransferInvestId(transferInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new DateTime(2016, 7, 5, 12, 0, 0).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanId);
+        assertEquals(2, transferApplicationModels.size());
+        for (TransferApplicationModel transferApplicationModel1 : transferApplicationModels) {
+            assertEquals(TransferStatus.TRANSFERRING, transferApplicationModel1.getStatus());
+        }
     }
 }

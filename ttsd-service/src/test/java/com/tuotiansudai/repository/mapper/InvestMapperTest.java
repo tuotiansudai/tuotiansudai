@@ -54,11 +54,11 @@ public class InvestMapperTest {
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
 
-    private String User_ID = "helloworld";
-    private String User_ID2 = "testuser";
-    private long Loan_ID = 200093022L;
-    private long Loan_ID2 = 300093022L;
-    private long Loan_ID3 = 400093022L;
+    private String User_ID = "helloworld1";
+    private String User_ID2 = "testuser1";
+    private long Loan_ID = 200093023L;
+    private long Loan_ID2 = 300093023L;
+    private long Loan_ID3 = 400093023L;
 
     @Test
     public void shouldCreateInvest() throws Exception {
@@ -257,8 +257,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferAbleApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -278,8 +278,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindCountWebTransferableApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId,InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -292,8 +292,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameOverdueIsFail() {
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.OVERDUE);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -306,8 +306,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameInvestTransferStatusCancelIsFail(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.CANCEL);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -320,8 +320,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameTransferStatusCancelDiffDayIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         TransferApplicationModel transferApplicationModel = getFakeTransferApplicationModel(investorModel.getLoginName(), TransferStatus.CANCEL, investModel.getId(), loanModel.getId());
@@ -338,8 +338,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameTransferStatusCancelSameDayIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         investModel.setTransferStatus(TransferStatus.CANCEL);
@@ -357,8 +357,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindWebTransferableApplicationPaginationByLoginNameLessLimitDayIsFail(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(1).toDate(), new DateTime().plusDays(1).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -372,8 +372,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindTransferableApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -393,8 +393,8 @@ public class InvestMapperTest {
     @Test
     public void shouldFindCountTransferAbleApplicationPaginationByLoginNameIsSuccess(){
         long loanId = idGenerator.generate();
-        UserModel investorModel = createUser("investorModelRound4Test");
-        UserModel loanerModel = createUser("loanerModelRound4Test");
+        UserModel investorModel = createUser("investorModelRound5Test");
+        UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId,LoanStatus.REPAYING);
         InvestModel investModel = createInvest(investorModel.getLoginName(), loanId,InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);

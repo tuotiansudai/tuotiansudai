@@ -9,7 +9,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -32,11 +31,11 @@ public class RegisterUserLogAspect {
         } catch (Throwable throwable) {
             logger.error(throwable.getLocalizedMessage(), throwable);
             DateTime endTime = new DateTime();
-            logger.info(MessageFormat.format("[Register User {0}] failed, total time {1} ", dto.getMobile(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+            logger.info(MessageFormat.format("[Register User {0}] failed, total time {1} ", dto.getMobile(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
             throw throwable;
         }
         DateTime endTime = new DateTime();
-        logger.info(MessageFormat.format("[Register User {0}] completed, total time {1} ", dto.getMobile(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+        logger.info(MessageFormat.format("[Register User {0}] completed, total time {1} ", dto.getMobile(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
         return proceed;
     }
 
@@ -51,11 +50,11 @@ public class RegisterUserLogAspect {
         } catch (Throwable throwable) {
             logger.error(throwable.getLocalizedMessage(), throwable);
             DateTime endTime = new DateTime();
-            logger.info(MessageFormat.format("[Register User {0}] insert user failed, total time {1} ", model.getMobile(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+            logger.info(MessageFormat.format("[Register User {0}] insert user failed, total time {1} ", model.getMobile(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
             throw throwable;
         }
         DateTime endTime = new DateTime();
-        logger.info(MessageFormat.format("[Register User {0}] insert user completed, total time {1} ", model.getMobile(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+        logger.info(MessageFormat.format("[Register User {0}] insert user completed, total time {1} ", model.getMobile(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
         return proceed;
     }
 
@@ -71,11 +70,11 @@ public class RegisterUserLogAspect {
         } catch (Throwable throwable) {
             logger.error(throwable.getLocalizedMessage(), throwable);
             DateTime endTime = new DateTime();
-            logger.info(MessageFormat.format("[Register User {0}] insert user role failed, total time {1} ", models.get(0).getLoginName(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+            logger.info(MessageFormat.format("[Register User {0}] insert user role failed, total time {1} ", models.get(0).getLoginName(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
             throw throwable;
         }
         DateTime endTime = new DateTime();
-        logger.info(MessageFormat.format("[Register User {0}] insert user role completed, total time {1} ", models.get(0).getLoginName(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+        logger.info(MessageFormat.format("[Register User {0}] insert user role completed, total time {1} ", models.get(0).getLoginName(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
         return proceed;
     }
 
@@ -91,11 +90,11 @@ public class RegisterUserLogAspect {
         } catch (Throwable throwable) {
             logger.error(throwable.getLocalizedMessage(), throwable);
             DateTime endTime = new DateTime();
-            logger.info(MessageFormat.format("[Register User {0}] insert user role failed, total time {1} ", loginName, String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+            logger.info(MessageFormat.format("[Register User {0}] insert user role failed, total time {1} ", loginName, String.valueOf(endTime.getMillis() - startTime.getMillis())));
             throw throwable;
         }
         DateTime endTime = new DateTime();
-        logger.info(MessageFormat.format("[Register User {0}] insert user role completed, total time {1} ", loginName, String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+        logger.info(MessageFormat.format("[Register User {0}] insert user role completed, total time {1} ", loginName, String.valueOf(endTime.getMillis() - startTime.getMillis())));
         return proceed;
     }
 
@@ -111,11 +110,11 @@ public class RegisterUserLogAspect {
         } catch (Throwable throwable) {
             logger.error(throwable.getLocalizedMessage(), throwable);
             DateTime endTime = new DateTime();
-            logger.info(MessageFormat.format("[Register User {0}] insert user member failed, total time {1} ", userMembershipModel.getLoginName(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+            logger.info(MessageFormat.format("[Register User {0}] insert user member failed, total time {1} ", userMembershipModel.getLoginName(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
             throw throwable;
         }
         DateTime endTime = new DateTime();
-        logger.info(MessageFormat.format("[Register User {0}] insert user member completed, total time {1} ", userMembershipModel.getLoginName(), String.valueOf(Seconds.secondsBetween(startTime, endTime).getSeconds())));
+        logger.info(MessageFormat.format("[Register User {0}] insert user member completed, total time {1} ", userMembershipModel.getLoginName(), String.valueOf(endTime.getMillis() - startTime.getMillis())));
         return proceed;
     }
 }

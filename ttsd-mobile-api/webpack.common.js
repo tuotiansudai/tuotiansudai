@@ -7,7 +7,7 @@ module.exports = {
 	output: {
 		filename: 'index.js',
 		path: path.join(basePath, 'dist'),
-		publicPath: '/assets/'
+		publicPath: '/api/js/'
 	},
 	module: {
 		loaders: [{

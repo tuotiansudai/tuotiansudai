@@ -24,7 +24,7 @@
         <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
         <result column="invest_fee_rate" property="investFeeRate"/>
     </resultMap>
-    
+
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
         <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
@@ -624,10 +624,6 @@
           invest
         INNER JOIN
           loan ON invest.loan_id = loan.id
-        LEFT JOIN
-          loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -635,31 +631,18 @@
             AND invest.status = 'SUCCESS'
             AND invest.transfer_status = 'TRANSFERABLE'
             AND invest.transfer_invest_id IS NULL
-            AND lr.period = (
-                    SELECT
-                    MIN(period)
-                    FROM
-                    loan_repay future_repay
-                    JOIN
-                    loan ON future_repay.loan_id = loan.id
-                    WHERE
-                    future_repay.loan_id = lr.loan_id
-                    AND DATE(NOW()) >= DATE(loan.recheck_time)
-                    AND DATE(future_repay.repay_date) >= DATE(NOW())
-                )
-            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
-                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
-                    SELECT
-                    days_limit
-                    FROM
-                    transfer_rule
-                )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND EXISTS (SELECT * FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
+                        AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                                        DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                                            SELECT
+                                            days_limit
+                                            FROM
+                                            transfer_rule
+                                        )
+                       )
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
             ORDER BY invest.created_time DESC
             limit #{index}, #{pageSize}
     </select>
@@ -671,10 +654,6 @@
           invest
         INNER JOIN
           loan ON invest.loan_id = loan.id
-        LEFT JOIN
-          loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -682,31 +661,18 @@
             AND invest.status = 'SUCCESS'
             AND invest.transfer_status = 'TRANSFERABLE'
             AND invest.transfer_invest_id IS NULL
-            AND lr.period = (
-                    SELECT
-                    MIN(period)
-                    FROM
-                    loan_repay future_repay
-                    JOIN
-                    loan ON future_repay.loan_id = loan.id
-                    WHERE
-                    future_repay.loan_id = lr.loan_id
-                    AND DATE(NOW()) >= DATE(loan.recheck_time)
-                    AND DATE(future_repay.repay_date) >= DATE(NOW())
-                )
-            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
-                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
-                    SELECT
-                    days_limit
-                    FROM
-                    transfer_rule
-                )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND EXISTS (SELECT * FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
+                        AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                                        DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                                            SELECT
+                                            days_limit
+                                            FROM
+                                            transfer_rule
+                                        )
+                       )
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
     </select>
 
 
@@ -727,10 +693,6 @@
           invest
         INNER JOIN
           loan ON invest.loan_id = loan.id
-        LEFT JOIN
-          loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -738,31 +700,18 @@
             AND invest.status = 'SUCCESS'
             AND invest.transfer_status = 'TRANSFERABLE'
             AND invest.transfer_invest_id IS NULL
-            AND lr.period = (
-                    SELECT
-                    MIN(period)
-                    FROM
-                    loan_repay future_repay
-                    JOIN
-                    loan ON future_repay.loan_id = loan.id
-                    WHERE
-                    future_repay.loan_id = lr.loan_id
-                    AND DATE(NOW()) >= DATE(loan.recheck_time)
-                    AND DATE(future_repay.repay_date) >= DATE(NOW())
-                )
-            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
-                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
-                    SELECT
-                    days_limit
-                    FROM
-                    transfer_rule
-                )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND EXISTS (SELECT * FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
+                        AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                                        DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                                            SELECT
+                                            days_limit
+                                            FROM
+                                            transfer_rule
+                                        )
+                       )
+            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
             ORDER BY invest.created_time DESC
             limit #{index}, #{pageSize}
     </select>
@@ -774,10 +723,6 @@
           invest
         INNER JOIN
           loan ON invest.loan_id = loan.id
-        LEFT JOIN
-          loan_repay lr ON invest.loan_id = lr.loan_id
-        LEFT JOIN
-          transfer_application ta ON invest.id = ta.transfer_invest_id
 
         WHERE
             invest.login_name = #{loginName}
@@ -785,31 +730,18 @@
             AND invest.status = 'SUCCESS'
             AND invest.transfer_status = 'TRANSFERABLE'
             AND invest.transfer_invest_id IS NULL
-            AND lr.period = (
-                    SELECT
-                    MIN(period)
-                    FROM
-                    loan_repay future_repay
-                    JOIN
-                    loan ON future_repay.loan_id = loan.id
-                    WHERE
-                    future_repay.loan_id = lr.loan_id
-                    AND DATE(NOW()) >= DATE(loan.recheck_time)
-                    AND DATE(future_repay.repay_date) >= DATE(NOW())
-                )
-            AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
-                DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
-                    SELECT
-                    days_limit
-                    FROM
-                    transfer_rule
-                )
-            AND (
-                    ta.id IS NULL OR
-                    (ta.status = 'CANCEL'
-                    AND DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),
-                    DATE_FORMAT(ta.application_time, '%Y-%m-%d')) &lt;&gt; 0)
-                )
+            AND EXISTS (SELECT * FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
+                        AND DATEDIFF(DATE_FORMAT(lr.repay_date, '%Y-%m-%d'),
+                                        DATE_FORMAT(NOW(), '%Y-%m-%d')) >= (
+                                            SELECT
+                                            days_limit
+                                            FROM
+                                            transfer_rule
+                                        )
+                       )
+        AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
     </select>
 
     <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">

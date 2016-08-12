@@ -5,12 +5,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
@@ -40,10 +36,9 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,9 +110,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private int investProcessListSize;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
     private CouponRepayMapper couponRepayMapper;
 
     @Override
@@ -138,6 +130,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
+
+        logger.info(MessageFormat.format("[Transfer No Password Invest Request Data] user={0}, loan={1}, invest={2}, transferInvest={3}, amount={4}, source={5}",
+                investDto.getLoginName(),
+                investDto.getLoanId(),
+                String.valueOf(investModel.getId()),
+                String.valueOf(investModel.getTransferInvestId()),
+                investDto.getAmount(),
+                investDto.getSource()));
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
                 String.valueOf(investModel.getId()),
@@ -183,6 +183,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
+
+        logger.info(MessageFormat.format("[Transfer Invest Request Data] user={0}, loan={1}, invest={2}, transferInvest={3}, amount={4}, source={5}",
+                investDto.getLoginName(),
+                investDto.getLoanId(),
+                String.valueOf(investModel.getId()),
+                String.valueOf(investModel.getTransferInvestId()),
+                investDto.getAmount(),
+                investDto.getSource()));
 
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestTransferRequest(
@@ -322,7 +330,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         try {
             this.updateInvestRepay(transferApplicationModel);
-            this.updateCouponRepay(transferApplicationModel.getTransferInvestId(),transferApplicationModel.getPeriod());
+            this.updateCouponRepay(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update invest repay failed", String.valueOf(investModel.getId())), e);
             this.sendFatalNotify(MessageFormat.format("债权转让({0})更新回款计划失败", String.valueOf(investId)));
@@ -383,7 +391,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
     }
 
-    private void updateCouponRepay(long investId,final int period){
+    private void updateCouponRepay(long investId, final int period) {
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investId);
         List<CouponRepayModel> transferredCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
             @Override
@@ -392,7 +400,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             }
         }));
 
-        for(CouponRepayModel couponRepayModel : transferredCouponRepayModels){
+        for (CouponRepayModel couponRepayModel : transferredCouponRepayModels) {
             couponRepayModel.setExpectedInterest(0);
             couponRepayModel.setExpectedFee(0);
             couponRepayModel.setTransferred(true);
