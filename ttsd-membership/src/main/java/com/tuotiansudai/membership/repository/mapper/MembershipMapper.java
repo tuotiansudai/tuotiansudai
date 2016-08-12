@@ -16,4 +16,6 @@ public interface MembershipMapper {
     List<Integer> findAllLevels();
     
     MembershipModel findByExperience(long experience);
+
+    List<MembershipModel> findAllMembership();
 }

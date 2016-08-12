@@ -161,7 +161,7 @@ public class InvestTransferControllerTest {
         // 超投返款
         overInvestPaybackNotify(investId2, "0000");
 
-        List<InvestModel> investModelList2 = investMapper.findByLoginName(transferee2.getLoginName(), 0, Integer.MAX_VALUE);
+        List<InvestModel> investModelList2 = investMapper.findPaginationByLoginName(transferee2.getLoginName(), 0, Integer.MAX_VALUE);
         assert investModelList2.size() > 0;
         InvestModel investModel2 = investModelList2.get(0);
         assertThat(investModel2.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
@@ -187,7 +187,7 @@ public class InvestTransferControllerTest {
                 .andExpect(jsonPath("$.data.status").value(true));
 
 
-        List<InvestModel> investModelList = investMapper.findByLoginName(mockInvestLoginName, 0, Integer.MAX_VALUE);
+        List<InvestModel> investModelList = investMapper.findPaginationByLoginName(mockInvestLoginName, 0, Integer.MAX_VALUE);
         assert investModelList.size() > 0;
         InvestModel investModel = investModelList.get(0);
 

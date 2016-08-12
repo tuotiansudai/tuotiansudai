@@ -126,7 +126,7 @@
         limit 1;
     </select>
 
-    <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
+    <select id="findPaginationByLoginName" parameterType="map" resultMap="investResultMap">
         select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements
         from invest
         inner join loan on invest.loan_id = loan.id
@@ -822,5 +822,21 @@
             </foreach>
         </if>
     </select>
+
+    <select id="findCountExperienceLoanByLoginName" parameterType="map" resultType="int">
+        select count(1) from invest
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status &lt;&gt; 'CANCEL' and loan.product_type = 'EXPERIENCE'
+    </select>
+
+    <select id="findCountNewbieExceptExperienceLoanByLoginName" parameterType="map" resultType="int">
+        select count(1) from invest
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status &lt;&gt; 'CANCEL' and loan.product_type &lt;&gt; 'EXPERIENCE' and loan.activity_type = 'NEWBIE'
+    </select>
+
+
 
 </mapper>
