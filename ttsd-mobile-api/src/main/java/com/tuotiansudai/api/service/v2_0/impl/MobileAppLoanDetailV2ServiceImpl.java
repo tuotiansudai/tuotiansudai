@@ -147,7 +147,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
         }
-
+        dataDto.setActivityType(loanModel.getActivityType());
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
         dataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loanModel.getFundraisingStartTime()));
         dataDto.setMinInvestMoney(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
