@@ -126,6 +126,10 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             dataDto.setLoanStatus(loanModel.getStatus().name().toLowerCase());
             dataDto.setLoanStatusDesc(loanModel.getStatus().getDescription());
         }
+        if (loanModel.getFundraisingStartTime() != null) {
+            dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+        }
         long investedAmount;
         if (loanModel.getProductType() == ProductType.EXPERIENCE) {
             Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
@@ -145,10 +149,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         }
 
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
-        if (loanModel.getFundraisingStartTime() != null) {
-            dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
-            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
-        }
         dataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loanModel.getFundraisingStartTime()));
         dataDto.setMinInvestMoney(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         dataDto.setCardinalNumber(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
