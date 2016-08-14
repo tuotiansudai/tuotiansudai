@@ -1,4 +1,4 @@
-package com.tuotiansudai.pointsystem.directive;
+package com.tuotiansudai.pointsystem.freemarker.directive;
 
 
 import com.tuotiansudai.message.service.UserMessageService;
