@@ -14,6 +14,14 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-2 control-label">生日券来源描述:</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" value="生日月活动赠送" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label  class="col-sm-2 control-label">可投资标的: </label>
             <div class="col-sm-3">
                 <#list productTypes as productType>

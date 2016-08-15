@@ -51,6 +51,8 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     private UserGroup userGroup;
 
+    private String couponSource;
+
     public UserCouponView() {
     }
 
@@ -196,6 +198,14 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     public void setUserGroup(UserGroup userGroup) {
         this.userGroup = userGroup;
+    }
+
+    public String getCouponSource() {
+        return couponSource;
+    }
+
+    public void setCouponSource(String couponSource) {
+        this.couponSource = couponSource;
     }
 
     private int getStatusCode() {

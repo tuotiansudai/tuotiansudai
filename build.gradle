@@ -22,10 +22,6 @@ subprojects {
 
         reports.html.enabled = false
 
-        jacoco {
-            applyTo run
-        }
-
         task applicationCodeCoverageReport(type: JacocoReport) {
             executionData run
             sourceSets sourceSets.main

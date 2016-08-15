@@ -59,8 +59,13 @@ class Deployment(object):
         sh('mv ./ttsd-mobile-api/src/main/webapp/static_api.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_api.zip -d static')
 
+        sh('cd ./ttsd-mobile-ask/src/main/webapp && zip -r static_ask.zip ask/')
+        sh('mv ./ttsd-mobile-ask/src/main/webapp/static_ask.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
+
         sh('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
         sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
+
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
 
     def init_docker(self):

@@ -118,6 +118,10 @@
                                         产品可用
                                     </#if>
                                 </p>
+
+                                <p>
+                                    ${coupon.couponSource!}
+                                </p>
                             </div>
                         </div>
                         <div class="bottom-time">
@@ -202,6 +206,10 @@
                                         产品可用
                                     </#if>
                                 </p>
+
+                                <p>
+                                    ${record.couponSource!}
+                                </p>
                             </div>
                         </div>
                         <div class="detail-com">
@@ -276,6 +284,10 @@
                                         </#list>
                                         产品可用
                                     </#if>
+                                </p>
+
+                                <p>
+                                    ${coupon.couponSource!}
                                 </p>
                             </div>
                         </div>

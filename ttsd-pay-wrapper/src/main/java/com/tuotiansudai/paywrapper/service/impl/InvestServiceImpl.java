@@ -137,7 +137,9 @@ public class InvestServiceImpl implements InvestService {
                     String.valueOf(investModel.getId()),
                     accountModel.getPayUserId(),
                     String.valueOf(investModel.getAmount()), dto.getSource());
-            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+            BaseDto<PayFormDataDto> generateFormData = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+            couponInvestService.invest(investModel.getId(), dto.getUserCouponIds());
+            return generateFormData;
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
