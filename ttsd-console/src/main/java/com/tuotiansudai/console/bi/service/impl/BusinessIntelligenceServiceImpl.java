@@ -294,7 +294,14 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Override
     public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
-        return businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime,endTime,granularity);
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
+        if(granularity.equals(Granularity.Weekly)){
+            for(KeyValueModel keyValueModel : keyValueModels){
+                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1,keyValueModel.getName().length());
+                keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
+            }
+        }
+        return keyValueModels;
     }
 
 }
