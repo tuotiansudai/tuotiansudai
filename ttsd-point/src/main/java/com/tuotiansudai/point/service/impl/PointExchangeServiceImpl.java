@@ -8,7 +8,9 @@ import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -31,6 +33,9 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private ProductOrderMapper productOrderMapper;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -61,6 +66,11 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
+    public List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName) {
+        return productOrderMapper.findProductOrderListByLoginName(loginName);
+    }
+
+    @Override
     @Transactional
     public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint) {
         try {
@@ -72,4 +82,6 @@ public class PointExchangeServiceImpl implements PointExchangeService {
             return false;
         }
     }
+
+
 }

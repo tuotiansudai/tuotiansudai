@@ -2,6 +2,7 @@ package com.tuotiansudai.point.repository.mapper;
 
 
 import com.tuotiansudai.point.repository.model.ProductOrderModel;
+import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface ProductOrderMapper {
     long findProductOrderCount();
 
     ProductOrderModel findById(long id);
+
+    List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName);
 
 }

@@ -1,12 +1,12 @@
 package com.tuotiansudai.pointsystem.controller;
 
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.pointsystem.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,9 @@ public class PointSystemController {
 
     @Autowired
     private PointTaskService pointTaskService;
+
+    @Autowired
+    private PointExchangeService pointExchangeService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView pointSystemHome() {
@@ -68,9 +71,9 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/record",method = RequestMethod.GET)
-    public ModelAndView pointSystemRecord() {
+    public ModelAndView pointSystemRecord(String loginName) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-record");
-
+        modelAndView.addObject("recordList", pointExchangeService.findProductOrderListByLoginName(loginName));
         modelAndView.addObject("responsive",true);
         return modelAndView;
     }
@@ -78,7 +81,10 @@ public class PointSystemController {
     @RequestMapping(value = "/bill", method = RequestMethod.GET)
     public ModelAndView pointSystemBill(){
         ModelAndView modelAndView = new ModelAndView("/pointsystem-bill");
-
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), 1, 10, null, null, null);
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        dto.setData(dataDto);
+        modelAndView.addObject("dto",dto);
         modelAndView.addObject("responsive",true);
         return modelAndView;
 

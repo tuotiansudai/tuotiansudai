@@ -93,6 +93,7 @@
 
                 <i class="fr fa fa-chevron-up"></i>
             </div>
+
             <div class="task-frame clearfix" id="taskFrame">
                 <#list newbiePointTasks as newbiePointTask>
                     <div class="task-box">

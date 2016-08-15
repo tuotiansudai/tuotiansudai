@@ -7,8 +7,8 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
@@ -43,7 +43,7 @@ public class ExportController {
     private UserPointPrizeMapper userPointPrizeMapper;
 
     @Autowired
-    private AccountService accountService;
+    private PointBillService pointBillService;
 
     @Autowired
     private ExportService exportService;
@@ -150,7 +150,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<AccountItemDataDto> accountItemDataDtoList = null;//accountService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
+        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
 
         List<List<String>> csvData = exportService.buildOriginListToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
