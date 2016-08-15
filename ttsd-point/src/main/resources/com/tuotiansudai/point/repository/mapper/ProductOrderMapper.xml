@@ -17,7 +17,7 @@
         <result column="address" property="address"/>
         <result column="consignment" property="consignment"/>
         <result column="consignment_time" property="consignmentTime"/>
-        <result column="created_by" property="createBy"/>
+        <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
