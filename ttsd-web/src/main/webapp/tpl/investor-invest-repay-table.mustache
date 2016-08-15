@@ -2,64 +2,9 @@
 <div class="pad-s tc color-note">
 <div class="tl" style="font-size:20px;font-weight:bold;color:#000000">回款详情</div>
 <div class="tl mb-0" style="color:#000000">
-    <p class="mb-0">已收回款总额:399元  &nbsp;&nbsp;  待收回款总额:1111元  &nbsp;&nbsp;  现金红包奖励:50元</p>
+    <p class="mb-0">已收回款总额:{{sumActualInterest}}元  &nbsp;&nbsp;  待收回款总额:{{sumExpectedInterest}}元  &nbsp;&nbsp;  现金红包奖励:{{redInterest}}元</p>
 </div>
 </div>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>期数</th>
-            <th>应回款时间</th>
-            <th class="tr">应回款金额(元)</th>
-            <th class="tr">应收本金(元)</th>
-            <th class="tr">应收利息(元)</th>
-            <th class="tr">服务费(元)</th>
-            <th>回款时间</th>
-            <th class="tr">实收金额(元)</th>
-            <th class="tr">实收利息(元)</th>
-            <th class="tr">实收罚息(元)</th>
-            <th class="tr">实扣服务费(元)</th>
-            <th>状态</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {{#records}}
-            <tr>
-                <td>{{period}}</td>
-                <td>{{repayDate}}</td>
-                <td class="tr">{{amount}}</td>
-                <td class="tr">{{corpus}}</td>
-                <td class="tr">{{expectedInterest}}</td>
-                <td class="tr">{{expectedFee}}</td>
-                <td>
-                    {{#actualRepayDate}}{{.}}{{/actualRepayDate}}
-                    {{^actualRepayDate}}--{{/actualRepayDate}}
-                </td>
-                <td class="tr">
-                    {{#actualAmount}}{{.}}{{/actualAmount}}
-                    {{^actualAmount}}--{{/actualAmount}}
-                </td>
-                <td class="tr">
-                    {{#actualInterest}}{{.}}{{/actualInterest}}
-                    {{^actualInterest}}--{{/actualInterest}}
-                </td>
-                <td class="tr">
-                    {{#defaultInterest}}{{.}}{{/defaultInterest}}
-                    {{^defaultInterest}}--{{/defaultInterest}}
-                </td>
-                <td class="tr">
-                    {{#actualFee}}{{.}}{{/actualFee}}
-                    {{^actualFee}}--{{/actualFee}}
-                </td>
-                <td>
-                    {{status}}
-                </td>
-            </tr>
-        {{/records}}
-        </tbody>
-    </table>
-
     <table class="table table-hover">
             <thead>
             <tr>
@@ -67,8 +12,16 @@
                 <th class="tr">应收回款(元)</th>
                 <th class="tr">应收本金(元)</th>
                 <th class="tr">应收收益(元)</th>
-                <th class="tr">应收奖励(元)</th>
-                <th class="tr">应缴服务费(元)</th>
+                <th class="tr">应收奖励(元)
+                    {{#couponMessage}}
+                        <i class="fa fa-question-circle-o text-b" title="{{couponMessage}}"></i>
+                    {{/couponMessage}}
+                </th>
+                <th class="tr">应缴服务费(元)
+                    {{#level}}
+                        <i class="fa fa-question-circle-o text-b" title="基础服务费为收益和奖励的10%，{{level}}级会员享受服务费{{fee}}折优惠"></i>
+                    {{/level}}
+                </th>
                 <th class="tr">已收回款(元)</th>
                 <th class="tr">回款时间(元)</th>
                 <th>状态</th>
@@ -89,7 +42,12 @@
                                 {{^expectedFee}}--{{/expectedFee}}
                             </td>
                             <td class="tr">
-                                {{#actualAmount}}{{.}}{{/actualAmount}}
+                                {{#actualAmount}}
+                                    {{.}}
+                                    {{#defaultInterest}}
+                                        <i class="fa fa-question-circle-o text-b" title="逾期{{overdueDay}}天，已收违约金{{defaultInterest}}元"></i>
+                                    {{/defaultInterest}}
+                                {{/actualAmount}}
                                 {{^actualAmount}}--{{/actualAmount}}
                             </td>
                             <td class="tr">
@@ -104,6 +62,6 @@
                     </tbody>
             </thead>
         </table>
-<p class="tl mb-0">应收回款=应收本金+应收利息+应收奖励-应缴服务费</p>
+<p class="tl mb-0">  应收回款=应收本金+应收利息+应收奖励-应缴服务费</p>
 
 </div>

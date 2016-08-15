@@ -48,22 +48,24 @@ public class InvestRepayDataItemDto {
 
     private String couponDefaultInterest;
 
+    private String overdueDay;
+
     private LoanModel loan;
 
     public InvestRepayDataItemDto() {
     }
 
     public InvestRepayDataItemDto(InvestRepayModel model) {
-        if(RepayStatus.COMPLETE == model.getStatus()) {
+        if(RepayStatus.COMPLETE == model.getStatus() || RepayStatus.OVERDUE == model.getStatus()) {
             this.actualFee = AmountConverter.convertCentToString(model.getActualFee());
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
-            this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
-            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+            if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
+            if(RepayStatus.OVERDUE == model.getStatus()) this.overdueDay = (model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24) + "";
         }
-        this.investId = model.getInvestId();
+        if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+        if(model.getExpectedFee() > 0) this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
-        this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
         this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
@@ -225,5 +227,13 @@ public class InvestRepayDataItemDto {
 
     public void setCouponDefaultInterest(String couponDefaultInterest) {
         this.couponDefaultInterest = couponDefaultInterest;
+    }
+
+    public String getOverdueDay() {
+        return overdueDay;
+    }
+
+    public void setOverdueDay(String overdueDay) {
+        this.overdueDay = overdueDay;
     }
 }

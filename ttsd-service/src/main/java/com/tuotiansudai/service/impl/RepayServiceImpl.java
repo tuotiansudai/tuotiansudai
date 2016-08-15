@@ -3,13 +3,13 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
@@ -17,19 +17,15 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +60,10 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    private static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
+
+    private static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -158,8 +158,7 @@ public class RepayServiceImpl implements RepayService {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
         List<InvestRepayDataItemDto> repays = Lists.newArrayList();
         long sumActualInterest = 0l;
-        long expectedFee = 0l;
-        long redInterest = 0l;
+        long sumExpectedInterest = 0l;
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
             List<InvestRepayDataItemDto> records = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
                 @Override
@@ -180,17 +179,43 @@ public class RepayServiceImpl implements RepayService {
 
                 if (couponRepay.isPresent()) {
                     investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepay.get().getExpectedInterest()));
-                    investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getExpectedFee()) + couponRepay.get().getExpectedFee()));
-                    if (RepayStatus.COMPLETE.name() == investRepayDataItemDto.getStatus()) {
-                        investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualFee()) + couponRepay.get().getActualFee()));
-                        investRepayDataItemDto.setActualInterest(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualInterest()) + couponRepay.get().getActualInterest()));
+                    investRepayDataItemDto.setExpectedFee(add(investRepayDataItemDto.getExpectedFee(), couponRepay.get().getExpectedFee()));
+                    investRepayDataItemDto.setAmount(add(investRepayDataItemDto.getAmount(), (couponRepay.get().getExpectedInterest() - couponRepay.get().getExpectedFee())));
+                    if (RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())) {
+                        investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(),couponRepay.get().getRepayAmount()));
+                        investRepayDataItemDto.setActualFee(add(investRepayDataItemDto.getActualFee(), couponRepay.get().getActualFee()));
                     }
                 }
 
+                if(!RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())){
+                    sumExpectedInterest += AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount());
+                }
+                sumActualInterest += AmountConverter.convertStringToCent(investRepayDataItemDto.getActualAmount());
                 repays.add(investRepayDataItemDto);
             }
             dataDto.setRecords(repays);
         }
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
+        dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ? userCouponModels.get(0).getActualInterest() : 0l));
+        dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
+        dataDto.setSumExpectedInterest(AmountConverter.convertCentToString(sumExpectedInterest));
+
+        userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON,CouponType.INVEST_COUPON));
+        String couponMessage = "";
+        for(UserCouponModel userCouponModel : userCouponModels){
+            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+            if(couponModel.getCouponType().equals(CouponType.INVEST_COUPON)){
+                couponMessage = MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount()));
+            }else{
+                couponMessage = MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100));
+            }
+        }
+        dataDto.setCouponMessage(couponMessage);
         return baseDto;
+    }
+
+    private String add(String num1,long num2){
+        return AmountConverter.convertCentToString(AmountConverter.convertStringToCent(num1) + num2);
     }
 }

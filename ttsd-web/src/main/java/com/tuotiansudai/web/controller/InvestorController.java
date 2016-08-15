@@ -4,6 +4,8 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
@@ -31,6 +33,9 @@ public class InvestorController {
 
     @Autowired
     private RepayService repayService;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @RequestMapping(value = "/invest-list", method = RequestMethod.GET)
     public ModelAndView investList() {
@@ -76,6 +81,10 @@ public class InvestorController {
     @RequestMapping(path = "/invest/{investId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<InvestRepayDataDto> getInvestRepayData(@PathVariable long investId) {
-        return repayService.findInvestorInvestRepay(LoginUserInfo.getLoginName(), investId);
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(LoginUserInfo.getLoginName());
+        BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(LoginUserInfo.getLoginName(), investId);
+        investRepayDataDtoBaseDto.getData().setLevel(String.valueOf(membershipModel.getLevel()));
+        investRepayDataDtoBaseDto.getData().setFee(String.valueOf(membershipModel.getFee() * 100));
+        return investRepayDataDtoBaseDto;
     }
 }
