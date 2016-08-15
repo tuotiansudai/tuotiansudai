@@ -97,7 +97,7 @@ public class RepayServiceTest {
         UserCouponModel userCouponModel = getUserCouponModel(loginName, investCoupon.getId(), investModel.getId(), loanModel.getId());
         CouponRepayModel couponRepayModel = getCouponRepayModel(loginName,investCoupon.getId(),userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
         BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().size(),is(3));
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().size(),3);
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(),"1.50");
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getCouponExpectedInterest(),"2.00");
     }
