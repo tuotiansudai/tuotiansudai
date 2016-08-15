@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline",
     "server": "nodemon src/main/webapp/ask/feDev/server.js",
-    "build": "rm -rf ./src/main/webapp/ask/dist/ & webpack --progress --profile --colors --config webpack.production.js"
+    "dist": "rm -rf ./src/main/webapp/ask/dist/ & webpack --progress --profile --colors --config webpack.production.js"
   },
   "keywords": [
     "build",
@@ -18,7 +18,6 @@
   "dependencies": {
     "bundle-loader": "^0.5.4",
     "css-loader": "~0.16.0",
-    "file-loader": "~0.8.4",
     "history": "^1.17.0",
     "html-webpack-plugin": "2.x",
     "jquery": "~2.1.4",
@@ -29,15 +28,13 @@
     "webpack-dev-server": "^1.14.0",
     "express": "^4.13.4",
     "freemarker.js": "^1.2.2",
-    "underscore": "^1.8.3",
-    "jquery-form": "^3.50.0"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
     "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.8.5",
     "node-sass": "^3.8.0",
     "nodemon": "^1.9.2",
     "postcss-loader": "^0.9.1",
