@@ -63,6 +63,7 @@
                     <dd class="date-time-answer"><span>${bestAnswer.mobile}</span>
                         <span class="datetime">${bestAnswer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
                         <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
+                        <input type="hidden" data-id="${bestAnswer.id?string.computer}" class="answerId">
                     </dd>
                 </dl>
                 <div class="best-answer-sign"></div>
@@ -72,18 +73,20 @@
 
 <#--ad-->
     <div class="ad-answer"><img src="${staticServer}/images/sign/ad-answer.jpg"></div>
-
     <div class="borderBox clearfix margin-top-10">
         <div class="answers-box ">
             <div class="other-title">共${question.answers}个回答</div>
             <#list answers as answer>
                 <#if (bestAnswer?? && answer.id != bestAnswer.id) || !(bestAnswer??)>
                     <dl class="answers-list">
-                        <dd>${answer.answer}</dd>
+                        <dd>${answer.answer} </dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
                             <span class="datetime">${answer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
                             <span class="agree-ok ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
-                            <span class="btn fr">采纳此条信息</span>
+                        <#if !bestAnswer??>
+                            <span class="btn fr mark-this-answer">采纳此条信息</span>
+                        </#if>
+                            <input type="hidden" data-id="${answer.id?string.computer}" class="answerId">
                         </dd>
                     </dl>
                 </#if>

@@ -9,8 +9,8 @@
         <div class="answers-box">
             <#list questions.data.records as question>
                 <dl class="answers-list">
-                    <dt>${question.question}</dt>
-                    <dd class="detail">${question.addition}</dd>
+                    <dt><a href="/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
+                    <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
                         <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span>

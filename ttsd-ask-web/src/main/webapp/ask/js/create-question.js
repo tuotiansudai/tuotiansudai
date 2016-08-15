@@ -175,8 +175,6 @@ if($questionDetailTag.length) {
     });
 
     $formAnswerSubmit.on('click',function() {
-
-        if(answerValid && captchaValid) {
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
@@ -191,10 +189,38 @@ if($questionDetailTag.length) {
                 }
             })
                 .fail(function(data) {
-                    //comm.popWindow('error','接口错误',{ width:'300px'});
-                });
-        }
 
+                });
+
+    });
+    //采纳此条信息
+    $('.mark-this-answer',$questionDetailTag).on('click',function() {
+        var $this=$(this);
+        var answerId=$this.next('.answerId').data('id');
+        $.ajax({
+            url:'/answer/'+answerId+'/best',
+            type:'POST'
+        }).done(function(data) {
+            if(data.data.status) {
+               window.location.reload();
+           }
+        });
+    });
+
+    $('.agree-ok',$questionDetailTag).on('click',function() {
+
+        var $this=$(this),
+            value=$.trim($this.text());
+        var answerId=$this.parent().find('.answerId').data('id');
+        $.ajax({
+            url:'/answer/'+answerId+'/favor',
+            type:'POST'
+        }).done(function(data) {
+            if(data.data.status) {
+                $this.addClass('active');
+                $this.text(value-0+1);
+            }
+        });
     });
 }
 
@@ -223,8 +249,6 @@ if($createQuestion.length) {
     });
 
     $formSubmit.on('click',function() {
-        //$formQuestion.find('input').checkFrom();
-        if(tagValid && questionValid && additionValid && captchaValid) {
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
@@ -237,7 +261,7 @@ if($createQuestion.length) {
                 .fail(function(data) {
                         comm.popWindow('error','error',{ width:'300px'});
                 });
-        }
+
 
     });
 }
