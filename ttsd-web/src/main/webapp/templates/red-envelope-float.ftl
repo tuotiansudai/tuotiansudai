@@ -26,8 +26,6 @@
 		<p class="tip-text">计算结果仅供参考，以实际收益为准</p>
 	</div>
 </div>
-<a href="/activity/hero-ranking" class="hero-actor">
-</a>
 <ul class="fix-nav-list">
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>

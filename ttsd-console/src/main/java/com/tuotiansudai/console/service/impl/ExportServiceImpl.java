@@ -12,7 +12,6 @@ import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
@@ -46,14 +45,14 @@ public class ExportServiceImpl implements ExportService {
             row.add(loanRepayDataItemDto.getAgentLoginName());
             row.add(loanRepayDataItemDto.getRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getRepayDate()).toString("yyyy-MM-dd"));
             row.add(loanRepayDataItemDto.getActualRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd"));
-            row.add(String.valueOf("第" + loanRepayDataItemDto.getPeriod()+"期"));
+            row.add(String.valueOf("第" + loanRepayDataItemDto.getPeriod() + "期"));
             row.add(loanRepayDataItemDto.getCorpus());
             row.add(loanRepayDataItemDto.getExpectedInterest());
             row.add(loanRepayDataItemDto.getTotalAmount());
             row.add(loanRepayDataItemDto.getActualRepayAmount());
             if (loanRepayDataItemDto.getActualRepayDate() != null && loanRepayDataItemDto.getActualRepayDate().before(loanRepayDataItemDto.getRepayDate())) {
                 row.add("提前还款");
-            }else{
+            } else {
                 row.add(loanRepayDataItemDto.getLoanRepayStatus().getDescription());
             }
             rows.add(row);
@@ -76,7 +75,7 @@ public class ExportServiceImpl implements ExportService {
             row.add(transferApplicationPaginationItemDataDto.getTransferStatus());
             row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(transferApplicationPaginationItemDataDto.getTransfereeMobile());
-            row.add(transferApplicationPaginationItemDataDto.getSource() == null ?"":transferApplicationPaginationItemDataDto.getSource().name());
+            row.add(transferApplicationPaginationItemDataDto.getSource() == null ? "" : transferApplicationPaginationItemDataDto.getSource().name());
             row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferFee()));
             rows.add(row);
         }
@@ -285,11 +284,11 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public List<List<String>> buildConsoleLoanList(List<LoanListDto> records) {
         List<List<String>> rows = Lists.newArrayList();
-        for(LoanListDto loanListDto:records){
+        for (LoanListDto loanListDto : records) {
             List<String> row = Lists.newArrayList();
             row.add(String.valueOf(loanListDto.getId()));
             row.add(loanListDto.getName());
-            row.add(loanListDto.getProductType() == null ?"" : loanListDto.getProductType().getName());
+            row.add(loanListDto.getProductType() == null ? "" : loanListDto.getProductType().getName());
             row.add(loanListDto.getLoanerUserName());
             row.add(loanListDto.getAgentLoginName());
             row.add(AmountConverter.convertCentToString(loanListDto.getLoanAmount()));
