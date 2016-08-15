@@ -97,9 +97,9 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
 
             if(screenWid>700) {
                 $('.landing-container-app').css({'padding-top':bgImgHeight*0.5 });
-                $('.landing-container-game').css({'padding-top':bgImgHeight*0.6 });
-                $('.landing-container-bus').css({'padding-top':bgImgHeight*0.6 });
-                $('.landing-container-tour').css({'padding-top':bgImgHeight*0.6 });
+                $('.landing-container-game').css({'padding-top': bgImgHeight * 0.6});
+                $('.landing-container-bus').css({'padding-top': bgImgHeight * 0.6});
+                $('.landing-container-tour').css({'padding-top': bgImgHeight * 0.6});
             }
             if(dataShow) {
                 layer.open({

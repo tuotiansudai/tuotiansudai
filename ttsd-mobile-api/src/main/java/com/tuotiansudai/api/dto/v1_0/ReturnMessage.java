@@ -145,8 +145,9 @@ public enum ReturnMessage {
     TRANSFER_IS_NOT_EXIST("0071", "该债权不能申请转让"),
 
     BAD_REQUEST("0400", "非法请求"),
-    UNAUTHORIZED("0401", "未授权");
+    UNAUTHORIZED("0401", "未授权"),
 
+    ERROR("9999", "错误");
 
     private String code;
     private String msg;
