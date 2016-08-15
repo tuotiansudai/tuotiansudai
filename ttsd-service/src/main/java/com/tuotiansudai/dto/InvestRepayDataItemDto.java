@@ -44,7 +44,13 @@ public class InvestRepayDataItemDto {
 
     private double birthdayBenefit;
 
+    private String couponExpectedInterest;
+
+    private String couponDefaultInterest;
+
     private LoanModel loan;
+
+    private
 
     public InvestRepayDataItemDto() {
     }
@@ -206,4 +212,19 @@ public class InvestRepayDataItemDto {
         this.investId = investId;
     }
 
+    public String getCouponExpectedInterest() {
+        return couponExpectedInterest;
+    }
+
+    public void setCouponExpectedInterest(String couponExpectedInterest) {
+        this.couponExpectedInterest = couponExpectedInterest;
+    }
+
+    public String getCouponDefaultInterest() {
+        return couponDefaultInterest;
+    }
+
+    public void setCouponDefaultInterest(String couponDefaultInterest) {
+        this.couponDefaultInterest = couponDefaultInterest;
+    }
 }

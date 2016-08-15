@@ -1,12 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
@@ -17,12 +20,15 @@ import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -53,6 +59,9 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -143,7 +152,6 @@ public class RepayServiceImpl implements RepayService {
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
-        setCouponInterest(dataDto,investId);
         baseDto.setData(dataDto);
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
@@ -154,27 +162,24 @@ public class RepayServiceImpl implements RepayService {
                     return new InvestRepayDataItemDto(investRepayModel);
                 }
             });
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
+            DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+            List<CouponRepayModel> userCouponByInvestId = couponRepayMapper.findByUserCouponByInvestId(investId);
+            for(InvestRepayDataItemDto investRepayDataItemDto : records){
+                final Date repayDate = DateTime.parse(investRepayDataItemDto.getRepayDate().toString(),dateTimeFormatter).toDate();
+                Optional<CouponRepayModel> couponRepay =  Iterators.tryFind(userCouponByInvestId.iterator(), new Predicate<CouponRepayModel>() {
+                    @Override
+                    public boolean apply(CouponRepayModel input) {
+                        return input.getRepayDate() == repayDate;
+                    }
+                });
+
+                if(couponRepay.isPresent()){
+
+                }
+            }
             dataDto.setRecords(records);
         }
-
         return baseDto;
     }
-
-    private List<String> setCouponInterest(InvestRepayDataDto dataDto,long investId){
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
-        List<String> couponList = new ArrayList<>();
-        long expectedInterest = 0l;
-        long actualInterest = 0l;
-        if(CollectionUtils.isNotEmpty(userCouponModels)){
-            for(UserCouponModel userCouponModel : userCouponModels){
-                expectedInterest += userCouponModel.getExpectedInterest();
-                actualInterest += userCouponModel.getActualInterest();
-            }
-        }
-        dataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
-        dataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
-        return couponList;
-    }
-
-
 }
