@@ -1,1 +1,1 @@
-include "ttsd-service", "ttsd-web", "ttsd-console", "ttsd-pay-wrapper", "ttsd-sms-wrapper", "ttsd-job-worker", "ttsd-mobile-api", "ttsd-point", "ttsd-jpush", 'ttsd-membership', "ttsd-activity", "ttsd-message", 'ttsd-sign-in'
+include "ttsd-service", "ttsd-web", "ttsd-console", "ttsd-pay-wrapper", "ttsd-sms-wrapper", "ttsd-job-worker", "ttsd-mobile-api", "ttsd-point", "ttsd-jpush", 'ttsd-membership', "ttsd-activity", "ttsd-message", 'ttsd-sign-in', 'ttsd-activity-console'
