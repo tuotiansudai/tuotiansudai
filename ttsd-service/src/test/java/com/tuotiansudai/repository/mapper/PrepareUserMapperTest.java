@@ -45,6 +45,7 @@ public class PrepareUserMapperTest extends BaseMapperTest {
         prepareUserModel.setReferrerMobile(referrerMobile);
         prepareUserModel.setMobile(mobile);
         prepareUserModel.setChannel(Source.ANDROID);
+        prepareUserModel.setCreatedTime(new Date());
         return prepareUserModel;
     }
 }
