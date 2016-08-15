@@ -15,5 +15,9 @@ require(['jquery',
             location.href = "/finance-manage/system-bill";
         });
 
+        $('.down-load').click(function () {
+            location.href = "/export/system-bill?" + $('form').serialize();
+        });
+
     });
 });

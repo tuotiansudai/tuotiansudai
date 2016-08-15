@@ -93,4 +93,9 @@ public class SmsServiceImpl implements SmsService {
     public BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount) {
         return smsClient.sendSMS(ExperienceRepayNotifyMapper.class, mobiles, SmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE, Lists.newArrayList(repayAmount), "");
     }
+
+    @Override
+    public BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String transferLoanName) {
+        return smsClient.sendSMS(TransferLoanNotifyMapper.class, mobile, SmsTemplate.SMS_CANCEL_TRANSFER_LOAN, transferLoanName, "");
+    }
 }

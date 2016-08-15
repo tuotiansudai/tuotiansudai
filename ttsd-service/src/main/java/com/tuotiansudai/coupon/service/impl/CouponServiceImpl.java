@@ -98,6 +98,7 @@ public class CouponServiceImpl implements CouponService {
         if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
             CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
             couponExchangeModel.setCouponId(couponModel.getId());
+            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.create(couponExchangeModel);
         }
@@ -183,6 +184,7 @@ public class CouponServiceImpl implements CouponService {
 
             CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
+            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
             couponExchangeMapper.update(couponExchangeModel);
         }
 
@@ -212,6 +214,13 @@ public class CouponServiceImpl implements CouponService {
         List<CouponModel> couponModels = couponMapper.findRedEnvelopeCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
+                    couponModel.setImportIsRight(false);
+                } else {
+                    couponModel.setImportIsRight(true);
+                }
+            }
         }
         return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
             @Override
@@ -370,7 +379,9 @@ public class CouponServiceImpl implements CouponService {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
                 ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
-                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
+                CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(input.getId());
+                exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+                exchangeCouponDto.setSeq(couponExchangeModel.getSeq());
                 return exchangeCouponDto;
             }
         });

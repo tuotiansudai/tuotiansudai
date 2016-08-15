@@ -52,6 +52,7 @@ def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
+    local('cd ./ttsd-point-system/src/main/webapp && zip -r static_pointsystem.zip pointsystem/')
 
 def build():
     mk_war()
@@ -70,11 +71,13 @@ def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-point-system/src/main/webapp/static_pointsystem.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
         sudo('unzip static_api.zip -d static')
         sudo('unzip static_activity.zip -d static')
+        sudo('unzip static_pointsystem.zip -d static')
         sudo('service nginx restart')
 
 
@@ -156,7 +159,7 @@ def deploy_sign_in():
 def deploy_point_system():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-point_system/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-point-system/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
 def deploy_all():
@@ -291,6 +294,12 @@ def remove_sign_in_logs():
     remove_tomcat_logs()
     remove_nginx_logs()
 
+@roles('point-system')
+@parallel
+def remove_point_system_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
 def remove_old_logs():
     """
     Remove logs which was generated 30 days ago
@@ -302,6 +311,7 @@ def remove_old_logs():
     execute(remove_worker_logs)
     execute(remove_static_logs)
     execute(remove_sign_in_logs)
+    execute(remove_point_system_logs)
 
 
 @roles('pay')
@@ -365,6 +375,13 @@ def restart_logstash_service_for_sign_in():
     """
     run("service logstash restart")
 
+@roles('pointsystem')
+@parallel
+def restart_logstash_service_for_point_system():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
 
 
 def restart_logstash(service):
@@ -378,7 +395,8 @@ def restart_logstash(service):
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
            'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
-           'signin': restart_logstash_service_for_sign_in}.get(service)
+           'signin': restart_logstash_service_for_sign_in,
+           'pointsystem': restart_logstash_service_for_point_system}.get(service)
     execute(func)
 
 

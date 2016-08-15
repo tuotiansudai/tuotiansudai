@@ -217,7 +217,7 @@
           coupon c
           JOIN coupon_exchange e
             ON c.`id` = e.`coupon_id`
-        ORDER BY c.active, c.created_time desc
+        ORDER BY c.active, e.seq, c.created_time desc
         LIMIT #{index},#{pageSize}
     </select>
 

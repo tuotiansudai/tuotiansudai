@@ -23,7 +23,7 @@
             来源描述
         </th>
         <th>
-            金额
+            金额(元)
         </th>
         <th>
             活动期限
@@ -174,7 +174,6 @@
 </#list>
 </tbody>
 </table>
-</div>
 
     <!-- pagination  -->
     <nav>
@@ -202,6 +201,9 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
             </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+        </@security.authorize>
         </ul>
     </#if>
     </nav>

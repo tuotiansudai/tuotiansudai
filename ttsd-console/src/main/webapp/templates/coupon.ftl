@@ -22,7 +22,7 @@
 		</div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">红包来源描述</label>
+            <label class="col-sm-2 control-label">体验券来源描述</label>
 
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-source" name="couponSource" placeholder=""

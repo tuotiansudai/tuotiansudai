@@ -170,7 +170,9 @@
                 </li>
             </ul>
         </nav>
-        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+        </@security.authorize>
     </div>
 </div>
 <!-- content area end -->

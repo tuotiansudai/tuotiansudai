@@ -20,6 +20,9 @@
                     名称
                 </th>
                 <th>
+                    当前顺序
+                </th>
+                <th>
                     金额(元)
                 </th>
                 <th>
@@ -61,6 +64,9 @@
                     <td>
                         <span class="add-tooltip" data-placement="top" data-toggle="tooltip"
                               data-original-title="${exchangeCoupon.couponType.getName()}">${exchangeCoupon.couponType.getName()}</span>
+                    </td>
+                    <td>
+                        1-${exchangeCoupon.seq!}
                     </td>
                     <td>
                         <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>
@@ -143,7 +149,7 @@
         </table>
     </div>
 
-    <nav>
+    <nav class="pagination-control">
         <div>
             <span class="bordern">总共${exchangeCouponCount}条,每页显示${pageSize}条</span>
         </div>
@@ -165,11 +171,14 @@
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-                </li>
-            </ul>
-        </#if>
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+            </li>
+        </ul>
+    <@security.authorize access="hasAnyAuthority('DATA')">
+        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+    </@security.authorize>
+    </#if>
     </nav>
 
 </div>

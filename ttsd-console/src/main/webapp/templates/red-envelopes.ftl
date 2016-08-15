@@ -4,6 +4,18 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="see-detail">
+        <table border="1"></table>
+        <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
+    </div>
+    <div class="tip-container">
+        <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="txt"></span>
+        </div>
+    </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -35,10 +47,13 @@
             发放对象
         </th>
         <th>
+            预计发放数量(张)
+        </th>
+        <th>
             可投标的
         </th>
         <th>
-            起投金额
+            使用条件
         </th>
         <th>
             是否共用
@@ -88,12 +103,18 @@
         ${coupon.deadline?string('0')}天
         </td>
         <td>
-            <#if coupon.userGroup == "EXCHANGER_CODE">
+            <#if coupon.userGroup == 'IMPORT_USER'>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
+                   class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+            <#elseif coupon.userGroup == "EXCHANGER_CODE">
                 <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
                    class="btn-link">${coupon.userGroup.getDescription()}</a>
             <#else>
             ${coupon.userGroup.getDescription()}
             </#if>
+        </td>
+        <td>
+        ${coupon.totalCount?c}
         </td>
     <td>
         <#list coupon.productTypes as productType>
@@ -103,7 +124,9 @@
     <td>
     ${coupon.investLowerLimit}
     </td>
-    <td><#if coupon.shared>是<#else>否</#if></td>
+    <td>
+    <#if coupon.shared>是<#else>否</#if>
+    </td>
     <td>
     ${coupon.issuedCount?string('0')}
     </td>
@@ -201,6 +224,9 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
             </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left export-red-envelopes" type="button">导出Excel</button>
+        </@security.authorize>
         </ul>
     </#if>
     </nav>

@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Joiner;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -32,7 +33,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -122,6 +123,14 @@ public class InvestServiceImpl implements InvestService {
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
 
+        logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
+                dto.getLoginName(),
+                dto.getLoanId(),
+                String.valueOf(investModel.getId()),
+                dto.getAmount(),
+                CollectionUtils.isNotEmpty(dto.getUserCouponIds()) ? Joiner.on(",").join(dto.getUserCouponIds()) : "",
+                dto.getSource()));
+
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
                     dto.getLoanId(),
@@ -139,7 +148,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, List<Long> userCouponIds) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -147,13 +156,22 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         double rate = userMembershipMapper.findRateByLoginName(loginName);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, null, rate);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
             if (CollectionUtils.isNotEmpty(userCouponIds)) {
                 couponInvestService.invest(investModel.getId(), userCouponIds);
             }
+
+            logger.info(MessageFormat.format("[No Password Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
+                    loginName,
+                    String.valueOf(loanId),
+                    String.valueOf(investModel.getId()),
+                    String.valueOf(amount),
+                    CollectionUtils.isNotEmpty(userCouponIds) ? Joiner.on(",").join(userCouponIds) : "",
+                    source));
+
         } catch (Exception e) {
             logger.error("create no password invest model failed", e);
             payDataDto.setMessage(e.getLocalizedMessage());
@@ -351,7 +369,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getUserCouponIds());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
     }
 
     @Override
@@ -395,7 +413,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
                 if (!baseDto.isSuccess()) {
                     logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
