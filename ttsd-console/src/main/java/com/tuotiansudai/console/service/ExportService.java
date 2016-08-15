@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 
 import java.util.List;
 

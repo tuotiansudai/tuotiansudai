@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.UserBirthdayUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,10 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Override
     @Transactional
     public void invest(long investId, List<Long> userCouponIds) {
+        if (CollectionUtils.isEmpty(userCouponIds)) {
+            return;
+        }
+
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
@@ -62,7 +67,8 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             if (userCouponModel != null) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-                if (InvestStatus.SUCCESS == userCouponModel.getStatus()
+                if (!investModel.getLoginName().equalsIgnoreCase(userCouponModel.getLoginName())
+                        || InvestStatus.SUCCESS == userCouponModel.getStatus()
                         || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(investModel.getLoginName()))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
@@ -88,10 +94,11 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         }
 
         for (Long userCouponId : userCouponIds) {
-            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+            UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
             userCouponModel.setStatus(InvestStatus.WAIT_PAY);
             userCouponModel.setInvestId(investId);
             userCouponModel.setLoanId(loanModel.getId());
+            userCouponModel.setUsedTime(new Date());
             userCouponMapper.update(userCouponModel);
         }
     }
