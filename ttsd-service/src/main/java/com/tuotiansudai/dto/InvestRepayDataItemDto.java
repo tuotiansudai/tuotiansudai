@@ -50,8 +50,6 @@ public class InvestRepayDataItemDto {
 
     private LoanModel loan;
 
-    private
-
     public InvestRepayDataItemDto() {
     }
 

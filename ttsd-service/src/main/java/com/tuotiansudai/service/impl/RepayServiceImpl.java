@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -16,6 +17,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -175,7 +177,11 @@ public class RepayServiceImpl implements RepayService {
                 });
 
                 if(couponRepay.isPresent()){
-
+                    investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepay.get().getExpectedInterest()));
+                    if(RepayStatus.COMPLETE.name() == investRepayDataItemDto.getStatus()){
+                        investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualFee()) + couponRepay.get().getActualFee()));
+                        investRepayDataItemDto.setActualInterest(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualInterest()) + couponRepay.get().getActualInterest()));
+                    }
                 }
             }
             dataDto.setRecords(records);
