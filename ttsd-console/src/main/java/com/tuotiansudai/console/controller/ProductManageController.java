@@ -115,7 +115,7 @@ public class ProductManageController {
 
     @RequestMapping(value = "/goods-active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto goodsActive(@Valid @RequestBody GoodsActiveDto activeDto, BindingResult bindingResult) {
+    public BaseDataDto goodsActive(@Valid @ModelAttribute GoodsActiveDto activeDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new BaseDataDto(false, bindingResult.getFieldError().getDefaultMessage());
         }

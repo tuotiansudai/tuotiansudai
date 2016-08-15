@@ -87,13 +87,16 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDataDto goodsActive(GoodsActiveDto goodsActiveDto) {
         String errorMessage = "product model not exist product id = ({0})";
-        ProductModel productModel = productMapper.findById(goodsActiveDto.getProductId());
-        if (productModel == null) {
-            logger.error(MessageFormat.format(errorMessage, goodsActiveDto.getProductId()));
-            return new BaseDataDto(false, MessageFormat.format(errorMessage, goodsActiveDto.getProductId()));
+        Long[] productIds = goodsActiveDto.getProductId();
+        for (Long productId : productIds) {
+            ProductModel productModel = productMapper.findById(productId);
+            if (productModel == null) {
+                logger.error(MessageFormat.format(errorMessage, goodsActiveDto.getProductId()));
+                return new BaseDataDto(false, MessageFormat.format(errorMessage, goodsActiveDto.getProductId()));
+            }
+            productModel.setActive(true);
+            productMapper.update(productModel);
         }
-        productModel.setActive(true);
-        productMapper.update(productModel);
         return new BaseDataDto(true, null);
     }
 

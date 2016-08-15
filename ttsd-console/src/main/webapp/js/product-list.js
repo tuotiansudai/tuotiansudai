@@ -40,7 +40,9 @@ require(['jquery'], function ($) {
                 .done(function (data) {
                     data.status ? window.location.reload() : false;
                 });
-        })
-        ;
+        });
+        $('.export-product').click(function () {
+            location.href = "/export/product-list?" + location.href.split('?')[1];
+        });
     });
 });

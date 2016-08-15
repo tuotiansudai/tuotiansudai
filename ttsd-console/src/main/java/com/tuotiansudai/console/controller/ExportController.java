@@ -6,7 +6,10 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
+import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
@@ -55,8 +58,12 @@ public class ExportController {
 
     @Autowired
     private LoanRepayService loanRepayService;
+
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -244,7 +251,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public void ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
+    public void consoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                 @RequestParam(value = "loanId", required = false) Long loanId,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -263,8 +270,20 @@ public class ExportController {
                 index, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildConsoleLoanList(loanListDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
-
     }
 
+    @RequestMapping(value = "/product-list", method = RequestMethod.GET)
+    public void goodsExport(@RequestParam(value = "goodsType") GoodsType goodsType, HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        try {
+            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.Goods.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        httpServletResponse.setContentType("application/csv");
+        List<ProductModel> productModels = productService.findGoods(goodsType);
+        List<List<String>> csvData = exportService.buildGoods(productModels);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Goods, csvData, httpServletResponse.getOutputStream());
+    }
 
 }

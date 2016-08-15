@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
@@ -296,6 +297,26 @@ public class ExportServiceImpl implements ExportService {
             row.add("-");
             row.add(loanListDto.getStatus().getDescription());
             row.add(new DateTime(loanListDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildGoods(List<ProductModel> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ProductModel record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getGoodsType().getDescription());
+            row.add(String.valueOf(record.getSeq()));
+            row.add(record.getProductName());
+            row.add(record.getDescription());
+            row.add(String.valueOf(record.getTotalCount()));
+            row.add(String.valueOf(record.getUsedCount()));
+            row.add(String.valueOf(record.getProductPrice()));
+            row.add(new DateTime(record.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            String active = record.isActive() ? "已生效" : "未生效";
+            row.add(active);
             rows.add(row);
         }
         return rows;
