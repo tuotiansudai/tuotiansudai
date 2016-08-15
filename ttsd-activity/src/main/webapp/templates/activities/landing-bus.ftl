@@ -61,7 +61,7 @@
     </div>
     <div class="my-advantage">
 
-        <img src="${staticServer}/activity/images/landing-app/bg-advantage2.png" class="advantage">
+        <img src="${staticServer}/activity/images/landing-app/bg-advantage.png" class="advantage">
 
         <div class="info-text">
             1. 新用户注册后，即可获得5888元体验金，可投资新手体验项目；<br/>
