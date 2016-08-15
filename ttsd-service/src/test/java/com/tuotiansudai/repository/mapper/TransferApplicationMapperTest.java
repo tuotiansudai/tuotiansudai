@@ -287,4 +287,39 @@ public class TransferApplicationMapperTest {
 
         assertEquals(0, count2);
     }
+
+    @Test
+    public void testFindAllTransferringApplicationsByLoanId() throws Exception {
+        long loanId = idGenerator.generate();
+        UserModel transferModel = createUserByUserId("transfer");
+        UserModel transfereeModel = createUserByUserId("transferee");
+        LoanModel loanModel = createLoanByUserId("transfer", loanId);
+        InvestModel transferInvestModel = createInvest("transfer", loanId);
+        InvestModel transfereeInvestModel = createInvest("transferee", loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setTransferInvestId(transferInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new DateTime(2016, 7, 5, 12, 0, 0).toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanId);
+        assertEquals(2, transferApplicationModels.size());
+        for (TransferApplicationModel transferApplicationModel1 : transferApplicationModels) {
+            assertEquals(TransferStatus.TRANSFERRING, transferApplicationModel1.getStatus());
+        }
+    }
 }

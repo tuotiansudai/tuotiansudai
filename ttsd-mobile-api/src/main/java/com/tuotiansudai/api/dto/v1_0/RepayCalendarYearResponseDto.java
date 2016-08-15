@@ -36,6 +36,11 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
         }
     }
 
+    public RepayCalendarYearResponseDto(String month, long repayMount) {
+        this.month = month;
+        this.repayAmount = String.valueOf(repayMount);
+    }
+
     public String getMonth() {
         return month;
     }

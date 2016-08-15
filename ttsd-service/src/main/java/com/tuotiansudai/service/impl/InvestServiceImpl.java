@@ -42,6 +42,9 @@ public class InvestServiceImpl implements InvestService {
 
     private final static String INVEST_NO_PASSWORD_REMIND_MAP = "invest_no_password_remind_map";
 
+    @Value(value = "${web.coupon.lock.seconds}")
+    private int couponLockSeconds;
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -173,6 +176,17 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
+        // 验证优惠券是否可用
+        List<Long> userCouponIds = investDto.getUserCouponIds();
+        if (CollectionUtils.isNotEmpty(userCouponIds)) {
+            for (long userCouponId : userCouponIds) {
+                UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
+                Date usedTime = userCouponModel.getUsedTime();
+                if (usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime())) {
+                    throw new InvestException(InvestExceptionType.COUPON_IS_UNUSABLE);
+                }
+            }
+        }
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
@@ -225,7 +239,7 @@ public class InvestServiceImpl implements InvestService {
             if (investModel.getStatus() == InvestStatus.SUCCESS) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
                 for (UserCouponModel userCouponModel : userCouponModels) {
-                    userCouponDtoList.add(new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel));
+                    userCouponDtoList.add(new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, 0));
                 }
             }
 

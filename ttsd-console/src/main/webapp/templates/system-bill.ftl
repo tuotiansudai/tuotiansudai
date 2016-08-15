@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="system-bill.js" headLab="finance-manage" sideLab="systemBill" title="系统账户查询">
 
@@ -87,7 +88,7 @@
     </table>
 
     <!-- pagination  -->
-    <nav>
+    <nav class="pagination-control">
         <#if systemBillList?has_content>
             <div>
                 <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
@@ -115,6 +116,9 @@
                 </a>
                 </li>
             </ul>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->

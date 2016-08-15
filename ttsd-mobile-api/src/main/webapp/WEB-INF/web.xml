@@ -7,7 +7,8 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-session.xml, WEB-INF/spring-security.xml</param-value>
+        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-session.xml, WEB-INF/spring-security.xml
+        </param-value>
     </context-param>
 
     <listener>
@@ -35,6 +36,11 @@
             <param-name>forceEncoding</param-name>
             <param-value>true</param-value>
         </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>logGenerateFilter</filter-name>
+        <filter-class>com.tuotiansudai.api.filter.LogGenerateFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -102,6 +108,7 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
+
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -109,6 +116,11 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>logGenerateFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

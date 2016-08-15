@@ -137,7 +137,7 @@
 </table>
 </div>
 
-    <nav>
+    <nav class="pagination-control">
         <div>
             <span class="bordern">总共${exchangeCouponCount}条,每页显示${pageSize}条</span>
         </div>
@@ -163,6 +163,9 @@
                     </a>
             </li>
         </ul>
+    <@security.authorize access="hasAnyAuthority('DATA')">
+        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+    </@security.authorize>
     </#if>
     </nav>
 
