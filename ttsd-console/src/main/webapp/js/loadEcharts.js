@@ -114,7 +114,11 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         trigger: 'item',
                         formatter: function(option) {
                             console.log(option);
-                            return option.seriesName + ':' + option.value;
+                            var data=bar_datas.data,
+                                keyName=option.name;
+                            var filterData=_.where(data,{name: keyName})[0];
+
+                            return option.seriesName + ':' + filterData.value;
                         }
                     },
                     xAxis: [{

@@ -8,7 +8,7 @@
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
                     <#if extraLoanRates??>
-                        <div class="fl orange extra-rate" id="extra-rate">投资加息+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                        <div class="fl orange extra-rate" id="extra-rate">投资加息+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
                         </div>
                         <script>
                             var __extraRate = [
@@ -373,7 +373,7 @@
                                     </#if>
                                 </#list>
                             </#list>
-                            <h5>声明：${loan.declaration}</h5>
+                            <h5>声明：${loan.declaration!}</h5>
                         </div>
                     </div>
                 </div>

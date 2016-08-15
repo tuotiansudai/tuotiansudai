@@ -12,10 +12,6 @@
 
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
-    <mvc:interceptors>
-        <bean class="com.tuotiansudai.api.interceptors.LogGenerateInterceptor"/>
-    </mvc:interceptors>
-
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter"
@@ -57,9 +53,9 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.api.configruration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${api.static.server}"/>
-        <property name="javascriptLocation" value="${api.js.path}"/>
-        <property name="cssLocation" value="${api.css.path}"/>
+        <property name="staticServer" value="${mobile.static.server}"/>
+        <property name="javascriptLocation" value="${mobile.js.path}"/>
+        <property name="cssLocation" value="${mobile.css.path}"/>
         <property name="sourceMap">
             <map>
             </map>

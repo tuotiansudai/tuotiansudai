@@ -35,7 +35,8 @@
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
         <result column="loan_product_type" property="loanProductType"/>
-        <result column="product_types" property="productTypeList" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+        <result column="product_types" property="productTypeList"
+                typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
         <result column="invest_amount" property="investAmount"/>
@@ -45,6 +46,7 @@
         <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="status" property="status"/>
         <result column="user_group" property="userGroup"/>
+        <result column="coupon_source" property="couponSource"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -85,6 +87,10 @@
         select * from user_coupon where id = #{id}
     </select>
 
+    <select id="lockById" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where id = #{id} for update
+    </select>
+
     <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="map">
         select uc.* from user_coupon uc
         <if test="couponTypeList != null and couponTypeList.size != 0">
@@ -105,10 +111,11 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
-            (c.birthday_benefit + 1) as birthday_benefit,
+        c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
-            c.user_group
+            c.user_group,
+            c.coupon_source as coupon_source
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         where
@@ -133,10 +140,11 @@
             i.amount as invest_amount,
             uc.used_time as used_time,
             uc.expected_interest - uc.expected_fee as expected_income,
-            (c.birthday_benefit + 1) as birthday_benefit,
+        c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
-            c.user_group
+            c.user_group,
+            c.coupon_source as coupon_source
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
@@ -155,10 +163,11 @@
             c.rate as rate,
             c.product_types as product_types,
             uc.end_time as end_time,
-            (c.birthday_benefit + 1) as birthday_benefit,
+        c.birthday_benefit as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status,
-            c.user_group
+            c.user_group,
+            c.coupon_source as coupon_source
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         where
@@ -173,6 +182,17 @@
 
     <select id="findUserCouponSuccessByInvestId" parameterType="map" resultMap="userCouponResultMap">
         select * from user_coupon where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
+    <select id="findUserCouponSuccessAndCouponTypeByInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon uc
+        <if test="couponTypeList != null and couponTypeList.size != 0">
+            join coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where invest_id = #{investId} and status = 'SUCCESS'
     </select>
 
     <select id="findSumInvestAmountByCouponId" parameterType="map" resultType="long">

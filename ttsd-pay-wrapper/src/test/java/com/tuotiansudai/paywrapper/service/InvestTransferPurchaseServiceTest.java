@@ -3,6 +3,12 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -88,6 +94,15 @@ public class InvestTransferPurchaseServiceTest {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -420,6 +435,65 @@ public class InvestTransferPurchaseServiceTest {
 
         SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
         assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
+    }
+
+    @Test
+    public void shouldSuccessClearCouponRepayOnPostPurchase() throws Exception {
+        DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
+        Date transferTime = new DateTime().withDate(2016, 3, 11).toDate();
+        LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
+        UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
+        UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
+        InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
+        this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
+        InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
+        this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 1000, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
+        this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 1000, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeInvest.getLoginName(), 1, new DateTime(2200, 1, 1, 1, 1).toDate(), UserMembershipType.UPGRADE);
+        userMembershipModel.setCreatedTime(new DateTime().plusDays(-1).toDate());
+        userMembershipMapper.create(userMembershipModel);
+        CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1, "transferrer");
+        UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeTransferInvest.getId());
+        couponRepayMapper.create(Lists.newArrayList(new CouponRepayModel(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeTransferInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate())));
+
+        investTransferPurchaseService.postPurchase(fakeInvest.getId());
+
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(fakeTransferInvest.getId());
+        assertTrue(couponRepayModels.get(0).getActualFee() == 0);
+        assertTrue(couponRepayModels.get(0).getActualInterest() == 0);
+        assertTrue(couponRepayModels.get(0).isTransferred());
+        assertTrue(couponRepayModels.get(0).getStatus().equals(RepayStatus.COMPLETE));
+
+    }
+
+    public UserCouponModel createFakeUserCoupon(String loginName, long couponId, long loanId, long investId) {
+        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId, new Date(), new Date());
+        userCouponModel.setLoanId(loanId);
+        userCouponModel.setUsedTime(new Date());
+        userCouponModel.setInvestId(investId);
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponMapper.create(userCouponModel);
+        return userCouponModel;
+    }
+
+    public CouponModel createFakeInterestCoupon(double rate, String loginName) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setRate(rate);
+        couponModel.setActive(true);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setStartTime(new Date());
+        couponModel.setEndTime(new DateTime().plusDays(1).toDate());
+        couponModel.setDeadline(30);
+        couponModel.setActivatedBy(loginName);
+        couponModel.setCreatedBy(loginName);
+        couponModel.setTotalCount(10L);
+        couponModel.setUsedCount(0L);
+        couponModel.setInvestLowerLimit(10000L);
+        couponModel.setCouponType(CouponType.INTEREST_COUPON);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
+        couponModel.setCouponSource("couponSource");
+        couponMapper.create(couponModel);
+        return couponModel;
     }
 
     private UserModel createFakeUser(String loginName, long balance, long freeze) {
