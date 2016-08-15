@@ -1,4 +1,4 @@
-package com.tuotiansudai.pointsystem.directive;
+package com.tuotiansudai.pointsystem.freemarker.directive;
 
 import freemarker.core.Environment;
 import freemarker.template.*;

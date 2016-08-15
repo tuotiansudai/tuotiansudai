@@ -4,7 +4,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -16,10 +15,6 @@ public interface AccountMapper {
 
     AccountModel findByPayUserId(String payUserId);
 
-    List<String> findAllLoanerLikeLoginName(String loginName);
-
-    List<String> findAccountLikeLoginName(String loginName);
-
     AccountModel lockByLoginName(String loginName);
 
     void update(AccountModel model);
@@ -28,7 +23,9 @@ public interface AccountMapper {
 
     List<String> findLoginNames();
 
-    List<String> findBirthOfAccountInMonth();
+    List<String> findBirthMonthUsers();
+
+    List<String> findBirthDayUsers();
 
     List<AccountModel> findUsersAccountPoint(@Param(value = "loginName") String loginName,
                                              @Param(value = "userName") String userName,
@@ -40,17 +37,8 @@ public interface AccountMapper {
                                    @Param(value = "userName") String userName,
                                    @Param(value = "mobile") String mobile);
 
-    int findUsersAccountTotalPoint(@Param(value = "loginName") String loginName);
-
-    int findUsersAccountAvailablePoint(@Param(value = "loginName") String loginName);
-
-    List<String> findBirthOfAccountInDay();
-
-    int findTotalAccountCount();
+    long count();
 
     List<AccountModel> findAccountWithBalance(@Param(value = "startLimit") int startLimit,
                                               @Param(value = "endLimit") int endLimit);
-
-    Date findAccountRegisterTimeByLoginName(String loginName);
-
 }
