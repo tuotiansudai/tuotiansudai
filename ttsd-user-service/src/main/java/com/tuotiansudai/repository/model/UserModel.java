@@ -37,25 +37,7 @@ public class UserModel implements Cloneable, Serializable {
 
     private String city;
 
-    private String autoInvestStatus;
-
-    private boolean staff;
-
-    private AccountModel account;
-
-    private Date lastBillTime;
-
     private int signInCount;
-
-    private String address;
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public long getId() {
         return id;
@@ -145,24 +127,12 @@ public class UserModel implements Cloneable, Serializable {
         this.status = status;
     }
 
-    public boolean isActive() {
-        return this.status == UserStatus.ACTIVE;
+    public String getSalt() {
+        return salt;
     }
 
-    public AccountModel getAccount() {
-        return account;
-    }
-
-    public void setAccount(AccountModel account) {
-        this.account = account;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Source getSource() {
@@ -171,6 +141,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public String getProvince() {
@@ -189,44 +167,12 @@ public class UserModel implements Cloneable, Serializable {
         this.city = city;
     }
 
-    public String getAutoInvestStatus() {
-        return autoInvestStatus;
-    }
-
-    public void setAutoInvestStatus(String autoInvestStatus) {
-        this.autoInvestStatus = autoInvestStatus;
-    }
-
-    public boolean isStaff() {
-        return staff;
-    }
-
-    public void setStaff(boolean staff) {
-        this.staff = staff;
-    }
-
-    public Date getLastBillTime() {
-        return lastBillTime;
-    }
-
-    public void setLastBillTime(Date lastBillTime) {
-        this.lastBillTime = lastBillTime;
-    }
-
     public int getSignInCount() {
         return signInCount;
     }
 
     public void setSignInCount(int signInCount) {
         this.signInCount = signInCount;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     @Override
