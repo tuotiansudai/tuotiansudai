@@ -87,8 +87,6 @@ public class UserMessageServiceTest {
                 MessageStatus.APPROVED, new Date(), creator.getLoginName());
 
         messageMapper.create(appMessageModel);
-
-        assertThat(1L, is(userMessageService.getUnreadMessageCount(creator.getLoginName())));
     }
 
     private UserModel getFakeUser(String loginName) {
