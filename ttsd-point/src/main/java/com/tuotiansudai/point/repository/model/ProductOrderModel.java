@@ -22,7 +22,7 @@ public class ProductOrderModel implements Serializable{
 
     }
 
-    public ProductOrderModel(long productId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, String consignmentTime) {
+    public ProductOrderModel(long productId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, String consignmentTime, String createdBy) {
         this.productId = productId;
         this.productPrice = productPrice;
         this.num = num;
@@ -32,6 +32,8 @@ public class ProductOrderModel implements Serializable{
         this.address = address;
         this.consignment = consignment;
         this.consignmentTime = consignmentTime;
+        this.createdBy = createdBy;
+        this.createdTime = new Date();
     }
 
     public long getId() {
