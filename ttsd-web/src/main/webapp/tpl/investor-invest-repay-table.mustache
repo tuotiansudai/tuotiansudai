@@ -80,8 +80,14 @@
                             <td class="tr">{{amount}}</td>
                             <td class="tr">{{corpus}}</td>
                             <td class="tr">{{expectedInterest}}</td>
-                            <td class="tr">{{couponExpectedInterest}}</td>
-                            <td class="tr">{{expectedFee}}</td>
+                            <td class="tr">
+                                {{#couponExpectedInterest}}{{.}}{{/couponExpectedInterest}}
+                                {{^couponExpectedInterest}}--{{/couponExpectedInterest}}
+                            </td>
+                            <td class="tr">
+                                {{#expectedFee}}{{.}}{{/expectedFee}}
+                                {{^expectedFee}}--{{/expectedFee}}
+                            </td>
                             <td class="tr">
                                 {{#actualAmount}}{{.}}{{/actualAmount}}
                                 {{^actualAmount}}--{{/actualAmount}}

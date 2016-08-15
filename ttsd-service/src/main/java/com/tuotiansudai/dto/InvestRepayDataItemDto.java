@@ -61,6 +61,7 @@ public class InvestRepayDataItemDto {
             this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
             this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
         }
+        this.investId = model.getInvestId();
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
         this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());

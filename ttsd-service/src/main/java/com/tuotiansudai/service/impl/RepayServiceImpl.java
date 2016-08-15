@@ -155,8 +155,11 @@ public class RepayServiceImpl implements RepayService {
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
+        List<InvestRepayDataItemDto> repays = Lists.newArrayList();
+        long sumActualInterest = 0l;
+        long expectedFee = 0l;
+        long redInterest = 0l;
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
             List<InvestRepayDataItemDto> records = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
                 @Override
@@ -166,26 +169,27 @@ public class RepayServiceImpl implements RepayService {
             });
 
             List<CouponRepayModel> userCouponByInvestId = couponRepayMapper.findByUserCouponByInvestId(investId);
-            if(CollectionUtils.isNotEmpty(userCouponByInvestId)){
-                for(InvestRepayDataItemDto investRepayDataItemDto : records){
-                    final Date repayDate = investRepayDataItemDto.getRepayDate();
-                    Optional<CouponRepayModel> couponRepay =  Iterators.tryFind(userCouponByInvestId.iterator(), new Predicate<CouponRepayModel>() {
-                        @Override
-                        public boolean apply(CouponRepayModel input) {
-                            return input.getRepayDate() == repayDate;
-                        }
-                    });
+            for (InvestRepayDataItemDto investRepayDataItemDto : records) {
+                final Date repayDate = investRepayDataItemDto.getRepayDate();
+                Optional<CouponRepayModel> couponRepay = Iterators.tryFind(userCouponByInvestId.iterator(), new Predicate<CouponRepayModel>() {
+                    @Override
+                    public boolean apply(CouponRepayModel input) {
+                        return input.getRepayDate().getTime() == repayDate.getTime();
+                    }
+                });
 
-                    if(couponRepay.isPresent()){
-                        investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepay.get().getExpectedInterest()));
-                        if(RepayStatus.COMPLETE.name() == investRepayDataItemDto.getStatus()){
-                            investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualFee()) + couponRepay.get().getActualFee()));
-                            investRepayDataItemDto.setActualInterest(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualInterest()) + couponRepay.get().getActualInterest()));
-                        }
+                if (couponRepay.isPresent()) {
+                    investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepay.get().getExpectedInterest()));
+                    investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getExpectedFee()) + couponRepay.get().getExpectedFee()));
+                    if (RepayStatus.COMPLETE.name() == investRepayDataItemDto.getStatus()) {
+                        investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualFee()) + couponRepay.get().getActualFee()));
+                        investRepayDataItemDto.setActualInterest(AmountConverter.convertCentToString(AmountConverter.convertStringToCent(investRepayDataItemDto.getActualInterest()) + couponRepay.get().getActualInterest()));
                     }
                 }
+
+                repays.add(investRepayDataItemDto);
             }
-            dataDto.setRecords(records);
+            dataDto.setRecords(repays);
         }
         return baseDto;
     }

@@ -6,6 +6,12 @@ import java.util.List;
 
 public class InvestRepayDataDto extends BaseDataDto {
 
+    private String sumActualInterest;
+
+    private String expectedFee;
+
+    private String redInterest;
+
     private List<InvestRepayDataItemDto> records = Lists.newArrayList();
 
     public List<InvestRepayDataItemDto> getRecords() {
