@@ -15,22 +15,6 @@
   ],
   "author": "belen",
   "license": "ISC",
-  "dependencies": {
-    "bundle-loader": "^0.5.4",
-    "css-loader": "~0.16.0",
-    "file-loader": "~0.8.4",
-    "history": "^1.17.0",
-    "html-webpack-plugin": "2.x",
-    "jquery": "~2.1.4",
-    "open-browser-webpack-plugin": "0.0.1",
-    "style-loader": "~0.12.3",
-    "url-loader": "~0.5.6",
-    "webpack": "~1.13.0",
-    "webpack-dev-server": "^1.14.0",
-    "express": "^4.13.4",
-    "freemarker.js": "^1.2.2",
-    "underscore": "^1.8.3"
-  },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.10.4",
@@ -41,6 +25,20 @@
     "nodemon": "^1.9.2",
     "postcss-loader": "^0.9.1",
     "sass-loader": "^4.0.0",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "object-assign": "^4.1.0",
+    "webpack": "~1.13.0",
+    "webpack-dev-server": "^1.14.0",
+    "style-loader": "~0.12.3",
+    "express": "^4.13.4",
+    "bundle-loader": "^0.5.4",
+    "css-loader": "~0.16.0"
+  },
+  "dependencies": {
+    "history": "^1.17.0",
+    "html-webpack-plugin": "2.x",
+    "jquery": "~2.1.4",
+    "freemarker.js": "^1.2.2",
+    "underscore": "^1.8.3"
   }
 }
