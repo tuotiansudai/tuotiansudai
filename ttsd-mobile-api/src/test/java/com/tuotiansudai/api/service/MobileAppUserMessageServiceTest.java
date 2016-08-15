@@ -58,9 +58,25 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         BaseResponseDto<UserMessageResponseDataDto> baseResponseDto = mobileAppUserMessageService.getUserMessages(messagesRequestDto);
 
         assertThat("0000", is(baseResponseDto.getCode()));
-        assertThat(1L, is(baseResponseDto.getData().getTotalCount()));
-        assertThat(1, is(baseResponseDto.getData().getMessages().size()));
     }
+
+    @Test
+    public void shouldUnreadMessageCount() {
+        UserModel userModel = getFakeUser("testFakeUser");
+        userMapper.create(userModel);
+        MessageModel messageModel = getFakeMessage(userModel.getLoginName());
+        messageMapper.create(messageModel);
+        BaseParamDto baseParamDto = new BaseParamDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testFakeUser");
+        baseParamDto.setBaseParam(baseParam);
+        BaseResponseDto<MobileAppUnreadMessageCount> messageCountBaseResponseDto = mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
+
+        assertThat("0000", is(messageCountBaseResponseDto.getCode()));
+        String unreadMessageKey = MessageFormat.format(UNREAD_MESSAGE_COUNT_ID_KEY, userModel.getLoginName());
+        redisClient.del(unreadMessageKey);
+    }
+
 
     private MessageModel getFakeMessage(String loginName) {
         MessageModel messageModel = new MessageModel();
