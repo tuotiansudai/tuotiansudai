@@ -269,7 +269,7 @@ def jcversion():
     replace_min_files_in_config_js_file('ttsd-activity/src/main/webapp/activity/js/dest/')
 
     versioning_webpack_files('ttsd-mobile-api/')
-    versioning_webpack_files('ttsd-mobile-ask/')
+    versioning_webpack_files('ttsd-ask-web/')
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
