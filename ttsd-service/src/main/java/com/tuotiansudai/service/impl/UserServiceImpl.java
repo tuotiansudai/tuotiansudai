@@ -136,6 +136,10 @@ public class UserServiceImpl implements UserService {
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
+        PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
+        if(prepareUserModel != null){
+            dto.setReferrer(prepareUserModel.getReferrerMobile());
+        }
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
@@ -444,6 +448,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean mobileIsRegister(String mobile) {
         return mobileIsExist(mobile) || prepareUserMapper.findByMobile(mobile) != null;
+    }
+
+    @Override
+    public UserModel findByMobile(String mobile) {
+        return userMapper.findByMobile(mobile);
     }
 
     @Override

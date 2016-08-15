@@ -6,6 +6,7 @@ CREATE TABLE `aa`.`prepare_user` (
   `created_time`    DATETIME        NOT NULL,
 
   PRIMARY KEY (`id`),
+  UNIQUE KEY (`mobile`),
   CONSTRAINT FK_REFERRER_MOBILE_REF_USER_MOBILE FOREIGN KEY (`referrer_mobile`) REFERENCES user (`mobile`)
 
 )

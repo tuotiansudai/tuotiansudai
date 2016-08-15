@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,P2P理财,短期理财,短期投资,拓天速贷2级推荐机制" description="拓天速贷针对老用户推出2级推荐机制的推荐奖励,可以让您的财富快速升值.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.share_reward}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,P2P理财,短期理财,短期投资,拓天速贷2级推荐机制" description="拓天速贷针对老用户推出2级推荐机制的推荐奖励,可以让您的财富快速升值.">
 <div class="share-reward-container">
 	<div class="rank-phone-model">
         <img src="${staticServer}/activity/images/sign/actor/sharereward/share-top-bgg.png" width="100%">
@@ -54,9 +54,9 @@
 	    <div class="share-example"></div>
 	    <div class="share-recommend">
 			<#if referrer??>
-        <a href="/register/user?referrer=${referrer}">立即注册</a>
+                <a href="/register/user?referrer=${referrer}">立即注册</a>
 			<#else>
-        <a href="/referrer/refer-list" onclick="cnzzPush.trackClick('推荐奖励落地页','立即推荐')">立即推荐</a>
+                <a href="/referrer/refer-list" onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
 			</#if>
 	    </div>
 	    <div class="share-rules"></div>

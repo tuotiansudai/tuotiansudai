@@ -4,7 +4,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PrepareModel implements Serializable {
+public class PrepareUserModel implements Serializable {
     private long id;
     private String referrerMobile;
     private String mobile;

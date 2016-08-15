@@ -1,9 +1,7 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
@@ -19,9 +17,6 @@ public class PrepareRegisterRequestDto implements Serializable {
     @NotEmpty
     @Pattern(regexp = "^[0-9]{6}$")
     private String captcha;
-
-    @NotNull(message = "渠道不能为空")
-    private Source channel;
 
     public String getReferrerMobile() {
         return referrerMobile;
@@ -47,11 +42,4 @@ public class PrepareRegisterRequestDto implements Serializable {
         this.captcha = captcha;
     }
 
-    public Source getChannel() {
-        return channel;
-    }
-
-    public void setChannel(Source channel) {
-        this.channel = channel;
-    }
 }

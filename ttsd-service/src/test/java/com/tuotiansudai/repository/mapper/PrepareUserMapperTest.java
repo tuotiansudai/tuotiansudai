@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -23,8 +23,8 @@ public class PrepareUserMapperTest extends BaseMapperTest {
     public void shouldCreatePrepare() {
         UserModel userModel = fakeUserModel("prepareUser", "18999999999");
         userMapper.create(userModel);
-        PrepareModel prepareModel = fakePrepareModel(userModel.getMobile(), "18998888888");
-        prepareUserMapper.create(prepareModel);
+        PrepareUserModel prepareUserModel = fakePrepareModel(userModel.getMobile(), "18998888888");
+        prepareUserMapper.create(prepareUserModel);
     }
 
 
@@ -40,11 +40,11 @@ public class PrepareUserMapperTest extends BaseMapperTest {
     }
 
 
-    private PrepareModel fakePrepareModel(String referrerMobile, String mobile) {
-        PrepareModel prepareModel = new PrepareModel();
-        prepareModel.setReferrerMobile(referrerMobile);
-        prepareModel.setMobile(mobile);
-        prepareModel.setChannel(Source.ANDROID);
-        return prepareModel;
+    private PrepareUserModel fakePrepareModel(String referrerMobile, String mobile) {
+        PrepareUserModel prepareUserModel = new PrepareUserModel();
+        prepareUserModel.setReferrerMobile(referrerMobile);
+        prepareUserModel.setMobile(mobile);
+        prepareUserModel.setChannel(Source.ANDROID);
+        return prepareUserModel;
     }
 }

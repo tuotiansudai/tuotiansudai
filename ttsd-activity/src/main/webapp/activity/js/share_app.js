@@ -5,12 +5,35 @@
  */
 require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, layer, _) {
 	$(function() {
+		$('#shareAPP')?cnzzPush.trackClick('208APP分享', '注册或者预注册成功页面', '页面加载'):false;
+
+		//判断访问终端
+		var browser = {
+			versions: function() {
+				var u = navigator.userAgent,
+					app = navigator.appVersion;
+				return {
+					ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+					android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 //android终端
+				};
+			}(),
+			language: (navigator.browserLanguage || navigator.language).toLowerCase()
+		}
+		//判断是否ios
+		if(browser.versions.ios){
+			cnzzPush.trackClick('203APP分享', '分享链接IOS', '页面加载');
+		}
+		//判断是否android
+		if(browser.versions.android){
+			cnzzPush.trackClick('202APP分享', '分享链接ANDROID', '页面加载');
+		}
+
 		var $androidForm = $('#androidForm'),
 			$iosForm = $('#iosForm'),
 			$androidBtn = $('#androidBtn'),
 			$iosBtn = $('#iosBtn'),
 			countdown = 60,
-			XQ = {
+			sendSms = {
 				androidCount: function() { //安卓倒计时
 					timer = setInterval(function() {
 						$androidBtn.prop('disabled', true).val(countdown + 's');
@@ -25,16 +48,14 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				anCaptcha: function(state) { //安卓-获取手机验证码
 					if (state == false) {
 						$.ajax({
-								url: '/register/user/send-register-captcha',
-								type: 'POST',
-								dataType: 'json',
-								data: {
-									mobile: $('#mobile').val()
-								}
+								url: '/register/user/'+ $('#mobile').val() +'/send-register-captcha',
+								type: 'get',
+								dataType: 'json'
+
 							})
 							.done(function(data) {
 								if (data.data.status && !data.data.isRestricted) {
-									XQ.androidCount();
+									sendSms.androidCount();
 								} else if (!data.data.status && data.data.isRestricted) {
 									layer.msg('短信发送频繁,请稍后再试');
 								}
@@ -43,7 +64,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 								layer.msg('请求失败，请重试！');
 							});
 					}else {
-						location.href = '/share-app';
+						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
 					}
 				},
 				iosCount: function() { //ios倒计时
@@ -60,44 +82,31 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				iosCaptcha: function(state) { //ios-获取手机验证码
 					if (state == false) {
 						$.ajax({
-							url: '/register/user/send-register-captcha',
-							type: 'POST',
-							dataType: 'json',
-							data: {
-								mobile: $('#mobile').val()
-							}
+							url: '/register/user/' + $('#mobile').val() + '/send-register-captcha',
+							type: 'get',
+							dataType: 'json'
 						})
-						.done(function(data) {
-							if (data.data.status && !data.data.isRestricted) {
-								XQ.iosCount();
-							} else if (!data.data.status && data.data.isRestricted) {
-								layer.msg('短信发送频繁,请稍后再试');
-							}
-						})
-						.fail(function() {
-							layer.msg('请求失败，请重试！');
-						});
+							.done(function (data) {
+								if (data.data.status && !data.data.isRestricted) {
+									sendSms.iosCount();
+								} else if (!data.data.status && data.data.isRestricted) {
+									layer.msg('短信发送频繁,请稍后再试');
+								}
+							})
+							.fail(function () {
+								layer.msg('请求失败，请重试！');
+							});
 					}else {
-						location.href = '/share-app';
+						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
 					}
-				},
-				showTip: function() {//新注册用户弹框
-					layer.open({
-						type:1,
-						title: false,
-						closeBtn: 0,
-						btn: 0,
-						area: ['240px', 'auto'],
-						shadeClose: true,
-						content: '<div class="tip-item tc"><p>哇，真的拿到了5888体验金，快去体验那更多奖励吧！</p><a href="/app/download">下载APP开始赚钱</a></div>'
-					});
 				}
 			};
 
 
 		// isphone validate
 		jQuery.validator.addMethod("isPhone", function(value, element) {
-			var tel = /0?(13|14|15|18)[0-9]{9}/;
+			var tel = /0?(13|14|15|18|17)[0-9]{9}/;
 			return this.optional(element) || (tel.test(value));
 		}, "请正确填写您的手机号码");
 
@@ -167,17 +176,17 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					dataType: 'json',
 					data: {
 						mobile: $('#mobile').val(),
-						password:$('#password').val(),
-						captcha: $('#captchaText').val(),
-						referrer:$('#referrer').attr('data-referrer'),
-						source:'MOBILE'
+						password: $('#password').val(),
+						captcha: $('#captcha').val(),
+						referrer: JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')["referrerMobile"],
+						agreement:$('#agreement').attr("checked")=="checked"
 					}
 				})
 				.done(function(data) {
-					if(data.status==true){
-						XQ.showTip();
-					}else{
-						layer.msg('请求失败，请重试！');
+						if (data.data.status == true) {
+							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+						} else {
+							layer.msg('请求失败，请重试！');
 					}
 				})
 				.fail(function() {
@@ -245,37 +254,34 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 					dataType: 'json',
 					data: {
 						mobile: $('#mobile').val(),
-						captcha: $('#captchaText').val(),
-						referrerMobile:$('#referrer').attr('data-referrer'),
-						channel:'IOS'
+						captcha: $('#captcha').val(),
+						referrerMobile: JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')["referrerMobile"]
 					}
 				})
-				.done(function(data) {
-					if(data.status==true){
-						XQ.showTip();
-					}else{
+					.done(function (data) {
+						if (data.data.status == true) {
+							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+						} else {
 						layer.msg('请求失败，请重试！');
-					}
-				})
-				.fail(function() {
-					layer.msg('请求失败，请重试！');
-				});
+						}
+					})
+					.fail(function () {
+						layer.msg('请求失败，请重试！');
+					});
 			}
 		});
 
 		//get code event
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
+			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 			$.ajax({
-				url: '/register/user/mobile/'+$('#mobile').val()+'/is-exist', //获取手机验证码接口
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					mobile: $('#mobile').val()
-				}
+				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //获取手机验证码接口
+				type: 'get',
+				dataType: 'json'
 			})
 			.done(function(data) {
-				XQ.anCaptcha(data.status);
+				sendSms.anCaptcha(data.data.status);
 			})
 			.fail(function(data) {
 				layer.msg('请求失败，请重试');
@@ -284,17 +290,15 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 
 		//get code event
 		$iosBtn.on('click', function(event) {
+			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 			event.preventDefault();
 			$.ajax({
-				url: '/register/user/mobile/'+$('#mobile').val()+'/is-register', //判断手机号是否存在
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					mobile: $('#mobile').val()
-				}
+				url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在
+				type: 'get',
+				dataType: 'json'
 			})
 			.done(function(data) {
-				XQ.iosCaptcha(data.status);
+				sendSms.iosCaptcha(data.data.status);
 			})
 			.fail(function(data) {
 				layer.msg('请求失败，请重试');

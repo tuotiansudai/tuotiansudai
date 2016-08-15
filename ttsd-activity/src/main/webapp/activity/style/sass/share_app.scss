@@ -1,4 +1,4 @@
-$width:375px;
+$width:640px;
 
 input[type="button"],
 input[type="submit"],
@@ -43,7 +43,7 @@ textarea {
 }
 .header-container{
 	@media (min-width: $width + 1px){
-		width:$width;
+		width:375px;
 		margin:0 auto;
 	}
 	.header-download{
@@ -59,7 +59,7 @@ textarea {
 		width:100%;
 	}
 	@media (min-width: $width + 1px) {
-		width:$width;
+		width:375px;
 		margin:0 auto;
 	}
 }
@@ -69,7 +69,7 @@ textarea {
 		width:100%;
 	}
 	@media (min-width: $width + 1px) {
-		width:$width;
+	  width: 375px;
 	}
 	.share-container{
 		float:left;

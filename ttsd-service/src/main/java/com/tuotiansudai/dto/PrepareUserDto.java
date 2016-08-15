@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 
@@ -18,15 +18,15 @@ public class PrepareUserDto {
     private Date useTime;
     private String referrerMobile;
 
-    public PrepareUserDto(PrepareModel prepareModel, AccountModel referrerAccountModel, UserModel useUserModel) {
-        this.id = prepareModel.getId();
-        this.mobile = prepareModel.getMobile();
+    public PrepareUserDto(PrepareUserModel prepareUserModel, AccountModel referrerAccountModel, UserModel useUserModel) {
+        this.id = prepareUserModel.getId();
+        this.mobile = prepareUserModel.getMobile();
         this.referrerName = referrerAccountModel != null ? referrerAccountModel.getUserName() : null;
-        this.channel = prepareModel.getChannel();
+        this.channel = prepareUserModel.getChannel();
         this.register = useUserModel != null;
         this.registerTime = register ? useUserModel.getRegisterTime() : null;
-        this.useTime = prepareModel.getCreatedTime();
-        this.referrerMobile = prepareModel.getReferrerMobile();
+        this.useTime = prepareUserModel.getCreatedTime();
+        this.referrerMobile = prepareUserModel.getReferrerMobile();
     }
 
     public long getId() {

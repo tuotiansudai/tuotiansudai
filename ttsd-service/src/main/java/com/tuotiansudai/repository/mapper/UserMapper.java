@@ -80,4 +80,6 @@ public interface UserMapper {
     long findUsersCount();
 
     List<String> findLoginNames();
+
+    UserModel findUsersByChannelAndMobile(@Param(value = "channel") String channel,@Param(value = "mobile") String mobile);
 }

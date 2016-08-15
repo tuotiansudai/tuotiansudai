@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.PrepareModel;
+import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface PrepareUserMapper {
 
-    void create(PrepareModel prepareModel);
+    void create(PrepareUserModel prepareUserModel);
 
-    List<PrepareModel> findPrepares(
+    List<PrepareUserModel> findPrepares(
             @Param(value = "referrerMobile") String referrerMobile,
             @Param(value = "mobile") String mobile,
             @Param(value = "channel") Source channel,
@@ -32,7 +32,7 @@ public interface PrepareUserMapper {
             @Param(value = "endTime") Date endTime
     );
 
-    PrepareModel findByMobile(
+    PrepareUserModel findByMobile(
             @Param(value = "mobile") String mobile
     );
 }

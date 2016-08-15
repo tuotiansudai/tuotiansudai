@@ -1,23 +1,24 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取5888体验金，体验再得红包大奖和3%的新手加息券.">
 <div class="share-app-container clearfix">
-	<div class="share-container">
+	<div class="share-container" id="shareAPP">
 		<div class="share-item">
-			<div class="item-tel">
-				<span>133****5387</span>
-			</div>
-			<div class="item-intro">
-				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
-			</div>
-			<div class="item-intro">
-				体验再得588现金红包＋3%加息券
-			</div>
+
+                <div class="item-tel">
+                    <span>${referrerInfo!}</span>
+                </div>
+                <div class="item-intro">
+                    <img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
+                </div>
+                <div class="item-intro">
+                    体验再得588现金红包＋3%加息券
+                </div>
 			<div class="item-form">
 				<div class="item-int tc">
 					<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">
 				</div>
 				<div class="item-int tc">
-					<a href="/app/download" class="btn item-submit">领取5888元体验金</a>
+					<a href="/app/download" class="btn item-submit" onclick="cnzzPush.trackClick('207APP分享', '注册或者预注册成功页面', '礼包到手下载APP赚钱')">礼包到手下载APP赚钱</a>
 				</div>
 			</div>
 		</div>
@@ -62,7 +63,7 @@
 			</div>
 			<div class="info-item">
 				<p class="title-text">便捷</p>
-				<p class="intro-text">手机APP随时随地放心理财</p>
+				<p class="intro-text">手机APP随时随地放心投资</p>
 			</div>
 		</li>
 	</ul>

@@ -4,7 +4,8 @@
 	<div class="share-container">
 		<div class="share-item">
 			<div class="item-tel">
-				<span data-referrer="" id="referrer">133****5387</span>
+                <span data-referrer="" id="referrer">${referrerInfo!}</span>
+
 			</div>
 			<div class="item-intro">
 				<img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
@@ -18,21 +19,21 @@
 						<input type="text" class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile">
 					</div>
 					<div class="item-int">
-						<input type="text" class="item-text" name="password" placeholder="请输入您的密码" id="password">
+						<input type="password" class="item-text" name="password" placeholder="请输入您的密码" id="password">
 					</div>
 					<div class="item-int">
 						<input type="text" class="item-text" name="captcha" placeholder="请输入验证码" id="captcha">
 						<input type="button" class="ignore get-code" value="获取验证码" id="androidBtn">
 					</div>
 					<div class="item-int">
-						<input type="submit" class="item-submit" value="领取5888元体验金">
+						<input type="submit" class="item-submit" onclick="cnzzPush.trackClick('206APP分享', '注册或者预注册页面', '领取5888体验金')" value="领取5888元体验金">
 					</div>
 					<div class="item-int">
-	      				<input type="checkbox" class="checkbox" id="agree" name="agree">
-						<label for="agree" class="agree">同意拓天速贷<span>《服务协议》</span></label>
+	      				<input type="checkbox" class="checkbox" id="agreement" name="agreement" checked>
+						<label for="agreement" class="agree">同意拓天速贷<span>《服务协议》</span></label>
 					</div>
 					<div class="item-int">
-						<p class="tc">好友<span>133****2082</span>邀请你来拓天速贷理财</p>
+						<p class="tc">好友<span>${referrerInfo!}</span>邀请你来拓天速贷投资</p>
 						<p class="tc">新手活动收益高，奖不停，拿红包到手软！</p>
 					</div>
 				</form>
@@ -79,7 +80,7 @@
 			</div>
 			<div class="info-item">
 				<p class="title-text">便捷</p>
-				<p class="intro-text">手机APP随时随地放心理财</p>
+				<p class="intro-text">手机APP随时随地放心投资</p>
 			</div>
 		</li>
 	</ul>

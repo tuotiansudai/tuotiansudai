@@ -72,4 +72,6 @@ public interface UserService {
     long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax);
 
     boolean mobileIsRegister(String mobile);
+
+    UserModel findByMobile(String mobile);
 }
