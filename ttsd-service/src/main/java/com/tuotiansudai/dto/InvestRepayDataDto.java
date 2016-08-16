@@ -12,9 +12,7 @@ public class InvestRepayDataDto extends BaseDataDto {
 
     private String redInterest;
 
-    private String level;
-
-    private String fee;
+    private String levelMessage;
 
     private String couponMessage;
 
@@ -52,27 +50,19 @@ public class InvestRepayDataDto extends BaseDataDto {
         this.sumExpectedInterest = sumExpectedInterest;
     }
 
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getFee() {
-        return fee;
-    }
-
-    public void setFee(String fee) {
-        this.fee = fee;
-    }
-
     public String getCouponMessage() {
         return couponMessage;
     }
 
     public void setCouponMessage(String couponMessage) {
         this.couponMessage = couponMessage;
+    }
+
+    public String getLevelMessage() {
+        return levelMessage;
+    }
+
+    public void setLevelMessage(String levelMessage) {
+        this.levelMessage = levelMessage;
     }
 }

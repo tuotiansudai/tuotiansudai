@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -27,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RepayServiceImpl implements RepayService {
@@ -72,6 +75,15 @@ public class RepayServiceImpl implements RepayService {
     private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您使用了生日月福利";
+
+    private final static Map<String,String> membershipMessage = new HashMap(){{
+        put("0","平台收取收益和奖励的10%作为服务费");
+        put("1","平台收取收益和奖励的10%作为服务费");
+        put("2","平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠");
+        put("3","平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠");
+        put("4","平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠");
+        put("5","平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠");
+    }};
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -216,14 +228,13 @@ public class RepayServiceImpl implements RepayService {
         });
 
         if(membershipModelOptional.isPresent()){
-            dataDto.setLevel(String.valueOf(membershipModelOptional.get().getLevel()));
-            dataDto.setFee(String.valueOf(membershipModelOptional.get().getFee()));
+            dataDto.setLevelMessage(membershipMessage.get(membershipModelOptional.get().getLevel()));
         }
         return baseDto;
     }
 
     private InvestRepayDataItemDto setCouponInvestRepayDataItemDto(InvestRepayDataItemDto investRepayDataItemDto){
-        CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(),investRepayDataItemDto.getPeriod());
+        CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
         if(couponRepayModel != null){
             investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepayModel.getExpectedInterest()));
             investRepayDataItemDto.setExpectedFee(add(investRepayDataItemDto.getExpectedFee(), couponRepayModel.getExpectedFee()));
