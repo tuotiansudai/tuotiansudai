@@ -91,7 +91,7 @@ public class MessageMapperTest {
     public void shouldFindAssignableManualMessages() throws Exception {
         UserModel creator = getFakeUser("messageCreator");
 
-        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableMessages(creator.getLoginName());
+        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableManualMessages(creator.getLoginName());
 
         userMapper.create(creator);
         MessageModel messageModel1 = new MessageModel("title", "template",
@@ -105,12 +105,26 @@ public class MessageMapperTest {
                 MessageType.EVENT,
                 Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new DateTime().plusDays(10).toDate(), creator.getLoginName());
+                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel2);
 
-        List<MessageModel> messageModels = messageMapper.findAssignableMessages(creator.getLoginName());
+        MessageModel messageModel3 = new MessageModel("title", "template",
+                MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.APP_MESSAGE),
+                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
+        messageMapper.create(messageModel3);
 
-        assertThat(messageModels.size() - existingAssignableManualMessages.size(), is(1));
+        MessageModel messageModel4 = new MessageModel("title", "template",
+                MessageType.EVENT,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.APP_MESSAGE),
+                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
+        messageMapper.create(messageModel4);
+
+        List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
+
+        assertThat(messageModels.size() - existingAssignableManualMessages.size(), is(2));
     }
 
     private UserModel getFakeUser(String loginName) {
