@@ -36,7 +36,7 @@
                         </#list>
                     </ol>
                     <div class="recharge-form pad-m">
-                        <div class="limit-tips"><span>中国银行快捷支付限额:单笔50,000元/单日50,000元</span><i class="fa fa-question-circle-o text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                        <div class="limit-tips"><span>中国银行快捷支付限额:单笔50,000元/单日50,000元</span><i class="fa fa-question-circle text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
                         <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
 
                             银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />

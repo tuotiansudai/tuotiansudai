@@ -491,6 +491,7 @@ public class InvestTransferPurchaseServiceTest {
         couponModel.setInvestLowerLimit(10000L);
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
+        couponModel.setCouponSource("couponSource");
         couponMapper.create(couponModel);
         return couponModel;
     }
