@@ -13,71 +13,38 @@ import java.util.Date;
 import java.util.List;
 
 public class CouponModel implements Serializable {
-
     private long id;
-
     private long amount;
-
     private double rate;
-
     private double birthdayBenefit;
-
     private boolean multiple;
-
     private Date startTime;
-
     private Date endTime;
-
     private Integer deadline;
-
     private long usedCount;
-
     private Long totalCount;
-
     private boolean active;
-
     private boolean shared;
-
     private Date createdTime;
-
     private String createdBy;
-
     private String activatedBy;
-
     private Date activatedTime;
-
     private String updatedBy;
-
     private Date updatedTime;
-
     private long issuedCount;
-
     private long expectedAmount;
-
     private long actualAmount;
-
     private long investLowerLimit;
-
     private List<ProductType> productTypes;
-
     private CouponType couponType;
-
     private boolean smsAlert;
-
     private UserGroup userGroup;
-
     private long totalInvestAmount;
-
     private boolean deleted;
-
     private Boolean importIsRight;
-
     private List<String> agents;
-
     private List<String> channels;
-
     private String couponSource;
-
     private String comment;
 
     public long getId() {
@@ -367,5 +334,41 @@ public class CouponModel implements Serializable {
         this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponDto.getUserGroup());
         this.couponSource = couponDto.getCouponSource();
         this.comment = couponDto.getComment();
+    }
+
+    protected CouponModel(CouponModel couponModel) {
+        this.id = couponModel.getId();
+        this.amount = couponModel.getAmount();
+        this.rate = couponModel.getRate();
+        this.birthdayBenefit = couponModel.getBirthdayBenefit();
+        this.multiple = couponModel.isMultiple();
+        this.startTime = couponModel.getStartTime();
+        this.endTime = couponModel.getEndTime();
+        this.deadline = couponModel.getDeadline();
+        this.usedCount = couponModel.getUsedCount();
+        this.totalCount = couponModel.getTotalCount();
+        this.active = couponModel.isActive();
+        this.shared = couponModel.isShared();
+        this.createdTime = couponModel.getCreatedTime();
+        this.createdBy = couponModel.getCreatedBy();
+        this.activatedBy = couponModel.getActivatedBy();
+        this.activatedTime = couponModel.getActivatedTime();
+        this.updatedBy = couponModel.getUpdatedBy();
+        this.updatedTime = couponModel.getUpdatedTime();
+        this.issuedCount = couponModel.getIssuedCount();
+        this.expectedAmount = couponModel.getExpectedAmount();
+        this.actualAmount = couponModel.getActualAmount();
+        this.investLowerLimit = couponModel.getInvestLowerLimit();
+        this.productTypes = couponModel.getProductTypes();
+        this.couponType = couponModel.getCouponType();
+        this.smsAlert = couponModel.isSmsAlert();
+        this.userGroup = couponModel.getUserGroup();
+        this.totalInvestAmount = couponModel.getTotalInvestAmount();
+        this.deleted = couponModel.isDeleted();
+        this.importIsRight = couponModel.getImportIsRight();
+        this.agents = couponModel.getAgents();
+        this.channels = couponModel.getChannels();
+        this.couponSource = couponModel.couponSource;
+        this.comment = couponModel.getComment();
     }
 }
