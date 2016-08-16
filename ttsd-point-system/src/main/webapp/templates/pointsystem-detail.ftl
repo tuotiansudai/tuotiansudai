@@ -41,7 +41,7 @@
 						<div class="info-content">
 							<div class="count-list">
 								<span class="count-btn low-btn">-</span>
-								<input type="text" value="1" class="num-text">
+								<input type="text" value="1" class="num-text" readonly="readonly">
 								<span class="count-btn add-btn">+</span>
 								<span class="total-num">
 									剩余<i>8938</i>件
