@@ -91,7 +91,7 @@ public class MessageMapperTest {
     public void shouldFindAssignableManualMessages() throws Exception {
         UserModel creator = getFakeUser("messageCreator");
 
-        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableMessages(creator.getLoginName());
+        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableManualMessages(creator.getLoginName());
 
         userMapper.create(creator);
         MessageModel messageModel1 = new MessageModel("title", "template",
@@ -108,7 +108,7 @@ public class MessageMapperTest {
                 MessageStatus.TO_APPROVE, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel2);
 
-        List<MessageModel> messageModels = messageMapper.findAssignableMessages(creator.getLoginName());
+        List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
 
         assertThat(messageModels.size() - existingAssignableManualMessages.size(), is(1));
     }
