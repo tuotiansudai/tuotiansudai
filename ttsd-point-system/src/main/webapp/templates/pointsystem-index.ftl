@@ -5,19 +5,28 @@
 <div class="global-member-store">
     <div class="store-top">
         <div class="store-login">
-            <div class="login-model hide">
-                <p>
-                    <a href="${webServer}/login" class="login-btn">立即登录</a>
-                </p>
-                <p>
-                   <a href="${webServer}/register/user" class="regist-btn">新用户注册></a>
-                </p> 
-            </div>
-            <div class="user-info">
-                <h3>我的积分</h3>
-                <p>1,900,300</p>
-                <p><span data-url="${webServer}/pointsystem/signIn" id="signBtn">签到</span></p>
-            </div>
+            <#if isLogin>
+                <div class="user-info">
+                    <h3>我的积分</h3>
+                    <p>${userPoint}</p>
+                    <#if isSignIn>
+                        <p><span>今日已签到</span></p>
+                    <#else>
+                        <p><span data-url="/pointsystem/signIn" id="signBtn">签到</span></p>
+                    </#if>
+                </div>
+            <#else>
+                <div class="login-model">
+                    <p>
+                        <a href="${webServer}/login" class="login-btn">立即登录</a>
+                    </p>
+
+                    <p>
+                        <a href="${webServer}/register/user" class="regist-btn">新用户注册></a>
+                    </p>
+                </div>
+            </#if>
+
             <ul class="other-list">
                 <li class="right-line">
                     <p><span>做任务赚积分</span></p>
@@ -28,9 +37,11 @@
                     <p><a href="${webServer}/loan-list">去投资</a></p>
                 </li>
             </ul>
+            <#if isLogin>
             <div class="user-trade">
                 <a href="#">兑换记录></a> | <a href="#">积分明细></a>
             </div>
+            </#if>
             <div class="sign-layer" id="signLayer">
                 <div class="sign-layer-list">
                     <div class="sign-top">
@@ -118,114 +129,65 @@
     <div class="store-material">
         <div class="wp clearfix">
             <ul class="material-list">
-                <li class="big-gift">
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li class="big-gift">
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
+                <#list virtualProducts as virtualProduct>
+                    <#if virtualProduct_index < 2>
+                        <li class="big-gift">
+                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+                            <#if virtualProduct.itemType.name() == 'RED_ENVELOPE'>
+                                <p class="mater-img bag-bg">
+                                    <span><i><@amount>${virtualProduct.pictureDescription!"0"}</@amount></i>元</span>
+                                </p>
+                            <#elseif virtualProduct.itemType.name() == 'INVEST_COUPON'>
+                                <p class="mater-img coupon-bg">
+                                    <span><i><@amount>${virtualProduct.pictureDescription!"0"}</@amount></i>元</span>
+                                    <span>投资体验券</span>
+                                </p>
+                            <#elseif virtualProduct.itemType.name() == 'INTEREST_COUPON'>
+                                <p class="mater-img jia-bg">
+                                    <span><i>${virtualProduct.pictureDescription!"0"}</i>%</span>
+                                    <span>加息券</span>
+                                </p>
+                            <#elseif virtualProduct.itemType.name() == 'VIRTUAL'>
+                                <p class="mater-img picture-item">
+                                    <img src="${virtualProduct.imageUrl}" width="160" height="100"/>
+                                </p>
+                            </#if>
+                            <p class="convert-btn">
+                                <span class="name-text">${virtualProduct.productName}</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
+                                <span class="get-btn">立即兑换</span>
+                            </p>
+                        </li>
+                    <#else>
+                        <li>
+                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+                            <#if virtualProduct.itemType == 'RED_ENVELOPE'>
+                                <p class="mater-img bag-bg">
+                                    <span><i><@amount>${virtualProduct.pictureDescription!"0"}</@amount></i>元</span>
+                                </p>
+                            <#elseif virtualProduct.itemType == 'INVEST_COUPON'>
+                                <p class="mater-img coupon-bg">
+                                    <span><i><@amount>${virtualProduct.pictureDescription!"0"}</@amount></i>元</span>
+                                    <span>投资体验券</span>
+                                </p>
+                            <#elseif virtualProduct.itemType == 'INTEREST_COUPON'>
+                                <p class="mater-img jia-bg">
+                                    <span><i>${virtualProduct.pictureDescription!"0"}</i>%</span>
+                                    <span>加息券</span>
+                                </p>
+                            <#elseif virtualProduct.itemType == 'VIRTUAL'>
+                                <p class="mater-img picture-item">
+                                    <img src="${virtualProduct.imageUrl}" width="160" height="100"/>
+                                </p>
+                            </#if>
+                            <p class="convert-btn">
+                                <span class="name-text">${virtualProduct.productName}</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
+                                <span class="get-btn">立即兑换</span>
+                            </p>
+                        </li>
+                    </#if>
+                </#list>
             </ul>
         </div>
     </div>
@@ -239,80 +201,38 @@
     <div class="store-material">
         <div class="wp clearfix">
             <ul class="material-list">
-                <li class="big-gift">
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li class="big-gift">
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img bag-bg">
-                        <span><i>500</i>元</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">500元现金红包</span>
-                        <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
-                <li>
-                    <p class="num-text">剩余100件</p>
-                    <p class="mater-img coupon-bg">
-                        <span><i>0.5</i>%</span>
-                        <span>加息券</span>
-                    </p>
-                    <p class="convert-btn">
-                        <span class="name-text">0.5%加息券</span>
-                        <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <a href="#">
-                            <span class="get-btn">立即兑换</span>
-                        </a>
-                    </p>
-                </li>
+                <#list physicalProducts as physicalProduct>
+                    <#if physicalProduct_index < 2>
+                        <li class="big-gift">
+                            <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+                            <p class="mater-img picture-item">
+                                <img src="${physicalProduct.imageUrl}" width="160" height="100"/>
+                            </p>
+
+                            <p class="convert-btn">
+                                <span class="name-text">${physicalProduct.productName}</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
+                                <span class="get-btn">立即兑换</span>
+                            </p>
+                        </li>
+                    <#else>
+                        <li>
+                            <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+
+                            <p class="mater-img picture-item">
+                                <img src="${physicalProduct.imageUrl}" width="160" height="100"/>
+                            </p>
+
+                            <p class="convert-btn">
+                                <span class="name-text">${physicalProduct.productName}</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
+                                <span class="get-btn">立即兑换</span>
+                            </p>
+                        </li>
+                    </#if>
+                </#list>
             </ul>
         </div>
     </div>
 </div>
-
-
-
-
 </@global.main>

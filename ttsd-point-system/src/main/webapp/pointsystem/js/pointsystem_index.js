@@ -3,7 +3,7 @@
  * @xuqiang  
  * @2016-07-11
  */
-require(['jquery'], function($) {
+require(['jquery', 'jquery.ajax.extension'], function ($) {
 	$(function() {
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),

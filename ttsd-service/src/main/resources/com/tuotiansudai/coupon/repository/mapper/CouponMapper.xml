@@ -277,7 +277,7 @@
         WHERE
         `total_count` > `issued_count` AND
         `active` is TRUE AND
-        `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON') AND
+        `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
         `end_time` >= now() AND EXISTS
         (SELECT 1 FROM coupon_exchange WHERE `coupon`.`id` = `coupon_exchange`.`coupon_id`)
         ) coupon
