@@ -140,12 +140,16 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         switch (couponModel.getCouponType()){
             case RED_ENVELOPE:
                 usedCouponName = MessageFormat.format(RED_ENVELOPE_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                return usedCouponName;
             case NEWBIE_COUPON:
                 usedCouponName = MessageFormat.format(NEWBIE_COUPON_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                return usedCouponName;
             case INVEST_COUPON:
                 usedCouponName = MessageFormat.format(INVEST_COUPON_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                return usedCouponName;
             case INTEREST_COUPON:
                 usedCouponName = MessageFormat.format(INTEREST_COUPON_TEMPLATE,couponModel.getRate() * 100);
+                return usedCouponName;
             case BIRTHDAY_COUPON:
                 usedCouponName = couponModel.getCouponType().getName();
 
