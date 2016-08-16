@@ -28,4 +28,9 @@
     <select id="findByExperience" resultMap="membershipResultMap" parameterType="long">
         select * from membership where experience &lt;= #{experience} order by experience desc limit 1;
     </select>
+
+    <select id="findAllMembership" resultMap="membershipResultMap" parameterType="long">
+        select * from membership;
+    </select>
+
 </mapper>

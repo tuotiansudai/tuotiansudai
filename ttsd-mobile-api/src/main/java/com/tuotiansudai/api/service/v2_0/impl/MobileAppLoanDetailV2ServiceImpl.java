@@ -118,7 +118,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setRepayUnit(loanModel.getType().getLoanPeriodUnit().getDesc());
         dataDto.setRatePercent(decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
         dataDto.setLoanMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-
+        dataDto.setActivityType(loanModel.getActivityType());
         if (loanModel.getStatus().equals(LoanStatus.PREHEAT)) {
             dataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
             dataDto.setLoanStatusDesc(LoanStatus.RAISING.getMessage());

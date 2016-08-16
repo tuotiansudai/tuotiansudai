@@ -65,7 +65,8 @@ public class CaptchaHelper {
 
 
     public boolean captchaVerify(String attributeKey, String captcha, String deviceId) {
-        String loginImageCaptcha = MOBILE_APP_LOGIN_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey);
+        String loginImageCaptcha = MOBILE_APP_BASIC_IMAGE_CAPTCHA_KEY.replace("{deviceId}", deviceId).replace("{type}", attributeKey);
+
         String actualCaptcha = redisWrapperClient.get(loginImageCaptcha);
         redisWrapperClient.del(loginImageCaptcha);
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
