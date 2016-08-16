@@ -4,7 +4,7 @@
 
     <div class="error-tip-container tl">
         <div class="error-info">
-            <img src="${staticServer}/images/icons/error-tip-404.png" class="fl error"/>
+            <img src="${staticServer}/pointsystem/images/icons/error-tip-404.png" class="fl error"/>
 
             <p>
                 <span class="sorry">很抱歉，您访问的页面不存在！</span>

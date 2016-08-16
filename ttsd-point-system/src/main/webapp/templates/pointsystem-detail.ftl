@@ -50,7 +50,7 @@
 						</div>
 					</div>
 					<div class="info-text mt-20">
-						<input type="submit" name="" value="立即兑换" class="get-btn">
+						<input type="submit" value="立即兑换" class="get-btn" id="getBtn">
 					</div>
 					<div class="info-text mt-20">
 						<p class="tip-text">兑换成功后，请前去“我的账户”－》“我的宝藏”中进行查看</p>
