@@ -16,7 +16,7 @@
     <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
         <property name="cookieSerializer">
             <bean class="org.springframework.session.web.http.DefaultCookieSerializer">
-                <property name="domainName" value=".${web.domain}"/>
+                <property name="domainName" value="${web.domain:#{null}}"/>
             </bean>
         </property>
     </bean>

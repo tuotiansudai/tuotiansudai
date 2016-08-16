@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
@@ -30,7 +31,7 @@ public class LoginController {
 
     static Logger logger = Logger.getLogger(LoginController.class);
 
-    @Value(value = "${web.domain}")
+    @Value(value = "${web.domain:#{null}}")
     private String domain;
 
     @Autowired
@@ -79,7 +80,9 @@ public class LoginController {
         Cookie cookie = new Cookie("SESSION", sessionId);
         cookie.setSecure(request.isSecure());
         cookie.setPath(MessageFormat.format("{0}/", request.getContextPath()));
-        cookie.setDomain(MessageFormat.format(".{0}", domain));
+        if (!Strings.isNullOrEmpty(domain)) {
+            cookie.setDomain(domain);
+        }
         cookie.setHttpOnly(this.isServlet3());
 
         return cookie;
