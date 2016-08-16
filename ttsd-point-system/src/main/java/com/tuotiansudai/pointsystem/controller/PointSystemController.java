@@ -84,8 +84,8 @@ public class PointSystemController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public ModelAndView pointSystemDetail(@RequestParam(value = "id", required = true) long id,
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    public ModelAndView pointSystemDetail(@PathVariable long id,
                                           @RequestParam(value = "itemType", required = true) ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-detail");
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
@@ -96,7 +96,8 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
-    public ModelAndView pointSystemOrder(@PathVariable long id, @RequestParam(value = "itemType", required = true) ItemType itemType) {
+    public ModelAndView pointSystemOrder(@PathVariable long id,
+                                         @RequestParam(value = "itemType", required = true) ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-order");
 
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
@@ -112,8 +113,9 @@ public class PointSystemController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> buyProduct(@PathVariable long id, @RequestParam(value = "itemType", required = true) ItemType itemType,
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
+                                           @RequestParam(value = "itemType", required = true) ItemType itemType,
                                            @RequestParam(value = "amount", required = true) int amount,
                                            @RequestParam(value = "userAddress", required = false) UserAddressModel userAddressModel) {
         String loginName = LoginUserInfo.getLoginName();

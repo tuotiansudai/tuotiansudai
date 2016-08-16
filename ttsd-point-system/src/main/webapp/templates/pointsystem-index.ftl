@@ -17,7 +17,8 @@
             <#else>
                 <div class="login-model">
                     <p>
-                        <a href="${webServer}/login" class="login-btn">立即登录</a>
+                        <a href="${webServer}/login?redirect=http://localhost:8082/pointsystem"
+                           class="login-btn">立即登录</a>
                     </p>
 
                     <p>
@@ -154,7 +155,7 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail?id=${virtualProduct.id?c}&itemType=${virtualProduct.itemType.name()}"><span
+                                <a href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
@@ -183,7 +184,7 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail?id=${virtualProduct.id?c}&itemType=${virtualProduct.itemType.name()}"><span
+                                <a href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
@@ -213,7 +214,7 @@
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail?id=${physicalProduct.id?c}&itemType=${physicalProduct.itemType.name()}"><span
+                                <a href="/pointsystem/detail/${physicalProduct.id?c}?itemType=${physicalProduct.itemType.name()}"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
@@ -228,7 +229,7 @@
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail?id=${physicalProduct.id?c}&itemType=${physicalProduct.itemType.name()}"><span
+                                <a href="/pointsystem/detail/${physicalProduct.id?c}?itemType=${physicalProduct.itemType.name()}"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>

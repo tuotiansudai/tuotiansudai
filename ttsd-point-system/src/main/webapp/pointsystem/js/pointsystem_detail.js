@@ -2,8 +2,7 @@ require(['jquery'],function($){
 	$(function() {
 		var $countList=$('.count-list'),
 			$numText=$countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i'),
-			$getBtn=$('#getBtn');
+			$bigText = $countList.find('.total-num i');
 
 		$countList.on('click', '.low-btn', function(event) {//减号
 			event.preventDefault();
@@ -19,11 +18,6 @@ require(['jquery'],function($){
 					return parseInt(num) + 1
 				}) : $numText.val($bigText.text());
 			}
-		});
-
-		$getBtn.on('click', function(event) {//立即兑换
-			event.preventDefault();
-			/* Act on the event */
 		});
 	});
 })

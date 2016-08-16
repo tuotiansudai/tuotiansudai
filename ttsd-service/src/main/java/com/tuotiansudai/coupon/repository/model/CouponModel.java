@@ -212,7 +212,7 @@ public class CouponModel implements Serializable {
     }
 
     public CouponModel() {
-
+        this.updatedTime = new Date();
     }
 
     public long getTotalInvestAmount() {
@@ -334,6 +334,8 @@ public class CouponModel implements Serializable {
         this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponDto.getUserGroup());
         this.couponSource = couponDto.getCouponSource();
         this.comment = couponDto.getComment();
+        this.updatedTime = new Date();
+
     }
 
     protected CouponModel(CouponModel couponModel) {

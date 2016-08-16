@@ -35,8 +35,14 @@
 						<div class="info-name">
 							商品介绍：
 						</div>
-						<div class="info-content">
-                            <p>${productShowItem.description}</p>
+                        <div class="info-content">
+							<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>
+                                <p>${productShowItem.description}</p>
+							<#else>
+								<#list productShowItem.description?split("\n") as str>
+                                    <p>${str}</p>
+								</#list>
+							</#if>
 						</div>
 					</div>
 					<div class="info-text mt-price">
@@ -65,10 +71,15 @@
 						</div>
 					</div>
 					<div class="info-text mt-20">
-                        <input type="submit" value="立即兑换" class="btn get-btn" id="getBtn">
+                        <a href="/pointsystem/order/${productShowItem.id?c!"0"}?itemType=${productShowItem.itemType.name()}"
+                           class="btn get-btn">立即兑换</a>
 					</div>
 					<div class="info-text mt-20">
-						<p class="tip-text">兑换成功后，请前去“我的账户”－》“我的宝藏”中进行查看</p>
+						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>
+                            <p class="tip-text">需要修改文案</p>
+						<#else>
+                            <p class="tip-text">兑换成功后，请前去“我的账户”－》“我的宝藏”中进行查看</p>
+						</#if>
 					</div>
 				</div>
 			</div>
