@@ -259,7 +259,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             }
             redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }
-        return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
+        return getMonthKeyValue(keyValueModelLists, granularity, startTime, endTime);
     }
 
     private List<KeyValueModel> getMonthKeyValue(List<KeyValueModel> keyValueModels, Granularity granularity,Date queryStartTime,Date queryEndTime){
@@ -290,6 +290,18 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private boolean isLastDayOfMonth(Calendar calendar) {
         calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
+    }
+
+    @Override
+    public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
+        if(granularity.equals(Granularity.Weekly)){
+            for(KeyValueModel keyValueModel : keyValueModels){
+                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1,keyValueModel.getName().length());
+                keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
+            }
+        }
+        return keyValueModels;
     }
 
 }
