@@ -72,7 +72,7 @@
     </#if>
 
 <#--ad-->
-    <div class="ad-answer"><img src="${staticServer}/images/sign/ad-answer.jpg"></div>
+    <div class="ad-answer"><a href="#"></a></div>
     <div class="borderBox clearfix margin-top-10">
         <div class="answers-box ">
             <div class="other-title">共${question.answers}个回答</div>

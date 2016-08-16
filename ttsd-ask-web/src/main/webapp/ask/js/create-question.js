@@ -5,8 +5,11 @@ var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
 //刷新验证码
+var refreshCaptcha=function() {
+    $('.captchaImg').attr('src', '/captcha?' + new Date().getTime().toString());
+}
 $('.captchaImg').on('click',function() {
-    $(this).attr('src', '/captcha?' + new Date().getTime().toString());
+    refreshCaptcha();
 });
 
 var utils = {
@@ -91,19 +94,22 @@ var utils = {
 
         }
         //switch end
+        if($createQuestion.length) {
+            if(tagValid && questionValid && additionValid && captchaValid) {
+                $formSubmit.prop('disabled',false);
+            }
+            else {
+                $formSubmit.prop('disabled',true);
+            }
+        }
 
-        if(tagValid && questionValid && additionValid && captchaValid) {
-            $formSubmit.prop('disabled',false);
-        }
-        else {
-            $formSubmit.prop('disabled',true);
-        }
-
-        if(captchaValid && answerValid) {
-            $formSubmit.prop('disabled',false);
-        }
-        else {
-            $formSubmit.prop('disabled',true);
+        if($questionDetailTag.length) {
+            if(captchaValid && answerValid) {
+                $formSubmit.prop('disabled',false);
+            }
+            else {
+                $formSubmit.prop('disabled',true);
+            }
         }
 
     },
@@ -254,8 +260,12 @@ if($createQuestion.length) {
                     data: $formQuestion.serialize(),
                     type: 'POST'
                 }).done(function(data) {
-                    if (data.status) {
+                    if (data.data.status) {
                         location.href='question/my-questions';
+                    }
+                    else {
+                        refreshCaptcha();
+                        $('.captchaImg').parent().find('.error').show().text('验证码错误');
                     }
                 })
                 .fail(function(data) {

@@ -54,7 +54,7 @@
                             <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
                         </@global.isNotAnonymous>
                         <img src="/captcha" class="captchaImg" alt="">
-                        <span class="error " style="display: none">请请输入验证码</span>
+                        <span class="error " style="display: none">请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">
                         <@global.isAnonymous>

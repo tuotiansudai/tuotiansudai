@@ -3,6 +3,7 @@ var os = require('os');
 var webpack = require('webpack');
 var objectAssign = require('object-assign');
 var commonOptions = require('./webpack.common');
+//var commonOptions = require('./webpack.production');
 
 var basePath = path.join(__dirname, 'src/main/webapp/ask');
 
