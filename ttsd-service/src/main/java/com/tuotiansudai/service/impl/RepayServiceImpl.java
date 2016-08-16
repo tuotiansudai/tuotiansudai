@@ -172,7 +172,7 @@ public class RepayServiceImpl implements RepayService {
                     InvestRepayDataItemDto investRepayDataItemDto = setCouponInvestRepayDataItemDto(new InvestRepayDataItemDto(investRepayModel));
                     if (investRepayModel.getPeriod() == period) {
                         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                        if (investExtraRateModel != null) {
+                        if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                             investRepayDataItemDto.setCouponExpectedInterest(add(investRepayDataItemDto.getCouponExpectedInterest(), investExtraRateModel.getExpectedInterest()));
                             investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(), investExtraRateModel.getRepayAmount()));
                         }
