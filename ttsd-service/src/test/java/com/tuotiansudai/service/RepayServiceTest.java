@@ -101,6 +101,7 @@ public class RepayServiceTest {
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().size(),3);
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(),"1.50");
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getCouponExpectedInterest(),"2.00");
+        assertEquals(investRepayDataDtoBaseDto.getData().getSumExpectedInterest(),"2.50");
     }
 
     @Test
