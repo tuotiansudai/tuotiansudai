@@ -228,7 +228,7 @@ public class RepayServiceImpl implements RepayService {
         });
 
         if(membershipModelOptional.isPresent()){
-            dataDto.setLevelMessage(membershipMessage.get(membershipModelOptional.get().getLevel()));
+            dataDto.setLevelMessage(membershipMessage.get(String.valueOf(membershipModelOptional.get().getLevel())));
         }
         return baseDto;
     }
