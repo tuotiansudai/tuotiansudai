@@ -36,16 +36,17 @@ var utils = {
 
                 if (len > num) {
                     errorMsg = '您的问题不能超过' + num + '个字符';
-                    $wordstip.addClass('error');
                 }
 
                 if(len<=num && len>0) {
                     this.hideError(element);
                     questionValid = true;
+                    $wordstip.removeClass('red-color');
                 }
                 else {
                     questionValid = false;
                     this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
                 }
                 break;
 
@@ -55,15 +56,17 @@ var utils = {
                     .text(len);
                 if (len > num) {
                     errorMsg = '问题补充' + num + '个字符';
-                    $wordstip.addClass('error');
+                    //$wordstip.addClass('error');
                 }
-                if(len<=num && len>0) {
+                if(len<=num && len>=0) {
                     this.hideError(element);
                     additionValid=true;
+                    $wordstip.removeClass('red-color');
                 }
                 else {
                     additionValid = false;
                     this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
                 }
                 break;
             case 'captcha':
@@ -246,11 +249,11 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $formQuestion.find('textarea.addition').on('keyup',function() {
+    $addition.on('keyup',function() {
         $(this).checkFrom();
     });
 
-    $formQuestion.find('input.captcha').on('blur',function() {
+    $captcha.on('blur',function() {
         $(this).checkFrom();
     });
 

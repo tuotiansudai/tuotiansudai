@@ -5,6 +5,17 @@
     display: none;
   }
 }
+.answer-container {
+  .ad-answer {
+    width:700px;
+    height:90px;
+    background: url('../../images/sign/ad-answer.jpg') 0 0 no-repeat;
+    a {
+      display: block;
+    }
+  }
+}
+
 .agree-ok {
   @include border-color(#e5e5e5);
   padding: 8px 20px 8px 40px;
@@ -496,9 +507,9 @@
   }
   .download-mobile {
     display: block;
-    height:154px;
-    background: url("../../images/sign/downloadApp.jpg") no-repeat left center;
-    background-size: 100%;
+    height:110px;
+    background: url("../../images/sign/downloadApp.jpg") no-repeat center center;
+    background-size: cover;
   }
   .download-mobile img {
     width:100%;
@@ -546,14 +557,7 @@
     }
   }
   .answer-container {
-    .ad-answer {
-      width:700px;
-      height:90px;
-      background: url('../../images/sign/ad-answer.jpg') 0 0 no-repeat;
-      a {
-        display: block;
-      }
-    }
+
     .answers-box dl.answers-list {
       padding-left: 15px;
       padding-right: 15px;
@@ -605,7 +609,8 @@
       border-right-width: 0;
     }
   }
-  .ad-answer {
+
+  .answer-container .ad-answer {
     display: none;
   }
   .ask-question-box {

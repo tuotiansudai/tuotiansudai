@@ -60,7 +60,7 @@
         <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
     </div>
     <div class="download-mobile">
-        <a href="#"> <img src="${staticServer}/images/sign/downloadApp.jpg"></a>
+        <a href="#"></a>
     </div>
 <#--banner-->
 
