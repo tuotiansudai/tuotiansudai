@@ -32,7 +32,7 @@ public class AppShareController {
     private String getReferrerInfo(UserModel referrer) {
         AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
         if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            return  StringUtils.leftPad(StringUtils.right(referrerAccount.getUserName(),1),referrerAccount.getUserName().length(),"*") ; 
+            return  StringUtils.leftPad(StringUtils.right(referrerAccount.getUserName(),1),referrerAccount.getUserName().length(),"*") ;
         } else {
             return referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7);
         }
