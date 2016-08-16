@@ -89,7 +89,7 @@ public class PointSystemController {
                                           @RequestParam(value = "itemType", required = true) ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-detail");
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
-        modelAndView.addObject("productShowItemDto", productShowItemDto);
+        modelAndView.addObject("productShowItem", productShowItemDto);
 
         modelAndView.addObject("responsive", true);
         return modelAndView;

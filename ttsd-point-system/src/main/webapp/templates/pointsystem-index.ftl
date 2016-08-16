@@ -1,7 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.pointsystem_index}" pageJavascript="${js.pointsystem_index}" activeNav="积分商城" activeLeftNav="" title="积分商城">
 
-
 <div class="global-member-store">
     <div class="store-top">
         <div class="store-login">
@@ -155,7 +154,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <span class="get-btn">立即兑换</span>
+                                <a href="/pointsystem/detail?id=${virtualProduct.id?c}&itemType=${virtualProduct.itemType.name()}"><span
+                                        class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     <#else>
@@ -183,7 +183,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <span class="get-btn">立即兑换</span>
+                                <a href="/pointsystem/detail?id=${virtualProduct.id?c}&itemType=${virtualProduct.itemType.name()}"><span
+                                        class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     </#if>
@@ -212,7 +213,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
-                                <span class="get-btn">立即兑换</span>
+                                <a href="/pointsystem/detail?id=${physicalProduct.id?c}&itemType=${physicalProduct.itemType.name()}"><span
+                                        class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     <#else>
@@ -226,7 +228,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
-                                <span class="get-btn">立即兑换</span>
+                                <a href="/pointsystem/detail?id=${physicalProduct.id?c}&itemType=${physicalProduct.itemType.name()}"><span
+                                        class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     </#if>
