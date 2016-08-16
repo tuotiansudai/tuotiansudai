@@ -66,6 +66,9 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private MembershipMapper membershipMapper;
 
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
+
     private static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
     private static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
@@ -198,6 +201,14 @@ public class RepayServiceImpl implements RepayService {
                 }
                 sumActualInterest += AmountConverter.convertStringToCent(investRepayDataItemDto.getActualAmount());
                 repays.add(investRepayDataItemDto);
+            }
+
+            InvestRepayDataItemDto investRepayDataItemDto = repays.get(repays.size() - 1);
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investId);
+            if(investExtraRateModel != null){
+                investRepayDataItemDto.setCouponExpectedInterest(add(investRepayDataItemDto.getCouponExpectedInterest(),investExtraRateModel.getExpectedInterest()));
+                investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(),investExtraRateModel.getRepayAmount()));
+
             }
             dataDto.setRecords(repays);
         }

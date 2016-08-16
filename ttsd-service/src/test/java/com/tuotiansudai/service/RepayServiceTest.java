@@ -70,7 +70,7 @@ public class RepayServiceTest {
         String loginName = "testInvestRepay";
         getUserModelTest(loginName);
         LoanModel loanModel = getFakeLoan(loginName, loginName, LoanStatus.REPAYING, ActivityType.NORMAL);
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,null);
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,TransferStatus.NONTRANSFERABLE);
         getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,null,100);
         getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING,null,100);
         getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING,null,100);
@@ -88,7 +88,7 @@ public class RepayServiceTest {
         String loginName = "testInvestRepay";
         getUserModelTest(loginName);
         LoanModel loanModel = getFakeLoan(loginName, loginName, LoanStatus.REPAYING, ActivityType.NORMAL);
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,null);
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), loginName,TransferStatus.NONTRANSFERABLE);
         getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,null,100);
         getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING,null,100);
         getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING,null,100);
@@ -162,6 +162,7 @@ public class RepayServiceTest {
         CouponModel couponModel = new CouponModel(exchangeCouponDto);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(DateTime.now().toDate());
+        couponModel.setCouponSource("");
         couponMapper.create(couponModel);
         return couponModel;
     }
