@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -46,12 +47,12 @@ public class ProductShowItemDto {
         switch (exchangeCouponView.getCouponType()) {
             case RED_ENVELOPE:
                 this.itemType = ItemType.RED_ENVELOPE;
-                this.productName = exchangeCouponView.getAmount() + "元现金红包";
+                this.productName = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
                 break;
             case INVEST_COUPON:
                 this.itemType = ItemType.INVEST_COUPON;
-                this.productName = exchangeCouponView.getAmount() + "元投资体验券";
+                this.productName = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
                 break;
             case INTEREST_COUPON:

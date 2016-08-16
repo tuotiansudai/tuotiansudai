@@ -317,6 +317,24 @@
                 text-align: center; }
                 .main-frame .global-member-store .store-material .material-list li p.mater-img.bag-bg span i {
                   font-size: 26px; }
+            .main-frame .global-member-store .store-material .material-list li p.mater-img.jia-bg {
+              width: 80px;
+              height: 40px;
+              padding: 30px 40px;
+              background: url("/pointsystem/images/jia-bg.png") no-repeat center; }
+              .main-frame .global-member-store .store-material .material-list li p.mater-img.jia-bg span {
+                float: left;
+                width: 100%;
+                font-size: 12px;
+                color: #ff7a78;
+                line-height: 16px;
+                text-align: center; }
+                .main-frame .global-member-store .store-material .material-list li p.mater-img.jia-bg span i {
+                  font-size: 30px;
+                  color: #ff7a78; }
+              .main-frame .global-member-store .store-material .material-list li p.mater-img.jia-bg.picture-item {
+                width: 160px;
+                height: 100px; }
             .main-frame .global-member-store .store-material .material-list li p.convert-btn {
               width: 140px;
               height: 100px; }

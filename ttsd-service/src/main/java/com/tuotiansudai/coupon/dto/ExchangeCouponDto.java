@@ -9,7 +9,7 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     private Long exchangePoint;
 
-    private Long seq;
+    private Integer seq;
 
     public Long getExchangePoint() {
         return exchangePoint;
@@ -19,11 +19,11 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
         this.exchangePoint = exchangePoint;
     }
 
-    public Long getSeq() {
+    public Integer getSeq() {
         return seq;
     }
 
-    public void setSeq(Long seq) {
+    public void setSeq(Integer seq) {
         this.seq = seq;
     }
 
