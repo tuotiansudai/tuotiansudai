@@ -89,9 +89,8 @@
 </div>
 
     <#include "../footer.ftl" />
-
+<script src="${staticServer}${jsPath}/vendor.bundle.js" type="text/javascript"></script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
-
 </body>
 </html>
 </#macro>

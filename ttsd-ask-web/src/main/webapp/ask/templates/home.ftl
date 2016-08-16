@@ -1,5 +1,4 @@
 <#import "macro/global.ftl" as global>
-
 <@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
 <div class="article-content fl" id="homeTagContainer">
     <ul class="switch-menu clearfix">

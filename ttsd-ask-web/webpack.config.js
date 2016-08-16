@@ -17,6 +17,7 @@ module.exports = objectAssign(commonOptions, {
     ],
     cache: true,
     devtool: 'eval-source-map',
+    //devtool: false,
     devServer: {
         contentBase: basePath,
         port: port,
