@@ -16,10 +16,11 @@ BEGIN;
             AND DATE(created_time) = '2016-08-16') um ON um.login_name = a.login_name
 
     WHERE
-        um.login_name IS NOT NULL);
+        um.login_name IS NOT NULL
+        and (a.register_time) = '2016-08-16');
 
 
-    DELETE FROM user_message
+   DELETE FROM user_message
     WHERE
     login_name IN (SELECT
         um.*
@@ -36,11 +37,12 @@ BEGIN;
             AND DATE(created_time) = '2016-08-16') um ON um.login_name = u.login_name
 
     WHERE
-        um.login_name IS NOT NULL);
+        um.login_name IS NOT NULL
+        and  (u.register_time) = '2016-08-16');
 
     DELETE FROM user_message
     WHERE
     DATE(created_time) = '2016-08-16'
-    AND title LIKE '%{%';
+    AND title REGEXP '%[{0}|{1}|{2}]%';
 
 COMMIT;
