@@ -338,7 +338,7 @@ h5 {
     margin: 0 auto; }
     .nav-container .nav .logo {
       background: url("/pointsystem/images/icons/logo-index.png") left center no-repeat;
-      width: 420px;
+      width: 370px;
       height: 50px;
       display: block;
       float: left;
@@ -353,7 +353,7 @@ h5 {
       float: right; }
       .nav-container .nav ul li {
         float: left;
-        width: 100px;
+        width: 90px;
         margin-left: 15px;
         position: relative; }
         .nav-container .nav ul li a {
@@ -366,11 +366,11 @@ h5 {
           font-size: 15px; }
           .nav-container .nav ul li a:hover {
             cursor: pointer;
-            color: #ffe0c7;
-            border-top: #ff7200 3px solid; }
+            color: #428edf;
+            border-top: #428edf 3px solid; }
           .nav-container .nav ul li a.active {
-            color: #ff7200;
-            border-top: #ff7200 3px solid; }
+            color: #428edf;
+            border-top: #428edf 3px solid; }
         .nav-container .nav ul li.top-membership, .nav-container .nav ul li.top-activity {
           display: none; }
 

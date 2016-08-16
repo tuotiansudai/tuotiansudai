@@ -1,13 +1,3 @@
-.nav-container {
-  margin-right: 10px; }
-  .nav-container .nav .logo {
-    width: 370px; }
-  .nav-container .nav ul li {
-    width: 90px; }
-  .nav-container .nav ul li a.active, .nav-container .nav ul li a:hover {
-    color: #428edf;
-    border-top: #428edf 3px solid; }
-
 .main-frame {
   width: 100%;
   margin: 0; }

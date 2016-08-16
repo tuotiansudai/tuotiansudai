@@ -127,7 +127,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li class="big-gift">
@@ -138,7 +140,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -150,7 +154,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -161,7 +167,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -173,7 +181,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -184,7 +194,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -196,7 +208,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -207,7 +221,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
             </ul>
@@ -232,7 +248,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li class="big-gift">
@@ -243,7 +261,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -255,7 +275,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -266,7 +288,9 @@
                     <p class="convert-btn">
                         <span class="name-text">500元现金红包</span>
                         <span class="price-text">尊享价：<i>5000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
                 <li>
@@ -278,7 +302,9 @@
                     <p class="convert-btn">
                         <span class="name-text">0.5%加息券</span>
                         <span class="price-text">尊享价：<i>2000</i>积分</span>
-                        <span class="get-btn">立即兑换</span>
+                        <a href="#">
+                            <span class="get-btn">立即兑换</span>
+                        </a>
                     </p>
                 </li>
             </ul>

@@ -1,20 +1,5 @@
 @import 'variables';
 @import 'daterangepicker';
-.nav-container {
-  margin-right: 10px;
-  .nav .logo{
-    width:370px;
-  }
-  .nav ul {
-    li{
-      width:90px;
-    }
-    li a.active, li a:hover {
-      color: #428edf;
-      border-top: #428edf 3px solid;
-    }
-  }
-}
 
 .main-frame{
   width:100%;
