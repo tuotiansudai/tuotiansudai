@@ -13,6 +13,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
@@ -60,6 +62,9 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     private static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
@@ -212,6 +217,11 @@ public class RepayServiceImpl implements RepayService {
             }
         }
         dataDto.setCouponMessage(couponMessage);
+
+//        List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
+//        for(MembershipModel membershipModel:membershipModels){
+//            userInvestRepayResponseDataDto.setMembershipLevel(investModel.getInvestFeeRate() == membershipModel.getFee()?String.valueOf(membershipModel.getLevel()):"0");
+//        }
         return baseDto;
     }
 
