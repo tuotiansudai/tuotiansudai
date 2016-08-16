@@ -13,4 +13,6 @@ public interface AccountService {
     long getFreeze(String loginName);
 
     String getRealName(String loginName);
+
+    long getUserPointByLoginName(String loginName);
 }

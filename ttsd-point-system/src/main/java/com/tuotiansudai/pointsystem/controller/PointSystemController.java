@@ -1,21 +1,24 @@
 package com.tuotiansudai.pointsystem.controller;
 
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.point.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.point.service.PointExchangeService;
-import com.tuotiansudai.point.service.PointTaskService;
+import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.pointsystem.util.LoginUserInfo;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
@@ -35,57 +38,115 @@ public class PointSystemController {
     @Autowired
     private PointExchangeService pointExchangeService;
 
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private SignInService signInService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView pointSystemHome() {
         ModelAndView modelAndView = new ModelAndView("pointsystem-index");
+        String loginName = LoginUserInfo.getLoginName();
 
-        modelAndView.addObject("responsive",true);
+        List<ProductShowItemDto> virtualProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.COUPON,
+                GoodsType.VIRTUAL));
+        modelAndView.addObject("virtualProducts", virtualProducts);
+
+        List<ProductShowItemDto> physicalProducts = productService.findAllProductsByGoodsTypes(Lists.newArrayList(GoodsType.PHYSICAL));
+        modelAndView.addObject("physicalProducts", physicalProducts);
+
+        boolean isLogin = userService.loginNameIsExist(loginName);
+        if (isLogin) {
+            modelAndView.addObject("userPoint", accountService.getUserPointByLoginName(loginName));
+            modelAndView.addObject("isSignIn", signInService.signInIsSuccess(loginName));
+        }
+        modelAndView.addObject("isLogin", isLogin);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
- @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public ModelAndView pointSystemDetail() {
+    @RequestMapping(path = "/signIn", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> signIn() {
+        String loginName = LoginUserInfo.getLoginName();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = signInService.signIn(loginName);
+        baseDataDto.setStatus(true);
+        baseDto.setData(baseDataDto);
+        baseDto.setSuccess(true);
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public ModelAndView pointSystemDetail(@RequestParam(value = "id", required = true) long id,
+                                          @RequestParam(value = "itemType", required = true) ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-detail");
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        modelAndView.addObject("productShowItemDto", productShowItemDto);
 
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/order",method = RequestMethod.GET)
-    public ModelAndView pointSystemOrder() {
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    public ModelAndView pointSystemOrder(@PathVariable long id, @RequestParam(value = "itemType", required = true) ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-order");
 
-        modelAndView.addObject("responsive",true);
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        modelAndView.addObject("productShowItemDto", productShowItemDto);
+
+        if (itemType.equals(ItemType.PHYSICAL)) {
+            String loginName = LoginUserInfo.getLoginName();
+            List<UserAddressModel> userAddressModels = productService.getUserAddressesByLoginName(loginName);
+            modelAndView.addObject("addresses", userAddressModels);
+        }
+
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/task",method = RequestMethod.GET)
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> buyProduct(@PathVariable long id, @RequestParam(value = "itemType", required = true) ItemType itemType,
+                                           @RequestParam(value = "amount", required = true) int amount,
+                                           @RequestParam(value = "userAddress", required = false) UserAddressModel userAddressModel) {
+        String loginName = LoginUserInfo.getLoginName();
+        return productService.buyProduct(loginName, id, itemType, amount, userAddressModel);
+    }
+
+    @RequestMapping(value = "/task", method = RequestMethod.GET)
     public ModelAndView pointSystemTask() {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-task");
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("newbiePointTasks", pointTaskService.getNewbiePointTasks(loginName));
         modelAndView.addObject("advancedPointTasks", pointTaskService.getAdvancedPointTasks(loginName));
         modelAndView.addObject("completedAdvancedPointTasks", pointTaskService.getCompletedAdvancedPointTasks(loginName));
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/record",method = RequestMethod.GET)
+    @RequestMapping(value = "/record", method = RequestMethod.GET)
     public ModelAndView pointSystemRecord(String loginName) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-record");
         modelAndView.addObject("recordList", pointExchangeService.findProductOrderListByLoginName(loginName));
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
     @RequestMapping(value = "/bill", method = RequestMethod.GET)
-    public ModelAndView pointSystemBill(){
+    public ModelAndView pointSystemBill() {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-bill");
         BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), 1, 10, null, null, null);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
-        modelAndView.addObject("dto",dto);
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("dto", dto);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
 
     }

@@ -12,9 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,11 +39,10 @@ public class UserAddressMapperTest {
 
         userAddressMapper.create(userAddressModel);
 
-        UserAddressModel userAddressModel1 = userAddressMapper.findByLoginName(fakeUserModel.getLoginName());
-
+        List<UserAddressModel> userAddressModelList = userAddressMapper.findByLoginName(fakeUserModel.getLoginName());
+        assertEquals(1, userAddressModelList.size());
+        UserAddressModel userAddressModel1 = userAddressModelList.get(0);
         assertThat(userAddressModel1.getRealName(), is("张山"));
-
-
     }
 
     private UserModel createFakeUserModel() {
