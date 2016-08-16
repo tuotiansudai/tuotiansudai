@@ -185,7 +185,7 @@
         TopMainMenuList=window.$('TopMainMenuList');
 
     if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(e) {
+        window.$('iphone-app-pop').onclick=function(event) {
             if(imgDom.style.display == "block") {
                 imgDom.style.display='none';
             }
