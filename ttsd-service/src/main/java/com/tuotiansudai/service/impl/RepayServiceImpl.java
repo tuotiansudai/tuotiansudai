@@ -161,6 +161,7 @@ public class RepayServiceImpl implements RepayService {
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
+
         List<InvestRepayDataItemDto> repays = Lists.newArrayList();
         long sumActualInterest = 0l;
         long sumExpectedInterest = 0l;
@@ -218,10 +219,13 @@ public class RepayServiceImpl implements RepayService {
         }
         dataDto.setCouponMessage(couponMessage);
 
-//        List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
-//        for(MembershipModel membershipModel:membershipModels){
-//            userInvestRepayResponseDataDto.setMembershipLevel(investModel.getInvestFeeRate() == membershipModel.getFee()?String.valueOf(membershipModel.getLevel()):"0");
-//        }
+        InvestModel investModel = investMapper.findById(investId);
+        List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
+        for(MembershipModel membershipModel:membershipModels){
+            dataDto.setLevel(investModel.getInvestFeeRate() == membershipModel.getFee() ? String.valueOf(membershipModel.getLevel()) : "0");
+            dataDto.setFee(investModel.getInvestFeeRate() == membershipModel.getFee() ? String.valueOf(membershipModel.getFee()) : "0");
+        }
+
         return baseDto;
     }
 
