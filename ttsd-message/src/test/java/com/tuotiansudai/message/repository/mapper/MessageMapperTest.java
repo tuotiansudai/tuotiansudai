@@ -105,7 +105,7 @@ public class MessageMapperTest {
                 MessageType.EVENT,
                 Lists.newArrayList(MessageUserGroup.ALL_USER),
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new DateTime().plusDays(10).toDate(), creator.getLoginName());
+                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
         messageMapper.create(messageModel2);
 
         List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
