@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -116,12 +117,12 @@ public class RepayServiceTest {
         UserCouponModel userCouponModel = getUserCouponModel(loginName, investCoupon.getId(), investModel.getId(), loanModel.getId());
         CouponRepayModel couponRepayModel = getCouponRepayModel(loginName,investCoupon.getId(),userCouponModel.getId(), investModel.getId(), DateTime.parse("2010-01-01").toDate());
         BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
-        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getStatus(),"已转让");
+        assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getStatus(), TransferStatus.SUCCESS.getDescription());
     }
-
 
     private CouponRepayModel getCouponRepayModel(String loginName,long couponId,long userCouponId,long investId,Date date){
         CouponRepayModel couponRepayModel = new CouponRepayModel(loginName, couponId, userCouponId, investId, 200, 100, 1, date);
+        couponRepayModel.setPeriod(1);
         couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
         return couponRepayModel;
     }

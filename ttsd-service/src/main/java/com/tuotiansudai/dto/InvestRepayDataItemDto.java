@@ -63,6 +63,7 @@ public class InvestRepayDataItemDto {
             if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
             if(RepayStatus.OVERDUE == model.getStatus()) this.overdueDay = (model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24) + "";
         }
+        this.investId = model.getInvestId();
         if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
         if(model.getExpectedFee() > 0) this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());

@@ -26,9 +26,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -69,9 +67,11 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
-    private static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
+    private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
-    private static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
+    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
+
+    private final static String BIRTHDAY_COUPON_MESSAGE = "您使用了生日月福利";
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -163,81 +163,79 @@ public class RepayServiceImpl implements RepayService {
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
-
-        List<InvestRepayDataItemDto> repays = Lists.newArrayList();
-        long sumActualInterest = 0l;
-        long sumExpectedInterest = 0l;
+        final List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
+        final long[] sumActualInterest = {0};
+        final long[] sumExpectedInterest = {0l};
+        final int period = investRepayModels.size();
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
             List<InvestRepayDataItemDto> records = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
                 @Override
                 public InvestRepayDataItemDto apply(InvestRepayModel investRepayModel) {
-                    return new InvestRepayDataItemDto(investRepayModel);
+                    InvestRepayDataItemDto investRepayDataItemDto = setCouponInvestRepayDataItemDto(new InvestRepayDataItemDto(investRepayModel));
+                    if (investRepayModel.getPeriod() == period) {
+                        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                        if (investExtraRateModel != null) {
+                            investRepayDataItemDto.setCouponExpectedInterest(add(investRepayDataItemDto.getCouponExpectedInterest(), investExtraRateModel.getExpectedInterest()));
+                            investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(), investExtraRateModel.getRepayAmount()));
+                        }
+                    }
+                    sumActualInterest[0] += AmountConverter.convertStringToCent(investRepayDataItemDto.getActualAmount());
+                    sumExpectedInterest[0] += AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount());
+                    return investRepayDataItemDto;
                 }
             });
-
-            List<CouponRepayModel> userCouponByInvestId = couponRepayMapper.findByUserCouponByInvestId(investId);
-            for (InvestRepayDataItemDto investRepayDataItemDto : records) {
-                final Date repayDate = investRepayDataItemDto.getRepayDate();
-                Optional<CouponRepayModel> couponRepay = Iterators.tryFind(userCouponByInvestId.iterator(), new Predicate<CouponRepayModel>() {
-                    @Override
-                    public boolean apply(CouponRepayModel input) {
-                        return input.getRepayDate().getTime() == repayDate.getTime();
-                    }
-                });
-
-                if (couponRepay.isPresent()) {
-                    investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepay.get().getExpectedInterest()));
-                    investRepayDataItemDto.setExpectedFee(add(investRepayDataItemDto.getExpectedFee(), couponRepay.get().getExpectedFee()));
-                    investRepayDataItemDto.setAmount(add(investRepayDataItemDto.getAmount(), (couponRepay.get().getExpectedInterest() - couponRepay.get().getExpectedFee())));
-                    if (RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())) {
-                        investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(),couponRepay.get().getRepayAmount()));
-                        investRepayDataItemDto.setActualFee(add(investRepayDataItemDto.getActualFee(), couponRepay.get().getActualFee()));
-                    }
-                }
-
-                if(!RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())){
-                    sumExpectedInterest += AmountConverter.convertStringToCent(investRepayDataItemDto.getAmount());
-                }
-                sumActualInterest += AmountConverter.convertStringToCent(investRepayDataItemDto.getActualAmount());
-                repays.add(investRepayDataItemDto);
-            }
-
-            InvestRepayDataItemDto investRepayDataItemDto = repays.get(repays.size() - 1);
-            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investId);
-            if(investExtraRateModel != null){
-                investRepayDataItemDto.setCouponExpectedInterest(add(investRepayDataItemDto.getCouponExpectedInterest(),investExtraRateModel.getExpectedInterest()));
-                investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(),investExtraRateModel.getRepayAmount()));
-
-            }
-            dataDto.setRecords(repays);
+            dataDto.setRecords(records);
         }
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
         dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ? userCouponModels.get(0).getActualInterest() : 0l));
-        dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
-        dataDto.setSumExpectedInterest(AmountConverter.convertCentToString(sumExpectedInterest));
+        dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest[0]));
+        dataDto.setSumExpectedInterest(AmountConverter.convertCentToString(sumExpectedInterest[0]));
 
         userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON,CouponType.INVEST_COUPON));
-        String couponMessage = "";
         for(UserCouponModel userCouponModel : userCouponModels){
             CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if(couponModel.getCouponType().equals(CouponType.INVEST_COUPON)){
-                couponMessage = MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount()));
-            }else{
-                couponMessage = MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100));
+            switch (couponModel.getCouponType()){
+                case INVEST_COUPON:
+                    dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
+                    break;
+                case INTEREST_COUPON:
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100)));
+                    break;
+                case BIRTHDAY_COUPON:
+                    dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
+                    break;
             }
         }
-        dataDto.setCouponMessage(couponMessage);
 
-        InvestModel investModel = investMapper.findById(investId);
+        final InvestModel investModel = investMapper.findById(investId);
         List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
-        for(MembershipModel membershipModel:membershipModels){
-            dataDto.setLevel(investModel.getInvestFeeRate() == membershipModel.getFee() ? String.valueOf(membershipModel.getLevel()) : "0");
-            dataDto.setFee(investModel.getInvestFeeRate() == membershipModel.getFee() ? String.valueOf(membershipModel.getFee()) : "0");
-        }
+        Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
+            @Override
+            public boolean apply(MembershipModel input) {
+                return input.getFee() == investModel.getInvestFeeRate() ;
+            }
+        });
 
+        if(membershipModelOptional.isPresent()){
+            dataDto.setLevel(String.valueOf(membershipModelOptional.get().getLevel()));
+            dataDto.setFee(String.valueOf(membershipModelOptional.get().getFee()));
+        }
         return baseDto;
+    }
+
+    private InvestRepayDataItemDto setCouponInvestRepayDataItemDto(InvestRepayDataItemDto investRepayDataItemDto){
+        CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(),investRepayDataItemDto.getPeriod());
+        if(couponRepayModel != null){
+            investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponRepayModel.getExpectedInterest()));
+            investRepayDataItemDto.setExpectedFee(add(investRepayDataItemDto.getExpectedFee(), couponRepayModel.getExpectedFee()));
+            investRepayDataItemDto.setAmount(add(investRepayDataItemDto.getAmount(), (couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee())));
+            if (RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())) {
+                investRepayDataItemDto.setActualAmount(add(investRepayDataItemDto.getActualAmount(),couponRepayModel.getRepayAmount()));
+                investRepayDataItemDto.setActualFee(add(investRepayDataItemDto.getActualFee(), couponRepayModel.getActualFee()));
+            }
+        }
+        return investRepayDataItemDto;
     }
 
     private String add(String num1,long num2){
