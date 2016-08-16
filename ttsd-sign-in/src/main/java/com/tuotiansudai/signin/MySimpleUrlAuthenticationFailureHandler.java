@@ -2,7 +2,6 @@ package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;

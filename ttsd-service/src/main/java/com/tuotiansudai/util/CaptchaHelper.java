@@ -24,8 +24,6 @@ public class CaptchaHelper {
 
     public final static String LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
 
-    public final static String ASK_CAPTCHA = "ASK_CAPTCHA";
-
     public final static String REGISTER_CAPTCHA = "REGISTER_CAPTCHA";
 
     public final static String RETRIEVE_PASSWORD_CAPTCHA = "RETRIEVE_PASSWORD_CAPTCHA";

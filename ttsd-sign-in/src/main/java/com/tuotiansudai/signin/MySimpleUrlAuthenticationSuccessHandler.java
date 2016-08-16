@@ -1,17 +1,10 @@
 package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
