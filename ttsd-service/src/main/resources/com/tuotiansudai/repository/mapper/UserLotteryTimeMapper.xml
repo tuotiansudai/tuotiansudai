@@ -16,55 +16,24 @@
         <result column="updated_time" property="updatedTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`user_lottery_time`(`id`,`mobile`,`login_name`,`used_count`,`unused_count`,`create_time`,`update_time`)
         VALUES(#{id},#{mobile},#{login_name},#{used_count},#{unused_count},#{create_time},#{update_time});
 
     </insert>
 
-    <select id="findByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
-        select * from account where login_name = #{loginName}
-    </select>
-
-    <select id="findByPayUserId" parameterType="java.lang.String" resultMap="accountResultMap">
-        select * from account where pay_user_id = #{payUserId}
-    </select>
-
-    <select id="findAllLoanerLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
-        select t.login_name from account t JOIN user_role r ON t.`login_name` = r.`login_name` AND r.`role` = 'LOANER' where t.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
-    </select>
-
-    <select id="findAccountLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
-        select login_name from account where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
-    </select>
-
-    <select useCache="false" id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
-        select * from account where login_name = #{loginName} for update
-    </select>
-
-    <update id="update" parameterType="AccountModel">
-        update account set
-          balance = #{balance},
-          freeze = #{freeze},
-          auto_invest = #{autoInvest},
-          auto_repay = #{autoRepay},
-          no_password_invest = #{noPasswordInvest},
-          point = #{point},
-          membership_point = #{membershipPoint}
-        where login_name = #{loginName}
+    <update id="update" parameterType="UserLotteryTimeModel">
+        UPDATE `aa`.`user_lottery_time`
+        SET
+        `id` = #{id},
+        `mobile` = #{mobile},
+        `login_name` = #{login_name},
+        `used_count` = #{used_count},
+        `unused_count` = #{unused_count},
+        `create_time` = #{create_time},
+        `update_time` = #{update_time}
+        WHERE `id` = #{id}
     </update>
-
-    <select id="findByIdentityNumber" parameterType="java.lang.String" resultMap="accountResultMap">
-        select * from account where identity_number = #{identityNumber}
-    </select>
-
-    <select id="findLoginNames" resultType="java.lang.String">
-        select login_name from account
-    </select>
-
-    <select id="findBirthOfAccountInMonth" resultType="java.lang.String">
-        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,2),substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
-    </select>
 
     <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
         SELECT
@@ -84,53 +53,6 @@
         </if>
         ORDER BY a.point DESC
         limit #{startLimit}, #{endLimit}
-    </select>
-
-    <select id="findUsersAccountPointCount" parameterType="map" resultType="int">
-        SELECT
-        COUNT(1)
-        FROM user u
-        JOIN account a ON u.login_name = a.login_name
-        WHERE a.point > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.login_name = #{loginName}
-        </if>
-        <if test="userName != null and userName != '' ">
-            AND a.user_name = #{userName}
-        </if>
-        <if test="mobile != null and mobile != '' ">
-            AND u.mobile = #{mobile}
-        </if>
-    </select>
-
-    <select id="findUsersAccountTotalPoint" parameterType="java.lang.String" resultType="int">
-        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
-    </select>
-
-    <select id="findUsersAccountAvailablePoint" parameterType="java.lang.String" resultType="int">
-        SELECT  IFNULL(point, 0) FROM account WHERE login_name = #{loginName}
-    </select>
-
-    <update id="updateByLoginName" parameterType="map">
-        UPDATE account SET
-        point = point - #{exchangePoint}
-        WHERE login_name = #{loginName}
-    </update>
-
-    <select id="findBirthOfAccountInDay" resultType="java.lang.String">
-        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,4),substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
-    </select>
-
-    <select id="findTotalAccountCount" resultType="int">
-        select count(1) from account
-    </select>
-
-    <select id="findAccountWithBalance" parameterType="map" resultMap="accountResultMap">
-        select login_name, balance from account order by id ASC limit #{startLimit}, #{endLimit}
-    </select>
-
-    <select id="findAccountRegisterTimeByLoginName" parameterType="java.lang.String" resultType="Date">
-        select register_time from account where login_name = #{loginName}
     </select>
 
 </mapper>
