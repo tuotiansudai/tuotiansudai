@@ -5,9 +5,11 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
+import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
@@ -55,8 +57,12 @@ public class ExportController {
 
     @Autowired
     private LoanRepayService loanRepayService;
+
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -244,7 +250,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public void ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
+    public void consoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                 @RequestParam(value = "loanId", required = false) Long loanId,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -263,8 +269,20 @@ public class ExportController {
                 index, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildConsoleLoanList(loanListDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
-
     }
 
+    @RequestMapping(value = "/product-order-list", method = RequestMethod.GET)
+    public void productOrderListExport(@RequestParam(value = "productId") long productId, HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        try {
+            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ProductOrderList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        httpServletResponse.setContentType("application/csv");
+        List<ProductOrderDto> productOrderDtos = productService.findProductOrderList(productId, null, 1, Integer.MAX_VALUE);
+        List<List<String>> csvData = exportService.buildProductOrderList(productOrderDtos);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ProductOrderList, csvData, httpServletResponse.getOutputStream());
+    }
 
 }

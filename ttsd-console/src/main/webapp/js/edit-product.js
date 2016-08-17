@@ -28,7 +28,7 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
         html += '<span aria-hidden="true">&times;</span>';
         html += '</button>';
-        html += '<span class="txt">创建失败：' + msg + '</span>';
+        html += '<span class="txt">修改失败：' + msg + '</span>';
         html += '</div>';
         $errorDom.append(html);
     }
@@ -126,4 +126,5 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
             $productForm[0].submit();
         }
     });
+
 });
