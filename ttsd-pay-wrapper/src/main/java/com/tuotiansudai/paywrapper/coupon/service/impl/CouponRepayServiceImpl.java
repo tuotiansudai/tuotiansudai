@@ -210,7 +210,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.error(MessageFormat.format("(coupon is exist (couponId = {0}))", userCouponModel.getCouponId()));
                         continue;
                     }
-                    if(couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1){
+                    if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1) {
                         continue;
                     }
                     long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
@@ -218,7 +218,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)
                             .multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
-                    couponRepayModels.add(new CouponRepayModel(successInvestModel.getLoginName(),
+                    couponRepayMapper.create(new CouponRepayModel(successInvestModel.getLoginName(),
                             couponModel.getId(),
                             userCouponModel.getId(),
                             successInvestModel.getId(),
@@ -231,7 +231,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             }
         }
-        couponRepayMapper.create(couponRepayModels);
     }
 
     private void updateCouponRepay(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {
