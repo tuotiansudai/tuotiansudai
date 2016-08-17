@@ -29,6 +29,7 @@ require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
 			if ($.trim(exchangeCode).length != 14) {
 				$errorText.addClass('error-color').find('span').text('请输入正确的兑换码');
 				$('#couponByCode').val('');
+				$(this).prop('disabled',false);
 			} else {
 				$.ajax({
 					url: '/my-treasure/'+exchangeCode+'/exchange',
