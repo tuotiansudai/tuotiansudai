@@ -29,7 +29,7 @@ require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
 			if ($.trim(exchangeCode).length != 14) {
 				$errorText.addClass('error-color').find('span').text('请输入正确的兑换码');
 				$('#couponByCode').val('');
-				$(this).prop('disabled',false);
+				$("#submitCode").removeAttr("disabled");
 			} else {
 				$.ajax({
 					url: '/my-treasure/'+exchangeCode+'/exchange',
@@ -37,7 +37,7 @@ require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
 					dataType: 'json',
 					contentType: 'application/json; charset=UTF-8'
 				}).done(function(data){
-					$(this).prop('disabled',false);
+					$("#submitCode").removeAttr("disabled");
 					var message = data.message;
 					if (data.status) {
 						$errorText.addClass('success-color').find('span').text(message);
@@ -47,7 +47,7 @@ require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
 						$('#couponByCode').val('');
 					}
 				}).fail(function() {
-					$(this).prop('disabled',false);
+					$("#submitCode").removeAttr("disabled");
 					$errorText.addClass('error-color').find('span').text('兑换失败，请重试');
 					$('#couponByCode').val('');
 				});
