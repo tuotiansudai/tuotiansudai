@@ -1,6 +1,6 @@
 require(['jquery'],function($){
 	$(function() {
-		var $countList=$('.count-list'),
+		var $countList=$('.order-number'),
 			$numText=$countList.find('.num-text'),
 			$bigText = $countList.find('.total-num i');
 
@@ -9,15 +9,21 @@ require(['jquery'],function($){
 			if ($bigText.text() > 0) {
 				$numText.val() > 1 ? $numText.val(function (index, num) {
 					return parseInt(num) - 1
-				}) : $numText.val('1');
+				}) && changeCount() : $numText.val('1');
 			}
 		}).on('click', '.add-btn', function(event) {//加号
 			event.preventDefault();
 			if ($bigText.text() > 0) {
 				$numText.val() < parseInt($bigText.text()) ? $numText.val(function (index, num) {
-					return parseInt(num) + 1
-				}) : $numText.val($bigText.text());
+					return parseInt(num) + 1 
+				}) && changeCount(): $numText.val($bigText.text());
 			}
 		});
+		changeCount()
+		function changeCount(){
+			$('.count-num').each(function(index, el) {
+				$(this).text(parseInt($(this).attr('data-num'))*parseInt($numText.val()));
+			});
+		}
 	});
 })

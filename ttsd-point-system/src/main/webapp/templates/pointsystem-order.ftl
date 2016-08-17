@@ -64,7 +64,7 @@
 						<p class="title-text">商品数量</p>
 						<p class="count-list">
 							<span class="count-btn low-btn">-</span>
-							<input type="text" value="1" class="num-text">
+							<input type="text" value="1" class="num-text" readonly="readonly">
 							<span class="count-btn add-btn">+</span>
 						</p>
 						<p>
@@ -75,13 +75,13 @@
 					</div>
 					<div class="order-count">
 						<p class="title-text">小计</p>
-						<p>20000积分</p>
+						<p><i class="count-num" data-num="20">20</i>积分</p>
 					</div>
 				</div>
 			</div>
 			<div class="order-total">
 				<p>
-					<span>共需支付：<i>20000</i>积分</span>
+					<span>共需支付：<i class="count-num" data-num="20">20</i>积分</span>
 				</p>
 				<p>
 					<input type="button" value="立即兑换" class="order-btn" id="orderBtn">
