@@ -195,7 +195,7 @@ public class CouponRepayServiceTest {
 
         doNothing().when(couponRepayMapper).create(any(CouponRepayModel.class));
         ArgumentCaptor<CouponRepayModel> argumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
-        verify(couponRepayMapper, times(1)).create(argumentCaptor.capture());
+        verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
         CouponRepayModel value = argumentCaptor.getValue();
 
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
