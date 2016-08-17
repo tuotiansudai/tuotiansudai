@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ProductOrderDto {
     private long id;
-    private long productId;
+    private long goodsId;
     private String loginName;
     private Date createdTime;
     private long num;
@@ -19,7 +19,7 @@ public class ProductOrderDto {
 
     public ProductOrderDto(ProductOrderModel productOrderModel) {
         this.id = productOrderModel.getId();
-        this.productId = productOrderModel.getProductId();
+        this.goodsId = productOrderModel.getGoodsId();
         this.loginName = productOrderModel.getCreatedBy();
         this.createdTime = productOrderModel.getCreatedTime();
         this.num = productOrderModel.getNum();
@@ -38,12 +38,12 @@ public class ProductOrderDto {
         this.id = id;
     }
 
-    public long getProductId() {
-        return productId;
+    public long getGoodsId() {
+        return goodsId;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setGoodsId(long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getLoginName() {

@@ -44,7 +44,7 @@ public class ProductOrderMapperTest {
 
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
-        productOrderModel.setProductId(productModel.getId());
+        productOrderModel.setGoodsId(productModel.getId());
         productOrderModel.setProductPrice(2000);
         productOrderModel.setNum(2);
         productOrderModel.setTotalPrice(4000);

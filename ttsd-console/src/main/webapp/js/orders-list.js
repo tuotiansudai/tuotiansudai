@@ -31,8 +31,8 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         $('.export-product').click(function (e) {
             e.preventDefault();
             var $self=$(this),
-                $productId = $self.attr('data-pid');
-            location.href = "/export/product-order-list?productId=" + $productId;
+                $goodsId = $self.attr('data-pid');
+            location.href = "/export/product-order-list?goodsId=" + $goodsId;
         });
     });
 });

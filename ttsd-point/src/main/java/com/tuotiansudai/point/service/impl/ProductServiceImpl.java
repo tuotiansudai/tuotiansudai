@@ -77,8 +77,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductOrderDto> findProductOrderList(final long productId, String loginName, int index, int pageSize) {
-        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(productId, loginName, (index-1)*pageSize, pageSize);
+    public List<ProductOrderDto> findProductOrderList(final long goodsId, String loginName, int index, int pageSize) {
+        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(goodsId, loginName, (index-1)*pageSize, pageSize);
         return Lists.transform(productOrderList, new Function<ProductOrderModel, ProductOrderDto>() {
             @Override
             public ProductOrderDto apply(ProductOrderModel model) {
@@ -88,8 +88,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public long findProductOrderCount(long productId) {
-        return productOrderMapper.findProductOrderCount(productId, null);
+    public long findProductOrderCount(long goodsId) {
+        return productOrderMapper.findProductOrderCount(goodsId, null);
     }
 
     @Override

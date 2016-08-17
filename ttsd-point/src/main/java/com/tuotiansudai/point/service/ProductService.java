@@ -33,9 +33,9 @@ public interface ProductService {
 
     BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address);
 
-    List<ProductOrderDto> findProductOrderList(long productId, String loginName, int index, int pageSize);
+    List<ProductOrderDto> findProductOrderList(long goodsId, String loginName, int index, int pageSize);
 
-    long findProductOrderCount(long productId);
+    long findProductOrderCount(long goodsId);
 
     BaseDataDto active(long productId, String loginName);
 

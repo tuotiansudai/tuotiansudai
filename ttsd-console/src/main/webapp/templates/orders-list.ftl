@@ -82,7 +82,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?index=${index-1}&pageSize=${pageSize}&productId=${productId}"
+                    <a href="?index=${index-1}&pageSize=${pageSize}&goodsId=${goodsId}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -93,7 +93,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?index=${index+1}&pageSize=${pageSize}&productId=${productId}"
+                    <a href="?index=${index+1}&pageSize=${pageSize}&goodsId=${goodsId}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -102,7 +102,7 @@
                 </a>
                 </li>
                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${productId}">导出Excel</button>
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${goodsId}">导出Excel</button>
                 </@security.authorize>
 
             </ul>
