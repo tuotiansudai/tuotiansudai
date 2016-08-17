@@ -16,7 +16,7 @@ BEGIN;
 
    DELETE FROM user_message
     WHERE
-    
+
         *
     FROM
         user
