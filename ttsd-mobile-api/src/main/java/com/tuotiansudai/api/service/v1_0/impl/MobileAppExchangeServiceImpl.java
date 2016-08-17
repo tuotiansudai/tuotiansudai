@@ -64,7 +64,10 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         if (exchangeCodeService.checkExchangeCodeDailyCount(loginName)) {
             return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getCode(),ReturnMessage.EXCHANGE_CODE_OVER_DAILY_COUNT.getMsg());
         }
-        couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        boolean exchangeResult = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        if(!exchangeResult){
+            return new BaseResponseDto<>(ReturnMessage.EXCHANGE_CODE_IS_FAIL.getCode(),ReturnMessage.EXCHANGE_CODE_IS_FAIL.getMsg());
+        }
         String isUsed = "1";
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, isUsed);
 
