@@ -1,7 +1,7 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
+<@global.main pageCss="" pageJavascript="orders-list.js" headLab="point-manage" title="订单详情">
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${goodsType.name()!}Manage" title="添加商品">
 <div class="col-md-10">
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -11,62 +11,56 @@
             <span class="txt"></span>
         </div>
     </div>
-    <div class="table-responsive" id="productListContainer">
+    <div>
+        <span><a class="loan_repay"
+                 href="/product-manage/product-list?goodsType=${product.goodsType.name()!}">返回></a></span>
+    </div>
+    <div>
+        <span>商品名称:${product.productName!}</span>
+    </div>
+    <div>
+        <span>商品价格:${product.productPrice?string('0')!}</span>
+    </div>
+    <div>
+        <span>商品数量:${product.totalCount?string('0')!}</span>
+    </div>
+    <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
-                <th>商品类别</th>
-                <th>当前顺序</th>
-                <th>名称</th>
-                <th>商品图片</th>
-                <th>商品介绍</th>
-                <th>总数量</th>
-                <th>已兑换数量</th>
-                <th>商品价格</th>
-                <th>商品有效期限</th>
+                <th>用户名</th>
+                <th>兑换时间</th>
+                <th>兑换数量</th>
+                <th>姓名</th>
+                <th>手机号码</th>
+                <th>收货地址</th>
                 <th>操作</th>
-                <th></th>
-                <th></th>
+                <th>发货时间</th>
             </tr>
             </thead>
             <tbody>
-                <#list products as product>
+                <#list orders as order>
                 <tr>
-                    <td>${goodsType.description!}</td>
-                    <td>2-${product.seq?string('0')!}</td>
-                    <td>${product.productName}</td>
-                    <td><img src="${product.imageUrl}" width="100px" height="50px"></td>
-                    <td>${product.description}</td>
-                    <td>${product.totalCount?string('0')}</td>
-                    <td>${product.usedCount?string('0')}</td>
-                    <td>${product.productPrice?string('0')}</td>
-                    <td>${(product.startTime?string('yyyy-MM-dd'))!}至${(product.endTime?string('yyyy-MM-dd'))!}</td>
-                    <td>
-                        <#if product.active>
-                            -
-                        <#else>
-                            <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                                -
-                            </@security.authorize>
-                            <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                                <a href="/product-manage/${product.id?string('0')}/edit">编辑</a>
-                            </@security.authorize>
-                        </#if>
-                    </td>
+                    <td>${order.loginName}</td>
+                    <td>${(order.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>${order.num?string('0')}</td>
+                    <td>${order.realName}</td>
+                    <td>${order.mobile}</td>
+                    <td>${order.address!}</td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                            <#if product.active>
+                            <#if order.consignment>
                                 <label>
                                     <i class="check-btn add-check"></i>
                                     <button class="loan_repay already-btn btn-link inactive-btn" disabled
-                                            data-id="${product.id?string('0')}">已生效
+                                            data-id="${order.id?string('0')}">已发货
                                     </button>
                                 </label>
                             <#else>
                                 <label>
                                     <i class="check-btn"></i>
                                     <a class="loan_repay confirm-btn" href="javascript:void(0)"
-                                       data-id="${product.id?string('0')}">确认生效</a>
+                                       data-id="${order.id?string('0')}">确认发货</a>
                                 </label>
                             </#if>
                         </@security.authorize>
@@ -74,10 +68,7 @@
                             -
                         </@security.authorize>
                     </td>
-                    <td>
-                        <a href="/product-manage/${product.id?string('0')}/detail"
-                           class="btn-link">查看详情</a>
-                    </td>
+                    <td>${(order.consignmentTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                 </#list>
             </tbody>
         </table>
@@ -85,14 +76,14 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${goodsCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${ordersCount}条,每页显示${pageSize}条</span>
         </div>
-        <#if products?has_content>
+        <#if orders?has_content>
             <ul class="pagination">
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?index=${index-1}&pageSize=${pageSize}&goodsType=${goodsType}"
+                    <a href="?index=${index-1}&pageSize=${pageSize}&goodsId=${goodsId}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -103,7 +94,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?index=${index+1}&pageSize=${pageSize}&goodsType=${goodsType}"
+                    <a href="?index=${index+1}&pageSize=${pageSize}&goodsId=${goodsId}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -111,9 +102,16 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
+                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${goodsId}">
+                        导出Excel
+                    </button>
+                </@security.authorize>
+
             </ul>
         </#if>
     </nav>
-    </form>
+    <!-- pagination -->
 </div>
+<!-- content area end -->
 </@global.main>

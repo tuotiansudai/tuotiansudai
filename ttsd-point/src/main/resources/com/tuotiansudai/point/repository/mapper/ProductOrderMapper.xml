@@ -8,7 +8,7 @@
 
     <resultMap id="productOrderResultMap" type="ProductOrderModel">
         <id column="id" property="id"/>
-        <result column="product_id" property="productId"/>
+        <result column="goods_id" property="goodsId"/>
         <result column="product_price" property="productPrice"/>
         <result column="num" property="num"/>
         <result column="total_price" property="totalPrice"/>
@@ -23,7 +23,7 @@
 
     <resultMap id="productOrderExchangeResultMap" type="ProductOrderViewDto">
         <id column="id" property="id"/>
-        <result column="product_id" property="productId"/>
+        <result column="goods_id" property="goodsId"/>
         <result column="product_price" property="productPrice"/>
         <result column="num" property="num"/>
         <result column="total_price" property="totalPrice"/>
@@ -32,14 +32,16 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product_order (`product_id`, `product_price`, `num`, `total_price`, `real_name`, `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        value(#{productId}, #{productPrice},  #{num},  #{totalPrice},  #{realName},  #{mobile},  #{address}, #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
+        insert into product_order (`goods_id`, `goods_type`, `product_price`, `num`, `total_price`, `real_name`,
+        `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
+        value(#{goodsId}, #{goodsType}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
+        #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="ProductOrderModel">
         update product_order
         set `consignment` = #{consignment},
-            `consignment_time` = #{consignment_time}
+        `consignment_time` = #{consignmentTime}
         where `id` = #{id}
     </update>
 
@@ -48,17 +50,34 @@
     </select>
 
     <select id="findProductOrderCount" resultType="long">
-        select count(id) from product_order
+        select count(id) from product_order p
+        <where>
+            <if test="goodsId != null">
+                and p.goods_id = #{goodsId}
+            </if>
+            <if test="createdBy != null">
+                and p.created_by = #{createdBy}
+            </if>
+        </where>
     </select>
 
     <select id="findProductOrderList" resultMap="productOrderResultMap">
-        select * from product_order
+        select * from product_order p
+        <where>
+            <if test="goodsId != null">
+                and p.goods_id = #{goodsId}
+            </if>
+            <if test="createdBy != null">
+                and p.created_by = #{createdBy}
+            </if>
+        </where>
         order by created_time desc
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findProductOrderListByLoginName" parameterType="java.lang.String" resultMap="productOrderExchangeResultMap">
         select po.id as id,
-        po.product_id as product_id,
+        po.goods_id as goods_id,
         po.product_price as product_price,
         po.num as num,
         po.total_price as total_price,
@@ -66,6 +85,8 @@
         p.product_name as product_name
         from product_order po
         JOIN product p ON po.product_id = p.id
+
+
         WHERE po.created_by = #{loginName}
         order by po.created_time desc
     </select>

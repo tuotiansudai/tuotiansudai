@@ -6,7 +6,7 @@ import java.util.Date;
 public class ProductOrderModel implements Serializable{
 
     private long id;
-    private long productId;
+    private long goodsId;
     private long productPrice;
     private Integer num;
     private long totalPrice;
@@ -22,8 +22,8 @@ public class ProductOrderModel implements Serializable{
 
     }
 
-    public ProductOrderModel(long productId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
-        this.productId = productId;
+    public ProductOrderModel(long goodsId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
+        this.goodsId = goodsId;
         this.productPrice = productPrice;
         this.num = num;
         this.totalPrice = totalPrice;
@@ -44,12 +44,12 @@ public class ProductOrderModel implements Serializable{
         this.id = id;
     }
 
-    public long getProductId() {
-        return productId;
+    public long getGoodsId() {
+        return goodsId;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setGoodsId(long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public long getProductPrice() {

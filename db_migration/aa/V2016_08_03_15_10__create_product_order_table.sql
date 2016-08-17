@@ -1,6 +1,6 @@
 CREATE TABLE `aa`.`product_order` (
   `id`                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `product_id`        BIGINT UNSIGNED NOT NULL,
+  `goods_id`          BIGINT UNSIGNED NOT NULL,
   `product_price`     BIGINT UNSIGNED NOT NULL,
   `num`               BIGINT UNSIGNED NOT NULL,
   `total_price`       BIGINT UNSIGNED NOT NULL,
@@ -12,8 +12,7 @@ CREATE TABLE `aa`.`product_order` (
   `created_by`        VARCHAR(25),
   `created_time`      DATETIME,
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_PRODUCT_ORDER_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES `aa`.`user` (`login_name`),
-  CONSTRAINT `FK_PRODUCT_ORDER_PRODUCT_ID_BY_PRODUCT_ID` FOREIGN KEY (`product_id`) REFERENCES `aa`.`product` (`id`)
+  CONSTRAINT `FK_PRODUCT_ORDER_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1001
