@@ -27,16 +27,14 @@ public class AppShareController {
     private AccountMapper accountMapper;
     @Autowired
     private UserService userService;
-    @Autowired
-    private PrepareUserService prepareUserService;
 
 
     private String getReferrerInfo(UserModel referrer) {
         AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
         if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            return referrerAccount.getUserName().substring(0, 1) + "某";
+            return  StringUtils.leftPad(StringUtils.right(referrerAccount.getUserName(),1),referrerAccount.getUserName().length(),"*") ;
         } else {
-            return referrer.getMobile().substring(0, 2) + "****" + referrer.getMobile().substring(7, 10);
+            return referrer.getMobile().substring(0, 3) + "****" + referrer.getMobile().substring(7);
         }
     }
 
