@@ -187,8 +187,13 @@ public class ProductServiceImpl implements ProductService {
         Collections.sort(productShowItemDtos, new Comparator<ProductShowItemDto>() {
             @Override
             public int compare(ProductShowItemDto o1, ProductShowItemDto o2) {
-                int result = o1.getSeq().compareTo(o2.getSeq());
-                if (0 == result) {
+                int result = 0;
+                if (o1.getSeq() > o2.getSeq()) {
+                    result = 1;
+                } else if (o1.getSeq() < o2.getSeq()) {
+                    result = -1;
+                }
+                if (0 == result && null != o1.getUpdatedTime() && null != o2.getUpdatedTime()) {
                     return o1.getUpdatedTime().compareTo(o2.getUpdatedTime());
                 } else {
                     return result;

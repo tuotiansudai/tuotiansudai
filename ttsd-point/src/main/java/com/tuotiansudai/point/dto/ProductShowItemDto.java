@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductShowItemDto {
 
     private long id;
-    private Integer seq;
+    private int seq;
     private ItemType itemType;
     private String productName;
     private String description;
@@ -86,11 +86,11 @@ public class ProductShowItemDto {
         this.id = id;
     }
 
-    public Integer getSeq() {
+    public int getSeq() {
         return seq;
     }
 
-    public void setSeq(Integer seq) {
+    public void setSeq(int seq) {
         this.seq = seq;
     }
 
