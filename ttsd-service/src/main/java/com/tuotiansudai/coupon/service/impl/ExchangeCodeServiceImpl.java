@@ -160,7 +160,11 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             baseDataDto.setMessage("当天兑换次数达到上限");
             return baseDataDto;
         }
-        couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        boolean exchangeResult = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
+        if(!exchangeResult){
+            baseDataDto.setMessage("兑换码兑换失败");
+            return baseDataDto;
+        }
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
         baseDataDto.setStatus(true);
         baseDataDto.setMessage("恭喜您兑换成功");
