@@ -7,7 +7,6 @@ import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 
 import java.util.List;
 

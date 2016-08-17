@@ -36,4 +36,6 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity);
 
     List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime,Granularity granularity);
+
+    List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity);
 }

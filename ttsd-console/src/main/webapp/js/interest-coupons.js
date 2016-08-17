@@ -16,10 +16,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: thisLink,
-                        type: 'DELETE',
-                        dataType: 'json'
-                    })
+                    url: thisLink,
+                    type: 'DELETE',
+                    dataType: 'json'
+                })
                     .done(function (res) {
                         if (res.data.status) {
                             $self.closest('tr').remove();
@@ -44,10 +44,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: '/activity-manage/coupon/' + thisId + '/active',
-                        type: 'POST',
-                        dataType: 'json'
-                    })
+                    url: '/activity-manage/coupon/' + thisId + '/active',
+                    type: 'POST',
+                    dataType: 'json'
+                })
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已生效</button>');
@@ -72,10 +72,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         var $this = $(this);
         var link = $this.attr('data-url');
         $.ajax({
-                url: link,
-                type: 'POST',
-                dataType: 'JSON'
-            })
+            url: link,
+            type: 'POST',
+            dataType: 'JSON'
+        })
             .done(function (res) {
                 $('.see-detail').show();
                 var $table = $('.see-detail').find('table');

@@ -71,7 +71,6 @@ public class CouponServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
-
     }
 
     @Test
@@ -142,6 +141,7 @@ public class CouponServiceTest {
         couponModel.setCouponType(CouponType.NEWBIE_COUPON);
         couponModel.setUserGroup(UserGroup.NEW_REGISTERED_USER);
         couponModel.setCreatedTime(new Date());
+        couponModel.setCouponSource("couponSource");
         couponMapper.create(couponModel);
 
         userService.registerUser(registerUserDto);
@@ -180,6 +180,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setInvestLowerLimit("1000.00");
         exchangeCouponDto.setUserGroup(userGroup);
         exchangeCouponDto.setDeadline(2);
+        exchangeCouponDto.setCouponSource("couponSource");
         return exchangeCouponDto;
     }
 

@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
@@ -100,7 +101,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private InvestAchievementUserCollector investAchievementCollector;
 
     @Override
-    public void assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
+    public boolean assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         long couponId = exchangeCodeService.getValueBase31(exchangeCode);
@@ -108,22 +109,28 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) is not correct", exchangeCode));
-            return;
+            return false;
         }
 
         if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) exchange coupon({1}) is inactive", exchangeCode, String.valueOf(couponId)));
-            return;
+            return false;
         }
 
         if (couponModel.getUserGroup() != UserGroup.EXCHANGER_CODE) {
             logger.error(MessageFormat.format("[Exchange Coupon] code({0}) coupon({1}) user group({2}) is not EXCHANGER_CODE", exchangeCode, String.valueOf(couponId), couponModel.getUserGroup()));
-            return;
+            return false;
         }
 
-        ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
+
+        UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
+
+        if(StringUtils.isNotEmpty(exchangeCode) && userCouponModel == null){
+            return false;
+        }
 
         logger.debug(MessageFormat.format("[Exchange Coupon] user({0}) exchange coupon({1}) with code({2})", loginName, String.valueOf(couponId), exchangeCode));
+        return true;
     }
 
     @Override
@@ -227,6 +234,13 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
+        if(StringUtils.isNotEmpty(exchangeCode)){
+            int exchangeCodeCount = userCouponMapper.findByExchangeCode(exchangeCode);
+            if(exchangeCodeCount > 0){
+                logger.debug(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ",exchangeCode));
+                return null;
+            }
+        }
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
