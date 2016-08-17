@@ -1,0 +1,14 @@
+BEGIN;
+CREATE TABLE `activity`.`user_lottery` (
+  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `mobile` VARCHAR(18) NOT NULL,
+  `login_name` VARCHAR(25) NOT NULL,
+  `prize` VARCHAR(50) NOT NULL,
+  `lottery_time` DATETIME,
+  PRIMARY KEY (`id`),
+  CONSTRAINT FK_USER_LOTTERY_MOBILE_REF_USER_MOBILE FOREIGN KEY (`mobile`) REFERENCES `aa`.`user` (`mobile`),
+  CONSTRAINT FK_USER_LOTTERY_MOBILE_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
+)
+	ENGINE = InnoDB
+	DEFAULT CHARSET = utf8;
+COMMIT;
