@@ -88,10 +88,10 @@
                     ${prepareUser.channel}
                     </td>
                     <td>
-                    ${prepareUser.register?string('未注册','已注册')}
+                    ${prepareUser.register?string('已注册','未注册')}
                     </td>
                     <td>
-                    ${prepareUser.registerTime?string('yyyy-MM-dd hh:mm:ss')}
+                    ${(prepareUser.registerTime?string('yyyy-MM-dd hh:mm:ss'))!}
                     </td>
                     <td>
                     ${prepareUser.referrerMobile}

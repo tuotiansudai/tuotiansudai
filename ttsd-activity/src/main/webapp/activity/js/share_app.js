@@ -274,8 +274,9 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 		//get code event
 		$androidBtn.on('click', function(event) {
 			event.preventDefault();
-			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
-			$.ajax({
+			if($('#mobile').val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val())){
+				cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
+				$.ajax({
 					url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //获取手机验证码接口
 					type: 'get',
 					dataType: 'json'
@@ -286,13 +287,15 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				.fail(function(data) {
 					layer.msg('请求失败，请重试');
 				});
+			}
 		});
 
 		//get code event
 		$iosBtn.on('click', function(event) {
-			cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
 			event.preventDefault();
-			$.ajax({
+			if($('#mobile').val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val())){
+				cnzzPush.trackClick('204APP分享', '注册或者预注册页面', '获取验证码');
+				$.ajax({
 					url: '/register/user/mobile/' + $('#mobile').val() + '/is-register', //判断手机号是否存在
 					type: 'get',
 					dataType: 'json'
@@ -303,6 +306,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				.fail(function(data) {
 					layer.msg('请求失败，请重试');
 				});
+			}
 		});
 
 		$('#agreeRule').on('click', function(event) {
