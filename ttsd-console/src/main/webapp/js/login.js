@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var refreshCaptcha = function () {
         var captcha = $('.verification-console-img');
         captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
@@ -8,12 +8,12 @@ $(function() {
         $('.captcha').val('');
     });
 
-    String.prototype.trim = function()
-    {
+    String.prototype.trim = function () {
         return this.replace(/(^\s*)|(\s*$)/g, "");
     };
 
     var login = function () {
+        $('.btn-block').prop('disabled',true);
         if ($('input[name="username"]').val().trim() === ''
             || $('input[name="password"]').val().trim() === ''
             || $('input[name="captcha"]').val().trim() === '') {
@@ -25,6 +25,7 @@ $(function() {
             type: 'post',
             data: $('.form-login').serialize()
         }).done(function (response) {
+            $('.btn-block').prop('disabled',false);
             if (response.data.status) {
                 //redirectByRoles(response.data.roles);
                 window.location.href = "/";
