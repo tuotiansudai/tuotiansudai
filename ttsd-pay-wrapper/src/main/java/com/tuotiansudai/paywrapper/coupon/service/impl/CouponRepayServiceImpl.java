@@ -210,7 +210,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.error(MessageFormat.format("(coupon is exist (couponId = {0}))", userCouponModel.getCouponId()));
                         continue;
                     }
-
+                    if(couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1){
+                        continue;
+                    }
                     long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
                             loanModel, couponModel, currentRepayDate, lastRepayDate);
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)

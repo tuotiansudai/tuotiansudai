@@ -629,7 +629,7 @@
             <div class="loan-list-index">
                 <ul class="loan-box-inner loan-btn">
         <#list transferApplications as item>
-                    <li data-url="/transfer/${item.transferApplicationId} class="clearfix">
+                    <li data-url="/transfer/${item.transferApplicationId}" class="clearfix">
                         <div class="loan-info-frame fl">
                             <div class="loan-top">
                                 <span class="l-title fl">${item.name}</span>
