@@ -233,7 +233,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(period)));
                     } catch (Exception e) {
                         logger.error(e.getLocalizedMessage(), e);
-                        
+
                     }
                 }
 
