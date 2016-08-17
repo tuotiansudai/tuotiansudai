@@ -18,7 +18,7 @@ public class HelloWorld {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
         UserModel loginName = userMapper.findByLoginName("sidneygao");
-        ModelAndView modelAndView = new ModelAndView("/hello-world");
+        ModelAndView modelAndView = new ModelAndView("/activity-center-list");
         modelAndView.addObject("id", loginName.getId());
         return modelAndView;
     }

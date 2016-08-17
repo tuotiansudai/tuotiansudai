@@ -16,7 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().sameOrigin();
         http.formLogin().loginPage("/login");
-        http.authorizeRequests().antMatchers("/**").authenticated();
+        http.authorizeRequests().antMatchers("/**").permitAll();
 
         http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler());
     }

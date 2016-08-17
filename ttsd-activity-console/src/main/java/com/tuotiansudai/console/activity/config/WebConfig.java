@@ -1,6 +1,10 @@
 package com.tuotiansudai.console.activity.config;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -22,6 +26,9 @@ import java.util.Properties;
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+    @Value("${web.server}")
+    private String webServer;
+
     // Override configuration methods...
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -34,13 +41,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/activity/style/**").addResourceLocations("classpath:/static/activity/style/");
-        registry.addResourceHandler("/activity/images/**").addResourceLocations("classpath:/static/activity/images/");
-        registry.addResourceHandler("/activity/js/**").addResourceLocations("classpath:/static/activity/js/");
+        registry.addResourceHandler("/style/**").addResourceLocations("classpath:/static/style/");
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
     }
 
     @Bean
-    public ViewResolver viewResolver() {
+    public FreeMarkerViewResolver freeMarkerViewResolver() {
         FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
         freeMarkerViewResolver.setCache(true);
         freeMarkerViewResolver.setPrefix("");
@@ -56,6 +63,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setDefaultEncoding("UTF-8");
         configurer.setTemplateLoaderPath("classpath:/templates/");
+        configurer.setFreemarkerVariables(Maps.newHashMap(new ImmutableMap.Builder<String, Object>()
+                .put("webServer", webServer)
+                .build()));
         Properties settings = new Properties();
         settings.setProperty("template_exception_handler", "RETHROW");
         configurer.setFreemarkerSettings(settings);
