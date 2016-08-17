@@ -182,7 +182,7 @@ public class RepayServiceImpl implements RepayService {
             long sumActualInterest = 0l;
             long sumExpectedInterest = 0l;
             for(InvestRepayModel investRepayModel : investRepayModels){
-                long amount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                long expectedAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 long expectedFee = investRepayModel.getExpectedFee();
                 long actualFee = investRepayModel.getActualFee();
                 long repayAmount = investRepayModel.getRepayAmount();
@@ -193,8 +193,8 @@ public class RepayServiceImpl implements RepayService {
                     couponExpectedInterest = couponRepayModel.getExpectedInterest();
                     investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
                     investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee + couponRepayModel.getExpectedFee()));
-                    amount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
-                    investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(amount));
+                    expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
+                    investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount));
                     if (RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())) {
                         repayAmount += couponRepayModel.getRepayAmount();
                         investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
@@ -211,7 +211,7 @@ public class RepayServiceImpl implements RepayService {
                     }
                 }
                 sumActualInterest += repayAmount;
-                sumExpectedInterest += amount;
+                sumExpectedInterest += expectedAmount;
                 records.add(investRepayDataItemDto);
             }
             dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
