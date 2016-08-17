@@ -10,8 +10,8 @@
         <id column="id" property="id"></id>
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
-        <result column="used_count" property="userCount"></result>
-        <result column="unused_count" property="unUserCount"></result>
+        <result column="used_count" property="useCount"></result>
+        <result column="unused_count" property="unUseCount"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="updated_time" property="updatedTime"></result>
     </resultMap>
@@ -35,24 +35,24 @@
         WHERE `id` = #{id}
     </update>
 
-    <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
-        SELECT
-        a.*
-        FROM user u
-        JOIN account a ON u.login_name = a.login_name
-        WHERE a.point > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.login_name = #{loginName}
-        </if>
-        <if test="userName != null and userName != '' ">
-            AND a.user_name = #{userName}
-        </if>
+    <select id="findUserLotteryTimeModels" parameterType="map" resultMap="userLotteryTimeModel">
+        select * from `aa`.`user_lottery_time`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile like '${mobile}%'
+            </if>
+        </where>
+        order by created_time DESC
+        limit #{index}, #{pageSize}
+    </select>
 
-        <if test="mobile != null and mobile != '' ">
-            AND u.mobile = #{mobile}
-        </if>
-        ORDER BY a.point DESC
-        limit #{startLimit}, #{endLimit}
+    <select id="findUserLotteryTimeCountModels" parameterType="map" resultType="int">
+        select count(1) from `aa`.`user_lottery_time`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile like '${mobile}%'
+            </if>
+        </where>
     </select>
 
 </mapper>

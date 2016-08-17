@@ -11,9 +11,9 @@ public class UserLotteryTimeModel implements Serializable {
 
     private String loginName;
 
-    private int userCount;
+    private int useCount;
 
-    private int unUserCount;
+    private int unUseCount;
 
     private Date createdTime;
 
@@ -43,20 +43,20 @@ public class UserLotteryTimeModel implements Serializable {
         this.loginName = loginName;
     }
 
-    public int getUserCount() {
-        return userCount;
+    public int getUseCount() {
+        return useCount;
     }
 
-    public void setUserCount(int userCount) {
-        this.userCount = userCount;
+    public void setUseCount(int useCount) {
+        this.useCount = useCount;
     }
 
-    public int getUnUserCount() {
-        return unUserCount;
+    public int getUnUseCount() {
+        return unUseCount;
     }
 
-    public void setUnUserCount(int unUserCount) {
-        this.unUserCount = unUserCount;
+    public void setUnUseCount(int unUseCount) {
+        this.unUseCount = unUseCount;
     }
 
     public Date getCreatedTime() {
