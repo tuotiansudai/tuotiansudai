@@ -64,7 +64,7 @@
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
 
-    <link href="${staticServer}/activity/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
