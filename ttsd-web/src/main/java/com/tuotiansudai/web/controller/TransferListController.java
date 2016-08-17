@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -41,21 +40,10 @@ public class TransferListController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("rateStart", rateStart);
         modelAndView.addObject("rateEnd", rateEnd);
-        modelAndView.addObject("transferStatus", (transferStatus == null || transferStatus.size() == 0)?"":transferStatus.get(0).name());
+        modelAndView.addObject("transferStatus", (transferStatus == null || transferStatus.size() == 0) ? "" : transferStatus.get(0).name());
         int maxIndex = count / pageSize + (count % pageSize > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);
         return modelAndView;
     }
-    @RequestMapping(value = "/homePage", method = RequestMethod.GET)
-        @ResponseBody
-    public List<TransferApplicationPaginationItemDataDto> webTransferList(
-            @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, index, pageSize);
-
-        return transferApplicationItemList.getRecords();
-    }
-
 }

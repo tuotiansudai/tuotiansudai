@@ -20,7 +20,9 @@ textarea {
 		display: none;
 	}
 }
-
+.layui-layer-page .layui-layer-content {
+    overflow-y: auto !important;
+}
 .nav-container,.footer-container{
 	display: none;
 }
