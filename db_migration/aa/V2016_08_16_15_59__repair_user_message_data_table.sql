@@ -31,6 +31,6 @@ BEGIN;
     DELETE FROM user_message
     WHERE
     DATE(created_time) = '2016-08-16'
-    AND title REGEXP '%[{0}|{1}|{2}]%';
+    AND title REGEXP '\{[012]\}';
 
 COMMIT;
