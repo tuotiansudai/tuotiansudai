@@ -38,7 +38,7 @@ public class CheckUserBalanceServiceImpl implements CheckUserBalanceService {
     public void checkUserBalance() {
         logger.debug("start checkUserBalance.");
 
-        int totalCount = accountMapper.findTotalAccountCount();
+        long totalCount = accountMapper.count();
 
         int startIndex = 0;
 

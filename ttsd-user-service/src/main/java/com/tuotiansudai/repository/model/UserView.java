@@ -3,27 +3,36 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserView implements Cloneable, Serializable {
+public class UserView implements Serializable {
     private long id;
     private String loginName;
-    private String password;
-    private String email;
     private String mobile;
-    private Date registerTime = new Date();
+    private String email;
+    private String userName;
+    private String identityNumber;
+    private String referrerMobile;
+    private Date registerTime;
     private Date lastModifiedTime;
     private String lastModifiedUser;
-    private String avatar;
-    private String referrerMobile;
-    private UserStatus status = UserStatus.ACTIVE;
-    private String salt;
+    private UserStatus status;
+    private long balance;
     private Source source;
     private String channel;
     private String province;
     private String city;
     private String autoInvestStatus;
-    private boolean staff;
-    private AccountModel account;
+    private boolean isStaff;
+    private boolean isBindBankCard;
+    private boolean isReferrerStaff;
     private Date lastBillTime;
+
+    public boolean isBindBankCard() {
+        return isBindBankCard;
+    }
+
+    public void setBindBankCard(boolean bindBankCard) {
+        isBindBankCard = bindBankCard;
+    }
 
     public long getId() {
         return id;
@@ -41,12 +50,12 @@ public class UserView implements Cloneable, Serializable {
         this.loginName = loginName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getEmail() {
@@ -57,12 +66,28 @@ public class UserView implements Cloneable, Serializable {
         this.email = email;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getReferrerMobile() {
+        return referrerMobile;
+    }
+
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 
     public Date getRegisterTime() {
@@ -89,22 +114,6 @@ public class UserView implements Cloneable, Serializable {
         this.lastModifiedUser = lastModifiedUser;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getReferrerMobile() {
-        return referrerMobile;
-    }
-
-    public void setReferrerMobile(String referrerMobile) {
-        this.referrerMobile = referrerMobile;
-    }
-
     public UserStatus getStatus() {
         return status;
     }
@@ -113,12 +122,12 @@ public class UserView implements Cloneable, Serializable {
         this.status = status;
     }
 
-    public String getSalt() {
-        return salt;
+    public long getBalance() {
+        return balance;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
     public Source getSource() {
@@ -162,19 +171,19 @@ public class UserView implements Cloneable, Serializable {
     }
 
     public boolean isStaff() {
-        return staff;
+        return isStaff;
     }
 
     public void setStaff(boolean staff) {
-        this.staff = staff;
+        isStaff = staff;
     }
 
-    public AccountModel getAccount() {
-        return account;
+    public boolean isReferrerStaff() {
+        return isReferrerStaff;
     }
 
-    public void setAccount(AccountModel account) {
-        this.account = account;
+    public void setReferrerStaff(boolean referrerStaff) {
+        isReferrerStaff = referrerStaff;
     }
 
     public Date getLastBillTime() {
@@ -183,13 +192,5 @@ public class UserView implements Cloneable, Serializable {
 
     public void setLastBillTime(Date lastBillTime) {
         this.lastBillTime = lastBillTime;
-    }
-
-    @Override
-    public UserView clone() throws CloneNotSupportedException {
-        UserView clone = (UserView) super.clone();
-        clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
-        clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
-        return clone;
     }
 }

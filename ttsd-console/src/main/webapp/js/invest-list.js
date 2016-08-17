@@ -43,7 +43,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     var autoValue = '';
     $("#tags").autocomplete({
         source: function (query, process) {
-            $.get('/user-manage/mobile/account/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });
