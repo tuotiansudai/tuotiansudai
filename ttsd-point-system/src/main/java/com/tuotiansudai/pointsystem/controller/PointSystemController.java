@@ -95,13 +95,29 @@ public class PointSystemController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
-    public ModelAndView pointSystemOrder(@PathVariable long id,
-                                         @RequestParam(value = "itemType", required = true) ItemType itemType) {
+    @RequestMapping(value = "/hasEnoughGoods", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> hasEnoughGoods(@RequestParam(value = "id", required = true) long id,
+                                               @RequestParam(value = "itemType", required = true) ItemType itemType,
+                                               @RequestParam(value = "amount", required = true) int amount) {
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        if (productShowItemDto.getLeftCount() < amount) {
+            return new BaseDto<>(new BaseDataDto(false, "所需商品数量不足"));
+        } else {
+            return new BaseDto<>(new BaseDataDto(true));
+        }
+    }
+
+    @RequestMapping(value = "/order/{id}/{itemType}/{amount}", method = RequestMethod.GET)
+    public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable ItemType itemType, @PathVariable int amount) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-order");
 
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
         modelAndView.addObject("productShowItemDto", productShowItemDto);
+        if (amount <= productShowItemDto.getLeftCount()) {
+            modelAndView.addObject("amount", amount);
+        } else {
+            modelAndView.addObject("amount", productShowItemDto.getLeftCount());
+        }
 
         if (itemType.equals(ItemType.PHYSICAL)) {
             String loginName = LoginUserInfo.getLoginName();

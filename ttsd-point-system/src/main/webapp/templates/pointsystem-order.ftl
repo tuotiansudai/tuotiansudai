@@ -9,30 +9,55 @@
 	</div>
 	<div class="wp clearfix order-item">
 		<div class="container-order">
-			<div class="order-place">
-				<h3>添加您的收货地址</h3>
-				<div class="address-item">
-					<a href="javascript:void(0)" class="address-set">修改</a>
-					<p class="user-name">刘海宁</p>
-					<p>18610074450</p>
-					<p title="北京市丰台区18号胡同对面街道办事处">北京市丰台区18号胡同对面街道办事处</p>
-				</div>
-			</div>
+			<#if productShowItem.itemType.name() == 'PHYSICAL'>
+                <div class="order-place">
+                    <h3>添加您的收货地址</h3>
+
+                    <div class="address-item">
+                        <a href="javascript:void(0)" class="address-set">修改</a>
+
+                        <p class="user-name">刘海宁</p>
+
+                        <p>18610074450</p>
+
+                        <p title="北京市丰台区18号胡同对面街道办事处">北京市丰台区18号胡同对面街道办事处</p>
+                    </div>
+                </div>
+			</#if>
+
 			<div class="order-info">
 				<h3>订单确认</h3>
 				<div class="order-table">
 					<div class="order-picture">
-						<img src="http://dummyimage.com/140x114/d1e9fa/686a82.gif&text=商品" width="140" height="114">
+						<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
+                            <p class="mater-img bag-bg">
+                                <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                            </p>
+						<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
+                            <p class="mater-img coupon-bg">
+                                <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                                <span>投资体验券</span>
+                            </p>
+						<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>
+                            <p class="mater-img jia-bg">
+                                <span><i>${productShowItem.pictureDescription!"0"}</i>%</span>
+                                <span>加息券</span>
+                            </p>
+						<#else>
+                            <p class="mater-img picture-item">
+                                <img src="${productShowItem.imageUrl}" width="300" height="244"/>
+                            </p>
+						</#if>
 					</div>
 					<div class="order-name">
-						<p class="name-text">拓天速贷U盘</p>
-						<p>限时抢兑</p>
-						<p>拓天速贷系列U盘</p>
-						<p>印花图案，8G内存</p>
+                        <p class="name-text">${productShowItem.productName}</p>
+
+                        <p>${productShowItem.description}</p>
 					</div>
 					<div class="order-price">
 						<p class="title-text">商品价格</p>
-						<p><i>20000</i>积分</p>
+
+                        <p><i>${productShowItem.productPrice}</i>积分</p>
 					</div>
 					<div class="order-number">
 						<p class="title-text">商品数量</p>
@@ -43,7 +68,7 @@
 						</p>
 						<p>
 							<span class="total-num">
-								剩余<i>8938</i>件
+								剩余<i>${productShowItem.leftCount}</i>件
 							</span>
 						</p>
 					</div>
@@ -66,8 +91,4 @@
 	<div class="container-ad">
 	</div>
 </div>
-
-
-
-
 </@global.main>
