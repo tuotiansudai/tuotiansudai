@@ -68,10 +68,10 @@ public class CouponAspect {
     }
 
     @AfterReturning(value = "loginSuccessPointcut()", returning = "returnValue")
-    public void afterReturningUserLogin(JoinPoint joinPoint, BaseDto<LoginDto> returnValue) {
+    public void afterReturningUserLogin(JoinPoint joinPoint, LoginDto returnValue) {
         logger.info("assign coupon after user login");
         try {
-            if(returnValue.getData().getStatus()) {
+            if(returnValue.getStatus()) {
                 SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
                 String loginName = signInDto.getUsername();
                 couponAssignmentService.assignUserCoupon(loginName, userGroups);

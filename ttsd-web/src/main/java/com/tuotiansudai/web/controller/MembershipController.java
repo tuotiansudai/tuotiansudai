@@ -16,7 +16,8 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,6 +44,9 @@ public class MembershipController {
     private AccountService accountService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MembershipExperienceBillService membershipExperienceBillService;
 
     @Autowired
@@ -51,23 +55,18 @@ public class MembershipController {
     @Autowired
     private HeroRankingService heroRankingService;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/membership-index");
 
         String loginName = LoginUserInfo.getLoginName();
-        String mobile = null;
         if (loginName != null) {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
-            mobile = userMapper.findUsersMobileByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
             UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
-
+            modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
             modelAndView.addObject("membershipNextLevelValue", (nextLevelMembershipModel.getExperience() - membershipPoint));
@@ -76,8 +75,6 @@ public class MembershipController {
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
             modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
         }
-
-        modelAndView.addObject("mobile", mobile);
         return modelAndView;
 
     }
@@ -101,9 +98,7 @@ public class MembershipController {
 
     @RequestMapping(path = "/privilege", method = RequestMethod.GET)
     public ModelAndView privilege() {
-        ModelAndView modelAndView = new ModelAndView("/membership-privilege");
-
-        return modelAndView;
+        return new ModelAndView("/membership-privilege");
     }
 
 

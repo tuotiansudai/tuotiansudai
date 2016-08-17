@@ -5,9 +5,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
@@ -24,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedbackController {
 
     static Logger logger = Logger.getLogger(FeedbackController.class);
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private FeedbackService feedbackService;
@@ -50,12 +54,7 @@ public class FeedbackController {
             return baseDto;
         }
 
-        String loginName = LoginUserInfo.getLoginName();
-        if (LoginUserInfo.getMobile() != null) {
-            contact = LoginUserInfo.getMobile();
-        }
-
-        feedbackService.create(loginName, contact, Source.WEB, type, content);
+        feedbackService.create(LoginUserInfo.getLoginName(), Source.WEB, type, content);
 
         return baseDto;
     }

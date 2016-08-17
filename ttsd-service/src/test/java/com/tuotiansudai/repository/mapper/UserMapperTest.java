@@ -58,7 +58,7 @@ public class UserMapperTest {
         userModelTest.setProvince("天津");
         userMapper.updateUser(userModelTest);
 
-        List<String> list = userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList("天津")).build()));
+        List<String> list = userMapper.findAllUsersByProvinces(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList("天津")).build()));
         assertThat(list.size(), is(1));
 
         assertThat(list.get(0), is("hellokitty"));

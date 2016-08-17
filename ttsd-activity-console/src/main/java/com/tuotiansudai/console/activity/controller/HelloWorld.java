@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.repository.mapper.UserMapper;
-import com.tuotiansudai.console.activity.repository.model.UserModel;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

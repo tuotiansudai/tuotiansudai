@@ -5,10 +5,10 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -113,7 +113,6 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-
         doNothing().when(myAuthenticationManager).createAuthentication(anyString());
 
         this.mockMvc.perform(post("/register/user")
@@ -190,14 +189,5 @@ public class RegisterUserControllerTest {
 
         this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void shouldDisplayRegisterUserTemplate() throws Exception {
-        when(userMapper.findUsersMobileByLoginName(anyString())).thenReturn("");
-
-        this.mockMvc.perform(get("/register/user"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/register-user"));
     }
 }

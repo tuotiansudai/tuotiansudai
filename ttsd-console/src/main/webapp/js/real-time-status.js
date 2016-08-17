@@ -55,7 +55,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
         minLength: 0,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/mobile/account/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
         },

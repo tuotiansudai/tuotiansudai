@@ -15,12 +15,12 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
@@ -35,7 +35,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,9 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private UserRoleService userRoleService;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -89,6 +85,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private AutoInvestPlanMapper autoInvestPlanMapper;
+
     @Value("${web.login.max.failed.times}")
     private int times;
 
@@ -97,7 +96,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private IdGenerator idGenerator;
 
-    private static String LOGIN_NAME = "user-{0}";
+    private final static String LOGIN_NAME = "user-{0}";
+
+    @Override
+    public String getMobile(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getMobile() : null;
+    }
 
     @Override
     public boolean emailIsExist(String email) {
@@ -176,6 +181,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
+        dto.setMobile(userMapper.findByLoginName(dto.getLoginName()).getMobile());
         BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
         myAuthenticationManager.createAuthentication(dto.getLoginName());
 
@@ -195,8 +201,8 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         String mobile = userModel.getMobile();
 
-        String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
-        userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
+        userModel.setPassword(myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt()));
+        userMapper.updateUser(userModel);
         smsWrapperClient.sendPasswordChangedNotify(mobile);
         return true;
     }
@@ -210,20 +216,12 @@ public class UserServiceImpl implements UserService {
 
         String mobile = editUserDto.getMobile();
         UserModel userModel = userMapper.findByLoginName(loginName);
-        UserModel beforeUpdateUserModel;
-        try {
-            beforeUpdateUserModel = userModel.clone();
-        } catch (CloneNotSupportedException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return;
-        }
+        String beforeUpdateUserMobile = userModel.getMobile();
 
         // update role
-        List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(loginName);
         userRoleMapper.deleteByLoginName(loginName);
-        List<UserRoleModel> afterUpdateUserRoleModels = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(editUserDto.getRoles())) {
-            afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), new Function<Role, UserRoleModel>() {
+            List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), new Function<Role, UserRoleModel>() {
                 @Override
                 public UserRoleModel apply(Role role) {
                     return new UserRoleModel(loginName, role);
@@ -243,11 +241,8 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedUser(operatorLoginName);
         userMapper.updateUser(userModel);
 
-        //generate audit
-//        auditLogService.createUserActiveLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
-
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
+        if (!mobile.equals(beforeUpdateUserMobile) && accountModel != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     accountModel.getUserName(),
@@ -311,7 +306,9 @@ public class UserServiceImpl implements UserService {
         }
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles);
+        AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
+
+        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles, autoInvestPlanModel);
 
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
         if (bankCard != null) {
@@ -325,44 +322,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findStaffNameFromUserLike(String loginName) {
-        return userMapper.findStaffByLikeLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findAllLoanerLikeLoginName(String loginName) {
-        return accountMapper.findAllLoanerLikeLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findAccountLikeLoginName(String loginName) {
-        return accountMapper.findAccountLikeLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findLoginNameLike(String loginName) {
-        return userMapper.findLoginNameLike(loginName);
-    }
-
-    @Override
-    public List<String> findMobileLike(String mobile) {
-        return userMapper.findMobileLike(mobile);
-    }
-
-    @Override
-    public List<String> findAccountMobileLike(String mobile) {
-        return userMapper.findAccountMobileLike(mobile);
-    }
-
-    @Override
     public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
-    }
-
-    @Override
-    public List<String> findAllChannels() {
-        return userMapper.findAllChannels();
     }
 
     @Override
@@ -397,44 +359,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void refreshAreaByMobileInJob() {
         while (true) {
-            List<UserModel> userModels = userMapper.findUserByProvince();
+            List<UserModel> userModels = userMapper.findUsersByProvince();
             if (CollectionUtils.isEmpty(userModels)) {
                 break;
             }
             ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
-    }
-
-    @Override
-    public List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber) {
-        return userMapper.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
-    }
-
-    @Override
-    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, int index, int pageSize) {
-        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserView> userViews = userMapper.findUsersAccountBalance(mobile, balance.get(0), balance.get(1), (index - 1) * pageSize, pageSize);
-
-        List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for (UserView userView : userViews) {
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
-            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userView.getLoginName(), Role.STAFF));
-            userItemDataDtoList.add(userItemDataDto);
-        }
-        return userItemDataDtoList;
-    }
-
-    @Override
-    public long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
-        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceCount(mobile, balance.get(0), balance.get(1));
-    }
-
-
-    @Override
-    public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
-        List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapper.findUsersAccountBalanceSum(mobile, balance.get(0), balance.get(1));
     }
 
     @Override
@@ -446,11 +376,4 @@ public class UserServiceImpl implements UserService {
         ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
         return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
-
-    private List<Long> parseBalanceInt(String balanceMin, String balanceMax) {
-        long min = AmountConverter.convertStringToCent(balanceMin);
-        long max = AmountConverter.convertStringToCent(balanceMax);
-        return Lists.newArrayList(min, max);
-    }
-
 }

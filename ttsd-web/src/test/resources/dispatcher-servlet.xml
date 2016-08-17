@@ -11,11 +11,13 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.web.configuration.CustomerObjectMapper"></bean>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>

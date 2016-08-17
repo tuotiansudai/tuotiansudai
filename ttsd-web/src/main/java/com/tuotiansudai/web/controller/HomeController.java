@@ -11,7 +11,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

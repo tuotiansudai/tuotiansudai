@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.ask.repository.mapper.QuestionMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="questionResultMap" type="QuestionModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="question" property="question"/>
+        <result column="addition" property="addition"/>
+        <result column="tags" property="tags" typeHandler="com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler"/>
+        <result column="answers" property="answers"/>
+        <result column="last_answered_time" property="lastAnsweredTime"/>
+        <result column="approved_by" property="approvedBy"/>
+        <result column="approved_time" property="approvedTime"/>
+        <result column="rejected_by" property="rejectedBy"/>
+        <result column="rejected_time" property="rejectedTime"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
+        insert into question (login_name, question, addition, tags, answers, last_answered_time, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
+        value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
+    </insert>
+
+    <update id="update" parameterType="QuestionModel">
+        update question set
+        login_name = #{loginName},
+        question = #{question},
+        addition = #{addition},
+        tags = #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler},
+        answers = #{answers},
+        last_answered_time = #{lastAnsweredTime},
+        approved_by = #{approvedBy},
+        approved_time = #{approvedTime},
+        rejected_by = #{rejectedBy},
+        rejected_time = #{rejectedTime},
+        status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="questionResultMap">
+        select *
+        from question
+        where id = #{id}
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where login_name = #{loginName}
+        order by created_time desc
+        <if test="index != null and pageSize != null ">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countByLoginName" parameterType="string" resultType="long">
+        select ifnull(count(1), 0)
+        from question
+        where login_name = #{loginName}
+    </select>
+
+    <select id="findAllQuestions" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName}
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countAllQuestions" parameterType="string" resultType="long">
+        select ifnull(count(1), 0)  from question
+        where status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName}
+    </select>
+
+    <select id="findAllUnresolvedQuestions" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        and not exists (select 1 from answer where question.id = answer.question_id and best_answer is TRUE)
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countAllUnresolvedQuestions" parameterType="string" resultType="long">
+        select ifnull(count(1), 0) from question
+        where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        and not exists (select 1 from answer where question.id = answer.question_id and best_answer is TRUE)
+    </select>
+
+    <select id="findAllHotQuestions" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        order by last_answered_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countByTag" parameterType="map" resultType="long">
+        select ifnull(count(1), 0)
+        from question
+        where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+    </select>
+
+    <select id="findByTag" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findQuestionsForConsole" parameterType="map" resultMap="questionResultMap">
+        select *
+        from question
+        <where>
+            <if test="question != null and question != '' ">
+                and question like CONCAT(CONCAT('%', #{question}), '%')
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countQuestionsForConsole" parameterType="map" resultType="long">
+        select ifnull(count(1), 0)
+        from question
+        <where>
+            <if test="question != null and question != '' ">
+                and question like CONCAT(CONCAT('%', #{question}), '%')
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+</mapper>

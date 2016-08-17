@@ -17,7 +17,7 @@
             <bean id="jacksonMessageConverter"
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.api.util.CustomerObjectMapper"/>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -51,7 +51,7 @@
         </property>
     </bean>
 
-    <bean id="staticResourceVersionMap" class="com.tuotiansudai.api.configruration.FreeMarkerVariablesMap">
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${mobile.static.server}"/>
         <property name="javascriptLocation" value="${mobile.js.path}"/>

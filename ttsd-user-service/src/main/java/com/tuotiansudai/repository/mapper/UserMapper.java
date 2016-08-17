@@ -1,0 +1,47 @@
+package com.tuotiansudai.repository.mapper;
+
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserView;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public interface UserMapper {
+
+    int create(UserModel userModel);
+
+    int updateUser(UserModel userModel);
+
+    UserModel findByLoginName(String loginName);
+
+    UserModel lockByLoginName(String loginName);
+
+    UserModel findByMobile(String mobile);
+
+    UserModel findByLoginNameOrMobile(String loginNameOrMobile);
+
+    UserModel findByEmail(String email);
+
+    long findUsersCount();
+
+    List<String> findAllLoginNames();
+
+    List<String> findAllUserChannels();
+
+    List<UserModel> findUsersByProvince();
+
+    List<String> findAllUsersByProvinces(Map<String, Object> params);
+
+    List<String> findNaturalUser(Map<String, Object> params);
+
+    List<String> findAllRecommendation(Map<String, Object> params);
+
+    List<UserModel> findUsersByChannel(Map<String, Object> params);
+
+    List<String> findUsersBirthdayMobile();
+
+    List<String> findAllByRole(Map<String, Object> params);
+}

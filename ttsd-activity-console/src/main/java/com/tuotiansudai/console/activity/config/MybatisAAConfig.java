@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.sql.DataSource;
 
@@ -29,7 +30,7 @@ public class MybatisAAConfig {
     @Bean
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.console.activity.repository.mapper");
+        configurer.setBasePackage("com.tuotiansudai.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return configurer;
     }
@@ -43,7 +44,7 @@ public class MybatisAAConfig {
     public SqlSessionFactory sqlSessionFactory(@Autowired DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPAADataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.console.activity.repository.model");
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model");
         return sessionFactory.getObject();
     }
 }

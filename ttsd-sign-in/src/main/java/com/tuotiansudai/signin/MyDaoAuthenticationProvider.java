@@ -3,6 +3,7 @@ package com.tuotiansudai.signin;
 import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.CaptchaHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
         super.additionalAuthenticationChecks(userDetails, authentication);
         String loginName = userDetails.getUsername();
         UserModel userModel = userMapper.findByLoginName(loginName);
-        boolean enabled = userModel.isActive();
+        boolean enabled = userModel.getStatus() == UserStatus.ACTIVE;
         if (!enabled) {
             String errorMessage = MessageFormat.format("Login Error: {0} is locked!", loginName);
             throw new DisabledException(errorMessage);
@@ -64,10 +65,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
             }
         }
         return super.authenticate(authentication);
-    }
-
-    public void setCaptchaHelper(CaptchaHelper captchaHelper) {
-        this.captchaHelper = captchaHelper;
     }
 
     public void setEnableCaptchaVerify(boolean enableCaptchaVerify) {
