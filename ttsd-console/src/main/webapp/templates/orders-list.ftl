@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="orders-list.js" headLab="point-manage" title="商品详情">
+<@global.main pageCss="" pageJavascript="orders-list.js" headLab="point-manage" title="订单详情">
 
 <div class="col-md-10">
     <div class="tip-container">
@@ -10,6 +10,18 @@
             </button>
             <span class="txt"></span>
         </div>
+    </div>
+    <div>
+        <span><a class="loan_repay" href="/product-manage/product-list?goodsType=${product.goodsType.name()!}">返回></a></span>
+    </div>
+    <div>
+        <span>商品名称:${product.productName!}</span>
+    </div>
+    <div>
+        <span>商品价格:${product.productPrice?string('0')!}</span>
+    </div>
+    <div>
+        <span>商品数量:${product.totalCount?string('0')!}</span>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
@@ -29,13 +41,33 @@
                 <#list orders as order>
                 <tr>
                     <td>${order.loginName}</td>
-                    <td>${order.createdTime}</td>
-                    <td>${order.usedCount}</td>
+                    <td>${(order.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>${order.num?string('0')}</td>
                     <td>${order.realName}</td>
                     <td>${order.mobile}</td>
                     <td>${order.address!}</td>
-                    <a href=""></a>
-                    <td>${order.consignmentTime}</td>
+                    <td>
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                            <#if order.consignment>
+                                <label>
+                                    <i class="check-btn add-check"></i>
+                                    <button class="loan_repay already-btn btn-link inactive-btn" disabled
+                                            data-id="${order.id?string('0')}">已发货
+                                    </button>
+                                </label>
+                            <#else>
+                                <label>
+                                    <i class="check-btn"></i>
+                                    <a class="loan_repay confirm-btn" href="javascript:void(0)"
+                                       data-id="${order.id?string('0')}">确认发货</a>
+                                </label>
+                            </#if>
+                        </@security.authorize>
+                        <@security.authorize access="hasAuthority('OPERATOR')">
+                            -
+                        </@security.authorize>
+                    </td>
+                    <td>${(order.consignmentTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                 </#list>
             </tbody>
         </table>
@@ -50,7 +82,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?productId=${productId}"
+                    <a href="?index=${index-1}&pageSize=${pageSize}&productId=${productId}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -61,7 +93,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?productId=${productId}"
+                    <a href="?index=${index+1}&pageSize=${pageSize}&productId=${productId}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -69,6 +101,10 @@
                     <span aria-hidden="true">Next &raquo;</span>
                 </a>
                 </li>
+                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${productId}">导出Excel</button>
+                </@security.authorize>
+
             </ul>
         </#if>
     </nav>

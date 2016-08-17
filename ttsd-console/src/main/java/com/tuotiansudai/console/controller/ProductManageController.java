@@ -3,12 +3,14 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.dto.GoodsActiveDto;
 import com.tuotiansudai.point.dto.GoodsConsignmentDto;
 import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,62 +36,45 @@ public class ProductManageController {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new ModelAndView("redirect:find-goods?goodsType=" + productDto.getGoodsType());
+        return new ModelAndView("redirect:product-list?goodsType=" + productDto.getGoodsType());
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView createProduct(@RequestParam(value = "goodsType", required = false) GoodsType goodsType) {
-        ModelAndView modelAndView = getRedirectPage(goodsType);
+        ModelAndView modelAndView = new ModelAndView("/product-create");
         modelAndView.addObject("goodsType", goodsType);
-        modelAndView.addObject("goodsTypeDesc", goodsType.getDescription());
         return modelAndView;
     }
 
-
-    @RequestMapping(value = "/edit/{id:^\\d+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id:^\\d+$}/edit", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView editProduct(@PathVariable long id) {
         ProductModel productModel = productService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("/edit-product");
+        ModelAndView modelAndView = new ModelAndView("/product-edit");
         modelAndView.addObject("goodsType", productModel.getGoodsType());
-        modelAndView.addObject("goodsTypeDesc", productModel.getGoodsType().getDescription());
         modelAndView.addObject("product", productModel);
         return modelAndView;
     }
-
-    @RequestMapping(value = "/delete/{id:^\\d+$}", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDataDto deleteProduct(@PathVariable long id) {
-        try {
-            productService.deleteProduct(id);
-            return new BaseDataDto(true, null);
-        } catch (Exception e) {
-            logger.error("delete product failed product id = (" + id + ")");
-            return new BaseDataDto(false, e.getLocalizedMessage());
-        }
-    }
-
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView updateProduct(@ModelAttribute ProductDto productDto) {
         productDto.setLoginName(LoginUserInfo.getLoginName());
         productService.updateProduct(productDto);
-        return new ModelAndView("redirect:find-goods?goodsType=" + productDto.getGoodsType());
+        return new ModelAndView("redirect:product-list?goodsType=" + productDto.getGoodsType());
     }
 
-
-    @RequestMapping(value = "/find-goods", method = RequestMethod.GET)
+    @RequestMapping(value = "/product-list", method = RequestMethod.GET)
     public ModelAndView findVirtualGoods(@RequestParam(value = "goodsType", required = false) GoodsType goodsType,
                                          @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("products", productService.findGoods(goodsType));
-        modelAndView.addObject("goodsTypeDesc", goodsType.getDescription());
+        modelAndView.addObject("products", productService.findProductsList(goodsType, index, pageSize));
+        modelAndView.addObject("goodsType", goodsType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("goodsType", goodsType);
-        long goodsCount = productService.findGoodsCount(goodsType);
+        long goodsCount = productService.findProductsCount(goodsType);
         long totalPages = goodsCount / pageSize + (goodsCount % pageSize > 0 || goodsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
@@ -100,57 +85,47 @@ public class ProductManageController {
         return modelAndView;
     }
 
-
-    @RequestMapping(value = "/find-orders", method = RequestMethod.GET)
-    public ModelAndView find(@RequestParam(value = "productId", required = false) long productId,
+    @RequestMapping(value = "/{productId:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView find(@PathVariable long productId,
                              @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/orders-list");
-        modelAndView.addObject("orders", productService.findProductOrderList(productId));
-        modelAndView.addObject("ordersCount", productService.findProductOrderCount(productId));
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("orders", productService.findProductOrderList(productId, null, index, pageSize));
+        modelAndView.addObject("product", productService.findById(productId));
+        long ordersCount = productService.findProductOrderCount(productId);
+        modelAndView.addObject("productId", productId);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
+        long totalPages = ordersCount / pageSize + (ordersCount % pageSize > 0 || ordersCount == 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("ordersCount", ordersCount);
+        modelAndView.setViewName("/orders-list");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/goods-active", method = RequestMethod.POST)
+    @RequestMapping(value = "/{productId:^\\d+$}/active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto goodsActive(@Valid @ModelAttribute GoodsActiveDto activeDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new BaseDataDto(false, bindingResult.getFieldError().getDefaultMessage());
-        }
-        try {
-            productService.goodsActive(activeDto);
-            return new BaseDataDto(true, null);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return new BaseDataDto(false, e.getLocalizedMessage());
-        }
+    public BaseDto<BaseDataDto> productActive(@PathVariable long productId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        productService.active(productId, LoginUserInfo.getLoginName());
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 
-    @RequestMapping(value = "/consignment", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId:^\\d+$}/consignment", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView goodsConsignment(@Valid @ModelAttribute GoodsConsignmentDto consignmentDto) {
-        consignmentDto.setLoginName(LoginUserInfo.getLoginName());
-        try {
-            productService.goodsConsignment(consignmentDto);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return new ModelAndView();
+    public  BaseDto<BaseDataDto> productConsignment(@PathVariable long orderId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        productService.consignment(orderId);
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 
-
-    private ModelAndView getRedirectPage(GoodsType goodsType) {
-        ModelAndView modelAndView = new ModelAndView();
-        switch (goodsType) {
-            case PHYSICAL:
-                modelAndView.setViewName("/create-product");
-                break;
-            case VIRTUAL:
-                modelAndView.setViewName("/create-product");
-                break;
-        }
-        return modelAndView;
-    }
 }

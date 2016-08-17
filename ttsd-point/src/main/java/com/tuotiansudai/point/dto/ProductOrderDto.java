@@ -6,32 +6,44 @@ import com.tuotiansudai.point.repository.model.ProductOrderModel;
 import java.util.Date;
 
 public class ProductOrderDto {
-    private long productOrderId;
+    private long id;
+    private long productId;
     private String loginName;
     private Date createdTime;
-    private long usedCount;
+    private long num;
     private String realName;
     private String mobile;
     private String address;
-    private String consignmentTime;
+    private Date consignmentTime;
+    private boolean consignment;
 
-    public ProductOrderDto(ProductOrderModel productOrderModel, long usedCount) {
-        this.productOrderId = productOrderModel.getId();
+    public ProductOrderDto(ProductOrderModel productOrderModel) {
+        this.id = productOrderModel.getId();
+        this.productId = productOrderModel.getProductId();
         this.loginName = productOrderModel.getCreatedBy();
         this.createdTime = productOrderModel.getCreatedTime();
-        this.usedCount = usedCount;
+        this.num = productOrderModel.getNum();
         this.realName = productOrderModel.getRealName();
         this.mobile = productOrderModel.getMobile();
         this.consignmentTime = productOrderModel.getConsignmentTime();
         this.address = productOrderModel.getAddress();
+        this.consignment = productOrderModel.isConsignment();
     }
 
-    public long getProductOrderId() {
-        return productOrderId;
+    public long getId() {
+        return id;
     }
 
-    public void setProductOrderId(long productOrderId) {
-        this.productOrderId = productOrderId;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public String getLoginName() {
@@ -50,12 +62,12 @@ public class ProductOrderDto {
         this.createdTime = createdTime;
     }
 
-    public long getUsedCount() {
-        return usedCount;
+    public long getNum() {
+        return num;
     }
 
-    public void setUsedCount(long usedCount) {
-        this.usedCount = usedCount;
+    public void setNum(long num) {
+        this.num = num;
     }
 
     public String getRealName() {
@@ -82,11 +94,19 @@ public class ProductOrderDto {
         this.address = address;
     }
 
-    public String getConsignmentTime() {
+    public Date getConsignmentTime() {
         return consignmentTime;
     }
 
-    public void setConsignmentTime(String consignmentTime) {
+    public void setConsignmentTime(Date consignmentTime) {
         this.consignmentTime = consignmentTime;
+    }
+
+    public boolean isConsignment() {
+        return consignment;
+    }
+
+    public void setConsignment(boolean consignment) {
+        this.consignment = consignment;
     }
 }

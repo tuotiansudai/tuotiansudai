@@ -17,7 +17,7 @@
         <result column="address" property="address"/>
         <result column="consignment" property="consignment"/>
         <result column="consignment_time" property="consignmentTime"/>
-        <result column="created_user" property="createdUser"/>
+        <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
@@ -29,7 +29,7 @@
     <update id="update" parameterType="ProductOrderModel">
         update product_order
         set `consignment` = #{consignment},
-            `consignment_time` = #{consignment_time}
+            `consignment_time` = #{consignmentTime}
         where `id` = #{id}
     </update>
 
@@ -44,7 +44,7 @@
                 and p.product_id = #{productId}
             </if>
             <if test="createdBy != null">
-                and p.created_by = ${createdBy}
+                and p.created_by = #{createdBy}
             </if>
         </where>
     </select>
@@ -56,10 +56,11 @@
                 and p.product_id = #{productId}
             </if>
             <if test="createdBy != null">
-                and p.created_by = ${createdBy}
+                and p.created_by = #{createdBy}
             </if>
         </where>
         order by created_time desc
+        limit #{index}, #{pageSize}
     </select>
 
 </mapper>

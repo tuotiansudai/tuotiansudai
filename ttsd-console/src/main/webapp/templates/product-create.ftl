@@ -1,14 +1,14 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="createProduct" title="添加商品">
+<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage" sideLab="create${goodsType.name()!}Product" title="添加商品">
 
 <div class="col-md-10">
     <form action="/product-manage/create" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>
             <div class="col-sm-4">
-                <span class="form-control">${goodsTypeDesc!}</span>
-                <input class="goodsType" name="goodsType" value="${goodsType!}" type="hidden">
+                <span class="form-control">${goodsType.description!}</span>
+                <input class="goodsType" name="goodsType" value="${goodsType.name()!}" type="hidden">
             </div>
         </div>
 
@@ -16,16 +16,14 @@
             <label class="col-sm-2 control-label">商品名称</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control product-name" name="productName" placeholder=""
-                       <#if product??>value="${product.productName!}"</#if> datatype="*" nullmsg="商品名称不能为空">
+                <input type="text" class="form-control product-name" name="productName" placeholder="" datatype="*" errormsg="商品名称不能为空">
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">商品图片:</label>
             <div class="col-sm-4 ">
-                <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if product??>${product.imageUrl!}</#if>" datatype="*" nullmsg="商品图片">
+                <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder="" datatype="*" errormsg="请上传商品图片">
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
                         <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="300" height="244"/>
@@ -48,16 +46,14 @@
             <label class="col-sm-2 control-label">商品数量</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control total-count" name="totalCount" placeholder=""
-                       <#if product??>value="${product.totalCount!}"</#if> datatype="*" nullmsg="商品数量不能为空">
+                <input type="text" class="form-control total-count" name="totalCount" placeholder="" datatype="n" errormsg="商品数量只能为数字">
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">商品介绍</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control description" name="description" placeholder=""
-                       <#if product??>value="${product.description!}"</#if> datatype="*" nullmsg="商品介绍不能为空">
+                <input type="text" class="form-control description" name="description" placeholder="" datatype="*" errormsg="商品介绍不能为空">
             </div>
         </div>
 
@@ -66,8 +62,7 @@
 
             <div class="col-sm-4">
                 <input data-type="${goodsType!}" class="order-number input-sm" name="seq" value="1" disabled>- <input
-                    type="text" class="form-control seq" name="seq" placeholder=""
-                    <#if product??>value="${product.seq!}"</#if> datatype="*" nullmsg="商品顺序不能为空">
+                    type="text" class="form-control seq" name="seq" placeholder="" datatype="n" errormsg="商品顺序只能为数字">
             </div>
         </div>
 
@@ -75,9 +70,7 @@
             <label class="col-sm-2 control-label ">商品有效期限: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
-                    <input type='text' class="form-control product-start" name="startTime"
-                           <#if product??>value="${(product.startTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if>
-                           datatype="date" nullmsg="请选择商品开始时间"/>
+                    <input type='text' class="form-control product-start" name="startTime" datatype="date" errormsg="请选择商品有效开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -86,9 +79,7 @@
             <div class="line-size">-</div>
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
-                    <input type='text' class="form-control product-end" name="endTime"
-                           <#if product??>value="${(product.endTime?string("yyyy-MM-dd HH:mm:ss"))!}"</#if> datatype="date"
-                           nullmsg="请选择商品结束时间"/>
+                    <input type='text' class="form-control product-end" name="endTime" datatype="date" errormsg="请选择商品有效结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -99,20 +90,28 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">商品价格</label>
 
-            <div class="col-sm-2">
-                <input type="text" class="form-control productPrice" name="productPrice" placeholder=""
-                       <#if product??>value="${product.productPrice!}"</#if> datatype="*" nullmsg="商品价格不能为空">
+            <div class="col-sm-3">
+                <input type="text" class="form-control productPrice" name="productPrice" placeholder="" datatype="n" errormsg="商品价格只能为数字">
             </div>
-            <div class="col-sm-2"><span style="line-height: 34px">财豆</span></div>
+            <div class="col-sm-1"><span style="line-height: 34px">积分</span></div>
+        </div>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="form-group ">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4 form-error">
+                <#if errorMessage?has_content>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                </#if>
+            </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave"
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>
-                    确认生效
+                    确认创建
                 </button>
             </div>
         </div>

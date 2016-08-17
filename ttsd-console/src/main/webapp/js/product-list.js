@@ -1,48 +1,32 @@
-require(['jquery'], function ($) {
+require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
     $(function () {
-        var $productListCon = $('#productListContainer'),
-            $saveBtn = $('#btnSave');
-
-        $productListCon.on('click', '.delete-record', function (event) {
-            event.preventDefault();
-            var $self = $(this),
-                productId = $this.siblings('input').attr('data-id');
-
-            $.ajax({
-                    url: '/product-manage/delete/' + productId,
-                    type: 'GET',
-                    dataType: 'json'
-                })
-                .done(function (data) {
-                    data.status ? window.location.reload() : false;
-                })
-                .fail(function () {
-                    console.log("请求失败");
-                });
-        });
-
-        $saveBtn.on('click', function (event) {
-            event.preventDefault();
-            var checkArr = [];
-            $('.confirm-btn').each(function () {
-                if ($(this).prop('checked') == true && $('.confirm-btn:checked').length > 0) {
-                    checkArr.push($(this).attr('data-id'));
-                }
-            });
-            $.ajax({
-                    url: '/product-manage/goods-active',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        productId: checkArr
-                    },
-                })
-                .done(function (data) {
-                    data.status ? window.location.reload() : false;
-                });
-        });
-        $('.export-product').click(function () {
-            location.href = "/export/product-list?" + location.href.split('?')[1];
-        });
+        //confirm event
+        $('body').delegate('.confirm-btn','click',function(e) {
+            e.preventDefault();
+            var $self=$(this),
+                $parentTd = $self.parents('td'),
+                thisId=$self.attr('data-id');//data id
+            if (!confirm("是否确认执行此操作?")) {
+                return;
+            }else{
+                $.ajax({
+                        url: '/product-manage/' + thisId +'/active',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function(res) {
+                        if(res.data.status){
+                            $parentTd.html('<label><i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button></label>');
+                            $parentTd.prev().html('-');
+                        }else{
+                            $tipCom.show().find('.txt').text('操作失败！');
+                        }
+                    })
+                    .fail(function(res) {
+                        $self.addClass('confirm-btn').text('操作失败');
+                        $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
+                    });
+            }
+        })
     });
 });

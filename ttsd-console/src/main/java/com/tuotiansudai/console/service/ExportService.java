@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.repository.model.ProductModel;
 
@@ -35,5 +36,5 @@ public interface ExportService {
 
     List<List<String>> buildConsoleLoanList(List<LoanListDto> records);
 
-    List<List<String>> buildGoods(List<ProductModel> records);
+    List<List<String>> buildProductOrderList(List<ProductOrderDto> records);
 }

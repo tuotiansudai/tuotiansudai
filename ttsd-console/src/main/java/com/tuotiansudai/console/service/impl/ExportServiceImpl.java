@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.repository.model.CouponType;
@@ -303,20 +304,19 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public List<List<String>> buildGoods(List<ProductModel> records) {
+    public List<List<String>> buildProductOrderList(List<ProductOrderDto> records) {
         List<List<String>> rows = Lists.newArrayList();
-        for (ProductModel record : records) {
+        for (ProductOrderDto record : records) {
             List<String> row = Lists.newArrayList();
-            row.add(record.getGoodsType().getDescription());
-            row.add(String.valueOf(record.getSeq()));
-            row.add(record.getProductName());
-            row.add(record.getDescription());
-            row.add(String.valueOf(record.getTotalCount()));
-            row.add(String.valueOf(record.getUsedCount()));
-            row.add(String.valueOf(record.getProductPrice()));
-            row.add(new DateTime(record.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            String active = record.isActive() ? "已生效" : "未生效";
-            row.add(active);
+            row.add(record.getLoginName());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getNum()));
+            row.add(record.getRealName());
+            row.add(record.getMobile());
+            row.add(record.getAddress());
+            String consignment = record.isConsignment() ? "已发货" : "未发货";
+            row.add(consignment);
+            row.add(new DateTime(record.getConsignmentTime()).toString("yyyy-MM-dd HH:mm:ss"));
             rows.add(row);
         }
         return rows;

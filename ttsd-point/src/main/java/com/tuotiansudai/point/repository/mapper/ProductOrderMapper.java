@@ -15,14 +15,14 @@ public interface ProductOrderMapper {
     void update(ProductOrderModel productModel);
 
     List<ProductOrderModel> findProductOrderList(
-            @Param("productId") long productId,
-            @Param("createdBy") String createdBy
-    );
+            @Param(value = "productId") long productId,
+            @Param(value = "createdBy") String createdBy,
+            @Param(value = "index") int index,
+            @Param(value = "pageSize") int pageSize);
 
     long findProductOrderCount(
-            @Param("productId") long productId,
-            @Param("createdBy") String createdBy
-    );
+            @Param(value = "productId") long productId,
+            @Param(value = "createdBy") String createdBy);
 
     ProductOrderModel findById(long id);
 

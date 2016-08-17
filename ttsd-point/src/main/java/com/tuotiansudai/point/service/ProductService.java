@@ -15,21 +15,19 @@ public interface ProductService {
 
     void createProduct(ProductDto productDto);
 
-    List<ProductModel> findGoods(GoodsType goodsType);
+    List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize);
 
-    long findGoodsCount(GoodsType goodsType);
+    long findProductsCount(GoodsType goodsType);
 
-    List<ProductOrderDto> findProductOrderList(long productId);
+    List<ProductOrderDto> findProductOrderList(long productId, String loginName, int index, int pageSize);
 
     long findProductOrderCount(long productId);
 
-    BaseDataDto goodsActive(GoodsActiveDto goodsActiveDto);
+    BaseDataDto active(long productId, String loginName);
 
-    BaseDataDto goodsConsignment(GoodsConsignmentDto consignmentDto);
+    BaseDataDto consignment(long orderId);
 
     ProductModel findById(long id);
 
     BaseDataDto updateProduct(ProductDto productDto);
-
-    BaseDataDto deleteProduct(long id);
 }

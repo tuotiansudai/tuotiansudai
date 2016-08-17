@@ -1,6 +1,7 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="${goodsTypeDesc!}" title="添加商品">
+<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${goodsType.name()!}Manage" title="添加商品">
 <div class="col-md-10">
         <div class="tip-container">
             <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -23,49 +24,63 @@
                     <th>已兑换数量</th>
                     <th>商品价格</th>
                     <th>商品有效期限</th>
-                    <th/>
-                    <th/>
+                    <th>操作</th>
+                    <th> </th>
+                    <th> </th>
                 </tr>
                 </thead>
                 <tbody>
                     <#list products as product>
                     <tr>
-                        <td>${goodsTypeDesc!}</td>
-                        <td>${product.seq}</td>
+                        <td>${goodsType.description!}</td>
+                        <td>2-${product.seq?string('0')!}</td>
                         <td>${product.productName}</td>
-                        <td>${product.imageUrl}</td>
+                        <td><img src="${product.imageUrl}"></td>
                         <td>${product.description}</td>
-                        <td>${product.totalCount}</td>
-                        <td>${product.usedCount}</td>
-                        <td>${product.productPrice}</td>
-                        <td>${(product.endTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                        <td>${product.totalCount?string('0')}</td>
+                        <td>${product.usedCount?string('0')}</td>
+                        <td>${product.productPrice?string('0')}</td>
+                        <td>${(product.startTime?string('yyyy-MM-dd'))!}至${(product.endTime?string('yyyy-MM-dd'))!}</td>
                         <td>
-                            <input type="hidden" data-id="${product.id!}">
                             <#if product.active>
-                                <a href="/product-manage/find-orders?productId=${product.id!}">查看详情</a>
+                                -
                             <#else>
-                                <a href="/product-manage/edit/${product.id!}">编辑</a>
-                                <a href="javascript:void(0);" class="delete-record">删除</a>
+                                <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+                                    -
+                                </@security.authorize>
+                                <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                                    <a href="/product-manage/${product.id?string('0')}/edit">编辑</a>
+                                </@security.authorize>
                             </#if>
                         </td>
                         <td>
-                            <#if product.active>
-                                <input type="checkbox" checked="checked" disabled="disabled"> 已生效
-                            <#else>
-                                <input class="confirm-btn" type="checkbox" data-id="${product.id}"> 确认生效
-                            </#if>
+                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                <#if product.active>
+                                    <label>
+                                        <i class="check-btn add-check"></i>
+                                        <button class="loan_repay already-btn btn-link inactive-btn" disabled
+                                                data-id="${product.id?string('0')}">已生效
+                                        </button>
+                                    </label>
+                                <#else>
+                                    <label>
+                                        <i class="check-btn"></i>
+                                        <a class="loan_repay confirm-btn" href="javascript:void(0)"
+                                           data-id="${product.id?string('0')}">确认生效</a>
+                                    </label>
+                                </#if>
+                            </@security.authorize>
+                            <@security.authorize access="hasAuthority('OPERATOR')">
+                                -
+                            </@security.authorize>
+                        </td>
+                        <td>
+                            <a href="/product-manage/${product.id?string('0')}/detail"
+                               class="btn-link">查看详情</a>
                         </td>
                     </#list>
                 </tbody>
             </table>
-        </div>
-        <div class="table-responsive">
-            <div class="col-sm-1 col-md-offset-11">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <button type="button" class="btn btn-sm btn-primary" id="btnSave">
-                    确认生效
-                </button>
-            </div>
         </div>
         <!-- pagination  -->
         <nav>
@@ -77,7 +92,7 @@
 
                     <li>
                         <#if hasPreviousPage >
-                        <a href="?goodsType=${goodsType}"
+                        <a href="?index=${index-1}&pageSize=${pageSize}&goodsType=${goodsType}"
                            aria-label="Previous">
                         <#else>
                         <a href="#" aria-label="Previous">
@@ -88,7 +103,7 @@
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage >
-                        <a href="?goodsType=${goodsType}"
+                        <a href="?index=${index+1}&pageSize=${pageSize}&goodsType=${goodsType}"
                            aria-label="Next">
                         <#else>
                         <a href="#" aria-label="Next">
@@ -96,7 +111,6 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
                     </li>
-                    <button class="btn btn-default pull-left export-product" type="button">导出Excel</button>
                 </ul>
             </#if>
         </nav>

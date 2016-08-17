@@ -1,9 +1,25 @@
 require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui'], function ($) {
 
-    $('#startTime').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
-    $('#endTime').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+    var $selectDom = $('.selectpicker'),
+        $dateStart = $('#startTime'),
+        $dateEnd = $('#endTime'),
+        $orderNumber = $('.order-number'),
+        $submitBtn = $('#btnSave'),
+        $errorDom = $('.form-error'),
+        boolFlag = false, //校验布尔变量值
+        $productForm = $('.form-list');
 
-    var $orderNumber = $('.order-number');
+    $selectDom.selectpicker();
+
+    $dateStart.datetimepicker({
+        format: 'YYYY-MM-DD'
+    }).on('dp.change', function(e) {
+        $dateEnd.data("DateTimePicker").minDate(e.date);
+    });
+
+    $dateEnd.datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
 
     function showErrorMessage(msg, obj) {
         currentErrorObj = obj;
@@ -83,15 +99,32 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         tipSweep: true,
         focusOnError: false,
         ignoreHidden: true,
-        tiptype: 3,
-        label: '.label',
-        showAllError: true,
-        beforeSubmit: function (curform) {
-            //debugger
-            curform[0].submit();
-            //return false;
+        tiptype: function(msg, o, cssctl) {
+            if (o.type == 3) {
+                var msg = o.obj.attr('errormsg') || msg;
+                showErrorMessage(msg, o.obj);
+            }
+        },
+        callback: function(form) {
+            boolFlag = true;
+            return false;
         }
+    });
 
-    })
+    $('body').on('click', '.form-error', function () {
+        $submitBtn.removeAttr('disabled');
+        if (!!currentErrorObj) {
+            currentErrorObj.focus();
+        }
+    });
+
+    $submitBtn.on('click', function(event) {
+        event.preventDefault();
+        var $self = $(this);
+        if (boolFlag) {
+            $self.attr('disabled', 'disabled');
+            $productForm[0].submit();
+        }
+    });
 
 });

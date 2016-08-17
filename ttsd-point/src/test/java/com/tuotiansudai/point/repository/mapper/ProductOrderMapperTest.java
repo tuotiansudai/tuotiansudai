@@ -58,7 +58,7 @@ public class ProductOrderMapperTest {
 
         productOrderMapper.create(productOrderModel);
 
-        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList(productModel.getId(), null);
+        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList(productModel.getId(), null, 0, 10);
 
         assertThat(productOrderModelList.size(), is(1));
     }

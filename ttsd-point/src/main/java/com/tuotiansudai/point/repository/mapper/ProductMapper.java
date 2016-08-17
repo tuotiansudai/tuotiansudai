@@ -15,19 +15,11 @@ public interface ProductMapper {
 
     void update(ProductModel productModel);
 
-    List<ProductModel> findProductList(
-            @Param(value = "goodsType") GoodsType goodsType
-    );
+    List<ProductModel> findProductsList(@Param(value = "goodsType") GoodsType goodsType,
+                                        @Param(value = "index") int index,
+                                        @Param(value = "pageSize") int pageSize);
 
-    long findProductCount(
-            @Param(value = "goodsType") GoodsType goodsType
-    );
+    long findProductsCount(@Param(value = "goodsType") GoodsType goodsType);
 
-    ProductModel findById(
-            @Param(value = "id") long id
-    );
-
-    void delete(
-            @Param(value = "id") long id
-    );
+    ProductModel findById(@Param(value = "id") long id);
 }

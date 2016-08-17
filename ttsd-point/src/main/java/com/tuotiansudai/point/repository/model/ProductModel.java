@@ -1,5 +1,7 @@
 package com.tuotiansudai.point.repository.model;
 
+import com.tuotiansudai.point.dto.ProductDto;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,6 +28,19 @@ public class ProductModel implements Serializable{
 
     public ProductModel(){
 
+    }
+
+    public ProductModel(ProductDto productDto) {
+        this.id = productDto.getId();
+        this.goodsType = productDto.getGoodsType();
+        this.productName = productDto.getProductName();
+        this.seq = productDto.getSeq();
+        this.imageUrl = productDto.getImageUrl();
+        this.description = productDto.getDescription();
+        this.totalCount = productDto.getTotalCount();
+        this.productPrice = productDto.getProductPrice();
+        this.startTime = productDto.getStartTime();
+        this.endTime = productDto.getEndTime();
     }
 
     public ProductModel(GoodsType goodsType, String productName, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long productPrice, Date startTime, Date endTime, boolean active, String createdBy, Date createdTime) {

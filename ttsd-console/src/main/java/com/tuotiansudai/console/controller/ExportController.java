@@ -5,10 +5,12 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.repository.model.ProductOrderModel;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
@@ -272,18 +274,18 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
     }
 
-    @RequestMapping(value = "/product-list", method = RequestMethod.GET)
-    public void goodsExport(@RequestParam(value = "goodsType") GoodsType goodsType, HttpServletResponse httpServletResponse) throws IOException {
+    @RequestMapping(value = "/product-order-list", method = RequestMethod.GET)
+    public void productOrderListExport(@RequestParam(value = "productId") long productId, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.Goods.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ProductOrderList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<ProductModel> productModels = productService.findGoods(goodsType);
-        List<List<String>> csvData = exportService.buildGoods(productModels);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Goods, csvData, httpServletResponse.getOutputStream());
+        List<ProductOrderDto> productOrderDtos = productService.findProductOrderList(productId, null, 1, Integer.MAX_VALUE);
+        List<List<String>> csvData = exportService.buildProductOrderList(productOrderDtos);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ProductOrderList, csvData, httpServletResponse.getOutputStream());
     }
 
 }
