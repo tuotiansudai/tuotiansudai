@@ -16,7 +16,7 @@ BEGIN;
 
    DELETE FROM user_message
     WHERE
-
+    NOT EXISTS( SELECT
         *
     FROM
         user
