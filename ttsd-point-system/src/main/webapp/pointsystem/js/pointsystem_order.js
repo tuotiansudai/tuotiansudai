@@ -1,8 +1,9 @@
-require(['jquery'],function($){
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer) {
 	$(function() {
 		var $countList=$('.order-number'),
 			$numText=$countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i');
+			$bigText = $countList.find('.total-num i'),
+			$orderBtn = $('#orderBtn');
 
 		$countList.on('click', '.low-btn', function(event) {//减号
 			event.preventDefault();
@@ -25,5 +26,33 @@ require(['jquery'],function($){
 				$(this).text(parseInt($(this).attr('data-num'))*parseInt($numText.val()));
 			});
 		}
+
+		$orderBtn.on('click', function (event) {//立即兑换
+			event.preventDefault();
+			var $self = $(this),
+				idString = $self.attr('data-id'),
+				typeString = $self.attr('data-type');
+			$.ajax({
+				url: '/pointsystem/order',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					id: idString,
+					itemType: typeString,
+					number: $numText.val()
+				}
+			})
+				.done(function (data) {
+					console.log(data);
+					if (data.data.status) {
+						location.href = '/pointsystem/record';
+					} else {
+						layer.msg(data.data.message);
+					}
+				})
+				.fail(function (data) {
+					layer.msg('请求失败，请重试！');
+				});
+		});
 	});
 })

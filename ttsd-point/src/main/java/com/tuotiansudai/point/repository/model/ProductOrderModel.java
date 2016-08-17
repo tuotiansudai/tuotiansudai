@@ -14,7 +14,7 @@ public class ProductOrderModel implements Serializable{
     private String mobile;
     private String address;
     private boolean consignment;
-    private String consignmentTime;
+    private Date consignmentTime;
     private String createdBy;
     private Date createdTime;
 
@@ -22,7 +22,7 @@ public class ProductOrderModel implements Serializable{
 
     }
 
-    public ProductOrderModel(long productId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, String consignmentTime, String createdBy) {
+    public ProductOrderModel(long productId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
         this.productId = productId;
         this.productPrice = productPrice;
         this.num = num;
@@ -108,11 +108,11 @@ public class ProductOrderModel implements Serializable{
         this.consignment = consignment;
     }
 
-    public String getConsignmentTime() {
+    public Date getConsignmentTime() {
         return consignmentTime;
     }
 
-    public void setConsignmentTime(String consignmentTime) {
+    public void setConsignmentTime(Date consignmentTime) {
         this.consignmentTime = consignmentTime;
     }
 

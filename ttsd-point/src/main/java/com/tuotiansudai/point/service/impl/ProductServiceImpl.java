@@ -176,11 +176,11 @@ public class ProductServiceImpl implements ProductService {
     private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel) {
         if (productShowItemDto.getItemType().equals(ItemType.PHYSICAL)) {
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
-                    userAddressModel.getRealName(), userAddressModel.getMobile(), userAddressModel.getAddress(), true, "", accountModel.getLoginName());
+                    userAddressModel.getRealName(), userAddressModel.getMobile(), userAddressModel.getAddress(), true, null, accountModel.getLoginName());
         } else {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
-                    accountModel.getUserName(), userModel.getMobile(), "", false, "", accountModel.getLoginName());
+                    accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         }
     }
 
