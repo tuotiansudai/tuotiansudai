@@ -219,6 +219,14 @@ public class InterestCalculator {
         return totalExpectedInterestAmount;
     }
 
+    public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels,double fee) {
+        long totalExpectedInterestAmount = 0;
+        for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
+            totalExpectedInterestAmount += investRepayModels.get(i).getExpectedInterest() - new BigDecimal(investRepayModels.get(i).getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(fee)).longValue();
+        }
+        return totalExpectedInterestAmount;
+    }
+
     public static long calculateExtraLoanRateInterest(LoanModel loanModel, double extraRate, InvestModel investModel, Date endTime) {
         DateTime startTime;
         if (InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {

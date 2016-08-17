@@ -7,6 +7,8 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -63,6 +65,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private InvestRepayMapper investRepayMapper;
     @Mock
     private InvestService investService;
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -189,10 +193,13 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         investRepayModels.add(investRepayModel1);
         investRepayModels.add(investRepayModel2);
         investRepayModels.add(investRepayModel3);
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setFee(0.4);
 
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
 
         BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
 
@@ -200,7 +207,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         assertEquals("1000.00", baseResponseDto.getData().getBalance());
         assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("0.14", baseResponseDto.getData().getExpectedInterestAmount());
+        assertEquals("0.16", baseResponseDto.getData().getExpectedInterestAmount());
     }
 
     @Test
