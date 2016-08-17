@@ -39,6 +39,6 @@ public interface MessageMapper {
                                        @Param(value = "index") int index,
                                        @Param(value = "pageSize") int pageSize);
 
-    List<MessageModel> findAssignableMessages(String loginName);
+    List<MessageModel> findAssignableManualMessages(String loginName);
 
 }
