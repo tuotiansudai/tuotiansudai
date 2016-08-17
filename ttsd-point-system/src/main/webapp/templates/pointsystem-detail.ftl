@@ -11,11 +11,11 @@
 				<div class="detail-left">
 					<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
                         <p class="mater-img bag-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
                         </p>
 					<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
                         <p class="mater-img coupon-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
                             <span>投资体验券</span>
                         </p>
 					<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>
@@ -71,8 +71,8 @@
 						</div>
 					</div>
 					<div class="info-text mt-20">
-                        <a href="/pointsystem/order/${productShowItem.id?c!"0"}?itemType=${productShowItem.itemType.name()}"
-                           class="btn get-btn">立即兑换</a>
+                        <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
+                           data-type="${productShowItem.itemType.name()}" id="getBtn">立即兑换</a>
 					</div>
 					<div class="info-text mt-20">
 						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>

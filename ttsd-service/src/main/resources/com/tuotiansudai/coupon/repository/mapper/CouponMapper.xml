@@ -294,7 +294,7 @@
 
     <select id="findExchangeableCouponViewCount" resultType="int">
         SELECT
-        COUNT (1)
+        COUNT(1)
         FROM
         (SELECT * FROM `coupon`
         WHERE

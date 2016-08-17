@@ -17,14 +17,13 @@ public class UserAddressModel implements Serializable{
 
     }
 
-    public UserAddressModel(long id, String loginName, String realName, String mobile, String address, String createdBy, Date createdTime) {
-        this.id = id;
+    public UserAddressModel(String loginName, String realName, String mobile, String address, String createdBy) {
         this.loginName = loginName;
         this.realName = realName;
         this.mobile = mobile;
         this.address = address;
         this.createdBy = createdBy;
-        this.createdTime = createdTime;
+        this.createdTime = new Date();
     }
 
     public long getId() {

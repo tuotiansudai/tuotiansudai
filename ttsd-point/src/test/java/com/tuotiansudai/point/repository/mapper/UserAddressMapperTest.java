@@ -33,9 +33,9 @@ public class UserAddressMapperTest {
 
     @Test
     public void shouldCreateUserAddressModel() throws Exception {
-        UserModel fakeUserModel = this.createFakeUserModel();
+        UserModel fakeUserModel = createFakeUserModel("userAddressUser");
 
-        UserAddressModel userAddressModel = new UserAddressModel(10001,fakeUserModel.getLoginName(), "张山", "13999999999", "北京市北京市", fakeUserModel.getLoginName(), new Date());
+        UserAddressModel userAddressModel = new UserAddressModel(fakeUserModel.getLoginName(), "张山", "13999999999", "北京市北京市", fakeUserModel.getLoginName());
 
         userAddressMapper.create(userAddressModel);
 
@@ -45,17 +45,42 @@ public class UserAddressMapperTest {
         assertThat(userAddressModel1.getRealName(), is("张山"));
     }
 
-    private UserModel createFakeUserModel() {
+    @Test
+    public void testUpdate() throws Exception {
+        UserModel user1 = createFakeUserModel("user1");
+        UserModel user2 = createFakeUserModel("user2");
+
+        UserAddressModel userAddressModel1 = new UserAddressModel(user1.getLoginName(), "realName1", "mobile1", "address1", user1.getLoginName());
+        userAddressMapper.create(userAddressModel1);
+        UserAddressModel userAddressModel2 = new UserAddressModel(user2.getLoginName(), "realName2", "mobile2", "address2", user2.getLoginName());
+        userAddressMapper.create(userAddressModel2);
+
+        userAddressModel1.setMobile("MOBILE1");
+        userAddressModel1.setRealName("REAL_NAME1");
+        userAddressModel1.setAddress("ADDRESS1");
+        userAddressMapper.update(userAddressModel1);
+
+        UserAddressModel updatedUserAddressModel1 = userAddressMapper.findByLoginName(user1.getLoginName()).get(0);
+        assertEquals(userAddressModel1.getMobile(), updatedUserAddressModel1.getMobile());
+        assertEquals(userAddressModel1.getRealName(), updatedUserAddressModel1.getRealName());
+        assertEquals(userAddressModel1.getAddress(), updatedUserAddressModel1.getAddress());
+
+        UserAddressModel updatedUserAddressModel2 = userAddressMapper.findByLoginName(user2.getLoginName()).get(0);
+        assertEquals(userAddressModel2.getMobile(), updatedUserAddressModel2.getMobile());
+        assertEquals(userAddressModel2.getRealName(), updatedUserAddressModel2.getRealName());
+        assertEquals(userAddressModel2.getAddress(), updatedUserAddressModel2.getAddress());
+    }
+
+    private UserModel createFakeUserModel(String loginName) {
         UserModel fakeUserModel = new UserModel();
-        fakeUserModel.setLoginName("userAddressUser");
+        fakeUserModel.setLoginName(loginName);
         fakeUserModel.setPassword("123abc");
         fakeUserModel.setEmail("12345@abc.com");
-        fakeUserModel.setMobile("13900000000");
+        fakeUserModel.setMobile(loginName);
         fakeUserModel.setRegisterTime(new Date());
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
-
 }

@@ -216,7 +216,35 @@ public class ProductServiceImpl implements ProductService {
         return new BaseDto<>(new BaseDataDto(true));
     }
 
+    @Override
     public List<UserAddressModel> getUserAddressesByLoginName(String loginName) {
         return userAddressMapper.findByLoginName(loginName);
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> addAddress(String loginName, String realName, String mobile, String address) {
+        List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(loginName);
+        if (userAddressModels.size() > 0) {
+            return new BaseDto<>(new BaseDataDto(false, "已经填写过地址"));
+        } else {
+            UserAddressModel userAddressModel = new UserAddressModel(loginName, realName, mobile, address, loginName);
+            userAddressMapper.create(userAddressModel);
+            return new BaseDto<>(new BaseDataDto(true));
+        }
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address) {
+        List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(loginName);
+        if (userAddressModels.size() <= 0) {
+            return new BaseDto<>(new BaseDataDto(false, "没有填写过地址"));
+        } else {
+            UserAddressModel userAddressModel = userAddressModels.get(0);
+            userAddressModel.setRealName(realName);
+            userAddressModel.setMobile(mobile);
+            userAddressModel.setAddress(address);
+            userAddressMapper.update(userAddressModel);
+            return new BaseDto<>(new BaseDataDto(true));
+        }
     }
 }

@@ -1,8 +1,9 @@
-require(['jquery'],function($){
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer) {
 	$(function() {
 		var $countList=$('.count-list'),
 			$numText=$countList.find('.num-text'),
-			$bigText = $countList.find('.total-num i');
+			$bigText = $countList.find('.total-num i'),
+			$getBtn = $('#getBtn');
 
 		$countList.on('click', '.low-btn', function(event) {//减号
 			event.preventDefault();
@@ -18,6 +19,34 @@ require(['jquery'],function($){
 					return parseInt(num) + 1
 				}) : $numText.val($bigText.text());
 			}
+		});
+
+		$getBtn.on('click', function (event) {//立即兑换
+			event.preventDefault();
+			var $self = $(this),
+				idString = $self.attr('data-id'),
+				typeString = $self.attr('data-type');
+			$.ajax({
+				url: '/pointsystem/hasEnoughGoods',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					id: idString,
+					itemType: typeString,
+					amount: $numText.val()
+				}
+			})
+				.done(function (data) {
+					console.log(data);
+					if (data.data.status) {
+						location.href = '/pointsystem/order/' + idString + '/' + typeString + '/' + $numText.val();
+					} else {
+						layer.msg(data.data.message);
+					}
+				})
+				.fail(function (data) {
+					layer.msg('请求失败，请重试！');
+				});
 		});
 	});
 })

@@ -12,5 +12,7 @@ public interface UserAddressMapper {
 
     void create(UserAddressModel userAddressModel);
 
+    void update(UserAddressModel userAddressModel);
+
     List<UserAddressModel> findByLoginName(@Param("loginName") String loginName);
 }

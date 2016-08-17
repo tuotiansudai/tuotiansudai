@@ -27,4 +27,8 @@ public interface ProductService {
     BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, UserAddressModel userAddressModel);
 
     List<UserAddressModel> getUserAddressesByLoginName(String loginName);
+
+    BaseDto<BaseDataDto> addAddress(String loginName, String realName, String mobile, String address);
+
+    BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address);
 }

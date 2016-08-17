@@ -168,7 +168,10 @@
                 border: none;
                 border-radius: 0;
                 cursor: pointer;
-                background: #fc4a52; }
+                background: #fc4a52;
+                padding: 0;
+                line-height: 40px;
+              }
     .main-frame .global-member-detail .container-ad {
       float: left;
       width: 100%;

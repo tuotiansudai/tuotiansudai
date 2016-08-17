@@ -12,16 +12,17 @@
 			<#if productShowItem.itemType.name() == 'PHYSICAL'>
                 <div class="order-place">
                     <h3>添加您的收货地址</h3>
-
+					<#list addresses as address>
                     <div class="address-item">
                         <a href="javascript:void(0)" class="address-set">修改</a>
 
-                        <p class="user-name">刘海宁</p>
+                        <p class="user-name">${address.realName}</p>
 
-                        <p>18610074450</p>
+                        <p>${address.mobile}</p>
 
-                        <p title="北京市丰台区18号胡同对面街道办事处">北京市丰台区18号胡同对面街道办事处</p>
+                        <p title="${address.address}">${address.address}</p>
                     </div>
+					</#list>
                 </div>
 			</#if>
 
@@ -31,11 +32,11 @@
 					<div class="order-picture">
 						<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
                             <p class="mater-img bag-bg">
-                                <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                                <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
                             </p>
 						<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
                             <p class="mater-img coupon-bg">
-                                <span><i><@amount>${productShowItem.pictureDescription!"0"}</@amount></i>元</span>
+                                <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
                                 <span>投资体验券</span>
                             </p>
 						<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>

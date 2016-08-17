@@ -25,4 +25,15 @@
         select * from user_address where login_name = #{loginName};
     </select>
 
+    <update id="update" parameterType="UserAddressModel">
+        UPDATE
+          `aa`.`user_address`
+        SET
+          real_name = #{realName},
+          mobile = #{mobile},
+          address = #{address}
+        WHERE
+          login_name = #{loginName}
+    </update>
+
 </mapper>

@@ -96,6 +96,7 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/hasEnoughGoods", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> hasEnoughGoods(@RequestParam(value = "id", required = true) long id,
                                                @RequestParam(value = "itemType", required = true) ItemType itemType,
                                                @RequestParam(value = "amount", required = true) int amount) {
@@ -107,16 +108,16 @@ public class PointSystemController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}/{itemType}/{amount}", method = RequestMethod.GET)
-    public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable ItemType itemType, @PathVariable int amount) {
+    @RequestMapping(value = "/order/{id}/{itemType}/{number}", method = RequestMethod.GET)
+    public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable ItemType itemType, @PathVariable int number) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-order");
 
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
-        modelAndView.addObject("productShowItemDto", productShowItemDto);
-        if (amount <= productShowItemDto.getLeftCount()) {
-            modelAndView.addObject("amount", amount);
+        modelAndView.addObject("productShowItem", productShowItemDto);
+        if (number <= productShowItemDto.getLeftCount()) {
+            modelAndView.addObject("number", number);
         } else {
-            modelAndView.addObject("amount", productShowItemDto.getLeftCount());
+            modelAndView.addObject("number", productShowItemDto.getLeftCount());
         }
 
         if (itemType.equals(ItemType.PHYSICAL)) {
@@ -136,6 +137,22 @@ public class PointSystemController {
                                            @RequestParam(value = "userAddress", required = false) UserAddressModel userAddressModel) {
         String loginName = LoginUserInfo.getLoginName();
         return productService.buyProduct(loginName, id, itemType, amount, userAddressModel);
+    }
+
+    @RequestMapping(value = "/add-address", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> addAddress(@RequestParam(value = "realName", required = true) String realName,
+                                           @RequestParam(value = "mobile", required = true) String mobile,
+                                           @RequestParam(value = "address", required = true) String address) {
+        String loginName = LoginUserInfo.getLoginName();
+        return productService.addAddress(loginName, realName, mobile, address);
+    }
+
+    @RequestMapping(value = "/update-address", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> updateAddress(@RequestParam(value = "realName", required = true) String realName,
+                                              @RequestParam(value = "mobile", required = true) String mobile,
+                                              @RequestParam(value = "address", required = true) String address) {
+        String loginName = LoginUserInfo.getLoginName();
+        return productService.updateAddress(loginName, realName, mobile, address);
     }
 
     @RequestMapping(value = "/task", method = RequestMethod.GET)
@@ -182,5 +199,4 @@ public class PointSystemController {
 
         return dto;
     }
-
 }
