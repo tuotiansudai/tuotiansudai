@@ -123,6 +123,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                     case 'bar':
                         option = loadEcharts.ChartOptionTemplates.Bar(data, name,xAxisName);
                         break;
+                    case 'mBar':
+                        option = loadEcharts.ChartOptionTemplates.mBar(data, name,xAxisName);
+                        break;
                     case 'kBar':
                         option = loadEcharts.ChartOptionTemplates.kBar(data, name);
                         break;
@@ -172,11 +175,14 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','投资用户(人)','pie');
 
     /*标的资金分布*/
-    showReport('#formLoanAmountReport','/bi/loan-amount-distribution','loanAmountDistribution','标的金额(元)','bar','标的期数');
+    showReport('#formLoanAmountReport','/bi/loan-amount-distribution','loanAmountDistribution','标的金额(元)','mBar','标的期数');
 
     /*标的满标周期分布*/
     showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
 
     /*平台待收 总待收-总入金+回款*/
     showReport('#platformSumRepayByTimeReport','/bi/platform-repay-time','platformSumRepayByTimeDistribution','金额','repayLines');
+
+    /*平台支出*/
+    showReport('#platformOut','/bi/platform-out','platformOutDistribution','金额','Lines');
 });

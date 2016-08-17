@@ -43,4 +43,8 @@ public interface BusinessIntelligenceMapper {
 
     KeyValueModel queryRepayByRecheckTimeAndActualRepayDate(@Param("startTime") Date recheckDate,
                                                             @Param("repayDate") Date repayDate);
+
+    List<KeyValueModel> querySystemBillOutByCreatedTime(@Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime,
+                                                        @Param("granularity") Granularity granularity);
 }
