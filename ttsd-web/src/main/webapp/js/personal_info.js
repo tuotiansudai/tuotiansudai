@@ -209,7 +209,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 if (!this.checkable(element) && !this.optional(element)) {
                     this.element(element);
                 }
-
             },
             success:function(label){
                 label.remove();
@@ -226,16 +225,19 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 $(form).ajaxSubmit({
                     data: {mobile: $('.mobile').val()},
                     dataType: 'json',
+                    beforeSubmit: function (arr, $form, options) {
+                        $getCaptchaElement.prop('disabled',true);
+                    },
                     success: function (response) {
                         var data = response.data;
                         if (data.status && !data.isRestricted) {
                             $codeNumber.removeClass('code-number-hidden');
                             var seconds = 60;
                             countTimer = setInterval(function () {
-                                $getCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
+                                $getCaptchaElement.html(seconds + '秒后重新发送').prop('disabled',true);
                                 if (seconds == 0) {
                                     clearInterval(countTimer);
-                                    $getCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
+                                    $getCaptchaElement.html('重新发送').prop('disabled',false);
                                     refreshCaptcha();
                                 }
                                 seconds--;
