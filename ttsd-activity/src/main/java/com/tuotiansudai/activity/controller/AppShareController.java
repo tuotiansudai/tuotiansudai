@@ -1,10 +1,13 @@
 package com.tuotiansudai.activity.controller;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity/app-share")
@@ -27,6 +31,8 @@ public class AppShareController {
     private AccountMapper accountMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PrepareUserMapper prepareUserMapper;
 
 
     private String getReferrerInfo(UserModel referrer) {
@@ -38,8 +44,8 @@ public class AppShareController {
         }
     }
 
-    @RequestMapping(value = "/ios", method = RequestMethod.GET)
-    public ModelAndView getIOSPage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
@@ -64,47 +70,18 @@ public class AppShareController {
                 return modelAndView;
             }
         }
-
-        ModelAndView modelAndView = new ModelAndView("/activities/share-app-ios");
+        String userAgent = httpServletRequest.getHeader("user-agent");
+        ModelAndView modelAndView = new ModelAndView(obtainPageByMobileClient(userAgent));
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/android", method = RequestMethod.GET)
-    public ModelAndView getAndroidPage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
-        UserModel referrer = userMapper.findByMobile(referrerMobile);
-        if (null == referrer) {
-            ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
-            modelAndView.addObject("errorInfo", "无效推荐链接");
-            return modelAndView;
-        }
 
-        String registerMobile = null;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("registerMobile")) {
-                registerMobile = cookie.getValue();
-                break;
-            }
-        }
-        if (!StringUtils.isEmpty(registerMobile)) {
-            if(userService.mobileIsRegister(registerMobile)){
-                ModelAndView modelAndView = new ModelAndView("/activities/share-app");
-                modelAndView.addObject("responsive", true);
-                modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-                return modelAndView;
-            }
-        }
 
-        ModelAndView modelAndView = new ModelAndView("/activities/share-app-android");
-        modelAndView.addObject("responsive", true);
-        modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-        return modelAndView;
-    }
-
-    @RequestMapping( method = RequestMethod.GET)
-    public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile) {
+    @RequestMapping(value = "/success",method = RequestMethod.GET)
+    public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile,
+                                        @RequestParam(value = "mobile",required = false) String mobile) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         ModelAndView modelAndView = new ModelAndView();
         if (null == referrer) {
@@ -112,12 +89,31 @@ public class AppShareController {
             modelAndView.addObject("errorInfo", "无效推荐链接");
             return modelAndView;
         }
-
+        UserModel userModel = userMapper.findByMobile(mobile);
+        boolean isOldUser = userModel != null && !"abShare".equals(userModel.getChannel()) && prepareUserMapper.findByMobile(mobile) == null;
+        modelAndView.addObject("isOldUser",isOldUser);
         modelAndView.setViewName("/activities/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
     }
+
+    private String obtainPageByMobileClient(final String userAgent){
+        List<String> applyDevice = Lists.newArrayList("MAC", "IPAD", "IPHONE");
+        Integer index = Iterators.indexOf(applyDevice.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return userAgent.toUpperCase().indexOf(input) > -1;
+            }
+        });
+        if(index >= 0){
+            return "/activities/share-app-ios";
+        }
+
+        return "/activities/share-app-android";
+
+    }
+
 
 
 }

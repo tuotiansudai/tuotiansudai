@@ -65,7 +65,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 							});
 					}else {
 						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
-						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
+						location.href = '/activity/app-share/success?referrerMobile=' + param["referrerMobile"]+'&mobile='+$('#mobile').val();
 					}
 				},
 				iosCount: function() { //ios倒计时
@@ -98,7 +98,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 							});
 					}else {
 						var param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
-						location.href = '/activity/app-share?referrerMobile=' + param["referrerMobile"];
+						location.href = '/activity/app-share/success?referrerMobile=' + param["referrerMobile"] +'&mobile='+$('#mobile').val();
 					}
 				}
 			};
@@ -184,7 +184,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				})
 				.done(function(data) {
 						if (data.data.status == true) {
-							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+							location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1];
 						} else {
 							layer.msg('请求失败，请重试！');
 					}
@@ -260,7 +260,7 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 				})
 					.done(function (data) {
 						if (data.data.status == true) {
-							location.href = '/activity/app-share?referrerMobile=' + location.href.split('referrerMobile=')[1];
+							location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1];
 						} else {
 						layer.msg('请求失败，请重试！');
 						}

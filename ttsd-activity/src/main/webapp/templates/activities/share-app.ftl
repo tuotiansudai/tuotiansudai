@@ -3,16 +3,25 @@
 <div class="share-app-container clearfix">
 	<div class="share-container" id="shareAPP">
 		<div class="share-item">
+				<#if isOldUser?? && isOldUser>
+                    <!-- 老用户信息 start -->
+                    <div class="item-intro">
+                        <img src="${staticServer}/activity/images/sign/actor/shareapp/share-old.png" width="100%">
+                    </div>
+                    <!-- 老用户信息  end -->
+				<#else>
+                    <div class="item-tel">
+                        <span>${referrerInfo!}</span>
+                    </div>
+                    <div class="item-intro">
+                        <img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
+                    </div>
+                    <div class="item-intro">
+                        体验再得588现金红包＋3%加息券
+                    </div>
+				</#if>
 
-                <div class="item-tel">
-                    <span>${referrerInfo!}</span>
-                </div>
-                <div class="item-intro">
-                    <img src="${staticServer}/activity/images/sign/actor/shareapp/intro-text.png" width="100%">
-                </div>
-                <div class="item-intro">
-                    体验再得588现金红包＋3%加息券
-                </div>
+
 			<div class="item-form">
 				<div class="item-int tc">
 					<img src="${staticServer}/activity/images/sign/actor/shareapp/gift-icon.png" width="50%">
