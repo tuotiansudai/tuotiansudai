@@ -155,8 +155,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
-                                        class="get-btn">立即兑换</span></a>
+                                <a class="fl" href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
+                                        class="fl get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     <#else>
@@ -184,8 +184,8 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
-                                <a href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
-                                        class="get-btn">立即兑换</span></a>
+                                <a class="fl" href="/pointsystem/detail/${virtualProduct.id?c}?itemType=${virtualProduct.itemType.name()}"><span
+                                        class="fl get-btn">立即兑换</span></a>
                             </p>
                         </li>
                     </#if>

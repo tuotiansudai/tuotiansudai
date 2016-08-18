@@ -19,7 +19,7 @@ require(['jquery'],function($){
 				}) && changeCount(): $numText.val($bigText.text());
 			}
 		});
-		changeCount()
+		changeCount();
 		function changeCount(){
 			$('.count-num').each(function(index, el) {
 				$(this).text(parseInt($(this).attr('data-num'))*parseInt($numText.val()));

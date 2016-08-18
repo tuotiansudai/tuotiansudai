@@ -11,21 +11,17 @@
 		<div class="container-order">
 			<#if productShowItem.itemType.name() == 'PHYSICAL'>
                 <div class="order-place">
-                    <h3>添加您的收货地址</h3>
+					<h3>添加您的收货地址</h3>
 					<#list addresses as address>
-                    <div class="address-item">
-                        <a href="javascript:void(0)" class="address-set">修改</a>
-
-                        <p class="user-name">${address.realName}</p>
-
-                        <p>${address.mobile}</p>
-
-                        <p title="${address.address}">${address.address}</p>
-                    </div>
+					<div class="address-item">
+						<a href="javascript:void(0)" class="address-set">修改</a>
+						<p class="user-name">${address.realName}</p>
+						<p>${address.mobile}</p>
+						<p title="${address.address}">${address.address}</p>
+					</div>
 					</#list>
                 </div>
 			</#if>
-
 			<div class="order-info">
 				<h3>订单确认</h3>
 				<div class="order-table">
