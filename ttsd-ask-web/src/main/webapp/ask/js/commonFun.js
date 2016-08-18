@@ -30,6 +30,7 @@ comm.serializeObject = function (formData) {
     });
     return o;
 };
+
 comm.initToken = function () {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -84,8 +85,10 @@ comm.popWindow=function(title,content,size) {
         // $popWindow.delegate('.close','click',function() {
         //     $('.ecope-overlay,.popWindow').hide();
         // })
-}
+};
 
-
+$('#logout-link').click(function() {
+    $('#logout-form').submit();
+});
 
 module.exports = comm;

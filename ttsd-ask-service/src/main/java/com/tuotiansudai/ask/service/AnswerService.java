@@ -11,6 +11,7 @@ import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
+import com.tuotiansudai.ask.utils.MobileEncoder;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -79,6 +80,7 @@ public class AnswerService {
             answerMapper.update(answerModel);
             QuestionModel questionModel = questionMapper.findById(answerModel.getQuestionId());
             questionModel.setAnswers(questionModel.getAnswers() + 1);
+            questionModel.setLastAnsweredTime(new Date());
             questionMapper.update(questionModel);
         }
     }
@@ -99,8 +101,9 @@ public class AnswerService {
             return null;
         }
 
+        String mobile = userMapper.findByLoginName(bestAnswerModel.getLoginName()).getMobile();
         return new AnswerDto(bestAnswerModel,
-                userMapper.findByLoginName(bestAnswerModel.getLoginName()).getMobile(),
+                bestAnswerModel.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile),
                 bestAnswerModel.getFavoredBy() != null && bestAnswerModel.getFavoredBy().contains(loginName),
                 null);
     }
@@ -110,8 +113,9 @@ public class AnswerService {
         return Lists.transform(answerModels, new Function<AnswerModel, AnswerDto>() {
             @Override
             public AnswerDto apply(AnswerModel input) {
+                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
                 return new AnswerDto(input,
-                        userMapper.findByLoginName(input.getLoginName()).getMobile(),
+                        input.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile),
                         input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
                         null);
             }
@@ -171,7 +175,7 @@ public class AnswerService {
         long count = answerMapper.countByLoginName(loginName);
         List<AnswerModel> myAnswers = answerMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
-        return generatePaginationData(loginName, index, pageSize, count, myAnswers);
+        return generatePaginationData(loginName, index, pageSize, count, myAnswers, false);
     }
 
     public BaseDto<BasePaginationDataDto> findAnswersForConsole(String question, String mobile, AnswerStatus status, int index, int pageSize) {
@@ -179,7 +183,7 @@ public class AnswerService {
         String loginName = userModel != null ? userModel.getLoginName() : null;
         long count = answerMapper.countAnswersForConsole(question, loginName, status);
         List<AnswerModel> answerModels = answerMapper.findAnswersForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(null, index, pageSize, count, answerModels);
+        return generatePaginationData(null, index, pageSize, count, answerModels, false);
     }
 
     public boolean isNewAnswerAdoptedExists(String loginName) {
@@ -210,14 +214,15 @@ public class AnswerService {
         }).isPresent();
     }
 
-    private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<AnswerModel> answers) {
+    private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<AnswerModel> answers, final boolean isEncodeMobile) {
         List<AnswerDto> items = Lists.transform(answers, new Function<AnswerModel, AnswerDto>() {
             @Override
             public AnswerDto apply(AnswerModel input) {
                 QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
                 QuestionDto questionDto = new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
+                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
                 return new AnswerDto(input,
-                        userMapper.findByLoginName(input.getLoginName()).getMobile(),
+                        isEncodeMobile ? MobileEncoder.encode(mobile) : mobile,
                         input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
                         questionDto);
             }

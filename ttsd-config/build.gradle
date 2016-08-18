@@ -199,7 +199,7 @@ task flywayAsk(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/ask"]
     extension.schemas = ["ask"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/ask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }

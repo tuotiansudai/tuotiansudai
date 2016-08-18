@@ -11,6 +11,7 @@ import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
+import com.tuotiansudai.ask.utils.MobileEncoder;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -86,44 +87,46 @@ public class QuestionService {
         }
     }
 
-    public QuestionDto getQuestion(long questionId) {
+    public QuestionDto getQuestion(String loginName, long questionId) {
         QuestionModel questionModel = questionMapper.findById(questionId);
         if (questionModel == null) {
             return null;
         }
 
-        return new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
+        String mobile = userMapper.findByLoginName(questionModel.getLoginName()).getMobile();
+        return new QuestionDto(questionModel,
+                questionModel.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile));
     }
 
     public BaseDto<BasePaginationDataDto> findAllQuestions(String loginName, int index, int pageSize) {
         long count = questionMapper.countAllQuestions(loginName);
         List<QuestionModel> allQuestions = questionMapper.findAllQuestions(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, allQuestions);
+        return generatePaginationData(loginName, index, pageSize, count, allQuestions, true);
     }
 
     public BaseDto<BasePaginationDataDto> findAllUnresolvedQuestions(String loginName, int index, int pageSize) {
         long count = questionMapper.countAllUnresolvedQuestions(loginName);
         List<QuestionModel> allUnresolvedQuestions = questionMapper.findAllUnresolvedQuestions(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, allUnresolvedQuestions);
+        return generatePaginationData(loginName, index, pageSize, count, allUnresolvedQuestions, true);
     }
 
     public BaseDto<BasePaginationDataDto> findAllHotQuestions(String loginName, int index, int pageSize) {
         long count = questionMapper.countAllQuestions(loginName);
         List<QuestionModel> allHotQuestions = questionMapper.findAllHotQuestions(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, allHotQuestions);
+        return generatePaginationData(loginName, index, pageSize, count, allHotQuestions, true);
     }
 
     public BaseDto<BasePaginationDataDto> findMyQuestions(String loginName, int index, int pageSize) {
         redisWrapperClient.hset(newAnswerAlertKey, loginName, SIMPLE_DATE_FORMAT.format(new Date()));
         long count = questionMapper.countByLoginName(loginName);
         List<QuestionModel> myQuestions = questionMapper.findByLoginName(loginName, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, myQuestions);
+        return generatePaginationData(loginName, index, pageSize, count, myQuestions, false);
     }
 
     public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
         long count = questionMapper.countByTag(loginName, tag);
         List<QuestionModel> questions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, questions);
+        return generatePaginationData(loginName, index, pageSize, count, questions, false);
     }
 
     public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize) {
@@ -131,7 +134,7 @@ public class QuestionService {
         String loginName = userModel != null ? userModel.getLoginName() : null;
         long count = questionMapper.countQuestionsForConsole(question, loginName, status);
         List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(index, pageSize, count, myQuestions);
+        return generatePaginationData(null, index, pageSize, count, myQuestions, false);
     }
 
     public boolean isNewAnswerExists(String loginName) {
@@ -168,11 +171,13 @@ public class QuestionService {
         return false;
     }
 
-    private BaseDto<BasePaginationDataDto> generatePaginationData(int index, int pageSize, long count, List<QuestionModel> questionModels) {
+    private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<QuestionModel> questionModels, final boolean isEncodeMobile) {
         List<QuestionDto> items = Lists.transform(questionModels, new Function<QuestionModel, QuestionDto>() {
             @Override
             public QuestionDto apply(QuestionModel input) {
-                return new QuestionDto(input, userMapper.findByLoginName(input.getLoginName()).getMobile());
+                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
+                return new QuestionDto(input,
+                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ? MobileEncoder.encode(mobile) : mobile);
             }
         });
 

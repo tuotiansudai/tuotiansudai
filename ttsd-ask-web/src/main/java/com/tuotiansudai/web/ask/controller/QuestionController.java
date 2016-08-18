@@ -36,7 +36,7 @@ public class QuestionController {
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView question(@PathVariable long questionId) {
-        QuestionDto question = questionService.getQuestion(questionId);
+        QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
             return new ModelAndView("/error/404");
         }
@@ -45,6 +45,7 @@ public class QuestionController {
         List<AnswerDto> answers = answerService.getAnswers(LoginUserInfo.getLoginName(), questionId);
 
         ModelAndView modelAndView = new ModelAndView("/question");
+        modelAndView.addObject("isQuestionOwner", question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
         modelAndView.addObject("question", question);
         modelAndView.addObject("bestAnswer", bestAnswer);
         modelAndView.addObject("answers", answers);
