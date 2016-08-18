@@ -1,11 +1,14 @@
 module.exports = function(grunt) {
+
+    require('time-grunt')(grunt);
+    require('load-grunt-tasks')(grunt);
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         // Metadata.
         meta: {
             basePath: '../',
             baseSassPath: 'src/main/webapp/style/sass',
-            baseCssPath: 'src/main/webapp/style/css',
+            baseCssPath: 'src/main/webapp/style',
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
             baseJsMinPath: 'src/main/webapp/js/dest'
@@ -143,7 +146,7 @@ module.exports = function(grunt) {
     });
 
     // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    //require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
