@@ -8,7 +8,6 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
 
     $('#lotteryTimeBtn').click(function(){
-        var mobile = $('#mobile').val();
-        window.location.href = "/activity-manage/user-lottery-list?mobile="+mobile+"&export=csv";
+        window.location.href = "/activity-manage/user-lottery-list?"+$('#lotteryTimeForm').serialize()+"&export=csv";
     });
 });
