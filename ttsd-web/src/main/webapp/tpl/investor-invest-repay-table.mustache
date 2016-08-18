@@ -1,18 +1,11 @@
 <div class="layer-content">
-<div class="pad-s tc color-note">
-<div class="tl" style="font-size:16px;font-weight:bold;color:#000000">回款详情</div>
-<hr/>
-<div class="tl mb-0" style="height: 25px;">
-    <table>
-        <tr>
-            <td style="text-align:left">已收回款总额 : <font style="color:#ff7a2a">{{sumActualInterest}}</font>元</td>
-            <td style="text-align:left">待收回款总额 : <font style="color:#ff7a2a">{{sumExpectedInterest}}</font>元</td>
-            <td style="text-align:left">现金红包奖励 : <font style="color:#ff7a2a">{{redInterest}}</font>元</td>
-        </tr>
-    </table>
+
+<div class="summary-top clearfix">
+    <span>已收回款总额 : <em>{{sumActualInterest}}</em>元</span>
+    <span>待收回款总额 : <em>{{sumExpectedInterest}}</em>元</span>
+    <span>现金红包奖励 : <em>{{redInterest}}</em>元</span>
 </div>
-</div>
-    <table class="table table-hover">
+    <table class="table table-repay">
             <thead>
             <tr>
                 <th class="tr">到期回款日</th>
@@ -21,17 +14,17 @@
                 <th class="tr">应收收益(元)</th>
                 <th class="tr">应收奖励(元)
                     {{#couponMessage}}
-                        <i class="fa fa-question-circle-o text-b" title="{{couponMessage}}"></i>
+                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="{{couponMessage}}"></i>
                     {{/couponMessage}}
                 </th>
                 <th class="tr">应缴服务费(元)
                     {{#levelMessage}}
-                        <i class="fa fa-question-circle-o text-b" title="{{levelMessage}}"></i>
+                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="{{levelMessage}}"></i>
                     {{/levelMessage}}
                 </th>
-                <th class="tr">已收回款(元)</th>
-                <th class="tr">回款时间(元)</th>
-                <th>状态</th>
+                <th class="tr spec-bg">已收回款(元)</th>
+                <th class="tr spec-bg">回款时间(元)</th>
+                <th class="spec-bg">状态</th>
             </tr>
             <tbody>
                     {{#records}}
@@ -48,20 +41,20 @@
                                 {{#expectedFee}}-{{.}}{{/expectedFee}}
                                 {{^expectedFee}}--{{/expectedFee}}
                             </td>
-                            <td class="tr">
+                            <td class="tr spec-bg">
                                 {{#actualAmount}}
                                     {{.}}
                                     {{#defaultInterest}}
-                                        <i class="fa fa-question-circle-o text-b" title="逾期{{overdueDay}}天，已收违约金{{defaultInterest}}元"></i>
+                                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="逾期{{overdueDay}}天，已收违约金{{defaultInterest}}元"></i>
                                     {{/defaultInterest}}
                                 {{/actualAmount}}
                                 {{^actualAmount}}--{{/actualAmount}}
                             </td>
-                            <td class="tr">
+                            <td class="tr spec-bg">
                                 {{#actualRepayDate}}{{.}}{{/actualRepayDate}}
                                 {{^actualRepayDate}}--{{/actualRepayDate}}
                             </td>
-                            <td>
+                            <td class="spec-bg">
                                 {{status}}
                             </td>
                         </tr>
@@ -69,6 +62,6 @@
                     </tbody>
             </thead>
         </table>
-<p class="tl mb-0">&nbsp;&nbsp;应收回款=应收本金+应收利息+应收奖励-应缴服务费</p>
+<p class="bottom-note">应收回款=应收本金+应收利息+应收奖励-应缴服务费</p>
 
 </div>
