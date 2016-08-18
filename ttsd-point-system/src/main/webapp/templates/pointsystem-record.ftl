@@ -31,6 +31,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					{{if data}}
 					{{each data}}
 						<tr>
 							<td>3%加息券</td>
@@ -42,6 +43,9 @@
 							<td>11</td>
 						</tr>
 					{{/each}}
+					{{else}}
+					暂无数据
+					{{/if}}
 					</tbody>
 				</table>
 			</script>

@@ -1,69 +1,97 @@
-require(['jquery', 'layerWrapper','jquery.validate', 'jquery.ajax.extension'], function ($, layer) {
+require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], function($, layer) {
 	$(function() {
-		var $countList=$('.order-number'),
-			$numText=$countList.find('.num-text'),
+		var $countList = $('.order-number'),
+			$numText = $countList.find('.num-text'),
 			$bigText = $countList.find('.total-num i'),
 			$orderBtn = $('#orderBtn'),
-			$addPlace=$('#addPlace'),
-			$addressForm=$('#addressForm');
+			$addPlace = $('#addPlace'),
+			$updatePlace = $('#updatePlace'),
+			$addressForm = $('#addressForm');
 
-		$countList.on('click', '.low-btn', function(event) {//减号
+		$countList.on('click', '.low-btn', function(event) { //减号
 			event.preventDefault();
 			if ($bigText.text() > 0) {
-				$numText.val() > 1 ? $numText.val(function (index, num) {
+				$numText.val() > 1 ? $numText.val(function(index, num) {
 					return parseInt(num) - 1
 				}) && changeCount() : $numText.val('1');
 			}
-		}).on('click', '.add-btn', function(event) {//加号
+		}).on('click', '.add-btn', function(event) { //加号
 			event.preventDefault();
 			if ($bigText.text() > 0) {
-				$numText.val() < parseInt($bigText.text()) ? $numText.val(function (index, num) {
-					return parseInt(num) + 1 
-				}) && changeCount(): $numText.val($bigText.text());
+				$numText.val() < parseInt($bigText.text()) ? $numText.val(function(index, num) {
+					return parseInt(num) + 1
+				}) && changeCount() : $numText.val($bigText.text());
 			}
 		});
 		changeCount();
-		function changeCount(){
+
+		function changeCount() {
 			$('.count-num').each(function(index, el) {
-				$(this).text(parseInt($(this).attr('data-num'))*parseInt($numText.val()));
+				$(this).text(parseInt($(this).attr('data-num')) * parseInt($numText.val()));
 			});
 		}
 
-		$orderBtn.on('click', function (event) {//立即兑换
+		$orderBtn.on('click', function(event) { //立即兑换
 			event.preventDefault();
 			var $self = $(this),
 				idString = $self.attr('data-id'),
 				typeString = $self.attr('data-type');
 			$.ajax({
-				url: '/pointsystem/order',
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					id: idString,
-					itemType: typeString,
-					number: $numText.val()
-				}
-			})
-			.done(function (data) {
-				console.log(data);
-				if (data.data.status) {
-					location.href = '/pointsystem/bill';
-				} else {
-					layer.msg(data.data.message);
-				}
-			})
-			.fail(function (data) {
-				layer.msg('请求失败，请重试！');
-			});
+					url: '/pointsystem/order',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						id: idString,
+						itemType: typeString,
+						number: $numText.val()
+					}
+				})
+				.done(function(data) {
+					console.log(data);
+					if (data.data.status) {
+						location.href = '/pointsystem/bill';
+					} else {
+						layer.msg(data.data.message);
+						layer.open({
+							type: 1,
+							title: false,
+							area: ['300px', 'auto'],
+							content: $('#errorTip')
+						});
+					}
+				})
+				.fail(function(data) {
+					layer.msg('请求失败，请重试！');
+				});
 		});
 		//add adress
 		$addPlace.on('click', function(event) {
 			event.preventDefault();
+			$addressForm.attr('data-type', 'add');
 			layer.open({
-			  type: 1,
-			  title :'添加地址',
-			  area: ['700px', 'auto'],
-			  content: $('#fixAdress') 
+				type: 1,
+				title: '添加地址',
+				area: ['700px', 'auto'],
+				content: $('#fixAdress')
+			});
+		});
+
+		//update place
+		$updatePlace.on('click', function(event) {
+			event.preventDefault();
+			var $self = $(this),
+				user = $self.attr('data-user'),
+				phone = $self.attr('data-phone'),
+				address = $self.attr('data-address');
+			$('#Recipient').val(user),
+			$('#Phone').val(phone),
+			$('#AddRess').val(address)
+			$addressForm.attr('data-type', 'update');
+			layer.open({
+				type: 1,
+				title: '添加地址',
+				area: ['700px', 'auto'],
+				content: $('#fixAdress')
 			});
 		});
 
@@ -104,31 +132,52 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.ajax.extension'], f
 				},
 				AddRess: {
 					required: '请填写收件地址',
-					maxlength: '收件地址字数在100字以内'
+					maxlength: '收件地址字数限制在100字以内'
 				}
 			},
 			errorPlacement: function(error, element) {
 				error.appendTo(element.parent());
 			},
 			submitHandler: function(form) {
-				$.ajax({
-					url: '/path/to/file',
-					type: 'POST',
-					dataType: 'json',
-					data: {
-						Recipient: $('#Recipient').val(),
-						Phone: $('#Phone').val(),
-						AddRess: $('#AddRess').val()
-					}
-				})
-				.done(function(data) {
-					location.reload();
-				})
-				.fail(function() {
-					layer.msg('请求失败，请重试！');
-				});
+				submitPlace($(form).attr('data-type'));
 			}
 		});
 
+		//submit place data
+		function submitPlace(type) {
+			var dataList = {};
+			if (type == 'add') {
+				dataList = {
+					url: '/pointsystem/add-address',
+					data: {
+						realName: $('#Recipient').val(),
+						mobile: $('#Phone').val(),
+						address: $('#AddRess').val()
+					}
+				};
+			} else if (type == 'update') {
+				dataList = {
+					url: '/pointsystem/update-address',
+					data: {
+						id: $('#updatePlace').attr('data-id'),
+						realName: $('#Recipient').val(),
+						mobile: $('#Phone').val(),
+						address: $('#AddRess').val()
+					}
+				};
+			}
+			$.ajax({
+				url: dataList.url,
+				type: 'POST',
+				dataType: 'json',
+				data: dataList.data
+			})
+			.done(function(data) {
+				location.reload();
+			})
+			.fail(function() {
+				layer.msg('请求失败，请重试！');
+			});
+		}
 	});
 })
