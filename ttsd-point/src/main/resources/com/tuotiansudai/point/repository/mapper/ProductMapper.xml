@@ -34,13 +34,14 @@
 
     <update id="update" parameterType="ProductModel">
         update product
-        set `product_type` = #{productType},
+        set `goods_type` = #{goodsType},
         `product_name` = #{productName},
         `seq` = #{seq},
         `image_url` = #{imageUrl},
         `description` = #{description},
         `total_count` = #{totalCount},
         `used_count` = #{usedCount},
+        `product_price` = #{productPrice},
         `start_time` = #{startTime},
         `end_time` = #{endTime} ,
         `active` = #{active},
@@ -55,7 +56,7 @@
         select * from product where id = #{id};
     </select>
 
-    <select id="findProductCount" resultType="long">
+    <select id="findProductsCount" resultType="long">
         select count(id) from product p
         <where>
             <if test="goodsType != null">
@@ -64,14 +65,19 @@
         </where>
     </select>
 
-    <select id="findProductList" resultMap="productResultMap">
+    <select id="findProductsList" resultMap="productResultMap">
         select * from product p
         <where>
             <if test="goodsType != null">
                 and p.goods_type = #{goodsType}
             </if>
         </where>
-        order by seq, updated_time desc
+        order by seq desc, updated_time desc
+        limit #{index}, #{pageSize}
     </select>
+
+    <delete id="delete" parameterType="long">
+        delete from product where id = #{id}
+    </delete>
 
 </mapper>

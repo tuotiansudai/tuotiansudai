@@ -5,7 +5,7 @@
 	<div class="wp clearfix detail-model">
 		<div class="container-detail">
 			<div class="detail-top">
-                您所在的位置：积分商城 > <span>${productShowItem.productName}</span>
+                您所在的位置：<a href="/pointsystem">积分商城</a> > <span>${productShowItem.productName}</span>
 			</div>
 			<div class="detail-info">
 				<div class="detail-left">
@@ -76,7 +76,7 @@
 					</div>
 					<div class="info-text mt-20">
 						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>
-                            <p class="tip-text">需要修改文案</p>
+                            <p class="tip-text">兑换成功后，拓天客服将会在7个工作日联系您发放商品</p>
 						<#else>
                             <p class="tip-text">兑换成功后，请前去“我的账户”－》“我的宝藏”中进行查看</p>
 						</#if>
@@ -88,8 +88,4 @@
 	<div class="container-ad">
 	</div>
 </div>
-
-
-
-
 </@global.main>

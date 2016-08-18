@@ -44,7 +44,7 @@ public class ProductOrderMapperTest {
 
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
-        productOrderModel.setProductId(productModel.getId());
+        productOrderModel.setGoodsId(productModel.getId());
         productOrderModel.setProductPrice(2000);
         productOrderModel.setNum(2);
         productOrderModel.setTotalPrice(4000);
@@ -59,7 +59,7 @@ public class ProductOrderMapperTest {
 
         productOrderMapper.create(productOrderModel);
 
-        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList();
+        List<ProductOrderModel> productOrderModelList = productOrderMapper.findProductOrderList(productModel.getId(), null, 0, 10);
 
         assertThat(productOrderModelList.size() > 0, is(true));
     }
@@ -77,7 +77,7 @@ public class ProductOrderMapperTest {
         return fakeUserModel;
     }
 
-    private ProductModel createFakeProductModel(String loginName){
+    private ProductModel createFakeProductModel(String loginName) {
         ProductModel fakeProductModel = new ProductModel();
         fakeProductModel.setId(100001);
         fakeProductModel.setGoodsType(GoodsType.VIRTUAL);
@@ -96,7 +96,6 @@ public class ProductOrderMapperTest {
         productMapper.create(fakeProductModel);
         return fakeProductModel;
     }
-
 
 
 }

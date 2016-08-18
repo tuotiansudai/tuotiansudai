@@ -19,7 +19,10 @@
         <div class="form-group invest-coupon">
             <label  class="col-sm-2 control-label">当前顺序: </label>
             <div class="col-sm-8">
-                <div class="item-invest">1-</div> <input type="text" class="form-control invest-quota coupon-deadline" name="seq" placeholder="" <#if exchangeCouponDto??>value="${exchangeCouponDto.seq!}"</#if> datatype="n" errormsg="当前顺序只能为有效数字">
+                <div class="item-invest">1-</div>
+                <input type="text" class="form-control invest-quota" name="seq" placeholder=""
+                       <#if exchangeCouponDto??>value="${exchangeCouponDto.seq!}"</#if> datatype="n"
+                       errormsg="当前顺序只能为有效数字">
             </div>
         </div>
 

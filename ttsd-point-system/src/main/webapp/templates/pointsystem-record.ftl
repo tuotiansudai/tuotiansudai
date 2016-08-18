@@ -4,7 +4,7 @@
 <div class="global-member-record">
 	<div class="wp clearfix">
 		<div class="detail-top">
-			您所在的位置：积分商城 > <span>兑换记录&积分明细</span>
+			您所在的位置：<a href="/pointsystem">积分商城</a> > <span>兑换记录&积分明细</span>
 		</div>
 		<div class="container-detail">
 			<div class="type-list">

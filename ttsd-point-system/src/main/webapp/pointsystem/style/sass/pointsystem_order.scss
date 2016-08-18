@@ -18,6 +18,9 @@
         color:#808080;
         font-size:16px;
         margin:20px 0;
+        a{
+          color:#808080;
+        }
         span{
           color:#fc4a52;
         }
@@ -54,15 +57,20 @@
                   color:#ff000b;
                 }
               }
-              .fa{
-                color:#808080;
-                font-size: 50px;
+              .add-place{
+                color:#178fe6;
+                font-size: 18px;
+                width:100px;
+                height:40px;
+                line-height:40px;
+                padding-left:40px;
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                margin-top: -27px;
-                margin-left: -24px;
+                margin-top: -20px;
+                margin-left: -70px;
                 cursor:pointer;
+                background:url("/pointsystem/images/add-place.png") no-repeat 5% 50%;
               }
               .address-set{
                 width:40px;
@@ -93,12 +101,15 @@
             display:none;
             .addr-form{
               float:left;
-              width:960px;
+              width:660px;
               padding:20px;
               .input-group{
                 float:left;
                 width:100%;
                 margin-bottom:20px;
+                &.box-item{
+                  width:50%;
+                }
                 label{
                   float:left;
                   width:85px;
@@ -113,6 +124,7 @@
                 .input-box{
                   float:left;
                   margin-left:10px;
+                  position: relative;
                   .text-input{
                     float:left;
                     padding: 10px;
@@ -123,17 +135,24 @@
                     border: 1px solid #e1e1e1;
                     line-height: 16px;
                     &:focus{
-                      border:1px solid #fc4a52;
+                      border:1px solid #178fe6;
                     }
+                  }
+                  label.error{
+                    position: absolute;
+                    left:0;
+                    bottom:-18px;
+                    width:100%;
+                    padding:0;
                   }
                   .text-area{
                     float:left;
-                    width: 466px;
+                    width: 488px;
                     padding: 10px;
                     border: 1px solid #e1e1e1;
                     font-family: 'Microsoft Yahei','\5FAE\8F6F\96C5\9ED1',Arial,'Hiragino Sans GB','\5B8B\4F53';
                     &:focus{
-                      border:1px solid #fc4a52;
+                      border:1px solid #178fe6;
                     }
                   }
                 }
@@ -144,8 +163,9 @@
                 text-align:center;
                 .btn-save{
                   display:inline-block;
-                  background:#fc4a52;
-                  border: 1px solid #fc4a52;
+                  background:#178fe6;
+                  border: 1px solid #178fe6;
+                  border-radius:0;
                 }
               }
             }

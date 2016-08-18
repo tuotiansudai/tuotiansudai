@@ -131,12 +131,13 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
                                            @RequestParam(value = "itemType", required = true) ItemType itemType,
-                                           @RequestParam(value = "amount", required = true) int amount,
+                                           @RequestParam(value = "number", required = true) int number,
                                            @RequestParam(value = "userAddress", required = false) UserAddressModel userAddressModel) {
         String loginName = LoginUserInfo.getLoginName();
-        return productService.buyProduct(loginName, id, itemType, amount, userAddressModel);
+        return productService.buyProduct(loginName, id, itemType, number, userAddressModel);
     }
 
     @RequestMapping(value = "/add-address", method = RequestMethod.POST)

@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -296,6 +297,25 @@ public class ExportServiceImpl implements ExportService {
             row.add("-");
             row.add(loanListDto.getStatus().getDescription());
             row.add(new DateTime(loanListDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildProductOrderList(List<ProductOrderDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ProductOrderDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getNum()));
+            row.add(record.getRealName());
+            row.add(record.getMobile());
+            row.add(record.getAddress());
+            String consignment = record.isConsignment() ? "已发货" : "未发货";
+            row.add(consignment);
+            row.add(new DateTime(record.getConsignmentTime()).toString("yyyy-MM-dd HH:mm:ss"));
             rows.add(row);
         }
         return rows;

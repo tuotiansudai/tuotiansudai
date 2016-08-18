@@ -17,6 +17,8 @@
         color: #808080;
         font-size: 16px;
         margin: 20px 0; }
+        .main-frame .global-member-order .wp .order-top a {
+          color: #808080; }
         .main-frame .global-member-order .wp .order-top span {
           color: #fc4a52; }
       .main-frame .global-member-order .wp .container-order {
@@ -48,15 +50,20 @@
                 .main-frame .global-member-order .wp .container-order .order-place .address-model .address-item:hover .address-set {
                   display: block;
                   color: #ff000b; }
-              .main-frame .global-member-order .wp .container-order .order-place .address-model .address-item .fa {
-                color: #808080;
-                font-size: 50px;
+              .main-frame .global-member-order .wp .container-order .order-place .address-model .address-item .add-place {
+                color: #178fe6;
+                font-size: 18px;
+                width: 100px;
+                height: 40px;
+                line-height: 40px;
+                padding-left: 40px;
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                margin-top: -27px;
-                margin-left: -24px;
-                cursor: pointer; }
+                margin-top: -20px;
+                margin-left: -70px;
+                cursor: pointer;
+                background: url("/pointsystem/images/add-place.png") no-repeat 5% 50%; }
               .main-frame .global-member-order .wp .container-order .order-place .address-model .address-item .address-set {
                 width: 40px;
                 position: absolute;
@@ -81,12 +88,14 @@
             display: none; }
             .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form {
               float: left;
-              width: 960px;
+              width: 660px;
               padding: 20px; }
               .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group {
                 float: left;
                 width: 100%;
                 margin-bottom: 20px; }
+                .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group.box-item {
+                  width: 50%; }
                 .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group label {
                   float: left;
                   width: 85px;
@@ -98,7 +107,8 @@
                     color: #f00; }
                 .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box {
                   float: left;
-                  margin-left: 10px; }
+                  margin-left: 10px;
+                  position: relative; }
                   .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box .text-input {
                     float: left;
                     padding: 10px;
@@ -109,23 +119,30 @@
                     border: 1px solid #e1e1e1;
                     line-height: 16px; }
                     .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box .text-input:focus {
-                      border: 1px solid #fc4a52; }
+                      border: 1px solid #178fe6; }
+                  .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box label.error {
+                    position: absolute;
+                    left: 0;
+                    bottom: -18px;
+                    width: 100%;
+                    padding: 0; }
                   .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box .text-area {
                     float: left;
-                    width: 466px;
+                    width: 488px;
                     padding: 10px;
                     border: 1px solid #e1e1e1;
                     font-family: 'Microsoft Yahei','\5FAE\8F6F\96C5\9ED1',Arial,'Hiragino Sans GB','\5B8B\4F53'; }
                     .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .input-group .input-box .text-area:focus {
-                      border: 1px solid #fc4a52; }
+                      border: 1px solid #178fe6; }
               .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .btn-group {
                 float: left;
                 width: 100%;
                 text-align: center; }
                 .main-frame .global-member-order .wp .container-order .order-place .fix-address .addr-form .btn-group .btn-save {
                   display: inline-block;
-                  background: #fc4a52;
-                  border: 1px solid #fc4a52; }
+                  background: #178fe6;
+                  border: 1px solid #178fe6;
+                  border-radius: 0; }
         .main-frame .global-member-order .wp .container-order .order-info {
           float: left;
           width: 100%; }

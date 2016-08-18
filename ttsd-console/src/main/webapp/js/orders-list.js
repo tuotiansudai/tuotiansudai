@@ -10,14 +10,13 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                    url: '/product-manage/' + thisId + '/active',
+                    url: '/product-manage/' + thisId + '/consignment',
                     type: 'POST',
                     dataType: 'json'
                 })
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<label><i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已生效</button></label>');
-                            $parentTd.prev().html('-');
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');
                         }
@@ -28,5 +27,12 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                     });
             }
         })
+
+        $('.export-product').click(function (e) {
+            e.preventDefault();
+            var $self = $(this),
+                $goodsId = $self.attr('data-pid');
+            location.href = "/export/product-order-list?goodsId=" + $goodsId;
+        });
     });
 });
