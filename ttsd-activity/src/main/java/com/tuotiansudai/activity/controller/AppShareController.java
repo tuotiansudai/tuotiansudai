@@ -55,10 +55,12 @@ public class AppShareController {
 
         String registerMobile = null;
         Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("registerMobile")) {
-                registerMobile = cookie.getValue();
-                break;
+        if(cookies != null){
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("registerMobile")) {
+                    registerMobile = cookie.getValue();
+                    break;
+                }
             }
         }
 
