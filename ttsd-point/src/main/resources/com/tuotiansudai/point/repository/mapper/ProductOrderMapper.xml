@@ -32,15 +32,25 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product_order (`goods_id`, `goods_type`, `product_price`, `num`, `total_price`, `real_name`, `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        value(#{goodsId}, #{goodsType}, #{productPrice},  #{num},  #{totalPrice},  #{realName},  #{mobile},  #{address}, #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
+        insert into product_order (`goods_id`, `product_price`, `num`, `total_price`, `real_name`,
+        `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
+        value(#{goodsId}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
+        #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="ProductOrderModel">
         update product_order
         set `consignment` = #{consignment},
-            `consignment_time` = #{consignmentTime}
+        `consignment_time` = #{consignmentTime}
         where `id` = #{id}
+    </update>
+
+    <update id="batchConsignment" parameterType="long">
+        update product_order
+         set `consignment` = 1,
+        `consignment_time` = now()
+        where `consignment` = 0
+        and `goods_id` = #{goodsId}
     </update>
 
     <select id="findById" parameterType="long" resultMap="productOrderResultMap">

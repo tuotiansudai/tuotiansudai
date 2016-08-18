@@ -16,14 +16,17 @@
             <label class="col-sm-2 control-label">商品名称</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control product-name" name="productName" placeholder="" datatype="*" errormsg="商品名称不能为空">
+                <input type="text" class="form-control product-name" name="productName" placeholder="" datatype="*"
+                       errormsg="商品名称不能为空">
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">商品图片:</label>
             <div class="col-sm-4 ">
-                <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder="" datatype="*" errormsg="请上传商品图片">
+                <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
+                       datatype="*" errormsg="请上传商品图片">
+
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
                         <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="300" height="244"/>
@@ -46,14 +49,16 @@
             <label class="col-sm-2 control-label">商品数量</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control total-count" name="totalCount" placeholder="" datatype="n" errormsg="商品数量只能为数字">
+                <input type="text" class="form-control total-count" name="totalCount" placeholder="" datatype="n"
+                       errormsg="商品数量只能为数字">
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">商品介绍</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control description" name="description" placeholder="" datatype="*" errormsg="商品介绍不能为空">
+                <input type="text" class="form-control description" name="description" placeholder="" datatype="*"
+                       errormsg="商品介绍不能为空">
             </div>
         </div>
 
@@ -70,7 +75,8 @@
             <label class="col-sm-2 control-label ">商品有效期限: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
-                    <input type='text' class="form-control product-start" name="startTime" datatype="date" errormsg="请选择商品有效开始时间"/>
+                    <input type='text' class="form-control product-start" name="startTime" datatype="date"
+                           errormsg="请选择商品有效开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -79,7 +85,8 @@
             <div class="line-size">-</div>
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
-                    <input type='text' class="form-control product-end" name="endTime" datatype="date" errormsg="请选择商品有效结束时间"/>
+                    <input type='text' class="form-control product-end" name="endTime" datatype="date"
+                           errormsg="请选择商品有效结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -91,17 +98,24 @@
             <label class="col-sm-2 control-label">商品价格</label>
 
             <div class="col-sm-3">
-                <input type="text" class="form-control productPrice" name="productPrice" placeholder="" datatype="n" errormsg="商品价格只能为数字">
+                <input type="text" class="form-control productPrice" name="productPrice" placeholder="" datatype="n"
+                       errormsg="商品价格只能为数字">
             </div>
             <div class="col-sm-1"><span style="line-height: 34px">积分</span></div>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
         <div class="form-group ">
             <label class="col-sm-2 control-label"></label>
+
             <div class="col-sm-4 form-error">
                 <#if errorMessage?has_content>
-                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <span class="txt">创建失败：${errorMessage!}</span></div>
                 </#if>
             </div>
         </div>

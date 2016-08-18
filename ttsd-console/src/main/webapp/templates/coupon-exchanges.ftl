@@ -66,7 +66,7 @@
                               data-original-title="${exchangeCoupon.couponType.getName()}">${exchangeCoupon.couponType.getName()}</span>
                     </td>
                     <td>
-                        1-${exchangeCoupon.seq!}
+                        1-${exchangeCoupon.seq?string('0')!}
                     </td>
                     <td>
                         <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>
@@ -109,9 +109,6 @@
                         <#if exchangeCoupon.active>
                             -
                         <#else>
-                            <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                                -
-                            </@security.authorize>
                             <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
                                 <#if exchangeCoupon.issuedCount?string('0') != "0">
                                     -

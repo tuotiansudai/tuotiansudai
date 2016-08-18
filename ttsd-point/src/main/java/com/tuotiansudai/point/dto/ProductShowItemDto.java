@@ -57,13 +57,13 @@ public class ProductShowItemDto {
                 break;
             case INTEREST_COUPON:
                 this.itemType = ItemType.INTEREST_COUPON;
-                this.productName = exchangeCouponView.getRate() + "%加息券";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getRate());
+                this.productName = exchangeCouponView.getRate() * 100 + "%加息券";
+                this.pictureDescription = String.valueOf(exchangeCouponView.getRate() * 100);
                 break;
         }
         this.description = generateCouponDescription(exchangeCouponView);
         this.imageUrl = "";
-        this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getUsedCount();
+        this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount();
         this.productPrice = exchangeCouponView.getExchangePoint();
         this.updatedTime = exchangeCouponView.getUpdatedTime();
     }

@@ -4,19 +4,20 @@
 <div class="global-member-record">
 	<div class="wp clearfix">
 		<div class="detail-top">
-			您所在的位置：积分商城 > <span>兑换记录&积分明细</span>
+			您所在的位置：<a href="/pointsystem">积分商城</a> > <span>兑换记录&积分明细</span>
 		</div>
 		<div class="container-detail">
 			<div class="type-list">
 				<span class="active">
-					<a href="/membership/record">兑换记录</a>
+					<a href="/pointsystem/record">兑换记录</a>
 				</span>
 				<span>|</span>
 				<span>
-					<a href="/membership/integral">积分明细</a>
+					<a href="/pointsystem/bill">积分明细</a>
 				</span>
 			</div>
-			<div class="data-list" id="dataList">
+			<div class="data-list" id="dataList"></div>
+			<script type="text/html" id="dataListTpl">
 				<table class="table">
 					<thead>
 						<tr>
@@ -25,49 +26,29 @@
 							<th>数量</th>
 							<th>小计</th>
 							<th>兑换时间</th>
-							<th>商品编号</th>
-							<th>备注</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>3%加息券</td>
-							<td>20000</td>
-							<td>2</td>
-							<td>40000</td>
-							<td>2016-05-05</td>
-							<td>20160606002</td>
-							<td>11</td>
-						</tr>
-						<tr>
-							<td>3%加息券</td>
-							<td>20000</td>
-							<td>2</td>
-							<td>40000</td>
-							<td>2016-05-05</td>
-							<td>20160606002</td>
-							<td>11</td>
-						</tr>
-						<tr>
-							<td>3%加息券</td>
-							<td>20000</td>
-							<td>2</td>
-							<td>40000</td>
-							<td>2016-05-05</td>
-							<td>20160606002</td>
-							<td>11</td>
-						</tr>
+                    {{if records}}
+                    {{each records}}
+                    <tr>
+                        <td>{{$value.productName}}</td>
+                        <td>{{$value.productPrice}}</td>
+                        <td>{{$value.num}}</td>
+                        <td>{{$value.productPrice*$value.num}}</td>
+                        <td>{{$value.createdTime}}</td>
+                    </tr>
+                    {{/each}}
+                    {{else}}
+                    暂无数据
+                    {{/if}}
 					</tbody>
 				</table>
-			</div>
+			</script>
 		</div>
-		<div class="pagination" data-url="/announce/list" id="pageList"></div>
+		<div class="pagination" data-url="/pointsystem/record-list" id="pageList"></div>
 	</div>
 	<div class="container-ad">
 	</div>
 </div>
-
-
-
-
 </@global.main>

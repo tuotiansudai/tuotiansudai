@@ -72,13 +72,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize){
-        return productMapper.findProductsList(goodsType,(index-1)*pageSize, pageSize);
+    public List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize) {
+        return productMapper.findProductsList(goodsType, (index - 1) * pageSize, pageSize);
     }
 
     @Override
     public List<ProductOrderDto> findProductOrderList(final long goodsId, String loginName, int index, int pageSize) {
-        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(goodsId, loginName, (index-1)*pageSize, pageSize);
+        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(goodsId, loginName, (index - 1) * pageSize, pageSize);
         return Lists.transform(productOrderList, new Function<ProductOrderModel, ProductOrderDto>() {
             @Override
             public ProductOrderDto apply(ProductOrderModel model) {
@@ -128,13 +128,25 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDataDto consignment(long orderId) {
         String errorMessage = "goods order not exist, product Order id = ({0})";
-            ProductOrderModel productOrderModel = productOrderMapper.findById(orderId);
-            if (productOrderModel == null) {
-                logger.debug(MessageFormat.format(errorMessage, orderId));
-            }
-            productOrderModel.setConsignment(true);
-            productOrderModel.setConsignmentTime(new Date());
-            productOrderMapper.update(productOrderModel);
+        ProductOrderModel productOrderModel = productOrderMapper.findById(orderId);
+        if (productOrderModel == null) {
+            logger.debug(MessageFormat.format(errorMessage, orderId));
+        }
+        productOrderModel.setConsignment(true);
+        productOrderModel.setConsignmentTime(new Date());
+        productOrderMapper.update(productOrderModel);
+        return new BaseDataDto(true, null);
+    }
+
+    @Override
+    @Transactional
+    public BaseDataDto batchConsignment(long goodsId) {
+        String errorMessage = "goodsId is not exist, product Order goodsId = ({0})";
+        ProductModel productModel = productMapper.findById(goodsId);
+        if (productModel == null) {
+            logger.debug(MessageFormat.format(errorMessage, goodsId));
+        }
+        productOrderMapper.batchConsignment(goodsId);
         return new BaseDataDto(true, null);
     }
 
@@ -158,7 +170,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductShowItemDto> productShowItemDtos = new ArrayList<>();
         switch (goodsType) {
             case VIRTUAL:
-                productModels = productMapper.findProductsList(GoodsType.VIRTUAL, 1, Integer.MAX_VALUE);
+                productModels = productMapper.findProductsList(GoodsType.VIRTUAL, 0, Integer.MAX_VALUE);
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
@@ -167,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
                 });
                 break;
             case PHYSICAL:
-                productModels = productMapper.findProductsList(GoodsType.PHYSICAL, 1, Integer.MAX_VALUE);
+                productModels = productMapper.findProductsList(GoodsType.PHYSICAL, 0, Integer.MAX_VALUE);
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
@@ -210,7 +222,7 @@ public class ProductServiceImpl implements ProductService {
                     result = -1;
                 }
                 if (0 == result && null != o1.getUpdatedTime() && null != o2.getUpdatedTime()) {
-                    return o1.getUpdatedTime().compareTo(o2.getUpdatedTime());
+                    return o2.getUpdatedTime().compareTo(o1.getUpdatedTime());
                 } else {
                     return result;
                 }
@@ -280,13 +292,19 @@ public class ProductServiceImpl implements ProductService {
         accountModel.setPoint(accountModel.getPoint() - totalPrice);
 
         accountMapper.update(accountModel);
-        logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, use point {3}",
-                accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), totalPrice));
+        logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
+                accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount, totalPrice));
         productOrderMapper.create(productOrderModel);
         if (itemType.equals(ItemType.RED_ENVELOPE) || itemType.equals(ItemType.INTEREST_COUPON) || itemType.equals(ItemType.INVEST_COUPON)) {
-            couponAssignmentService.assignUserCoupon(loginName, id);
-            logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy coupon {1} product type {2}. coupon has been assigned",
-                    accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription()));
+            for (int i = 0; i < amount; ++i) {
+                couponAssignmentService.assignUserCoupon(loginName, id);
+            }
+            logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy coupon {1} product type {2}.amount{3}. coupon has been assigned",
+                    accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount));
+        } else if (itemType.equals(ItemType.PHYSICAL) || itemType.equals(ItemType.VIRTUAL)) {
+            ProductModel productModel = productMapper.findById(id);
+            productModel.setUsedCount(productModel.getUsedCount() + amount);
+            productMapper.update(productModel);
         }
 
         return new BaseDto<>(new BaseDataDto(true));

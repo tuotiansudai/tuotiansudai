@@ -12,7 +12,8 @@
         </div>
     </div>
     <div>
-        <span><a class="loan_repay" href="/product-manage/product-list?goodsType=${product.goodsType.name()!}">返回></a></span>
+        <span><a class="loan_repay"
+                 href="/product-manage/product-list?goodsType=${product.goodsType.name()!}">返回></a></span>
     </div>
     <div>
         <span>商品名称:${product.productName!}</span>
@@ -22,6 +23,15 @@
     </div>
     <div>
         <span>商品数量:${product.totalCount?string('0')!}</span>
+    </div>
+    <div>
+        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+            <#if (orders?size>0)>
+                <button type="button" class="btn btn-sm btn-primary btnSend" data-id="${product.id?string('0')!}">
+                    全部发货
+                </button>
+            </#if>
+        </@security.authorize>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
@@ -102,7 +112,9 @@
                 </a>
                 </li>
                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${goodsId}">导出Excel</button>
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${goodsId}">
+                        导出Excel
+                    </button>
                 </@security.authorize>
 
             </ul>

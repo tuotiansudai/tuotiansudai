@@ -33,4 +33,6 @@ public interface ProductOrderMapper {
 
     long findProductOrderListByLoginNameCount(@Param(value = "loginName") String loginName);
 
+    void batchConsignment(long goodsId);
+
 }

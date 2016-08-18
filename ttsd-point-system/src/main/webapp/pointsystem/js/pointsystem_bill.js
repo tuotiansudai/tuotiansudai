@@ -1,9 +1,9 @@
 /**
- * [name]:membership integral page
+ * [name]:membership bill page
  * [user]:xuqiang
  * [date]:2016-08-08
  */
-require(['jquery', 'template', 'moment','pagination',  'daterangepicker', 'jquery.ajax.extension'], function($, tpl, moment) {
+require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery.ajax.extension'], function($, tpl, moment) {
 	$(function() {
 		var $dataList = $('#dataList');
 
@@ -37,7 +37,7 @@ require(['jquery', 'template', 'moment','pagination',  'daterangepicker', 'jquer
 				default:
 					dataPickerElement.val('');
 			}
-		}();
+		};
 		var loadLoanData = function(currentPage) {
 			var dates = dataPickerElement.val().split('~'),
 				startTime = $.trim(dates[0]) || '',
@@ -46,14 +46,37 @@ require(['jquery', 'template', 'moment','pagination',  'daterangepicker', 'jquer
 				requestData = {
 					startTime: startTime,
 					endTime: endTime,
-					status: status,
+					businessType: status,
 					index: currentPage || 1
 				};
 
 			$('#pageList').loadPagination(requestData, function(data) {
-				// $dataList.html(tpl('dataListTpl', data));
+				if (data.records) {
+					$.each(data.records, function(index,item) {
+						switch (item.businessType) {
+							case 'SIGN_IN':
+								item.businessType = '签到奖励';
+								break;
+							case 'TASK':
+								item.businessType = '任务奖励';
+								break;
+							case 'INVEST':
+								item.businessType = '投资奖励';
+								break;
+							case 'EXCHANGE':
+								item.businessType = '积分兑换';
+								break;
+							case 'LOTTERY':
+								item.businessType = '抽奖';
+								break;
+						}
+					});
+				}
+				$dataList.html(tpl('dataListTpl', data));
 			});
-		}();
+		};
+		changeDatePicker();
+		loadLoanData();
 		$dateFilter.find(".select-item").click(function() {
 			$(this).addClass("current").siblings(".select-item").removeClass("current");
 			changeDatePicker();

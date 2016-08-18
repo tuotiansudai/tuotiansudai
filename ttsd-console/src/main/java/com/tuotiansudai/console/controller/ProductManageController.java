@@ -126,9 +126,20 @@ public class ProductManageController {
 
     @RequestMapping(value = "/{orderId:^\\d+$}/consignment", method = RequestMethod.POST)
     @ResponseBody
-    public  BaseDto<BaseDataDto> productConsignment(@PathVariable long orderId) {
+    public BaseDto<BaseDataDto> productConsignment(@PathVariable long orderId) {
         BaseDataDto dataDto = new BaseDataDto();
         productService.consignment(orderId);
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/batch/{goodsId:^\\d+$}/consignment", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> productBatchConsignment(@PathVariable long goodsId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        productService.batchConsignment(goodsId);
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);

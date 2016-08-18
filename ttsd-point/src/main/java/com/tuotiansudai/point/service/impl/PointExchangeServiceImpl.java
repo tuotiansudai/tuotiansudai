@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
@@ -66,8 +67,12 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
-    public List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName, int index, int pageSize) {
-        return productOrderMapper.findProductOrderListByLoginName(loginName, (index-1)*pageSize, pageSize);
+    public BasePaginationDataDto<ProductOrderViewDto> findProductOrderListByLoginNamePagination(String loginName, int index, int pageSize) {
+        long count = productOrderMapper.findProductOrderListByLoginNameCount(loginName);
+        List<ProductOrderViewDto> records = productOrderMapper.findProductOrderListByLoginName(loginName, (index-1)*pageSize, pageSize);
+        BasePaginationDataDto<ProductOrderViewDto> dto = new BasePaginationDataDto<ProductOrderViewDto>(index, pageSize, count, records);
+        dto.setStatus(true);
+        return dto;
     }
 
     @Override

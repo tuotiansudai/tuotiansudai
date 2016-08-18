@@ -7,10 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
-import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ItemType;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.pointsystem.util.LoginUserInfo;
 import com.tuotiansudai.service.AccountService;
@@ -131,12 +128,13 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
                                            @RequestParam(value = "itemType", required = true) ItemType itemType,
-                                           @RequestParam(value = "amount", required = true) int amount,
+                                           @RequestParam(value = "number", required = true) int number,
                                            @RequestParam(value = "userAddress", required = false) UserAddressModel userAddressModel) {
         String loginName = LoginUserInfo.getLoginName();
-        return productService.buyProduct(loginName, id, itemType, amount, userAddressModel);
+        return productService.buyProduct(loginName, id, itemType, number, userAddressModel);
     }
 
     @RequestMapping(value = "/add-address", method = RequestMethod.POST)
@@ -167,27 +165,28 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/record", method = RequestMethod.GET)
-    public ModelAndView pointSystemRecord(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                          @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public ModelAndView pointSystemRecord() {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-record");
-
-        modelAndView.addObject("recordList", pointExchangeService.findProductOrderListByLoginName(LoginUserInfo.getLoginName(), index, pageSize));
-        modelAndView.addObject("recordCount", pointExchangeService.findProductOrderListByLoginNameCount(LoginUserInfo.getLoginName()));
-
         modelAndView.addObject("responsive", true);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/record-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                                @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        BasePaginationDataDto<ProductOrderViewDto> dataDto = pointExchangeService.findProductOrderListByLoginNamePagination(LoginUserInfo.getLoginName(), index, pageSize);
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        dto.setData(dataDto);
+        return dto;
     }
 
     @RequestMapping(value = "/bill", method = RequestMethod.GET)
     public ModelAndView pointSystemBill() {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-bill");
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), 1, 10, null, null, null);
-        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
-        dto.setData(dataDto);
-        modelAndView.addObject("dto", dto);
         modelAndView.addObject("responsive", true);
         return modelAndView;
-
     }
 
     @RequestMapping(value = "/bill-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
@@ -197,10 +196,10 @@ public class PointSystemController {
                                                             @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                             @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
+
         BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, pageSize, startTime, endTime, businessType);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
-
         return dto;
     }
 }

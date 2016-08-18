@@ -43,6 +43,8 @@ public interface ProductService {
 
     BaseDataDto consignment(long orderId);
 
+    BaseDataDto batchConsignment(long goodsId);
+
     ProductModel findById(long id);
 
     BaseDataDto updateProduct(ProductDto productDto);

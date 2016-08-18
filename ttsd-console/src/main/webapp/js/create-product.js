@@ -13,7 +13,7 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
 
     $dateStart.datetimepicker({
         format: 'YYYY-MM-DD'
-    }).on('dp.change', function(e) {
+    }).on('dp.change', function (e) {
         $dateEnd.data("DateTimePicker").minDate(e.date);
     });
 
@@ -99,13 +99,13 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         tipSweep: true,
         focusOnError: false,
         ignoreHidden: true,
-        tiptype: function(msg, o, cssctl) {
+        tiptype: function (msg, o, cssctl) {
             if (o.type == 3) {
                 var msg = o.obj.attr('errormsg') || msg;
                 showErrorMessage(msg, o.obj);
             }
         },
-        callback: function(form) {
+        callback: function (form) {
             boolFlag = true;
             return false;
         }
@@ -118,7 +118,7 @@ require(['jquery', 'bootstrap', 'Validform', 'bootstrapDatetimepicker', 'Validfo
         }
     });
 
-    $submitBtn.on('click', function(event) {
+    $submitBtn.on('click', function (event) {
         event.preventDefault();
         var $self = $(this);
         if (boolFlag) {

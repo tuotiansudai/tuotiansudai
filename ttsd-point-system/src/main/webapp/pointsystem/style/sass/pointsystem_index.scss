@@ -390,7 +390,7 @@
               }
             }
             &.convert-btn{
-              width:140px;
+              width:200px;
               height:100px;
               span{
                 float:left;
@@ -407,6 +407,8 @@
                   }
                 }
                 &.get-btn{
+                  width:140px;
+                  height:35px;
                   font-size:16px;
                   color:#fff;
                   line-height:35px;

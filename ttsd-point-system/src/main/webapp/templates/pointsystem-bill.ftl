@@ -4,7 +4,7 @@
 <div class="global-member-integral">
 	<div class="wp clearfix">
 		<div class="detail-top">
-			您所在的位置：积分商城 > <span>兑换记录&积分明细</span>
+			您所在的位置：<a href="/pointsystem">积分商城</a> > <span>兑换记录&积分明细</span>
 		</div>
 		<div class="container-detail">
 			<div class="type-list">
@@ -33,54 +33,37 @@
                 <span class="select-item" data-status="EXCHANGE,LOTTERY">已使用</span>
 		    </div>
 
-            <div class="clear-blank"></div>
-            <div class="bill-list">
-            </div>
-            <div class="data-list" data-url="/pointsystem/bill-list-data" data-page-size="10">
-            </div>
-
-
-
-
-			<div class="data-list" id="dataList">
+			<div class="data-list" id="dataList"></div>
+			<script type="text/html" id="dataListTpl">
 				<table class="table">
 					<thead>
 						<tr>
 							<th>时间</th>
 							<th>行为</th>
-							<th>财豆数(个)</th>
+							<th>积分</th>
 							<th>备注</th>
 						</tr>
 					</thead>
 					<tbody>
+					{{if records}}
+					{{each records}}
 						<tr>
-							<td>2016-05-26  09:49:30</td>
-							<td>兑换商品</td>
-							<td>－80</td>
-							<td>2016-05-26  签到</td>
+							<td>{{$value.createdTime}}</td>
+							<td>{{$value.businessType}}</td>
+							<td>{{$value.point}}</td>
+							<td>{{$value.note}}</td>
 						</tr>
-						<tr>
-							<td>2016-05-26  09:49:30</td>
-							<td>兑换商品</td>
-							<td>+80</td>
-							<td>2016-05-26  签到</td>
-						</tr>
-						<tr>
-							<td>2016-05-26  09:49:30</td>
-							<td>兑换商品</td>
-							<td>－80</td>
-							<td>2016-05-26  签到</td>
-						</tr>
+					{{/each}}
+					{{else}}
+					暂无数据
+					{{/if}}
 					</tbody>
 				</table>
-			</div>
+			</script>
 		</div>
-		<div class="pagination" data-url="/announce/list" id="pageList"></div>
+		<div class="pagination" data-url="/pointsystem/bill-list" data-page-size="10" id="pageList"></div>
 	</div>
 	<div class="container-ad">
 	</div>
 </div>
-
-
-
 </@global.main>
