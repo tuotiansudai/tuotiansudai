@@ -8,7 +8,7 @@
             提问有新回答，<a href="/question/my-questions">点击查看</a>
         </li>
         <li class="new-answer-adopted-alert <@newAnswerAdoptedAlert><@global.security.authentication property="principal.username"/></@newAnswerAdoptedAlert>">
-            回答被采纳为最佳答案，<a href="/question/my-answers">点击查看</a>
+            回答被采纳为最佳答案，<a href="/answer/my-answers">点击查看</a>
         </li>
     </@global.isNotAnonymous>
 

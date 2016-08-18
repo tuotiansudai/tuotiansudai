@@ -53,22 +53,33 @@ public class AnswerService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public boolean createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
-        if (!captchaHelperService.captchaVerify(answerRequestDto.getCaptcha())) {
-            return false;
-        }
+    public AnswerResultDataDto createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
+        AnswerResultDataDto answerResultDataDto = new AnswerResultDataDto();
 
         long questionId = answerRequestDto.getQuestionId();
         QuestionModel questionModel = questionMapper.findById(questionId);
         if (questionModel == null) {
-            return false;
+            return answerResultDataDto;
         }
+
+        if (!captchaHelperService.captchaVerify(answerRequestDto.getCaptcha())) {
+            return answerResultDataDto;
+        }
+        answerResultDataDto.setCaptchaValid(true);
+
+        if (SensitiveWordsFilter.match(answerRequestDto.getAnswer())) {
+            return answerResultDataDto;
+        }
+        answerResultDataDto.setAnswerSensitiveValid(true);
 
         AnswerModel answerModel = new AnswerModel(loginName,
                 questionId,
                 SensitiveWordsFilter.replace(answerRequestDto.getAnswer()));
         answerMapper.create(answerModel);
-        return true;
+
+        answerResultDataDto.setStatus(true);
+
+        return answerResultDataDto;
     }
 
     public void approve(String loginName, List<Long> answerIds) {
@@ -108,18 +119,10 @@ public class AnswerService {
                 null);
     }
 
-    public List<AnswerDto> getAnswers(final String loginName, long questionId) {
-        List<AnswerModel> answerModels = answerMapper.findByQuestionId(loginName, questionId);
-        return Lists.transform(answerModels, new Function<AnswerModel, AnswerDto>() {
-            @Override
-            public AnswerDto apply(AnswerModel input) {
-                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
-                return new AnswerDto(input,
-                        input.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile),
-                        input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
-                        null);
-            }
-        });
+    public BaseDto<BasePaginationDataDto> getNotBestAnswers(final String loginName, long questionId, int index, int pageSize) {
+        long count = answerMapper.countNotBestByQuestionId(loginName, questionId);
+        List<AnswerModel> notBestAnswerModels = answerMapper.findNotBestByQuestionId(loginName, questionId, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return generatePaginationData(loginName, index, pageSize, count, notBestAnswerModels, true);
     }
 
     @Transactional

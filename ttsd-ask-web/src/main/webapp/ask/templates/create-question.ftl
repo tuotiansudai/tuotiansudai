@@ -51,7 +51,7 @@
                             <span class="isAnonymous captcha">请输入验证码</span>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                            <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
+                            <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha" maxlength="5">
                         </@global.isNotAnonymous>
                         <img src="/captcha" class="captchaImg" alt="">
                         <span class="error " style="display: none">请输入验证码</span>
