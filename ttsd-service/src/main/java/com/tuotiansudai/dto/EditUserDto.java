@@ -29,7 +29,7 @@ public class EditUserDto implements Serializable {
 
     private String autoInvestStatus;
 
-    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles) {
+    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles, AutoInvestPlanModel autoInvestPlanModel) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.mobile = userModel.getMobile();
@@ -42,7 +42,7 @@ public class EditUserDto implements Serializable {
         }
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
-        this.autoInvestStatus = userModel.getAutoInvestStatus();
+        this.autoInvestStatus = autoInvestPlanModel != null && autoInvestPlanModel.isEnabled() ? "1" : "0";
     }
 
     public EditUserDto() {

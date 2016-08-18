@@ -84,7 +84,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         for (ReferrerManageView view : referrerManageViewList) {
             view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
             view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
-            view.setMobile(userMapper.findUsersMobileByLoginName(view.getInvestName()));
         }
     }
 

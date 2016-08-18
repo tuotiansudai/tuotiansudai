@@ -113,7 +113,11 @@
                         </#if>
                     </td>
                     <td>${userItem.userName!}</td>
-                    <td>${userItem.mobile}</td>
+                    <td>${userItem.mobile}
+                        <#if userItem.staff>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${userItem.email!}</td>
                     <td>${userItem.referrerMobile!}
                         <#if userItem.referrerStaff>

@@ -80,7 +80,6 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                 writer.close();
             }
         }
-
     }
 
     private void updateUserStatus(String loginName) {

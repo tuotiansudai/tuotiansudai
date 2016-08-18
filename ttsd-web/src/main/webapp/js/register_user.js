@@ -148,7 +148,6 @@ require(['underscore', 'jquery', 'layerWrapper','placeholder', 'jquery.validate'
                 },
                 complete: function () {
                     imageCaptchaSubmitElement.removeClass("loading");
-
                 }
             });
         },

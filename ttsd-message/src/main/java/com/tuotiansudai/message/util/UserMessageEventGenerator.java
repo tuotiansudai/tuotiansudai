@@ -66,7 +66,6 @@ public class UserMessageEventGenerator {
     @Autowired
     private LoginLogService loginLogService;
 
-    @Transactional
     public void generateRegisterUserSuccessEvent(String loginName) {
         MessageModel registerUserSuccessMessage = messageMapper.findActiveByEventType(MessageEventType.REGISTER_USER_SUCCESS);
         //终于等到你，欢迎来到拓天速贷平台。
