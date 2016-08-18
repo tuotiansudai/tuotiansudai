@@ -207,7 +207,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         assertEquals("1000.00", baseResponseDto.getData().getBalance());
         assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("0.16", baseResponseDto.getData().getExpectedInterestAmount());
+        assertEquals("0.15", baseResponseDto.getData().getExpectedInterestAmount());
     }
 
     @Test
