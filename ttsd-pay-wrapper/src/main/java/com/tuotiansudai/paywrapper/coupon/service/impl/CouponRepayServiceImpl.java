@@ -191,7 +191,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         int totalPeriods = loanModel.getPeriods();
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
 
-        List<CouponRepayModel> couponRepayModels = Lists.newArrayList();
 
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
@@ -210,7 +209,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.error(MessageFormat.format("(coupon is exist (couponId = {0}))", userCouponModel.getCouponId()));
                         continue;
                     }
-                    if(couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1){
+                    if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1) {
                         continue;
                     }
                     long expectedCouponInterest = InterestCalculator.estimateCouponRepayExpectedInterest(successInvestModel,
@@ -218,20 +217,28 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)
                             .multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
-                    couponRepayModels.add(new CouponRepayModel(successInvestModel.getLoginName(),
-                            couponModel.getId(),
-                            userCouponModel.getId(),
-                            successInvestModel.getId(),
-                            expectedCouponInterest,
-                            expectedFee,
-                            period,
-                            currentRepayDate.toDate()
-                    ));
+                    try {
+                        couponRepayMapper.create(new CouponRepayModel(successInvestModel.getLoginName(),
+                                couponModel.getId(),
+                                userCouponModel.getId(),
+                                successInvestModel.getId(),
+                                expectedCouponInterest,
+                                expectedFee,
+                                period,
+                                currentRepayDate.toDate()
+                        ));
+                        logger.info(MessageFormat.format("generate coupon repay is success, user={0}, userCouponId={1}, period={2}",
+                                successInvestModel.getLoginName(),
+                                String.valueOf(userCouponModel.getId()),
+                                String.valueOf(period)));
+                    } catch (Exception e) {
+                        logger.error(e.getLocalizedMessage(), e);
+
+                    }
                 }
 
             }
         }
-        couponRepayMapper.create(couponRepayModels);
     }
 
     private void updateCouponRepay(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {

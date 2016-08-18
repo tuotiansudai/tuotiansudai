@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -53,13 +54,13 @@ public class RegisterUserController {
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
 
-
     @RequestMapping(method = RequestMethod.GET)
 
     public ModelAndView registerUser(HttpServletRequest request) {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
+        UserModel referrerModel = userMapper.findByLoginName(referrer);
+        modelAndView.addObject("referrer", referrerModel != null ? referrerModel.getMobile() : null);
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }

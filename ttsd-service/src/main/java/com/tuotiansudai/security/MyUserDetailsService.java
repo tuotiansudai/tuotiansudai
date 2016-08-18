@@ -56,7 +56,7 @@ public class MyUserDetailsService implements UserDetailsService {
             userMapper.updateUser(userModel);
         }
 
-        boolean enabled = userModel.isActive();
+        boolean enabled = userModel.getStatus() == UserStatus.ACTIVE;
 
         String salt = userModel.getSalt();
 
