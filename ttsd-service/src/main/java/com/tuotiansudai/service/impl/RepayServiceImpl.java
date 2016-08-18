@@ -222,7 +222,7 @@ public class RepayServiceImpl implements RepayService {
         List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
         dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ? userCouponModels.get(0).getActualInterest() : 0l));
 
-        userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON,CouponType.INVEST_COUPON));
+        userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON,CouponType.INVEST_COUPON,CouponType.BIRTHDAY_COUPON));
         for(UserCouponModel userCouponModel : userCouponModels){
             CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
             switch (couponModel.getCouponType()){

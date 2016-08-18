@@ -61,7 +61,7 @@ public class InvestRepayDataItemDto {
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
             if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
-            if(RepayStatus.OVERDUE == model.getStatus()) this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
+            if(RepayStatus.OVERDUE == model.getStatus() && model.getActualRepayDate() != null) this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
         }
         this.investId = model.getInvestId();
         if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
@@ -69,7 +69,11 @@ public class InvestRepayDataItemDto {
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
+        if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate().compareTo(model.getRepayDate()) == -1){
+            this.status = "提前还款";
+        }else {
+            this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
+        }
         this.period = model.getPeriod();
         this.amount = AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
     }
