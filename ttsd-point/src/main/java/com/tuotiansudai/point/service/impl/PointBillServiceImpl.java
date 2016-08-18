@@ -63,6 +63,15 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Override
     @Transactional
+    public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        accountModel.setPoint(accountModel.getPoint() + point);
+        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
+        accountMapper.update(accountModel);
+    }
+
+    @Override
+    @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setPoint(accountModel.getPoint() + point);
@@ -156,6 +165,7 @@ public class PointBillServiceImpl implements PointBillService {
                         double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
                         return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
                     case INVEST_COUPON:
+                    case RED_ENVELOPE:
                         return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
                     default:
                         return null;

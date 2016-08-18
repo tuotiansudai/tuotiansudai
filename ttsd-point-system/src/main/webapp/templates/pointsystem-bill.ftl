@@ -32,7 +32,6 @@
                 <span class="select-item" data-status="SIGN_IN,TASK,INVEST">已获取</span>
                 <span class="select-item" data-status="EXCHANGE,LOTTERY">已使用</span>
 		    </div>
-
 			<div class="data-list" id="dataList"></div>
 			<script type="text/html" id="dataListTpl">
 				<table class="table">

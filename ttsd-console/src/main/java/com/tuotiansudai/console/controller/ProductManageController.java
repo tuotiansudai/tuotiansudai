@@ -65,12 +65,12 @@ public class ProductManageController {
                                          @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("products", productService.findProductsList(goodsType, index, pageSize));
+        modelAndView.addObject("products", productService.findAllProducts(goodsType, index, pageSize));
         modelAndView.addObject("goodsType", goodsType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("goodsType", goodsType);
-        long goodsCount = productService.findProductsCount(goodsType);
+        long goodsCount = productService.findAllProductsCount(goodsType);
         long totalPages = goodsCount / pageSize + (goodsCount % pageSize > 0 || goodsCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;

@@ -32,54 +32,54 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product_order (`goods_id`, `product_price`, `num`, `total_price`, `real_name`,
+        INSERT INTO product_order (`goods_id`, `product_price`, `num`, `total_price`, `real_name`,
         `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        value(#{goodsId}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
+        VALUE(#{goodsId}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
         #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="ProductOrderModel">
-        update product_order
-        set `consignment` = #{consignment},
+        UPDATE product_order
+        SET `consignment` = #{consignment},
         `consignment_time` = #{consignmentTime}
-        where `id` = #{id}
+        WHERE `id` = #{id}
     </update>
 
     <update id="batchConsignment" parameterType="long">
-        update product_order
-         set `consignment` = 1,
+        UPDATE product_order
+         SET `consignment` = 1,
         `consignment_time` = now()
         where `consignment` = 0
         and `goods_id` = #{goodsId}
     </update>
 
     <select id="findById" parameterType="long" resultMap="productOrderResultMap">
-        select * from product_order where id = #{id};
+        SELECT * FROM product_order WHERE id = #{id};
     </select>
 
     <select id="findProductOrderCount" resultType="long">
-        select count(id) from product_order p
+        SELECT COUNT(id) FROM product_order p
         <where>
             <if test="goodsId != null">
-                and p.goods_id = #{goodsId}
+                AND p.goods_id = #{goodsId}
             </if>
             <if test="createdBy != null">
-                and p.created_by = #{createdBy}
+                AND p.created_by = #{createdBy}
             </if>
         </where>
     </select>
 
     <select id="findProductOrderList" resultMap="productOrderResultMap">
-        select * from product_order p
+        SELECT * FROM product_order p
         <where>
             <if test="goodsId != null">
-                and p.goods_id = #{goodsId}
+                AND p.goods_id = #{goodsId}
             </if>
             <if test="createdBy != null">
-                and p.created_by = #{createdBy}
+                AND p.created_by = #{createdBy}
             </if>
         </where>
-        order by created_time desc
+        ORDER BY created_time DESC
         limit #{index}, #{pageSize}
     </select>
 

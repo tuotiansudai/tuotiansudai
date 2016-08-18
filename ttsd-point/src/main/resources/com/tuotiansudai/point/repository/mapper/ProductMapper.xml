@@ -28,13 +28,13 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product(`goods_type`,`product_name`, `seq`, `image_url`, `description`, `total_count`, `used_count`, `product_price`, `start_time`, `end_time`, `active`, `created_by`, `created_time`, `active_by`, `active_time`, `updated_by`, `updated_time`)
-        value(#{goodsType}, #{productName}, #{seq}, #{imageUrl}, #{description}, #{totalCount}, #{usedCount}, #{productPrice}, #{startTime}, #{endTime}, #{active}, #{createdBy}, #{createdTime}, #{activeBy}, #{activeTime}, #{updatedBy}, #{updatedTime})
+        INSERT INTO product(`goods_type`,`product_name`, `seq`, `image_url`, `description`, `total_count`, `used_count`, `product_price`, `start_time`, `end_time`, `active`, `created_by`, `created_time`, `active_by`, `active_time`, `updated_by`, `updated_time`)
+        VALUE(#{goodsType}, #{productName}, #{seq}, #{imageUrl}, #{description}, #{totalCount}, #{usedCount}, #{productPrice}, #{startTime}, #{endTime}, #{active}, #{createdBy}, #{createdTime}, #{activeBy}, #{activeTime}, #{updatedBy}, #{updatedTime})
     </insert>
 
     <update id="update" parameterType="ProductModel">
-        update product
-        set `goods_type` = #{goodsType},
+        UPDATE product
+        SET `goods_type` = #{goodsType},
         `product_name` = #{productName},
         `seq` = #{seq},
         `image_url` = #{imageUrl},
@@ -49,35 +49,57 @@
         `active_time` = #{activeTime},
         `updated_by` = #{updatedBy},
         `updated_time` = #{updatedTime}
-        where `id` = #{id}
+        WHERE `id` = #{id}
     </update>
 
     <select id="findById" parameterType="map" resultMap="productResultMap">
-        select * from product where id = #{id};
+        SELECT * FROM product WHERE id = #{id};
     </select>
 
-    <select id="findProductsCount" resultType="long">
-        select count(id) from product p
-        <where>
-            <if test="goodsType != null">
-                and p.goods_type = #{goodsType}
-            </if>
-        </where>
+    <select id="findExchangeableProductsCount" resultType="long">
+        SELECT COUNT(id) FROM product p
+        WHERE p.active = 1
+        <![CDATA[
+        AND p.end_time >= now()
+        AND p.start_time <= now()
+        ]]>
+        <if test="goodsType != null">
+            AND p.goods_type = #{goodsType}
+        </if>
     </select>
 
-    <select id="findProductsList" resultMap="productResultMap">
-        select * from product p
-        <where>
-            <if test="goodsType != null">
-                and p.goods_type = #{goodsType}
-            </if>
-        </where>
-        order by seq desc, updated_time desc
+    <select id="findExchangeableProductsList" resultMap="productResultMap">
+        SELECT * FROM product p
+        WHERE p.active = 1
+        <![CDATA[
+        AND p.end_time >= now()
+        AND p.start_time <= now()
+        ]]>
+        <if test="goodsType != null">
+            AND p.goods_type = #{goodsType}
+        </if>
+        ORDER BY seq DESC, updated_time DESC
         limit #{index}, #{pageSize}
     </select>
 
-    <delete id="delete" parameterType="long">
-        delete from product where id = #{id}
-    </delete>
+    <select id="findAllProductsCount" resultType="long">
+        SELECT COUNT(id) FROM product p
+        <where>
+            <if test="goodsType != null">
+                AND p.goods_type = #{goodsType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAllProducts" resultMap="productResultMap">
+        SELECT * FROM product p
+        <where>
+            <if test="goodsType != null">
+                AND p.goods_type = #{goodsType}
+            </if>
+        </where>
+        ORDER BY seq DESC, updated_time DESC
+        limit #{index}, #{pageSize}
+    </select>
 
 </mapper>

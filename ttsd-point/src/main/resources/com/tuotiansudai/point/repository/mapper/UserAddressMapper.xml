@@ -17,23 +17,27 @@
     </resultMap>
 
     <insert id="create" parameterType="UserAddressModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_address (`login_name`, `real_name`, `mobile`, `address`, `created_by`, `created_time`)
-        value(#{loginName}, #{realName},  #{mobile},  #{address},  #{createdBy},  #{createdTime})
+        INSERT INTO user_address (`login_name`, `real_name`, `mobile`, `address`, `created_by`, `created_time`)
+        VALUE(#{loginName}, #{realName},  #{mobile},  #{address},  #{createdBy},  #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="map" resultMap="userAddressResultMap">
-        select * from user_address where login_name = #{loginName};
+        SELECT * FROM user_address WHERE login_name = #{loginName};
     </select>
 
     <update id="update" parameterType="UserAddressModel">
-        UPDATE
-          `aa`.`user_address`
-        SET
-          real_name = #{realName},
-          mobile = #{mobile},
-          address = #{address}
-        WHERE
-          login_name = #{loginName}
+        UPDATE `aa`.`user_address`
+        SET real_name = #{realName},
+        mobile = #{mobile},
+        address = #{address}
+        WHERE login_name = #{loginName}
+        AND id = #{id}
     </update>
+
+    <select id="findByLoginNameAndId" resultMap="userAddressResultMap">
+        SELECT *FROM `aa`.`user_address`
+        WHERE id = #{id}
+        AND login_name = #{loginName}
+    </select>
 
 </mapper>

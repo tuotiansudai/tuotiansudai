@@ -15,4 +15,6 @@ public interface UserAddressMapper {
     void update(UserAddressModel userAddressModel);
 
     List<UserAddressModel> findByLoginName(@Param("loginName") String loginName);
+
+    UserAddressModel findByLoginNameAndId(@Param("id") long id, @Param("loginName") String loginName);
 }

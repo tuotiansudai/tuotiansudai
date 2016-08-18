@@ -15,6 +15,7 @@ import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -54,6 +55,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
+    @Autowired
+    private PointBillService pointBillService;
+
     @Override
     @Transactional
     public void createProduct(ProductDto productDto) {
@@ -68,12 +72,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public long findProductsCount(GoodsType goodsType) {
-        return productMapper.findProductsCount(goodsType);
+        return productMapper.findExchangeableProductsCount(goodsType);
     }
 
     @Override
     public List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize) {
-        return productMapper.findProductsList(goodsType, (index - 1) * pageSize, pageSize);
+        return productMapper.findExchangeableProductsList(goodsType, (index - 1) * pageSize, pageSize);
+    }
+
+
+    @Override
+    public long findAllProductsCount(GoodsType goodsType) {
+        return productMapper.findAllProductsCount(goodsType);
+    }
+
+    @Override
+    public List<ProductModel> findAllProducts(GoodsType goodsType, int index, int pageSize) {
+        return productMapper.findAllProducts(goodsType, (index - 1) * pageSize, pageSize);
     }
 
     @Override
@@ -170,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductShowItemDto> productShowItemDtos = new ArrayList<>();
         switch (goodsType) {
             case VIRTUAL:
-                productModels = productMapper.findProductsList(GoodsType.VIRTUAL, 0, Integer.MAX_VALUE);
+                productModels = productMapper.findExchangeableProductsList(GoodsType.VIRTUAL, 0, Integer.MAX_VALUE);
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
@@ -179,7 +194,7 @@ public class ProductServiceImpl implements ProductService {
                 });
                 break;
             case PHYSICAL:
-                productModels = productMapper.findProductsList(GoodsType.PHYSICAL, 0, Integer.MAX_VALUE);
+                productModels = productMapper.findExchangeableProductsList(GoodsType.PHYSICAL, 0, Integer.MAX_VALUE);
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
@@ -259,7 +274,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel) {
         if (productShowItemDto.getItemType().equals(ItemType.PHYSICAL)) {
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
-                    userAddressModel.getRealName(), userAddressModel.getMobile(), userAddressModel.getAddress(), true, null, accountModel.getLoginName());
+                    userAddressModel.getRealName(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, accountModel.getLoginName());
         } else {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
@@ -269,7 +284,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, UserAddressModel userAddressModel) {
+    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户不存在"));
@@ -286,14 +301,25 @@ public class ProductServiceImpl implements ProductService {
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
 
+        UserAddressModel userAddressModel = null;
+        if (ItemType.PHYSICAL == itemType) {
+            if (null == addressId) {
+                return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
+            }
+            userAddressModel = userAddressMapper.findByLoginNameAndId(addressId, loginName);
+            if (null == userAddressModel) {
+                return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
+            }
+        }
+
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel);
 
         long totalPrice = productShowItemDto.getProductPrice() * amount;
-        accountModel.setPoint(accountModel.getPoint() - totalPrice);
 
-        accountMapper.update(accountModel);
+        pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getProductName());
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
                 accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount, totalPrice));
+
         productOrderMapper.create(productOrderModel);
         if (itemType.equals(ItemType.RED_ENVELOPE) || itemType.equals(ItemType.INTEREST_COUPON) || itemType.equals(ItemType.INVEST_COUPON)) {
             for (int i = 0; i < amount; ++i) {
@@ -323,17 +349,16 @@ public class ProductServiceImpl implements ProductService {
         } else {
             UserAddressModel userAddressModel = new UserAddressModel(loginName, realName, mobile, address, loginName);
             userAddressMapper.create(userAddressModel);
-            return new BaseDto<>(new BaseDataDto(true));
+            return new BaseDto<>(new BaseDataDto(true, String.valueOf(userAddressModel.getId())));
         }
     }
 
     @Override
-    public BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address) {
-        List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(loginName);
-        if (userAddressModels.size() <= 0) {
-            return new BaseDto<>(new BaseDataDto(false, "没有填写过地址"));
+    public BaseDto<BaseDataDto> updateAddress(long id, String loginName, String realName, String mobile, String address) {
+        UserAddressModel userAddressModel = userAddressMapper.findByLoginNameAndId(id, loginName);
+        if (null == userAddressModel) {
+            return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
         } else {
-            UserAddressModel userAddressModel = userAddressModels.get(0);
             userAddressModel.setRealName(realName);
             userAddressModel.setMobile(mobile);
             userAddressModel.setAddress(address);
