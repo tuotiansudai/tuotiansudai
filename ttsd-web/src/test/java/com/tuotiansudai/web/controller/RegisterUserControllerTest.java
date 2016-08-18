@@ -212,20 +212,6 @@ public class RegisterUserControllerTest {
     }
 
     @Test
-    public void shouldSendRegisterCaptchaIsFail() throws Exception {
-        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
-        SmsDataDto dataDto = new SmsDataDto();
-        baseDto.setData(dataDto);
-
-        dataDto.setStatus(true);
-        when(userService.mobileIsRegister(anyString())).thenReturn(true);
-        this.mockMvc.perform(get("/register/user/13900000000/send-register-captcha")).andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(false));
-    }
-
-    @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
