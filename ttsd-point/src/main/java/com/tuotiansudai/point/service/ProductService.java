@@ -25,7 +25,7 @@ public interface ProductService {
 
     ProductShowItemDto findProductShowItemDto(long id, ItemType itemType);
 
-    BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, long addressId);
+    BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId);
 
     List<UserAddressModel> getUserAddressesByLoginName(String loginName);
 

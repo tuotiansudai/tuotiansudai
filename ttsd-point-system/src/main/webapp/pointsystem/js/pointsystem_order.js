@@ -43,7 +43,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], 
 					data: {
 						id: idString,
 						itemType: typeString,
-						number: $numText.val()
+						number: $numText.val(),
+						userAddressId: $('#updatePlace').attr('data-id')
 					}
 				})
 				.done(function(data) {
@@ -173,7 +174,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], 
 				data: dataList.data
 			})
 			.done(function(data) {
-				location.reload();
+					if (data.data.status) {
+						location.reload();
+					} else {
+						layer.msg(data.data.message);
+					}
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');

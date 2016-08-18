@@ -135,12 +135,13 @@ public class PointSystemController {
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
                                            @RequestParam(value = "itemType", required = true) ItemType itemType,
                                            @RequestParam(value = "number", required = true) int number,
-                                           @RequestParam(value = "userAddressId", required = false) long addressId) {
+                                           @RequestParam(value = "userAddressId", required = false) Long addressId) {
         String loginName = LoginUserInfo.getLoginName();
         return productService.buyProduct(loginName, id, itemType, number, addressId);
     }
 
     @RequestMapping(value = "/add-address", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> addAddress(@RequestParam(value = "realName", required = true) String realName,
                                            @RequestParam(value = "mobile", required = true) String mobile,
                                            @RequestParam(value = "address", required = true) String address) {
@@ -149,6 +150,7 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/update-address", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> updateAddress(@RequestParam(value = "id", required = true) long id,
                                               @RequestParam(value = "realName", required = true) String realName,
                                               @RequestParam(value = "mobile", required = true) String mobile,

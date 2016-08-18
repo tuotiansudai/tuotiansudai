@@ -19,7 +19,9 @@
                                 <span class="add-place" id="addPlace">添加地址</span>
 							<#else>
 								<#list addresses as address>
-									<a href="javascript:void(0)" class="address-set" data-id="121" data-user="${address.realName}" data-phone="${address.mobile}" data-address="${address.address}" id="updatePlace">修改</a>
+                                    <a href="javascript:void(0)" class="address-set" data-id="${address.id?c!0}"
+                                       data-user="${address.realName}" data-phone="${address.mobile}"
+                                       data-address="${address.address}" id="updatePlace">修改</a>
 									<p class="user-name">${address.realName}</p>
 									<p>${address.mobile}</p>
 									<p title="${address.address}">${address.address}</p>

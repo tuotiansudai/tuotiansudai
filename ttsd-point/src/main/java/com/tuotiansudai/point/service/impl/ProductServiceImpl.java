@@ -241,7 +241,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, long addressId) {
+    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户不存在"));
@@ -260,7 +260,10 @@ public class ProductServiceImpl implements ProductService {
 
         UserAddressModel userAddressModel = null;
         if (ItemType.PHYSICAL == itemType) {
-            userAddressModel = userAddressMapper.findByLoginNameAndId(id, loginName);
+            if (null == addressId) {
+                return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
+            }
+            userAddressModel = userAddressMapper.findByLoginNameAndId(addressId, loginName);
             if (null == userAddressModel) {
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
@@ -303,7 +306,7 @@ public class ProductServiceImpl implements ProductService {
         } else {
             UserAddressModel userAddressModel = new UserAddressModel(loginName, realName, mobile, address, loginName);
             userAddressMapper.create(userAddressModel);
-            return new BaseDto<>(new BaseDataDto(true));
+            return new BaseDto<>(new BaseDataDto(true, String.valueOf(userAddressModel.getId())));
         }
     }
 
