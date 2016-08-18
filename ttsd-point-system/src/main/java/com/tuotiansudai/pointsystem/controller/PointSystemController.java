@@ -131,6 +131,7 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
                                            @RequestParam(value = "itemType", required = true) ItemType itemType,
                                            @RequestParam(value = "number", required = true) int number,

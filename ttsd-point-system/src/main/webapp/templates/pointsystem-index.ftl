@@ -131,6 +131,7 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
+                        <#if virtualProduct.leftCount != 0>
                         <li class="big-gift">
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
                             <#if virtualProduct.itemType.name() == 'RED_ENVELOPE'>
@@ -144,7 +145,7 @@
                                 </p>
                             <#elseif virtualProduct.itemType.name() == 'INTEREST_COUPON'>
                                 <p class="mater-img jia-bg">
-                                    <span><i>${virtualProduct.pictureDescription!"0"}</i>%</span>
+                                    <span><i><@amount>${virtualProduct.pictureDescription!"0"}</@amount></i>%</span>
                                     <span>加息券</span>
                                 </p>
                             <#elseif virtualProduct.itemType.name() == 'VIRTUAL'>
@@ -159,7 +160,9 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
+                        </#if>
                     <#else>
+                        <#if virtualProduct.leftCount != 0>
                         <li>
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
                             <#if virtualProduct.itemType == 'RED_ENVELOPE'>
@@ -188,6 +191,7 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
+                        </#if>
                     </#if>
                 </#list>
             </ul>
@@ -205,6 +209,7 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
+                        <#if physicalProduct.leftCount != 0>
                         <li class="big-gift">
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
                             <p class="mater-img picture-item">
@@ -218,7 +223,9 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
+                        </#if>
                     <#else>
+                        <#if physicalProduct.leftCount != 0>
                         <li>
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
@@ -233,6 +240,7 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
+                        </#if>
                     </#if>
                 </#list>
             </ul>

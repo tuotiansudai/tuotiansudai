@@ -45,7 +45,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
 				.done(function (data) {
 					console.log(data);
 					if (data.data.status) {
-						location.href = '/pointsystem/record';
+						location.href = '/pointsystem/bill';
 					} else {
 						layer.msg(data.data.message);
 					}

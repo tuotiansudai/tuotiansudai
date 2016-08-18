@@ -32,9 +32,9 @@
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        insert into product_order (`goods_id`, `goods_type`, `product_price`, `num`, `total_price`, `real_name`,
+        insert into product_order (`goods_id`, `product_price`, `num`, `total_price`, `real_name`,
         `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        value(#{goodsId}, #{goodsType}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
+        value(#{goodsId}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
         #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
