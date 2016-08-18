@@ -22,7 +22,7 @@ import java.util.UUID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
 @Transactional
-public class BaseMapperTest {
+public abstract class BaseMapperTest {
 
 
     @Autowired
