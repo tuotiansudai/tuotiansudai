@@ -228,7 +228,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             currentRepayDate.toDate()
                     ));
                 }
-
             }
         }
         couponRepayMapper.create(couponRepayModels);

@@ -181,24 +181,24 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
-    <link href="${applicationContext}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <!-- link bootstrap css -->
-    <link href="${applicationContext}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${applicationContext}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link href="${applicationContext}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="${applicationContext}/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-    <link href="${applicationContext}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
-    <link href="${applicationContext}/style/index.css" rel="stylesheet">
-    <link href="${applicationContext}/style/libs/jquery.pageflip.css" rel="stylesheet">
-    <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
+    <link href="/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+    <link href="/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
+    <link href="/style/index.css" rel="stylesheet">
+    <link href="/style/libs/jquery.pageflip.css" rel="stylesheet">
+    <link href="/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
     </#if>
 
     <!-- link bootstrap js -->
     <#if pageJavascript?? && pageJavascript != "">
-        <script src="${applicationContext}/js/libs/config.js"></script>
-        <script src="${applicationContext}/js/libs/require-2.1.20.min.js" defer="defer" async="async"
+        <script src="/js/libs/config.js"></script>
+        <script src="/js/libs/require-2.1.20.min.js" defer="defer" async="async"
                 data-main="${applicationContext}/js/${pageJavascript}"></script>
     </#if>
 </head>
@@ -208,8 +208,8 @@
 <header class="navbar" id="top" role="banner">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="${applicationContext}/" class="navbar-brand">
-                <img src="${applicationContext}/images/logo.png" alt="" />
+            <a href="/" class="navbar-brand">
+                <img src="/images/logo.png" alt="" />
             </a>
         </div>
         <div class="collapse navbar-collapse">
