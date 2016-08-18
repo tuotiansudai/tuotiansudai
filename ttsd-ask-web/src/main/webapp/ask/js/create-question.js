@@ -187,18 +187,29 @@ if($questionDetailTag.length) {
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
-                type: 'POST'
-            }).done(function(data) {
-                if (data.data.status) {
-                    comm.popWindow('','回答成功!',{ width:'200px'});
-                    setTimeout(function() {
+                type: 'POST',
+                beforeSend:function() {
+                    $formAnswerSubmit.prop('disabled',true);
+                }
+            }).done(function(responseData) {
+                 var response=responseData.data;
+                    if (response.status) {
+                        comm.popWindow('','回答成功!',{ width:'200px'},true);
+                        setTimeout(function() {
                         $('.popWindow,.popWindow-overlay').fadeOut();
                         window.location.reload();
                     },3000);
-                }
+                    }
+                    else {
+                        refreshCaptcha();
+                         comm.popWindow('error','验证码错误',{ width:'300px'});  
+                    }
             })
                 .fail(function(data) {
 
+                })
+                .complete(function() {
+                    $formAnswerSubmit.prop('disabled',false);
                 });
 
     });
@@ -209,9 +220,15 @@ if($questionDetailTag.length) {
         $.ajax({
             url:'/answer/'+answerId+'/best',
             type:'POST'
-        }).done(function(data) {
-            if(data.data.status) {
-               window.location.reload();
+        }).done(function(responseData) {
+            var response=responseData.data;
+            if(response.status) {
+                comm.popWindow('','成功采纳此条信息!',{ width:'200px'},true);
+                setTimeout(function() {
+                        $('.popWindow,.popWindow-overlay').fadeOut();
+                        window.location.reload();
+                    },3000);
+               
            }
         });
     });
@@ -242,7 +259,7 @@ if($createQuestion.length) {
         $formSubmit=$('.formSubmit',$formQuestion),
         tagValid=false,
         questionValid=false,
-        additionValid=false,
+        additionValid=true,
         captchaValid=false;
 
     $formQuestion.find('input.ask-con,input.tag').on('change keyup',function(event) {
@@ -261,18 +278,31 @@ if($createQuestion.length) {
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
-                    type: 'POST'
-                }).done(function(data) {
-                    if (data.data.status) {
+                    type: 'POST',
+                    beforeSend:function(xhr) {
+                        $formSubmit.prop('disabled',true);
+                    }
+                }).done(function(responseData) {
+                     var response=responseData.data;
+                    if (response.status) {
                         location.href='question/my-questions';
                     }
                     else {
                         refreshCaptcha();
-                        $('.captchaImg').parent().find('.error').show().text('验证码错误');
+                        if(response.captchaValid) {
+                            $('.captchaImg').parent().find('.error').show().text('验证码错误');
+                        }
+                        else if(response.sensitiveValid) {
+                              comm.popWindow('error','不能包含有敏感词',{ width:'300px'});  
+                        }
+                        
                     }
                 })
                 .fail(function(data) {
                         comm.popWindow('error','error',{ width:'300px'});
+                })
+                .complete(function(data) { 
+                   $formSubmit.prop('disabled',false);
                 });
 
 
