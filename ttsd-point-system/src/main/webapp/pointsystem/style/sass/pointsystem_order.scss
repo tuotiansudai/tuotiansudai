@@ -303,6 +303,30 @@
       height:80px;
       background:url("/pointsystem/images/bottom-img.jpg") no-repeat center;
     }
+    .error-tip{
+      float:left;
+      width:300px;
+      text-align:center;
+      display:none;
+      h3{
+        font-size:20px;
+        text-align:center;
+        color:#ff9c1b;
+        background: url("/pointsystem/imgaes/error-tip.png") no-repeat 5% 50%;
+      }
+      p{
+        font-size:16px;
+        color:#4c4c4c;
+      }
+      .close-layer{
+        display:inline-block;
+        width:160px;
+        height:40px;
+        color:#fff;
+        font-size:16px;
+        background:#178fe6;
+      }
+    }
   }
 }
 

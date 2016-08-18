@@ -122,10 +122,11 @@
 	</div>
 	<div class="container-ad">
 	</div>
-	<div class="error-tip" id="errorTip">
+	<div class="error-tip" id="errorTip"></div>
+	<script type="text/html" id="errorTipTpl">
 		<h3>温馨提示</h3>
-		<p>积分不足，不能兑换该商品</p>
-		<p><a href="javascript:void(0)" class="close-layer">确认</a></p>
-	</div>
+		<p>{{message}}</p>
+		<a href="javascript:void(0)" class="close-layer">确认</a>
+	</script>
 </div>
 </@global.main>

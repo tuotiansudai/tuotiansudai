@@ -32,16 +32,6 @@
                 <span class="select-item" data-status="SIGN_IN,TASK,INVEST">已获取</span>
                 <span class="select-item" data-status="EXCHANGE,LOTTERY">已使用</span>
 		    </div>
-
-            <div class="clear-blank"></div>
-            <div class="bill-list">
-            </div>
-            <div class="data-list" data-url="/pointsystem/bill-list-data" data-page-size="10">
-            </div>
-
-
-
-
 			<div class="data-list" id="dataList"></div>
 			<script type="text/html" id="dataListTpl">
 				<table class="table">
@@ -70,7 +60,7 @@
 				</table>
 			</script>
 		</div>
-		<div class="pagination" data-url="/announce/list" id="pageList"></div>
+		<div class="pagination" data-url="/pointsystem/bill-list-data" data-page-size="10" id="pageList"></div>
 	</div>
 	<div class="container-ad">
 	</div>

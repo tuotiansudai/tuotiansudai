@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], function($, layer) {
+require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.extension'], function($, layer,tpl) {
 	$(function() {
 		var $countList = $('.order-number'),
 			$numText = $countList.find('.num-text'),
@@ -51,13 +51,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], 
 					if (data.data.status) {
 						location.href = '/pointsystem/bill';
 					} else {
-						layer.msg(data.data.message);
-						layer.open({
-							type: 1,
-							title: false,
-							area: ['300px', 'auto'],
-							content: $('#errorTip')
-						});
+						errorTip(data.data);
 					}
 				})
 				.fail(function(data) {
@@ -143,6 +137,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], 
 			}
 		});
 
+
+		$('.close-layer').on('click', function(event) {
+			event.preventDefault();
+			layer.closeAll();
+		});
 		//submit place data
 		function submitPlace(type) {
 			var dataList = {};
@@ -177,6 +176,16 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.ajax.extension'], 
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
+			});
+		}
+		//error tip
+		function errorTip(msg){
+			$('#errorTip').html(tpl('errorTipTpl', msg));
+			layer.open({
+				type: 1,
+				title: false,
+				area: ['300px', 'auto'],
+				content: $('#errorTip')
 			});
 		}
 	});
