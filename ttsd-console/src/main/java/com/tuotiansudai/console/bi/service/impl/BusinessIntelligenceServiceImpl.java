@@ -231,7 +231,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         List<KeyValueModel> keyValueModelLists = Lists.newArrayList();
-        if (redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY).size() == 0) {
+        if (redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY).size() == 0 || DateTime.parse("2016-08-17").toDate().compareTo(endTime) == 0) {
             while (startTime.before(queryEndTime)) {
                 KeyValueModel keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(startTime, 1));
                 logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
@@ -302,5 +302,4 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         return keyValueModels;
     }
-
 }
