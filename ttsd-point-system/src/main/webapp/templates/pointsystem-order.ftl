@@ -19,13 +19,10 @@
                                 <span class="add-place" id="addPlace">添加地址</span>
 							<#else>
 								<#list addresses as address>
-                                    <a href="javascript:void(0)" class="address-set">修改</a>
-
-                                    <p class="user-name">${address.realName}</p>
-
-                                    <p>${address.mobile}</p>
-
-                                    <p title="${address.address}">${address.address}</p>
+									<a href="javascript:void(0)" class="address-set" data-id="121" data-user="${address.realName}" data-phone="${address.mobile}" data-address="${address.address}" id="updatePlace">修改</a>
+									<p class="user-name">${address.realName}</p>
+									<p>${address.mobile}</p>
+									<p title="${address.address}">${address.address}</p>
 								</#list>
 							</#if>
 						</div>
@@ -128,6 +125,11 @@
 		</div>
 	</div>
 	<div class="container-ad">
+	</div>
+	<div class="error-tip" id="errorTip">
+		<h3>温馨提示</h3>
+		<p>积分不足，不能兑换该商品</p>
+		<p><a href="javascript:void(0)" class="close-layer">确认</a></p>
 	</div>
 </div>
 </@global.main>
