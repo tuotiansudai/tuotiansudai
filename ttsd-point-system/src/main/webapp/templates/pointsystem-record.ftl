@@ -16,7 +16,8 @@
 					<a href="/membership/integral">积分明细</a>
 				</span>
 			</div>
-			<div class="data-list" id="dataList">
+			<div class="data-list" id="dataList"></div>
+			<script type="text/html" id="dataListTpl">
 				<table class="table">
 					<thead>
 						<tr>
@@ -30,6 +31,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					{{each data}}
 						<tr>
 							<td>3%加息券</td>
 							<td>20000</td>
@@ -39,27 +41,10 @@
 							<td>20160606002</td>
 							<td>11</td>
 						</tr>
-						<tr>
-							<td>3%加息券</td>
-							<td>20000</td>
-							<td>2</td>
-							<td>40000</td>
-							<td>2016-05-05</td>
-							<td>20160606002</td>
-							<td>11</td>
-						</tr>
-						<tr>
-							<td>3%加息券</td>
-							<td>20000</td>
-							<td>2</td>
-							<td>40000</td>
-							<td>2016-05-05</td>
-							<td>20160606002</td>
-							<td>11</td>
-						</tr>
+					{{/each}}
 					</tbody>
 				</table>
-			</div>
+			</script>
 		</div>
 		<div class="pagination" data-url="/announce/list" id="pageList"></div>
 	</div>

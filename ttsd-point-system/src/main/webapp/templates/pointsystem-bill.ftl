@@ -42,7 +42,8 @@
 
 
 
-			<div class="data-list" id="dataList">
+			<div class="data-list" id="dataList"></div>
+			<script type="text/html" id="dataListTpl">
 				<table class="table">
 					<thead>
 						<tr>
@@ -53,27 +54,17 @@
 						</tr>
 					</thead>
 					<tbody>
+					{{each data}}
 						<tr>
 							<td>2016-05-26  09:49:30</td>
 							<td>兑换商品</td>
 							<td>－80</td>
 							<td>2016-05-26  签到</td>
 						</tr>
-						<tr>
-							<td>2016-05-26  09:49:30</td>
-							<td>兑换商品</td>
-							<td>+80</td>
-							<td>2016-05-26  签到</td>
-						</tr>
-						<tr>
-							<td>2016-05-26  09:49:30</td>
-							<td>兑换商品</td>
-							<td>－80</td>
-							<td>2016-05-26  签到</td>
-						</tr>
+					{{/each}}
 					</tbody>
 				</table>
-			</div>
+			</script>
 		</div>
 		<div class="pagination" data-url="/announce/list" id="pageList"></div>
 	</div>

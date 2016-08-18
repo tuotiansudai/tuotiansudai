@@ -1,5 +1,5 @@
 /**
- * [name]:membership integral page
+ * [name]:membership bill page
  * [user]:xuqiang
  * [date]:2016-08-08
  */
@@ -37,7 +37,7 @@ require(['jquery', 'template', 'moment','pagination',  'daterangepicker', 'jquer
 				default:
 					dataPickerElement.val('');
 			}
-		}();
+		};
 		var loadLoanData = function(currentPage) {
 			var dates = dataPickerElement.val().split('~'),
 				startTime = $.trim(dates[0]) || '',
@@ -51,9 +51,11 @@ require(['jquery', 'template', 'moment','pagination',  'daterangepicker', 'jquer
 				};
 
 			$('#pageList').loadPagination(requestData, function(data) {
-				// $dataList.html(tpl('dataListTpl', data));
+				$dataList.html(tpl('dataListTpl', data));
 			});
-		}();
+		};
+		changeDatePicker();
+		loadLoanData();
 		$dateFilter.find(".select-item").click(function() {
 			$(this).addClass("current").siblings(".select-item").removeClass("current");
 			changeDatePicker();
