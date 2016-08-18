@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         meta: {
             basePath: '../',
             baseSassPath: 'src/main/webapp/style/sass',
-            baseCssPath: 'src/main/webapp/style',
+            baseCssPath: 'src/main/webapp/style/css',
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
             baseJsMinPath: 'src/main/webapp/js/dest'
