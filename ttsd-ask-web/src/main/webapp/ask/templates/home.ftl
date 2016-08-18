@@ -15,11 +15,11 @@
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
                         <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
-                        <span class="fr tag">
                             <#list question.tags as tag>
+                            <em class="fr tag">
                                 <a href="/question/category?tag=${tag.name()}">${tag.description}</a>
+                            </em>
                             </#list>
-                        </span>
                     </dd>
                 </dl>
             </#list>
