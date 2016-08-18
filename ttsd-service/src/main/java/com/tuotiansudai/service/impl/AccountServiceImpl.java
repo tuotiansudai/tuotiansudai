@@ -19,9 +19,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     public AccountModel findByLoginName(String loginName) {
         return accountMapper.findByLoginName(loginName);
     }

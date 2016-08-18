@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
@@ -43,10 +44,8 @@ public class ExportController {
     private UserPointPrizeMapper userPointPrizeMapper;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private ExportService exportService;
+
     @Autowired
     private SystemBillService systemBillService;
 
@@ -55,8 +54,12 @@ public class ExportController {
 
     @Autowired
     private LoanRepayService loanRepayService;
+
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private PointBillService pointBillService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -138,9 +141,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
-    public void exportUserPoint(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                @RequestParam(value = "loginName", required = false) String loginName,
+    public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
                                 @RequestParam(value = "userName", required = false) String userName,
                                 @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
@@ -150,8 +151,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<AccountItemDataDto> accountItemDataDtoList = exportService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
-
+        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
         List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 

@@ -27,15 +27,15 @@ public class TransferController {
     @Autowired
     private TransferService transferService;
 
-    @RequestMapping(value = "/transfer-application-list/{transferStatus}",method = RequestMethod.GET)
-    public ModelAndView getTransferrerTransferApplicationList(@PathVariable TransferStatus transferStatus){
-            ModelAndView modelAndView = new ModelAndView("/transfer-record");
-        modelAndView.addObject("transferStatus",transferStatus);
+    @RequestMapping(value = "/transfer-application-list/{transferStatus}", method = RequestMethod.GET)
+    public ModelAndView getTransferrerTransferApplicationList(@PathVariable TransferStatus transferStatus) {
+        ModelAndView modelAndView = new ModelAndView("/transfer-record");
+        modelAndView.addObject("transferStatus", transferStatus);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/transfer-application-list",method = RequestMethod.GET)
-    public ModelAndView getTransferrerTransferApplicationList(){
+    @RequestMapping(value = "/transfer-application-list", method = RequestMethod.GET)
+    public ModelAndView getTransferrerTransferApplicationList() {
         ModelAndView modelAndView = new ModelAndView("/transfer-record");
         return modelAndView;
     }
@@ -43,14 +43,14 @@ public class TransferController {
     @RequestMapping(value = "/transfer-application-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> transferrerListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                         @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                         @RequestParam(name = "status", required = false) List<TransferStatus> statusList) {
+                                                              @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                              @RequestParam(name = "status", required = false) List<TransferStatus> statusList) {
         String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto dataDto;
-        if(CollectionUtils.isNotEmpty(statusList) && statusList.contains(TransferStatus.TRANSFERABLE)){
+        if (CollectionUtils.isNotEmpty(statusList) && statusList.contains(TransferStatus.TRANSFERABLE)) {
             dataDto = transferService.generateTransferableInvest(loginName, index, pageSize);
-        }else{
-            dataDto = investTransferService.findWebTransferApplicationPaginationList(loginName,statusList,index,pageSize);
+        } else {
+            dataDto = investTransferService.findWebTransferApplicationPaginationList(loginName, statusList, index, pageSize);
         }
 
         dataDto.setStatus(true);

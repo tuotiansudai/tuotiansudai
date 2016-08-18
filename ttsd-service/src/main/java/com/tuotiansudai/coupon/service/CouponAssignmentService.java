@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CouponAssignmentService {
 
-    void assignUserCoupon(String loginNameOrMobile, String exchangeCode);
+    boolean assignUserCoupon(String loginNameOrMobile, String exchangeCode);
 
     void assignUserCoupon(String loginNameOrMobile, long couponId);
 
