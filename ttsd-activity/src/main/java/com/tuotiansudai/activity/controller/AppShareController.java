@@ -92,7 +92,7 @@ public class AppShareController {
             return modelAndView;
         }
         UserModel userModel = userMapper.findByMobile(mobile);
-        boolean isOldUser = userModel != null && !"abShare".equals(userModel.getChannel()) && prepareUserMapper.findByMobile(mobile) == null;
+        boolean isOldUser = userModel != null && !"shareAB".equals(userModel.getChannel()) && prepareUserMapper.findByMobile(mobile) == null;
         modelAndView.addObject("isOldUser",isOldUser);
         modelAndView.setViewName("/activities/share-app");
         modelAndView.addObject("responsive", true);
