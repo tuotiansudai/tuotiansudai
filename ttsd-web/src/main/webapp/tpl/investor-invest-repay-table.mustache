@@ -14,12 +14,12 @@
                 <th class="tr">应收收益(元)</th>
                 <th class="tr">应收奖励(元)
                     {{#couponMessage}}
-                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="{{couponMessage}}"></i>
+                        <i class="fa fa-question-circle-o text-b coupon" style="color:#ff7a2a;" data-benefit="{{couponMessage}}"></i>
                     {{/couponMessage}}
                 </th>
                 <th class="tr">应缴服务费(元)
                     {{#levelMessage}}
-                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="{{levelMessage}}"></i>
+                        <i class="fa fa-question-circle-o text-b fee" data-benefit="{{levelMessage}}"></i>
                     {{/levelMessage}}
                 </th>
                 <th class="tr spec-bg">已收回款(元)</th>
@@ -45,7 +45,7 @@
                                 {{#actualAmount}}
                                     {{.}}
                                     {{#defaultInterest}}
-                                        <i class="fa fa-question-circle-o text-b" style="color:#ff7a2a;" title="逾期{{overdueDay}}天，已收违约金{{defaultInterest}}元"></i>
+                                        <i class="fa fa-question-circle-o text-b repay" data-benefit="逾期{{overdueDay}}天，已收违约金{{defaultInterest}}元"></i>
                                     {{/defaultInterest}}
                                 {{/actualAmount}}
                                 {{^actualAmount}}--{{/actualAmount}}

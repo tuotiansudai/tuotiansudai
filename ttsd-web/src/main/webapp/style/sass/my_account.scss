@@ -339,6 +339,7 @@ body{
     left: 50px;
     position: relative;
   }
+
   .accountImg {
     margin-right: 10px;
     width: 71px;
@@ -1377,12 +1378,22 @@ body{
         color: #fff;
         text-align: center;
       }
+      .coupon{
+        color:#ff7a2a;
+      }
+      .fee{
+        color:#ff7a2a;
+      }
+      .repay{
+        color:#ff7a2a;
+      }
     }
     td{
       &.spec-bg {
         background: #f1f5f8;
         text-align: center;
       }
+
     }
 
   }
