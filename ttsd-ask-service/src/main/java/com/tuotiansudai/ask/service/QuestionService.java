@@ -52,10 +52,22 @@ public class QuestionService {
     @Autowired
     private CaptchaHelperService captchaHelperService;
 
-    public boolean createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+    public QuestionResultDataDto createQuestion(String loginName, QuestionRequestDto questionRequestDto) {
+        QuestionResultDataDto dataDto = new QuestionResultDataDto();
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
-            return false;
+            return dataDto;
         }
+        dataDto.setCaptchaValid(true);
+
+        if (SensitiveWordsFilter.match(questionRequestDto.getQuestion())) {
+            return dataDto;
+        }
+        dataDto.setQuestionSensitiveValid(true);
+
+        if (SensitiveWordsFilter.match(questionRequestDto.getAddition())) {
+            return dataDto;
+        }
+        dataDto.setAdditionSensitiveValid(true);
 
         QuestionModel questionModel = new QuestionModel(loginName,
                 SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
@@ -64,7 +76,9 @@ public class QuestionService {
 
         questionMapper.create(questionModel);
 
-        return true;
+        dataDto.setStatus(true);
+
+        return dataDto;
     }
 
     public void approve(String loginName, List<Long> questionIds) {

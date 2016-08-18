@@ -56,7 +56,7 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/?group=${group}&index=${page}" <#if page==questions.data.index>class='active'</#if>> ${page} </a>
+            <a href="/?group=${group}&index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>

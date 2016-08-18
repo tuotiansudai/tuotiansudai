@@ -32,12 +32,6 @@
         <mvc:path-matching suffix-pattern="false"/>
     </mvc:annotation-driven>
 
-
-    <mvc:interceptors>
-        <bean class="com.tuotiansudai.activity.interceptors.ChannelInterceptor"/>
-        <bean class="com.tuotiansudai.activity.interceptors.LinkExchangeInterceptor"/>
-    </mvc:interceptors>
-
     <context:component-scan base-package="com.tuotiansudai.activity"/>
 
     <mvc:resources mapping="/activity/style/**" location="/activity/style/"/>
@@ -46,11 +40,13 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${web.static.server}"/>
         <property name="javascriptLocation" value="/activity${web.js.path}"/>
         <property name="cssLocation" value="/activity${web.css.path}"/>
         <property name="sourceMap">
             <map>
+                <entry key="webServer" value="${web.server}"/>
+                <entry key="askServer" value="${ask.server}"/>
+                <entry key="staticServer" value="${web.static.server}"/>
                 <entry key="percentFraction">
                     <bean class="com.tuotiansudai.activity.freemarker.directive.PercentFractionDirective"/>
                 </entry>

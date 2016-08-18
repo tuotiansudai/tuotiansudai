@@ -69,7 +69,7 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/answer/my-answers?index=${page}"> ${page} </a>
+            <a href="/answer/my-answers?index=${page}" <#if page == answers.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if answers.data.maxPage - answers.data.index &gt; 2>

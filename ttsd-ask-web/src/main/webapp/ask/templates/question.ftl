@@ -15,9 +15,11 @@
                         <span class="tag">${tag.description}</span>
                     </#list>
                 <dd>${question.addition!}</dd>
-                <dd class="fr clearfix answer-button">
-                    <button type="button" class="btn">我来回答</button>
-                </dd>
+                <#if !isQuestionOwner>
+                    <dd class="fr clearfix answer-button">
+                        <button type="button" class="btn">我来回答</button>
+                    </dd>
+                </#if>
             </dl>
         </div>
     </div>
@@ -46,7 +48,7 @@
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
-                        <input type="text" placeholder="请输入验证码" class="captcha" name="captcha">
+                        <input type="text" placeholder="请输入验证码" class="captcha" name="captcha" maxlength="5">
                         <img src="/captcha" alt="" class="captchaImg">
                         <button type="button" class="btn fr formSubmit" disabled>提交答案</button>
                         <i class="error" style="display: none">验证码不正确</i>
@@ -75,17 +77,14 @@
 
 <#--ad-->
     <div class="ad-answer"><a href="#"></a></div>
-    <div class="borderBox clearfix margin-top-10">
-        <div class="answers-box ">
-            <div class="other-title">
-                <#if bestAnswer??>
-                    其他${question.answers - 1}条回答
-                <#else>
-                    共${question.answers}个回答
-                </#if>
-            </div>
-            <#list answers as answer>
-                <#if (bestAnswer?? && answer.id != bestAnswer.id) || !(bestAnswer??)>
+
+    <#if answers.data.records?has_content>
+        <div class="borderBox clearfix margin-top-10">
+            <div class="answers-box ">
+                <div class="other-title">
+                    <#if bestAnswer??>其他回答<#else>全部回答</#if>
+                </div>
+                <#list answers.data.records as answer>
                     <dl class="answers-list">
                         <dd>${answer.answer}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
@@ -97,10 +96,51 @@
                             <input type="hidden" data-id="${answer.id?string.computer}" class="answerId">
                         </dd>
                     </dl>
-                </#if>
-            </#list>
+                </#list>
+            </div>
         </div>
-    </div>
+        <div class="pagination">
+            <#if answers.data.hasPreviousPage>
+                <a href="/question/${questionId?string.computer}">首页</a>
+            </#if>
+            <#if answers.data.index &gt; 3>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.index-1}"> < </a>
+            </#if>
+
+            <#assign lower = 1>
+            <#assign upper = answers.data.maxPage>
+            <#if answers.data.maxPage &gt; 5>
+                <#assign lower = answers.data.index>
+                <#assign upper = answers.data.index>
+                <#list 1..2 as index>
+                    <#if answers.data.index - index &gt; 0>
+                        <#assign lower = lower - 1>
+                    <#else>
+                        <#assign upper = upper + 1>
+                    </#if>
+                </#list>
+                <#list 1..2 as index>
+                    <#if answers.data.index + index <= answers.data.maxPage>
+                        <#assign upper = upper + 1>
+                    <#else>
+                        <#assign lower = lower - 1>
+                    </#if>
+                </#list>
+            </#if>
+
+            <#list lower..upper as page>
+                <a href="/question/${questionId?string.computer}?index=${page}"
+                   <#if page == answers.data.index>class="active"</#if>> ${page} </a>
+            </#list>
+
+            <#if answers.data.maxPage - answers.data.index &gt; 2>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.index+1}"> > </a>
+            </#if>
+            <#if answers.data.hasNextPage>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.maxPage}">末页</a>
+            </#if>
+        </div>
+    </#if>
 
 </div>
 </@global.main>

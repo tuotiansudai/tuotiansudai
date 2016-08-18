@@ -34,7 +34,7 @@ processResources.outputs.upToDateWhen { false }
  */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
-    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
+    def outerConfigPath = '/workspace/new_version_config/ttsd-config'
     if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
         innerConfigPath = configPath
     } else if (new File(outerConfigPath).isDirectory()) {
