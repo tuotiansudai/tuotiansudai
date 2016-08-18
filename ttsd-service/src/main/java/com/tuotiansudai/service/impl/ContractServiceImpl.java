@@ -195,6 +195,7 @@ public class ContractServiceImpl implements ContractService {
         List<ContractInvestDto> contractInvestDtos = new ArrayList<>();
         for (InvestModel invest : invests) {
             AccountModel accountModel = accountMapper.findByLoginName(invest.getLoginName());
+
             if (!invest.getLoginName().equals(loginName) && ContractType.INVEST == contractType) {
                 contractInvestDtos.add(new ContractInvestDto(encryptData(accountModel.getLoginName(), EncryptType.LOGIN_NAME),
                         encryptData(accountModel.getUserName(), EncryptType.REAL_NAME), encryptData(accountModel.getIdentityNumber(), EncryptType.ID_CARD),

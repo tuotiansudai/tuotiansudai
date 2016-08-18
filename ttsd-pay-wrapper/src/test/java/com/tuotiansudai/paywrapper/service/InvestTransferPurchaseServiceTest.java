@@ -454,7 +454,7 @@ public class InvestTransferPurchaseServiceTest {
         userMembershipMapper.create(userMembershipModel);
         CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1, "transferrer");
         UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeTransferInvest.getId());
-        couponRepayMapper.create(Lists.newArrayList(new CouponRepayModel(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeTransferInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate())));
+        couponRepayMapper.create(new CouponRepayModel(transferee.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeTransferInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate()));
 
         investTransferPurchaseService.postPurchase(fakeInvest.getId());
 

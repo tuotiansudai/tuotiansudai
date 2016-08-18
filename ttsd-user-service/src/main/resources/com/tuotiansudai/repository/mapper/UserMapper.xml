@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userResultMap" type="UserModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="mobile"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="last_modified_time" property="lastModifiedTime"/>
+        <result column="last_modified_user" property="lastModifiedUser"/>
+        <result column="avatar" property="avatar"/>
+        <result column="referrer" property="referrer"/>
+        <result column="status" property="status"/>
+        <result column="salt" property="salt"/>
+        <result column="channel" property="channel"/>
+        <result column="source" property="source"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="sign_in_count" property="signInCount"/>
+    </resultMap>
+
+    <resultMap id="userViewResultMap" type="UserView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+        <result column="identity_number" property="identityNumber"/>
+        <result column="email" property="email"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="status" property="status"/>
+        <result column="channel" property="channel"/>
+        <result column="source" property="source"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="auto_invest_status" property="autoInvestStatus"/>
+        <result column="last_bill_time" property="lastBillTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
+        value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
+    </insert>
+
+    <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
+        update user set email = #{email},
+        mobile = #{mobile},
+        password = #{password},
+        last_modified_time = #{lastModifiedTime},
+        last_modified_user = #{lastModifiedUser},
+        status = #{status},
+        referrer = #{referrer},
+        province = #{province},
+        city = #{city},
+        sign_in_count = #{signInCount}
+        where id = #{id}
+    </update>
+
+    <select id="findByLoginName" parameterType="string" resultMap="userResultMap">
+        select * from user where login_name = #{loginName}
+    </select>
+
+    <select id="lockByLoginName" parameterType="string" resultMap="userResultMap">
+        select * from user where login_name = #{loginName} for update
+    </select>
+
+    <select id="findByMobile" parameterType="string" resultMap="userResultMap">
+        select * from user where mobile = #{mobile}
+    </select>
+
+    <select id="findByLoginNameOrMobile" parameterType="string" resultMap="userResultMap">
+        select * from user where login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile}
+    </select>
+
+    <select id="findByEmail" parameterType="string" resultMap="userResultMap">
+        select * from user where email = #{email} and status = 'ACTIVE'
+    </select>
+
+    <select id="findUsersCount" resultType="long">
+        select count(1) FROM user
+    </select>
+
+    <select id="findAllLoginNames" resultType="string">
+        select login_name from user
+    </select>
+
+    <select id="findAllUserChannels" resultType="string">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
+    </select>
+
+    <select id="findUsersByProvince" resultMap="userResultMap">
+        select * from user
+        where province is NULL
+        or province = ''
+        order by register_time desc
+        limit 0, 100
+    </select>
+
+    <select id="findAllUsersByProvinces" resultType="java.lang.String">
+        select login_name from user
+        <if test="districtName != null and districtName.size != 0">
+            where province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findNaturalUser" resultType="string">
+        SELECT
+        us.login_name
+        FROM
+        user us
+        JOIN invest t
+        ON us.`login_name` = t.`login_name`
+        and t.`status` = 'SUCCESS'
+        where NOT EXISTS
+        (SELECT
+        1
+        FROM
+        referrer_relation r
+        JOIN user_role u
+        ON r.`referrer_login_name` = u.`login_name`
+        AND u.`role` = 'STAFF'
+        WHERE r.`level` = '1'
+        AND t.`login_name` = r.`login_name`)
+        AND NOT EXISTS
+        (SELECT
+        1
+        FROM
+        user_role ur
+        WHERE ur.role IN ('STAFF', 'AGENT')
+        AND t.`login_name` = ur.`login_name`)
+        <if test="districtName != null and districtName.size != 0">
+            and us.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findAllRecommendation" resultType="java.lang.String">
+        SELECT
+        r.login_name
+        FROM
+        referrer_relation r
+        JOIN user_role u
+        ON r.`referrer_login_name` = u.`login_name`
+        AND u.`role` = 'STAFF'
+        <if test="districtName != null and districtName.size != 0">
+            join user ur on ur.login_name = r.login_name
+            and ur.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE r.`level` = '1'
+    </select>
+
+    <select id="findUsersByChannel" parameterType="map" resultMap="userResultMap">
+        select * from user where channel is not null
+        <if test="channels != null and channels.size != 0">
+            and channel in
+            <foreach item="item" collection="channels" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findUsersBirthdayMobile" resultType="string">
+        select user.mobile
+        from user
+        inner join account on user.login_name = account.login_name
+        where if(length(identity_number)=18, substring(identity_number,11,2), substring(identity_number,9,2)) - date_format(now(),'%m') = 0
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS');
+    </select>
+
+    <select id="findAllByRole" parameterType="map" resultType="string">
+        SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
+        <if test="districtName != null and districtName.size != 0">
+            and u.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE t.role = #{role};
+    </select>
+
+</mapper>
