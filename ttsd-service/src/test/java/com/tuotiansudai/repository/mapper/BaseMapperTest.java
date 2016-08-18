@@ -24,6 +24,7 @@ import java.util.UUID;
 @Transactional
 public abstract class BaseMapperTest {
 
+
     @Autowired
     private UserMapper userMapper;
 
@@ -127,4 +128,5 @@ public abstract class BaseMapperTest {
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
     }
+
 }
