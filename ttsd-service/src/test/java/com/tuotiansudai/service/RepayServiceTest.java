@@ -124,7 +124,7 @@ public class RepayServiceTest {
     private CouponRepayModel getCouponRepayModel(String loginName,long couponId,long userCouponId,long investId,Date date){
         CouponRepayModel couponRepayModel = new CouponRepayModel(loginName, couponId, userCouponId, investId, 200, 100, 1, date);
         couponRepayModel.setPeriod(1);
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
+        couponRepayMapper.create(couponRepayModel);
         return couponRepayModel;
     }
 
