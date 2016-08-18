@@ -1,8 +1,15 @@
 <div class="layer-content">
 <div class="pad-s tc color-note">
-<div class="tl" style="font-size:20px;font-weight:bold;color:#000000">回款详情</div>
-<div class="tl mb-0" style="color:#000000">
-    <p class="mb-0">已收回款总额:{{sumActualInterest}}元  &nbsp;&nbsp;  待收回款总额:{{sumExpectedInterest}}元  &nbsp;&nbsp;  现金红包奖励:{{redInterest}}元</p>
+<div class="tl" style="font-size:16px;font-weight:bold;color:#000000">回款详情</div>
+<hr/>
+<div class="tl mb-0" style="height: 25px;">
+    <table>
+        <tr>
+            <td style="text-align:left">已收回款总额 : <font style="color:#ff7a2a">{{sumActualInterest}}</font>元</td>
+            <td style="text-align:left">待收回款总额 : <font style="color:#ff7a2a">{{sumExpectedInterest}}</font>元</td>
+            <td style="text-align:left">现金红包奖励 : <font style="color:#ff7a2a">{{redInterest}}</font>元</td>
+        </tr>
+    </table>
 </div>
 </div>
     <table class="table table-hover">
@@ -38,7 +45,7 @@
                                 {{^couponExpectedInterest}}--{{/couponExpectedInterest}}
                             </td>
                             <td class="tr">
-                                {{#expectedFee}}{{.}}{{/expectedFee}}
+                                {{#expectedFee}}-{{.}}{{/expectedFee}}
                                 {{^expectedFee}}--{{/expectedFee}}
                             </td>
                             <td class="tr">
