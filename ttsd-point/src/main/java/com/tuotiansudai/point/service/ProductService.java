@@ -39,6 +39,8 @@ public interface ProductService {
 
     BaseDataDto active(long productId, String loginName);
 
+    BaseDataDto inactive(long productId, String loginName);
+
     BaseDataDto consignment(long orderId);
 
     ProductModel findById(long id);

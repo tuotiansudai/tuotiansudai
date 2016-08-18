@@ -73,21 +73,69 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findProductOrderListByLoginName" parameterType="java.lang.String" resultMap="productOrderExchangeResultMap">
-        select po.id as id,
-        po.goods_id as goods_id,
-        po.product_price as product_price,
-        po.num as num,
-        po.total_price as total_price,
-        po.created_time as created_time,
-        p.product_name as product_name
-        from product_order po
-        JOIN product p ON po.product_id = p.id
+    <select id="findProductOrderListByLoginName" parameterType="map" resultMap="productOrderExchangeResultMap">
+        SELECT * FROM (
+            SELECT po.id AS id,
+                po.goods_id AS goods_id,
+                po.product_price AS product_price,
+                po.num AS num,
+                po.total_price AS total_price,
+                po.created_time AS created_time,
+                po.created_by AS created_by,
+                p.product_name AS product_name
+                FROM product_order po
+                JOIN product p ON po.goods_id = p.id
+            UNION ALL
+              SELECT po.id AS id,
+                po.goods_id AS goods_id,
+                po.product_price AS product_price,
+                po.num AS num,
+                po.total_price AS total_price,
+                po.created_time AS created_time,
+                po.created_by AS created_by,
+                 CASE p.coupon_type
+                    WHEN 'RED_ENVELOPE' THEN CONCAT(truncate((p.amount/100),2),'元现金红包')
+                    WHEN 'INTEREST_COUPON' THEN CONCAT((p.rate*100),'%加息券')
+                    WHEN 'INVEST_COUPON' THEN CONCAT(truncate((p.amount/100),2),'元投资体验券')
+                    ELSE '其他'
+                 END AS product_name
+                FROM product_order po
+                JOIN coupon p ON po.goods_id = p.id
+        ) pr
+        WHERE pr.created_by = #{loginName}
+        ORDER BY pr.created_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
 
-
-
-
-        WHERE po.created_by = #{loginName}
-        order by po.created_time desc
+    <select id="findProductOrderListByLoginNameCount" resultType="long">
+        SELECT COUNT(1) FROM (
+          SELECT po.id AS id,
+            po.goods_id AS goods_id,
+            po.product_price AS product_price,
+            po.num AS num,
+            po.total_price AS total_price,
+            po.created_time AS created_time,
+            po.created_by AS created_by,
+            p.product_name AS product_name
+            FROM product_order po
+            JOIN product p ON po.goods_id = p.id
+        UNION ALL
+          SELECT po.id AS id,
+            po.goods_id AS goods_id,
+            po.product_price AS product_price,
+            po.num AS num,
+            po.total_price AS total_price,
+            po.created_time AS created_time,
+            po.created_by AS created_by,
+            CASE p.coupon_type
+              WHEN 'RED_ENVELOPE' THEN CONCAT(truncate((p.amount/100),2),'元现金红包')
+              WHEN 'INTEREST_COUPON' THEN CONCAT((p.rate*100),'%加息券')
+              WHEN 'INVEST_COUPON' THEN CONCAT(truncate((p.amount/100),2),'元投资体验券')
+              ELSE '其他'
+              END AS product_name
+            FROM product_order po
+            JOIN coupon p ON po.goods_id = p.id
+        ) pr
+          WHERE pr.created_by = #{loginName}
     </select>
 </mapper>

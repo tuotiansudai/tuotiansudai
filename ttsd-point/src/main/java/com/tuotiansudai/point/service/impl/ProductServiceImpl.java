@@ -110,6 +110,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    public BaseDataDto inactive(long porductId, String loginName) {
+        String errorMessage = "product model not exist product id = ({0})";
+        ProductModel productModel = productMapper.findById(porductId);
+        if (productModel == null) {
+            logger.error(MessageFormat.format(errorMessage, productModel.getId()));
+            return new BaseDataDto(false, MessageFormat.format(errorMessage, productModel.getId()));
+        }
+        productModel.setActive(false);
+        productModel.setActiveBy(loginName);
+        productModel.setActiveTime(new Date());
+        productMapper.update(productModel);
+        return new BaseDataDto(true, null);
+    }
+
+    @Override
+    @Transactional
     public BaseDataDto consignment(long orderId) {
         String errorMessage = "goods order not exist, product Order id = ({0})";
             ProductOrderModel productOrderModel = productOrderMapper.findById(orderId);

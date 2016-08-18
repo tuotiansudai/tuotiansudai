@@ -39,7 +39,7 @@
             </ul>
             <#if isLogin>
             <div class="user-trade">
-                <a href="#">兑换记录></a> | <a href="#">积分明细></a>
+                <a href="/pointsystem/record">兑换记录></a> | <a href="/pointsystem/bill">积分明细></a>
             </div>
             </#if>
             <div class="sign-layer" id="signLayer">

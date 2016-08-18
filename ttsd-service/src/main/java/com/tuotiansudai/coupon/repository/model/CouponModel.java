@@ -331,7 +331,7 @@ public class CouponModel implements Serializable {
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
         this.agents = couponDto.getAgents();
         this.channels = couponDto.getChannels();
-        this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT).contains(couponDto.getUserGroup());
+        this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT,UserGroup.EXCHANGER).contains(couponDto.getUserGroup());
         this.couponSource = couponDto.getCouponSource();
         this.comment = couponDto.getComment();
         this.updatedTime = new Date();

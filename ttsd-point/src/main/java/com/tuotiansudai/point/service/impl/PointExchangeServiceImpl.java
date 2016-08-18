@@ -66,8 +66,13 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
-    public List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName) {
-        return productOrderMapper.findProductOrderListByLoginName(loginName);
+    public List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName, int index, int pageSize) {
+        return productOrderMapper.findProductOrderListByLoginName(loginName, (index-1)*pageSize, pageSize);
+    }
+
+    @Override
+    public long findProductOrderListByLoginNameCount(String loginName) {
+        return productOrderMapper.findProductOrderListByLoginNameCount(loginName);
     }
 
     @Override

@@ -13,6 +13,8 @@ public interface PointExchangeService {
 
     boolean exchangeableCoupon(long couponId, String loginName);
 
-    List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName);
+    List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName, int index, int pageSize);
+
+    long findProductOrderListByLoginNameCount(String loginName);
 
 }

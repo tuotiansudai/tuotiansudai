@@ -113,8 +113,12 @@
                                 -
                             </@security.authorize>
                             <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                                <a href="/activity-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit"
-                                   class="btn-link">编辑</a>
+                                <#if exchangeCoupon.issuedCount?string('0') != "0">
+                                    -
+                                <#else>
+                                    <a href="/activity-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit"
+                                       class="btn-link">编辑</a>
+                                </#if>
                             </@security.authorize>
                         </#if>
                     </td>
@@ -123,15 +127,15 @@
                             <#if exchangeCoupon.active>
                                 <label>
                                     <i class="check-btn add-check"></i>
-                                    <button class="loan_repay already-btn btn-link inactive-btn" disabled
-                                            data-id="${exchangeCoupon.id?string('0')}">已生效
+                                    <button class="loan_repay already-btn btn-link inactive-btn"
+                                            data-id="${exchangeCoupon.id?string('0')}" data-value="${exchangeCoupon.issuedCount?string('0')}">已生效
                                     </button>
                                 </label>
                             <#else>
                                 <label>
                                     <i class="check-btn"></i>
                                     <a class="loan_repay confirm-btn" href="javascript:void(0)"
-                                       data-id="${exchangeCoupon.id?string('0')}">确认生效</a>
+                                       data-id="${exchangeCoupon.id?string('0')}" data-value="${exchangeCoupon.issuedCount?string('0')}">确认生效</a>
                                 </label>
                             </#if>
                         </@security.authorize>

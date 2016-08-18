@@ -27,6 +27,10 @@ public interface ProductOrderMapper {
 
     ProductOrderModel findById(long id);
 
-    List<ProductOrderViewDto> findProductOrderListByLoginName(String loginName);
+    List<ProductOrderViewDto> findProductOrderListByLoginName(@Param(value = "loginName") String loginName,
+                                                              @Param(value = "index") int index,
+                                                              @Param(value = "pageSize") int pageSize);
+
+    long findProductOrderListByLoginNameCount(@Param(value = "loginName") String loginName);
 
 }

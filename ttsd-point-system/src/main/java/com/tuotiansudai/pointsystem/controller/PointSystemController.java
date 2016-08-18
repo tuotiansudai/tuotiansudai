@@ -167,9 +167,13 @@ public class PointSystemController {
     }
 
     @RequestMapping(value = "/record", method = RequestMethod.GET)
-    public ModelAndView pointSystemRecord(String loginName) {
+    public ModelAndView pointSystemRecord(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                          @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-record");
-        modelAndView.addObject("recordList", pointExchangeService.findProductOrderListByLoginName(loginName));
+
+        modelAndView.addObject("recordList", pointExchangeService.findProductOrderListByLoginName(LoginUserInfo.getLoginName(), index, pageSize));
+        modelAndView.addObject("recordCount", pointExchangeService.findProductOrderListByLoginNameCount(LoginUserInfo.getLoginName()));
+
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }

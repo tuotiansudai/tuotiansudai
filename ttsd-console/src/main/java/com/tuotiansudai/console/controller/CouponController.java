@@ -291,6 +291,21 @@ public class CouponController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/exchange-coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> inactiveExchangeCoupon(@PathVariable long couponId, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
+        String ip = RequestIPParser.parse(request);
+        couponActivationService.exchangeInactive(loginName, couponId, ip);
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
+
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup) {

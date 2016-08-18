@@ -113,6 +113,17 @@ public class ProductManageController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/{productId:^\\d+$}/inactive", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> productInActive(@PathVariable long productId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        productService.inactive(productId, LoginUserInfo.getLoginName());
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
     @RequestMapping(value = "/{orderId:^\\d+$}/consignment", method = RequestMethod.POST)
     @ResponseBody
     public  BaseDto<BaseDataDto> productConsignment(@PathVariable long orderId) {

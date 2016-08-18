@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class ProductOrderViewDto implements Serializable {
     private long id;
-    private long productId;
+    private long goodsId;
     private String productName;
     private long productPrice;
     private Integer num;
@@ -25,12 +25,12 @@ public class ProductOrderViewDto implements Serializable {
         this.id = id;
     }
 
-    public long getProductId() {
-        return productId;
+    public long getGoodsId() {
+        return goodsId;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setGoodsId(long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getProductName() {
