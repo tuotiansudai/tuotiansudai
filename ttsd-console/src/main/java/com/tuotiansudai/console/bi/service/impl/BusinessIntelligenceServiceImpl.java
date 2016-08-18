@@ -229,15 +229,14 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Override
     public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
-        Date queryStartTime = new DateTime(startTime).minusDays(1).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         List<KeyValueModel> keyValueModelLists = Lists.newArrayList();
         if (redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY).size() == 0) {
-            while (queryStartTime.before(queryEndTime)) {
-                KeyValueModel keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(queryStartTime, 1),queryStartTime);
+            while (startTime.before(queryEndTime)) {
+                KeyValueModel keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(startTime, 1));
                 logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
                 keyValueModelLists.add(keyValueModel);
-                queryStartTime = DateUtils.addDays(queryStartTime, 1);
+                startTime = DateUtils.addDays(startTime, 1);
             }
             redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }else{
@@ -252,7 +251,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             Date nowDate = DateTime.now().withTimeAtStartOfDay().toDate();
             redisLastDate = DateUtils.addDays(redisLastDate, 1);
             while (redisLastDate.before(nowDate)) {
-                keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(redisLastDate, 1),redisLastDate);
+                keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(redisLastDate, 1));
                 logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
                 keyValueModelLists.add(keyValueModel);
                 redisLastDate = DateUtils.addDays(redisLastDate, 1);
