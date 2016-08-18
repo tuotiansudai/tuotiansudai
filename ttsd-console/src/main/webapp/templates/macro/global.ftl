@@ -123,7 +123,7 @@
             },
             {
                 "name":"app-push-manage",
-            "header":{"text":"消息管理"},
+                "header":{"text":"消息管理"},
                 "sidebar":[
                     {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
@@ -165,8 +165,8 @@
                 "name":"ask-manage",
                 "header":{"text":"问答管理"},
                 "sidebar":[
-                    {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN'"},
-                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN'"}
+                    {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN', 'ASK_ADMIN'"},
+                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"}
                 ]
             }
 

@@ -11,7 +11,8 @@ public enum Role {
     AGENT("代理商"),
     ADMIN("管理员"),
     EDITOR("编辑"),
-    DATA("数据专员");
+    DATA("数据专员"),
+    ASK_ADMIN("问答管理员"),;
 
     private String description;
 
