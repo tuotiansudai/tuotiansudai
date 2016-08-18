@@ -56,7 +56,9 @@
 			<#if referrer??>
                 <a href="/register/user?referrer=${referrer}">立即注册</a>
 			<#else>
-                <a href="/referrer/refer-list" onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
+				<#if !isAppSource>>
+					<a href="/referrer/refer-list" onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
+				</#if>
 			</#if>
 	    </div>
 	    <div class="share-rules"></div>
