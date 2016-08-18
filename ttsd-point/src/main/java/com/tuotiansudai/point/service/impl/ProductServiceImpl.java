@@ -241,7 +241,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, UserAddressModel userAddressModel) {
+    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户不存在"));
@@ -256,6 +256,17 @@ public class ProductServiceImpl implements ProductService {
         }
         if (accountModel.getPoint() < productShowItemDto.getProductPrice() * amount) {
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
+        }
+
+        UserAddressModel userAddressModel = null;
+        if (ItemType.PHYSICAL == itemType) {
+            if (null == addressId) {
+                return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
+            }
+            userAddressModel = userAddressMapper.findByLoginNameAndId(addressId, loginName);
+            if (null == userAddressModel) {
+                return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
+            }
         }
 
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel);
@@ -295,17 +306,16 @@ public class ProductServiceImpl implements ProductService {
         } else {
             UserAddressModel userAddressModel = new UserAddressModel(loginName, realName, mobile, address, loginName);
             userAddressMapper.create(userAddressModel);
-            return new BaseDto<>(new BaseDataDto(true));
+            return new BaseDto<>(new BaseDataDto(true, String.valueOf(userAddressModel.getId())));
         }
     }
 
     @Override
-    public BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address) {
-        List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(loginName);
-        if (userAddressModels.size() <= 0) {
-            return new BaseDto<>(new BaseDataDto(false, "没有填写过地址"));
+    public BaseDto<BaseDataDto> updateAddress(long id, String loginName, String realName, String mobile, String address) {
+        UserAddressModel userAddressModel = userAddressMapper.findByLoginNameAndId(id, loginName);
+        if (null == userAddressModel) {
+            return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
         } else {
-            UserAddressModel userAddressModel = userAddressModels.get(0);
             userAddressModel.setRealName(realName);
             userAddressModel.setMobile(mobile);
             userAddressModel.setAddress(address);

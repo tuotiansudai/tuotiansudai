@@ -33,7 +33,18 @@
           mobile = #{mobile},
           address = #{address}
         WHERE
-          login_name = #{loginName}
+        login_name = #{loginName} AND
+        id = #{id}
     </update>
+
+    <select id="findByLoginNameAndId" resultMap="userAddressResultMap">
+        SELECT
+          *
+        FROM
+          `aa`.`user_address`
+        WHERE
+          id = #{id} AND
+          login_name = #{loginName}
+    </select>
 
 </mapper>

@@ -4,7 +4,8 @@
 <div class="global-member-order">
 	<div class="wp clearfix">
 		<div class="order-top">
-			您所在的位置：<a href="/pointsystem">积分商城</a> > <a href="#">拓天速贷U盘</a>><span>订单确认</span>
+            您所在的位置：<a href="/pointsystem">积分商城</a> > <a
+                href="/pointsystem/detail/${productShowItem.id}?itemType=${productShowItem.itemType}">${productShowItem.productName}</a>><span>订单确认</span>
 		</div>
 	</div>
 	<div class="wp clearfix order-item">
@@ -14,13 +15,18 @@
                 	<div class="address-model">
 						<h3>添加您的收货地址</h3>
 						<div class="address-item">
+							<#if addresses?size == 0>
+                                <span class="add-place" id="addPlace">添加地址</span>
+							<#else>
 								<#list addresses as address>
-									<a href="javascript:void(0)" class="address-set" data-id="121" data-user="${address.realName}" data-phone="${address.mobile}" data-address="${address.address}" id="updatePlace">修改</a>
+                                    <a href="javascript:void(0)" class="address-set" data-id="${address.id?c!0}"
+                                       data-user="${address.realName}" data-phone="${address.mobile}"
+                                       data-address="${address.address}" id="updatePlace">修改</a>
 									<p class="user-name">${address.realName}</p>
 									<p>${address.mobile}</p>
 									<p title="${address.address}">${address.address}</p>
 								</#list>
-								<span class="add-place" id="addPlace">添加地址</span>
+							</#if>
 						</div>
 					</div>
 					<div class="fix-address" id="fixAdress">

@@ -43,7 +43,8 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 					data: {
 						id: idString,
 						itemType: typeString,
-						number: $numText.val()
+						number: $numText.val(),
+						userAddressId: $('#updatePlace').attr('data-id')
 					}
 				})
 				.done(function(data) {
@@ -172,7 +173,11 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 				data: dataList.data
 			})
 			.done(function(data) {
-				location.reload();
+					if (data.data.status) {
+						location.reload();
+					} else {
+						errorTip(data.data);
+					}
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
@@ -184,7 +189,7 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 			layer.open({
 				type: 1,
 				title: false,
-				area: ['300px', 'auto'],
+				area: ['300px', '180px'],
 				content: $('#errorTip')
 			});
 		}

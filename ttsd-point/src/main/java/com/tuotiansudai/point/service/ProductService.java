@@ -25,13 +25,13 @@ public interface ProductService {
 
     ProductShowItemDto findProductShowItemDto(long id, ItemType itemType);
 
-    BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, UserAddressModel userAddressModel);
+    BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId);
 
     List<UserAddressModel> getUserAddressesByLoginName(String loginName);
 
     BaseDto<BaseDataDto> addAddress(String loginName, String realName, String mobile, String address);
 
-    BaseDto<BaseDataDto> updateAddress(String loginName, String realName, String mobile, String address);
+    BaseDto<BaseDataDto> updateAddress(long id, String loginName, String realName, String mobile, String address);
 
     List<ProductOrderDto> findProductOrderList(long goodsId, String loginName, int index, int pageSize);
 
