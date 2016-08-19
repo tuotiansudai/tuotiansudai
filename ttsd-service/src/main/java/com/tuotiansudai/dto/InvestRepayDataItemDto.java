@@ -71,7 +71,9 @@ public class InvestRepayDataItemDto {
         this.repayDate = model.getRepayDate();
         if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().compareTo(model.getRepayDate()) == -1){
             this.status = "提前还款";
-        }else {
+        }else if(RepayStatus.OVERDUE == model.getStatus()){
+            this.status = "逾期还款";
+        }else{
             this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
         }
         this.period = model.getPeriod();
