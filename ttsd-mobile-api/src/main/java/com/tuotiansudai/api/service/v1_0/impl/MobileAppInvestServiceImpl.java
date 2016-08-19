@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.v1_0.MobileAppAdvertisementService;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -65,13 +64,13 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
             BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
-            if(!formDto.isSuccess()) {
+            if (!formDto.isSuccess()) {
                 String userCouponIds = "";
-                for(long userCouponId : investDto.getUserCouponIds()) {
+                for (long userCouponId : investDto.getUserCouponIds()) {
                     userCouponIds += String.valueOf(userCouponId);
                 }
                 logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. " +
-                        "investDto:loanId:{0}, transferInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
+                                "investDto:loanId:{0}, transferInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
                         investDto.getLoanId(), investDto.getTransferInvestId(), investDto.getLoginName(), investDto.getAmount(), userCouponIds, investDto.getChannel(),
                         investDto.getSource(), investDto.isNoPassword()));
 
