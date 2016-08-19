@@ -95,8 +95,16 @@ flyway {
     schemas = ["${defaultDatabase}"]
 
     url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    user = properties.getProperty("common.jdbc.username")
-    password = properties.getProperty("common.jdbc.password")
+
+    if (['aa', 'ump_operations', 'sms_operations', 'job_worker'].contains(defaultDatabase)) {
+        user = properties.getProperty("common.jdbc.username")
+        password = properties.getProperty("common.jdbc.password")
+    }
+
+    if ('edxask'.equals(defaultDatabase)) {
+        user = properties.getProperty("ask.jdbc.username")
+        password = properties.getProperty("ask.jdbc.password")
+    }
 }
 
 task flywayAA(type: FlywayMigrateTask) {

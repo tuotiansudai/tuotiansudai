@@ -174,6 +174,14 @@ def only_activity():
 
 
 @task
+def only_ask():
+    """
+    Deploy ask component to PROD from CI
+    """
+    fab_command("ask")
+
+
+@task
 def only_worker():
     """
     Deploy worker component to PROD from CI
