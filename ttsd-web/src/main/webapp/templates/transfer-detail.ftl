@@ -23,7 +23,12 @@
                 </dl>
                 <dl>
                     <dt>预期年化收益</dt>
-                    <dd><em>${transferApplication.baseRate!}%</em></dd>
+                    <dd><em>${transferApplication.baseRate!}
+                        <#if loanDto.activityRate != '0.0'>
+                            <i class="data-extra-rate">+ ${100 * loanDto.activityRate?number}</i>
+                        </#if>
+                        %
+                    </em></dd>
                 </dl>
                 <dl>
                     <dt>剩余期数</dt>
