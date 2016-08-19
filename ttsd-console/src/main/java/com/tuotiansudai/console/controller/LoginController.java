@@ -43,14 +43,14 @@ public class LoginController {
 
     @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<LoginDto> login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public LoginDto login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
         SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
-        BaseDto<LoginDto> baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
+        LoginDto baseDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         Map<String, String> sessionIds = new HashMap<>();
-        sessionIds.put("SESSION", baseDto.getData().getNewSessionId() != null ? baseDto.getData().getNewSessionId() : httpServletRequest.getSession().getId());
+        sessionIds.put("SESSION", baseDto.getNewSessionId() != null ? baseDto.getNewSessionId() : httpServletRequest.getSession().getId());
         Cookie cookie = createSessionCookie(httpServletRequest, sessionIds);
         httpServletResponse.addCookie(cookie);
         return baseDto;

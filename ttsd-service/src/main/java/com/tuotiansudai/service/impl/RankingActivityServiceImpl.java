@@ -13,11 +13,13 @@ import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
@@ -37,6 +39,9 @@ import java.util.*;
 public class RankingActivityServiceImpl implements RankingActivityService {
 
     private static Logger logger = Logger.getLogger(RankingActivityServiceImpl.class);
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private AccountService accountService;
@@ -85,14 +90,14 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     @Autowired
     private RandomUtils randomUtils;
 
-    public BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName, String mobile) {
+    public BaseDto<DrawLotteryDto> drawTianDouPrize(String loginName) {
         logger.debug(loginName + " is drawing the tiandou prize.");
 
         DrawLotteryDto drawLotteryDto = new DrawLotteryDto();
         BaseDto baseDto = new BaseDto();
         baseDto.setData(drawLotteryDto);
 
-        if (StringUtils.isEmpty(loginName) || StringUtils.isEmpty(mobile)) {
+        if (StringUtils.isEmpty(loginName)) {
             logger.error("User not login. can't draw prize.");
             drawLotteryDto.setMessage("用户未登录，不能抽奖。");
             drawLotteryDto.setReturnCode(2);
@@ -124,6 +129,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         logger.debug(loginName + " drew a prize: " + prize);
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
         String userName = accountModel == null ? "" : accountModel.getUserName();
         String identityNumber = accountModel == null ? "" : accountModel.getIdentityNumber();
@@ -133,7 +139,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         redisWrapperClient.lpush(TIAN_DOU_WINNER_PRIZE + loginName, winnerPrize);
         redisWrapperClient.lpush(TIAN_DOU_ALL_WINNER, loginName + "+" + winnerPrize);
 
-        String prizeWinner = loginName + "+" + userName + "+" + mobile + "+" + identityNumber + "+" + dateTime;
+        String prizeWinner = loginName + "+" + userName + "+" + userModel.getMobile() + "+" + identityNumber + "+" + dateTime;
         redisWrapperClient.lpush(TIAN_DOU_PRIZE_WINNER + prize, prizeWinner);
 
         redisWrapperClient.sadd(TIAN_DOU_DRAW_USER_SET, loginName);

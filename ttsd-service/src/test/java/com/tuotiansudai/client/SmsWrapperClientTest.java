@@ -52,23 +52,4 @@ public class SmsWrapperClientTest {
         assertNotNull(resultDto);
         assertTrue(resultDto.getData().getStatus());
     }
-
-    @Test
-    @Transactional
-    public void shouldMonitor() throws Exception {
-        MockResponse mockResponse = new MockResponse();
-        String jsonString = "{\"success\":true,\"data\":{\"status\":true, \"databaseStatus\":true, \"redisStatus\":true }}";
-        mockResponse.setBody(jsonString);
-        server.enqueue(mockResponse);
-        URL url = server.getUrl("/monitor");
-        smsWrapperClient.setHost(url.getHost());
-        smsWrapperClient.setPort(String.valueOf(url.getPort()));
-        smsWrapperClient.setApplicationContext("");
-        BaseDto<MonitorDataDto> resultDto = this.smsWrapperClient.monitor();
-
-        assertNotNull(resultDto);
-        assertTrue(resultDto.getData().getStatus());
-        assertTrue(resultDto.getData().isDatabaseStatus());
-        assertTrue(resultDto.getData().isRedisStatus());
-    }
 }

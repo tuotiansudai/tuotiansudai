@@ -16,7 +16,8 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,6 +42,9 @@ public class MembershipController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MembershipExperienceBillService membershipExperienceBillService;

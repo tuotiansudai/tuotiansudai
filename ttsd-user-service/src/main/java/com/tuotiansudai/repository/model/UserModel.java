@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserModel implements Cloneable, Serializable {
+public class UserModel implements Serializable {
 
     private long id;
 

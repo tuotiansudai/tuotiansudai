@@ -9,7 +9,7 @@ import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

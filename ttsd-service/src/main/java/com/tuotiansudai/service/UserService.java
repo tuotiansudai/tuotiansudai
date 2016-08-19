@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface UserService {
 
+    String getMobile(String loginName);
+
     boolean emailIsExist(String email);
 
     boolean mobileIsExist(String mobile);

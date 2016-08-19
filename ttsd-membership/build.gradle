@@ -13,7 +13,10 @@ sourceSets {
 }
 
 dependencies {
-    testCompile project(':ttsd-service')
+    testCompile project(':ttsd-config'),
+            project(':ttsd-client'),
+            project(':ttsd-user-service')
+
 }
 
 processResources.outputs.upToDateWhen { false }

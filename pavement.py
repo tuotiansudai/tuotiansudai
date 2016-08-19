@@ -174,6 +174,14 @@ def only_activity():
 
 
 @task
+def only_ask():
+    """
+    Deploy ask component to PROD from CI
+    """
+    fab_command("ask")
+
+
+@task
 def only_worker():
     """
     Deploy worker component to PROD from CI
@@ -243,7 +251,7 @@ def replace_min_files_in_config_js_file(path):
     replace_versioned_config_file(name2path, path)
 
 
-def versioning_mobile_api_files(path):
+def versioning_webpack_files(path):
     from paver.shell import sh
 
     owd = os.getcwd()
@@ -268,7 +276,8 @@ def jcversion():
     versioning_min_files('ttsd-activity/src/main/webapp/activity/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-activity/src/main/webapp/activity/js/dest/')
 
-    versioning_mobile_api_files('ttsd-mobile-api/')
+    versioning_webpack_files('ttsd-mobile-api/')
+    versioning_webpack_files('ttsd-ask-web/')
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
