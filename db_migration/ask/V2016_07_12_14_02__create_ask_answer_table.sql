@@ -1,4 +1,4 @@
-CREATE TABLE `ask`.`answer` (
+CREATE TABLE `answer` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`    VARCHAR(25)     NOT NULL,
   `question_id`   BIGINT UNSIGNED NOT NULL,
