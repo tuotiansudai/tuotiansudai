@@ -79,7 +79,10 @@
 
     <select id="findByUserCouponByInvestId" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay where invest_id = #{investId}
+    </select>
 
+    <select id="findByUserCouponByInvestIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where invest_id = #{investId} and period = #{period}
     </select>
 
     <select id="findCouponRepayByLoanIdAndPeriod" parameterType="map" resultMap="couponRepayResultMap">
