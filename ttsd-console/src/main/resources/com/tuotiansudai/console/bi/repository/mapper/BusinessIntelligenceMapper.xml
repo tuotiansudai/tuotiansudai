@@ -1393,7 +1393,7 @@
     <select id="queryRepayByRecheckTimeAndActualRepayDate" parameterType="map" resultMap="keyValueMap">
         SELECT
             ROUND(IFNULL(SUM(r.corpus + r.expected_interest + r.default_interest),0)/ 100, 2) AS `value`,
-            DATE(#{repayDate}) AS `name`,
+            DATE(DATE_ADD(#{repayDate},INTERVAL -1 DAY)) AS `name`,
             '待收' as `group`
         FROM
             loan l
@@ -1401,7 +1401,7 @@
             loan_repay r ON l.id = r.loan_id
         WHERE
         l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
-            AND l.recheck_time &lt; #{startTime}
+            AND l.recheck_time &lt; #{repayDate}
             AND (r.actual_repay_date > #{repayDate} or actual_repay_date is null)
     </select>
 

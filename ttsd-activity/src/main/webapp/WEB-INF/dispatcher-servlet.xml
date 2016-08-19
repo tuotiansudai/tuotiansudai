@@ -51,9 +51,9 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.activity.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${web.static.server}"/>
-        <property name="javascriptLocation" value="/activity${web.js.path}"/>
-        <property name="cssLocation" value="/activity${web.css.path}"/>
+        <property name="staticServer" value="${activity.static.server}"/>
+        <property name="javascriptLocation" value="${activity.js.path}"/>
+        <property name="cssLocation" value="${activity.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="percentFraction">
