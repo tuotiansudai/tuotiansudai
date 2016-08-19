@@ -49,7 +49,9 @@
 <#--top menus-->
 
 <#--ad image-->
-<div class="banner-box page-width"></div>
+<div class="banner-box page-width">
+    <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
+</div>
 <#--ad image-->
 
 <div class="main-frame full-screen clearfix">
@@ -60,7 +62,7 @@
         <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
     </div>
     <div class="download-mobile">
-        <a href="#"></a>
+        <a href="https://tuotiansudai.com/app/download" target="_blank"></a>
     </div>
 <#--banner-->
 
@@ -82,7 +84,7 @@
         <div class="aside-frame fr">
             <#include "../user.ftl"/>
             <#include "../tags.ftl"/>
-            <a href="#" class="margin-top-10 ad-welfare" ></a>
+            <a href="https://tuotiansudai.com/activity/app-download" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
     </div>

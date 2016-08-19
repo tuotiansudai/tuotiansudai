@@ -76,7 +76,7 @@
     </#if>
 
 <#--ad-->
-    <div class="ad-answer"><a href="#"></a></div>
+    <div class="ad-answer"><a href="https://tuotiansudai.com/activity/share-reward" target="_blank"></a></div>
 
     <#if answers.data.records?has_content>
         <div class="borderBox clearfix margin-top-10">

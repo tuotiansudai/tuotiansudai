@@ -12,6 +12,7 @@
     background: url('../../images/sign/ad-answer.jpg') 0 0 no-repeat;
     a {
       display: block;
+      height:100%;
     }
   }
 }
@@ -472,7 +473,7 @@
   }
   .answers-box dl.answers-list {
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 5px;
     margin-bottom: 0;
     padding-bottom: 10px;
     dt ,dd{
@@ -543,6 +544,10 @@
     height:110px;
     background: url("../../images/sign/downloadApp.jpg") no-repeat center center;
     background-size: cover;
+    a {
+      display: block;
+      height: 100%;
+    }
   }
   .download-mobile img {
     width:100%;
@@ -593,7 +598,7 @@
 
     .answers-box dl.answers-list {
       padding-left: 15px;
-      padding-right: 15px;
+      padding-right: 5px;
       padding-bottom:5px;
       dd {
         color: #999;
@@ -607,6 +612,8 @@
       }
       .tag {
         display: inline-block;
+        padding: 4px 8px;
+        margin-right: 5px;
       }
       .answer-button {
         .btn {

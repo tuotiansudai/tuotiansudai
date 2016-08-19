@@ -9,6 +9,10 @@
 .banner-box {
   background: url("../../images/ba01.jpg") no-repeat;
   height:140px;
+  a {
+    display: block;
+    height:100%;
+  }
 }
 .m-title {
   font-size:18px;
