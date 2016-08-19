@@ -2,8 +2,13 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-lottery-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
 
+<div>
+    <button class="btn btn-sm btn-primary btnPrizeRecord">抽奖记录</button>
+    <button class="btn btn-sm btn-primary btnPrizeTime">抽奖机会统计</button>
+</div>
+
 <!-- content area begin -->
-<div class="col-md-10" style="display: none">
+<div class="col-md-10" id="prizeTimeDiv">
     <form action="" method="get" class="form-inline query-build" id="lotteryTimeForm">
 
         <div class="form-group">
@@ -87,8 +92,13 @@
 
             <div class="form-group">
                 <label>奖品</label>
-                <select class="selectpicker" name="activityStatus">
-                    <option value="" <#if !(activityStatus??)>selected</#if>>全部</option>
+                <select class="selectpicker" name="selectPrize">
+                    <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
+                    <#list lotteryPrizes as prize>
+                            <option value="${prize}" <#if lotteryPrizes?? && prize==selectPrize>selected</#if>>
+                            ${prize.description}
+                            </option>
+                    </#list>
                 </select>
             </div>
 
@@ -118,23 +128,19 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>用户手机号</th>
+                <th>中奖时间</th>
+                <th>获奖用户手机</th>
                 <th>姓名</th>
-                <th>可用抽奖机会</th>
-                <th>已用抽奖机会</th>
+                <th>奖品</th>
             </tr>
             </thead>
             <tbody>
-                <#if lotteryList?? >
-                    <#list lotteryList as lottery>
-                    <tr>
-                        <td>${lottery.mobile!}</td>
-                        <td>${lottery.loginName!}</td>
-                        <td>${lottery.useCount!}</td>
-                        <td>${lottery.unUseCount!}</td>
-                    </tr>
-                    </#list>
-                </#if>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
 
         </table>

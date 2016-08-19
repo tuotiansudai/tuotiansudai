@@ -10,4 +10,14 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     $('#lotteryTimeBtn').click(function(){
         window.location.href = "/activity-manage/user-lottery-list?"+$('#lotteryTimeForm').serialize()+"&export=csv";
     });
+
+    $('.btnPrizeRecord').click(function(){
+        $("#prizeTimeDiv").show();
+        $("#btnPrizeTime").hide();
+    });
+
+    $('.btnPrizeTime').click(function(){
+        $("#btnPrizeTime").show();
+        $("#prizeTimeDiv").hide();
+    });
 });
