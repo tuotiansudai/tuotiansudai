@@ -42,7 +42,7 @@ public class ActivitiesController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game|luxury-activity$}", method = RequestMethod.GET)
     public ModelAndView promoteNewbie(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         CouponAlertDto couponAlert = couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
