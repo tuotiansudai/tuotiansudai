@@ -339,6 +339,7 @@ body{
     left: 50px;
     position: relative;
   }
+
   .accountImg {
     margin-right: 10px;
     width: 71px;
@@ -1340,8 +1341,68 @@ body{
   }
 }
 
+.repay-layer-pop {
+  .layui-layer-title {
+    font-size: 15px;
+  }
+  .layui-layer-content {
+    padding:15px 15px 5px 15px;
+    .bottom-note {
+      font-size: 14px;
+      color: #666;
+    } 
+    .summary-top {
+      padding-bottom:10px;
+      color: #333;
+
+      span {
+        display: block;
+        width:30%;
+        float: left;
+        font-size:15px;
+        em {
+          color: #ff7a2a;
+        }
+      }
+    }
+  }
+  .table-repay {
+    color: #666;
+    th,td { border:1px solid #e6e6e6; padding:8px; text-align: right;}
+    th {
+      background: #fafafa;
+      text-align: center;
+      font-weight: normal;
+      &.spec-bg {
+        background: #ffac2a;
+        color: #fff;
+        text-align: center;
+      }
+      .coupon{
+        color:#ff7a2a;
+      }
+      .fee{
+        color:#ff7a2a;
+      }
+      .repay{
+        color:#ff7a2a;
+      }
+    }
+    td{
+      &.spec-bg {
+        background: #f1f5f8;
+        text-align: center;
+      }
+      .repay{
+        color:#ff7a2a;
+      }
+    }
+
+  }
+}
 /* refer page */
 .invest-list-content {
+
   .column-title {
     em {
       border-bottom: none;

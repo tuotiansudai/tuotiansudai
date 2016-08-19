@@ -114,7 +114,7 @@ public class ExchangeCodeServiceTest {
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
         long couponId = exchangeCouponDto.getId();
-        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "SDRFUJTHEG";
+        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
         redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
@@ -154,7 +154,7 @@ public class ExchangeCodeServiceTest {
         couponService.createCoupon("couponTest", exchangeCouponDto);
         long couponId = exchangeCouponDto.getId();
         couponActivationService.active(userModel.getLoginName(), couponId, "");
-        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "SDRFUJTHEG";
+        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
         redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
