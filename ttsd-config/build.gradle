@@ -195,7 +195,6 @@ task flywayAsk(type: FlywayMigrateTask) {
     def properties = getEnvProperties()
     def defaultHost = properties.getProperty("common.jdbc.host")
     def defaultPort = properties.getProperty("common.jdbc.port")
-    def defaultSchema = properties.getProperty("ask.jdbc.schema")
     extension = new FlywayExtension()
     if (project.hasProperty('dbhost')) {
         defaultHost = dbhost;
@@ -205,10 +204,10 @@ task flywayAsk(type: FlywayMigrateTask) {
     }
     extension.outOfOrder = true
     extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/ask"]
-    extension.schemas = ["${defaultSchema}"]
+    extension.locations = ["filesystem:db_migration/edxask"]
+    extension.schemas = ["edxask"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultSchema}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("ask.jdbc.username")
     extension.password = properties.getProperty("ask.jdbc.password")
 }

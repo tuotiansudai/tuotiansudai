@@ -19,7 +19,7 @@ env.roledefs = {
     'cms': ['wuhan'],
     'activity': ['sanya'],
     'signin' : ['xian'],
-    'ask' : ['']
+    'ask' : ['taiyuan']
 }
 
 
@@ -380,6 +380,15 @@ def restart_logstash_service_for_activity():
     run("service logstash restart")
 
 
+@roles('ask')
+@parallel
+def restart_logstash_service_for_ask():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
 @roles('signin')
 @parallel
 def restart_logstash_service_for_sign_in():
@@ -400,7 +409,7 @@ def restart_logstash(service):
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
            'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
-           'signin': restart_logstash_service_for_sign_in}.get(service)
+           'signin': restart_logstash_service_for_sign_in, 'ask': restart_logstash_service_for_ask}.get(service)
     execute(func)
 
 
