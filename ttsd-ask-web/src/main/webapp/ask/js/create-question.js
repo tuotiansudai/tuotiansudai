@@ -202,11 +202,18 @@ if($questionDetailTag.length) {
                     }
                     else {
                         refreshCaptcha();
-                         comm.popWindow('error','验证码错误',{ width:'300px'});  
+                        if(response.isCaptchaValid) { 
+                            if(!response.isAnswerSensitiveValid) {
+                                $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
+                            }
+                        }
+                        else {
+                            $formAnswer.find('.captcha').parent().find('.error').show().text('验证码错误');
+                        }
                     }
             })
                 .fail(function(data) {
-
+                    comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
                 })
                 .complete(function() {
                     $formAnswerSubmit.prop('disabled',false);
@@ -289,17 +296,25 @@ if($createQuestion.length) {
                     }
                     else {
                         refreshCaptcha();
-                        if(response.captchaValid) {
-                            $('.captchaImg').parent().find('.error').show().text('验证码错误');
+                        if(response.isCaptchaValid) {
+                                if(!response.isQuestionSensitiveValid) {
+                                    $question.next().show().text('您输入的内容不能包含敏感词');
+                                    return;
+                                }
+                                if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
+                                    $addition.next().show().text('您输入的内容不能包含敏感词');  
+                                }
+                            
                         }
-                        else if(response.sensitiveValid) {
-                              comm.popWindow('error','不能包含有敏感词',{ width:'300px'});  
+                        else {
+                            $captcha.parent().find('.error').show().text('验证码错误');
                         }
+                        
                         
                     }
                 })
                 .fail(function(data) {
-                        comm.popWindow('error','error',{ width:'300px'});
+                        comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
                 })
                 .complete(function(data) { 
                    $formSubmit.prop('disabled',false);
