@@ -7,7 +7,10 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +72,7 @@ public class InvestRepayDataItemDto {
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().compareTo(model.getRepayDate()) == -1){
+        if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().before(new DateTime(model.getRepayDate()).withTimeAtStartOfDay().toDate())){
             this.status = "提前还款";
         }else if(RepayStatus.OVERDUE == model.getStatus()){
             this.status = "逾期还款";
