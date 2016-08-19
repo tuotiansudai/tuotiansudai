@@ -176,6 +176,8 @@
               width: 140px;
               margin-right: 50px; }
               .main-frame .global-member-order .wp .container-order .order-info .order-table .order-picture p {
+                float: left;
+                width: 100%;
                 margin-bottom: 0; }
                 .main-frame .global-member-order .wp .container-order .order-info .order-table .order-picture p.mater-img.coupon-bg {
                   width: 140px;
