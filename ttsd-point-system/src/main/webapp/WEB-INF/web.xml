@@ -21,7 +21,7 @@
 
     <filter>
         <filter-name>XssSqlFilter</filter-name>
-        <filter-class>com.tuotiansudai.pointsystem.interceptors.XssFilter</filter-class>
+        <filter-class>com.tuotiansudai.web.config.interceptors.XssFilter</filter-class>
     </filter>
 
     <filter>
@@ -35,11 +35,6 @@
             <param-name>forceEncoding</param-name>
             <param-value>true</param-value>
         </init-param>
-    </filter>
-
-    <filter>
-        <filter-name>logGenerateFilter</filter-name>
-        <filter-class>com.tuotiansudai.pointsystem.filter.LogGenerateFilter</filter-class>
     </filter>
 
     <filter>
@@ -58,6 +53,10 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>logGenerateFilter</filter-name>
+        <filter-class>com.tuotiansudai.pointsystem.filter.LogGenerateFilter</filter-class>
+    </filter>
 
     <filter-mapping>
         <filter-name>XssSqlFilter</filter-name>

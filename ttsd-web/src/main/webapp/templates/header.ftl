@@ -9,7 +9,7 @@
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
             <li class="membership-store">
-                <a href="/pointsystem">积分商城</a>
+                <a href="${pointsystemServer}/pointsystem">积分商城</a>
             </li>
             <li class="header-membership">
                 <a href="/membership">会员中心</a>
@@ -44,7 +44,7 @@
                 <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
             <li>
-                <a href="<#if channel??>/register/user?channel=${channel}<#else>/register/user</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
+                <a href="/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>
         </ul>

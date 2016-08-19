@@ -1,16 +1,10 @@
 package com.tuotiansudai.transfer.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.InvestPaginationItemView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class TransferableInvestPaginationItemDataDto implements Serializable {

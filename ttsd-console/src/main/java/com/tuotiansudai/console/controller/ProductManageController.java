@@ -1,13 +1,13 @@
 package com.tuotiansudai.console.controller;
 
 
-import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.ProductService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

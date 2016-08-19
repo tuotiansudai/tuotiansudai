@@ -81,9 +81,9 @@ public class PointSystemController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/{itemType}/detail", method = RequestMethod.GET)
     public ModelAndView pointSystemDetail(@PathVariable long id,
-                                          @RequestParam(value = "itemType", required = true) ItemType itemType) {
+                                          @PathVariable ItemType itemType) {
         ModelAndView modelAndView = new ModelAndView("/pointsystem-detail");
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
         modelAndView.addObject("productShowItem", productShowItemDto);

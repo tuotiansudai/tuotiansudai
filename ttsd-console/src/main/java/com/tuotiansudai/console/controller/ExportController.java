@@ -49,6 +49,7 @@ public class ExportController {
 
     @Autowired
     private ExportService exportService;
+
     @Autowired
     private SystemBillService systemBillService;
 
@@ -144,9 +145,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
-    public void exportUserPoint(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                @RequestParam(value = "loginName", required = false) String loginName,
+    public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
                                 @RequestParam(value = "userName", required = false) String userName,
                                 @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
@@ -156,9 +155,9 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
 
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(accountItemDataDtoList);
+        List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
+        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 
     }

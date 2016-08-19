@@ -128,3 +128,13 @@ nginx-server:
   links:
     - "activity"
     - "web"
+    - "ask"
+ask:
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  ports:
+    - "20009:8080"
+  volumes:
+    - ./ttsd-ask-web/war:/webapps
+  links:
+    - "redis-server"
+    - "static-server"

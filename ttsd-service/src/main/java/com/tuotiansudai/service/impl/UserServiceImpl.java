@@ -15,13 +15,13 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
@@ -36,7 +36,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +87,8 @@ public class UserServiceImpl implements UserService {
     private UserMembershipMapper userMembershipMapper;
 
     @Autowired
+    private PrepareUserMapper prepareUserMapper;
+    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Value("${web.login.max.failed.times}")
@@ -98,7 +99,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private IdGenerator idGenerator;
 
-    private static String LOGIN_NAME = "user-{0}";
+    private final static String LOGIN_NAME = "user-{0}";
+
+    @Override
+    public String getMobile(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel != null ? userModel.getMobile() : null;
+    }
 
     @Override
     public boolean emailIsExist(String email) {
@@ -133,6 +140,10 @@ public class UserServiceImpl implements UserService {
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
+        PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
+        if(prepareUserModel != null){
+            dto.setReferrer(prepareUserModel.getReferrerMobile());
+        }
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
@@ -177,6 +188,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
+        dto.setMobile(userMapper.findByLoginName(dto.getLoginName()).getMobile());
         BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
         myAuthenticationManager.createAuthentication(dto.getLoginName());
 
@@ -360,6 +372,16 @@ public class UserServiceImpl implements UserService {
             }
             ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
+    }
+
+    @Override
+    public boolean mobileIsRegister(String mobile) {
+        return mobileIsExist(mobile) || prepareUserMapper.findByMobile(mobile) != null;
+    }
+
+    @Override
+    public UserModel findByMobile(String mobile) {
+        return userMapper.findByMobile(mobile);
     }
 
     @Override

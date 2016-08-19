@@ -37,7 +37,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        userMessageServices.generateUserMessages(loginName);
+        userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         int index = requestDto.getIndex();
         int pageSize = requestDto.getPageSize();
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, index, pageSize);
@@ -51,7 +51,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        userMessageServices.generateUserMessages(loginName);
+        userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
         boolean existUnreadMessage = existUnreadMessage(loginName, currentUnreadMessageCount);
         MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount();

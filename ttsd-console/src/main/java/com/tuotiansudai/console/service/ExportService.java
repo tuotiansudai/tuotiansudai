@@ -7,13 +7,14 @@ import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.point.dto.ProductOrderDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 
 import java.util.List;
 
 public interface ExportService {
 
-    <T> List<List<String>> buildOriginListToCsvData(List<T> originList);
+    <T> List<List<String>> buildUserPointToCsvData(List<T> originList);
 
     List<List<String>> buildLoanRepayCsvData(List<LoanRepayDataItemDto> loanRepayDataItemDtos);
 
@@ -36,4 +37,6 @@ public interface ExportService {
     List<List<String>> buildConsoleLoanList(List<LoanListDto> records);
 
     List<List<String>> buildProductOrderList(List<ProductOrderDto> records);
+
+    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
 }

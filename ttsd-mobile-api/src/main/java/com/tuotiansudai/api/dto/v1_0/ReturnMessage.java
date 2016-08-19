@@ -117,6 +117,7 @@ public enum ReturnMessage {
     EXCHANGE_CODE_IS_USED("0106","兑换码已被使用"),
     EXCHANGE_CODE_OVER_DAILY_COUNT("0107","当天兑换次数达到上限"),
     USER_COUPON_IS_NOT_EXIST("0108",""),
+    EXCHANGE_CODE_IS_FAIL("0109","兑换码兑换失败"),
 
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
@@ -145,8 +146,9 @@ public enum ReturnMessage {
     TRANSFER_IS_NOT_EXIST("0071", "该债权不能申请转让"),
 
     BAD_REQUEST("0400", "非法请求"),
-    UNAUTHORIZED("0401", "未授权");
+    UNAUTHORIZED("0401", "未授权"),
 
+    ERROR("9999", "错误");
 
     private String code;
     private String msg;

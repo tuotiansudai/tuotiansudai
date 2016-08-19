@@ -17,7 +17,7 @@
             <bean id="jacksonMessageConverter"
                   class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.pointsystem.configuration.CustomerObjectMapper"/>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -33,29 +33,27 @@
         <mvc:path-matching suffix-pattern="false"/>
     </mvc:annotation-driven>
 
-
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.pointsystem.interceptors.ChannelInterceptor"/>
-        <bean class="com.tuotiansudai.pointsystem.interceptors.AppTokenInterceptor"/>
+        <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
     </mvc:interceptors>
 
     <context:component-scan base-package="com.tuotiansudai.pointsystem"/>
 
-    <!--<mvc:resources mapping="/html/**" location="/html/"/>-->
     <mvc:resources mapping="/pointsystem/style/**" location="/pointsystem/style/"/>
     <mvc:resources mapping="/pointsystem/images/**" location="/pointsystem/images/"/>
     <mvc:resources mapping="/pointsystem/js/**" location="/pointsystem/js/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
-    <bean id="staticResourceVersionMap" class="com.tuotiansudai.pointsystem.configuration.FreeMarkerVariablesMap">
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="webServer" value="${web.server}"/>
-        <property name="staticServer" value="${pointsystem.static.server}"/>
         <property name="javascriptLocation" value="${pointsystem.js.path}"/>
         <property name="cssLocation" value="${pointsystem.css.path}"/>
         <property name="sourceMap">
             <map>
+                <entry key="webServer" value="${web.server}"/>
+                <entry key="staticServer" value="${pointsystem.static.server}"/>
+                <entry key="pointsystemServer" value="${pointsystem.server}"/>
                 <entry key="percentFraction">
                     <bean class="com.tuotiansudai.pointsystem.freemarker.directive.PercentFractionDirective"/>
                 </entry>

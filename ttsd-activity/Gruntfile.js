@@ -117,9 +117,9 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8088,
+                    port: 5088,
                     hostname: '*',
-                    base: 'src/main/webapp/activity/',
+                    base: 'src/main/webapp',
                     middleware: function(connect, options, middlewares) {
                         middlewares.unshift(function(req, res, next) {
                             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -143,7 +143,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);

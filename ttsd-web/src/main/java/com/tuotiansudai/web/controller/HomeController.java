@@ -5,13 +5,16 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.transfer.service.TransferService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +50,9 @@ public class HomeController {
     @Autowired
     private BannerMapper bannerMapper;
 
+    @Autowired
+    private TransferService transferService;
+
     @Value("${web.banner.server}")
     private String bannerServer;
 
@@ -71,6 +77,9 @@ public class HomeController {
             }
         });
         modelAndView.addObject("bannerList", bannerModelList);
+        //债权转让列表显示前两项
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
+        modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
         return modelAndView;
     }
 }

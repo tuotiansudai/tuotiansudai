@@ -27,7 +27,7 @@ public interface PointBillService {
 
     long getPointBillCountByLoginName(String loginName);
 
-    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
+    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize);
 
     int findUsersAccountPointCount(String loginName, String userName, String mobile);
 }

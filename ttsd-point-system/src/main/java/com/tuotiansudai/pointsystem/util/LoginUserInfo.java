@@ -1,6 +1,6 @@
 package com.tuotiansudai.pointsystem.util;
 
-import com.tuotiansudai.security.MyUser;
+import com.tuotiansudai.spring.MyUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

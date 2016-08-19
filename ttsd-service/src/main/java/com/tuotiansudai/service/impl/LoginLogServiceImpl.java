@@ -6,15 +6,11 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.model.LoginLogView;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.LoginLogService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -30,18 +26,6 @@ public class LoginLogServiceImpl implements LoginLogService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Transactional
-    @Override
-    public void generateLoginLog(String loginNameOrMobile, Source source, String ip, String device, boolean loginSuccess) {
-        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        if(userModel == null)
-            return;
-        LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
-
-        loginLogMapper.create(model, this.getLoginLogTableName(new Date()));
-
-    }
 
     @Override
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String mobile, Boolean success, int index, int pageSize, int year, int month) {

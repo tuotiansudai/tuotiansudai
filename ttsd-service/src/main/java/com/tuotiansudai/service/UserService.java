@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface UserService {
 
+    String getMobile(String loginName);
+
     boolean emailIsExist(String email);
 
     boolean mobileIsExist(String mobile);
@@ -48,4 +50,9 @@ public interface UserService {
     void refreshAreaByMobileInJob();
 
     boolean resetUmpayPassword(String loginName, String identityNumber);
+
+    boolean mobileIsRegister(String mobile);
+
+    UserModel findByMobile(String mobile);
+
 }

@@ -90,7 +90,9 @@
             </if>
         </where>
         ORDER BY account.point DESC
+        <if test="startLimit != null and endLimit != null">
         limit #{startLimit}, #{endLimit}
+        </if>
     </select>
 
     <select id="findUsersAccountPointCount" parameterType="map" resultType="int">

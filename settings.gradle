@@ -12,4 +12,12 @@ include "ttsd-service",
         "ttsd-message",
         'ttsd-sign-in',
         'ttsd-user-service',
+        'ttsd-web-common-config',
+        'ttsd-ask-web',
+        'ttsd-ask-service',
+        'ttsd-user-service',
+        'ttsd-config',
+        'ttsd-client',
+        'ttsd-spring-extension',
         'ttsd-point-system'
+

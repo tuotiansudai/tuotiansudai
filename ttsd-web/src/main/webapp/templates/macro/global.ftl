@@ -30,33 +30,33 @@
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
-    {"title":"我的积分", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
+    {"title":"问答", "url":"${askServer}","category":""},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
     {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "leftNavs":[
-            {"title":"公司介绍", "url":"/about/company"},
-            {"title":"团队介绍", "url":"/about/team"},
-            {"title":"拓天公告", "url":"/about/notice"},
-            {"title":"媒体报道", "url":"/about/media"},
-            {"title":"推荐奖励", "url":"/about/refer-reward"},
-            {"title":"服务费用", "url":"/about/service-fee"},
-            {"title":"常见问题", "url":"/about/qa"},
-            {"title":"联系我们", "url":"/about/contact"},
-            {"title":"运营数据", "url":"/about/operational"}
-        ]
-    }
+        {"title":"公司介绍", "url":"/about/company"},
+        {"title":"团队介绍", "url":"/about/team"},
+        {"title":"拓天公告", "url":"/about/notice"},
+        {"title":"媒体报道", "url":"/about/media"},
+        {"title":"推荐奖励", "url":"/about/refer-reward"},
+        {"title":"服务费用", "url":"/about/service-fee"},
+        {"title":"常见问题", "url":"/about/qa"},
+        {"title":"联系我们", "url":"/about/contact"},
+        {"title":"运营数据", "url":"/about/operational"}
+    ]}
     ]/>
 
     <#local membershipMenus=[
         {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
         {"title":"会员特权", "url":"/membership/privilege","category":""},
-        {"title":"积分商城", "url":"/membership/store","category":""},
-        {"title":"积分任务", "url":"/membership/task","category":""}
+        {"title":"积分商城", "url":"${pointsystemServer}/pointsystem","category":""},
+        {"title":"积分任务", "url":"${pointsystemServer}/pointsystem/task","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,7 +142,7 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").onclick=function (event) {
+    document.getElementById("logout-link").onclick = function () {
         document.getElementById("logout-form").submit();
     };
     </@security.authorize>
@@ -193,7 +193,7 @@
         TopMainMenuList=window.$('TopMainMenuList');
 
     if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(e) {
+        window.$('iphone-app-pop').onclick=function(event) {
             if(imgDom.style.display == "block") {
                 imgDom.style.display='none';
             }

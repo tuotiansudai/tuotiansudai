@@ -39,7 +39,7 @@ public class TransferApplyController {
     @RequestMapping(value = "/application/{transferApplyId}/cancel", method = RequestMethod.POST)
     @ResponseBody
     public boolean investTransferApplyCancel(@PathVariable long transferApplyId) {
-         return investTransferService.cancelTransferApplication(transferApplyId);
+        return investTransferService.cancelTransferApplication(transferApplyId);
     }
 
 }
