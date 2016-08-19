@@ -94,6 +94,7 @@ public class RegisterUserController {
             baseDto.setData(baseDataDto);
             return baseDto;
         }
+        requestDto.setChannel("shareAB");
         baseDataDto = prepareService.register(requestDto);
         if (baseDataDto.getStatus()) {
             Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
