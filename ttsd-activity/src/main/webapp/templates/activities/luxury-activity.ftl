@@ -2,30 +2,21 @@
 <@global.main pageCss="${css.luxury_activity}" pageJavascript="${js.luxury_activity}" activeNav="" activeLeftNav="" title="拓天排行榜_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
 <div class="rank-list-container">
     <div class="rank-phone-model">
-        <img src="${staticServer}/activity/images/sign/actor/ranklist/rank-list-top.png" width="100%">
+        <img src="${staticServer}/activity/images/sign/actor/luxury/top-banner.png" width="100%">
     </div>
-    <div class="wp clearfix actor-intro">
+    <div class="wp clearfix">
         <div class="left-bg"></div>
         <div class="right-bg"></div>
-        <div class="line-single"></div>
-        <div class="actor-info-text">
-            <div class="actor-title">
-                活动说明
-            </div>
-            <p>活动期间，投资即可获得相应天豆，天豆可冲击排行榜拿排名大奖。</p>
-
-            <p>用户还可消费天豆参与<span>“百分百中奖”</span>的抽奖活动。</p>
-        </div>
-        <div class="leader-container" id="awardCom">
+        <div class="leader-container hide" id="awardCom">
             <div class="leader-list active">
                 <div class="lottery-circle">
                     <h3 class="td-list">
-                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou?c}</strong></span>
+                        <span class="td-total">我的天豆：<strong class="my-td-bean">2414</strong></span>
                         <span class="td-tip">每次抽奖将消耗 1000 天豆</span>
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img" id="pointerTd" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                        <div class="pointer-img" id="pointerTd">
                             <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
