@@ -13,6 +13,8 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -139,6 +141,9 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     @Override
     public BaseDataDto exchange(String loginName, String exchangeCode) {
         BaseDataDto baseDataDto = new BaseDataDto();
+        if (StringUtils.isNotEmpty(exchangeCode)) {
+            exchangeCode = exchangeCode.toUpperCase();
+        }
         long couponId = getValueBase31(exchangeCode);
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
@@ -202,7 +207,6 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
      * @return
      */
     public long getValueBase31(String exchangeCode) {
-
         if (exchangeCode == null || exchangeCode.length() != 14) return 0;
         String prefix = exchangeCode.substring(0, 4);
         int value = 0;
