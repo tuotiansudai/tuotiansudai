@@ -51,6 +51,7 @@ public class LotteryController {
                 dataModel.add(String.valueOf(userLotteryTimeModel.getUnUseCount()));
                 data.add(dataModel);
             }
+            
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserLotteryList, data, response.getOutputStream());
             return null;
         }else{
