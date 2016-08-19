@@ -10,12 +10,11 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
-import org.apache.commons.collections.CollectionUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -142,6 +141,9 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     @Override
     public BaseDataDto exchange(String loginName, String exchangeCode) {
         BaseDataDto baseDataDto = new BaseDataDto();
+        if (StringUtils.isNotEmpty(exchangeCode)) {
+            exchangeCode = exchangeCode.toUpperCase();
+        }
         long couponId = getValueBase31(exchangeCode);
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
@@ -161,7 +163,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             return baseDataDto;
         }
         boolean exchangeResult = couponAssignmentService.assignUserCoupon(loginName, exchangeCode);
-        if(!exchangeResult){
+        if (!exchangeResult) {
             baseDataDto.setMessage("兑换码兑换失败");
             return baseDataDto;
         }
@@ -195,7 +197,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
 
     @Override
     public boolean checkExchangeCodeCorrect(String exchangeCode, long couponId, CouponModel couponModel) {
-        return  couponModel != null && exchangeCode.length() == EXCHANGE_CODE_LENGTH && redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode);
+        return couponModel != null && exchangeCode.length() == EXCHANGE_CODE_LENGTH && redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode);
     }
 
     /**
@@ -205,7 +207,6 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
      * @return
      */
     public long getValueBase31(String exchangeCode) {
-
         if (exchangeCode == null || exchangeCode.length() != 14) return 0;
         String prefix = exchangeCode.substring(0, 4);
         int value = 0;
@@ -216,7 +217,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
                 value = value * 31 + index;
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.debug(e.getMessage(), e);
             return 0;
         }
         return value;
