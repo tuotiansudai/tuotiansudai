@@ -51,7 +51,7 @@
 						</div>
 						<div class="info-content">
 							<div class="price-text">
-                                <span>${productShowItem.productPrice}</span>积分
+                                <span>${productShowItem.productPrice?string('0')}</span>积分
 							</div>
 						</div>
 					</div>

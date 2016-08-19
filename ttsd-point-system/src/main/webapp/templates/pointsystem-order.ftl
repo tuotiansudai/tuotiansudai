@@ -5,7 +5,7 @@
 	<div class="wp clearfix">
 		<div class="order-top">
             您所在的位置：<a href="/pointsystem">积分商城</a> > <a
-                href="/pointsystem/detail/${productShowItem.id}?itemType=${productShowItem.itemType}">${productShowItem.productName}</a>><span>订单确认</span>
+                href="/pointsystem/${productShowItem.id?string('0')}/${productShowItem.itemType}/detail">${productShowItem.productName}</a>><span>订单确认</span>
 		</div>
 	</div>
 	<div class="wp clearfix order-item">
@@ -90,7 +90,7 @@
 					<div class="order-price">
 						<p class="title-text">商品价格</p>
 
-                        <p><i>${productShowItem.productPrice}</i>积分</p>
+                        <p><i>${productShowItem.productPrice?string('0')}</i>积分</p>
 					</div>
 					<div class="order-number">
 						<p class="title-text">商品数量</p>
@@ -109,7 +109,7 @@
 						<p class="title-text">小计</p>
 
                         <p><i class="count-num"
-                              data-num="${productShowItem.productPrice}">${productShowItem.productPrice * number}</i>积分
+                              data-num="${productShowItem.productPrice?string('0')}">${productShowItem.productPrice * number}</i>积分
                         </p>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 			<div class="order-total">
 				<p>
                     <span>共需支付：<i class="count-num"
-                                  data-num="${productShowItem.productPrice}">${productShowItem.productPrice * number}</i>积分</span>
+                                  data-num="${productShowItem.productPrice?string('0')}">${productShowItem.productPrice * number}</i>积分</span>
 				</p>
 				<p>
                     <input type="button" value="立即兑换" class="order-btn" data-id="${productShowItem.id?c!0}"

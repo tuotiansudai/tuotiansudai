@@ -9,7 +9,7 @@
                     <h3>我的积分</h3>
                     <p>${userPoint}</p>
                     <#if isSignIn>
-                        <p><span>今日已签到</span></p>
+                        <p><span class="already">已签到</span></p>
                     <#else>
                         <p><span data-url="/pointsystem/signIn" id="signBtn">签到</span></p>
                     </#if>
@@ -155,7 +155,7 @@
                             </#if>
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
-                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice?string('0')}</i>积分</span>
                                 <a class="fl" href="/pointsystem/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>
                             </p>
@@ -186,7 +186,7 @@
                             </#if>
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.productName}</span>
-                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice}</i>积分</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.productPrice?string('0')}</i>积分</span>
                                 <a class="fl" href="/pointsystem/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>
                             </p>
@@ -218,7 +218,7 @@
 
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
-                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice?string('0')}</i>积分</span>
                                 <a href="/pointsystem/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/detail"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>
@@ -235,7 +235,7 @@
 
                             <p class="convert-btn">
                                 <span class="name-text">${physicalProduct.productName}</span>
-                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice}</i>积分</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.productPrice?string('0')}</i>积分</span>
                                 <a href="/pointsystem/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/detail"><span
                                         class="get-btn">立即兑换</span></a>
                             </p>

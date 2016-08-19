@@ -212,6 +212,10 @@
               color:#fff;
               background:#ff9c1b;
               cursor:pointer;
+              &.already{
+                background: #ccc;
+                cursor: no-drop;
+              }
             }
           }
         }

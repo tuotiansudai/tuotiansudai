@@ -26,7 +26,7 @@ require(['jquery', 'jquery.ajax.extension'], function ($) {
 				if (response.data.status) {
 					$signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
 					$tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
-					$signBtn.addClass("no-click").html("今日已签到");
+					$signBtn.addClass("no-click").html("已签到");
 					$addDou.html("+" + response.data.signInPoint);
 					$signTip.fadeIn('fast', function() {
 						$(this).find('.add-dou').animate({

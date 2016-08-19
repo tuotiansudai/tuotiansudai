@@ -1,7 +1,6 @@
 package com.tuotiansudai.pointsystem.filter;
 
-
-import com.tuotiansudai.pointsystem.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
