@@ -87,6 +87,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             logger.debug(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) repay is starting...", String.valueOf(loanRepayId), String.valueOf(userCouponModel.getId())));
+
+            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
+            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && currentLoanRepayModel.getPeriod() > 1) {
+                continue;
+            }
+
             InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
             if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS || investModel.getTransferStatus() == TransferStatus.SUCCESS) {
                 logger.error(MessageFormat.format("[Coupon Repay {0}] invest({1}) is nonexistent or not success or has transferred",
@@ -103,8 +109,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         currentLoanRepayModel.getPeriod()));
                 continue;
             }
-
-            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
 
             long investAmount = investModel.getAmount();
             long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
@@ -192,8 +196,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
 
 
-        for (int index = 0; index < totalPeriods; index++) {
-            int period = index + 1;
+        for (int period = 1; period <= totalPeriods; period++) {
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
             DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
             for (InvestModel successInvestModel : successInvestModels) {
@@ -206,7 +209,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     }
                     CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                     if (couponModel == null) {
-                        logger.error(MessageFormat.format("(coupon is exist (couponId = {0}))", userCouponModel.getCouponId()));
+                        logger.error(MessageFormat.format("(coupon is not exist (couponId = {0}))", userCouponModel.getCouponId()));
                         continue;
                     }
                     if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && period > 1) {
@@ -233,7 +236,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(period)));
                     } catch (Exception e) {
                         logger.error(e.getLocalizedMessage(), e);
-
                     }
                 }
 
