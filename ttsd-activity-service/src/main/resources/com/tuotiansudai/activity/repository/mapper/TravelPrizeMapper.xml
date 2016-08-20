@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="travelPrizeResultMap" type="travelPrizeModel">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="price" column="price"/>
+        <result property="image" column="image"/>
+        <result property="investAmount" column="invest_amount"/>
+        <result property="introduce" column="introduce"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <insert id="create" parameterType="LuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into travel_prize(name,description,price,image,invest_amount,introduce,created_by,created_time,updated_by,updated_time)
+               value(#{name},#{description},#{price},#{image},#{investAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
+    </insert>
+    
+    <select id="findById" parameterType="long" resultMap="travelPrizeResultMap">
+        select * from travel_prize where id = #{id}
+    </select>
+
+
+</mapper>
