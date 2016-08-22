@@ -13,8 +13,6 @@ import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
-import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -30,6 +30,7 @@ dependencies {
             project(":ttsd-spring-extension"),
             project(":ttsd-web-common-config"),
             project(":ttsd-activity-service"),
+            project(":ttsd-util"),
             "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-jdbc",
