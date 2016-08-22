@@ -10,11 +10,11 @@
         <beans:property name="userPropertyToUse" value="salt"/>
     </beans:bean>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="accessDeniedExceptionRedirect">
             <beans:map>
-                <beans:entry key="com.tuotiansudai.security.UserRoleAccessDeniedException" value="/register/account"/>
+                <beans:entry key="com.tuotiansudai.spring.UserRoleAccessDeniedException" value="/register/account"/>
                 <beans:entry key="org.springframework.security.web.csrf.MissingCsrfTokenException" value="/login"/>
             </beans:map>
         </beans:property>
@@ -31,8 +31,8 @@
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
-    <beans:bean id="affirmativeBased" class="com.tuotiansudai.security.MyAffirmativeBased">
-        <beans:constructor-arg ref="webExpressionVoter"/>
+    <beans:bean id="affirmativeBased" class="com.tuotiansudai.spring.MyAffirmativeBased">
+        <beans:constructor-arg  ref="webExpressionVoter"/>
     </beans:bean>
 
     <http auto-config="true" use-expressions="true">
@@ -95,7 +95,7 @@
         <csrf disabled="true"/>
     </http>
 
-    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>

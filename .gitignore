@@ -24,3 +24,4 @@ cs/.env
 ttsd-mobile-api/src/main/webapp/api/js/
 ttsd-activity/src/main/webapp/activity/style/*.css
 ttsd-activity/src/main/webapp/activity/style/*.css.map
+ttsd-ask-web/src/main/webapp/ask/dist

@@ -1,7 +1,7 @@
 package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;

@@ -241,7 +241,7 @@
       float: right;
       li {
         float: left;
-        width: 100px;
+        width: 80px;
         margin-left: 15px;
         position: relative;
         a {
@@ -329,7 +329,6 @@
     }
   }
   .nav-container {
-
     .nav {
       width:auto;
       .logo {
@@ -337,7 +336,6 @@
         background-size: 100%;
         margin-left: 10px;
       }
-
       .show-main-menu {
         display: inline-block;
         cursor: pointer;

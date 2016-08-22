@@ -152,8 +152,7 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
         List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
-
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(accountItemDataDtoList);
+        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 
     }

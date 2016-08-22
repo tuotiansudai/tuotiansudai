@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.AgentDto;
 import com.tuotiansudai.exception.CreateAgentException;
 import com.tuotiansudai.service.AgentService;
@@ -18,19 +17,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:spring-security.xml", "classpath:applicationContext.xml"})
 @Transactional
 public class AgentControllerTest {
     private MockMvc mockMvc;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
     private AgentController agentController;
