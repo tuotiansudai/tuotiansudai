@@ -56,9 +56,21 @@
 			<#if referrer??>
                 <a href="/register/user?referrer=${referrer}">立即注册</a>
 			<#else>
-				<#if !isAppSource>>
-					<a href="/referrer/refer-list" onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
-				</#if>
+				<@global.isNotAnonymous>
+                    <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
+				</@global.isNotAnonymous>
+				<@global.isAnonymous>
+					<#if noAccount?? && noAccount>
+						<#if isAppSource?? && !isAppSource>
+                            <a href="/register/account?redirect=/referrer/refer-list">立即推荐</a>
+						<#else>
+                            <a href="/registeraccount">立即推荐</a>
+						</#if>
+					<#else>
+                        <a href="/referrer/refer-list"
+                           onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
+					</#if>
+				</@global.isAnonymous>
 			</#if>
 	    </div>
 	    <div class="share-rules"></div>
