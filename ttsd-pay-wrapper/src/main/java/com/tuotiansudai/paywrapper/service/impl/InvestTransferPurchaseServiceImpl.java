@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -39,7 +38,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,9 +110,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private int investProcessListSize;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
     private CouponRepayMapper couponRepayMapper;
 
     @Override
@@ -134,6 +130,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
+
+        logger.info(MessageFormat.format("[Transfer No Password Invest Request Data] user={0}, loan={1}, invest={2}, transferInvest={3}, amount={4}, source={5}",
+                investDto.getLoginName(),
+                investDto.getLoanId(),
+                String.valueOf(investModel.getId()),
+                String.valueOf(investModel.getTransferInvestId()),
+                investDto.getAmount(),
+                investDto.getSource()));
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
                 String.valueOf(investModel.getId()),
@@ -179,6 +183,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
+
+        logger.info(MessageFormat.format("[Transfer Invest Request Data] user={0}, loan={1}, invest={2}, transferInvest={3}, amount={4}, source={5}",
+                investDto.getLoginName(),
+                investDto.getLoanId(),
+                String.valueOf(investModel.getId()),
+                String.valueOf(investModel.getTransferInvestId()),
+                investDto.getAmount(),
+                investDto.getSource()));
 
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestTransferRequest(

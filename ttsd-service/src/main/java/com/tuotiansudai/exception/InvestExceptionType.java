@@ -11,7 +11,8 @@ public enum InvestExceptionType {
     PASSWORD_INVEST_OFF("尚未开启免密投资"),
     ILLEGAL_LOAN_STATUS("标的暂不可投资"),
     INVESTOR_IS_LOANER("您不能接手自己的债权"),
-    NOT_ENOUGH_BALANCE("账户余额不足");
+    NOT_ENOUGH_BALANCE("账户余额不足"),
+    COUPON_IS_UNUSABLE("优惠券已使用，请重新选择");
 
     private final String description;
 

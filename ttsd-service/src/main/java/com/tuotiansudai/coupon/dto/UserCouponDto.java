@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.ProductType;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class UserCouponDto implements Serializable {
     public UserCouponDto() {
     }
 
-    public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
+    public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon, int couponLockSeconds) {
         this.id = userCoupon.getId();
         this.couponId = coupon.getId();
         this.loginName = userCoupon.getLoginName();
@@ -49,7 +50,8 @@ public class UserCouponDto implements Serializable {
         this.endTime = userCoupon.getEndTime();
         this.usedTime = userCoupon.getUsedTime();
         this.loanId = userCoupon.getLoanId();
-        this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
+        this.used = InvestStatus.SUCCESS == userCoupon.getStatus()
+                || (userCoupon.getUsedTime() != null && new DateTime(userCoupon.getUsedTime()).plusSeconds(couponLockSeconds).isAfter(new DateTime()));
         this.expired = !this.used && this.endTime.before(new Date());
         this.unused = !this.used && this.endTime.after(new Date());
         this.shared = coupon.isShared();

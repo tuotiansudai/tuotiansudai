@@ -1,0 +1,14 @@
+{
+	"css": {
+		"main": "main.css"
+	},
+	"js": {
+		"main": "main.js"
+	},
+    "staticServer": "http://localhost:8080/",
+	"linkExchangeList": [{
+		"linkUrl": 1212,
+		"noFollow": true,
+		"title": 121212
+	}]
+}

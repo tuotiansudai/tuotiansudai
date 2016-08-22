@@ -1,6 +1,7 @@
 package com.tuotiansudai.util;
 
 
+import com.google.common.collect.Lists;
 import nl.captcha.text.renderer.WordRenderer;
 
 import java.awt.*;
@@ -17,8 +18,8 @@ public class CaptchaDefaultWordRenderer implements WordRenderer {
     private final java.util.List<Font> _fonts;
 
     public CaptchaDefaultWordRenderer(java.util.List<Color> colors, java.util.List<Font> fonts) {
-        this._colors = new ArrayList();
-        this._fonts = new ArrayList();
+        this._colors = Lists.newArrayList();
+        this._fonts = Lists.newArrayList();
         this._colors.addAll(colors);
         this._fonts.addAll(fonts);
     }
@@ -39,9 +40,9 @@ public class CaptchaDefaultWordRenderer implements WordRenderer {
         for (int var10 = 0; var10 < var11; ++var10) {
             char c = var12[var10];
             chars[0] = c;
-            g.setColor((Color) this._colors.get(RAND.nextInt(this._colors.size())));
+            g.setColor(this._colors.get(RAND.nextInt(this._colors.size())));
             int choiceFont = RAND.nextInt(this._fonts.size());
-            Font font = (Font) this._fonts.get(choiceFont);
+            Font font = this._fonts.get(choiceFont);
             g.setFont(font);
             GlyphVector gv = font.createGlyphVector(frc, chars);
             g.drawChars(chars, 0, chars.length, xBaseline, yBaseline);

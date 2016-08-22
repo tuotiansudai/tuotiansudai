@@ -20,7 +20,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -82,7 +82,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         when(exchangeCodeService.checkExchangeCodeExpire(any(CouponModel.class))).thenReturn(false);
         when(exchangeCodeService.checkExchangeCodeUsed(anyLong(), anyString())).thenReturn(false);
         when(exchangeCodeService.checkExchangeCodeDailyCount(anyString())).thenReturn(false);
-        doNothing().when(couponAssignmentService).assignUserCoupon(anyString(), anyString());
+        when(couponAssignmentService.assignUserCoupon(anyString(),anyString())).thenReturn(true);
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);

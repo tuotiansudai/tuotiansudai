@@ -21,16 +21,20 @@ import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 @Service
 public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceService {
 
-    public static final String PLATFROM_REPAY_KEY = "console:platformRepay:list";
+    public static final String PLATFORM_REPAY_KEY = "console:platformRepay:list";
+
+    static Logger logger = Logger.getLogger(BusinessIntelligenceServiceImpl.class);
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -225,33 +229,37 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
     @Override
     public List<KeyValueModel> queryPlatformSumRepay(Date startTime, Date endTime, Granularity granularity) {
-        Date queryStartTime = new DateTime(startTime).minusDays(1).withTimeAtStartOfDay().toDate();
+        Date queryStartTime = startTime;
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         List<KeyValueModel> keyValueModelLists = Lists.newArrayList();
-        if (redisWrapperClient.hgetValuesSeri(PLATFROM_REPAY_KEY).size() == 0) {
-            while (queryStartTime.before(queryEndTime)) {
-                queryStartTime = DateUtils.addDays(queryStartTime, 1);
-                keyValueModelLists.add(businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(queryStartTime));
+        if (redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY).size() == 0) {
+            while (startTime.before(queryEndTime)) {
+                KeyValueModel keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(startTime, 1));
+                logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+                keyValueModelLists.add(keyValueModel);
+                startTime = DateUtils.addDays(startTime, 1);
             }
-            redisWrapperClient.hsetSeri(PLATFROM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
+            redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }else{
-            List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(PLATFROM_REPAY_KEY);
+            List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(PLATFORM_REPAY_KEY);
             for (byte[] bs : notifies) {
                 keyValueModelLists = (List<KeyValueModel>) SerializeUtil.deserialize(bs);
             }
-        }
 
-        Date redisLastDate = DateTime.parse(keyValueModelLists.get(keyValueModelLists.size() - 1).getName()).toDate();
-        Date nowDate = DateTime.now().plusDays(1).withTimeAtStartOfDay().toDate();
-        if (redisLastDate.before(nowDate)) {
+            KeyValueModel keyValueModel = keyValueModelLists.get(keyValueModelLists.size() - 1);
+            logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+            Date redisLastDate = DateTime.parse(keyValueModel.getName()).toDate();
+            Date nowDate = DateTime.now().withTimeAtStartOfDay().toDate();
+            redisLastDate = DateUtils.addDays(redisLastDate, 1);
             while (redisLastDate.before(nowDate)) {
+                keyValueModel = businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(DateUtils.addDays(redisLastDate, 1));
+                logger.info(MessageFormat.format("Platform Repay date:{0},value:{1}",keyValueModel.getName(),keyValueModel.getValue()));
+                keyValueModelLists.add(keyValueModel);
                 redisLastDate = DateUtils.addDays(redisLastDate, 1);
-                keyValueModelLists.add(businessIntelligenceMapper.queryRepayByRecheckTimeAndActualRepayDate(redisLastDate));
             }
-            redisWrapperClient.hsetSeri(PLATFROM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
+            redisWrapperClient.hsetSeri(PLATFORM_REPAY_KEY,Granularity.Daily.name(), keyValueModelLists,lifeSecond);
         }
-
-        return getMonthKeyValue(keyValueModelLists,granularity,startTime,endTime);
+        return getMonthKeyValue(keyValueModelLists, granularity, queryStartTime, endTime);
     }
 
     private List<KeyValueModel> getMonthKeyValue(List<KeyValueModel> keyValueModels, Granularity granularity,Date queryStartTime,Date queryEndTime){
@@ -284,4 +292,15 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
 
+    @Override
+    public List<KeyValueModel> queryPlatformOut(Date startTime, Date endTime,Granularity granularity){
+        List<KeyValueModel> keyValueModels = businessIntelligenceMapper.querySystemBillOutByCreatedTime(startTime, new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate(), granularity);
+        if(granularity.equals(Granularity.Weekly)){
+            for(KeyValueModel keyValueModel : keyValueModels){
+                String week = keyValueModel.getName().substring(keyValueModel.getName().indexOf("W") + 1,keyValueModel.getName().length());
+                keyValueModel.setName(keyValueModel.getName().substring(0,keyValueModel.getName().indexOf("W") + 1) + (Integer.parseInt(week) + 1));
+            }
+        }
+        return keyValueModels;
+    }
 }

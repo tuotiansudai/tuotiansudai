@@ -212,16 +212,17 @@ public class UserItemDataDto implements Serializable {
         this.source = userView.getSource();
         this.mobile = userView.getMobile();
         this.registerTime = userView.getRegisterTime();
-        if (userView.getAccount() != null) {
-            this.userName = userView.getAccount().getUserName();
-        }
-        this.balance = AmountConverter.convertCentToString(userView.getAccount().getBalance());
+        this.userName = userView.getUserName();
+        this.balance = AmountConverter.convertCentToString(userView.getBalance());
         this.status = userView.getStatus();
         this.autoInvestStatus = userView.getAutoInvestStatus();
-        this.identityNumber = userView.getAccount().getIdentityNumber();
+        this.identityNumber = userView.getIdentityNumber();
         this.province = userView.getProvince();
         this.city = userView.getCity();
         this.lastBillTime = userView.getLastBillTime();
+        this.referrerStaff = userView.isReferrerStaff();
+        this.staff = userView.isStaff();
+        this.bankCard = userView.isBindBankCard();
     }
 }
 

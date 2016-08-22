@@ -20,9 +20,10 @@ import java.util.Date;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public abstract class BaseMapperTest {
+
 
     @Autowired
     private UserMapper userMapper;
@@ -113,6 +114,7 @@ public abstract class BaseMapperTest {
         couponModel.setInvestLowerLimit(10000L);
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
+        couponModel.setCouponSource("couponSource");
         couponMapper.create(couponModel);
         return couponModel;
     }
@@ -126,4 +128,5 @@ public abstract class BaseMapperTest {
         userCouponMapper.create(userCouponModel);
         return userCouponModel;
     }
+
 }

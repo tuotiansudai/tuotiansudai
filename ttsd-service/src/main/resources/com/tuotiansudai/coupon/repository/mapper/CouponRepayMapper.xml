@@ -23,17 +23,16 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="java.util.List">
-        insert into coupon_repay (login_name, coupon_id, user_coupon_id, invest_id, period,
-        expected_interest,actual_interest, expected_fee, actual_fee, repay_amount,repay_date,
-        actual_repay_date,is_transferred, status, created_time)
+    <insert id="create" parameterType="CouponRepayModel" useGeneratedKeys="true" keyProperty="id">
+        insert into coupon_repay (
+            login_name, coupon_id, user_coupon_id, invest_id, period,
+            expected_interest,actual_interest, expected_fee, actual_fee, repay_amount,repay_date,
+            actual_repay_date,is_transferred, status, created_time)
         values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.loginName}, #{item.couponId}, #{item.userCouponId}, #{item.investId}, #{item.period},
-            #{item.expectedInterest}, #{item.actualInterest},#{item.expectedFee}, #{item.actualFee},#{item.repayAmount},
-            #{item.repayDate},
-            #{item.actualRepayDate}, #{item.isTransferred}, #{item.status}, now())
-        </foreach>
+            (#{loginName}, #{couponId}, #{userCouponId}, #{investId}, #{period},
+            #{expectedInterest}, #{actualInterest},#{expectedFee},
+            #{actualFee},#{repayAmount},#{repayDate},
+            #{actualRepayDate}, #{isTransferred}, #{status}, now())
     </insert>
 
     <select id="findByUserCouponIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
@@ -80,7 +79,10 @@
 
     <select id="findByUserCouponByInvestId" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay where invest_id = #{investId}
+    </select>
 
+    <select id="findByUserCouponByInvestIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where invest_id = #{investId} and period = #{period}
     </select>
 
     <select id="findCouponRepayByLoanIdAndPeriod" parameterType="map" resultMap="couponRepayResultMap">

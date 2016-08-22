@@ -126,6 +126,10 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             dataDto.setLoanStatus(loanModel.getStatus().name().toLowerCase());
             dataDto.setLoanStatusDesc(loanModel.getStatus().getDescription());
         }
+        if (loanModel.getFundraisingStartTime() != null) {
+            dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+        }
         long investedAmount;
         if (loanModel.getProductType() == ProductType.EXPERIENCE) {
             Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
@@ -143,17 +147,19 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
         }
-
+        dataDto.setActivityType(loanModel.getActivityType());
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));
-        if (loanModel.getFundraisingStartTime() != null) {
-            dataDto.setInvestBeginTime(new DateTime(loanModel.getFundraisingStartTime()).toDate());
-            dataDto.setVerifyTime(new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
-        }
         dataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loanModel.getFundraisingStartTime()));
         dataDto.setMinInvestMoney(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         dataDto.setCardinalNumber(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         dataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
         dataDto.setInvestedCount(investMapper.countSuccessInvest(loanModel.getId()));
+
+        dataDto.setMinInvestMoneyCent(String.valueOf(loanModel.getMinInvestAmount()));
+        dataDto.setCardinalNumberCent(String.valueOf(loanModel.getInvestIncreasingAmount()));
+        dataDto.setMaxInvestMoneyCent(String.valueOf(loanModel.getMaxInvestAmount()));
+        dataDto.setInvestedMoneyCent(String.valueOf(investedAmount));
+        dataDto.setLoanMoneyCent(String.valueOf(loanModel.getLoanAmount()));
         if (loanModel.getRaisingCompleteTime() != null) {
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }
@@ -183,37 +189,40 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         List<EvidenceResponseDataDto> evidence = getEvidenceByLoanId(loanModel.getId());
         dataDto.setEvidence(evidence);
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loanModel.getId());
-        if (loanModel.getActivityType() != ActivityType.NEWBIE) {
-            StringBuffer marqueeTitle = new StringBuffer();
-            if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(com.tuotiansudai.repository.model.LoanStatus.RAISING, com.tuotiansudai.repository.model.LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
-                marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
-            } else {
-                for (InvestModel investModel : investAchievements) {
-                    String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE);
-                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                        marqueeTitle.append(investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
-                        marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                        marqueeTitle.append("恭喜" + investorLoginName + "以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
-                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
-                    }
-                    if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)) {
-                        marqueeTitle.append("恭喜" + investorLoginName + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
-                    }
+        StringBuffer marqueeTitle = new StringBuffer();
+        if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(com.tuotiansudai.repository.model.LoanStatus.RAISING, com.tuotiansudai.repository.model.LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
+            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+        } else {
+            for (InvestModel investModel : investAchievements) {
+                String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE);
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
+                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName())) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
+                }
+                if (investModel.getAchievements().contains(InvestAchievement.LAST_INVEST)) {
+                    marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "一锤定音，奖励0.2％加息券＋50元红包    ");
                 }
             }
             dataDto.setMarqueeTitle(marqueeTitle.toString());
-            dataDto.setTitle(title);
-            dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney(), dataDto.getDeadline(), dataDto.getRepayUnit(), dataDto.getRatePercent()));
-            dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");
-            List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
-            if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
-                List<ExtraLoanRateDto> extraLoanRateDtos = fillExtraLoanRateDto(extraLoanRateModels);
-                dataDto.setExtraRates(extraLoanRateDtos);
-            }
+        }
+        //TODO:fake
+        if (loanModel.getId() == 41650602422768L && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.REPAYING) {
+            dataDto.setMarqueeTitle(MessageFormat.format("恭喜186**67 以累计投资{0}元夺得标王，奖励0.5％加息券＋100元红包    恭喜186**67 {0}占领先锋，奖励0.2％加息券＋50元红包    恭喜186**67 2016-07-29 15:33:45一锤定音，奖励0.2％加息券＋50元红包    ",
+                    AmountConverter.convertCentToString(loanModel.getLoanAmount()), new DateTime(2016, 7, 28, 0, 0, 0).toString("yyyy-MM-dd HH:mm:ss")));
+        }
+        dataDto.setTitle(title);
+        dataDto.setContent(MessageFormat.format(content, dataDto.getLoanMoney(), dataDto.getDeadline(), dataDto.getRepayUnit(), dataDto.getRatePercent()));
+        dataDto.setProductNewType(loanModel.getProductType() != null ? loanModel.getProductType().name() : "");
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanModel.getId());
+        if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
+            List<ExtraLoanRateDto> extraLoanRateDtos = fillExtraLoanRateDto(extraLoanRateModels);
+            dataDto.setExtraRates(extraLoanRateDtos);
         }
         return dataDto;
     }

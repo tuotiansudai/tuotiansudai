@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="coupons.js" headLab="activity-manage" sideLab="statisticsBirthdayCoupon" title="生日红包管理">
 
@@ -58,35 +59,36 @@
     <#list coupons as coupon>
     <tr>
         <td>
-            <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
+                        <span class="add-tooltip" data-placement="top" data-toggle="tooltip"
+                              data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
         </td>
         <td>
-            ${(coupon.birthdayBenefit+1)!}
+        ${(coupon.birthdayBenefit+1)!}
         </td>
         <td>
-            ${coupon.totalInvestAmount/100}
+        ${coupon.totalInvestAmount/100}
         </td>
         <td>
-            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
+        ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
         ${coupon.userGroup.getDescription()}
         </td>
-        <td>
-            <#list coupon.productTypes as productType>
-            ${productType.getName()}<#sep>, </#sep>
-            </#list>
-        </td>
-        <td>
-        ${coupon.usedCount?string('0')}
-        </td>
-        <td>
-        ${coupon.expectedAmount/100}
-        </td>
-        <td>
-        ${coupon.actualAmount/100}
-        </td>
-        <td>是</td>
+    <td>
+        <#list coupon.productTypes as productType>
+        ${productType.getName()}<#sep>, </#sep>
+</#list>
+</td>
+    <td>
+    ${coupon.usedCount?string('0')}
+    </td>
+    <td>
+    ${coupon.expectedAmount/100}
+    </td>
+    <td>
+    ${coupon.actualAmount/100}
+    </td>
+    <td>是</td>
     <td>
     <#if coupon.deleted>
         已删除
@@ -94,7 +96,11 @@
     <#if coupon.active>
         -
     <#else>
-        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
+        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a>
+        /
+        <button class="btn-link coupon-delete"
+                data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除
+        </button>
     </#if>
     </#if>
     </td>
@@ -105,12 +111,15 @@
     <#if coupon.active>
         <label>
             <i class="check-btn add-check"></i>
-            <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
+            <button class="loan_repay already-btn btn-link inactive-btn"
+                    data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效
+            </button>
         </label>
     <#else>
         <label>
             <i class="check-btn"></i>
-            <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
+            <a class="loan_repay confirm-btn" href="javascript:void(0)"
+               data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
         </label>
     </#if>
     </#if>
@@ -150,6 +159,9 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
             </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left export-birthday-coupons" type="button">导出Excel</button>
+        </@security.authorize>
         </ul>
     </#if>
     </nav>

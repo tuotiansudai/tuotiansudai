@@ -7,7 +7,8 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-session.xml, WEB-INF/spring-security.xml</param-value>
+        <param-value>WEB-INF/applicationContext.xml, WEB-INF/spring-session.xml, WEB-INF/spring-security.xml
+        </param-value>
     </context-param>
 
     <listener>
@@ -20,7 +21,7 @@
 
     <filter>
         <filter-name>XssSqlFilter</filter-name>
-        <filter-class>com.tuotiansudai.web.interceptors.XssFilter</filter-class>
+        <filter-class>com.tuotiansudai.web.config.interceptors.XssFilter</filter-class>
     </filter>
 
     <filter>
@@ -52,6 +53,10 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>logGenerateFilter</filter-name>
+        <filter-class>com.tuotiansudai.web.filter.LogGenerateFilter</filter-class>
+    </filter>
 
     <filter-mapping>
         <filter-name>XssSqlFilter</filter-name>
@@ -66,6 +71,12 @@
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
     <filter-mapping>
         <filter-name>springSessionRepositoryFilter</filter-name>
@@ -91,12 +102,11 @@
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>logGenerateFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-    <servlet>
-        <servlet-name>dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>

@@ -41,8 +41,6 @@ public class ReferrerManageView {
 
     private ProductType productType;
 
-    private String mobile;
-
     public String getLoanName() {
         return loanName;
     }
@@ -185,13 +183,5 @@ public class ReferrerManageView {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 }

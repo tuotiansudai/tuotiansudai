@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BankDto;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.service.BankService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

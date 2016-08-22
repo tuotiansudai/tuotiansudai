@@ -94,7 +94,7 @@ public class MobileAppTokenProvider {
         return dto;
     }
 
-    public BaseResponseDto generateResponseDto(ReturnMessage returnMessage, String loginName) {
+    public BaseResponseDto<LoginResponseDataDto> generateResponseDto(ReturnMessage returnMessage, String loginName) {
         String message = returnMessage.getMsg();
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
         if (userModel != null) {

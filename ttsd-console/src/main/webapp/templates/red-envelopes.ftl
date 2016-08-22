@@ -4,6 +4,18 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="see-detail">
+        <table border="1"></table>
+        <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
+    </div>
+    <div class="tip-container">
+        <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="txt"></span>
+        </div>
+    </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -20,10 +32,10 @@
             名称
         </th>
         <th>
-            金额(元)
+            来源描述
         </th>
         <th>
-            总投资金额(元)
+            金额(元)
         </th>
         <th>
             活动期限
@@ -32,19 +44,28 @@
             有效天数
         </th>
         <th>
+            发放对象
+        </th>
+        <th>
+            预计发放数量(张)
+        </th>
+        <th>
+            可投标的
+        </th>
+        <th>
+            使用条件
+        </th>
+        <th>
+            是否共用
+        </th>
+        <th>
             已发放(张)
         </th>
         <th>
             已使用(张)
         </th>
         <th>
-            发放对象
-        </th>
-        <th>
-            可投标的
-        </th>
-        <th>
-            起投金额
+            总投资金额(元)
         </th>
         <th>
             应发放总收益(元)
@@ -53,7 +74,7 @@
             已发放收益(元)
         </th>
         <th>
-            是否共用
+            备注
         </th>
         <th colspan="2">
             操作
@@ -66,94 +87,113 @@
     <#list coupons as coupon>
     <tr>
         <td>
-            <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
+            <span class="add-tooltip" data-placement="top" data-toggle="tooltip"
+                  data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
         </td>
         <td>
-            ${coupon.amount}
+        ${coupon.couponSource}
         </td>
         <td>
-            ${coupon.totalInvestAmount/100}
+        ${coupon.amount}
         </td>
         <td>
-            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
+        ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
-            ${coupon.deadline?string('0')}天
+        ${coupon.deadline?string('0')}天
         </td>
         <td>
-        ${coupon.issuedCount?string('0')}
-        </td>
-        <td>
-        ${coupon.usedCount?string('0')}
-        </td>
-        <td>
-            <#if coupon.userGroup == "EXCHANGER_CODE">
-                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code" class="btn-link">${coupon.userGroup.getDescription()}</a>
+            <#if coupon.userGroup == 'IMPORT_USER'>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis"
+                   class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+            <#elseif coupon.userGroup == "EXCHANGER_CODE">
+                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code"
+                   class="btn-link">${coupon.userGroup.getDescription()}</a>
             <#else>
-                ${coupon.userGroup.getDescription()}
+            ${coupon.userGroup.getDescription()}
             </#if>
         </td>
         <td>
-            <#list coupon.productTypes as productType>
-            ${productType.getName()}<#sep>, </#sep>
-            </#list>
+        ${coupon.totalCount?c}
         </td>
-        <td>
-            ${coupon.investLowerLimit}
-        </td>
-        <td>
-            ${coupon.expectedAmount/100}
-        </td>
-        <td>
-            ${coupon.actualAmount/100}
-        </td>
-        <td><#if coupon.shared>是<#else>否</#if></td>
-        <td>
-        <#if coupon.deleted>
-            已删除
-        <#else>
-        <#if coupon.active>
-            -
-        <#else>
-            <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
-                -
-            </@security.authorize>
-            <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
-                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
-                </#if>
-                <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
-            </@security.authorize>
-        </#if>
-        </#if>
-        </td>
-        <td>
-            <#if coupon.deleted>
-                -
-            <#else>
-            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                <#if coupon.active>
-                    <label>
-                        <i class="check-btn add-check"></i>
-                        <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
-                    </label>
-                <#else>
-                    <label>
-                        <i class="check-btn"></i>
-                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
-                    </label>
-                </#if>
-            </@security.authorize>
-            <@security.authorize access="hasAuthority('OPERATOR')">
-                -
-            </@security.authorize>
-            </#if>
-        </td>
-        <td>
-            <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
-        </td>
-    </tr>
-    </#list>
+    <td>
+        <#list coupon.productTypes as productType>
+        ${productType.getName()}<#sep>, </#sep>
+</#list>
+</td>
+    <td>
+    ${coupon.investLowerLimit}
+    </td>
+    <td>
+    <#if coupon.shared>是<#else>否</#if>
+    </td>
+    <td>
+    ${coupon.issuedCount?string('0')}
+    </td>
+    <td>
+    ${coupon.usedCount?string('0')}
+    </td>
+    <td>
+    ${coupon.totalInvestAmount/100}
+    </td>
+    <td>
+    ${coupon.expectedAmount/100}
+    </td>
+    <td>
+    ${coupon.actualAmount/100}
+    </td>
+    <td>
+    ${coupon.comment!}
+    </td>
+    <td>
+    <#if coupon.deleted>
+        已删除
+    <#else>
+    <#if coupon.active>
+        -
+    <#else>
+    <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+        -
+    </@security.authorize>
+    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+    <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
+        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
+    </#if>
+        <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+    </@security.authorize>
+    </#if>
+    </#if>
+    </td>
+    <td>
+    <#if coupon.deleted>
+        -
+    <#else>
+    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+    <#if coupon.active>
+        <label>
+            <i class="check-btn add-check"></i>
+            <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}"
+                    data-type="${coupon.couponType}">已生效
+            </button>
+        </label>
+    <#else>
+        <label>
+            <i class="check-btn"></i>
+            <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}"
+               data-type="${coupon.couponType}">确认生效</a>
+        </label>
+    </#if>
+    </@security.authorize>
+    <@security.authorize access="hasAuthority('OPERATOR')">
+        -
+    </@security.authorize>
+    </#if>
+    </td>
+    <td>
+        <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
+    </td>
+</tr>
+</#list>
 </tbody>
 </table>
 </div>
@@ -184,6 +224,9 @@
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
             </li>
+        <@security.authorize access="hasAnyAuthority('DATA')">
+            <button class="btn btn-default pull-left export-red-envelopes" type="button">导出Excel</button>
+        </@security.authorize>
         </ul>
     </#if>
     </nav>

@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="userMan" title="用户管理">
 
@@ -112,7 +113,11 @@
                         </#if>
                     </td>
                     <td>${userItem.userName!}</td>
-                    <td>${userItem.mobile}</td>
+                    <td>${userItem.mobile}
+                        <#if userItem.staff>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${userItem.email!}</td>
                     <td>${userItem.referrerMobile!}
                         <#if userItem.referrerStaff>
@@ -177,7 +182,9 @@
 
                 </li>
             </ul>
-            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            <@security.authorize access="hasAnyAuthority('DATA')">
+                <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
+            </@security.authorize>
         </#if>
     </nav>
     <!-- pagination -->

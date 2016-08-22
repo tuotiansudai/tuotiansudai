@@ -24,6 +24,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Value(value = "${web.coupon.lock.seconds}")
+    private int couponLockSeconds;
 
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
@@ -90,7 +94,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
             public UserCouponDto apply(UserCouponModel userCouponModel) {
-                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, couponLockSeconds);
             }
         });
 
@@ -118,7 +122,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         if (userCouponModelOptional.isPresent()) {
             UserCouponModel userCouponModel = userCouponModelOptional.get();
-            return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+            return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, 0);
         }
 
         return null;
@@ -141,7 +145,9 @@ public class UserCouponServiceImpl implements UserCouponService {
             public boolean apply(UserCouponModel userCouponModel) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 boolean isShared = couponModel.isShared();
-                boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus() && userCouponModel.getEndTime().after(new Date());
+                boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus()
+                        && userCouponModel.getEndTime().after(new Date())
+                        && (userCouponModel.getUsedTime() == null || new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isAfter(new DateTime()));
                 boolean productTypeEnable = couponModel.getProductTypes().contains(loanModel.getProductType());
                 boolean isGreatThanInvestLowerLimit = couponModel.getInvestLowerLimit() <= amount;
                 return !isShared && unused && productTypeEnable && isGreatThanInvestLowerLimit;
@@ -184,7 +190,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         }.sortedCopy(maxBenefitUserCoupons);
 
         return orderingMaxBenefitUserCoupons.isEmpty() ? null :
-                new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0));
+                new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0), 0);
     }
 
     @Override

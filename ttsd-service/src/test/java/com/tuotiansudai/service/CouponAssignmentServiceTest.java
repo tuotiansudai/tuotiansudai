@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -159,6 +157,7 @@ public class CouponAssignmentServiceTest {
         couponModel.setCreatedTime(new Date());
         couponModel.setActive(true);
         couponModel.setMultiple(isMultiple);
+        couponModel.setCouponSource("couponSource");
         couponMapper.create(couponModel);
         return couponModel;
     }

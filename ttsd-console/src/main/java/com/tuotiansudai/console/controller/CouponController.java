@@ -3,7 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
@@ -11,7 +11,6 @@ import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
@@ -22,6 +21,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -73,6 +73,9 @@ public class CouponController {
     private UserMapper userMapper;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
 
     @Autowired
@@ -87,10 +90,10 @@ public class CouponController {
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/coupon/{couponId}/exchange-code", method = RequestMethod.GET)
-    public ModelAndView expertExchangeCode(@PathVariable long couponId, HttpServletResponse response) throws IOException{
+    public ModelAndView expertExchangeCode(@PathVariable long couponId, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("兑换码"+ new DateTime().toString("yyyyMMdd")+".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("兑换码" + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -99,17 +102,17 @@ public class CouponController {
         CouponModel couponModel = couponService.findCouponById(couponId);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
 
-        for (int i=0; i<exchangeCodes.size(); i++) {
+        for (int i = 0; i < exchangeCodes.size(); i++) {
             List<String> dataModel = Lists.newArrayList();
             if (i == 0) {
                 dataModel.add(couponModel.getCouponType().getName());
                 dataModel.add(new DateTime(couponModel.getCreatedTime()).toString("yyyy-MM-dd"));
                 dataModel.add(couponModel.getCouponType() == CouponType.INVEST_COUPON ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
-                dataModel.add(couponModel.getCouponType() == CouponType.INTEREST_COUPON ? couponModel.getRate()*100 + "%" : "");
+                dataModel.add(couponModel.getCouponType() == CouponType.INTEREST_COUPON ? couponModel.getRate() * 100 + "%" : "");
                 dataModel.add(couponModel.getCouponType() == CouponType.RED_ENVELOPE ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
                 dataModel.add(new DateTime(couponModel.getStartTime()).toString("yyyy-MM-dd") + "至" + new DateTime(couponModel.getEndTime()).toString("yyyy-MM-dd"));
-                dataModel.add(couponModel.getTotalCount()+"个");
-                dataModel.add("满"+ AmountConverter.convertCentToString(couponModel.getInvestLowerLimit())+"元");
+                dataModel.add(couponModel.getTotalCount() + "个");
+                dataModel.add("满" + AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()) + "元");
                 dataModel.add(StringUtils.join(Lists.transform(couponModel.getProductTypes(), new Function<ProductType, Object>() {
                     @Override
                     public Object apply(ProductType input) {
@@ -220,14 +223,19 @@ public class CouponController {
     public ModelAndView edit(@PathVariable long id, Model model) {
         CouponModel couponModel = couponService.findCouponById(id);
         ModelAndView modelAndView;
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
-            modelAndView = new ModelAndView("/interest-coupon-edit");
-        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
-            modelAndView = new ModelAndView("/red-envelope-edit");
-        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            modelAndView = new ModelAndView("/birthday-coupon-edit");
-        } else {
-            modelAndView = new ModelAndView("/coupon-edit");
+        switch (couponModel.getCouponType()) {
+            case INTEREST_COUPON:
+                modelAndView = new ModelAndView("/interest-coupon-edit");
+                break;
+            case RED_ENVELOPE:
+                modelAndView = new ModelAndView("/red-envelope-edit");
+                break;
+            case BIRTHDAY_COUPON:
+                modelAndView = new ModelAndView("/birthday-coupon-edit");
+                break;
+            default:
+                modelAndView = new ModelAndView("/coupon-edit");
+                break;
         }
         if (!model.containsAttribute("coupon")) {
             CouponDto couponDto = new CouponDto(couponModel);
@@ -238,13 +246,12 @@ public class CouponController {
                 modelAndView.addObject(modelKey.toString(), modelMap.get(modelKey));
             }
         }
-
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
             modelAndView.addObject("agents", userRoleService.queryAllAgent());
-            modelAndView.addObject("channels",userMapper.findAllChannels());
+            modelAndView.addObject("channels", userService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }
         if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {
@@ -257,7 +264,7 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request){
+    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         couponActivationService.active(loginName, couponId, ip);

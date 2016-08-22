@@ -1,4 +1,7 @@
 module.exports = function(grunt) {
+
+    require('time-grunt')(grunt);
+    require('load-grunt-tasks')(grunt);  //load all grunt tasks
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         // Metadata.
@@ -141,9 +144,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-    // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
