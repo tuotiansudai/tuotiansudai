@@ -277,7 +277,7 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $captcha.on('blur',function() {
+    $captcha.on('keyup',function() {
         $(this).checkFrom();
     });
 
