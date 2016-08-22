@@ -6,11 +6,11 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -30,7 +30,7 @@ import java.text.MessageFormat;
 @RequestMapping(path = "/register/user")
 public class RegisterUserController {
 
-    private static Logger logger = Logger.getLogger(RegisterUserController.class);
+    private final static Logger logger = Logger.getLogger(RegisterUserController.class);
 
     @Autowired
     private UserService userService;
@@ -42,17 +42,12 @@ public class RegisterUserController {
     private CaptchaHelper captchaHelper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private MyAuthenticationManager myAuthenticationManager;
-
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser(HttpServletRequest request) {
-        String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
-        modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(referrer));
+        modelAndView.addObject("referrer", userService.getMobile(request.getParameter("referrer")));
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -69,6 +64,10 @@ public class RegisterUserController {
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
             logger.info(MessageFormat.format("[Register User {0}] controller invoked service ({0})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess)));
         } catch (ReferrerRelationException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);
         }
@@ -78,6 +77,7 @@ public class RegisterUserController {
             myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
+
         String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
         String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
         logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));

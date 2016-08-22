@@ -28,7 +28,9 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
 
     $('.down-load').click(function(){
         var mobile = $('.jq-loginName').val();
-        window.location.href = "/finance-manage/account-balance?mobile="+mobile+"&export=csv";
+        var minBalance = $('.jq-balance-min').val();
+        var maxBalance = $('.jq-balance-max').val();
+        window.location.href = "/finance-manage/account-balance?mobile=" + mobile + '&balanceMin=' + minBalance + '&balanceMax=' + maxBalance + "&export=csv";
     });
 
-})
+});

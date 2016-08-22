@@ -150,9 +150,9 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<AccountItemDataDto> accountItemDataDtoList = accountService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
+        List<AccountItemDataDto> accountItemDataDtoList = exportService.findUsersAccountPoint(loginName, userName, mobile, 1, Integer.MAX_VALUE);
 
-        List<List<String>> csvData = exportService.buildOriginListToCsvData(accountItemDataDtoList);
+        List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 
     }

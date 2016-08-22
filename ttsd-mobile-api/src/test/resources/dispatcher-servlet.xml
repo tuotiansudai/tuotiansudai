@@ -16,7 +16,7 @@
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.tuotiansudai.api.util.CustomerObjectMapper"/>
+                    <bean class="com.tuotiansudai.web.config.jackson.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -35,7 +35,7 @@
     <context:component-scan base-package="com.tuotiansudai.api.controller"/>
 
     <mvc:resources mapping="/api/style/**" location="/api/style/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/images/**" location="api/images/"/>
     <mvc:resources mapping="/api/js/**" location="/api/js/"/>
 
 

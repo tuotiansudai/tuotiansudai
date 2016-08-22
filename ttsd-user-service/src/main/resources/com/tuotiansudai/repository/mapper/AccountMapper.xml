@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AccountMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="accountResultMap" type="AccountModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="identity_number" property="identityNumber"/>
+        <result column="pay_user_id" property="payUserId"/>
+        <result column="pay_account_id" property="payAccountId"/>
+        <result column="balance" property="balance"/>
+        <result column="freeze" property="freeze"/>
+        <result column="point" property="point"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="auto_invest" property="autoInvest"/>
+        <result column="auto_repay" property="autoRepay"/>
+        <result column="no_password_invest" property="noPasswordInvest"/>
+        <result column="membership_point" property="membershipPoint"/>
+    </resultMap>
+
+    <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze, register_time, membership_point)
+        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
+    </insert>
+
+    <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">
+        select * from account where login_name = #{loginName}
+    </select>
+
+    <select id="findByPayUserId" parameterType="string" resultMap="accountResultMap">
+        select * from account where pay_user_id = #{payUserId}
+    </select>
+
+    <select useCache="false" id="lockByLoginName" parameterType="string" resultMap="accountResultMap">
+        select * from account where login_name = #{loginName} for update
+    </select>
+
+    <update id="update" parameterType="AccountModel">
+        update account set
+          balance = #{balance},
+          freeze = #{freeze},
+          auto_invest = #{autoInvest},
+          auto_repay = #{autoRepay},
+          no_password_invest = #{noPasswordInvest},
+          point = #{point},
+          membership_point = #{membershipPoint}
+        where login_name = #{loginName}
+    </update>
+
+    <select id="findByIdentityNumber" parameterType="string" resultMap="accountResultMap">
+        select * from account where identity_number = #{identityNumber}
+    </select>
+
+    <select id="findLoginNames" resultType="string">
+        select login_name from account
+    </select>
+
+    <select id="findBirthDayUsers" resultType="string">
+        select login_name
+        from account
+        where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
+    </select>
+
+    
+    <select id="findBirthMonthUsers" resultType="string">
+        select login_name 
+        from account 
+        where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
+    </select>
+
+    <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
+        SELECT *
+        FROM account
+        <where>
+            <if test="loginName != null and loginName != '' ">
+                AND account.login_name = #{loginName}
+            </if>
+            <if test="userName != null and userName != '' ">
+                AND account.user_name = #{userName}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
+            </if>
+        </where>
+        ORDER BY account.point DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountPointCount" parameterType="map" resultType="int">
+        SELECT COUNT(1)
+        FROM account
+        <where>
+            <if test="loginName != null and loginName != '' ">
+                AND account.login_name = #{loginName}
+            </if>
+            <if test="userName != null and userName != '' ">
+                AND account.user_name = #{userName}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
+            </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="long">
+        select count(1) from account
+    </select>
+
+    <select id="findAccountWithBalance" parameterType="map" resultMap="accountResultMap">
+        select login_name, balance from account order by id ASC limit #{startLimit}, #{endLimit}
+    </select>
+</mapper>

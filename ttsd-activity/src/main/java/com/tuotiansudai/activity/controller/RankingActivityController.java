@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.activity.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
@@ -63,9 +63,7 @@ public class RankingActivityController {
     @RequestMapping(value = "/draw-tiandou", method = RequestMethod.POST)
     public BaseDto<DrawLotteryDto> drawTianDouPrize() {
         String loginName = LoginUserInfo.getLoginName();
-        String mobile = LoginUserInfo.getMobile();
-
-        return rankingActivityService.drawTianDouPrize(loginName, mobile);
+        return rankingActivityService.drawTianDouPrize(loginName);
     }
 
     @ResponseBody

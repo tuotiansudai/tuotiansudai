@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://central.maven.org/maven2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+jar {
+    baseName = 'ttsd-activity-console'
+}
+
+repositories {
+    jcenter()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://central.maven.org/maven2/" }
+}
+
+dependencies {
+    compile project(":ttsd-user-service"),
+            project(":ttsd-spring-extension"),
+            project(":ttsd-web-common-config"),
+            "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-configuration-processor",
+            "org.springframework.boot:spring-boot-starter-jdbc",
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.boot:spring-boot-starter-redis",
+            "org.springframework.boot:spring-boot-starter-freemarker",
+            "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
+            'mysql:mysql-connector-java:5.1.39',
+            'com.zaxxer:HikariCP:2.4.7',
+            'com.google.guava:guava:19.0'
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
