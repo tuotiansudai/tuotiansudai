@@ -34,10 +34,6 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
         }
 
         Source source = Source.valueOf(feedbackRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
-        String contact = feedbackRequestDto.getContact();
-        if (StringUtils.isEmpty(contact)) {
-            contact = feedbackRequestDto.getBaseParam().getPhoneNum();
-        }
 
         FeedbackType type;
         if (StringUtils.isEmpty(feedbackRequestDto.getType())) {
@@ -46,7 +42,7 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
             type = FeedbackType.valueOf(feedbackRequestDto.getType());
         }
 
-        feedbackService.create(getLoginName(), contact, source, type, feedbackRequestDto.getContent());
+        feedbackService.create(getLoginName(), source, type, feedbackRequestDto.getContent());
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 }

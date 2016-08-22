@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class BookingLoanMapperTest {
 
@@ -35,7 +35,7 @@ public class BookingLoanMapperTest {
                 Source.WEB,
                 DateTime.now().toDate(),
                 ProductType._90,
-                1000l,
+                1000L,
                 DateTime.now().toDate(),
                 false,
                 DateTime.now().toDate());

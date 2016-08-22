@@ -20,7 +20,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class ExtraLoanRateMapperTest {
 

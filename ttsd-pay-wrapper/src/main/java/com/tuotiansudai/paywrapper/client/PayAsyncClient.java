@@ -10,14 +10,16 @@ import com.tuotiansudai.paywrapper.repository.mapper.BaseAsyncMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseCallbackMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
-import com.tuotiansudai.util.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,9 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-public class PayAsyncClient {
+public class PayAsyncClient implements ApplicationContextAware {
+
+    private static ApplicationContext applicationContext;
 
     static Logger logger = Logger.getLogger(PayAsyncClient.class);
 
@@ -131,6 +135,11 @@ public class PayAsyncClient {
 
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
-        return SpringContextUtil.getBeanByName(beanName);
+        return applicationContext.getBean(beanName);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        PayAsyncClient.applicationContext = applicationContext;
     }
 }

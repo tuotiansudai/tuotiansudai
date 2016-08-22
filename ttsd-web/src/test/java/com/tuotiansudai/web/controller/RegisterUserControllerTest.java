@@ -3,11 +3,11 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -146,7 +146,6 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-
         doNothing().when(myAuthenticationManager).createAuthentication(anyString());
 
         this.mockMvc.perform(post("/register/user")

@@ -139,7 +139,6 @@ public class InvestAchievementServiceTest {
 
         List<LoanAchievementView> investAchievementDtosMax = investAchievementService.findInvestAchievement(1, 10, userModelMaxMan.getMobile());
         assertThat(investAchievementDtosMax.get(0).getMaxAmountLoginName(), is(userModelMaxMan.getMobile()));
-
     }
 
 }

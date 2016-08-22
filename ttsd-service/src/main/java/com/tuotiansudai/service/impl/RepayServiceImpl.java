@@ -195,7 +195,7 @@ public class RepayServiceImpl implements RepayService {
                     investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee + couponRepayModel.getExpectedFee()));
                     expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
                     investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount));
-                    if (RepayStatus.COMPLETE.name().equals(investRepayDataItemDto.getStatus())) {
+                    if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
                         repayAmount += couponRepayModel.getRepayAmount();
                         investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
                         investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee + couponRepayModel.getActualFee()));

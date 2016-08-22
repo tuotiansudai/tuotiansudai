@@ -14,7 +14,7 @@
                 "header":{"text":"系统首页","link":"/"},
                 "sidebar":
                 [
-                    {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN'"}
                 ]
             },
             {
@@ -125,7 +125,7 @@
             },
             {
                 "name":"app-push-manage",
-            "header":{"text":"消息管理"},
+                "header":{"text":"消息管理"},
                 "sidebar":[
                     {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
@@ -162,7 +162,16 @@
                     {"name":"createCouponExchange","text":"优惠券兑换创建","link":"/activity-manage/coupon-exchange","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"couponExchangeManage","text":"优惠券兑换管理","link":"/activity-manage/coupon-exchange-manage","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
                 ]
+            },
+            {
+                "name":"ask-manage",
+                "header":{"text":"问答管理"},
+                "sidebar":[
+                    {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN', 'ASK_ADMIN'"},
+                    {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"}
+                ]
             }
+
         ]
 >
 

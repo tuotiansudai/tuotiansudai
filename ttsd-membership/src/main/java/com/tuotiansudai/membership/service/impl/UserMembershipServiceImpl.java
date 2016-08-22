@@ -41,7 +41,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     public int getProgressBarPercent(String loginName) {
         Long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
         if(membershipPoint == null){
-            membershipPoint = 0l;
+            membershipPoint = 0L;
         }
         int currentLevel = userMembershipMapper.findRealLevelByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findByLevel(currentLevel);

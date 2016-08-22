@@ -25,12 +25,12 @@ $(function() {
             type: 'post',
             data: $('.form-login').serialize()
         }).done(function (response) {
-            if (response.data.status) {
+            if (response.status) {
                 //redirectByRoles(response.data.roles);
                 window.location.href = "/";
             } else {
                 refreshCaptcha();
-                if (response.data.isCaptchaNotMatch) {
+                if (response.isCaptchaNotMatch) {
                     $('.error').text('验证码不正确').css('visibility', 'visible');
                 } else {
                     $('.error').text('用户名或密码不正确').css('visibility', 'visible');

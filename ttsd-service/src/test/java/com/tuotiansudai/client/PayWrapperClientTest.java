@@ -97,31 +97,6 @@ public class PayWrapperClientTest {
     }
 
     @Test
-    public void shouldMonitor() throws Exception {
-        MockResponse mockResponse = new MockResponse();
-        BaseDto<MonitorDataDto> baseDto = new BaseDto<>();
-        MonitorDataDto dataDto = new MonitorDataDto();
-        dataDto.setStatus(true);
-        dataDto.setDatabaseStatus(true);
-        dataDto.setRedisStatus(true);
-        baseDto.setData(dataDto);
-
-        mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
-        server.enqueue(mockResponse);
-        payWrapperClient.setHost(server.getHostName());
-        payWrapperClient.setPort(String.valueOf(server.getPort()));
-        payWrapperClient.setApplicationContext("");
-
-        BaseDto<MonitorDataDto> actualBaseDto = payWrapperClient.monitor();
-
-        assertTrue(actualBaseDto.isSuccess());
-        assertTrue(actualBaseDto.getData().getStatus());
-        assertTrue(actualBaseDto.getData().isDatabaseStatus());
-        assertTrue(actualBaseDto.getData().isRedisStatus());
-
-    }
-
-    @Test
     public void shouldCreateLoanTest() throws Exception {
         createMockUser("xiangjie");
 
