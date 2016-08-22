@@ -1393,7 +1393,7 @@
     <select id="queryRepayByRecheckTimeAndActualRepayDate" parameterType="map" resultMap="keyValueMap">
         SELECT
             ROUND(IFNULL(SUM(r.corpus + r.expected_interest + r.default_interest),0)/ 100, 2) AS `value`,
-            DATE(#{repayDate}) AS `name`,
+            DATE(DATE_ADD(#{repayDate},INTERVAL -1 DAY)) AS `name`,
             '待收' as `group`
         FROM
             loan l
@@ -1401,7 +1401,42 @@
             loan_repay r ON l.id = r.loan_id
         WHERE
         l.status IN ('REPAYING' , 'COMPLETE', 'OVERDUE')
-            AND l.recheck_time &lt; #{startTime}
+            AND l.recheck_time &lt; #{repayDate}
             AND (r.actual_repay_date > #{repayDate} or actual_repay_date is null)
+    </select>
+
+    <select id="querySystemBillOutByCreatedTime" parameterType="map" resultMap="keyValueMap">
+        SELECT
+            <if test="granularity.name() == 'Daily'">
+                DATE(created_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                DATE_FORMAT(created_time, '%Y-W%u') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                DATE_FORMAT(created_time, '%Y-%m') AS `name`,
+            </if>
+            ROUND(IFNULL(SUM(amount), 0)/ 100, 2) AS `value`,
+            '支出' as `group`
+        FROM system_bill
+        WHERE operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+
+            GROUP BY
+            <if test="granularity.name() == 'Daily'">
+                date(created_time)
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                year(created_time), week(created_time)
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                year(created_time), month(created_time)
+            </if>
+            ORDER BY created_time
     </select>
 </mapper>

@@ -491,6 +491,7 @@
         select
             i.loan_id AS loan_id,
             i.login_name AS invest_name,
+            (select mobile from user where user.login_name = i.login_name) as invest_mobile,
             rr.level,
             l.name AS loan_name,
             i.amount AS invest_amount,

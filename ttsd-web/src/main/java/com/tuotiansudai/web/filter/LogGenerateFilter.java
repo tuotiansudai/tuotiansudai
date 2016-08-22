@@ -1,8 +1,8 @@
 package com.tuotiansudai.web.filter;
 
 
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.UUIDGenerator;
-import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
 

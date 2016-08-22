@@ -41,7 +41,7 @@
                 <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
             <li>
-                <a href="<#if channel??>/register/user?channel=${channel}<#else>/register/user</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
+                <a href="/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>
         </ul>

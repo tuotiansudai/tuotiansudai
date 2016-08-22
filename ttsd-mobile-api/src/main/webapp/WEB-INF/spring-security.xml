@@ -45,7 +45,6 @@
         <intercept-url pattern="/api/**" access="permitAll()"/>
         <intercept-url pattern="/api-template" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
-
         <intercept-url pattern="/v1.0/get/mobile-is-available" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/show-image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()"/>

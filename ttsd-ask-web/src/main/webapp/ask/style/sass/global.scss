@@ -1,0 +1,49 @@
+@import 'reset';
+@import 'btn';
+@import 'page_frame';
+@import 'questions';
+
+.red-color {
+  color: red;
+}
+.banner-box {
+  background: url("../../images/ba01.jpg") no-repeat;
+  height:140px;
+  a {
+    display: block;
+    height:100%;
+  }
+}
+.m-title {
+  font-size:18px;
+  color:#333333;
+  font-weight: bold;
+  line-height: 50px;
+}
+
+.pagination {
+  text-align: center;
+  margin-top:20px;
+  a {
+    display: inline-block;
+    margin-right:6px;
+    background: #fff;
+    line-height: 15px;
+    padding: 8px 12px;
+    @include center-block;
+    border:1px solid #e5e5e5;
+    &.active {
+      background:#ff9700;
+      color: #fff;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+

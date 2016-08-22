@@ -95,10 +95,10 @@ public class MobileAppRepayCalendarServiceTest {
         CouponRepayModel couponRepayModel2 = createCouponRepay(investModel2.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-10-02").toDate());
         CouponRepayModel couponRepayModel3 = createCouponRepay(investModel2.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-10-02").toDate());
         CouponRepayModel couponRepayModel4 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-09-03").toDate());
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel2));
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel3));
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel4));
+        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(couponRepayModel2);
+        couponRepayMapper.create(couponRepayModel3);
+        couponRepayMapper.create(couponRepayModel4);
 
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse("2200-11-01").toDate()));
@@ -143,8 +143,8 @@ public class MobileAppRepayCalendarServiceTest {
         userCouponMapper.create(userCouponModel);
         CouponRepayModel couponRepayModel = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
         CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel1));
+        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(couponRepayModel1);
 
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse("2200-11-03").toDate()));
@@ -190,8 +190,8 @@ public class MobileAppRepayCalendarServiceTest {
         userCouponMapper.create(userCouponModel);
         CouponRepayModel couponRepayModel = createCouponRepay(investModel6.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-02").toDate());
         CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel));
-        couponRepayMapper.create(Lists.newArrayList(couponRepayModel1));
+        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(couponRepayModel1);
 
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
         investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));

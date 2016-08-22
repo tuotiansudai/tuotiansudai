@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 public interface FeedbackService {
-    FeedbackModel create(String loginName,
-                         String contact,
-                         Source source,
-                         FeedbackType type,
-                         String content);
+    FeedbackModel create(String loginName, Source source, FeedbackType type, String content);
 
     BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String loginName,
                                                                Source source,

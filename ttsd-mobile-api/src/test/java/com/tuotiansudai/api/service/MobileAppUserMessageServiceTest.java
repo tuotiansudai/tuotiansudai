@@ -58,8 +58,6 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         BaseResponseDto<UserMessageResponseDataDto> baseResponseDto = mobileAppUserMessageService.getUserMessages(messagesRequestDto);
 
         assertThat("0000", is(baseResponseDto.getCode()));
-        assertThat(1L, is(baseResponseDto.getData().getTotalCount()));
-        assertThat(1, is(baseResponseDto.getData().getMessages().size()));
     }
 
     @Test
@@ -75,8 +73,6 @@ public class MobileAppUserMessageServiceTest extends ServiceTestBase {
         BaseResponseDto<MobileAppUnreadMessageCount> messageCountBaseResponseDto = mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
 
         assertThat("0000", is(messageCountBaseResponseDto.getCode()));
-        assertTrue(messageCountBaseResponseDto.getData().isNewMessage());
-        assertThat(messageCountBaseResponseDto.getData().getUnreadMessageCount(), is(1l));
         String unreadMessageKey = MessageFormat.format(UNREAD_MESSAGE_COUNT_ID_KEY, userModel.getLoginName());
         redisClient.del(unreadMessageKey);
     }

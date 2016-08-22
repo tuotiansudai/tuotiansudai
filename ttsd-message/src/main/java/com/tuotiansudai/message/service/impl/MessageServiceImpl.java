@@ -137,6 +137,7 @@ public class MessageServiceImpl implements MessageService {
         return null != messageMapper.findById(messageId);
     }
 
+    @SuppressWarnings(value = "unchecked")
     private void createManualMessage(MessageDto messageDto, long importUsersId) {
         MessageModel messageModel = new MessageModel(messageDto);
 
@@ -157,6 +158,7 @@ public class MessageServiceImpl implements MessageService {
         }
     }
 
+    @SuppressWarnings(value = "unchecked")
     private void editManualMessage(MessageDto messageDto, long importUsersId) {
         List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));

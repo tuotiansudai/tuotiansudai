@@ -37,7 +37,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -194,19 +193,16 @@ public class CouponRepayServiceTest {
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         couponRepayService.generateCouponRepay(loanModel.getId());
 
-        doNothing().when(couponRepayMapper).create(any(ArrayList.class));
-        ArgumentCaptor<ArrayList> argumentCaptor = ArgumentCaptor.forClass(ArrayList.class);
-        verify(couponRepayMapper, times(1)).create(argumentCaptor.capture());
-        List<CouponRepayModel> values = argumentCaptor.getValue();
+        doNothing().when(couponRepayMapper).create(any(CouponRepayModel.class));
+        ArgumentCaptor<CouponRepayModel> argumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
+        verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
+        CouponRepayModel value = argumentCaptor.getValue();
 
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-        for (CouponRepayModel value : values) {
-            Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
-            assertEquals("123", String.valueOf(value.getExpectedInterest()));
-            assertEquals("12", String.valueOf(value.getExpectedFee()));
-            assertEquals("3", String.valueOf(values.size()));
-            assertTrue(repayDate.equals(value.getRepayDate()));
-        }
+        Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
+        assertEquals("123", String.valueOf(value.getExpectedInterest()));
+        assertEquals("12", String.valueOf(value.getExpectedFee()));
+        assertTrue(repayDate.equals(value.getRepayDate()));
 
     }
 

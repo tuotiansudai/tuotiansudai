@@ -55,7 +55,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Transactional
     public boolean exchangeableCoupon(long couponId, String loginName) {
         long exchangePoint = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
-        long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
+        long availablePoint = accountMapper.findByLoginName(loginName).getPoint();
         CouponModel couponModel = couponMapper.lockById(couponId);
         return availablePoint >= exchangePoint && couponModel.getIssuedCount() < couponModel.getTotalCount();
     }

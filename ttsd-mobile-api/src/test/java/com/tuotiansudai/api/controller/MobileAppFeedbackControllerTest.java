@@ -29,7 +29,7 @@ public class MobileAppFeedbackControllerTest extends ControllerTestBase {
 
     @Test
     public void createFeedbackOK() throws Exception {
-        when(service.create(anyString(), anyString(), any(Source.class), any(FeedbackType.class), anyString())).thenReturn(null);
+        when(service.create(anyString(), any(Source.class), any(FeedbackType.class), anyString())).thenReturn(null);
         FeedbackRequestDto requestDto = new FeedbackRequestDto();
         requestDto.setContent("hello");
         doRequestWithServiceMockedTest("/feedback", requestDto);
@@ -37,7 +37,7 @@ public class MobileAppFeedbackControllerTest extends ControllerTestBase {
 
     @Test
     public void createFeedbackFail() throws Exception {
-        when(service.create(anyString(), anyString(), any(Source.class), any(FeedbackType.class), anyString())).thenReturn(null);
+        when(service.create(anyString(), any(Source.class), any(FeedbackType.class), anyString())).thenReturn(null);
         doRequestWithServiceIsOkMockedTest("/feedback", new FeedbackRequestDto())
                 .andExpect(jsonPath("$.code").value("0080"));
     }

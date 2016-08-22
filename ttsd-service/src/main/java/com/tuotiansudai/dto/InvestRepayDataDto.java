@@ -6,13 +6,17 @@ import java.util.List;
 
 public class InvestRepayDataDto extends BaseDataDto {
 
+    private String sumActualInterest;
+
+    private String sumExpectedInterest;
+
+    private String redInterest;
+
+    private String levelMessage;
+
+    private String couponMessage;
+
     private List<InvestRepayDataItemDto> records = Lists.newArrayList();
-
-    private List<String> couponDescriptionList;
-
-    private String expectedInterest;
-
-    private String actualInterest;
 
     public List<InvestRepayDataItemDto> getRecords() {
         return records;
@@ -22,15 +26,43 @@ public class InvestRepayDataDto extends BaseDataDto {
         this.records = records;
     }
 
-    public List<String> getCouponDescriptionList() { return couponDescriptionList; }
+    public String getSumActualInterest() {
+        return sumActualInterest;
+    }
 
-    public void setCouponDescriptionList(List<String> couponDescriptionList) { this.couponDescriptionList = couponDescriptionList; }
+    public void setSumActualInterest(String sumActualInterest) {
+        this.sumActualInterest = sumActualInterest;
+    }
 
-    public String getExpectedInterest() { return expectedInterest; }
+    public String getRedInterest() {
+        return redInterest;
+    }
 
-    public void setExpectedInterest(String expectedInterest) { this.expectedInterest = expectedInterest; }
+    public void setRedInterest(String redInterest) {
+        this.redInterest = redInterest;
+    }
 
-    public String getActualInterest() { return actualInterest; }
+    public String getSumExpectedInterest() {
+        return sumExpectedInterest;
+    }
 
-    public void setActualInterest(String actualInterest) { this.actualInterest = actualInterest; }
+    public void setSumExpectedInterest(String sumExpectedInterest) {
+        this.sumExpectedInterest = sumExpectedInterest;
+    }
+
+    public String getCouponMessage() {
+        return couponMessage;
+    }
+
+    public void setCouponMessage(String couponMessage) {
+        this.couponMessage = couponMessage;
+    }
+
+    public String getLevelMessage() {
+        return levelMessage;
+    }
+
+    public void setLevelMessage(String levelMessage) {
+        this.levelMessage = levelMessage;
+    }
 }
