@@ -6,7 +6,7 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
         <beans:property name="errorPageMapping">
             <beans:map>
@@ -32,7 +32,7 @@
         <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login/**" access="permitAll()"/>
 
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN','EDITOR')"/>
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN','EDITOR','ASK_ADMIN')"/>
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
         <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
@@ -54,12 +54,13 @@
         <intercept-url pattern="/link-exchange-manage/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
         <intercept-url pattern="/announce-manage/article/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN','EDITOR')"/>
         <intercept-url pattern="/ueditor/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN','EDITOR')"/>
+        <intercept-url pattern="/ask-manage/**" access="hasAnyAuthority('ADMIN','ASK_ADMIN')"/>
 
         <intercept-url pattern="/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
 
-    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/ueditor/**</beans:value>

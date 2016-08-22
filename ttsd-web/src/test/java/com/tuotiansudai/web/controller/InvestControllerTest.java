@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.InvestService;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -64,7 +64,7 @@ public class InvestControllerTest {
 
     @Test
     public void invest() throws Exception{
-        mockLoginUser("investor", "13900000000");
+        mockLoginUser("investor");
 
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
@@ -87,7 +87,7 @@ public class InvestControllerTest {
 
     @Test
     public void noPasswordInvest() throws Exception{
-        mockLoginUser("investor", "13900000000");
+        mockLoginUser("investor");
 
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
@@ -110,8 +110,8 @@ public class InvestControllerTest {
                 .andExpect(jsonPath("$.data.status").value(true));
     }
 
-    private void mockLoginUser(String loginName, String mobile){
-        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
+    private void mockLoginUser(String loginName){
+        User user = new User(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
     }

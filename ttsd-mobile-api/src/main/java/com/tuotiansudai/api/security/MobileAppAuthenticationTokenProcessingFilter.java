@@ -6,15 +6,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.security.MyUserDetailsService;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.GenericFilterBean;
@@ -36,7 +29,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private MobileAppTokenProvider mobileAppTokenProvider;
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private MyAuthenticationManager myAuthenticationManager;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -66,7 +59,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
             return;
         }
 
-        authenticateToken(loginName);
+        myAuthenticationManager.createAuthentication(loginName);
         chain.doFilter(httpServletRequest, response);
     }
 
@@ -96,17 +89,6 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 out.close();
             }
         }
-    }
-
-    private void authenticateToken(String loginName) {
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
-        authentication.setDetails(userDetails);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     public void setIgnoreUrls(List<String> ignoreUrls) {
