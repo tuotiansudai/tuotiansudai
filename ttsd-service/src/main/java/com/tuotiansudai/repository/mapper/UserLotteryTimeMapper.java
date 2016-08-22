@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 
 import com.tuotiansudai.repository.model.UserLotteryTimeModel;
+import com.tuotiansudai.repository.model.UserLotteryTimeView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ public interface UserLotteryTimeMapper {
 
     void update(UserLotteryTimeModel userLotteryTimeModel);
 
-    List<UserLotteryTimeModel> findUserLotteryTimeModels(@Param(value = "mobile") String mobile,
+    List<UserLotteryTimeView> findUserLotteryTimeViews(@Param(value = "mobile") String mobile,
                                                          @Param(value = "index") Integer index,
                                                          @Param(value = "pageSize") Integer pageSize);
 

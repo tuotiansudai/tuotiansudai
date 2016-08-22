@@ -3,21 +3,28 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
     $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
-    $('form button[type="reset"]').click(function () {
+    $('#timeRestBtn').click(function () {
         location.href = "/activity-manage/user-lottery-list";
+    });
+    $('#prizeRestBtn').click(function () {
+        location.href = "/activity-manage/user-prize-list";
     });
 
     $('#lotteryTimeBtn').click(function(){
         window.location.href = "/activity-manage/user-lottery-list?"+$('#lotteryTimeForm').serialize()+"&export=csv";
     });
 
+    $('#prizeBtn').click(function(){
+        window.location.href = "/activity-manage/user-prize-list?"+$('#prizeFrom').serialize()+"&export=csv";
+    });
+
     $('.btnPrizeRecord').click(function(){
         $("#prizeTimeDiv").show();
-        $("#btnPrizeTime").hide();
+        $("#prizeDive").hide();
     });
 
     $('.btnPrizeTime').click(function(){
-        $("#btnPrizeTime").show();
+        $("#prizeDive").show();
         $("#prizeTimeDiv").hide();
     });
 });

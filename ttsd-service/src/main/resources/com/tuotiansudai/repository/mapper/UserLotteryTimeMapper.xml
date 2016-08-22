@@ -16,10 +16,17 @@
         <result column="updated_time" property="updatedTime"></result>
     </resultMap>
 
+    <resultMap id="userLotteryTimeView" type="UserLotteryTimeView">
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="used_count" property="useCount"></result>
+        <result column="unused_count" property="unUseCount"></result>
+    </resultMap>
+
+
     <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`user_lottery_time`(`id`,`mobile`,`login_name`,`used_count`,`unused_count`,`create_time`,`update_time`)
         VALUES(#{id},#{mobile},#{login_name},#{used_count},#{unused_count},#{create_time},#{update_time});
-
     </insert>
 
     <update id="update" parameterType="UserLotteryTimeModel">
@@ -35,14 +42,14 @@
         WHERE `id` = #{id}
     </update>
 
-    <select id="findUserLotteryTimeModels" parameterType="map" resultMap="userLotteryTimeModel">
-        select * from `aa`.`user_lottery_time`
+    <select id="findUserLotteryTimeViews" parameterType="map" resultMap="userLotteryTimeView">
+        select l.mobile,a.user_name,used_count,unused_count from `aa`.`user_lottery_time` l join `aa`.`account` a on l.login_name = a.login_name
         <where>
             <if test="mobile !=null and mobile !='' ">
-                and mobile like '${mobile}%'
+                and l.mobile like '${mobile}%'
             </if>
         </where>
-        order by created_time DESC
+        order by l.updated_time DESC
         limit #{index}, #{pageSize}
     </select>
 

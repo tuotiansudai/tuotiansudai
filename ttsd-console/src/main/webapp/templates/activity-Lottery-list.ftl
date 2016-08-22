@@ -8,8 +8,8 @@
 </div>
 
 <!-- content area begin -->
-<div class="col-md-10" id="prizeTimeDiv">
-    <form action="" method="get" class="form-inline query-build" id="lotteryTimeForm">
+<div class="col-md-10" id="prizeTimeDiv" <#if timeIsDisplay??>style="display: none;"</#if>>
+    <form action="/activity-manage/user-lottery-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
 
         <div class="form-group">
             <div class="form-group">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
-        <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
+        <button type="reset" class="btn btn-sm btn-default btnSearch" id="timeRestBtn">重置</button>
 
     </form>
     <div class="table-responsive">
@@ -36,7 +36,7 @@
                     <#list lotteryList as lottery>
                         <tr>
                             <td>${lottery.mobile!}</td>
-                            <td>${lottery.loginName!}</td>
+                            <td>${lottery.userName!}</td>
                             <td>${lottery.useCount!}</td>
                             <td>${lottery.unUseCount!}</td>
                         </tr>
@@ -81,8 +81,8 @@
 </div>
 
 
-<div class="col-md-10">
-    <form action="" method="get" class="form-inline query-build">
+<div class="col-md-10" id = "prizeDive" <#if prizeIsDisplay??>style="display: none;"</#if>>
+    <form action="/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
 
         <div class="form-group">
             <div class="form-group">
@@ -96,7 +96,7 @@
                     <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
                     <#list lotteryPrizes as prize>
                             <option value="${prize}" <#if lotteryPrizes?? && prize==selectPrize>selected</#if>>
-                            ${prize.description}
+                                ${prize.description}
                             </option>
                     </#list>
                 </select>
@@ -121,7 +121,7 @@
 
         </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
-        <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
+        <button type="reset" class="btn btn-sm btn-default btnSearch" id="prizeRestBtn">重置</button>
 
     </form>
     <div class="table-responsive">
@@ -135,12 +135,16 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <#if prizeList?? >
+                    <#list prizeList as prize>
+                    <tr>
+                        <td>${prize.lotteryTime?string('yyyy-MM-dd HH:mm')}</td>
+                        <td>${prize.mobile!}</td>
+                        <td>${prize.userName!}</td>
+                        <td>${prize.prize.description!}</td>
+                    </tr>
+                    </#list>
+                </#if>
             </tbody>
 
         </table>
@@ -172,7 +176,7 @@
                 </li>
             </ul>
             <@security.authorize access="hasAnyAuthority('DATA')">
-                <button class="btn btn-default pull-left down-load" id="lotteryBtn" type="button">导出Excel</button>
+                <button class="btn btn-default pull-left down-load" id="prizeBtn" type="button">导出Excel</button>
             </@security.authorize>
         </nav>
     </div>
