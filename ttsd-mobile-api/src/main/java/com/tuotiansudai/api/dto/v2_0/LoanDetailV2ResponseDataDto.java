@@ -95,9 +95,6 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public String loanMoneyCent;
 
-    public ActivityType activityType;
-
-
     private List<ExtraLoanRateDto> extraRates;
 
     private List<EvidenceResponseDataDto> evidence;
