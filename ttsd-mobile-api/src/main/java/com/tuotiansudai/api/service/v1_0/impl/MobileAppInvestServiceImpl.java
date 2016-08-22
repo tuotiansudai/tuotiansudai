@@ -1,8 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestService;
@@ -37,9 +35,6 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     @Value("${pay.callback.app.web.host}")
     private String domainName;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Override
     public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
         BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
@@ -71,13 +66,14 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
             BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
 
             if (!formDto.isSuccess()) {
-                String investDtoJson = "";
-                try {
-                    investDtoJson = objectMapper.writeValueAsString(investDto);
-                } catch (JsonProcessingException e) {
-                    logger.error("[MobileAppInvestServiceImpl][invest] objectMapper exception. Exception:" + e.getMessage());
+                String userCouponIds = "";
+                for (long userCouponId : investDto.getUserCouponIds()) {
+                    userCouponIds += String.valueOf(userCouponId);
                 }
-                logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. investDto: {0}", investDtoJson));
+                logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. " +
+                                "investDto:loanId:{0}, transferInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
+                        investDto.getLoanId(), investDto.getTransferInvestId(), investDto.getLoginName(), investDto.getAmount(), userCouponIds, investDto.getChannel(),
+                        investDto.getSource(), investDto.isNoPassword()));
                 responseDto.setCode(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
                 responseDto.setMessage(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getMsg());
                 return responseDto;
