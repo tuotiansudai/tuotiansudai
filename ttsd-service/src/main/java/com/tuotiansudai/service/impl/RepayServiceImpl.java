@@ -211,7 +211,9 @@ public class RepayServiceImpl implements RepayService {
                     }
                 }
                 sumActualInterest += repayAmount;
-                sumExpectedInterest += expectedAmount;
+                if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
+                    sumExpectedInterest += expectedAmount;
+                }
                 records.add(investRepayDataItemDto);
             }
             dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
