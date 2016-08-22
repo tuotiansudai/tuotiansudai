@@ -119,6 +119,7 @@ public class SignInClient extends BaseClient {
         }
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
+            System.out.println("===test====" + response.toString());
             if (response.isSuccessful()) {
                 return response.body().string();
             }
