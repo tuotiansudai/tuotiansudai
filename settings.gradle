@@ -23,3 +23,5 @@ include "ttsd-service",
 
 include 'ttsd-activity-service'
 
+include 'ttsd-util'
+
