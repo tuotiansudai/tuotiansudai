@@ -55,11 +55,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private AccountMapper accountMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
-    @Autowired
-    private InvestService investService;
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
 
     @Override
     public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {

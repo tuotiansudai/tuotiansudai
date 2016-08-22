@@ -87,7 +87,8 @@
     <select id="findTransferApplicationPaginationByLoginName" parameterType="map"
             resultMap="transferApplicationRecordDtoMap">
         select
-        ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.invest_id,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate
+        ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.transfer_invest_id,
+        ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate
         from transfer_application ta JOIN loan l on ta.loan_id = l.id
         <where>
             <if test="loginName != null">

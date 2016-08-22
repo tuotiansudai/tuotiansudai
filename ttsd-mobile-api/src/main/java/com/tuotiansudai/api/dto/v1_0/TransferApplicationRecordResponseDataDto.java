@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
@@ -15,6 +14,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     private String name;
     private String transferAmount;
     private Long investId;
+    private Long transferInvestId;
     private String investAmount;
     private String transferTime;
     private String baseRate;
@@ -53,6 +53,14 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
 
     public void setInvestId(Long investId) {
         this.investId = investId;
+    }
+
+    public Long getTransferInvestId() {
+        return transferInvestId;
+    }
+
+    public void setTransferInvestId(Long transferInvestId) {
+        this.transferInvestId = transferInvestId;
     }
 
     public String getInvestAmount() {
@@ -113,6 +121,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.name = transferApplicationRecordDto.getName();
         this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferAmount());
         this.investId = transferApplicationRecordDto.getInvestId();
+        this.transferInvestId = transferApplicationRecordDto.getTransferInvestId();
         this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getInvestAmount());
         this.transferTime = transferApplicationRecordDto.getTransferTime() == null ? "" : new DateTime(transferApplicationRecordDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");
         this.baseRate = decimalFormat.format(transferApplicationRecordDto.getBaseRate() * 100);
