@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','underscore', 'fancybox','jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form','commonFun'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -666,20 +666,20 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var len = $col.length;
             var record = 0;
             var eachShowAmount = $(window).width() > 700 ? 4 : 1;
-            var imgNum=$scrollEle.find('img').length,
+            var imgNum = $scrollEle.find('img').length,
                 moveWid;
-            switch(viewport) {
+            switch (viewport) {
                 case 'pc':
-                    if(imgNum<=4) {
+                    if (imgNum <= 4) {
                         $rightBtn.addClass('disabled');
                     }
-                    moveWid=200;
+                    moveWid = 200;
                     break;
                 case 'mobile':
-                    if(imgNum<=1) {
+                    if (imgNum <= 1) {
                         $rightBtn.addClass('disabled');
                     }
-                    moveWid=$ele.find('.scroll-content').width();
+                    moveWid = $ele.find('.scroll-content').width();
                     $scrollEle.find('img').width(moveWid);
                     $col.width(moveWid);
                     break;

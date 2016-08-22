@@ -961,9 +961,9 @@ form label.error {
     background: #fdd901 url("/activity/images/landing-app/bg-bus.png") no-repeat left top;
     background-size: 100%;
     .register-box {
-      ul li{
+      ul li {
         .register-user {
-            background: url(/activity/images/landing-app/button2.png) center top no-repeat;
+          background: url(/activity/images/landing-app/button2.png) center top no-repeat;
           background-size: 100%;
         }
       }
@@ -973,7 +973,7 @@ form label.error {
     background: #fdd901 url("/activity/images/landing-app/bg-game.png") no-repeat left top;
     background-size: 100%;
     .register-box {
-      ul li{
+      ul li {
         .register-user {
           background: url(/activity/images/landing-app/button2.png) center top no-repeat;
           background-size: 100%;
@@ -982,10 +982,10 @@ form label.error {
     }
   }
   &.landing-container-tour {
-    background: #fdd901 url("/activity/images/landing-app/bg-tour.png") no-repeat left top;
+    background: #fdd901 url("/activity/images/landing-app/bg-tour-20160817.png") no-repeat left top;
     background-size: 100%;
     .register-box {
-      ul li{
+      ul li {
         .register-user {
           background: url(/activity/images/landing-app/button2.png) center top no-repeat;
           background-size: 100%;
@@ -1037,7 +1037,6 @@ form label.error {
   }
 
 }
-
 
 .pop-win-app {
   position: relative;
@@ -1148,7 +1147,7 @@ form label.error {
     display: none;
   }
   .landing-container-app {
-    padding-top:425px;
+    padding-top: 425px;
     .register-box {
       margin: 0 45px;
       ul {
@@ -1180,12 +1179,12 @@ form label.error {
 
     }
   }
-  .landing-container-bus,.landing-container-game,.landing-container-tour {
-    padding-top:460px;
+  .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 460px;
     .my-advantage {
       margin-top: 15px;
       img.advantage {
-        width:100%;
+        width: 100%;
         margin: 10px auto;
       }
     }
@@ -1193,22 +1192,22 @@ form label.error {
 }
 
 @media screen and (max-width: 420px) {
-  .landing-container-app{
-    padding-top:245px;
+  .landing-container-app {
+    padding-top: 245px;
   }
 
-  .landing-container-app,.landing-container-bus,.landing-container-game,.landing-container-tour {
-    padding-top:285px;
+  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 285px;
   }
 }
 
 @media screen and (max-width: 380px) {
-  .landing-container-app{
-    padding-top:245px;
+  .landing-container-app {
+    padding-top: 245px;
   }
 
-  .landing-container-app,.landing-container-bus,.landing-container-game,.landing-container-tour {
-    padding-top:265px;
+  .landing-container-app, .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 265px;
   }
 }
 
@@ -1223,11 +1222,11 @@ form label.error {
       }
     }
     .my-advantage {
-      margin-top:10px;
+      margin-top: 10px;
     }
   }
-  .landing-container-bus,.landing-container-game,.landing-container-tour {
-      padding-top: 217px;
+  .landing-container-bus, .landing-container-game, .landing-container-tour {
+    padding-top: 217px;
   }
 
 }

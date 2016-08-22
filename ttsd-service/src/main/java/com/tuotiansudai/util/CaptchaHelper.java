@@ -81,7 +81,7 @@ public class CaptchaHelper {
 
     public String transferImageToBase64(BufferedImage bufferedImage) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        byte[] data = null;
+        byte[] data;
         InputStream in = null;
         try {
             ImageIO.write(bufferedImage, "png", os);
@@ -94,9 +94,7 @@ public class CaptchaHelper {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
-                if (os != null) {
-                    os.close();
-                }
+                os.close();
                 if (in != null) {
                     in.close();
                 }
@@ -120,9 +118,6 @@ public class CaptchaHelper {
 
     public boolean checkImageCaptcha(String attributeKey,String ip){
         String ipRedisKey = MOBILE_APP_IMAGE_CAPTCHA_IP_KEY.replace("{ip}", ip).replace("{type}", attributeKey);
-        if (redisWrapperClient.exists(ipRedisKey)) {
-            return true;
-        }
-        return false;
+        return redisWrapperClient.exists(ipRedisKey);
     }
 }

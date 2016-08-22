@@ -2,12 +2,12 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +25,6 @@ public class ActivitiesController {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private CouponAlertService couponAlertService;
 
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
@@ -36,7 +33,7 @@ public class ActivitiesController {
         String loginName = httpServletRequest.getParameter("loginName");
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
-            modelAndView.addObject("referrer", userMapper.findUsersMobileByLoginName(loginName));
+            modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
 
         return modelAndView;
@@ -44,7 +41,7 @@ public class ActivitiesController {
 
     @RequestMapping(path = "/{item:^landing-page-app|landing-tour|landing-bus|landing-game$}", method = RequestMethod.GET)
     public ModelAndView promoteNewbie(@PathVariable String item) {
-        ModelAndView modelAndView = new ModelAndView("/activities/"+item, "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         CouponAlertDto couponAlert = couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON));
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);

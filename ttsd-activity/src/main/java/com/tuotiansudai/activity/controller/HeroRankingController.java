@@ -1,17 +1,13 @@
 package com.tuotiansudai.activity.controller;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseListDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 

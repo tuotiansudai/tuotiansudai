@@ -13,6 +13,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -31,6 +33,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -62,6 +65,10 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private InvestService investService;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
 
     @Override
@@ -206,7 +213,9 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(requestDto.getBaseParam().getUserId());
+        double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels,investFeeRate)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

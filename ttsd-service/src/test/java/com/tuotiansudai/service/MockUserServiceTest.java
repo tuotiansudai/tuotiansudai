@@ -5,6 +5,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
@@ -58,6 +59,9 @@ public class MockUserServiceTest {
 
     @Mock
     private UserMembershipMapper userMembershipMapper;
+
+    @Mock
+    private PrepareUserMapper prepareUserMapper;
 
 
     @Before
@@ -145,6 +149,7 @@ public class MockUserServiceTest {
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
+        when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
         doNothing().when(referrerRelationService).generateRelation(null, loginName);
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
