@@ -211,7 +211,9 @@ public class RepayServiceImpl implements RepayService {
                     }
                 }
                 sumActualInterest += repayAmount;
-                sumExpectedInterest += expectedAmount;
+                if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
+                    sumExpectedInterest += expectedAmount;
+                }
                 records.add(investRepayDataItemDto);
             }
             dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
@@ -243,7 +245,7 @@ public class RepayServiceImpl implements RepayService {
         Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
             @Override
             public boolean apply(MembershipModel input) {
-                return input.getFee() == investModel.getInvestFeeRate() ;
+                return input.getFee() == investModel.getInvestFeeRate();
             }
         });
 
