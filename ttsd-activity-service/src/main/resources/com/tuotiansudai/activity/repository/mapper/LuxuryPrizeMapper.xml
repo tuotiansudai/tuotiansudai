@@ -32,5 +32,8 @@
         select * from luxury_prize where id = #{id}
     </select>
 
+    <select id="findByPrizeId" parameterType="long" resultMap="luxuryPrizeResultMap">
+        select * from luxury_prize where prize_id = #{id}
+    </select>
 
 </mapper>
