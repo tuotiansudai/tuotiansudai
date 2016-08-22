@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.filter;
 
-import com.tuotiansudai.activity.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;

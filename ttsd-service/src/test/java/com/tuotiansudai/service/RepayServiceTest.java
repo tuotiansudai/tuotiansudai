@@ -16,7 +16,6 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -32,7 +31,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static sun.nio.cs.Surrogate.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})

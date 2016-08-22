@@ -4,13 +4,13 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.security.MyUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +47,7 @@ public class BindEmailServiceTest {
     }
 
     private void mockLoginUser(String loginName, String mobile){
-        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
+        User user = new User(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
     }

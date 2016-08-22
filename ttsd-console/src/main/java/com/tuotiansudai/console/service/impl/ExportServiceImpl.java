@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -24,15 +25,32 @@ import java.util.List;
 
 @Service
 public class ExportServiceImpl implements ExportService {
-
+    @Autowired
+    private AccountMapper accountMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Override
-    public <T> List<List<String>> buildOriginListToCsvData(List<T> originList) {
+    public <T> List<List<String>> buildUserPointToCsvData(List<T> originList) {
         List<List<String>> csvData = new ArrayList<>();
         for (T item : originList) {
             List<String> dtoStrings = ExportCsvUtil.dtoToStringList(item);
             csvData.add(dtoStrings);
         }
         return csvData;
+    }
+
+    @Override
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
+        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
+
+        List<AccountItemDataDto> accountItemDataDtoList = new ArrayList<>();
+        for(AccountModel accountModel : accountModels) {
+            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
+            accountItemDataDto.setTotalPoint(accountMapper.findByLoginName(accountModel.getLoginName()).getPoint());
+            accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());
+            accountItemDataDtoList.add(accountItemDataDto);
+        }
+        return accountItemDataDtoList;
     }
 
     @Override

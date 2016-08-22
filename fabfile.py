@@ -18,16 +18,18 @@ env.roledefs = {
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
     'activity': ['sanya'],
-    'signin' : ['xian']
+    'signin' : ['xian'],
+    'ask' : ['taiyuan']
 }
 
 
 def migrate():
     local('/opt/gradle/latest/bin/gradle clean')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=sms_operations ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=job_worker ttsd-service:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=edxask ttsd-config:flywayMigrate')
 
 
 def mk_war():
@@ -39,6 +41,7 @@ def mk_war():
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/')
     local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_worker_zip():
@@ -51,6 +54,7 @@ def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
+    local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
 
 def build():
     mk_war()
@@ -69,11 +73,13 @@ def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
         sudo('unzip static_api.zip -d static')
         sudo('unzip static_activity.zip -d static')
+        sudo('unzip static_ask.zip -d static')
         sudo('service nginx restart')
 
 
@@ -142,6 +148,16 @@ def deploy_activity():
     upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
+
+@roles('ask')
+@parallel
+def deploy_ask():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-ask-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
+
+
 @roles('signin')
 @parallel
 def deploy_sign_in():
@@ -149,6 +165,7 @@ def deploy_sign_in():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-sign-in/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+
 
 def deploy_all():
     execute(deploy_static)
@@ -160,6 +177,7 @@ def deploy_all():
     execute(deploy_api)
     execute(deploy_web)
     execute(deploy_activity)
+    execute(deploy_ask)
 
 
 def pre_deploy():
@@ -178,9 +196,16 @@ def web():
     execute(deploy_web)
     execute(deploy_static)
 
+
 def activity():
     pre_deploy()
     execute(deploy_activity)
+    execute(deploy_static)
+
+
+def ask():
+    pre_deploy()
+    execute(deploy_ask)
     execute(deploy_static)
 
 
@@ -208,9 +233,11 @@ def pay():
     pre_deploy()
     execute(deploy_pay)
 
+
 def signin():
     pre_deploy()
     execute(deploy_sign_in)
+
 
 def get_30days_before(date_format="%Y-%m-%d"):
     from datetime import timedelta, date
@@ -244,6 +271,13 @@ def remove_activity_logs():
     remove_nginx_logs()
 
 
+@roles('ask')
+@parallel
+def remove_ask_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
 @roles('pay')
 @parallel
 def remove_pay_logs():
@@ -271,11 +305,13 @@ def remove_worker_logs():
 def remove_static_logs():
     remove_nginx_logs()
 
+
 @roles('signin')
 @parallel
 def remove_sign_in_logs():
     remove_tomcat_logs()
     remove_nginx_logs()
+
 
 def remove_old_logs():
     """
@@ -343,6 +379,16 @@ def restart_logstash_service_for_activity():
     """
     run("service logstash restart")
 
+
+@roles('ask')
+@parallel
+def restart_logstash_service_for_ask():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
 @roles('signin')
 @parallel
 def restart_logstash_service_for_sign_in():
@@ -350,7 +396,6 @@ def restart_logstash_service_for_sign_in():
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
     run("service logstash restart")
-
 
 
 def restart_logstash(service):
@@ -364,7 +409,7 @@ def restart_logstash(service):
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
            'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
-           'signin': restart_logstash_service_for_sign_in}.get(service)
+           'signin': restart_logstash_service_for_sign_in, 'ask': restart_logstash_service_for_ask}.get(service)
     execute(func)
 
 

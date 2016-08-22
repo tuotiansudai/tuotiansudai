@@ -9,7 +9,7 @@ import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

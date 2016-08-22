@@ -87,11 +87,7 @@ public class JPushAlertServiceTest {
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
-    @Autowired
-    private JPushScheduleAlertService jPushScheduleAlertService ;
-
     private static final long loanId = 10000000001L;
-    private static final long loanRepayId = 100000003L;
     private static final long investId = 3939399323434L;
 
     private static final long loanId2 = 20000000001L;
@@ -101,8 +97,6 @@ public class JPushAlertServiceTest {
     private static final long loanId3 = 30000000001L;
     private static final long loanRepayId3 = 300000003L;
     private static final long investId3 = 49393993235555L;
-
-    private static final String JPUSH_ID_KEY = "api:jpushId:store";
 
     private InvestRepayModel createInvestRepayHasDefaultInterest(long investId, RepayStatus repayStatus, int period) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
@@ -298,7 +292,7 @@ public class JPushAlertServiceTest {
 
         when(investRepayMapper.findByInvestIdAndPeriod(anyInt(), anyInt())).thenReturn(investRepayModel);
 
-        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), any(HashMap.class), any(PushSource.class))).thenReturn(true);
+        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyMap(), any(PushSource.class))).thenReturn(true);
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(createInvestSuccessList(loanId1));
 
@@ -388,6 +382,8 @@ public class JPushAlertServiceTest {
 
         publicMockMethod(loanId, 2, "testuser123", investId, "abdisierieruis123", null);
 
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+
         jPushAlertService.autoJPushReferrerRewardAlert(10001);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
@@ -462,6 +458,8 @@ public class JPushAlertServiceTest {
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
 
         when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
 
         jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
 

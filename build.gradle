@@ -9,7 +9,7 @@ subprojects {
     apply plugin: "application"
     apply plugin: "jacoco"
     repositories {
-        maven { url 'http://maven.oschina.net/content/groups/public/' }
+        mavenCentral()
     }
 
     gradle.startParameter.continueOnFailure = true
@@ -21,10 +21,6 @@ subprojects {
         }
 
         reports.html.enabled = false
-
-        jacoco {
-            applyTo run
-        }
 
         task applicationCodeCoverageReport(type: JacocoReport) {
             executionData run
@@ -41,7 +37,7 @@ subprojects {
     }
 
     dependencies {
-        def springVersion = '4.2.0.RELEASE'
+        def springVersion = '4.2.5.RELEASE'
         def slf4jVersion = '1.7.12'
         def mybatisVersion = '3.3.0'
         def mybatisSpringVersion = '1.2.3'
