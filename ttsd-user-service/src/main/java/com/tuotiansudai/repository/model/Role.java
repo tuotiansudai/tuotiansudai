@@ -12,7 +12,7 @@ public enum Role {
     ADMIN("管理员"),
     EDITOR("编辑"),
     DATA("数据专员"),
-    ASK_ADMIN("问答管理员"),;
+    ASK_ADMIN("问答管理员");
 
     private String description;
 
