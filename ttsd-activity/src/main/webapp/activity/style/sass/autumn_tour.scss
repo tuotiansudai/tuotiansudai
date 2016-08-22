@@ -1,8 +1,282 @@
 body {
   background: #b0e7f6;
 }
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.customized-button {
+  margin-top:40px;
+  .btn-normal {
+    border-bottom:4px solid #c75f28;
+    font-size:22px;
+    border-radius: 0;
+    letter-spacing: 0;
+    font-weight: bold;
+    padding: 12px 50px;
+  }
+}
+.tour-slide  {
+  height: 678px;
+  background: url("/activity/images/autumn-tour/tour-top-bar.jpg") center top no-repeat;
+}
 .autumn-tour-frame {
-	.tour-slide  {
-		height: 678px;
-	}
+  width:1100px;
+  margin:-10px auto 0 auto;
+
+  .bg-box {
+    background: rgba(113,207,207,0.2);
+    margin-bottom:20px;
+    padding:10px 50px;
+    height:auto;
+    overflow: auto;
+  }
+  .title-normal-box {
+    text-align: center;
+    padding-top: 25px;
+    color: #146566;
+    .box-inner-content {
+      background: #e6fbff;
+      border-radius:10px;
+      border:6px solid #71cfcf;
+      font-size: 16px;
+      line-height: 28px;
+      padding:10px;
+      h1 {
+        font-size: 20px;
+        line-height: 45px;
+      }
+      p {
+        color: #146566;
+        text-align: left;
+      }
+    }
+  &.steps-box {
+    .steps-list {
+      margin-left:60px;
+      li {
+        width:137px;
+        height:60px;
+        border:1px solid #8fb3b3;
+        border-left-width: 0;
+        border-right-width: 0;
+        position: relative;
+        float: left;
+        margin-right:32px;
+        i,em,s {
+          display: block;
+          float: left;
+          height:100%;
+        }
+        i,s {
+          width:0px;
+          height:0px;
+          border:31px solid transparent;
+          border-left:31px solid #8fb3b3;
+          &.arrow-left {
+            border:29px solid transparent;
+            border-left:29px solid #e6fbff;
+            position: absolute;
+            left: 0;
+            top: 1px;
+            z-index: 5;
+          }
+          &.arrow-right {
+            position: absolute;
+            z-index: 2;
+            top: -1px;
+            left:0;
+          }
+        }
+        s {
+          &.arrow-left {
+            right: -58px;
+            top: 1px;
+            left: auto;
+          }
+          &.arrow-right {
+            right: -62px;
+            top: -1px;
+            left: auto;
+          }
+        }
+        em {
+          position: absolute;
+          left:30px;
+          top:0;
+          line-height: 60px;
+          width:106px;
+
+        }
+      }
+    }
+    .activity-text {
+      display: inline-block;
+      padding:30px;
+    }
+    .customized-button {
+      margin-top:0px;
+      .detail {
+        color: #146566;
+      }
+    }
+  }
+  }
+  .time-axis {
+    margin-top:20px;
+    border-radius: 10px;
+    background: #71cfcf;
+    padding:15px 35px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    .date {
+      background: url("/activity/images/autumn-tour/ic-date.png") left 2px no-repeat;
+      padding-left:35px;
+    }
+    .note {
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+
+  .prize-kind {
+    .prize-box {
+      width:320px;
+      background: #71cfcf;
+      border-radius: 10px;
+      margin-top:20px;
+      float: left;
+      text-align: center;
+      &:nth-child(2) {
+        margin-left:19px;
+        margin-right:19px;
+      }
+      .pk-title {
+        display: inline-block;
+        background: #3f8f89;
+        border-radius:6px;
+        color: #fff;
+        font-size: 16px;
+        margin-top: 20px;
+        padding: 5px 20px;
+      }
+      .img-info {
+        margin:20px;
+        border:2px solid #fff;
+        position: relative;
+        img { width: 100%; }
+        .kind-text {
+          position: absolute;
+          top: 120px;
+          height: 32px;
+          background: rgba(0,0,0,0.2);
+          width: 100%;
+          left: 0;
+          line-height: 32px;
+          color: #fff;
+        }
+        .kind-bottom {
+          padding:0 10px;
+          height:57px;
+          line-height: 57px;
+          background: #e6fbff;
+          color: #ed702c;
+          font-size: 14px;
+          .btn-normal {
+            border-radius: 0;
+            margin-top: 10px;
+            font-size: 18px;
+            letter-spacing: 0;
+            padding:8px 15px;
+          }
+          em {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .award-box {
+    width:480px;
+    height: 280px;
+    background: #e6fbff;
+    border:1px solid #3f8f89;
+    border-radius: 10px;
+    .award-category {
+      border-bottom:1px solid #3f8f89;
+      background: #71cfcf;
+      width:100%;
+      height:45px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      overflow: hidden;
+      li {
+        width:50%;
+        height:100%;
+        float: left;
+        text-align: center;
+        font-size:18px;
+        background: #71cfcf;
+        color: #3f8f89;
+        line-height: 45px;
+        span {
+          display: block;
+          height:100%;
+        }
+        &.active {
+          background: #e6fbff;
+          color: #ed702c;
+          font-weight: bold;
+        }
+        &:first-child.active{
+          border-top-right-radius: 10px;
+        }
+        &:last-child.active{
+          border-top-left-radius: 10px;
+        }
+
+      }
+    }
+    .table {
+      th {
+        border-bottom: 1px solid #a3d0d0;
+        background: transparent;
+        color: #ed702c;
+      }
+      td { border:0; color: #ed702c;}
+    }
+
+    .scan-code {
+      padding: 47px;
+      img {
+        float: left;
+        margin-right:30px;
+        border:1px solid #3f8f89;
+      }
+      span {
+        color: #3f8f89;
+        font-weight: bold;
+        display: inline-block;
+        padding-top:35px;
+        font-size: 20px;
+      }
+    }
+  }
+  .award-records {
+    margin-top:20px;
+  }
+  .lottery-draw {
+    .award-box {
+      width:340px;
+      height:415px;
+    }
+    .award-list {
+      text-align: left;
+    }
+  }
+
+
+
 }
