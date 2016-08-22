@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.service.impl;
 
 
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryTimeMapper;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;

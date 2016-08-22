@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserLotteryPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="userLotteryPrizeModel" type="UserLotteryPrizeModel">
+        <id column="id" property="id"></id>
+        <result column="mobile" property="mobile"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="lottery_time" property="lotteryTime"></result>
+    </resultMap>
+
+    <resultMap id="userLotteryPrizeView" type="UserLotteryPrizeView">
+        <result column="mobile" property="mobile"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="lottery_time" property="lotteryTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `activity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
+        VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
+
+    </insert>
+
+    <update id="update" parameterType="userLotteryPrizeModel">
+        UPDATE `activity`.`user_lottery_prize`
+        SET
+        `id` = #{id},
+        `mobile` = #{mobile},
+        `login_name` = #{login_name},
+        `prize` = #{prize},
+        `lottery_time` = #{lotteryTime}
+        WHERE `id` = #{id}
+    </update>
+
+    <select id="findUserLotteryPrizeViews" parameterType="map" resultMap="userLotteryPrizeView">
+        select p.lottery_time,p.mobile,a.user_name,p.prize from `activity`.`user_lottery_prize` p join aa.account a on p.login_name = a.login_name
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and p.mobile like '${mobile}%'
+            </if>
+            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
+                and p.prize like '${lotteryPrize}%'
+            </if>
+            <if test="startTime != null">
+                and p.lottery_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and p.lottery_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by p.lottery_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findUserLotteryPrizeCountViews" parameterType="map" resultType="int">
+        select count(1) from `activity`.`user_lottery_prize`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile like '${mobile}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>
