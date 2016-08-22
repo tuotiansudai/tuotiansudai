@@ -1,8 +1,16 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.autumn_tour}" pageJavascript="" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
+<@global.main pageCss="${css.autumn_tour}" pageJavascript="${js.autumn_tour}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
 <div class="tour-slide">
 </div>
 <div class="autumn-tour-frame">
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
     <div class="bg-box">
         <div class="title-normal-box">
         <img src="${staticServer}/activity/images/autumn-tour/m-title01.png" alt="金秋拓荒计划">
@@ -53,19 +61,22 @@
             </div>
         </div>
 
-        <div class="award-records clearfix">
+        <div class="award-records clearfix" id="awardRecordsFrame">
             <div class="award-box fl">
                 <ul class="award-category">
                     <li class="active"><span>获奖名单</span></li>
                     <li><span>我的获奖记录</span></li>
                 </ul>
                 <table class="table">
+                    <thead>
                     <tr>
                         <th>用户</th>
                         <th>投资金额(元)</th>
                         <th>奖品</th>
                         <th>获奖时间</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>130****7149</td>
                         <td>100000.00</td>
@@ -75,27 +86,34 @@
                     <tr>
                         <td>130****7149</td>
                         <td>100000.00</td>
-                        <td>北京-海南5天跟团游</td>
+                        <td>北京-海南6天跟团游</td>
                         <td>2016-09-02</td>
                     </tr>
                     <tr>
                         <td>130****7149</td>
                         <td>100000.00</td>
-                        <td>北京-海南5天跟团游</td>
+                        <td>北京-海南7天跟团游</td>
                         <td>2016-09-02</td>
                     </tr>
                     <tr>
                         <td>130****7149</td>
                         <td>100000.00</td>
-                        <td>北京-海南5天跟团游</td>
+                        <td>北京-海南8天跟团游</td>
                         <td>2016-09-02</td>
                     </tr>
                     <tr>
                         <td>130****7149</td>
                         <td>100000.00</td>
-                        <td>北京-海南5天跟团游</td>
+                        <td>北京-海南9天跟团游</td>
                         <td>2016-09-02</td>
                     </tr>
+                    <tr>
+                        <td>130****7149</td>
+                        <td>100000.00</td>
+                        <td>北京-海南10天跟团游</td>
+                        <td>2016-09-02</td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="award-box fr">
@@ -121,15 +139,15 @@
             <div class="box-inner-content">
                 <h1>活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</h1>
                 <ul class="steps-list clearfix">
-                    <li>
+                    <li class="finished">
                         <i class="arrow-left"></i>
                         <i class="arrow-right"></i>
-                        <em>已注册</em>
+                        <em>已注册 <b class="fa fa-check-circle"></b> </em>
                         <s class="arrow-left"></s>
                         <s class="arrow-right"></s>
                     </li>
 
-                    <li>
+                    <li class="to-finish">
                         <i class="arrow-left"></i>
                         <i class="arrow-right"></i>
                         <em>去认证 >></em>
@@ -171,25 +189,47 @@
 
         <div class="lottery-draw">
             <div class="fr"></div>
-            <div class="award-box fr">
-                <ul class="award-category">
-                    <li class="active"><span>中奖记录</span></li>
-                    <li><span>我的奖品</span></li>
-                </ul>
-                <dl class="award-list">
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                </dl>
+            <div class="lottery-right fr">
+                <div class="award-box chance-number">我的抽奖机会：1次</div>
+                <div class="award-box chance-list">
+                    <ul class="award-category">
+                        <li class="active"><span>中奖记录</span></li>
+                        <li><span>我的奖品</span></li>
+                    </ul>
+                    <dl class="award-list">
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
+                    </dl>
 
 
+                </div>
             </div>
+
         </div>
       </div>
+
+    <div class="bg-box activity-rule">
+        <b>活动规则</b>
+        <span>
+            1、本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零； <br/>
+2、本次活动期间，用户每人每天仅限量领取一个旅游奖品；<br/>
+3、当用户从当前页面进行投资时，当日所有投资均计为参加旅游活动所做的投资，如用户想参与奢侈品活动，必须通过奢侈品活动页面进行投资方可生效；<br/>
+4、拓天速贷会根据活动的情况，以等值，增值为基础调整旅游产品；<br/>
+5、中奖结果将于次日在本活动页面公布，由客服联系确认。红包和加息券实时发放，用户可在“我的账户-我的宝藏”中查看，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
+6、旅游奖品中奖并由客服确认信息后，不可再行更改。如无法按时参团请与旅行社接洽，旅途中相关问题及引起的不良后果与拓天速贷无关；<br/>
+7、旅游产品内容随淡旺季变化调整较为频繁，网页中的产品介绍、行程安排等图片及文字信息仅供参考，最终产品内容以用户和旅行社的签约合同为准；<br/>
+8、获取抽奖机会和抽奖过程中，如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，收回活动中所得的奖品；<br/>
+9、拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
+        </span>
+     </div>
 </div>
 </@global.main>
 

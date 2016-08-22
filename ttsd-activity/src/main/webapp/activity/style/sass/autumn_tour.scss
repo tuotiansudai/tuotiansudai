@@ -1,5 +1,5 @@
 body {
-  background: #b0e7f6;
+  background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
 }
 .main-frame {
   width: 100%;
@@ -23,6 +23,48 @@ body {
 .autumn-tour-frame {
   width:1100px;
   margin:-10px auto 0 auto;
+  position: relative;
+  .vertical-line {
+    width:10px;
+    height:40px;
+    position: absolute;
+    background: url("/activity/images/autumn-tour/vertical-dot.png") left top no-repeat;
+    &:nth-child(1) {
+      left:92px;
+      top:267px;
+    }
+    &:nth-child(2) {
+      right:92px;
+      top:267px;
+    }
+
+    &:nth-child(3) {
+      left:92px;
+      top:372px;
+    }
+    &:nth-child(4) {
+      left:320px;
+      top:372px;
+    }
+    &:nth-child(5) {
+      left:429px;
+      top:372px;
+    }
+    &:nth-child(6) {
+      left:659px;
+      top:372px;
+    }
+
+    &:nth-child(7) {
+      right:320px;
+      top:372px;
+    }
+    &:nth-child(8) {
+      right:92px;
+      top:372px;
+    }
+
+  }
 
   .bg-box {
     background: rgba(113,207,207,0.2);
@@ -106,7 +148,47 @@ body {
           top:0;
           line-height: 60px;
           width:106px;
+          z-index: 10;
 
+        }
+        &.to-finish {
+          border-color: #ed702c;
+          s {
+            border-left: 30px solid #ed702c;
+            &.arrow-left {
+              right: -58px;
+            }
+            &.arrow-right {
+              right: -60px;
+            }
+          }
+          i {
+            border: 30px solid #ed702c;
+            border-left: 30px solid #e6fbff;
+          }
+          em {
+            background: #ed702c;
+            color: #fff;
+          }
+        }
+        &.finished {
+          border-color: #a3e2ee;
+          s {
+            border-left: 30px solid #a3e2ee;
+            &.arrow-left {
+              right: -58px;
+            }
+            &.arrow-right {
+              right: -60px;
+            }
+          }
+          i {
+            border: 30px solid #a3e2ee;
+            border-left: 30px solid #e6fbff;
+          }
+          em {
+            background: #a3e2ee;
+          }
         }
       }
     }
@@ -126,12 +208,12 @@ body {
     margin-top:20px;
     border-radius: 10px;
     background: #71cfcf;
-    padding:15px 35px;
+    padding:24px 35px;
     color: #fff;
     font-weight: bold;
     font-size: 18px;
     .date {
-      background: url("/activity/images/autumn-tour/ic-date.png") left 2px no-repeat;
+      background: url("/activity/images/autumn-tour/ic-date.png") left 7px no-repeat;
       padding-left:35px;
     }
     .note {
@@ -200,10 +282,11 @@ body {
 
   .award-box {
     width:480px;
-    height: 280px;
+    height: 270px;
     background: #e6fbff;
     border:1px solid #3f8f89;
     border-radius: 10px;
+    overflow: hidden;
     .award-category {
       border-bottom:1px solid #3f8f89;
       background: #71cfcf;
@@ -268,15 +351,46 @@ body {
     margin-top:20px;
   }
   .lottery-draw {
-    .award-box {
+    .lottery-right {
       width:340px;
-      height:415px;
+      .chance-number {
+        width:100%;
+        height:58px;
+        line-height: 58px;
+        text-align: center;
+        font-weight: bold;
+        color: #146566;
+        font-size: 20px;
+        margin-bottom:20px;
+      }
+      .chance-list {
+        width:100%;
+        height:415px;
+      }
+      .award-list {
+        text-align: left;
+        line-height: 35px;
+        padding-left: 20px;
+        height: 360px;
+        color: #ed702c;
+        padding-top:10px;
+      }
     }
-    .award-list {
-      text-align: left;
-    }
+
   }
 
-
+.activity-rule {
+  background: rgba(255,255,255,0.4);
+  margin-bottom:40px;
+  b {
+    display: block;
+    font-weight: bold;
+    font-size:24px;
+    padding: 20px 0;
+  }
+  color: #3f8f89;
+  font-size:12px;
+  line-height: 27px;
+}
 
 }
