@@ -212,6 +212,13 @@ public class CouponServiceImpl implements CouponService {
         List<CouponModel> couponModels = couponMapper.findRedEnvelopeCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
+                    couponModel.setImportIsRight(false);
+                } else {
+                    couponModel.setImportIsRight(true);
+                }
+            }
         }
         return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
             @Override
@@ -281,7 +288,7 @@ public class CouponServiceImpl implements CouponService {
     public long findEstimatedCount(UserGroup userGroup) {
         switch (userGroup) {
             case ALL_USER:
-                return userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+                return userMapper.findAllUsersByProvinces(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
             case INVESTED_USER:
                 return investMapper.findInvestorCount();
             case REGISTERED_NOT_INVESTED_USER:

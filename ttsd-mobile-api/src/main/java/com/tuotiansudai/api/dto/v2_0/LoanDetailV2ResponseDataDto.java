@@ -51,7 +51,7 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private String remainTime;//剩余时间
 
-    private Date investBeginTime;//起投时间
+    private String investBeginTime;//起投时间
 
     private String investBeginSeconds;//剩余秒数
 
@@ -94,6 +94,9 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     public String investedMoneyCent;
 
     public String loanMoneyCent;
+
+    public ActivityType activityType;
+
 
     private List<ExtraLoanRateDto> extraRates;
 
@@ -261,11 +264,11 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
         this.remainTime = remainTime;
     }
 
-    public Date getInvestBeginTime() {
+    public String getInvestBeginTime() {
         return investBeginTime;
     }
 
-    public void setInvestBeginTime(Date investBeginTime) {
+    public void setInvestBeginTime(String investBeginTime) {
         this.investBeginTime = investBeginTime;
     }
 

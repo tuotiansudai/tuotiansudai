@@ -20,6 +20,8 @@ public interface UserCouponMapper {
 
     UserCouponModel findById(@Param("id") long id);
 
+    UserCouponModel lockById(@Param("id") long id);
+
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
     List<UserCouponView> findUnusedCoupons(@Param(value = "loginName") String loginName);
@@ -58,4 +60,5 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
 
+    int findByExchangeCode(@Param("exchangeCode") String exchangeCode);
 }

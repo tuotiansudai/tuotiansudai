@@ -1,8 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.repository.model.AccountModel;
-import java.util.List;
 
 public interface AccountService {
 
@@ -13,10 +11,6 @@ public interface AccountService {
     boolean isIdentityNumberExist(String identityNumber);
 
     long getFreeze(String loginName);
-
-    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
-
-    int findUsersAccountPointCount(String loginName, String userName, String mobile);
 
     String getRealName(String loginName);
 }

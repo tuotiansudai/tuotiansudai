@@ -1,0 +1,18 @@
+apply plugin: 'war'
+
+dependencies {
+
+    compile project(':ttsd-ask-service'),
+            project(':ttsd-web-common-config'),
+            project(':ttsd-spring-extension'),
+            'org.springframework.data:spring-data-redis:1.7.1.RELEASE',
+            'org.springframework.session:spring-session:1.2.1.RELEASE'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+}
+
+war {
+    archiveName "ROOT.war"
+    destinationDir = file("war")
+}

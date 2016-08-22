@@ -129,6 +129,6 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
 
         BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
         assert !responseDto.isSuccess();
-        assert ReturnMessage.LOAN_IS_FULL.getCode().equals(responseDto.getCode());
+        assert ReturnMessage.ERROR.getCode().equals(responseDto.getCode());
     }
 }

@@ -9,11 +9,8 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             boolFlag = false, //校验布尔变量值
             currentErrorObj = null;
 
-
         //渲染select表单
         $selectDom.selectpicker();
-
-
 
         //起始时间绑定插件
         $dateStart.datetimepicker({
@@ -98,7 +95,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     showErrorMessage('最小为1', $('.coupon-number', curform));
                     return false;
                 }
-               var len= $('input[name="productTypes"]').filter(function(key,option) {
+                var len = $('input[name="productTypes"]').filter(function (key, option) {
                     return $(option).is(':checked');
                 }).length;
 

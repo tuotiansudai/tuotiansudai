@@ -31,8 +31,8 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
         String password = retrievePasswordDto.getPassword();
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel != null && smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
-            String encodePassword = myShaPasswordEncoder.encodePassword(password, userModel.getSalt());
-            userMapper.updatePasswordByLoginName(userModel.getLoginName(), encodePassword);
+            userModel.setPassword(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
+            userMapper.updateUser(userModel);
             return true;
         }
         return false;

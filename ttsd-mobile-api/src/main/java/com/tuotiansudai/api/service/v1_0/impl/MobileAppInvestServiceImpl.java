@@ -42,12 +42,12 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
                 responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
 
-            }else{
+            } else {
                 responseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             }
 
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}&message={2}", domainName, responseDto.getCode(),responseDto.getMessage())));
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}&message={2}", domainName, responseDto.getCode(), responseDto.getMessage())));
 
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
@@ -98,48 +98,8 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
     private BaseResponseDto<InvestResponseDataDto> convertExceptionToDto(InvestException e) {
         BaseResponseDto<InvestResponseDataDto> baseResponseDto = new BaseResponseDto<>();
-        switch (e.getType()) {
-            case EXCEED_MONEY_NEED_RAISED:
-                baseResponseDto.setCode(ReturnMessage.EXCEED_MONEY_NEED_RAISED.getCode());
-                baseResponseDto.setMessage(ReturnMessage.EXCEED_MONEY_NEED_RAISED.getMsg());
-                break;
-            case ILLEGAL_INVEST_AMOUNT:
-                baseResponseDto.setCode(ReturnMessage.ILLEGAL_INVEST_AMOUNT.getCode());
-                baseResponseDto.setMessage(ReturnMessage.ILLEGAL_INVEST_AMOUNT.getMsg());
-                break;
-            case LESS_THAN_MIN_INVEST_AMOUNT:
-                baseResponseDto.setCode(ReturnMessage.LESS_THAN_MIN_INVEST_AMOUNT.getCode());
-                baseResponseDto.setMessage(ReturnMessage.LESS_THAN_MIN_INVEST_AMOUNT.getMsg());
-                break;
-            case MORE_THAN_MAX_INVEST_AMOUNT:
-                baseResponseDto.setCode(ReturnMessage.MORE_THAN_MAX_INVEST_AMOUNT.getCode());
-                baseResponseDto.setMessage(ReturnMessage.MORE_THAN_MAX_INVEST_AMOUNT.getMsg());
-                break;
-            case LOAN_IS_FULL:
-                baseResponseDto.setCode(ReturnMessage.LOAN_IS_FULL.getCode());
-                baseResponseDto.setMessage(ReturnMessage.LOAN_IS_FULL.getMsg());
-                break;
-            case OUT_OF_NOVICE_INVEST_LIMIT:
-                baseResponseDto.setCode(ReturnMessage.OUT_OF_NOVICE_INVEST_LIMIT.getCode());
-                baseResponseDto.setMessage(ReturnMessage.OUT_OF_NOVICE_INVEST_LIMIT.getMsg());
-                break;
-            case ILLEGAL_LOAN_STATUS:
-                baseResponseDto.setCode(ReturnMessage.ILLEGAL_LOAN_STATUS.getCode());
-                baseResponseDto.setMessage(ReturnMessage.ILLEGAL_LOAN_STATUS.getMsg());
-            case NOT_ENOUGH_BALANCE:
-                baseResponseDto.setCode(ReturnMessage.NOT_ENOUGH_BALANCE.getCode());
-                baseResponseDto.setMessage(ReturnMessage.NOT_ENOUGH_BALANCE.getMsg());
-            case PASSWORD_INVEST_OFF:
-                baseResponseDto.setCode(ReturnMessage.PASSWORD_INVEST_OFF.getCode());
-                baseResponseDto.setMessage(ReturnMessage.PASSWORD_INVEST_OFF.getMsg());
-            case LOAN_NOT_FOUND:
-                baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
-                baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
-            case INVESTOR_IS_LOANER:
-                baseResponseDto.setCode(ReturnMessage.APPLICATION_IS_HIS_OWN.getCode());
-                baseResponseDto.setMessage(ReturnMessage.APPLICATION_IS_HIS_OWN.getMsg());
-                break;
-        }
+        baseResponseDto.setCode(ReturnMessage.ERROR.getCode());
+        baseResponseDto.setMessage(e.getType().getDescription());
         return baseResponseDto;
     }
 }

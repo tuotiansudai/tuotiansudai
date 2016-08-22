@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.model.TransferableInvestView;
+import com.tuotiansudai.repository.model.TransferableInvestView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

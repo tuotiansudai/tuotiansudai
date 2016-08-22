@@ -9,12 +9,14 @@ import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
-import com.tuotiansudai.util.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,9 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-public class PaySyncClient {
+public class PaySyncClient implements ApplicationContextAware {
+
+    private static ApplicationContext applicationContext;
 
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
@@ -111,7 +115,11 @@ public class PaySyncClient {
 
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
-        return (BaseSyncMapper) SpringContextUtil.getBeanByName(beanName);
+        return (BaseSyncMapper) applicationContext.getBean(beanName);
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        PaySyncClient.applicationContext = applicationContext;
+    }
 }

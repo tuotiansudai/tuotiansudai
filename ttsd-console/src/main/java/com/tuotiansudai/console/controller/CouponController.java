@@ -3,7 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
@@ -21,6 +21,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +71,9 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
@@ -219,14 +223,19 @@ public class CouponController {
     public ModelAndView edit(@PathVariable long id, Model model) {
         CouponModel couponModel = couponService.findCouponById(id);
         ModelAndView modelAndView;
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
-            modelAndView = new ModelAndView("/interest-coupon-edit");
-        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
-            modelAndView = new ModelAndView("/red-envelope-edit");
-        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            modelAndView = new ModelAndView("/birthday-coupon-edit");
-        } else {
-            modelAndView = new ModelAndView("/coupon-edit");
+        switch (couponModel.getCouponType()) {
+            case INTEREST_COUPON:
+                modelAndView = new ModelAndView("/interest-coupon-edit");
+                break;
+            case RED_ENVELOPE:
+                modelAndView = new ModelAndView("/red-envelope-edit");
+                break;
+            case BIRTHDAY_COUPON:
+                modelAndView = new ModelAndView("/birthday-coupon-edit");
+                break;
+            default:
+                modelAndView = new ModelAndView("/coupon-edit");
+                break;
         }
         if (!model.containsAttribute("coupon")) {
             CouponDto couponDto = new CouponDto(couponModel);
@@ -237,13 +246,12 @@ public class CouponController {
                 modelAndView.addObject(modelKey.toString(), modelMap.get(modelKey));
             }
         }
-
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
         if (couponUserGroupModel != null) {
             modelAndView.addObject("agents", userRoleService.queryAllAgent());
-            modelAndView.addObject("channels", userMapper.findAllChannels());
+            modelAndView.addObject("channels", userService.findAllUserChannels());
             modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
         }
         if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {

@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.interceptors;
 
-import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.service.LinkExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;

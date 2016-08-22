@@ -6,10 +6,7 @@ import com.tuotiansudai.dto.BookingLoanPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BookingLoanModel;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -33,7 +30,9 @@ public class BookingLoanServiceImpl implements BookingLoanService {
     private AccountMapper accountMapper;
 
     public void create(String loginName, ProductType productType, String bookingAmount) {
-        BookingLoanModel bookingLoanModel = new BookingLoanModel(userMapper.findUsersMobileByLoginName(loginName),
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        BookingLoanModel bookingLoanModel = new BookingLoanModel(
+                userModel != null ? userModel.getMobile() : null,
                 Source.WEB,
                 DateTime.now().toDate(),
                 productType,
