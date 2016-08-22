@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.mapper;
 
 
 import com.tuotiansudai.repository.model.UserLotteryTimeModel;
-import com.tuotiansudai.repository.model.UserLotteryTimeView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

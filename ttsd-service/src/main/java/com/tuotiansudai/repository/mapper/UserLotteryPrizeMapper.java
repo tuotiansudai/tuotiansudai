@@ -1,10 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.LotteryPrize;
 import com.tuotiansudai.repository.model.UserLotteryPrizeModel;
-import com.tuotiansudai.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.repository.model.UserLotteryTimeModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

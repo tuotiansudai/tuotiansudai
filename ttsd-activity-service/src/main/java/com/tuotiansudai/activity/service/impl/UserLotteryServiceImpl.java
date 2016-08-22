@@ -1,13 +1,10 @@
-package com.tuotiansudai.console.service.impl;
+package com.tuotiansudai.activity.service.impl;
 
 
-import com.tuotiansudai.console.service.UserLotteryService;
-import com.tuotiansudai.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.repository.mapper.UserLotteryTimeMapper;
-import com.tuotiansudai.repository.model.LotteryPrize;
-import com.tuotiansudai.repository.model.UserLotteryPrizeModel;
-import com.tuotiansudai.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.repository.model.UserLotteryTimeView;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
+import com.tuotiansudai.activity.service.UserLotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

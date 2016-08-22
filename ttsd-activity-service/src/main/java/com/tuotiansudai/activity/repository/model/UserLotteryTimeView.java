@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.activity.repository.model;
 
 
 import java.io.Serializable;
