@@ -37,8 +37,7 @@ public class UserRoleServiceImpl implements UserRoleService{
 
     @Override
     public List<Role> findRoleNameByLoginName(String loginName) {
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
-        return Lists.transform(userRoleModels, new Function<UserRoleModel, Role>() {
+        return Lists.transform(userRoleMapper.findByLoginName(loginName), new Function<UserRoleModel, Role>() {
             @Override
             public Role apply(UserRoleModel input) {
                 return input.getRole();

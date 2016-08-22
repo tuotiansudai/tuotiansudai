@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.joda.time.DateTime;
@@ -17,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -78,7 +78,7 @@ public class TransferControllerTest {
         BasePaginationDataDto<InvestPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(1,10,5,Lists.newArrayList(investPaginationItemDataDto));
 
         when(transferService.generateTransferableInvest(anyString(),anyInt(),anyInt())).thenReturn(basePaginationDataDto);
-        mockLoginUser("investor", "13900000000");
+        mockLoginUser("investor");
         this.mockMvc.perform(get("/transferrer/transfer-application-list-data").param("index", "1").param("pageSize", "10").param("status", TransferStatus.TRANSFERABLE.name()).contentType("application/json;charset=UTF-8"))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -94,8 +94,8 @@ public class TransferControllerTest {
     }
 
 
-    private void mockLoginUser(String loginName, String mobile){
-        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
+    private void mockLoginUser(String loginName){
+        User user = new User(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"));
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
     }

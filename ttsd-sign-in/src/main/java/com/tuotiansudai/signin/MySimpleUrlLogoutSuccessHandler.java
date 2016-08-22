@@ -25,10 +25,9 @@ public class MySimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter writer = response.getWriter();
-        BaseDto<LoginDto> baseDto = new BaseDto<>();
+        LoginDto baseDto = new LoginDto();
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
-        baseDto.setData(loginDto);
         String jsonBody = objectMapper.writeValueAsString(baseDto);
         writer.print(jsonBody);
         writer.close();

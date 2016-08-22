@@ -2,12 +2,9 @@ package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.LoginLogService;
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,7 +22,7 @@ import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
+    private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -34,9 +31,6 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
     @Autowired
     private LoginLogService loginLogService;
-
-    @Autowired
-    private UserRoleService userRoleService;
 
     @Autowired
     private UserMapper userMapper;
@@ -51,15 +45,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
 
-        BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
-        loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
         loginDto.setNewSessionId(request.getSession().getId());
-        baseDto.setData(loginDto);
 
         clearFailHistory(loginName);
-        String jsonBody = objectMapper.writeValueAsString(baseDto);
+        String jsonBody = objectMapper.writeValueAsString(loginDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = null;

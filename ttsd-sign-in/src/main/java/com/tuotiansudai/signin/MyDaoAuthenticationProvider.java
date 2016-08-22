@@ -67,10 +67,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
         return super.authenticate(authentication);
     }
 
-    public void setCaptchaHelper(CaptchaHelper captchaHelper) {
-        this.captchaHelper = captchaHelper;
-    }
-
     public void setEnableCaptchaVerify(boolean enableCaptchaVerify) {
         this.enableCaptchaVerify = enableCaptchaVerify;
     }

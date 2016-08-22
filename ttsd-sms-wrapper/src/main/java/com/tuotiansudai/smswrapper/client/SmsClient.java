@@ -10,7 +10,6 @@ import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
-import com.tuotiansudai.util.SpringContextUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -20,8 +19,11 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class SmsClient {
+public class SmsClient implements ApplicationContextAware {
+
+    private static ApplicationContext applicationContext;
 
     static Logger logger = Logger.getLogger(SmsClient.class);
 
@@ -160,11 +164,15 @@ public class SmsClient {
 
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
-        return (BaseMapper) SpringContextUtil.getBeanByName(beanName);
+        return (BaseMapper) applicationContext.getBean(beanName);
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SmsClient.applicationContext = applicationContext;
+    }
 }

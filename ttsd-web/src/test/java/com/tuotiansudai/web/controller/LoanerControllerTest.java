@@ -6,7 +6,6 @@ import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.security.MyUserDetailsService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.joda.time.DateTime;
@@ -14,13 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -73,7 +71,7 @@ public class LoanerControllerTest {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Before
     public void setUp() throws Exception {
@@ -153,7 +151,7 @@ public class LoanerControllerTest {
                 .getRequest()
                 .getSession();
 
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginName);
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());

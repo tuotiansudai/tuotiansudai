@@ -30,9 +30,6 @@ public class MembershipExperienceBillMapperTest {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private MembershipMapper membershipMapper;
-
     @Test
     public void shouldCreateMembershipExperienceBill() throws Exception {
 
