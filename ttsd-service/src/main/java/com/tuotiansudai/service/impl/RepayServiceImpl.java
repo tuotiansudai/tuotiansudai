@@ -245,7 +245,7 @@ public class RepayServiceImpl implements RepayService {
         Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
             @Override
             public boolean apply(MembershipModel input) {
-                return input.getFee() == investModel.getInvestFeeRate();
+                return input.getFee() == investModel.getInvestFeeRate() ;
             }
         });
 
