@@ -59,10 +59,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
-    private InvestService investService;
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -212,7 +208,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(requestDto.getBaseParam().getUserId());
         double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels,investFeeRate)));
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
