@@ -74,6 +74,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                         loginSubmitElement.addClass('loading');
                     },
                     success: function (data) {
+                        console.log("==1==" + data);
                         if (data.status) {
                             window.location.href = _.difference(data.roles, ['USER']).length > 0 ? loginFormElement.data('redirect-url') : "/register/account";
                         } else {
