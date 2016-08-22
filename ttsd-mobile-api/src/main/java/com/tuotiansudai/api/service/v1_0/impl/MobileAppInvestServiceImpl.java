@@ -67,7 +67,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
             if (!formDto.isSuccess()) {
                 String userCouponIds = "";
-                for (long userCouponId : investDto.getUserCouponIds()) {
+                for (Long userCouponId : investDto.getUserCouponIds()) {
                     userCouponIds += String.valueOf(userCouponId);
                 }
                 logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. " +
