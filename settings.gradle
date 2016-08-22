@@ -20,3 +20,6 @@ include "ttsd-service",
         'ttsd-dependency',
         'ttsd-spring-extension',
         'ttsd-activity-console'
+
+include 'ttsd-activity-service'
+
