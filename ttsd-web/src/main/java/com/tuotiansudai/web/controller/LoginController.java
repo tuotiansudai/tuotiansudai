@@ -1,5 +1,7 @@
 package com.tuotiansudai.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.LoginDto;
@@ -40,6 +42,8 @@ public class LoginController {
     @Autowired
     private SignInClient signInClient;
 
+    protected ObjectMapper objectMapper = new ObjectMapper();
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
         ModelAndView modelAndView = new ModelAndView("/login", "redirect", redirect);
@@ -49,13 +53,14 @@ public class LoginController {
 
     @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
-    public LoginDto login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public LoginDto login(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws JsonProcessingException {
         String username = httpServletRequest.getParameter("username");
         String password = httpServletRequest.getParameter("password");
         String captcha = httpServletRequest.getParameter("captcha");
         SignInDto signInDto = new SignInDto(username, password, captcha, Source.WEB.name(), null);
         LoginDto loginDto = signInClient.sendSignIn(httpServletRequest.getSession().getId(), signInDto);
         httpServletResponse.addCookie(this.createSessionCookie(httpServletRequest, loginDto));
+        System.out.println("====login===" + objectMapper.writeValueAsString(loginDto));
         return loginDto;
     }
 

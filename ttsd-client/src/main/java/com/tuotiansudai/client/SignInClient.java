@@ -94,6 +94,7 @@ public class SignInClient extends BaseClient {
     private LoginDto send(String oldSessionId, String requestPath, RequestBody requestBody) {
         try {
             String responseString = this.execute(oldSessionId, requestPath, requestBody);
+            System.out.println("responseString====" + responseString);
             if (!Strings.isNullOrEmpty(responseString)) {
                 return objectMapper.readValue(responseString, LoginDto.class);
             }
