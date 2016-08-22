@@ -2,19 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.UserLotteryTimeMapper">
+<mapper namespace="com.tuotiansudai.activity.mapper.UserLotteryTimeMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
-
-    <resultMap id="userLotteryTimeModel" type="UserLotteryTimeModel">
-        <id column="id" property="id"></id>
-        <result column="mobile" property="mobile"></result>
-        <result column="login_name" property="loginName"></result>
-        <result column="used_count" property="useCount"></result>
-        <result column="unused_count" property="unUseCount"></result>
-        <result column="created_time" property="createdTime"></result>
-        <result column="updated_time" property="updatedTime"></result>
-    </resultMap>
 
     <resultMap id="userLotteryTimeView" type="UserLotteryTimeView">
         <result column="mobile" property="mobile"></result>
@@ -22,25 +12,6 @@
         <result column="used_count" property="useCount"></result>
         <result column="unused_count" property="unUseCount"></result>
     </resultMap>
-
-
-    <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `aa`.`user_lottery_time`(`id`,`mobile`,`login_name`,`used_count`,`unused_count`,`create_time`,`update_time`)
-        VALUES(#{id},#{mobile},#{login_name},#{used_count},#{unused_count},#{create_time},#{update_time});
-    </insert>
-
-    <update id="update" parameterType="UserLotteryTimeModel">
-        UPDATE `aa`.`user_lottery_time`
-        SET
-        `id` = #{id},
-        `mobile` = #{mobile},
-        `login_name` = #{login_name},
-        `used_count` = #{used_count},
-        `unused_count` = #{unused_count},
-        `create_time` = #{create_time},
-        `update_time` = #{update_time}
-        WHERE `id` = #{id}
-    </update>
 
     <select id="findUserLotteryTimeViews" parameterType="map" resultMap="userLotteryTimeView">
         select l.mobile,a.user_name,used_count,unused_count from `aa`.`user_lottery_time` l join `aa`.`account` a on l.login_name = a.login_name
