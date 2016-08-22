@@ -79,6 +79,9 @@ public class SignInClient extends BaseClient {
             formEncodingBuilder.add("deviceId", dto.getDeviceId());
         }
 
+        logger.info(MessageFormat.format("[Sign In Request Data] username={0}, sessionId={1}, captcha={2}, source={3}",
+                dto.getUsername(), oldSessionId, dto.getCaptcha(), dto.getSource()));
+
         RequestBody requestBody = formEncodingBuilder.build();
         return this.send(oldSessionId, SIGN_IN_URL, requestBody);
     }
