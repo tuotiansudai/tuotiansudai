@@ -228,8 +228,6 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
-        long nextExpectedFee = new BigDecimal(investRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investFeeRate)).longValue();
-        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee));
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         String beforeDeadLine;
@@ -252,7 +250,8 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(), Source.WEB));
-        List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
+        long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ?transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
@@ -266,6 +265,14 @@ public class TransferServiceImpl implements TransferService {
             transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }
+
+        long nextExpectedFee = new BigDecimal(investRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investFeeRate)).longValue();
+        long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee;
+        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee));
+        if(transferApplicationModel.getPeriod() == loanModel.getPeriods()){
+            nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId,transferApplicationModel.getPeriod()).getCorpus();
+        }
+        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(nextExpectedInterest));
 
         return transferApplicationDetailDto;
     }
