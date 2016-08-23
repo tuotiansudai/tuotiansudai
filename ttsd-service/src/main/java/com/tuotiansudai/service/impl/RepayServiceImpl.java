@@ -27,6 +27,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -232,7 +234,7 @@ public class RepayServiceImpl implements RepayService {
                     dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100)));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.format("%.0f",couponModel.getRate() * 100)));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
