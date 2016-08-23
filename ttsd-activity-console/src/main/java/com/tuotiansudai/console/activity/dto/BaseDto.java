@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.console.activity.dto;
 
 public class BaseDto<T extends BaseDataDto> {
 

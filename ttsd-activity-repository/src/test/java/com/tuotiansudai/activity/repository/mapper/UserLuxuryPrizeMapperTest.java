@@ -92,7 +92,7 @@ public class UserLuxuryPrizeMapperTest extends BaseMapperTest{
         userLuxuryPrizeModel.setInvestAmount(luxuryPrizeModel.getTwentyPercentOffInvestAmount());
         userLuxuryPrizeModel.setLoginName("loginName");
         userLuxuryPrizeModel.setMobile("mobile");
-        userLuxuryPrizeModel.setPrize(20000l);
+        userLuxuryPrizeModel.setPrize("prize");
         userLuxuryPrizeModel.setCreatedTime(new DateTime(2016,7,30,0,0,0).toDate());
 
         return userLuxuryPrizeModel;

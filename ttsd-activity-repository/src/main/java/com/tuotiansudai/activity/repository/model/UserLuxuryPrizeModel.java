@@ -11,7 +11,7 @@ public class UserLuxuryPrizeModel implements Serializable{
 
     private long prizeId;
 
-    private long prize;
+    private String prize;
 
     private String loginName;
 
@@ -20,6 +20,8 @@ public class UserLuxuryPrizeModel implements Serializable{
     private long investAmount;
 
     private Date createdTime;
+
+    private String userName;
 
     public long getId() {
         return id;
@@ -69,11 +71,19 @@ public class UserLuxuryPrizeModel implements Serializable{
         this.createdTime = createdTime;
     }
 
-    public long getPrize() {
+    public String getPrize() {
         return prize;
     }
 
-    public void setPrize(long prize) {
+    public void setPrize(String prize) {
         this.prize = prize;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

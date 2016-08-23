@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.console.activity.dto;
 
 import java.io.Serializable;
 
