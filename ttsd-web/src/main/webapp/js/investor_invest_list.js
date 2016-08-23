@@ -76,7 +76,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
 
                 layer.open({
                     type: 1,
-                    title: false,
+                    title: '回款详情',
+                    skin:'repay-layer-pop',
                     //offset: '80px',
                     area: ['1000px'],
                     shadeClose: true,
@@ -185,6 +186,39 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
             area: 'auto',
             maxWidth: '500'
         });
+        })
+        .on('mouseenter','.coupon',function() {//last icon event
+            var messge = $(this).data('benefit');
+            layer.closeAll('tips');
+            layer.tips(messge, $(this), {
+                tips: [1, '#ff7200'],
+                time: 2000,
+                tipsMore: true,
+                area: 'auto',
+                maxWidth: '500'
+            });
+        })
+        .on('mouseenter','.fee',function() {//last icon event
+            var messge = $(this).data('benefit');
+            layer.closeAll('tips');
+            layer.tips(messge, $(this), {
+                tips: [1, '#ff7200'],
+                time: 2000,
+                tipsMore: true,
+                area: 'auto',
+                maxWidth: '500'
+            });
+        })
+        .on('mouseenter','.repay',function() {//last icon event
+            var messge = $(this).data('benefit');
+            layer.closeAll('tips');
+            layer.tips(messge, $(this), {
+                tips: [1, '#ff7200'],
+                time: 2000,
+                tipsMore: true,
+                area: 'auto',
+                maxWidth: '500'
+            });
         })
         .on('mouseenter', '.extra-rate', function () {//extra-rate icon event
             var num = $(this).data('benefit');

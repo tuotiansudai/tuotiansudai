@@ -172,7 +172,7 @@
     width:288px;
     .profile-box {
       width:100%;
-      height:237px;
+      height:210px;
       background: #fff;
       position: relative;
       @include border-color(#e5e5e5);
@@ -186,7 +186,7 @@
       }
       .welcome-info {
         position: absolute;
-        top:40px;
+        top:50px;
         left:130px;
         .username {
           font-size:15px;
@@ -435,9 +435,9 @@
   position:absolute;
   border:1px solid #ccc;
   background:#fff;
-  border-radius:8px;
+  border-radius:0px;
   padding:5px;
-  box-shadow:2px 2px 5px rgba(0,0,0,0.2), -2px -2px 5px rgba(0,0,0,0.2);
+  box-shadow:2px 2px 5px rgba(0,0,0,0.1), -2px -2px 5px rgba(0,0,0,0.1);
 
 .pop-title {
   height:35px;

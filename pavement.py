@@ -174,11 +174,27 @@ def only_activity():
 
 
 @task
+def only_ask():
+    """
+    Deploy ask component to PROD from CI
+    """
+    fab_command("ask")
+
+
+@task
 def only_worker():
     """
     Deploy worker component to PROD from CI
     """
     fab_command("worker")
+
+
+@task
+def only_sign_in():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("signin")
 
 
 def generate_git_log_file():

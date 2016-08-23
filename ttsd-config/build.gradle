@@ -30,7 +30,7 @@ processResources.outputs.upToDateWhen { false }
 
 /**
  * parameter: configPath
- * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-config
  */
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
@@ -95,8 +95,16 @@ flyway {
     schemas = ["${defaultDatabase}"]
 
     url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    user = properties.getProperty("common.jdbc.username")
-    password = properties.getProperty("common.jdbc.password")
+
+    if (['aa', 'ump_operations', 'sms_operations', 'job_worker'].contains(defaultDatabase)) {
+        user = properties.getProperty("common.jdbc.username")
+        password = properties.getProperty("common.jdbc.password")
+    }
+
+    if ('edxask'.equals(defaultDatabase)) {
+        user = properties.getProperty("ask.jdbc.username")
+        password = properties.getProperty("ask.jdbc.password")
+    }
 }
 
 task flywayAA(type: FlywayMigrateTask) {
@@ -196,12 +204,12 @@ task flywayAsk(type: FlywayMigrateTask) {
     }
     extension.outOfOrder = true
     extension.validateOnMigrate = false
-    extension.locations = ["filesystem:db_migration/ask"]
-    extension.schemas = ["ask"]
+    extension.locations = ["filesystem:db_migration/edxask"]
+    extension.schemas = ["edxask"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/ask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("ask.jdbc.username")
+    extension.password = properties.getProperty("ask.jdbc.password")
 }
 
 def getEnvProperties() {

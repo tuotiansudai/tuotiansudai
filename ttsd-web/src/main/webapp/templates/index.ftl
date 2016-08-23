@@ -192,7 +192,7 @@
                                                     <#if (loan.newbieInterestCouponRate > 0) >
                                                         +<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                         <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                                    </#if>%
+                                                    </#if>%+3%
                                                 </i>
                                                 <span>新手加息券</span>
                                             </dd>
@@ -307,15 +307,17 @@
                                         <dl>
                                             <dt>预期年化收益</dt>
                                             <dd>
-                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
-                                                <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger>
+                                                    <@percentFraction>${loan.baseRate}</@percentFraction>
                                                     <#if (loan.extraRate > 0)>
                                                         ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
                                                     </#if>
                                                     <#if (loan.activityRate > 0) >
                                                         +<@percentInteger>${loan.activityRate}</@percentInteger>
                                                         <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                    </#if>%
+                                                    </#if>
+                                                </em>
+                                                <i>%
                                                 </i>
                                             </dd>
                                         </dl>
