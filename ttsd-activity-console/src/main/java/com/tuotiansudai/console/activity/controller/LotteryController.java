@@ -24,6 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
+@Controller
+@RequestMapping("/activity-manage")
 public class LotteryController {
     static Logger logger = Logger.getLogger(LotteryController.class);
 

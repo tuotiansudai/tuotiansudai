@@ -17,10 +17,11 @@ import java.util.List;
 public class UserLotteryServiceImpl implements UserLotteryService {
 
     @Autowired
-    private UserLotteryTimeMapper userLotteryTimeMapper;
+    private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
-    private UserLotteryPrizeMapper userLotteryPrizeMapper;
+    private UserLotteryTimeMapper userLotteryTimeMapper;
+
 
     @Override
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,Integer index,Integer pageSize) {

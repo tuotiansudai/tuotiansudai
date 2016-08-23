@@ -6,12 +6,37 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
+    <resultMap id="userLotteryPrizeModel" type="UserLotteryPrizeModel">
+        <id column="id" property="id"></id>
+        <result column="mobile" property="mobile"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="prize" property="prize"></result>
+        <result column="lottery_time" property="lotteryTime"></result>
+    </resultMap>
+
     <resultMap id="userLotteryPrizeView" type="UserLotteryPrizeView">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
     </resultMap>
+
+    <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `activity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
+        VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
+
+    </insert>
+
+    <update id="update" parameterType="userLotteryPrizeModel">
+        UPDATE `activity`.`user_lottery_prize`
+        SET
+        `id` = #{id},
+        `mobile` = #{mobile},
+        `login_name` = #{login_name},
+        `prize` = #{prize},
+        `lottery_time` = #{lotteryTime}
+        WHERE `id` = #{id}
+    </update>
 
     <select id="findUserLotteryPrizeViews" parameterType="map" resultMap="userLotteryPrizeView">
         select p.lottery_time,p.mobile,a.user_name,p.prize from `activity`.`user_lottery_prize` p join aa.account a on p.login_name = a.login_name
