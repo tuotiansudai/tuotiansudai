@@ -13,11 +13,6 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':ttsd-dependency'),
-            project(":ttsd-config"),
-            fileTree(dir: 'libs', include: '**/*.jar')
-
-    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
 processResources.outputs.upToDateWhen { false }

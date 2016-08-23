@@ -1,7 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 

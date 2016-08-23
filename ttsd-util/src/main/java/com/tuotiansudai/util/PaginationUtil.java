@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.utils;
+package com.tuotiansudai.util;
 
 public class PaginationUtil {
 

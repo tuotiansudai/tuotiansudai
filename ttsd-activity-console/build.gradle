@@ -14,10 +14,6 @@ buildscript {
     }
 }
 
-jar {
-    baseName = 'ttsd-activity-console'
-}
-
 repositories {
     jcenter()
     maven { url "http://repo.spring.io/snapshot" }
@@ -26,12 +22,22 @@ repositories {
 }
 
 dependencies {
-    compile project(":ttsd-user-service"),
-            project(":ttsd-spring-extension"),
-            project(":ttsd-web-common-config");
-    compile project(":ttsd-activity-repository") {
-        exclude module: "ttsd-dependency"
+    compile(project(":ttsd-user-service")) {
+        exclude module: 'ttsd-dependency'
     };
+
+    compile(project(":ttsd-spring-extension")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-web-common-config")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-activity-repository")) {
+        exclude module: 'ttsd-dependency'
+    };
+
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-jdbc",
@@ -41,7 +47,8 @@ dependencies {
             "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
             'mysql:mysql-connector-java:5.1.39',
             'com.zaxxer:HikariCP:2.4.7',
-            'com.google.guava:guava:19.0'
+            'com.google.guava:guava:19.0',
+            'com.squareup.okhttp:okhttp:2.7.5'
 
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'

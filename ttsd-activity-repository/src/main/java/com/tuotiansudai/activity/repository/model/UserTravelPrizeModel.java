@@ -17,6 +17,8 @@ public class UserTravelPrizeModel implements Serializable{
 
     private String mobile;
 
+    private String userName;
+
     private long investAmount;
 
     private Date createdTime;
@@ -51,6 +53,14 @@ public class UserTravelPrizeModel implements Serializable{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public long getInvestAmount() {

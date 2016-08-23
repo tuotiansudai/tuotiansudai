@@ -12,18 +12,51 @@
         <result property="prize" column="prize"/>
         <result property="loginName" column="login_name"/>
         <result property="mobile" column="mobile"/>
+        <result property="user_name" column="userName"/>
         <result property="investAmount" column="invest_amount"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
     <insert id="create" parameterType="UserTravelPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_travel_prize(prize_id,prize,login_name,mobile,invest_amount,created_time)
-               value(#{prizeId},#{prize},#{loginName},#{mobile},#{investAmount},#{createdTime})
+        insert into user_travel_prize(prize_id,prize,login_name,mobile,user_name,invest_amount,created_time)
+               value(#{prizeId},#{prize},#{loginName},#{mobile},#{userName},#{investAmount},#{createdTime})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="userTravelPrizeResultMap">
         select * from user_travel_prize where id = #{id}
     </select>
 
+    <select id="countByPagination" parameterType="map" resultType="long">
+        select *
+        from user_travel_prize
+        <where>
+            <if test="mobile != null and mobile = ''">
+                and mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and created_time &lt;= #{startTime}
+            </if>
+        </where>
+    </select>
 
+    <select id="findByPagination" parameterType="map" resultMap="userTravelPrizeResultMap">
+        select *
+        from user_travel_prize
+        <where>
+            <if test="mobile != null and mobile = ''">
+                and mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and created_time &lt;= #{startTime}
+            </if>
+        </where>
+        order by id desc
+        limit #{index}, #{pageSize}
+    </select>
 </mapper>

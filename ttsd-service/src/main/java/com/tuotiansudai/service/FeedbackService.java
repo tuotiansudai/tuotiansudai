@@ -5,7 +5,6 @@ import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
 import com.tuotiansudai.repository.model.Source;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
