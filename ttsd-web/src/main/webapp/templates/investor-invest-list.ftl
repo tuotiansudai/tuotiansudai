@@ -100,7 +100,7 @@
                     </td>
                     <td>
                     {{if $value.investRepayExist}}
-                        <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a>
+                        <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款详情</a>
                         {{if $value.productType!='EXPERIENCE'}}
                         <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank"> | 合同</a>
                         {{/if}}

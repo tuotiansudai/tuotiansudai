@@ -1,8 +1,6 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.dto.AnswerRequestDto;
-import com.tuotiansudai.ask.dto.BaseDataDto;
-import com.tuotiansudai.ask.dto.BaseDto;
+import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,8 @@ public class AnswerController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> answer(@Valid @ModelAttribute AnswerRequestDto answerRequestDto) {
-        return new BaseDto<>(new BaseDataDto(answerService.createAnswer(LoginUserInfo.getLoginName(), answerRequestDto)));
+    public BaseDto<AnswerResultDataDto> answer(@Valid @ModelAttribute AnswerRequestDto answerRequestDto) {
+        return new BaseDto<>(answerService.createAnswer(LoginUserInfo.getLoginName(), answerRequestDto));
     }
 
     @RequestMapping(path = "/{answerId:^\\d+$}/best", method = RequestMethod.POST)

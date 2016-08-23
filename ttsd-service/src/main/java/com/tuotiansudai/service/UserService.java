@@ -50,4 +50,9 @@ public interface UserService {
     void refreshAreaByMobileInJob();
 
     boolean resetUmpayPassword(String loginName, String identityNumber);
+
+    boolean mobileIsRegister(String mobile);
+
+    UserModel findByMobile(String mobile);
+
 }

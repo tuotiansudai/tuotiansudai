@@ -11,12 +11,12 @@ module.exports = {
 	entry: {
 		app: path.resolve(basePath, 'js/mainSite.js'),
 		//添加要打包在vendors里面的库
-		vendors: ['jquery']
+		//vendor: ["jquery", "underscore"]
 	},
 	output: {
 		filename: "main.[hash:8].min.js",
-		path: path.join(basePath, '/dist'),
-		publicPath: '/dist'
+		path: path.join(basePath, '/dist/'),
+		publicPath: '/ask/dist/'
 	},
 	module:{
 		loaders:[
@@ -54,7 +54,7 @@ module.exports = {
 		new webpack.optimize.AggressiveMergingPlugin(),
 		new webpack.NoErrorsPlugin(),
 		//把入口文件里面的数组打包成verdors.js
-		new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
+		//new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
 	],
 	cache: false
 

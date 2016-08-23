@@ -49,6 +49,27 @@
     color: #fff;
   }
 }
+.btn-normal {
+  @extend .btn;
+  background: rgba(255,117,42,1);
+  //border: 1px solid nth($CK1,3);
+  color: #fff;
+  &:hover {
+    background: rgba(255,117,42,0.8);
+  }
+  &:disabled, &:disabled:hover {
+    background: #ccc !important;
+    border:1px solid #ccc!important;
+    cursor: default;
+    color: #fff;
+  }
+  &[disabled], &[disabled]:hover {
+    background: #ccc !important;
+    border:1px solid #ccc!important;
+    cursor: default;
+    color: #fff;
+  }
+}
 .btn-main {
   @extend .btn;
   background: nth($btnColor2,1);

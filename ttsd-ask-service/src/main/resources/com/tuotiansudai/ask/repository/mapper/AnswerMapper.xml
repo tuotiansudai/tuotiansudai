@@ -81,6 +81,26 @@
         order by created_time desc
     </select>
 
+    <select id="countNotBestByQuestionId" parameterType="map" resultType="long">
+        select ifnull(count(1), 0)
+        from answer
+        where question_id = #{questionId}
+        and best_answer is FALSE
+        and (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+    </select>
+
+    <select id="findNotBestByQuestionId" parameterType="map" resultMap="answerResultMap">
+        select *
+        from answer
+        where question_id = #{questionId}
+        and best_answer is FALSE
+        and (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
+        order by created_time desc
+        <if test="index != null and pageSize != null ">
+            limit #{index}, #{pageSize}
+        </if>
+    </select>
+
     <select id="findBestAnswerByQuestionId" parameterType="long" resultMap="answerResultMap">
         select *
         from answer

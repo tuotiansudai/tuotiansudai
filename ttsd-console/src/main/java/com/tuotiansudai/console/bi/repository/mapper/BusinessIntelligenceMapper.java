@@ -41,8 +41,7 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryWithdrawUserCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime,@Param("granularity") Granularity granularity);
 
-    KeyValueModel queryRepayByRecheckTimeAndActualRepayDate(@Param("startTime") Date recheckDate,
-                                                            @Param("repayDate") Date repayDate);
+    KeyValueModel queryRepayByRecheckTimeAndActualRepayDate(@Param("repayDate") Date repayDate);
 
     List<KeyValueModel> querySystemBillOutByCreatedTime(@Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,

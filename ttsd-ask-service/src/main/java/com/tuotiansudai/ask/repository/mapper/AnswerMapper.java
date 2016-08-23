@@ -28,6 +28,14 @@ public interface AnswerMapper {
     List<AnswerModel> findByQuestionId(@Param(value = "loginName") String loginName,
                                        @Param(value = "questionId") long questionId);
 
+    List<AnswerModel> findNotBestByQuestionId(@Param(value = "loginName") String loginName,
+                                              @Param(value = "questionId") long questionId,
+                                              @Param(value = "index") int index,
+                                              @Param(value = "pageSize") int pageSize);
+
+    long countNotBestByQuestionId(@Param(value = "loginName") String loginName,
+                                  @Param(value = "questionId") long questionId);
+
     AnswerModel findBestAnswerByQuestionId(@Param(value = "questionId") long questionId);
 
     List<AnswerModel> findAnswersForConsole(@Param(value = "question") String question,

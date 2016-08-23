@@ -1,4 +1,4 @@
-CREATE TABLE `activity`.`luxury_prize` (
+CREATE TABLE `luxury_prize` (
   `id`                               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `brand`                            VARCHAR(100)    NOT NULL,
   `name`                             VARCHAR(100)    NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE `activity`.`luxury_prize` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE `activity`.`user_luxury_prize` (
+CREATE TABLE `user_luxury_prize` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `prize_id`      BIGINT UNSIGNED NOT NULL,
   `prize`         VARCHAR(100)    NOT NULL,
@@ -32,13 +32,13 @@ CREATE TABLE `activity`.`user_luxury_prize` (
   PRIMARY KEY (`id`),
   INDEX INDEX_USER_LUXURY_PRIZE_LOGIN_NAME (`login_name`),
   INDEX INDEX_USER_LUXURY_PRIZE_MOBILE (`mobile`),
-  CONSTRAINT FK_USER_LUXURY_PRIZE_PRIZE_ID_REF_LUXURY_PRIZE_ID FOREIGN KEY (`prize_id`) REFERENCES `activity`.`luxury_prize` (`id`)
+  CONSTRAINT FK_USER_LUXURY_PRIZE_PRIZE_ID_REF_LUXURY_PRIZE_ID FOREIGN KEY (`prize_id`) REFERENCES `luxury_prize` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE `activity`.`travel_prize` (
+CREATE TABLE `travel_prize` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name`          VARCHAR(100)    NOT NULL,
   `description`   VARCHAR(100),
@@ -58,7 +58,7 @@ CREATE TABLE `activity`.`travel_prize` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE `activity`.`user_travel_prize` (
+CREATE TABLE `user_travel_prize` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `prize_id`      BIGINT UNSIGNED NOT NULL,
   `prize`         VARCHAR(100)    NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `activity`.`user_travel_prize` (
   PRIMARY KEY (`id`),
   INDEX INDEX_USER_TRAVEL_PRIZE_LOGIN_NAME (`login_name`),
   INDEX INDEX_USER_TRAVEL_PRIZE_MOBILE (`mobile`),
-  CONSTRAINT FK_USER_TRAVEL_PRIZE_PRIZE_ID_REF_TRAVEL_PRIZE_ID FOREIGN KEY (`prize_id`) REFERENCES `activity`.`travel_prize` (`id`)
+  CONSTRAINT FK_USER_TRAVEL_PRIZE_PRIZE_ID_REF_TRAVEL_PRIZE_ID FOREIGN KEY (`prize_id`) REFERENCES `travel_prize` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1

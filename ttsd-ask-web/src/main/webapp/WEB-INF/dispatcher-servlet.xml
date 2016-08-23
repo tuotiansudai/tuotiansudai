@@ -33,7 +33,7 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.web.config.interceptors.LogGenerateInterceptor"/>
+        <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
     </mvc:interceptors>
 
     <context:component-scan base-package="com.tuotiansudai.web.ask"/>
@@ -42,12 +42,13 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${ask.static.server}"/>
         <property name="javascriptLocation" value="${ask.js.path}"/>
         <property name="cssLocation" value="${ask.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
+                <entry key="askServer" value="${ask.server}"/>
+                <entry key="staticServer" value="${ask.static.server}"/>
                 <entry key="myQuestions">
                     <bean class="com.tuotiansudai.web.ask.freemarker.directive.MyQuestionsDirective"/>
                 </entry>

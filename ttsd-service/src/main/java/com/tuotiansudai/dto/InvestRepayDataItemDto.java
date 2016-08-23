@@ -7,7 +7,10 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,24 +47,38 @@ public class InvestRepayDataItemDto {
 
     private double birthdayBenefit;
 
+    private String couponExpectedInterest;
+
+    private String couponDefaultInterest;
+
+    private String overdueDay;
+
     private LoanModel loan;
 
     public InvestRepayDataItemDto() {
     }
 
     public InvestRepayDataItemDto(InvestRepayModel model) {
-        if(RepayStatus.COMPLETE == model.getStatus()) {
+        if(RepayStatus.COMPLETE == model.getStatus() || RepayStatus.OVERDUE == model.getStatus()) {
             this.actualFee = AmountConverter.convertCentToString(model.getActualFee());
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
-            this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
-            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+            if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
+            if(RepayStatus.OVERDUE == model.getStatus() && model.getActualRepayDate() != null) this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
         }
+        this.investId = model.getInvestId();
+        if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+        if(model.getExpectedFee() > 0) this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
-        this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
+        if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().before(new DateTime(model.getRepayDate()).withTimeAtStartOfDay().toDate())){
+            this.status = "提前还款";
+        }else if(RepayStatus.OVERDUE == model.getStatus()){
+            this.status = "逾期还款";
+        }else{
+            this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
+        }
         this.period = model.getPeriod();
         this.amount = AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
     }
@@ -206,4 +223,27 @@ public class InvestRepayDataItemDto {
         this.investId = investId;
     }
 
+    public String getCouponExpectedInterest() {
+        return couponExpectedInterest;
+    }
+
+    public void setCouponExpectedInterest(String couponExpectedInterest) {
+        this.couponExpectedInterest = couponExpectedInterest;
+    }
+
+    public String getCouponDefaultInterest() {
+        return couponDefaultInterest;
+    }
+
+    public void setCouponDefaultInterest(String couponDefaultInterest) {
+        this.couponDefaultInterest = couponDefaultInterest;
+    }
+
+    public String getOverdueDay() {
+        return overdueDay;
+    }
+
+    public void setOverdueDay(String overdueDay) {
+        this.overdueDay = overdueDay;
+    }
 }

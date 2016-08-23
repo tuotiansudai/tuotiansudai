@@ -13,7 +13,7 @@
                     <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
-                        <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span>
+                        <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
 
                             <#list question.tags as tag>
                             <em class="fr tag">
@@ -30,28 +30,38 @@
         <#if questions.data.hasPreviousPage>
             <a href="/question/my-questions">首页</a>
         </#if>
-
         <#if questions.data.index &gt; 3>
             <a href="/question/my-questions?index=${questions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
-        <#assign upper = lower + 4>
-        <#if questions.data.index - 2 &gt; 0>
-            <#assign lower = questions.data.index - 2>
-        </#if>
-        <#if upper &gt; questions.data.maxPage>
-            <#assign upper = questions.data.maxPage>
+        <#assign upper = questions.data.maxPage>
+        <#if questions.data.maxPage &gt; 5>
+            <#assign lower = questions.data.index>
+            <#assign upper = questions.data.index>
+            <#list 1..2 as index>
+                <#if questions.data.index - index &gt; 0>
+                    <#assign lower = lower - 1>
+                <#else>
+                    <#assign upper = upper + 1>
+                </#if>
+            </#list>
+            <#list 1..2 as index>
+                <#if questions.data.index + index <= questions.data.maxPage>
+                    <#assign upper = upper + 1>
+                <#else>
+                    <#assign lower = lower - 1>
+                </#if>
+            </#list>
         </#if>
 
         <#list lower..upper as page>
-            <a href="/question/my-questions?index=${page}"> ${page} </a>
+            <a href="/question/my-questions?index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>
             <a href="/question/my-questions?index=${questions.data.index+1}"> > </a>
         </#if>
-
         <#if questions.data.hasNextPage>
             <a href="/question/my-questions?index=${questions.data.maxPage}">末页</a>
         </#if>
