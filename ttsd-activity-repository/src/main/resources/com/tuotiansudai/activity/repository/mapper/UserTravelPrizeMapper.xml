@@ -12,7 +12,7 @@
         <result property="prize" column="prize"/>
         <result property="loginName" column="login_name"/>
         <result property="mobile" column="mobile"/>
-        <result property="user_name" column="userName"/>
+        <result property="userName" column="user_name"/>
         <result property="investAmount" column="invest_amount"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
@@ -27,10 +27,10 @@
     </select>
 
     <select id="countByPagination" parameterType="map" resultType="long">
-        select *
+        select ifnull(count(1), 0)
         from user_travel_prize
         <where>
-            <if test="mobile != null and mobile = ''">
+            <if test="mobile != null and mobile != ''">
                 and mobile = #{mobile}
             </if>
             <if test="startTime != null">
@@ -46,7 +46,7 @@
         select *
         from user_travel_prize
         <where>
-            <if test="mobile != null and mobile = ''">
+            <if test="mobile != null and mobile != ''">
                 and mobile = #{mobile}
             </if>
             <if test="startTime != null">

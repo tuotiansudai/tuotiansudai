@@ -1,8 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,7 @@ public class UserTravelPrizeMapperTest extends BaseMapperTest{
         userTravelPrizeModel.setInvestAmount(travelPrizeModel.getInvestAmount());
         userTravelPrizeModel.setLoginName("loginName");
         userTravelPrizeModel.setMobile("mobile");
-        userTravelPrizeModel.setPrize(20000l);
+        userTravelPrizeModel.setPrize("prize");
         userTravelPrizeModel.setCreatedTime(new Date());
 
         return userTravelPrizeModel;
