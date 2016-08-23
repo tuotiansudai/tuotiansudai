@@ -28,8 +28,11 @@ repositories {
 dependencies {
     compile project(":ttsd-user-service"),
             project(":ttsd-spring-extension"),
-            project(":ttsd-web-common-config"),
-            "org.springframework.boot:spring-boot-starter-web",
+            project(":ttsd-web-common-config");
+    compile project(":ttsd-activity-repository") {
+        exclude module: "ttsd-dependency"
+    };
+    compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-jdbc",
             "org.springframework.boot:spring-boot-starter-security",
@@ -39,6 +42,7 @@ dependencies {
             'mysql:mysql-connector-java:5.1.39',
             'com.zaxxer:HikariCP:2.4.7',
             'com.google.guava:guava:19.0'
+
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
