@@ -234,7 +234,7 @@ public class RepayServiceImpl implements RepayService {
                     dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.format("%.0f",couponModel.getRate() * 100)));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,covertRate(String.format("%.2f",couponModel.getRate() * 100))));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
@@ -257,5 +257,9 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setLevelMessage(membershipMessage.get(String.valueOf(0)));
         }
         return baseDto;
+    }
+
+    private static String covertRate(String rate){
+        return rate.indexOf(".00") != -1 ? rate.replaceAll(".00","") : String.valueOf(Double.parseDouble(rate));
     }
 }
