@@ -72,7 +72,7 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
-    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
+    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}%加息券";
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您使用了生日月福利";
 
@@ -232,7 +232,7 @@ public class RepayServiceImpl implements RepayService {
                     dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate())));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100)));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
