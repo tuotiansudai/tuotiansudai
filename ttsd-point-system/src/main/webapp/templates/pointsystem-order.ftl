@@ -78,7 +78,7 @@
                             </p>
 						<#else>
                             <p class="mater-img picture-item">
-                                <img src="${productShowItem.imageUrl}" width="140" height="114"/>
+                                <img src="/${productShowItem.imageUrl}" width="140" height="114"/>
                             </p>
 						</#if>
 					</div>

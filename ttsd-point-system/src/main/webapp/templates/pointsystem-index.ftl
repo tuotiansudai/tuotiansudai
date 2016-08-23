@@ -150,7 +150,7 @@
                                 </p>
                             <#elseif virtualProduct.itemType.name() == 'VIRTUAL'>
                                 <p class="mater-img picture-item">
-                                    <img src="${virtualProduct.imageUrl}" width="160" height="100"/>
+                                    <img src="/${virtualProduct.imageUrl}" width="160" height="100"/>
                                 </p>
                             </#if>
                             <p class="convert-btn">
@@ -181,7 +181,7 @@
                                 </p>
                             <#elseif virtualProduct.itemType == 'VIRTUAL'>
                                 <p class="mater-img picture-item">
-                                    <img src="${virtualProduct.imageUrl}" width="160" height="100"/>
+                                    <img src="/${virtualProduct.imageUrl}" width="160" height="100"/>
                                 </p>
                             </#if>
                             <p class="convert-btn">
@@ -213,7 +213,7 @@
                         <li class="big-gift">
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
                             <p class="mater-img picture-item">
-                                <img src="${physicalProduct.imageUrl}" width="160" height="100"/>
+                                <img src="/${physicalProduct.imageUrl}" width="160" height="100"/>
                             </p>
 
                             <p class="convert-btn">
@@ -230,7 +230,7 @@
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
                             <p class="mater-img picture-item">
-                                <img src="${physicalProduct.imageUrl}" width="160" height="100"/>
+                                <img src="/${physicalProduct.imageUrl}" width="160" height="100"/>
                             </p>
 
                             <p class="convert-btn">

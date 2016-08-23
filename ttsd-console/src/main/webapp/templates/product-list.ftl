@@ -35,7 +35,7 @@
                     <td>${goodsType.description!}</td>
                     <td>2-${product.seq?string('0')!}</td>
                     <td>${product.productName}</td>
-                    <td><img src="${product.imageUrl}" width="100px" height="50px"></td>
+                    <td><img src="/${product.imageUrl}" width="100px" height="50px"></td>
                     <td>${product.description}</td>
                     <td>${product.totalCount?string('0')}</td>
                     <td>${product.usedCount?string('0')}</td>

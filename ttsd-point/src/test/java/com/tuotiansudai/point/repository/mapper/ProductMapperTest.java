@@ -36,7 +36,7 @@ public class ProductMapperTest {
     public void shouldCreateProductModel() throws Exception {
         UserModel fakeUserModel = this.createFakeUserModel();
 
-        ProductModel productModel = new ProductModel(GoodsType.VIRTUAL, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, fakeUserModel.getLoginName(), new Date());
+        ProductModel productModel = new ProductModel(GoodsType.VIRTUAL, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new DateTime().minusDays(2).toDate(), new DateTime().plusDays(7).toDate(), true, fakeUserModel.getLoginName(), new Date());
 
         productMapper.create(productModel);
 
@@ -46,7 +46,7 @@ public class ProductMapperTest {
 
         long productCount = productMapper.findExchangeableProductsCount(GoodsType.VIRTUAL);
 
-        assertThat(productCount, is(1L));
+        assertThat(productCount , is(1L));
 
         ProductModel productModel1 = productMapper.findById(productModel.getId());
 
