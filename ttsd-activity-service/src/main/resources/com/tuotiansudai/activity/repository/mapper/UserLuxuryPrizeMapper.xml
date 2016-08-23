@@ -25,7 +25,7 @@
         select * from user_luxury_prize where id = #{id}
     </select>
 
-    <select id="getUserLuxuryPrizeList" parameterMap="map" resultMap="luxuryPrizeResultMap">
+    <select id="getUserLuxuryPrizeList" parameterType="map" resultMap="userLuxuryPrizeResultMap">
         select * from user_luxury_prize
         <where>
           <if test="mobile !=null and mobile !='' ">

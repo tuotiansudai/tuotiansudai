@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.activity.mapper.UserLotteryPrizeMapper">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="userLotteryPrizeModel" type="UserLotteryPrizeModel">
+    <resultMap id="userLotteryPrizeModel" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel">
         <id column="id" property="id"></id>
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
@@ -14,14 +14,14 @@
         <result column="lottery_time" property="lotteryTime"></result>
     </resultMap>
 
-    <resultMap id="userLotteryPrizeView" type="UserLotteryPrizeView">
+    <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeView">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="UserLotteryTimeModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `activity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
         VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
 

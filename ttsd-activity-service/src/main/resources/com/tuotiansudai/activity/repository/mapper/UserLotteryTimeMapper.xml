@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="userLotteryTimeView" type="UserLotteryTimeView">
+    <resultMap id="userLotteryTimeView" type="com.tuotiansudai.activity.repository.model.UserLotteryTimeView">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
         <result column="used_count" property="useCount"></result>
