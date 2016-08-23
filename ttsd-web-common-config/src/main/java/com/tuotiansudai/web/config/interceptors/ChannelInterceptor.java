@@ -1,7 +1,6 @@
-package com.tuotiansudai.web.interceptors;
+package com.tuotiansudai.web.config.interceptors;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -12,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelInterceptor extends HandlerInterceptorAdapter {
 
     private final static String APP_SOURCE_FLAG = "app";
+
     @Value("${common.environment}")
-    private Environment environment;
+    private String environment;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
@@ -32,7 +32,7 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
             return;
         }
 
-        modelAndView.addObject("isProduction", Environment.isProduction(environment));
+        modelAndView.addObject("isProduction", "PRODUCTION".equals(environment));
         modelAndView.addObject("isAppSource", APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source")));
     }
 }

@@ -5,8 +5,11 @@ var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
 //刷新验证码
+var refreshCaptcha=function() {
+    $('.captchaImg').attr('src', '/captcha?' + new Date().getTime().toString());
+}
 $('.captchaImg').on('click',function() {
-    $(this).attr('src', '/captcha?' + new Date().getTime().toString());
+    refreshCaptcha();
 });
 
 var utils = {
@@ -33,16 +36,17 @@ var utils = {
 
                 if (len > num) {
                     errorMsg = '您的问题不能超过' + num + '个字符';
-                    $wordstip.addClass('error');
                 }
 
                 if(len<=num && len>0) {
                     this.hideError(element);
                     questionValid = true;
+                    $wordstip.removeClass('red-color');
                 }
                 else {
                     questionValid = false;
                     this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
                 }
                 break;
 
@@ -52,15 +56,17 @@ var utils = {
                     .text(len);
                 if (len > num) {
                     errorMsg = '问题补充' + num + '个字符';
-                    $wordstip.addClass('error');
+                    //$wordstip.addClass('error');
                 }
-                if(len<=num && len>0) {
+                if(len<=num && len>=0) {
                     this.hideError(element);
                     additionValid=true;
+                    $wordstip.removeClass('red-color');
                 }
                 else {
                     additionValid = false;
                     this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
                 }
                 break;
             case 'captcha':
@@ -91,19 +97,22 @@ var utils = {
 
         }
         //switch end
+        if($createQuestion.length) {
+            if(tagValid && questionValid && additionValid && captchaValid) {
+                $formSubmit.prop('disabled',false);
+            }
+            else {
+                $formSubmit.prop('disabled',true);
+            }
+        }
 
-        if(tagValid && questionValid && additionValid && captchaValid) {
-            $formSubmit.prop('disabled',false);
-        }
-        else {
-            $formSubmit.prop('disabled',true);
-        }
-
-        if(captchaValid && answerValid) {
-            $formSubmit.prop('disabled',false);
-        }
-        else {
-            $formSubmit.prop('disabled',true);
+        if($questionDetailTag.length) {
+            if(captchaValid && answerValid) {
+                $formSubmit.prop('disabled',false);
+            }
+            else {
+                $formSubmit.prop('disabled',true);
+            }
         }
 
     },
@@ -178,18 +187,36 @@ if($questionDetailTag.length) {
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
-                type: 'POST'
-            }).done(function(data) {
-                if (data.data.status) {
-                    comm.popWindow('','回答成功!',{ width:'200px'});
-                    setTimeout(function() {
+                type: 'POST',
+                beforeSend:function() {
+                    $formAnswerSubmit.prop('disabled',true);
+                }
+            }).done(function(responseData) {
+                 var response=responseData.data;
+                    if (response.status) {
+                        comm.popWindow('','回答成功!',{ width:'200px'},true);
+                        setTimeout(function() {
                         $('.popWindow,.popWindow-overlay').fadeOut();
                         window.location.reload();
                     },3000);
-                }
+                    }
+                    else {
+                        refreshCaptcha();
+                        if(response.isCaptchaValid) { 
+                            if(!response.isAnswerSensitiveValid) {
+                                $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
+                            }
+                        }
+                        else {
+                            $formAnswer.find('.captcha').parent().find('.error').show().text('验证码错误');
+                        }
+                    }
             })
                 .fail(function(data) {
-
+                    comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                })
+                .complete(function() {
+                    $formAnswerSubmit.prop('disabled',false);
                 });
 
     });
@@ -200,9 +227,15 @@ if($questionDetailTag.length) {
         $.ajax({
             url:'/answer/'+answerId+'/best',
             type:'POST'
-        }).done(function(data) {
-            if(data.data.status) {
-               window.location.reload();
+        }).done(function(responseData) {
+            var response=responseData.data;
+            if(response.status) {
+                comm.popWindow('','成功采纳此条信息!',{ width:'200px'},true);
+                setTimeout(function() {
+                        $('.popWindow,.popWindow-overlay').fadeOut();
+                        window.location.reload();
+                    },3000);
+               
            }
         });
     });
@@ -233,18 +266,18 @@ if($createQuestion.length) {
         $formSubmit=$('.formSubmit',$formQuestion),
         tagValid=false,
         questionValid=false,
-        additionValid=false,
+        additionValid=true,
         captchaValid=false;
 
     $formQuestion.find('input.ask-con,input.tag').on('change keyup',function(event) {
         $(this).checkFrom();
     });
 
-    $formQuestion.find('textarea.addition').on('keyup',function() {
+    $addition.on('keyup',function() {
         $(this).checkFrom();
     });
 
-    $formQuestion.find('input.captcha').on('blur',function() {
+    $captcha.on('blur',function() {
         $(this).checkFrom();
     });
 
@@ -252,14 +285,39 @@ if($createQuestion.length) {
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
-                    type: 'POST'
-                }).done(function(data) {
-                    if (data.status) {
+                    type: 'POST',
+                    beforeSend:function(xhr) {
+                        $formSubmit.prop('disabled',true);
+                    }
+                }).done(function(responseData) {
+                     var response=responseData.data;
+                    if (response.status) {
                         location.href='question/my-questions';
+                    }
+                    else {
+                        refreshCaptcha();
+                        if(response.isCaptchaValid) {
+                                if(!response.isQuestionSensitiveValid) {
+                                    $question.next().show().text('您输入的内容不能包含敏感词');
+                                    return;
+                                }
+                                if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
+                                    $addition.next().show().text('您输入的内容不能包含敏感词');  
+                                }
+                            
+                        }
+                        else {
+                            $captcha.parent().find('.error').show().text('验证码错误');
+                        }
+                        
+                        
                     }
                 })
                 .fail(function(data) {
-                        comm.popWindow('error','error',{ width:'300px'});
+                        comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                })
+                .complete(function(data) { 
+                   $formSubmit.prop('disabled',false);
                 });
 
 

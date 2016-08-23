@@ -21,7 +21,7 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                              @RequestParam(value = "page-size", defaultValue = "1", required = false) int pageSize) {
+                              @RequestParam(value = "page-size", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/home");
         BaseDto<BasePaginationDataDto> data = questionService.findAllQuestions(LoginUserInfo.getLoginName(), index, pageSize);
         if (group == QuestionGroup.UNRESOLVED) {

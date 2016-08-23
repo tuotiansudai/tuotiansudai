@@ -3,6 +3,7 @@ var os = require('os');
 var webpack = require('webpack');
 var objectAssign = require('object-assign');
 var commonOptions = require('./webpack.common');
+//var commonOptions = require('./webpack.production');
 
 var basePath = path.join(__dirname, 'src/main/webapp/ask');
 
@@ -17,6 +18,7 @@ module.exports = objectAssign(commonOptions, {
     ],
     cache: true,
     devtool: 'eval-source-map',
+    //devtool: false,
     devServer: {
         contentBase: basePath,
         port: port,

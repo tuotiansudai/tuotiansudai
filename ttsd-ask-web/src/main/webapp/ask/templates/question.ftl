@@ -7,7 +7,7 @@
                 <dt>${question.question}</dt>
                 <dd><span>${question.mobile}</span>
                     <span>回答：${question.answers}</span>
-                    <span class="datetime">${question.createdTime?string("yyyy-MM-dd HH:mm")}</span> <br/>
+                    <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span> <br/>
 
                 </dd>
                 <dd class="tag-answer">
@@ -15,7 +15,11 @@
                         <span class="tag">${tag.description}</span>
                     </#list>
                 <dd>${question.addition!}</dd>
-                <dd class="fr clearfix answer-button"><button type="button" class="btn">我来回答</button> </dd>
+                <#if !isQuestionOwner>
+                    <dd class="fr clearfix answer-button">
+                        <button type="button" class="btn">我来回答</button>
+                    </dd>
+                </#if>
             </dl>
         </div>
     </div>
@@ -31,7 +35,7 @@
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
-                        <textarea rows="4" class="text-area answer" placeholder="请回答" name="answer" ></textarea>
+                        <textarea rows="4" class="text-area answer" placeholder="请回答" name="answer"></textarea>
                         <i class="error text-area-error fa fa-times-circle" style="display: none">您的回答过于简短</i>
                     </@global.isNotAnonymous>
 
@@ -44,9 +48,9 @@
                     </@global.isAnonymous>
 
                     <@global.isNotAnonymous>
-                        <input type="text" placeholder="请输入验证码" class="captcha captchaImg" name="captcha">
-                        <img src="/captcha" alt="">
-                        <button type="button" class="btn fr formSubmit" disabled >提交答案</button>
+                        <input type="text" placeholder="请输入验证码" class="captcha" name="captcha" maxlength="5">
+                        <img src="/captcha" alt="" class="captchaImg">
+                        <button type="button" class="btn fr formSubmit" disabled>提交答案</button>
                         <i class="error" style="display: none">验证码不正确</i>
                     </@global.isNotAnonymous>
 
@@ -61,7 +65,7 @@
                 <dl class="answers-list">
                     <dd>${bestAnswer.answer}</dd>
                     <dd class="date-time-answer"><span>${bestAnswer.mobile}</span>
-                        <span class="datetime">${bestAnswer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
+                        <span class="datetime">${bestAnswer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
                         <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
                         <input type="hidden" data-id="${bestAnswer.id?string.computer}" class="answerId">
                     </dd>
@@ -72,27 +76,71 @@
     </#if>
 
 <#--ad-->
-    <div class="ad-answer"><img src="${staticServer}/images/sign/ad-answer.jpg"></div>
-    <div class="borderBox clearfix margin-top-10">
-        <div class="answers-box ">
-            <div class="other-title">共${question.answers}个回答</div>
-            <#list answers as answer>
-                <#if (bestAnswer?? && answer.id != bestAnswer.id) || !(bestAnswer??)>
+    <div class="ad-answer"><a href="https://tuotiansudai.com/activity/share-reward" target="_blank"></a></div>
+
+    <#if answers.data.records?has_content>
+        <div class="borderBox clearfix margin-top-10">
+            <div class="answers-box ">
+                <div class="other-title">
+                    <#if bestAnswer??>其他回答<#else>全部回答</#if>
+                </div>
+                <#list answers.data.records as answer>
                     <dl class="answers-list">
-                        <dd>${answer.answer} </dd>
+                        <dd>${answer.answer}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
-                            <span class="datetime">${answer.createdTime?string("yyyy-MM-dd HH:mm")}</span>
+                            <span class="datetime">${answer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
                             <span class="agree-ok ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
-                        <#if !bestAnswer??>
-                            <span class="btn fr mark-this-answer">采纳此条信息</span>
-                        </#if>
+                            <#if isQuestionOwner && !(bestAnswer??)>
+                                <span class="btn fr mark-this-answer">采纳此条信息</span>
+                            </#if>
                             <input type="hidden" data-id="${answer.id?string.computer}" class="answerId">
                         </dd>
                     </dl>
-                </#if>
-            </#list>
+                </#list>
+            </div>
         </div>
-    </div>
+        <div class="pagination">
+            <#if answers.data.hasPreviousPage>
+                <a href="/question/${questionId?string.computer}">首页</a>
+            </#if>
+            <#if answers.data.index &gt; 3>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.index-1}"> < </a>
+            </#if>
+
+            <#assign lower = 1>
+            <#assign upper = answers.data.maxPage>
+            <#if answers.data.maxPage &gt; 5>
+                <#assign lower = answers.data.index>
+                <#assign upper = answers.data.index>
+                <#list 1..2 as index>
+                    <#if answers.data.index - index &gt; 0>
+                        <#assign lower = lower - 1>
+                    <#else>
+                        <#assign upper = upper + 1>
+                    </#if>
+                </#list>
+                <#list 1..2 as index>
+                    <#if answers.data.index + index <= answers.data.maxPage>
+                        <#assign upper = upper + 1>
+                    <#else>
+                        <#assign lower = lower - 1>
+                    </#if>
+                </#list>
+            </#if>
+
+            <#list lower..upper as page>
+                <a href="/question/${questionId?string.computer}?index=${page}"
+                   <#if page == answers.data.index>class="active"</#if>> ${page} </a>
+            </#list>
+
+            <#if answers.data.maxPage - answers.data.index &gt; 2>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.index+1}"> > </a>
+            </#if>
+            <#if answers.data.hasNextPage>
+                <a href="/question/${questionId?string.computer}?index=${answers.data.maxPage}">末页</a>
+            </#if>
+        </div>
+    </#if>
 
 </div>
 </@global.main>

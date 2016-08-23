@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.config.freemarker;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
@@ -20,8 +19,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
-    private String staticServer = "";
-
     private String javascriptLocation;
 
     private String cssLocation;
@@ -30,7 +27,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     protected Map<Object, Object> createInstance() {
         Map<Object, Object> map = super.createInstance();
 
-        map.put("staticServer", Strings.isNullOrEmpty(staticServer) ? "" : staticServer);
         map.put("jsPath", javascriptLocation);
         map.put("cssPath", cssLocation);
 
@@ -93,9 +89,5 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     public void setCssLocation(String cssLocation) {
         this.cssLocation = cssLocation;
-    }
-
-    public void setStaticServer(String staticServer) {
-        this.staticServer = staticServer;
     }
 }

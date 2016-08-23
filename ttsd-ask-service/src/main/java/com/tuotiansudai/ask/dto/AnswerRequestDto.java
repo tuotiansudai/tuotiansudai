@@ -14,7 +14,7 @@ public class AnswerRequestDto implements Serializable {
     private String answer;
 
     @NotEmpty
-    @Pattern(regexp = "^[0-9]{5}$")
+    @Pattern(regexp = "^(\\d+){5}$")
     private String captcha;
 
     public long getQuestionId() {

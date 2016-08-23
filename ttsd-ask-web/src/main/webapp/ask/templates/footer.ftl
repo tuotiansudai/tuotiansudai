@@ -2,23 +2,23 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要投资</li>
-            <li><a href="/loan-list" onclick="cnzzPush.trackClick('47底部导航','理财产品')">投资产品</a></li>
-            <li><a href="/account" onclick="cnzzPush.trackClick('48底部导航','我的帐户')">我的帐户</a></li>
-            <li><a href="/about/notice" onclick="cnzzPush.trackClick('49底部导航','拓天公告')">拓天公告</a></li>
+            <li><a href="${webServer}/loan-list" onclick="cnzzPush.trackClick('47底部导航','理财产品')">投资产品</a></li>
+            <li><a href="${webServer}/account" onclick="cnzzPush.trackClick('48底部导航','我的帐户')">我的帐户</a></li>
+            <li><a href="${webServer}/about/notice" onclick="cnzzPush.trackClick('49底部导航','拓天公告')">拓天公告</a></li>
         </ul>
         <ul>
             <li class="f-title">关于我们</li>
-            <li><a href="/about/company" onclick="cnzzPush.trackClick('50底部导航','公司介绍')">公司介绍</a></li>
-            <li><a href="/about/assurance" onclick="cnzzPush.trackClick('51底部导航','安全保障')">安全保障</a></li>
-            <li><a href="/about/team" onclick="cnzzPush.trackClick('52底部导航','团队介绍')">团队介绍</a></li>
-            <li><a href="/about/refer-reward" onclick="cnzzPush.trackClick('53底部导航','推荐奖励')">推荐奖励</a></li>
-            <li><a href="/about/operational">运营数据</a></li>
+            <li><a href="${webServer}/about/company" onclick="cnzzPush.trackClick('50底部导航','公司介绍')">公司介绍</a></li>
+            <li><a href="${webServer}/about/assurance" onclick="cnzzPush.trackClick('51底部导航','安全保障')">安全保障</a></li>
+            <li><a href="${webServer}/about/team" onclick="cnzzPush.trackClick('52底部导航','团队介绍')">团队介绍</a></li>
+            <li><a href="${webServer}/about/refer-reward" onclick="cnzzPush.trackClick('53底部导航','推荐奖励')">推荐奖励</a></li>
+            <li><a href="${webServer}/about/operational">运营数据</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>
-            <li><a href="/about/guide" onclick="cnzzPush.trackClick('54底部导航','新手指引')">新手指引</a></li>
-            <li><a href="/about/service-fee" onclick="cnzzPush.trackClick('55底部导航','服务费用')">服务费用</a></li>
-            <li><a href="/about/qa" onclick="cnzzPush.trackClick('56底部导航','常见问题')">常见问题</a></li>
+            <li><a href="${webServer}/about/guide" onclick="cnzzPush.trackClick('54底部导航','新手指引')">新手指引</a></li>
+            <li><a href="${webServer}/about/service-fee" onclick="cnzzPush.trackClick('55底部导航','服务费用')">服务费用</a></li>
+            <li><a href="${webServer}/about/qa" onclick="cnzzPush.trackClick('56底部导航','常见问题')">常见问题</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
@@ -37,20 +37,6 @@
                 扫我下载APP
             </li>
         </ul>
-    </div>
-    <div class="link-list page-width clearfix">
-        <h3>友情链接</h3>
-        <ul id="linkList">
-            <#if linkExchangeList??>
-                <#list linkExchangeList as linkExchange>
-                    <li><a href="${linkExchange.linkUrl}" <#if linkExchange.noFollow>rel="nofollow"</#if>
-                           target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
-                </#list>
-            </#if>
-        </ul>
-        <div class="get-more" id="getMore">
-            更多<i class="fa fa-chevron-down" aria-hidden="true"></i><i class="fa fa-chevron-up" aria-hidden="true"></i>
-        </div>
     </div>
     <div class="copyright page-width">
         <div class="fl">
@@ -74,9 +60,9 @@
     </div>
     <div class="footer-responsive">
         <ul>
-            <li><a href="/about/refer-reward">推荐奖励</a></li>
-            <li><a href="/about/guide">新手指引</a></li>
-            <li><a href="/about/assurance">安全保障</a></li>
+            <li><a href="${webServer}/about/refer-reward">推荐奖励</a></li>
+            <li><a href="${webServer}/about/guide">新手指引</a></li>
+            <li><a href="${webServer}/about/assurance">安全保障</a></li>
         </ul>
         <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
         <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>

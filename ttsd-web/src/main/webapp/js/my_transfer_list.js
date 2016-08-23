@@ -72,8 +72,9 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-transfer-table.mustach
 
                         layer.open({
                             type: 1,
-                            title: false,
-                            offset: '80px',
+                            title: '回款详情',
+                            skin:'repay-layer-pop',
+                            //offset: '80px',
                             area: ['1000px'],
                             shadeClose: true,
                             content: html

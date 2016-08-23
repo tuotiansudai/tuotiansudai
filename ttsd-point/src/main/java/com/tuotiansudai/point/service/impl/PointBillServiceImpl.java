@@ -127,10 +127,12 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
-        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize){
+        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile,
+                currentPageNo != null ? (currentPageNo - 1) * pageSize : null,
+                pageSize);
 
-        List<AccountItemDataDto> accountItemDataDtoList = new ArrayList<>();
+        List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
         for(AccountModel accountModel : accountModels) {
             AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
             accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
