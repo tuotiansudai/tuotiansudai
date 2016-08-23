@@ -4,6 +4,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'); //错误提示节点
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
         var _URL = window.URL || window.webkitURL;
 
         $('.appPicture,.webPicture').on('change', function () {
@@ -160,5 +162,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
             }
         });
 
+        $('#longTerm').on('change', function (event) {
+            event.preventDefault();
+            $('#actTime').hide();
+        });
+        $('#NotlongTerm').on('change', function (event) {
+            event.preventDefault();
+            $('#actTime').show();
+        });
     });
-})
+});
