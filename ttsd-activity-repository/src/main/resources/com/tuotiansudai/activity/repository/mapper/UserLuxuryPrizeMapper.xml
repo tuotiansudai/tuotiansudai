@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userLuxuryPrizeResultMap" type="userLuxuryPrizeModel">
+        <result property="id" column="id"/>
+        <result property="prizeId" column="prize_id"/>
+        <result property="prize" column="prize"/>
+        <result property="loginName" column="login_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="investAmount" column="invest_amount"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserLuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_luxury_prize(prize_id,prize,login_name,mobile,invest_amount,created_time)
+               value(#{prizeId},#{prize},#{loginName},#{mobile},#{investAmount},#{createdTime})
+    </insert>
+    
+    <select id="findById" parameterType="long" resultMap="userLuxuryPrizeResultMap">
+        select * from user_luxury_prize where id = #{id}
+    </select>
+
+    <select id="getUserLuxuryPrizeList" parameterType="map" resultMap="userLuxuryPrizeResultMap">
+        select * from user_luxury_prize
+        <where>
+          <if test="mobile !=null and mobile !='' ">
+              and mobile = #{mobile}
+          </if>
+          <if test="startTime != null">
+             and created_time >= #{startTime}
+          </if>
+          <if test="endTime != null">
+              and created_time &lt;= #{startTime}
+          </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="getCountUserLuxuryPrize" parameterType="map" resultType="long">
+        select count(1) from user_luxury_prize
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile = #{mobile}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and created_time &lt;= #{startTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -21,7 +21,7 @@ include "ttsd-service",
         'ttsd-spring-extension',
         'ttsd-activity-console'
 
-include 'ttsd-activity-service'
+include 'ttsd-activity-repository'
 
 include 'ttsd-util'
 
