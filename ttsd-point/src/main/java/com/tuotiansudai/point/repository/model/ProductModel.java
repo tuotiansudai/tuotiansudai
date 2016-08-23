@@ -8,14 +8,15 @@ import java.util.Date;
 public class ProductModel implements Serializable{
 
     private long id;
-    private GoodsType goodsType;
-    private String productName;
+    private GoodsType type;
+    private long couponId;
+    private String name;
     private Integer seq;
     private String imageUrl;
     private String description;
     private long totalCount;
     private long usedCount;
-    private long productPrice;
+    private long points;
     private Date startTime;
     private Date endTime;
     private boolean active;
@@ -32,26 +33,27 @@ public class ProductModel implements Serializable{
 
     public ProductModel(ProductDto productDto) {
         this.id = productDto.getId();
-        this.goodsType = productDto.getGoodsType();
-        this.productName = productDto.getProductName();
+        this.type = productDto.getType();
+        this.couponId = productDto.getCouponId();
+        this.name = productDto.getName();
         this.seq = productDto.getSeq();
         this.imageUrl = productDto.getImageUrl();
         this.description = productDto.getDescription();
         this.totalCount = productDto.getTotalCount();
-        this.productPrice = productDto.getProductPrice();
+        this.points = productDto.getPoints();
         this.startTime = productDto.getStartTime();
         this.endTime = productDto.getEndTime();
     }
 
-    public ProductModel(GoodsType goodsType, String productName, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long productPrice, Date startTime, Date endTime, boolean active, String createdBy, Date createdTime) {
-        this.goodsType = goodsType;
-        this.productName = productName;
+    public ProductModel(GoodsType type, String name, Integer seq, String imageUrl, String description, long totalCount, long usedCount, long points, Date startTime, Date endTime, boolean active, String createdBy, Date createdTime) {
+        this.type = type;
+        this.name = name;
         this.seq = seq;
         this.imageUrl = imageUrl;
         this.description = description;
         this.totalCount = totalCount;
         this.usedCount = usedCount;
-        this.productPrice = productPrice;
+        this.points = points;
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
@@ -67,20 +69,28 @@ public class ProductModel implements Serializable{
         this.id = id;
     }
 
-    public GoodsType getGoodsType() {
-        return goodsType;
+    public GoodsType getType() {
+        return type;
     }
 
-    public void setGoodsType(GoodsType goodsType) {
-        this.goodsType = goodsType;
+    public void setType(GoodsType type) {
+        this.type = type;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
     }
 
     public Integer getSeq() {
@@ -121,14 +131,6 @@ public class ProductModel implements Serializable{
 
     public void setUsedCount(long usedCount) {
         this.usedCount = usedCount;
-    }
-
-    public long getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(long productPrice) {
-        this.productPrice = productPrice;
     }
 
     public Date getStartTime() {

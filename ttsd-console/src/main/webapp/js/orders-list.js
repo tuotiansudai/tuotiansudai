@@ -10,7 +10,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                    url: '/product-manage/' + thisId + '/consignment',
+                    url: '/point-manage/' + thisId + '/consignment',
                     type: 'POST',
                     dataType: 'json'
                 })
@@ -36,13 +36,13 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: '/product-manage/batch/' + thisId + '/consignment',
+                        url: '/point-manage/batch/' + thisId + '/consignment',
                         type: 'POST',
                         dataType: 'json'
                     })
                     .done(function (res) {
                         if (res.data.status) {
-                            location.href="/product-manage/"+thisId+"/detail";
+                            location.href="/point-manage/"+thisId+"/detail";
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');
                         }
@@ -58,8 +58,8 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
         $('.export-product').click(function (e) {
             e.preventDefault();
             var $self = $(this),
-                $goodsId = $self.attr('data-pid');
-            location.href = "/export/product-order-list?goodsId=" + $goodsId;
+                $productId = $self.attr('data-pid');
+            location.href = "/export/product-order-list?productId=" + $productId;
         });
     });
 });

@@ -1,7 +1,7 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${goodsType.name()!}Manage" title="添加商品">
+<@global.main pageCss="" pageJavascript="product-list.js" headLab="point-manage" sideLab="product${type.name()!}Manage" title="添加商品">
 <div class="col-md-10">
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -32,14 +32,14 @@
             <tbody>
                 <#list products as product>
                 <tr>
-                    <td>${goodsType.description!}</td>
+                    <td>${type.description!}</td>
                     <td>2-${product.seq?string('0')!}</td>
-                    <td>${product.productName}</td>
+                    <td>${product.name}</td>
                     <td><img src="/${product.imageUrl}" width="100px" height="50px"></td>
                     <td>${product.description}</td>
                     <td>${product.totalCount?string('0')}</td>
                     <td>${product.usedCount?string('0')}</td>
-                    <td>${product.productPrice?string('0')}</td>
+                    <td>${product.points?string('0')}</td>
                     <td>${(product.startTime?string('yyyy-MM-dd'))!}至${(product.endTime?string('yyyy-MM-dd'))!}</td>
                     <td>
                         <#if product.active>
@@ -49,7 +49,7 @@
                                 <#if product.usedCount?string('0') != "0">
                                     -
                                 <#else>
-                                    <a href="/product-manage/${product.id?string('0')}/edit">编辑</a>
+                                    <a href="/point-manage/${product.id?string('0')}/edit">编辑</a>
                                 </#if>
                             </@security.authorize>
                         </#if>
@@ -73,7 +73,7 @@
                         </@security.authorize>
                     </td>
                     <td>
-                        <a href="/product-manage/${product.id?string('0')}/detail"
+                        <a href="/point-manage/${product.id?string('0')}/detail"
                            class="btn-link">查看详情</a>
                     </td>
                 </#list>
@@ -90,7 +90,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?index=${index-1}&pageSize=${pageSize}&goodsType=${goodsType}"
+                    <a href="?index=${index-1}&pageSize=${pageSize}&type=${type}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -101,7 +101,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?index=${index+1}&pageSize=${pageSize}&goodsType=${goodsType}"
+                    <a href="?index=${index+1}&pageSize=${pageSize}&type=${type}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

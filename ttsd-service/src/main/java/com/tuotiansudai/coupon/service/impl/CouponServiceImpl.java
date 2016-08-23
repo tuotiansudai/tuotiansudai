@@ -77,7 +77,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional
-    public void createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
+    public ExchangeCouponDto createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
         this.checkCoupon(exchangeCouponDto);
         CouponModel couponModel = new CouponModel(exchangeCouponDto);
         couponModel.setCreatedBy(loginName);
@@ -102,6 +102,7 @@ public class CouponServiceImpl implements CouponService {
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.create(couponExchangeModel);
         }
+        return exchangeCouponDto;
 
     }
 

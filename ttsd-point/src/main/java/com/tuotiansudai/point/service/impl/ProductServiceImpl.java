@@ -3,7 +3,9 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -21,6 +23,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +64,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void createProduct(ProductDto productDto) {
+        if("COUPON" == productDto.getType().name()){
+            CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
+            switch (couponModel.getCouponType()) {
+                case RED_ENVELOPE:
+                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
+                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
+                    productDto.setImageUrl("");
+                    break;
+                case INVEST_COUPON:
+                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
+                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
+                    productDto.setImageUrl("");
+                    break;
+                case INTEREST_COUPON:
+                    productDto.setName(couponModel.getRate()*100 + "%加息券");
+                    productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
+                    productDto.setImageUrl("");
+                    break;
+            }
+        }
         ProductModel productModel = new ProductModel(productDto);
         productModel.setActive(false);
         productModel.setCreatedBy(productDto.getLoginName());
@@ -273,11 +296,11 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel) {
         if (productShowItemDto.getItemType().equals(ItemType.PHYSICAL)) {
-            return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
-                    userAddressModel.getRealName(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, accountModel.getLoginName());
+            return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
+                    userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, accountModel.getLoginName());
         } else {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-            return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getProductPrice(), amount, productShowItemDto.getProductPrice() * amount,
+            return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         }
     }
@@ -297,7 +320,7 @@ public class ProductServiceImpl implements ProductService {
         if (amount > productShowItemDto.getLeftCount()) {
             return new BaseDto<>(new BaseDataDto(false, "商品数量不足"));
         }
-        if (accountModel.getPoint() < productShowItemDto.getProductPrice() * amount) {
+        if (accountModel.getPoint() < productShowItemDto.getPoints() * amount) {
             return new BaseDto<>(new BaseDataDto(false, "积分不足"));
         }
 
@@ -314,9 +337,9 @@ public class ProductServiceImpl implements ProductService {
 
         ProductOrderModel productOrderModel = generateOrder(accountModel, productShowItemDto, amount, userAddressModel);
 
-        long totalPrice = productShowItemDto.getProductPrice() * amount;
+        long totalPrice = productShowItemDto.getPoints() * amount;
 
-        pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getProductName());
+        pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
                 accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount, totalPrice));
 
@@ -354,12 +377,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> updateAddress(long id, String loginName, String realName, String mobile, String address) {
+    public BaseDto<BaseDataDto> updateAddress(long id, String loginName, String contact, String mobile, String address) {
         UserAddressModel userAddressModel = userAddressMapper.findByLoginNameAndId(id, loginName);
         if (null == userAddressModel) {
             return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
         } else {
-            userAddressModel.setRealName(realName);
+            userAddressModel.setContact(contact);
             userAddressModel.setMobile(mobile);
             userAddressModel.setAddress(address);
             userAddressMapper.update(userAddressModel);

@@ -15,17 +15,17 @@ public interface ProductMapper {
 
     void update(ProductModel productModel);
 
-    List<ProductModel> findExchangeableProductsList(@Param(value = "goodsType") GoodsType goodsType,
+    List<ProductModel> findExchangeableProductsList(@Param(value = "type") GoodsType type,
                                         @Param(value = "index") int index,
                                         @Param(value = "pageSize") int pageSize);
 
-    long findExchangeableProductsCount(@Param(value = "goodsType") GoodsType goodsType);
+    long findExchangeableProductsCount(@Param(value = "type") GoodsType type);
 
-    List<ProductModel> findAllProducts(@Param(value = "goodsType") GoodsType goodsType,
+    List<ProductModel> findAllProducts(@Param(value = "type") GoodsType type,
                                         @Param(value = "index") int index,
                                         @Param(value = "pageSize") int pageSize);
 
-    long findAllProductsCount(@Param(value = "goodsType") GoodsType goodsType);
+    long findAllProductsCount(@Param(value = "type") GoodsType type);
 
     ProductModel findById(@Param(value = "id") long id);
 }

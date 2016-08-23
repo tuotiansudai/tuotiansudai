@@ -17,11 +17,11 @@ public class ProductShowItemDto {
     private long id;
     private int seq;
     private ItemType itemType;
-    private String productName;
+    private String name;
     private String description;
     private String imageUrl;
     private long leftCount;
-    private long productPrice;
+    private long points;
     private String pictureDescription;
     private Date updatedTime;
 
@@ -32,11 +32,11 @@ public class ProductShowItemDto {
         this.id = productModel.getId();
         this.seq = productModel.getSeq();
         this.itemType = itemType;
-        this.productName = productModel.getProductName();
+        this.name = productModel.getName();
         this.description = productModel.getDescription();
         this.imageUrl = productModel.getImageUrl();
         this.leftCount = productModel.getTotalCount() - productModel.getUsedCount();
-        this.productPrice = productModel.getProductPrice();
+        this.points = productModel.getPoints();
         this.pictureDescription = pictureDescription;
         this.updatedTime = productModel.getUpdatedTime();
     }
@@ -47,24 +47,24 @@ public class ProductShowItemDto {
         switch (exchangeCouponView.getCouponType()) {
             case RED_ENVELOPE:
                 this.itemType = ItemType.RED_ENVELOPE;
-                this.productName = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
                 break;
             case INVEST_COUPON:
                 this.itemType = ItemType.INVEST_COUPON;
-                this.productName = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
                 break;
             case INTEREST_COUPON:
                 this.itemType = ItemType.INTEREST_COUPON;
-                this.productName = exchangeCouponView.getRate() * 100 + "%加息券";
+                this.name = exchangeCouponView.getRate() * 100 + "%加息券";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getRate() * 100);
                 break;
         }
         this.description = generateCouponDescription(exchangeCouponView);
         this.imageUrl = "";
         this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount();
-        this.productPrice = exchangeCouponView.getExchangePoint();
+        this.points = exchangeCouponView.getExchangePoint();
         this.updatedTime = exchangeCouponView.getUpdatedTime();
     }
 
@@ -102,12 +102,20 @@ public class ProductShowItemDto {
         this.itemType = itemType;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
     }
 
     public String getDescription() {
@@ -132,14 +140,6 @@ public class ProductShowItemDto {
 
     public void setLeftCount(long leftCount) {
         this.leftCount = leftCount;
-    }
-
-    public long getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(long productPrice) {
-        this.productPrice = productPrice;
     }
 
     public String getPictureDescription() {

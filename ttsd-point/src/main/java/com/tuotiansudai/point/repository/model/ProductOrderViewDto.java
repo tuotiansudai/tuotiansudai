@@ -6,11 +6,11 @@ import java.util.Date;
 
 public class ProductOrderViewDto implements Serializable {
     private long id;
-    private long goodsId;
-    private String productName;
-    private long productPrice;
+    private long productId;
+    private String name;
+    private long points;
     private Integer num;
-    private long totalPrice;
+    private long totalPoints;
     private Date createdTime;
 
     public ProductOrderViewDto(){
@@ -25,30 +25,6 @@ public class ProductOrderViewDto implements Serializable {
         this.id = id;
     }
 
-    public long getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(long goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public long getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(long productPrice) {
-        this.productPrice = productPrice;
-    }
-
     public Integer getNum() {
         return num;
     }
@@ -57,12 +33,36 @@ public class ProductOrderViewDto implements Serializable {
         this.num = num;
     }
 
-    public long getTotalPrice() {
-        return totalPrice;
+    public long getProductId() {
+        return productId;
     }
 
-    public void setTotalPrice(long totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setProductId(long productId) {
+        this.productId = productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
+    }
+
+    public long getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(long totalPoints) {
+        this.totalPoints = totalPoints;
     }
 
     public Date getCreatedTime() {

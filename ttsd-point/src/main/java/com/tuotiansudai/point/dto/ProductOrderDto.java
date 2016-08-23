@@ -7,11 +7,11 @@ import java.util.Date;
 
 public class ProductOrderDto {
     private long id;
-    private long goodsId;
+    private long productId;
     private String loginName;
     private Date createdTime;
     private long num;
-    private String realName;
+    private String contact;
     private String mobile;
     private String address;
     private Date consignmentTime;
@@ -19,11 +19,11 @@ public class ProductOrderDto {
 
     public ProductOrderDto(ProductOrderModel productOrderModel) {
         this.id = productOrderModel.getId();
-        this.goodsId = productOrderModel.getGoodsId();
+        this.productId = productOrderModel.getProductId();
         this.loginName = productOrderModel.getCreatedBy();
         this.createdTime = productOrderModel.getCreatedTime();
         this.num = productOrderModel.getNum();
-        this.realName = productOrderModel.getRealName();
+        this.contact = productOrderModel.getContact();
         this.mobile = productOrderModel.getMobile();
         this.consignmentTime = productOrderModel.getConsignmentTime();
         this.address = productOrderModel.getAddress();
@@ -38,12 +38,20 @@ public class ProductOrderDto {
         this.id = id;
     }
 
-    public long getGoodsId() {
-        return goodsId;
+    public long getProductId() {
+        return productId;
     }
 
-    public void setGoodsId(long goodsId) {
-        this.goodsId = goodsId;
+    public void setProductId(long productId) {
+        this.productId = productId;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public String getLoginName() {
@@ -70,13 +78,6 @@ public class ProductOrderDto {
         this.num = num;
     }
 
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
 
     public String getMobile() {
         return mobile;

@@ -333,7 +333,7 @@ public class ExportServiceImpl implements ExportService {
             row.add(record.getLoginName());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(String.valueOf(record.getNum()));
-            row.add(record.getRealName());
+            row.add(record.getContact());
             row.add(record.getMobile());
             row.add(record.getAddress());
             String consignment = record.isConsignment() ? "已发货" : "未发货";

@@ -1,15 +1,15 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage"  sideLab="product${goodsType.name()!}Manage" title="修改商品">
+<@global.main pageCss="" pageJavascript="create-product.js" headLab="point-manage"  sideLab="product${type.name()!}Manage" title="修改商品">
 
 <div class="col-md-10">
-    <form action="/product-manage/edit" method="post" class="form-horizontal form-list">
+    <form action="/point-manage/edit" method="post" class="form-horizontal form-list">
         <div class="form-group">
             <label class="col-sm-2 control-label">商品类别:</label>
 
             <div class="col-sm-4">
-                <span class="form-control">${goodsType.description!}</span>
-                <input class="goodsType" name="goodsType" value="${goodsType.name()!}" type="hidden">
+                <span class="form-control">${type.description!}</span>
+                <input class="type" name="type" value="${type.name()!}" type="hidden">
             </div>
         </div>
 
@@ -17,8 +17,8 @@
             <label class="col-sm-2 control-label">商品名称</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control product-name" name="productName" placeholder=""
-                       <#if product??>value="${product.productName!}"</#if> datatype="*" errormsg="商品名称不能为空">
+                <input type="text" class="form-control product-name" name="name" placeholder=""
+                       <#if product??>value="${product.name!}"</#if> datatype="*" errormsg="商品名称不能为空">
             </div>
         </div>
 
@@ -70,7 +70,7 @@
             <label class="col-sm-2 control-label">商品顺序</label>
 
             <div class="col-sm-4">
-                <input data-type="${goodsType!}" class="order-number input-sm" name="seq" value="1" disabled>- <input
+                <input data-type="${type!}" class="order-number input-sm" name="seq" value="1" disabled>- <input
                     type="text" class="form-control seq" name="seq" placeholder=""
                     <#if product??>value="${product.seq?string('0')!}"</#if> datatype="n" errormsg="商品顺序只能为数字">
             </div>
@@ -106,8 +106,8 @@
             <label class="col-sm-2 control-label">商品价格</label>
 
             <div class="col-sm-2">
-                <input type="text" class="form-control productPrice" name="productPrice" placeholder=""
-                       <#if product??>value="${product.productPrice?string('0')!}"</#if> datatype="n"
+                <input type="text" class="form-control productPrice" name="points" placeholder=""
+                       <#if product??>value="${product.points?string('0')!}"</#if> datatype="n"
                        errormsg="商品价格只能为数字">
             </div>
             <div class="col-sm-2"><span style="line-height: 34px">积分</span></div>

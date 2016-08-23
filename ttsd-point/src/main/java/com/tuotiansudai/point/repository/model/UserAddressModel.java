@@ -7,7 +7,7 @@ public class UserAddressModel implements Serializable{
 
     private long id;
     private String loginName;
-    private String realName;
+    private String contact;
     private String mobile;
     private String address;
     private String createdBy;
@@ -17,9 +17,9 @@ public class UserAddressModel implements Serializable{
 
     }
 
-    public UserAddressModel(String loginName, String realName, String mobile, String address, String createdBy) {
+    public UserAddressModel(String loginName, String contact, String mobile, String address, String createdBy) {
         this.loginName = loginName;
-        this.realName = realName;
+        this.contact = contact;
         this.mobile = mobile;
         this.address = address;
         this.createdBy = createdBy;
@@ -42,12 +42,12 @@ public class UserAddressModel implements Serializable{
         this.loginName = loginName;
     }
 
-    public String getRealName() {
-        return realName;
+    public String getContact() {
+        return contact;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public String getMobile() {

@@ -4,7 +4,7 @@
 
 <div class="col-md-10">
 
-    <form action="/activity-manage/coupon-exchange" method="post" class="form-horizontal form-list">
+    <form action="/point-manage/coupon-exchange" method="post" class="form-horizontal form-list">
 
         <div class="form-group">
             <label class="col-sm-2 control-label">优惠券类型:</label>

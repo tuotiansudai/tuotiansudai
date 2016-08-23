@@ -6,13 +6,12 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
             var $self = $(this),
                 $parentTd = $self.parents('td'),
                 thisId = $self.attr('data-id'),//data id
-                goodsType = $self.attr('data-id'),//data id
                 thisCount = $self.attr('data-value');
             if (!confirm("是否确认执行此操作?")) {
                 return;
             } else {
                 $.ajax({
-                    url: '/product-manage/' + thisId + '/active',
+                    url: '/point-manage/' + thisId + '/active',
                     type: 'POST',
                     dataType: 'json'
                 })
@@ -25,7 +24,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                                 $parentTd.prev().html('-');
                             }
                             else{
-                                $parentTd.prev().html('<a href="/product-manage/'+ thisId + '/edit" class="btn-link">编辑</a>');
+                                $parentTd.prev().html('<a href="/point-manage/'+ thisId + '/edit" class="btn-link">编辑</a>');
                             }
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');
@@ -49,7 +48,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                 return;
             } else {
                 $.ajax({
-                        url: '/product-manage/' + thisId +'/inactive',
+                        url: '/point-manage/' + thisId +'/inactive',
                         type: 'POST',
                         dataType: 'json'
                     })
@@ -62,7 +61,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                                 $parentTd.prev().html('-');
                             }
                             else{
-                                $parentTd.prev().html('<a href="/product-manage/'+ thisId + '/edit" class="btn-link">编辑</a>');
+                                $parentTd.prev().html('<a href="/point-manage/'+ thisId + '/edit" class="btn-link">编辑</a>');
                             }
 
                         } else {

@@ -16,13 +16,13 @@ public interface ProductOrderMapper {
     void update(ProductOrderModel productModel);
 
     List<ProductOrderModel> findProductOrderList(
-            @Param(value = "goodsId") long goodsId,
+            @Param(value = "productId") long productId,
             @Param(value = "createdBy") String createdBy,
             @Param(value = "index") int index,
             @Param(value = "pageSize") int pageSize);
 
     long findProductOrderCount(
-            @Param(value = "goodsId") long goodsId,
+            @Param(value = "productId") long productId,
             @Param(value = "createdBy") String createdBy);
 
     ProductOrderModel findById(long id);
@@ -33,6 +33,6 @@ public interface ProductOrderMapper {
 
     long findProductOrderListByLoginNameCount(@Param(value = "loginName") String loginName);
 
-    void batchConsignment(long goodsId);
+    void batchConsignment(long productId);
 
 }

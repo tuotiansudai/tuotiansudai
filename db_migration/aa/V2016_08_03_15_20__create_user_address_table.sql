@@ -1,7 +1,7 @@
 CREATE TABLE `aa`.`user_address` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`    VARCHAR(50) NOT NULL,
-  `real_name`     VARCHAR(50) NOT NULL,
+  `contact`     VARCHAR(50) NOT NULL,
   `mobile`        VARCHAR(18) NOT NULL,
   `address`       VARCHAR(200) NOT NULL,
   `created_by`    VARCHAR(50) NOT NULL,

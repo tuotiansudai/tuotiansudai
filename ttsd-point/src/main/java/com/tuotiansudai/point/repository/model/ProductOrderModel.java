@@ -6,11 +6,11 @@ import java.util.Date;
 public class ProductOrderModel implements Serializable{
 
     private long id;
-    private long goodsId;
-    private long productPrice;
+    private long productId;
+    private long points;
     private Integer num;
-    private long totalPrice;
-    private String realName;
+    private long totalPoints;
+    private String contact;
     private String mobile;
     private String address;
     private boolean consignment;
@@ -22,12 +22,12 @@ public class ProductOrderModel implements Serializable{
 
     }
 
-    public ProductOrderModel(long goodsId, long productPrice, Integer num, long totalPrice, String realName, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
-        this.goodsId = goodsId;
-        this.productPrice = productPrice;
+    public ProductOrderModel(long productId, long points, Integer num, long totalPoints, String contact, String mobile, String address, boolean consignment, Date consignmentTime, String createdBy) {
+        this.productId = productId;
+        this.points = points;
         this.num = num;
-        this.totalPrice = totalPrice;
-        this.realName = realName;
+        this.totalPoints = totalPoints;
+        this.contact = contact;
         this.mobile = mobile;
         this.address = address;
         this.consignment = consignment;
@@ -44,22 +44,6 @@ public class ProductOrderModel implements Serializable{
         this.id = id;
     }
 
-    public long getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(long goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public long getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(long productPrice) {
-        this.productPrice = productPrice;
-    }
-
     public Integer getNum() {
         return num;
     }
@@ -68,20 +52,36 @@ public class ProductOrderModel implements Serializable{
         this.num = num;
     }
 
-    public long getTotalPrice() {
-        return totalPrice;
+    public long getProductId() {
+        return productId;
     }
 
-    public void setTotalPrice(long totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
-    public String getRealName() {
-        return realName;
+    public long getPoints() {
+        return points;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setPoints(long points) {
+        this.points = points;
+    }
+
+    public long getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(long totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public String getMobile() {

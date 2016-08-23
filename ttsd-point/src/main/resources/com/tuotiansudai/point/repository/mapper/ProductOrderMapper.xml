@@ -8,11 +8,11 @@
 
     <resultMap id="productOrderResultMap" type="ProductOrderModel">
         <id column="id" property="id"/>
-        <result column="goods_id" property="goodsId"/>
-        <result column="product_price" property="productPrice"/>
+        <result column="product_id" property="productId"/>
+        <result column="points" property="points"/>
         <result column="num" property="num"/>
-        <result column="total_price" property="totalPrice"/>
-        <result column="real_name" property="realName"/>
+        <result column="total_points" property="totalPoints"/>
+        <result column="contact" property="contact"/>
         <result column="mobile" property="mobile"/>
         <result column="address" property="address"/>
         <result column="consignment" property="consignment"/>
@@ -23,18 +23,18 @@
 
     <resultMap id="productOrderExchangeResultMap" type="ProductOrderViewDto">
         <id column="id" property="id"/>
-        <result column="goods_id" property="goodsId"/>
-        <result column="product_price" property="productPrice"/>
+        <result column="product_id" property="productId"/>
+        <result column="points" property="points"/>
         <result column="num" property="num"/>
-        <result column="total_price" property="totalPrice"/>
+        <result column="total_points" property="totalPoints"/>
         <result column="product_name" property="productName"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO product_order (`goods_id`, `product_price`, `num`, `total_price`, `real_name`,
+        INSERT INTO product_order (`product_id`, `points`, `num`, `total_points`, `contact`,
         `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
-        VALUE(#{goodsId}, #{productPrice}, #{num}, #{totalPrice}, #{realName}, #{mobile}, #{address},
+        VALUE(#{productId}, #{points}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address},
         #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
     </insert>
 
@@ -50,7 +50,7 @@
          SET `consignment` = 1,
         `consignment_time` = now()
         where `consignment` = 0
-        and `goods_id` = #{goodsId}
+        and `product_id` = #{productId}
     </update>
 
     <select id="findById" parameterType="long" resultMap="productOrderResultMap">
@@ -60,8 +60,8 @@
     <select id="findProductOrderCount" resultType="long">
         SELECT COUNT(id) FROM product_order p
         <where>
-            <if test="goodsId != null">
-                AND p.goods_id = #{goodsId}
+            <if test="productId != null">
+                AND p.product_id = #{productId}
             </if>
             <if test="createdBy != null">
                 AND p.created_by = #{createdBy}
@@ -72,8 +72,8 @@
     <select id="findProductOrderList" resultMap="productOrderResultMap">
         SELECT * FROM product_order p
         <where>
-            <if test="goodsId != null">
-                AND p.goods_id = #{goodsId}
+            <if test="productId != null">
+                AND p.product_id = #{productId}
             </if>
             <if test="createdBy != null">
                 AND p.created_by = #{createdBy}
@@ -86,21 +86,21 @@
     <select id="findProductOrderListByLoginName" parameterType="map" resultMap="productOrderExchangeResultMap">
         SELECT * FROM (
             SELECT po.id AS id,
-                po.goods_id AS goods_id,
-                po.product_price AS product_price,
+                po.product_id AS product_id,
+                po.points AS points,
                 po.num AS num,
-                po.total_price AS total_price,
+                po.total_points AS total_points,
                 po.created_time AS created_time,
                 po.created_by AS created_by,
                 p.product_name AS product_name
                 FROM product_order po
-                JOIN product p ON po.goods_id = p.id
+                JOIN product p ON po.product_id = p.id
             UNION ALL
               SELECT po.id AS id,
-                po.goods_id AS goods_id,
-                po.product_price AS product_price,
+                po.product_id AS product_id,
+                po.points AS points,
                 po.num AS num,
-                po.total_price AS total_price,
+                po.total_points AS total_points,
                 po.created_time AS created_time,
                 po.created_by AS created_by,
                  CASE p.coupon_type
@@ -110,7 +110,7 @@
                     ELSE '其他'
                  END AS product_name
                 FROM product_order po
-                JOIN coupon p ON po.goods_id = p.id
+                JOIN coupon p ON po.product_id = p.id
         ) pr
         WHERE pr.created_by = #{loginName}
         ORDER BY pr.created_time DESC
@@ -120,21 +120,21 @@
     <select id="findProductOrderListByLoginNameCount" resultType="long">
         SELECT COUNT(1) FROM (
           SELECT po.id AS id,
-            po.goods_id AS goods_id,
-            po.product_price AS product_price,
+            po.product_id AS product_id,
+            po.points AS points,
             po.num AS num,
-            po.total_price AS total_price,
+            po.total_points AS total_points,
             po.created_time AS created_time,
             po.created_by AS created_by,
-            p.product_name AS product_name
+            p.name AS name
             FROM product_order po
-            JOIN product p ON po.goods_id = p.id
+            JOIN product p ON po.product_id = p.id
         UNION ALL
           SELECT po.id AS id,
-            po.goods_id AS goods_id,
-            po.product_price AS product_price,
+            po.product_id AS product_id,
+            po.points AS points,
             po.num AS num,
-            po.total_price AS total_price,
+            po.total_points AS total_points,
             po.created_time AS created_time,
             po.created_by AS created_by,
             CASE p.coupon_type
@@ -142,9 +142,9 @@
               WHEN 'INTEREST_COUPON' THEN CONCAT((p.rate*100),'%加息券')
               WHEN 'INVEST_COUPON' THEN CONCAT(truncate((p.amount/100),2),'元投资体验券')
               ELSE '其他'
-              END AS product_name
+              END AS name
             FROM product_order po
-            JOIN coupon p ON po.goods_id = p.id
+            JOIN coupon p ON po.product_id = p.id
         ) pr
           WHERE pr.created_by = #{loginName}
     </select>

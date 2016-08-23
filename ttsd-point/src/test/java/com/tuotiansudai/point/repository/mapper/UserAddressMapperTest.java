@@ -42,7 +42,7 @@ public class UserAddressMapperTest {
         List<UserAddressModel> userAddressModelList = userAddressMapper.findByLoginName(fakeUserModel.getLoginName());
         assertEquals(1, userAddressModelList.size());
         UserAddressModel userAddressModel1 = userAddressModelList.get(0);
-        assertThat(userAddressModel1.getRealName(), is("张山"));
+        assertThat(userAddressModel1.getContact(), is("张山"));
     }
 
     @Test
@@ -56,18 +56,18 @@ public class UserAddressMapperTest {
         userAddressMapper.create(userAddressModel2);
 
         userAddressModel1.setMobile("MOBILE1");
-        userAddressModel1.setRealName("REAL_NAME1");
+        userAddressModel1.setContact("REAL_NAME1");
         userAddressModel1.setAddress("ADDRESS1");
         userAddressMapper.update(userAddressModel1);
 
         UserAddressModel updatedUserAddressModel1 = userAddressMapper.findByLoginName(user1.getLoginName()).get(0);
         assertEquals(userAddressModel1.getMobile(), updatedUserAddressModel1.getMobile());
-        assertEquals(userAddressModel1.getRealName(), updatedUserAddressModel1.getRealName());
+        assertEquals(userAddressModel1.getContact(), updatedUserAddressModel1.getContact());
         assertEquals(userAddressModel1.getAddress(), updatedUserAddressModel1.getAddress());
 
         UserAddressModel updatedUserAddressModel2 = userAddressMapper.findByLoginName(user2.getLoginName()).get(0);
         assertEquals(userAddressModel2.getMobile(), updatedUserAddressModel2.getMobile());
-        assertEquals(userAddressModel2.getRealName(), updatedUserAddressModel2.getRealName());
+        assertEquals(userAddressModel2.getContact(), updatedUserAddressModel2.getContact());
         assertEquals(userAddressModel2.getAddress(), updatedUserAddressModel2.getAddress());
     }
 

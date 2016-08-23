@@ -9,7 +9,7 @@
     <resultMap id="userAddressResultMap" type="UserAddressModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
-        <result column="real_name" property="realName"/>
+        <result column="contact" property="contact"/>
         <result column="mobile" property="mobile"/>
         <result column="address" property="address"/>
         <result column="created_by" property="createdBy"/>
@@ -17,8 +17,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserAddressModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user_address (`login_name`, `real_name`, `mobile`, `address`, `created_by`, `created_time`)
-        VALUE(#{loginName}, #{realName},  #{mobile},  #{address},  #{createdBy},  #{createdTime})
+        INSERT INTO user_address (`login_name`, `contact`, `mobile`, `address`, `created_by`, `created_time`)
+        VALUE(#{loginName}, #{contact},  #{mobile},  #{address},  #{createdBy},  #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="map" resultMap="userAddressResultMap">
@@ -27,7 +27,7 @@
 
     <update id="update" parameterType="UserAddressModel">
         UPDATE `aa`.`user_address`
-        SET real_name = #{realName},
+        SET contact = #{contact},
         mobile = #{mobile},
         address = #{address}
         WHERE login_name = #{loginName}

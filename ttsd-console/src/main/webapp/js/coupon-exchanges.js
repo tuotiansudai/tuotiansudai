@@ -15,7 +15,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 return;
             } else {
                 $.ajax({
-                        url: '/activity-manage/exchange-coupon/' + thisId + '/inactive',
+                        url: '/point-manage/exchange-coupon/' + thisId + '/inactive',
                         type: 'POST',
                         dataType: 'json'
                     })
@@ -27,7 +27,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                                 $parentTd.prev().html('-');
                             }
                             else{
-                                $parentTd.prev().html('<a href="/activity-manage/coupon-exchange/'+ thisId + '/edit" class="btn-link">编辑</a>');
+                                $parentTd.prev().html('<a href="/point-manage/coupon-exchange/'+ thisId + '/edit" class="btn-link">编辑</a>');
                             }
 
                         } else {

@@ -13,13 +13,13 @@
     </div>
     <div>
         <span><a class="loan_repay"
-                 href="/product-manage/product-list?goodsType=${product.goodsType.name()!}">返回></a></span>
+                 href="/point-manage/product-list?type=${product.type.name()!}">返回></a></span>
     </div>
     <div>
-        <span>商品名称:${product.productName!}</span>
+        <span>商品名称:${product.name!}</span>
     </div>
     <div>
-        <span>商品价格:${product.productPrice?string('0')!}</span>
+        <span>商品价格:${product.points?string('0')!}</span>
     </div>
     <div>
         <span>商品数量:${product.totalCount?string('0')!}</span>
@@ -53,7 +53,7 @@
                     <td>${order.loginName}</td>
                     <td>${(order.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${order.num?string('0')}</td>
-                    <td>${order.realName}</td>
+                    <td>${order.contact}</td>
                     <td>${order.mobile}</td>
                     <td>${order.address!}</td>
                     <td>
@@ -92,7 +92,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?index=${index-1}&pageSize=${pageSize}&goodsId=${goodsId}"
+                    <a href="?index=${index-1}&pageSize=${pageSize}&productId=${productId}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -103,7 +103,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?index=${index+1}&pageSize=${pageSize}&goodsId=${goodsId}"
+                    <a href="?index=${index+1}&pageSize=${pageSize}&productId=${productId}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
@@ -112,7 +112,7 @@
                 </a>
                 </li>
                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${goodsId}">
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${productId}">
                         导出Excel
                     </button>
                 </@security.authorize>

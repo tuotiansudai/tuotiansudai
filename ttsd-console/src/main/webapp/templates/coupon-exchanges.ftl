@@ -113,7 +113,7 @@
                                 <#if exchangeCoupon.issuedCount?string('0') != "0">
                                     -
                                 <#else>
-                                    <a href="/activity-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit"
+                                    <a href="/point-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit"
                                        class="btn-link">编辑</a>
                                 </#if>
                             </@security.authorize>

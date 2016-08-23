@@ -19,5 +19,5 @@ include "ttsd-service",
         'ttsd-config',
         'ttsd-client',
         'ttsd-spring-extension',
-        'ttsd-point-system'
+        'ttsd-point-web'
 

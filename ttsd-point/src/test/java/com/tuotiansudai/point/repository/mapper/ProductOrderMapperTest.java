@@ -44,12 +44,12 @@ public class ProductOrderMapperTest {
 
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
-        productOrderModel.setGoodsId(productModel.getId());
-        productOrderModel.setProductPrice(2000);
+        productOrderModel.setProductId(productModel.getId());
+        productOrderModel.setPoints(2000);
         productOrderModel.setNum(2);
-        productOrderModel.setTotalPrice(4000);
+        productOrderModel.setTotalPoints(4000);
         productOrderModel.setConsignment(false);
-        productOrderModel.setRealName("张山");
+        productOrderModel.setContact("张山");
         productOrderModel.setMobile("13999999999");
         productOrderModel.setAddress("北京市北京市");
         productOrderModel.setConsignment(true);
@@ -80,8 +80,8 @@ public class ProductOrderMapperTest {
     private ProductModel createFakeProductModel(String loginName) {
         ProductModel fakeProductModel = new ProductModel();
         fakeProductModel.setId(100001);
-        fakeProductModel.setGoodsType(GoodsType.VIRTUAL);
-        fakeProductModel.setProductName("虚拟商品");
+        fakeProductModel.setType(GoodsType.VIRTUAL);
+        fakeProductModel.setName("虚拟商品");
         fakeProductModel.setDescription("充值卡");
         fakeProductModel.setActive(true);
         fakeProductModel.setCreatedBy(loginName);
@@ -91,7 +91,7 @@ public class ProductOrderMapperTest {
         fakeProductModel.setTotalCount(100);
         fakeProductModel.setUsedCount(0);
         fakeProductModel.setImageUrl("upload/images/a.png");
-        fakeProductModel.setProductPrice(2000);
+        fakeProductModel.setPoints(2000);
         fakeProductModel.setSeq(1);
         productMapper.create(fakeProductModel);
         return fakeProductModel;
