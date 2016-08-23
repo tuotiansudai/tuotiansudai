@@ -1,9 +1,11 @@
-require(['jquery', 'underscore','layerWrapper'], function ($, _, layer) {
+require(['jquery', 'underscore','layerWrapper','commonFun'], function ($, _, layer) {
 
     var $awardRecordsFrame=$('#awardRecordsFrame');
     var $slideBody=$('.table tbody',$awardRecordsFrame);
     var $awardList=$('.award-list');
     var scrollTimer,scrollTimer2;
+    var browser=commonFun.browserRedirect();
+
     function scrollAwardRecords(obj) {
         var lineHeight = obj.find("tr:first").height();
         obj.animate({

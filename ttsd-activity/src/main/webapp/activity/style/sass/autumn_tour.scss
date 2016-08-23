@@ -77,6 +77,9 @@ body {
     text-align: center;
     padding-top: 25px;
     color: #146566;
+    .title-normal-title01 {
+
+    }
     .box-inner-content {
       background: #e6fbff;
       border-radius:10px;
@@ -392,5 +395,160 @@ body {
   font-size:12px;
   line-height: 27px;
 }
+  .pc {
+    display: block;
+  }
+  .mobile {
+    display: none;
+  }
+}
 
+@media (max-width: 700px) {
+  body {
+    background: #a3e2ee;
+  }
+  .tour-slide  {
+    height: 188px;
+    background: url("/activity/images/autumn-tour/bar-app.jpg") center top no-repeat;
+    background-size: cover;
+  }
+  .autumn-tour-frame {
+   width:100%;
+    margin:0 auto;
+    .vertical-line {
+      display: none;
+      &:nth-child(1) {
+        left:92px;
+        top:267px;
+        display: block;
+      }
+      &:nth-child(2) {
+        right:92px;
+        top:267px;
+        display: block;
+      }
+    }
+    .bg-box {
+      padding:10px;
+    }
+    .title-normal-box {
+      text-align: left;
+      padding-top: 15px;
+      img {
+        width:96%;
+      }
+      .box-inner-content {
+        font-size:12px;
+        h1 {
+          font-size:13px;
+          line-height: 24px;
+        }
+        .steps-list {
+          display: none;
+        }
+      }
+      .activity-text {
+        text-align: left;
+        padding:15px!important;
+      }
+    }
+    .time-axis {
+      font-size: 12px;
+      padding: 10px;
+      .date {
+        background: none;
+      }
+      .note {
+        display: none;
+      }
+    }
+    .prize-kind {
+      .prize-box {
+        width:100%;
+        :nth-child(2) {
+          margin:0;
+        }
+        .img-info .kind-bottom {
+          font-size:12px;
+          em {
+            font-size:15px;
+          }
+          .btn-normal {
+            font-size:14px;
+          }
+        }
+
+      }
+    }
+    .award-box {
+      width:100%;
+      &.fl {
+        float: none;
+      }
+      &.fr {
+        display: none;
+      }
+      .award-category {
+        height: 35px;
+        li {
+          font-size:14px;
+          line-height: 35px;
+        }
+      }
+      .table {
+        th {
+          font-size:14px;
+          padding: 5px 0 5px 6px;
+        }
+        td {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .lottery-draw {
+      .fl,.fr {
+        float: none;
+      }
+      .lottery-right {
+        width:100%;
+        .chance-number {
+          margin:10px auto;
+          width: 85%;
+          height:50px;
+          line-height: 50px;
+        }
+        .chance-list {
+          margin:10px auto;
+          width: 85%;
+        }
+      }
+    }
+    .activity-rule {
+      font-size:11px;
+      b {
+        font-size:12px;
+        padding:10px 0;
+      }
+
+    }
+    .pc {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
+
+    .customized-button {
+      margin-top:20px;
+      .btn-normal {
+        border-bottom:2px solid #c75f28;
+        font-size:13px;
+        border-radius: 0;
+        letter-spacing: 0;
+        font-weight: bold;
+        padding: 10px 20px;
+      }
+    }
+  }
 }

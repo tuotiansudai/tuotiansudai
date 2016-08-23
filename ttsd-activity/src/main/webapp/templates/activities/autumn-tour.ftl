@@ -13,6 +13,7 @@
     <div class="vertical-line"></div>
     <div class="bg-box">
         <div class="title-normal-box">
+            <div class="title-normal-title01"></div>
         <img src="${staticServer}/activity/images/autumn-tour/m-title01.png" alt="金秋拓荒计划">
             <div class="box-inner-content">
                 <h1>活动期间投资满一定额度，即可获得当日对应旅游大奖</h1>
@@ -182,8 +183,14 @@
 
             <span class="activity-text">活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</span>
             <div class="tc customized-button">
-                <a href="#" class="btn-normal">立即邀请好友赢抽奖机会</a> <br/>
-                <a href="#" class="detail">查看邀请详情 >></a>
+                <span class="pc">
+                    <a href="#" class="btn-normal">立即邀请好友赢抽奖机会</a> <br/>
+                    <a href="#" class="detail">查看邀请详情 >></a>
+                </span>
+                <span class="mobile">
+                    <a href="#" class="btn-normal">立即投资领奖</a>
+                </span>
+
             </div>
         </div>
 
@@ -218,7 +225,7 @@
 
     <div class="bg-box activity-rule">
         <b>活动规则</b>
-        <span>
+        <span class="pc">
             1、本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零； <br/>
 2、本次活动期间，用户每人每天仅限量领取一个旅游奖品；<br/>
 3、当用户从当前页面进行投资时，当日所有投资均计为参加旅游活动所做的投资，如用户想参与奢侈品活动，必须通过奢侈品活动页面进行投资方可生效；<br/>
@@ -228,6 +235,14 @@
 7、旅游产品内容随淡旺季变化调整较为频繁，网页中的产品介绍、行程安排等图片及文字信息仅供参考，最终产品内容以用户和旅行社的签约合同为准；<br/>
 8、获取抽奖机会和抽奖过程中，如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，收回活动中所得的奖品；<br/>
 9、拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
+        </span>
+        <span class="mobile">
+            1.本活动仅计算当日的投资额，次日全部清零；<br/>
+2.用户每人每天仅限量领取一个旅游奖品；<br/>
+3.用户从当前页面进行投资时，其所有投资均计为参加旅游活动所做的投资，如用户想参与奢侈品活动，必须通过奢侈品活动页面进行投资方可生效；<br/>
+4.中奖奖品，红包和加息券实时发放至“我的宝藏”当中，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
+5.拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
+详细活动规则请查看电脑网页版活动页面。
         </span>
      </div>
 </div>
