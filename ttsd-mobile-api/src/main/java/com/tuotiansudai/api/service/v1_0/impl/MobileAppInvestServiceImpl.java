@@ -12,6 +12,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.Locale;
 
 @Service
 public class MobileAppInvestServiceImpl implements MobileAppInvestService {
+
+    static Logger logger = Logger.getLogger(MobileAppInvestServiceImpl.class);
 
     @Autowired
     private InvestService investService;
@@ -61,6 +64,21 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
             BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
+
+            if (!formDto.isSuccess()) {
+                String userCouponIds = "";
+                for (Long userCouponId : investDto.getUserCouponIds()) {
+                    userCouponIds += String.valueOf(userCouponId);
+                }
+                logger.error(MessageFormat.format("[MobileAppInvestServiceImpl][invest] invest failed!Maybe service cannot connect to payWrapper. " +
+                                "investDto:loanId:{0}, transferInvestId:{1}, loginName:{2}, amount:{3}, userCouponIds:{4} channel:{5}, source:{6}, noPassword:{7}",
+                        investDto.getLoanId(), investDto.getTransferInvestId(), investDto.getLoginName(), investDto.getAmount(), userCouponIds, investDto.getChannel(),
+                        investDto.getSource(), investDto.isNoPassword()));
+                responseDto.setCode(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
+                responseDto.setMessage(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getMsg());
+                return responseDto;
+            }
+
             if (formDto.getData().getStatus()) {
                 PayFormDataDto formDataDto = formDto.getData();
                 String requestData = CommonUtils.mapToFormData(formDataDto.getFields(), true);
