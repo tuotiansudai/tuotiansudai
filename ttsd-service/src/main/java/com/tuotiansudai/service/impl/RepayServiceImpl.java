@@ -247,7 +247,7 @@ public class RepayServiceImpl implements RepayService {
         Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
             @Override
             public boolean apply(MembershipModel input) {
-                return input.getFee() == investModel.getInvestFeeRate() ;
+                return input.getFee() == investModel.getInvestFeeRate();
             }
         });
 
@@ -260,6 +260,6 @@ public class RepayServiceImpl implements RepayService {
     }
 
     private static String covertRate(String rate){
-        return rate.indexOf(".00") != -1 ? rate.replaceAll(".00","") : String.valueOf(Double.parseDouble(rate));
+        return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00","") : String.valueOf(Double.parseDouble(rate));
     }
 }
