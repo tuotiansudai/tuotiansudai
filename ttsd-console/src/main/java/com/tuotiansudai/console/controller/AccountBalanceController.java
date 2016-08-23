@@ -59,7 +59,7 @@ public class AccountBalanceController {
                 dataModel.add(itemDataDto.getBalance());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleBalance, data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleBalance.getHeader(), data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/account-balance");

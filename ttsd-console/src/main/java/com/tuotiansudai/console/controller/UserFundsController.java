@@ -67,7 +67,7 @@ public class UserFundsController {
                 dataModel.add(String.valueOf(new BigDecimal(userBillView.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader.getHeader(), data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/user-funds");

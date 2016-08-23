@@ -18,11 +18,11 @@ public class ExportCsvUtil {
 
     static Logger logger = Logger.getLogger(ExportCsvUtil.class);
 
-    public static void createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
+    public static void createCsvOutputStream(String header, List<List<String>> data, OutputStream outputStream) {
         BufferedWriter csvFileOutputStream = null;
         try {
             csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream, "GBK"));
-            csvFileOutputStream.write(csvHeaderType.getHeader());
+            csvFileOutputStream.write(header);
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
                 csvFileOutputStream.write(StringUtils.join(dataList, ","));

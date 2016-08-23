@@ -78,7 +78,7 @@ public class BookingLoanController {
         }
         httpServletResponse.setContentType("application/csv");
         List<List<String>> csvData = bookingLoanService.getBookingLoanReportCsvData(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BookingLoanHeader, csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BookingLoanHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
         ModelAndView mv = new ModelAndView("/booking-loan-list");
         mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);

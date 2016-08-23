@@ -67,7 +67,7 @@ public class FinanceReportController {
         httpServletResponse.setContentType("application/csv");
 
         List<List<String>> csvData = financeReportService.getFinanceReportCsvData(loanId, period, investLoginName, investStartTime, investEndTime);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.FinanceReportHeader, csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.FinanceReportHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
 
         ModelAndView modelAndView = new ModelAndView("/finance-report");
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, index, pageSize);
