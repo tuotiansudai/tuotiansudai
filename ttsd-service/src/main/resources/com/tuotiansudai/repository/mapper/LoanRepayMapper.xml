@@ -181,7 +181,7 @@
                                        where future_repay.loan_id = #{loanId}
                                              and date(now()) >= date(loan.recheck_time)
                                              and date(future_repay.repay_date) >= date(now())
-                                             and status != 'COMPLETE')
+                                             and future_repay.status != 'COMPLETE')
     </select>
 
     <update id="update" parameterType="LoanRepayModel">
