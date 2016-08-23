@@ -180,7 +180,8 @@
                                        from loan_repay future_repay join loan on future_repay.loan_id = loan.id
                                        where future_repay.loan_id = #{loanId}
                                              and date(now()) >= date(loan.recheck_time)
-                                             and date(future_repay.repay_date) >= date(now()))
+                                             and date(future_repay.repay_date) >= date(now())
+                                             and status != 'COMPLETE')
     </select>
 
     <update id="update" parameterType="LoanRepayModel">
