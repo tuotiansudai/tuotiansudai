@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class LuxuryPrizeMapperTest extends BaseMapperTest{
     @Autowired

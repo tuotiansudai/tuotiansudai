@@ -33,4 +33,10 @@ public class TravelPrizeController {
         modelAndView.addObject("endTime", endTime);
         return modelAndView;
     }
+
+    @RequestMapping(path = "/travel-list")
+    public ModelAndView getTravelPrize() {
+        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrize();
+        return new ModelAndView("/travel-prize-list", "data", dto);
+    }
 }

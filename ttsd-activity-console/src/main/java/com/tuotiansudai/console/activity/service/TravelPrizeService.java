@@ -2,8 +2,11 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
+import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
+import com.tuotiansudai.console.activity.dto.TravelPrizeDto;
 import com.tuotiansudai.console.activity.dto.UserTravelPrizePaginationItemDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -16,6 +19,9 @@ import java.util.List;
 
 @Service
 public class TravelPrizeService {
+
+    @Autowired
+    private TravelPrizeMapper travelPrizeMapper;
 
     @Autowired
     private UserTravelPrizeMapper userTravelPrizeMapper;
@@ -31,6 +37,21 @@ public class TravelPrizeService {
         });
 
         BasePaginationDataDto<UserTravelPrizePaginationItemDto> dataDto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        dataDto.setStatus(true);
+        return new BaseDto<BasePaginationDataDto>(dataDto);
+    }
+
+    public BaseDto<BasePaginationDataDto> getTravelPrize() {
+        List<TravelPrizeModel> models = travelPrizeMapper.findAll();
+        List<TravelPrizeDto> items = Lists.transform(models, new Function<TravelPrizeModel, TravelPrizeDto>() {
+            @Override
+            public TravelPrizeDto apply(TravelPrizeModel input) {
+                return new TravelPrizeDto(input);
+            }
+        });
+
+        BasePaginationDataDto<TravelPrizeDto> dataDto = new BasePaginationDataDto<>(1, 10, 3, items);
+
         dataDto.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(dataDto);
     }

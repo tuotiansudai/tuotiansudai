@@ -8,6 +8,7 @@ dependencies {
             project(':ttsd-point'),
             project(':ttsd-message'),
             project(':ttsd-jpush'),
+            'commons-httpclient:commons-httpclient:3.1',
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
