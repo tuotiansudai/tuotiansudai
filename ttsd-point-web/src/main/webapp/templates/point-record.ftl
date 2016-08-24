@@ -32,10 +32,10 @@
                     {{if records}}
                     {{each records}}
                     <tr>
-                        <td>{{$value.productName}}</td>
-                        <td>{{$value.productPrice}}</td>
+                        <td>{{$value.name}}</td>
+                        <td>{{$value.points}}</td>
                         <td>{{$value.num}}</td>
-                        <td>{{$value.productPrice*$value.num}}</td>
+                        <td>{{$value.points*$value.num}}</td>
                         <td>{{$value.createdTime}}</td>
                     </tr>
                     {{/each}}

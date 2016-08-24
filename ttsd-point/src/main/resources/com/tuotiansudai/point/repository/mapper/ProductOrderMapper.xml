@@ -27,7 +27,7 @@
         <result column="points" property="points"/>
         <result column="num" property="num"/>
         <result column="total_points" property="totalPoints"/>
-        <result column="product_name" property="productName"/>
+        <result column="name" property="name"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
@@ -92,7 +92,7 @@
                 po.total_points AS total_points,
                 po.created_time AS created_time,
                 po.created_by AS created_by,
-                p.product_name AS product_name
+                p.name AS name
                 FROM product_order po
                 JOIN product p ON po.product_id = p.id
             UNION ALL
@@ -108,7 +108,7 @@
                     WHEN 'INTEREST_COUPON' THEN CONCAT((p.rate*100),'%加息券')
                     WHEN 'INVEST_COUPON' THEN CONCAT(truncate((p.amount/100),2),'元投资体验券')
                     ELSE '其他'
-                 END AS product_name
+                 END AS name
                 FROM product_order po
                 JOIN coupon p ON po.product_id = p.id
         ) pr

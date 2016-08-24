@@ -271,7 +271,7 @@
 
     <select id="findExchangeableCouponViews" resultMap="exchangeCouponViewResultMap">
         SELECT
-        coupon.*, coupon_exchange.exchange_point, coupon_exchange.seq
+        coupon.*, product.points as exchange_point, product.seq as seq
         FROM
         (SELECT * FROM `coupon`
         WHERE
@@ -279,13 +279,13 @@
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
-        `end_time` >= now() AND EXISTS
-        (SELECT 1 FROM coupon_exchange WHERE `coupon`.`id` = `coupon_exchange`.`coupon_id`)
+        now() between `start_time` and `end_time` AND EXISTS
+        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
         ) coupon
         JOIN
-        coupon_exchange
+        product
         ON
-        coupon.id = coupon_exchange.coupon_id
+        coupon.id = product.coupon_id
         ORDER BY `created_time` desc, `id` desc
         <if test="index != null and pageSize != null">
             LIMIT #{index}, #{pageSize}
@@ -302,12 +302,13 @@
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
-        `end_time` >= now() AND EXISTS
-        (SELECT 1 FROM coupon_exchange WHERE `coupon`.`id` = `coupon_exchange`.`coupon_id`)
+        now() between `start_time` and `end_time` AND EXISTS
+        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
         ) coupon
         JOIN
-        coupon_exchange
+        product
         ON
+        coupon.id = product.coupon_id
         coupon.id = coupon_exchange.coupon_id
     </select>
 
