@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.autumn_tour}" pageJavascript="${js.autumn_tour}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
 <div class="tour-slide">
 </div>
-<div class="autumn-tour-frame">
+<div class="autumn-tour-frame" id="pageone">
     <div class="vertical-line"></div>
     <div class="vertical-line"></div>
     <div class="vertical-line"></div>
@@ -14,7 +14,6 @@
     <div class="bg-box">
         <div class="title-normal-box">
             <div class="title-normal-title01"></div>
-        <img src="${staticServer}/activity/images/autumn-tour/m-title01.png" alt="金秋拓荒计划">
             <div class="box-inner-content">
                 <h1>活动期间投资满一定额度，即可获得当日对应旅游大奖</h1>
                 <p>小贴士：用户如想获取本次旅游活动奖励，请用户每次投资时，必须通过本页面中的“立即投资”按钮进行投资，才能参与活动哦！通过其他方式投资无法享受活动奖励。</p>
@@ -26,31 +25,32 @@
             <span class="fr">我的投资额：50000.00元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
         </div>
 
-        <div class="prize-kind clearfix">
-            <div class="prize-box">
-                <div class="pk-title">投资满5万元即可获得</div>
-                <div class="img-info">
-                    <img src="${staticServer}/activity/images/autumn-tour/p01.png">
-                    <span class="kind-text">三亚双飞5日跟团游</span>
-                    <div class="kind-bottom">
-                        <span class="fl">价值<em>2000</em>元</span>
-                        <a href="#" class="fr btn-normal">立即投资</a>
+        <div class="prize-kind clearfix swiper-container">
+            <div class="swiper-wrapper" id="sliderBox">
+                <div class="prize-box swiper-slide">
+                    <div class="pk-title">11投资满5万元即可获得</div>
+                    <div class="img-info">
+                        <img src="${staticServer}/activity/images/autumn-tour/p01.png">
+                        <span class="kind-text">三亚双飞5日跟团游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>2000</em>元</span>
+                            <a href="#" class="fr btn-normal">立即投资</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="prize-box">
-                <div class="pk-title">投资满10万元即可获得</div>
-                <div class="img-info">
-                    <img src="${staticServer}/activity/images/autumn-tour/p02.png">
-                    <span class="kind-text">三亚双飞5日跟团游</span>
-                    <div class="kind-bottom">
-                        <span class="fl">价值<em>2000</em>元</span>
-                        <a href="#" class="fr btn-normal">立即投资</a>
+                <div class="prize-box swiper-slide active">
+                    <div class="pk-title">22投资满10万元即可获得</div>
+                    <div class="img-info">
+                        <img src="${staticServer}/activity/images/autumn-tour/p02.png">
+                        <span class="kind-text">三亚双飞5日跟团游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>2000</em>元</span>
+                            <a href="#" class="fr btn-normal">立即投资</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="prize-box">
-                <div class="pk-title">投资满20万元即可获得</div>
+                <div class="prize-box swiper-slide">
+                <div class="pk-title">33投资满20万元即可获得</div>
                 <div class="img-info">
                     <img src="${staticServer}/activity/images/autumn-tour/p03.png">
                     <span class="kind-text">三亚双飞5日跟团游</span>
@@ -59,6 +59,8 @@
                         <a href="#" class="fr btn-normal">立即投资</a>
                     </div>
                 </div>
+            </div>
+                <div class="bg-shadow"></div>
             </div>
         </div>
 
@@ -136,7 +138,7 @@
 
     <div class="bg-box">
         <div class="title-normal-box steps-box">
-            <img src="${staticServer}/activity/images/autumn-tour/m-title02.png" alt="金秋拓荒计划">
+            <div class="title-normal-title02"></div>
             <div class="box-inner-content">
                 <h1>活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</h1>
                 <ul class="steps-list clearfix">
@@ -215,11 +217,8 @@
                         <dd>恭喜130****7149抽中了新马泰七日游</dd>
                         <dd>恭喜130****7149抽中了新马泰七日游</dd>
                     </dl>
-
-
                 </div>
             </div>
-
         </div>
       </div>
 

@@ -104,3 +104,50 @@ body {
     padding: 12px 50px;
   }
 }
+
+@media (max-width: 700px) {
+  * {
+    box-sizing: border-box;
+  }
+  .sub-tour-slide {
+    img {
+      width:100%;
+    }
+  }
+  .border-outer {
+    border:0;
+  }
+  .tour-detail-info {
+    &.fl,.fr {
+      float: none;
+    }
+    img {
+      width:100%;
+      float: none;
+    }
+    .text {
+      width:100%;
+      float: none;
+      font-size: 18px;
+      line-height: 35px;
+    }
+  }
+  .trip-route-include {
+    .include-or-no {
+      width:100%;
+      height:auto;
+      margin-bottom:10px;
+    }
+  }
+  .trip-route-info  {
+    .info-list {
+      dt i {
+        height:38px;
+      }
+      dt s {
+        margin-top: -1px;
+        margin-left: -1px;
+      }
+    }
+  }
+}
