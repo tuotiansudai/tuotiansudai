@@ -242,9 +242,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             if (couponRepayModel.isTransferred()) {
                 continue;
             }
-            if (couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayAmount() == 0) {
-                continue;
-            }
             if (couponRepayModel.getActualRepayDate() != null && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getActualRepayDate()), couponRepayModel));
                 continue;
@@ -271,9 +268,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         Map<String, RepayCalendarYearResponseDto> repayCalendarResponseDtoMaps = Maps.newConcurrentMap();
         for (InvestRepayModel investRepayModel : investRepayModelList) {
             if (investRepayModel.isTransferred()) {
-                continue;
-            }
-            if (investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayAmount() == 0) {
                 continue;
             }
             if (investRepayModel.getActualRepayDate() != null && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
