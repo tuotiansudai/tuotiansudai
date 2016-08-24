@@ -126,7 +126,7 @@ public class RegisterUserController {
 
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationManager.createAuthentication(registerUserDto.getLoginName());
+            myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
 
