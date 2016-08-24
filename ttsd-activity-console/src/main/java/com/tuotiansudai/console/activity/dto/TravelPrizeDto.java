@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.activity.dto;
 
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -10,6 +12,7 @@ public class TravelPrizeDto implements Serializable {
 
     private long id;
 
+
     private String name;
 
     private String description;
@@ -17,6 +20,8 @@ public class TravelPrizeDto implements Serializable {
     private String price;
 
     private String image;
+
+    private List<String> introduce;
 
     private String investAmount;
 
@@ -26,6 +31,7 @@ public class TravelPrizeDto implements Serializable {
         this.description = model.getDescription();
         this.price = model.getPrice();
         this.image = model.getImage();
+        this.introduce = model.getIntroduce();
         this.investAmount = AmountConverter.convertCentToString(model.getInvestAmount());
     }
 
@@ -47,6 +53,10 @@ public class TravelPrizeDto implements Serializable {
 
     public String getImage() {
         return image;
+    }
+
+    public List<String> getIntroduce() {
+        return introduce;
     }
 
     public String getInvestAmount() {

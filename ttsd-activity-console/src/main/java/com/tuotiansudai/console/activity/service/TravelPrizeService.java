@@ -7,7 +7,9 @@ import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.console.activity.dto.TravelPrizeDto;
+import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.console.activity.dto.UserTravelPrizePaginationItemDto;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.PaginationUtil;
@@ -41,7 +43,7 @@ public class TravelPrizeService {
         return new BaseDto<BasePaginationDataDto>(dataDto);
     }
 
-    public BaseDto<BasePaginationDataDto> getTravelPrize() {
+    public BaseDto<BasePaginationDataDto> getTravelPrizeItems() {
         List<TravelPrizeModel> models = travelPrizeMapper.findAll();
         List<TravelPrizeDto> items = Lists.transform(models, new Function<TravelPrizeModel, TravelPrizeDto>() {
             @Override
@@ -54,5 +56,23 @@ public class TravelPrizeService {
 
         dataDto.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(dataDto);
+    }
+
+    public TravelPrizeDto getTravelPrize(long id) {
+        TravelPrizeModel model = travelPrizeMapper.findById(id);
+
+        return new TravelPrizeDto(model);
+    }
+
+    public void update(String loginName, TravelPrizeRequestDto dto) {
+        TravelPrizeModel model = travelPrizeMapper.findById(dto.getId());
+        model.setName(dto.getName());
+        model.setDescription(dto.getDescription());
+        model.setPrice(dto.getPrice());
+        model.setImage(dto.getImage());
+//        model.setIntroduce(dto.getIntroduce());
+        model.setUpdatedBy(loginName);
+        model.setUpdatedTime(new Date());
+        travelPrizeMapper.update(model);
     }
 }

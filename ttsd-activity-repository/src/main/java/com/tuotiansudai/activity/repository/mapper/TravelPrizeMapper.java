@@ -14,4 +14,5 @@ public interface TravelPrizeMapper {
 
     List<TravelPrizeModel> findAll();
 
+    void update(TravelPrizeModel model);
 }
