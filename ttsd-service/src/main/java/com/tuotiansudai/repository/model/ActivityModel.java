@@ -40,6 +40,7 @@ public class ActivityModel implements Serializable {
         this.description = activityDto.getDescription();
         this.webPictureUrl = activityDto.getWebPictureUrl();
         this.appPictureUrl = activityDto.getAppPictureUrl();
+        this.activatedTime = activityDto.getActivatedTime();
         this.expiredTime = activityDto.getExpiredTime();
         this.source = activityDto.getSource();
         this.shareTitle = activityDto.getShareTitle();

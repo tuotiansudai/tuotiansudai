@@ -65,6 +65,8 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setExpiredTime(activityDto.getExpiredTime());
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
+                    activityModelExist.setSeq(activityDto.getSeq());
+                    activityModelExist.setLongTerm(activityDto.getLongTerm().equals("longTerm"));
                     activityMapper.update(activityModelExist);
                 } else {
                     ActivityModel activityModel = new ActivityModel(activityDto);

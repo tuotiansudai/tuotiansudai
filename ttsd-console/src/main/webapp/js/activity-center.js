@@ -164,11 +164,11 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         $('#longTerm').on('change', function (event) {
             event.preventDefault();
-            $('#actTime').hide();
+            $('#activityTime').hide();
         });
-        $('#NotlongTerm').on('change', function (event) {
+        $('#notLongTerm').on('change', function (event) {
             event.preventDefault();
-            $('#actTime').show();
+            $('#activityTime').show();
         });
     });
 });

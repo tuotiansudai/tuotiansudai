@@ -39,6 +39,7 @@ public class ActivityDto {
     public ActivityDto(ActivityModel activityModel) {
         this.activityId = activityModel.getId();
         this.title = activityModel.getTitle();
+        this.seq = activityModel.getSeq();
         this.webActivityUrl = activityModel.getWebActivityUrl();
         this.appActivityUrl = activityModel.getAppActivityUrl();
         this.description = activityModel.getDescription();

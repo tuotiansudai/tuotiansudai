@@ -194,8 +194,8 @@
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
                            value="<#if dto??>${dto.longTerm!}</#if>" placeholder="">
                     <label style="float:left;">非长期活动:</label>
-                    <input type="radio" name="longTerm" value="NotlongTermActivity"
-                           class="col-sm-1 activity-longTerm" id="NotLongTerm" checked="checked"
+                    <input type="radio" name="longTerm" value="notLongTerm"
+                           class="col-sm-1 activity-longTerm" id="notLongTerm" checked="checked"
                            style="box-shadow: none;"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
                            value="<#if dto??>${dto.longTerm!}</#if>" placeholder="">
@@ -205,7 +205,7 @@
             </div>
 
 
-            <div class="form-group" id="actTime">
+            <div class="form-group" id="activityTime">
                 <label class="col-sm-2 control-label">活动时间: </label>
 
                 <div class="date col-sm-2">
