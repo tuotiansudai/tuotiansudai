@@ -193,14 +193,12 @@ public class RepayServiceImpl implements RepayService {
                 CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
                 if(couponRepayModel != null){
                     couponExpectedInterest = couponRepayModel.getExpectedInterest();
-                    investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
-                    investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee + couponRepayModel.getExpectedFee()));
+                    expectedFee += couponRepayModel.getExpectedFee();
                     expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
                     investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount));
                     if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
                         repayAmount += couponRepayModel.getRepayAmount();
-                        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
-                        investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee + couponRepayModel.getActualFee()));
+                        actualFee += couponRepayModel.getActualFee();
                     }
                 }
 
@@ -209,9 +207,16 @@ public class RepayServiceImpl implements RepayService {
                     if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                         repayAmount += investExtraRateModel.getRepayAmount();
                         investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investExtraRateModel.getExpectedInterest()));
-                        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
                     }
                 }
+
+                if(RepayStatus.COMPLETE.equals(investRepayModel.getStatus())){
+                    investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
+                    investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee));
+                }
+
+                investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee));
+                investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
                 sumActualInterest += repayAmount;
                 if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
                     sumExpectedInterest += expectedAmount;
