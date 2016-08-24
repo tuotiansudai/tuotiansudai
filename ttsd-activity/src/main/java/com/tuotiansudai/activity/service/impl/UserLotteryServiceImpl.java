@@ -11,6 +11,7 @@ import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.UserLotteryService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,10 @@ public class UserLotteryServiceImpl implements UserLotteryService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            return userLotteryDto;
+        }
+
         List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
@@ -78,29 +83,7 @@ public class UserLotteryServiceImpl implements UserLotteryService {
             }
         }
 
-        if(userModel == null){
-            return userLotteryDto;
-        }
-
         if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
-            lotteryTime ++;
-            userLotteryDto.setRegisterStatus(LotteryTaskStatus.COMPLETE);
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
-            lotteryTime ++;
-            userLotteryDto.setCertificationStatus(LotteryTaskStatus.COMPLETE);
-        }
-
-
-
-
-
-
-
-
-        if(userModel != null && userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
             userLotteryDto.setRegisterStatus(LotteryTaskStatus.COMPLETE);
         }else{
@@ -108,7 +91,8 @@ public class UserLotteryServiceImpl implements UserLotteryService {
             return userLotteryDto;
         }
 
-        if(accountMapper.findByLoginName(userModel.getLoginName()) != null){
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
             userLotteryDto.setCertificationStatus(LotteryTaskStatus.COMPLETE);
         }else{
@@ -116,7 +100,8 @@ public class UserLotteryServiceImpl implements UserLotteryService {
             return userLotteryDto;
         }
 
-        if(bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName()) != null){
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
+        if(bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
             lotteryTime ++;
             userLotteryDto.setBindCardStatus(LotteryTaskStatus.COMPLETE);
         }else{
@@ -124,7 +109,7 @@ public class UserLotteryServiceImpl implements UserLotteryService {
             return userLotteryDto;
         }
 
-        if(investMapper.findCountByLoginName(userModel.getLoginName()) > 0){
+        if(investMapper.countInvestorInvestPagination(userModel.getLoginName(),null,startTime,endTime) > 0){
             lotteryTime ++;
             userLotteryDto.setInvestStatus(LotteryTaskStatus.COMPLETE);
         }else{

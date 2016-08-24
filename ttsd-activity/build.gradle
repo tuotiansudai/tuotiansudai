@@ -5,6 +5,7 @@ dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point'),
+            project(':ttsd-activity-repository'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.apache.poi:poi:3.13'
 
