@@ -130,19 +130,20 @@ public class UserServiceImpl implements UserService {
             loginNameIsExist = this.loginNameIsExist(loginName);
         } else {
             int count = 0;
-            do {
+            loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
+            while (loginNameIsExist(loginName)) {
                 loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
                 ++count;
                 if (count > 20) {
                     logger.debug(MessageFormat.format("[UserServiceImpl][registerUser] generate loginName failed! mobile:{0}", dto.getMobile()));
                     return false;
                 }
-            } while (loginNameIsExist(loginName));
+            }
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
-        if(prepareUserModel != null){
+        if (prepareUserModel != null) {
             dto.setReferrer(prepareUserModel.getReferrerMobile());
         }
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
