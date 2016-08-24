@@ -12,7 +12,7 @@ CREATE TABLE `aa`.`product_order` (
   `created_by`        VARCHAR(25),
   `created_time`      DATETIME,
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_PRODUCT_ORDER_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES `aa`.`user` (`login_name`)
+  CONSTRAINT `FK_PRODUCT_ORDER_CREATED_BY_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES `aa`.`user` (`login_name`),
   CONSTRAINT `FK_PRODUCT_ORDER_PRODUCT_ID` FOREIGN KEY (`product_id`) REFERENCES `aa`.`product` (`id`)
 )
   ENGINE = InnoDB
