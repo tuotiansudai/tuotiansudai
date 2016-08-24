@@ -62,7 +62,16 @@
         select count(1) from `activity`.`user_lottery_prize`
         <where>
             <if test="mobile !=null and mobile !='' ">
-                and mobile like '${mobile}%'
+                and p.mobile like '${mobile}%'
+            </if>
+            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
+                and p.prize like '${lotteryPrize}%'
+            </if>
+            <if test="startTime != null">
+                and p.lottery_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
         </where>
     </select>

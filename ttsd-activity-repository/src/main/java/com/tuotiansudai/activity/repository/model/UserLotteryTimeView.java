@@ -13,6 +13,14 @@ public class UserLotteryTimeView implements Serializable{
 
     private int unUseCount;
 
+    public UserLotteryTimeView() {
+    }
+
+    public UserLotteryTimeView(String mobile, String userName) {
+        this.mobile = mobile;
+        this.userName = userName;
+    }
+
     public String getMobile() {
         return mobile;
     }

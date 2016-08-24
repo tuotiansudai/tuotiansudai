@@ -3,6 +3,8 @@ package com.tuotiansudai.activity.dto;
 public enum LotteryPrize {
     TOURISM("华东旅游大奖"),
     MANGO_CARD_100("100元芒果卡"),
+    LUXURY("奢侈品大奖"),
+    PORCELAIN_CUP("青花瓷杯子"),
     RED_ENVELOPE_100("100元现金红包"),
     RED_ENVELOPE_50("50元现金红包"),
     INTEREST_COUPON_5("0.5加息券"),
