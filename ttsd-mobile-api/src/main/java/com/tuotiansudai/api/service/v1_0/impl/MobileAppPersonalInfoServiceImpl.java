@@ -98,10 +98,14 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setBankName("");
         }
         if(investMapper.findCountExperienceLoanByLoginName(user.getLoginName()) > 0){
+            personalInfoDataDto.setIsExperienceEnable(false);
+        }else{
             personalInfoDataDto.setIsExperienceEnable(true);
         }
 
-        if(investMapper.findCountNewbieExceptExperienceLoanByLoginName(user.getLoginName()) > 0){
+        if(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0){
+            personalInfoDataDto.setIsNewbieEnable(false);
+        }else{
             personalInfoDataDto.setIsNewbieEnable(true);
         }
 
