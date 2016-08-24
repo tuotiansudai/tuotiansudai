@@ -73,7 +73,7 @@ point:
   ports:
     - "20018:8080"
   volumes:
-    - ./ttsd-point-system/war:/webapps
+    - ./ttsd-point-web/war:/webapps
   links:
     - "redis-server"
     - "static-server"
