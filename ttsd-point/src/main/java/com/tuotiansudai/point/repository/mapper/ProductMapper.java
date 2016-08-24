@@ -28,4 +28,6 @@ public interface ProductMapper {
     long findAllProductsCount(@Param(value = "type") GoodsType type);
 
     ProductModel findById(@Param(value = "id") long id);
+
+    ProductModel findByCouponId(@Param(value = "couponId") long couponId);
 }

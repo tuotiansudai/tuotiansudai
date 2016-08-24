@@ -298,9 +298,14 @@ public class ProductServiceImpl implements ProductService {
         if (productShowItemDto.getItemType().equals(ItemType.PHYSICAL)) {
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, accountModel.getLoginName());
-        } else {
+        } else if (productShowItemDto.getItemType().equals(ItemType.VIRTUAL)){
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
+                    accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
+        } else {
+            UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
+            ProductModel productModel = productMapper.findByCouponId(productShowItemDto.getId());
+            return new ProductOrderModel(productModel.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         }
     }

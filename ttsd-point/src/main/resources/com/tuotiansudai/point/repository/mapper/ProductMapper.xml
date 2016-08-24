@@ -103,4 +103,8 @@
         limit #{index}, #{pageSize}
     </select>
 
+    <select id="findByCouponId" resultMap="productResultMap">
+        SELECT * FROM `aa`.`product` WHERE coupon_id = #{couponId}
+    </select>
+
 </mapper>
