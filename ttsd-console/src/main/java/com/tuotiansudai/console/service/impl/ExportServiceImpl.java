@@ -27,8 +27,10 @@ import java.util.List;
 public class ExportServiceImpl implements ExportService {
     @Autowired
     private AccountMapper accountMapper;
+
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public <T> List<List<String>> buildUserPointToCsvData(List<T> originList) {
         List<List<String>> csvData = new ArrayList<>();
@@ -40,11 +42,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
-        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize) {
+        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
 
         List<AccountItemDataDto> accountItemDataDtoList = new ArrayList<>();
-        for(AccountModel accountModel : accountModels) {
+        for (AccountModel accountModel : accountModels) {
             AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
             accountItemDataDto.setTotalPoint(accountMapper.findByLoginName(accountModel.getLoginName()).getPoint());
             accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());

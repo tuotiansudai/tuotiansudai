@@ -9,7 +9,6 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
@@ -63,14 +62,7 @@ public class ExportController {
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.CouponHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
-
+        fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findNewbieAndInvestCoupons(index, pageSize);
@@ -80,13 +72,7 @@ public class ExportController {
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
     public void exportInterestCoupons(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.InterestCouponsHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
+        fillExportResponse(response, CsvHeaderType.InterestCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findInterestCoupons(index, pageSize);
@@ -96,13 +82,7 @@ public class ExportController {
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
     public void exportRedEnvelopes(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.RedEnvelopesHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
+        fillExportResponse(response, CsvHeaderType.RedEnvelopesHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findRedEnvelopeCoupons(index, pageSize);
@@ -112,13 +92,7 @@ public class ExportController {
 
     @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
     public void exportBirthdayCoupons(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.BirthdayCouponsHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
+        fillExportResponse(response, CsvHeaderType.BirthdayCouponsHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findBirthdayCoupons(index, pageSize);
@@ -128,13 +102,7 @@ public class ExportController {
 
     @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
     public void exportPointPrize(HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.PointPrizeHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        response.setContentType("application/csv");
+        fillExportResponse(response, CsvHeaderType.PointPrizeHeader.getDescription());
         List<PointPrizeWinnerViewDto> records = userPointPrizeMapper.findAllPointPrizeGroupPrize();
         List<List<String>> pointPrize = exportService.buildPointPrize(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
@@ -143,34 +111,19 @@ public class ExportController {
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
     public void exportUserPoint(@RequestParam(value = "loginName", required = false) String loginName,
                                 @RequestParam(value = "userName", required = false) String userName,
-                                @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.UserPointHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
+                                @RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.UserPointHeader.getDescription());
         List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
         List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
-
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, response.getOutputStream());
     }
 
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
-    public void exportCouponExchange(HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.CouponExchangeHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
+    public void exportCouponExchange(HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());
         List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
-
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, httpServletResponse.getOutputStream());
-
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, response.getOutputStream());
     }
 
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
@@ -178,22 +131,14 @@ public class ExportController {
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                      @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
                                      @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.SystemBillHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
-
-        BaseDto<BasePaginationDataDto> baseDto = systemBillService.findSystemBillPagination(
+        fillExportResponse(httpServletResponse, CsvHeaderType.SystemBillHeader.getDescription());
+        BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
                 startTime,
                 endTime,
                 operationType,
                 businessType,
                 1,
                 Integer.MAX_VALUE);
-
         List<List<String>> csvData = exportService.buildSystemBillCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader, csvData, httpServletResponse.getOutputStream());
 
@@ -207,37 +152,22 @@ public class ExportController {
                                    @RequestParam(name = "transferrerMobile", required = false) String transferrerMobile,
                                    @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
                                    @RequestParam(name = "loanId", required = false) Long loanId,
-                                   @RequestParam(name = "source", required = false) Source source, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.TransferListHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
+                                   @RequestParam(name = "source", required = false) Source source, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.TransferListHeader.getDescription());
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildTransferListCsvData(basePaginationDataDto.getRecords());
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, response.getOutputStream());
     }
 
     @RequestMapping(value = "/loan-repay", method = RequestMethod.GET)
-    public void exportLoanRepay(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                @RequestParam(value = "loanId", required = false) Long loanId,
+    public void exportLoanRepay(@RequestParam(value = "loanId", required = false) Long loanId,
                                 @RequestParam(value = "loginName", required = false) String loginName,
                                 @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.LoanRepayHeader.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
-        BaseDto<BasePaginationDataDto> baseDto = loanRepayService.findLoanRepayPagination(1, Integer.MAX_VALUE,
+        fillExportResponse(httpServletResponse, CsvHeaderType.LoanRepayHeader.getDescription());
+        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = loanRepayService.findLoanRepayPagination(1, Integer.MAX_VALUE,
                 loanId, loginName, startTime, endTime, repayStatus);
-
         List<List<String>> csvData = exportService.buildLoanRepayCsvData(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader, csvData, httpServletResponse.getOutputStream());
 
@@ -250,13 +180,8 @@ public class ExportController {
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                 @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                 @RequestParam(value = "loanName", required = false) String loanName, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try {
-            httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ConsoleLoanList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        httpServletResponse.setContentType("application/csv");
+
+        fillExportResponse(httpServletResponse, CsvHeaderType.ConsoleLoanList.getDescription());
         List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
@@ -266,5 +191,16 @@ public class ExportController {
 
     }
 
+    private void fillExportResponse(HttpServletResponse httpServletResponse, String csvHeader) {
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        try {
+            httpServletResponse.setHeader("Content-Disposition", "attachment;filename="
+                    + java.net.URLEncoder.encode(csvHeader
+                    + new DateTime().toString("yyyy-MM-dd") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        httpServletResponse.setContentType("application/csv");
+    }
 
 }

@@ -63,8 +63,8 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Override
-    public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
-                                                                  String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
+    public BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> findLoanRepayPagination(int index, int pageSize, Long loanId,
+                                                                                        String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
         if (index < 1) {
             index = 1;
         }
@@ -72,7 +72,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             pageSize = 10;
         }
 
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = new BaseDto<>();
         int count = loanRepayMapper.findLoanRepayCount(loanId, loginName, repayStatus, startTime, endTime);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findLoanRepayPagination((index - 1) * pageSize, pageSize,
                 loanId, loginName, repayStatus, startTime, endTime);
@@ -110,7 +110,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         }
     }
 
-    private boolean isNeedCalculateDefaultInterestLoanRepay (LoanRepayModel loanRepayModel) {
+    private boolean isNeedCalculateDefaultInterestLoanRepay(LoanRepayModel loanRepayModel) {
         long loanId = loanRepayModel.getLoanId();
         int period = loanRepayModel.getPeriod();
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdAndLTPeriod(loanId, period);
@@ -122,7 +122,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         });
     }
 
-    private boolean isNeedCalculateDefaultInterestInvestRepay (InvestRepayModel investRepayModel) {
+    private boolean isNeedCalculateDefaultInterestInvestRepay(InvestRepayModel investRepayModel) {
         long investId = investRepayModel.getInvestId();
         int period = investRepayModel.getPeriod();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
@@ -134,7 +134,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         });
     }
 
-    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception{
+    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -184,7 +184,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             try {
                 BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
                 if (response.isSuccess() && response.getData().getStatus()) {
-                        continue;
+                    continue;
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
