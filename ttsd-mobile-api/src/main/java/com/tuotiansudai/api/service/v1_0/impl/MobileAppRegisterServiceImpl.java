@@ -89,10 +89,14 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(), ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
+        boolean isRegisterSuccess = false;
         try {
-            userService.registerUser(dto);
+            isRegisterSuccess = userService.registerUser(dto);
         } catch (ReferrerRelationException e) {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(), e.getMessage());
+        }
+        if (!isRegisterSuccess) {
+            return new BaseResponseDto(ReturnMessage.USER_NAME_IS_EXIST.getCode(), ReturnMessage.USER_NAME_IS_EXIST.getMsg());
         }
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
