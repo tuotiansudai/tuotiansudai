@@ -17,4 +17,6 @@ public interface UserLotteryService {
     int findUserLotteryPrizeCountViews(String mobile, LotteryPrize selectPrize, Date startTime, Date endTime);
 
     UserLotteryDto findUserLotteryByLoginName(String mobile);
+
+
 }
