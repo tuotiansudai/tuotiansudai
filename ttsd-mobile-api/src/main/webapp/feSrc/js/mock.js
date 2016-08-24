@@ -15,55 +15,11 @@ app.get('/task-center/completed-tasks', function(req, res) {
 		code: "0000",
 		message: "",
 		data: {
-
 			newbieTasks: [{
 				name: "EACH_SUM_INVEST",
 				title: "累计投资满10000.00元",
 				description: "还差<span class=color-key>0.00元</span>即可获得奖励",
 				point: 2000,
-				completed: true
-			}, {
-				name: "FIRST_SINGLE_INVEST",
-				title: "单笔投资满10000.00元",
-				description: '可获得奖励',
-				point: 2000,
-				completed: true
-			},{
-				name: "FIRST_INVEST_180",
-				title: "首次投资180天标的",
-				description: '可获得奖励',
-				point: 1000,
-				completed: true
-			}],
-			advancedTasks: [{
-				name: "EACH_SUM_INVEST",
-				title: "累计投资满10000.00元",
-				description: "还差<span class=color-key>0.00元</span>即可获得奖励",
-				point: 2000,
-				completed: true
-			}, {
-				name: "FIRST_SINGLE_INVEST",
-				title: "单笔投资满10000.00元",
-				description: '可获得奖励',
-				point: 2000,
-				completed: true
-			}, {
-				name: "EACH_RECOMMEND",
-				title: "每邀请1名好友注册",
-				description: "已邀请0名好友注册",
-				point: 200,
-				completed: true
-			}, {
-				name: "FIRST_REFERRER_INVEST",
-				title: "首次邀请好友投资",
-				description: '可获得奖励',
-				point: 5000,
-				completed: true
-			}, {
-				name: "EACH_REFERRER_INVEST",
-				title: "每邀请好友投资满1000元",
-				description: "已邀请好友投资0.00元",
-				point: 1000,
 				completed: true
 			}]
 		}

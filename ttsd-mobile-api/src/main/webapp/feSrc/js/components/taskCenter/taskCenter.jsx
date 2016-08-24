@@ -21,8 +21,6 @@ const MenuData = {
         value: 'FINISHED'
     }]
 };
-
-
 class ButtonStatus extends React.Component {
     
     jumpToWhere(event) {
@@ -172,13 +170,16 @@ class taskCenter extends React.Component {
         if(/active/.test(event.target.className) ) {
             return;
         }
-        this.myScroll.scrollTo(0, -imgHeight, 1000);
+        if(isFixedMenu) {
+            this.myScroll.scrollTo(0, -imgHeight, 200);
+        }
         this.setState({
           active: value,
           isShowLoading:true,
           isFixedMenu:isFixedMenu
           // menuTop:Math.abs()+10,
         });
+
 
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
@@ -247,6 +248,7 @@ class taskCenter extends React.Component {
                      let imgHeight=document.getElementById('imageTopHead').scrollHeight;
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
                      let topH;
+
                     if(Math.abs(this.myScroll.y) >= imgHeight-18) {
                         if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
                            topH= Math.abs(this.myScroll.maxScrollY)
