@@ -76,7 +76,7 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}%加息券";
 
-    private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利,首月收益翻1.5倍";
+    private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利";
 
     private final static Map<String,String> membershipMessage = new HashMap(){{
         put("0","平台收取收益和奖励的10%作为服务费");
