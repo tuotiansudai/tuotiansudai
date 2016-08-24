@@ -53,7 +53,6 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(request.getParameter("username"), source, RequestIPParser.parse(request), request.getParameter("deviceId"), false);
 
-        LoginDto baseDto = new LoginDto();
         LoginDto loginDto = new LoginDto();
         loginDto.setLocked(exception instanceof DisabledException);
         loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
@@ -62,7 +61,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             this.updateUserStatus(request.getParameter("username"));
         }
 
-        String jsonBody = objectMapper.writeValueAsString(baseDto);
+        String jsonBody = objectMapper.writeValueAsString(loginDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
