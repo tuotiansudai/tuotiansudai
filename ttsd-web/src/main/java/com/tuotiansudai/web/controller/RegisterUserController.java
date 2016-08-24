@@ -4,7 +4,6 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -127,7 +126,7 @@ public class RegisterUserController {
 
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
+            myAuthenticationManager.createAuthentication(registerUserDto.getLoginName());
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
 

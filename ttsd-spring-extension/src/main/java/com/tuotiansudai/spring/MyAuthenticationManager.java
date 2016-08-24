@@ -17,9 +17,9 @@ public class MyAuthenticationManager {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public void createAuthentication(String username) {
+    public void createAuthentication(String loginName) {
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginName);
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDetails, userDetails.getPassword(), userDetails.getAuthorities());

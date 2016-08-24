@@ -40,13 +40,12 @@ public class MyUserDetailsService implements UserDetailsService {
     private int times;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
-        UserModel userModel = userMapper.findByLoginNameOrMobile(username);
+    public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException, DisabledException {
+        UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
-            throw new UsernameNotFoundException(MessageFormat.format("Login Error: {0} not found!", username));
+            throw new UsernameNotFoundException(MessageFormat.format("Login Error: {0} not found!", loginName));
         }
 
-        String loginName = userModel.getLoginName();
         String mobile = userModel.getMobile();
         String password = userModel.getPassword();
         String salt = userModel.getSalt();
