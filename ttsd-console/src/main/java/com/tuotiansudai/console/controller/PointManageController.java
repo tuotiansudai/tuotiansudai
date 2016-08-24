@@ -218,7 +218,8 @@ public class PointManageController {
         try {
             if (id != null) {
                 couponService.editCoupon(loginName, exchangeCouponDto);
-                productService.updateProduct(new ProductDto(exchangeCouponDto, loginName));
+                ProductModel productModel = productService.findProductByCouponId(id);
+                productService.updateProduct(new ProductDto(exchangeCouponDto, loginName, productModel));
             } else {
                 ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);
                 productService.createProduct(new ProductDto(exchangeCouponDtoView, loginName));

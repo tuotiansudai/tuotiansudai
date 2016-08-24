@@ -115,8 +115,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductOrderDto> findProductOrderList(final long goodsId, String loginName, int index, int pageSize) {
-        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(goodsId, loginName, (index - 1) * pageSize, pageSize);
+    public List<ProductOrderDto> findProductOrderList(final long productId, String loginName, int index, int pageSize) {
+        List<ProductOrderModel> productOrderList = productOrderMapper.findProductOrderList(productId, loginName, (index - 1) * pageSize, pageSize);
         return Lists.transform(productOrderList, new Function<ProductOrderModel, ProductOrderDto>() {
             @Override
             public ProductOrderDto apply(ProductOrderModel model) {
@@ -196,6 +196,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public BaseDataDto updateProduct(ProductDto productDto) {
+        if("COUPON" == productDto.getType().name()){
+            CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
+            switch (couponModel.getCouponType()) {
+                case RED_ENVELOPE:
+                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
+                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
+                    productDto.setImageUrl("");
+                    break;
+                case INVEST_COUPON:
+                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
+                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
+                    productDto.setImageUrl("");
+                    break;
+                case INTEREST_COUPON:
+                    productDto.setName(couponModel.getRate()*100 + "%加息券");
+                    productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
+                    productDto.setImageUrl("");
+                    break;
+            }
+        }
         ProductModel productModel = new ProductModel(productDto);
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
@@ -393,5 +413,10 @@ public class ProductServiceImpl implements ProductService {
             userAddressMapper.update(userAddressModel);
             return new BaseDto<>(new BaseDataDto(true));
         }
+    }
+
+    @Override
+    public ProductModel findProductByCouponId(long couponId){
+        return productMapper.findByCouponId(couponId);
     }
 }

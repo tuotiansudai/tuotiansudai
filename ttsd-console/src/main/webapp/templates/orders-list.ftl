@@ -15,16 +15,16 @@
         <span><a class="loan_repay"
                  href="/point-manage/product-list?type=${product.type.name()!}">返回></a></span>
     </div>
-    <div>
+    <div class="col-md-12">
         <span>商品名称:${product.name!}</span>
     </div>
-    <div>
+    <div class="col-md-12">
         <span>商品价格:${product.points?string('0')!}</span>
     </div>
-    <div>
+    <div class="col-md-12">
         <span>商品数量:${product.totalCount?string('0')!}</span>
     </div>
-    <div>
+    <div  class="col-md-12" style="text-align:right">
         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
             <#if (orders?size>0)>
                 <button type="button" class="btn btn-sm btn-primary btnSend" data-id="${product.id?string('0')!}">
@@ -33,7 +33,7 @@
             </#if>
         </@security.authorize>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive col-md-12">
         <table class="table table-bordered table-hover ">
             <thead>
             <tr>
@@ -112,7 +112,7 @@
                 </a>
                 </li>
                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${productId}">
+                    <button class="btn btn-default pull-left export-product" type="button" data-pid="${productId?string('0')}">
                         导出Excel
                     </button>
                 </@security.authorize>

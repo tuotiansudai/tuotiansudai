@@ -141,6 +141,7 @@
         GROUP BY t.coupon_id) temp
         ON c.id = temp.coupon_id
         where c.coupon_type = 'RED_ENVELOPE'
+        and c.user_group != 'EXCHANGER'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>

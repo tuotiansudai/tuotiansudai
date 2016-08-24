@@ -52,4 +52,6 @@ public interface ProductService {
     ProductModel findById(long id);
 
     BaseDataDto updateProduct(ProductDto productDto);
+
+    ProductModel findProductByCouponId(long couponId);
 }

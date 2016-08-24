@@ -271,7 +271,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/product-order-list", method = RequestMethod.GET)
-    public void productOrderListExport(@RequestParam(value = "goodsId") long goodsId, HttpServletResponse httpServletResponse) throws IOException {
+    public void productOrderListExport(@RequestParam(value = "productId") long productId, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.ProductOrderList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
@@ -279,7 +279,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<ProductOrderDto> productOrderDtos = productService.findProductOrderList(goodsId, null, 1, Integer.MAX_VALUE);
+        List<ProductOrderDto> productOrderDtos = productService.findProductOrderList(productId, null, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildProductOrderList(productOrderDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ProductOrderList, csvData, httpServletResponse.getOutputStream());
     }
