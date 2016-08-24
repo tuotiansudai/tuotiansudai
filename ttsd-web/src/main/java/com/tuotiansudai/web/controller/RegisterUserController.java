@@ -6,21 +6,24 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -42,14 +45,64 @@ public class RegisterUserController {
     private CaptchaHelper captchaHelper;
 
     @Autowired
+    private PrepareUserService prepareService;
+
+    @Autowired
     private MyAuthenticationManager myAuthenticationManager;
 
     @RequestMapping(method = RequestMethod.GET)
+
     public ModelAndView registerUser(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", userService.getMobile(request.getParameter("referrer")));
+
         modelAndView.addObject("responsive", true);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/shared-prepare", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.debug("[APP SHARE IOS] :" + message);
+            baseDataDto = new BaseDataDto(false, message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+        baseDataDto = prepareService.prepareRegister(requestDto);
+        if (baseDataDto.getStatus()) {
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
+        }
+        baseDto.setData(baseDataDto);
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/shared", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.debug("[APP SHARE ANDROID] :" + message);
+            baseDataDto = new BaseDataDto(false, message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+        requestDto.setChannel("shareAB");
+        baseDataDto = prepareService.register(requestDto);
+        if (baseDataDto.getStatus()) {
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
+        }
+        baseDto.setData(baseDataDto);
+        return baseDto;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -96,6 +149,16 @@ public class RegisterUserController {
 
     }
 
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> mobileIsRegister(@PathVariable String mobile) {
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(userService.mobileIsRegister(mobile));
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
     @RequestMapping(value = "/login-name/{loginName}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
@@ -129,6 +192,13 @@ public class RegisterUserController {
             return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
+    }
+
+    @RequestMapping(path = "/{mobile:^\\d{11}$}/send-register-captcha", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile) {
+
+        return smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)

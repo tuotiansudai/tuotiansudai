@@ -2,13 +2,12 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
-import com.tuotiansudai.activity.service.UserLotteryService;
+import com.tuotiansudai.console.activity.service.UserLotteryService;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -92,6 +92,7 @@ public class LotteryController {
                                       @RequestParam(value = "export", required = false) String export,
                                       HttpServletResponse response) throws IOException {
         if (export != null && !export.equals("")) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             response.setCharacterEncoding("UTF-8");
             try {
                 response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户奖品统计.csv", "UTF-8"));
@@ -103,7 +104,7 @@ public class LotteryController {
             List<List<String>> data = Lists.newArrayList();
             for(UserLotteryPrizeView prize : userLotteryPrizeModels){
                 List<String> dataModel = Lists.newArrayList();
-                dataModel.add(new DateTime(prize.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                dataModel.add(simpleDateFormat.format(prize.getLotteryTime()));
                 dataModel.add(prize.getMobile());
                 dataModel.add(prize.getUserName());
                 dataModel.add(prize.getPrize().getDescription());

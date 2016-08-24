@@ -279,16 +279,14 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-user-name" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款人姓名不能为空" value="${loanInfo.loanerUserName}"
-                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人姓名不能为空" value="${loanInfo.loanerUserName}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">借款人性别: </label>
 
                 <div class="col-sm-4">
-                    <select class="selectpicker b-width jq-loaner-gender"
-                            <#if loanInfo.loanStatus!="WAITING_VERIFY">disabled="disabled"</#if>>
+                    <select class="selectpicker b-width jq-loaner-gender">
                         <option value="MALE" <#if loanInfo.loanerGender == 'MALE'>selected</#if>>男</option>
                         <option value="FEMALE" <#if loanInfo.loanerGender == 'FEMAIL'>selected</#if>>女</option>
                     </select>
@@ -300,8 +298,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-age" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款人年龄填写有误" value="${loanInfo.loanerAge}"
-                           <#if loanInfo.loanStatus!="WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人年龄填写有误" value="${loanInfo.loanerAge}">
                 </div>
             </div>
             <div class="form-group">
@@ -310,16 +307,14 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number"
                            datatype="idcard" autocomplete="off"
-                           placeholder="" errormsg="借款人身份证号填写有误" value="${loanInfo.loanerIdentityNumber}"
-                           <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人身份证号填写有误" value="${loanInfo.loanerIdentityNumber}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">借款人婚姻情况: </label>
 
                 <div class="col-sm-4">
-                    <select class="selectpicker b-width jq-loaner-marriage"
-                            <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                    <select class="selectpicker b-width jq-loaner-marriage">
                         <option value="UNMARRIED" <#if loanInfo.loanerMarriage == 'UNMARRIED'>selected</#if>>未婚</option>
                         <option value="MARRIED" <#if loanInfo.loanerMarriage == 'MARRIED'>selected</#if>>已婚</option>
                         <option value="DIVORCE" <#if loanInfo.loanerMarriage == 'DIVORCE'>selected</#if>>离异</option>
@@ -333,8 +328,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-region" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款人所在地区不能为空" value="${loanInfo.loanerRegion}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人所在地区不能为空" value="${loanInfo.loanerRegion}">
                 </div>
             </div>
             <div class="form-group">
@@ -343,8 +337,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-income" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款人年收入不能为空" value="${loanInfo.loanerIncome}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人年收入不能为空" value="${loanInfo.loanerIncome}">
                 </div>
             </div>
             <div class="form-group">
@@ -353,8 +346,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loaner-employment" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款人从业情况不能为空" value="${loanInfo.loanerEmploymentStatus}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款人从业情况不能为空" value="${loanInfo.loanerEmploymentStatus}">
                 </div>
             </div>
         </div>
@@ -367,8 +359,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-pledge-location" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="抵押物所在地不能为空" value="${loanInfo.pledgeLocation}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="抵押物所在地不能为空" value="${loanInfo.pledgeLocation}">
                 </div>
             </div>
             <div class="form-group">
@@ -377,8 +368,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-pledge-estimate-amount" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="借款抵押物估值不能为空" value="${loanInfo.estimateAmount}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="借款抵押物估值不能为空" value="${loanInfo.estimateAmount}">
                 </div>
             </div>
             <div class="form-group">
@@ -387,8 +377,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-pledge-loan-amount" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="抵押物借款金额不能为空" value="${loanInfo.pledgeLoanAmount}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="抵押物借款金额不能为空" value="${loanInfo.pledgeLoanAmount}">
                 </div>
             </div>
             <#if loanInfo.pledgeType == 'HOUSE'>
@@ -398,8 +387,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-estate-register-id"
                                datatype="*" autocomplete="off"
-                               placeholder="" errormsg="不动产登记证明不能为空" value="${loanInfo.estateRegisterId}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="不动产登记证明不能为空" value="${loanInfo.estateRegisterId}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -408,8 +396,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-property-card-id"
                                datatype="*" autocomplete="off"
-                               placeholder="" errormsg="房本编号不能为空" value="${loanInfo.propertyCardId}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="房本编号不能为空" value="${loanInfo.propertyCardId}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -418,8 +405,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-square" datatype="*"
                                autocomplete="off"
-                               placeholder="" errormsg="借款抵押房产面积不能为空" value="${loanInfo.square}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="借款抵押房产面积不能为空" value="${loanInfo.square}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -428,8 +414,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-authentic-act"
                                datatype="*" autocomplete="off"
-                               placeholder="" errormsg="公证书不能为空" value="${loanInfo.authenticAct}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="公证书不能为空" value="${loanInfo.authenticAct}">
                     </div>
                 </div>
             </#if>
@@ -440,8 +425,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-model" datatype="*"
                                autocomplete="off"
-                               placeholder="" errormsg="抵押车辆型号不能为空" value="${loanInfo.model}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="抵押车辆型号不能为空" value="${loanInfo.model}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -450,8 +434,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control ui-autocomplete-input jq-pledge-brand" datatype="*"
                                autocomplete="off"
-                               placeholder="" errormsg="抵押车辆品牌不能为空" value="${loanInfo.brand}"
-                               <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               placeholder="" errormsg="抵押车辆品牌不能为空" value="${loanInfo.brand}">
                     </div>
                 </div>
             </#if>
@@ -463,8 +446,7 @@
                 <div class="col-sm-4">
                     <input type="text" class="form-control ui-autocomplete-input jq-loan-declaration" datatype="*"
                            autocomplete="off"
-                           placeholder="" errormsg="声明不能为空" value="${loanInfo.declaration}"
-                           <#if loanInfo.loanStatus != "WAITING_VERIFY">disabled="disabled"</#if>>
+                           placeholder="" errormsg="声明不能为空" value="${loanInfo.declaration}">
                 </div>
             </div>
         </div>

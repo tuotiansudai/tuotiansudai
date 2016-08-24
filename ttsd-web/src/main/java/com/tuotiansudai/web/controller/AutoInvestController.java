@@ -7,7 +7,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.spring.LoginUserInfo;

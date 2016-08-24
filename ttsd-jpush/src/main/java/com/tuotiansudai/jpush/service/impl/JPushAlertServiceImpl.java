@@ -550,7 +550,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             if (transferAmount > 0) {
                 List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
-                loginNameMap.put(userMapper.findByLoginName(userCouponModel.getLoginName()).getMobile(), amountLists);
+                UserModel userModel = userMapper.findByLoginName(userCouponModel.getLoginName());
+                loginNameMap.put(userModel != null ? userModel.getMobile() : null, amountLists);
                 autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             }
         }
@@ -626,7 +627,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     if (jPushAlertModel != null) {
                         Map<String, List<String>> loginNameMap = Maps.newHashMap();
                         List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-                        loginNameMap.put(userMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName()).getMobile(), amountLists);
+                        UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
+                        loginNameMap.put(userModel != null ? userModel.getMobile() : null, amountLists);
                         autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
                         loginNameMap.clear();
                     } else {

@@ -7,6 +7,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class MybatisAAConfig {
 
-    @Bean(name = "hikariCPAADataSource")
+    @Bean
     @ConfigurationProperties(prefix="spring.datasource.aa")
     public DataSource hikariCPAADataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
@@ -30,18 +31,18 @@ public class MybatisAAConfig {
     @Bean
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper,com.tuotiansudai.activity.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
+        configurer.setBasePackage("com.tuotiansudai.repository.mapper");
+        configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Autowired DataSource hikariCPAADataSource) {
+    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
         return new DataSourceTransactionManager(hikariCPAADataSource);
     }
 
-    @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory(@Autowired DataSource hikariCPAADataSource) throws Exception {
+    @Bean
+    public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPAADataSource);
         sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model,com.tuotiansudai.activity.repository.model");

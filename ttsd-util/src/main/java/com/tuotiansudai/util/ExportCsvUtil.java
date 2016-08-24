@@ -1,8 +1,8 @@
 package com.tuotiansudai.util;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+
+import com.sun.deploy.util.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,8 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ExportCsvUtil {
-
-    static Logger logger = Logger.getLogger(ExportCsvUtil.class);
 
     public static void createCsvOutputStream(String header, List<List<String>> data, OutputStream outputStream) {
         BufferedWriter csvFileOutputStream = null;
@@ -51,7 +49,7 @@ public class ExportCsvUtil {
             try {
                 fieldObject = field.get(t);
             } catch (IllegalAccessException e) {
-                logger.error("T:" + t.getClass().getName() + ", field:" + field.getName() + "\n" + e.getMessage());
+                e.printStackTrace();
             }
             String fieldString;
             if (null == fieldObject) {

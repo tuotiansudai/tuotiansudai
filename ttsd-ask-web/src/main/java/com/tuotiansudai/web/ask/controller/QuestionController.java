@@ -4,6 +4,7 @@ import com.tuotiansudai.ask.dto.*;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/question")
@@ -30,24 +30,24 @@ public class QuestionController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
-        return new BaseDto<>(new BaseDataDto(questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto)));
+    public BaseDto<QuestionResultDataDto> question(@Valid @ModelAttribute QuestionRequestDto questionRequestDto) {
+        return new BaseDto<>(questionService.createQuestion(LoginUserInfo.getLoginName(), questionRequestDto));
     }
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView question(@PathVariable long questionId) {
-        QuestionDto question = questionService.getQuestion(questionId);
+    public ModelAndView question(@PathVariable long questionId,
+                                 @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
             return new ModelAndView("/error/404");
         }
 
-        AnswerDto bestAnswer = answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId);
-        List<AnswerDto> answers = answerService.getAnswers(LoginUserInfo.getLoginName(), questionId);
-
-        ModelAndView modelAndView = new ModelAndView("/question");
+        ModelAndView modelAndView = new ModelAndView("/question", "questionId", questionId);
+        modelAndView.addObject("isQuestionOwner", question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
         modelAndView.addObject("question", question);
-        modelAndView.addObject("bestAnswer", bestAnswer);
-        modelAndView.addObject("answers", answers);
+        modelAndView.addObject("bestAnswer", answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId));
+        modelAndView.addObject("answers", answerService.getNotBestAnswers(LoginUserInfo.getLoginName(), questionId, index, pageSize));
 
         return modelAndView;
     }

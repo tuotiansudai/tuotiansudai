@@ -34,7 +34,7 @@
     </mvc:annotation-driven>
 
     <mvc:interceptors>
-        <bean class="com.tuotiansudai.web.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
         <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>
 
@@ -51,11 +51,13 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="staticServer" value="${web.static.server}"/>
         <property name="javascriptLocation" value="${web.js.path}"/>
         <property name="cssLocation" value="${web.css.path}"/>
         <property name="sourceMap">
             <map>
+                <entry key="webServer" value="${web.server}"/>
+                <entry key="askServer" value="${ask.server}"/>
+                <entry key="staticServer" value="${web.static.server}"/>
                 <entry key="percentFraction">
                     <bean class="com.tuotiansudai.web.freemarker.directive.PercentFractionDirective"/>
                 </entry>

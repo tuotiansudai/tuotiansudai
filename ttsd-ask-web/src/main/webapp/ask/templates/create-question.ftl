@@ -27,7 +27,7 @@
                         <@global.isNotAnonymous>
                             <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
                         </@global.isNotAnonymous>
-                       
+                        <span class="error fl" style="display: none"></span>
                         <span class="words-tip fr"><em>0</em>/10000</span>
                     </dd>
                     <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
@@ -51,10 +51,10 @@
                             <span class="isAnonymous captcha">请输入验证码</span>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                            <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha">
+                            <input type="text" placeholder="请输入验证码" class="captcha input-short" name="captcha" maxlength="5">
                         </@global.isNotAnonymous>
                         <img src="/captcha" class="captchaImg" alt="">
-                        <span class="error " style="display: none">请请输入验证码</span>
+                        <span class="error " style="display: none">请输入验证码</span>
                     </dd>
                     <dd class="tc ask-button">
                         <@global.isAnonymous>

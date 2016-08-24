@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 public class SensitiveWordsFilter {
 
@@ -20,8 +21,8 @@ public class SensitiveWordsFilter {
         try {
             reader = new InputStreamReader(SensitiveWordsFilter.class.getClassLoader().getResourceAsStream("sensitive.properties"), StandardCharsets.UTF_8.name());
             config.load(reader);
-            sensitiveLevelTwoWords = config.getProperty("levelTwoWords");
             sensitiveLevelOneWords = config.getProperty("levelOneWords");
+            sensitiveLevelTwoWords = config.getProperty("levelTwoWords");
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
@@ -41,5 +42,9 @@ public class SensitiveWordsFilter {
 
     public static String filter(String raw) {
         return raw.replaceAll(sensitiveLevelTwoWords,  "*");
+    }
+
+    public static boolean match(String raw) {
+        return !replace(raw).equals(raw);
     }
 }

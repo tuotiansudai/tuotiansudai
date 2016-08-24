@@ -5,6 +5,13 @@ spring:
       username: root
       password:
       driver-class-name: com.mysql.jdbc.Driver
+    activity:
+      jdbcUrl: jdbc:mysql://192.168.33.10:3306/edxactivity?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password:
+      driver-class-name: com.mysql.jdbc.Driver
+
+
 
   redis:
     host: 192.168.33.10

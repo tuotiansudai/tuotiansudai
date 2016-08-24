@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.dto.BaseDto;
-import com.tuotiansudai.ask.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index(@RequestParam(value = "group", defaultValue = "ALL", required = false) QuestionGroup group,
                               @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                              @RequestParam(value = "page-size", defaultValue = "1", required = false) int pageSize) {
+                              @RequestParam(value = "page-size", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/home");
         BaseDto<BasePaginationDataDto> data = questionService.findAllQuestions(LoginUserInfo.getLoginName(), index, pageSize);
         if (group == QuestionGroup.UNRESOLVED) {
