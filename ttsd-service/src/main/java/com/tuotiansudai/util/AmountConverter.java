@@ -6,12 +6,11 @@ import java.util.regex.Pattern;
 
 public class AmountConverter {
 
-    final static private Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
-
     public static long convertStringToCent(String amount) {
         if (StringUtils.isEmpty(amount)) {
             return 0;
         }
+        Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
         Matcher matcher = pattern.matcher(amount);
         if (matcher.matches()) {
             String[] split = amount.split("\\.");
