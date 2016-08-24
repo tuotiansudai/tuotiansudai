@@ -18,7 +18,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.MyAuthenticationManager;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -93,11 +92,6 @@ public class UserServiceImpl implements UserService {
 
     public static String SHA = "SHA";
 
-    @Autowired
-    private IdGenerator idGenerator;
-
-    private final static String LOGIN_NAME = "user-{0}";
-
     private final static int LOGIN_NAME_LENGTH = 8;
 
     @Override
@@ -135,16 +129,15 @@ public class UserServiceImpl implements UserService {
             loginName = dto.getLoginName();
             loginNameIsExist = this.loginNameIsExist(loginName);
         } else {
-            loginName = dto.getMobile();
             int count = 0;
-            while (loginNameIsExist(loginName)) {
+            do {
                 loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
                 ++count;
-                if (count > 10) {
-                    logger.debug(MessageFormat.format("[UserServiceImpl][registerUser] generate loginName failed! Mobile:{0}", dto.getMobile()));
+                if (count > 20) {
+                    logger.debug(MessageFormat.format("[UserServiceImpl][registerUser] generate loginName failed! mobile:{0}", dto.getMobile()));
                     return false;
                 }
-            }
+            } while (loginNameIsExist(loginName));
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
