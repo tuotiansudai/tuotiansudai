@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,7 +126,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             if (investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())) {
                 continue;
             }
-            if (investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayAmount() == 0) {
+
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
                 continue;
             }
 
@@ -242,6 +244,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             if (couponRepayModel.isTransferred()) {
                 continue;
             }
+
+            if(RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
+                continue;
+            }
+
             if (couponRepayModel.getActualRepayDate() != null && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getActualRepayDate()), couponRepayModel));
                 continue;
@@ -270,6 +277,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             if (investRepayModel.isTransferred()) {
                 continue;
             }
+
+            if(RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
+                continue;
+            }
+
             if (investRepayModel.getActualRepayDate() != null && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
                 repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel));
                 continue;
