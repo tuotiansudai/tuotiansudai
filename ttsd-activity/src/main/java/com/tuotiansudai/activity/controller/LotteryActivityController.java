@@ -22,6 +22,6 @@ public class LotteryActivityController {
     @RequestMapping(value = "/draw-lottery", method = RequestMethod.POST)
     public BaseDto<DrawLotteryActivityDto> drawLotteryPrize() {
         String loginName = LoginUserInfo.getLoginName();
-        return lotteryActivityService.drawLotteryPrize(loginName);
+        return lotteryActivityService.drawLotteryPrize(loginName,"");
     }
 }
