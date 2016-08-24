@@ -1,12 +1,11 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.BasePaginationDataDto;
 import com.tuotiansudai.console.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.console.activity.dto.UserLuxuryPrizeDto;
 import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,6 +43,11 @@ public class LuxuryPrizeController {
         mv.addObject("luxuryPrize",baseDto);
         return mv;
     }
+//
+//    @RequestMapping(value = "/{luxuryPrizeID}/edit")
+//    public ModelAndView editLuxuryPrize(@RequestParam long luxuryPrizeId){
+//
+//    }
 
 
 

@@ -1,6 +1,6 @@
-package com.tuotiansudai.ask.dto;
+package com.tuotiansudai.dto;
 
-import com.tuotiansudai.ask.utils.PaginationUtil;
+import com.tuotiansudai.util.PaginationUtil;
 
 import java.util.List;
 
@@ -19,6 +19,10 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
     private boolean hasNextPage;
 
     protected List<T> records;
+
+    public BasePaginationDataDto() {
+
+    }
 
     public BasePaginationDataDto(int index, int pageSize, long count, List<T> records) {
         this.index = index;

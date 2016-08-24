@@ -5,12 +5,10 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -37,9 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MobileAppTransferApplicationServiceImpl implements MobileAppTransferApplicationService {

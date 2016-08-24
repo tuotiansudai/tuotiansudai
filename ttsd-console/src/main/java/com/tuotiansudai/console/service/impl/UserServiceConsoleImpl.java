@@ -14,14 +14,12 @@ import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserView;
-import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

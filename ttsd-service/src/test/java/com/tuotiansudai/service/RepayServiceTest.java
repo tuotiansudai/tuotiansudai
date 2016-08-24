@@ -73,7 +73,7 @@ public class RepayServiceTest {
         getInvestRepayModel(investModel.getId(), 1, DateTime.parse("2010-01-01").toDate(), RepayStatus.COMPLETE,null,100);
         getInvestRepayModel(investModel.getId(), 2, DateTime.parse("2010-02-01").toDate(), RepayStatus.REPAYING,null,100);
         getInvestRepayModel(investModel.getId(), 3, DateTime.parse("2010-03-01").toDate(), RepayStatus.REPAYING,null,100);
-        BaseDto<InvestRepayDataDto>  investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
+        BaseDto<InvestRepayDataDto> investRepayDataDtoBaseDto = repayService.findInvestorInvestRepay(loginName, investModel.getId());
         assertTrue(investRepayDataDtoBaseDto.getData().getRecords().size() == 3);
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getAmount(), "0.50");
         assertEquals(investRepayDataDtoBaseDto.getData().getRecords().get(0).getExpectedFee(),"0.50");

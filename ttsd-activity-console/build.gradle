@@ -22,16 +22,22 @@ dependencies {
     compile(project(":ttsd-user-service")) {
         exclude module: 'ttsd-dependency'
     };
+
     compile(project(":ttsd-spring-extension")) {
         exclude module: 'ttsd-dependency'
     };
+
     compile(project(":ttsd-web-common-config")) {
         exclude module: 'ttsd-dependency'
     };
+
     compile(project(":ttsd-activity-repository")) {
         exclude module: 'ttsd-dependency'
     };
-    compile "org.springframework.boot:spring-boot-starter-web",
+
+    compile project(':ttsd-util'),
+            'org.springframework.boot:spring-boot-starter-mail',
+            "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-jdbc",
             "org.springframework.boot:spring-boot-starter-security",
