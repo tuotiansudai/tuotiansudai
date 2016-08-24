@@ -38,7 +38,7 @@ public class AccountBalanceController {
                                        @RequestParam(value = "export", required = false) String export,
                                        HttpServletResponse response) throws IOException {
         if (StringUtils.isEmpty(balanceMax)) {
-            balanceMax = String.valueOf(999999999999999999L);
+            balanceMax = String.valueOf(Long.MAX_VALUE);
         }
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
