@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import org.junit.Test;
@@ -7,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class UserTravelPrizeMapperTest extends BaseMapperTest{
     @Autowired
@@ -36,10 +38,10 @@ public class UserTravelPrizeMapperTest extends BaseMapperTest{
         TravelPrizeModel travelPrizeModel = new TravelPrizeModel();
         travelPrizeModel.setDescription("brand");
         travelPrizeModel.setName("name");
-        travelPrizeModel.setPrice(1000l);
+        travelPrizeModel.setPrice("1000");
         travelPrizeModel.setImage("image");
-        travelPrizeModel.setInvestAmount(2000l);
-        travelPrizeModel.setIntroduce("introduce");
+        travelPrizeModel.setInvestAmount(2000L);
+        travelPrizeModel.setIntroduce(Lists.newArrayList("introduce"));
         travelPrizeModel.setCreatedBy("createdBy");
         travelPrizeModel.setCreatedTime(new Date());
         travelPrizeModel.setUpdatedBy("updatedBy");

@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TravelPrizeModel implements Serializable{
 
@@ -13,13 +14,13 @@ public class TravelPrizeModel implements Serializable{
 
     private String description;
 
-    private long price;
+    private String price;
 
     private String image;
 
     private long investAmount;
 
-    private String introduce;
+    private List<String> introduce;
 
     private String createdBy;
 
@@ -53,11 +54,11 @@ public class TravelPrizeModel implements Serializable{
         this.description = description;
     }
 
-    public long getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -77,11 +78,11 @@ public class TravelPrizeModel implements Serializable{
         this.investAmount = investAmount;
     }
 
-    public String getIntroduce() {
+    public List<String> getIntroduce() {
         return introduce;
     }
 
-    public void setIntroduce(String introduce) {
+    public void setIntroduce(List<String> introduce) {
         this.introduce = introduce;
     }
 

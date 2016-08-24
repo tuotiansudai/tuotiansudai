@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.repository.mybatis;
+package com.tuotiansudai.activity.repository.mybatis;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
