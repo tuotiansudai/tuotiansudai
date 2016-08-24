@@ -27,6 +27,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +74,7 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
-    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
+    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}%加息券";
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您使用了生日月福利";
 
@@ -211,7 +213,9 @@ public class RepayServiceImpl implements RepayService {
                     }
                 }
                 sumActualInterest += repayAmount;
-                sumExpectedInterest += expectedAmount;
+                if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
+                    sumExpectedInterest += expectedAmount;
+                }
                 records.add(investRepayDataItemDto);
             }
             dataDto.setSumActualInterest(AmountConverter.convertCentToString(sumActualInterest));
@@ -230,7 +234,7 @@ public class RepayServiceImpl implements RepayService {
                     dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100)));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,covertRate(String.format("%.2f",couponModel.getRate() * 100))));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
@@ -253,5 +257,9 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setLevelMessage(membershipMessage.get(String.valueOf(0)));
         }
         return baseDto;
+    }
+
+    private static String covertRate(String rate){
+        return rate.indexOf(".00") != -1 ? rate.replaceAll(".00","") : String.valueOf(Double.parseDouble(rate));
     }
 }

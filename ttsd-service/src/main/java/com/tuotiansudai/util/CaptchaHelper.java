@@ -2,6 +2,7 @@ package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.model.Environment;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,12 @@ public class CaptchaHelper {
     @Value("${ip.login.interval.seconds}")
     private int ipLeftSecond;
 
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Value("${common.fake.captcha}")
+    private String fakeCaptcha;
+
     public void storeCaptcha(String attributeKey, String captcha) {
         httpServletRequest.getSession().setAttribute(attributeKey, captcha);
     }
@@ -72,6 +79,14 @@ public class CaptchaHelper {
     }
 
     public boolean captchaVerify(String attributeKey, String captcha) {
+        if (Environment.SMOKE == environment) {
+            return true;
+        }
+
+        if(!Environment.isProduction(environment) && captcha.equals(fakeCaptcha)){
+            return true;
+        }
+
         String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
         httpServletRequest.getSession().removeAttribute(attributeKey);
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
