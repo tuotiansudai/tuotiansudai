@@ -40,7 +40,7 @@ require(['jquery', 'jquery.ajax.extension'], function ($) {
 		//hide sign tip
 		$closeSign.on('click', function(event) {
 			event.preventDefault();
-			location.href = "/pointsystem";
+			location.href = "/point-shop";
 		});
 	});
 })
