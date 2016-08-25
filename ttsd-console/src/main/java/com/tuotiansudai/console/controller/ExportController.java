@@ -1,6 +1,8 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.service.ExportService;
+import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -9,9 +11,7 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.LoanRepayService;
-import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.service.SystemBillService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -59,6 +59,15 @@ public class ExportController {
 
     @Autowired
     private PointBillService pointBillService;
+
+    @Autowired
+    private UserServiceConsole userServiceConsole;
+
+    @Autowired
+    private InvestService investService;
+
+    @Autowired
+    RechargeService rechargeService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -174,7 +183,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public void ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
+    public void consoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                 @RequestParam(value = "loanId", required = false) Long loanId,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -188,6 +197,56 @@ public class ExportController {
                 index, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildConsoleLoanList(loanListDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
+
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public void exportUsers(String loginName, String email, String mobile,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
+                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                            RoleStage roleStage, String referrerMobile, String channel,
+                            @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleUsers.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
+                beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
+        List<List<String>> usersData = exportService.buildUsers(baseDto.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, usersData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/invests", method = RequestMethod.GET)
+    public void exportInvests(@RequestParam(name = "loanId", required = false) Long loanId,
+                              @RequestParam(name = "mobile", required = false) String investorMobile,
+                              @RequestParam(name = "channel", required = false) String channel,
+                              @RequestParam(name = "source", required = false) Source source,
+                              @RequestParam(name = "role", required = false) String role,
+                              @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
+                              @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+        List<InvestPaginationItemDataDto> records = investPagination.getRecords();
+        List<List<String>> investsData = exportService.buildInvests(records);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/recharge", method = RequestMethod.GET)
+    public void exportRecharge(@RequestParam(value = "rechargeId", required = false) String rechargeId,
+                               @RequestParam(value = "mobile", required = false) String mobile,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "status", required = false) RechargeStatus status,
+                               @RequestParam(value = "source", required = false) RechargeSource source,
+                               @RequestParam(value = "channel", required = false) String channel, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = rechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
+        List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
 
     }
 

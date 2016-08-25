@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ExportService;
@@ -9,11 +10,10 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +54,7 @@ public class ExportServiceImpl implements ExportService {
         }
         return accountItemDataDtoList;
     }
+
 
     @Override
     public List<List<String>> buildLoanRepayCsvData(List<LoanRepayDataItemDto> loanRepayDataItemDtos) {
@@ -316,6 +317,92 @@ public class ExportServiceImpl implements ExportService {
             row.add("-");
             row.add(loanListDto.getStatus().getDescription());
             row.add(new DateTime(loanListDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildUsers(List<UserItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(record.isBankCard() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getEmail());
+            row.add(record.getReferrerMobile());
+            row.add(record.isReferrerStaff() ? "是" : "否");
+            row.add(record.getSource() != null ? record.getSource().name() : "");
+            row.add(record.getChannel());
+            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add("1".equals(record.getAutoInvestStatus()) ? "是" : "否");
+            List<UserRoleModel> userRoleModels = record.getUserRoles();
+            List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
+                @Override
+                public String apply(UserRoleModel model) {
+                    return model.getRole().getDescription();
+                }
+            });
+            row.add(StringUtils.join(userRole, ";"));
+            row.add(UserStatus.ACTIVE.equals(record.getStatus()) ? "正常" : "禁用");
+            row.add(record.getBirthday());
+            row.add(record.getProvince());
+            row.add(record.getCity());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildInvests(List<InvestPaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (InvestPaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(String.valueOf(record.getLoanId()));
+            row.add(record.getLoanName());
+            row.add(String.valueOf(record.getLoanPeriods()));
+            row.add(record.getInvestorLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getInvestorUserName());
+            row.add(record.getInvestorMobile());
+            row.add(record.getBirthday());
+            row.add(record.getProvince());
+            row.add(record.getCity());
+            row.add(record.getReferrerLoginName());
+            row.add(record.getReferrerLoginName() != null ? record.isReferrerStaff() ? "是" : "否" : "");
+            row.add(record.getReferrerUserName());
+            row.add(record.getReferrerMobile());
+            row.add(record.getChannel());
+            row.add(record.getSource());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(record.isAutoInvest() ? "是" : "否");
+            row.add(record.getAmount());
+            row.add(record.getRate() + "/" + record.getExpectedFee() + "/" + record.getActualFee());
+            row.add(record.getStatus());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildRecharge(List<RechargePaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (RechargePaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(new BigDecimal(record.getRechargeId()).toString());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getAmount());
+            row.add(record.getBankCode());
+            row.add(record.isFastPay() ? "是" : "否");
+            row.add(record.getStatus());
+            row.add(record.getSource().name());
+            row.add(record.getChannel());
             rows.add(row);
         }
         return rows;

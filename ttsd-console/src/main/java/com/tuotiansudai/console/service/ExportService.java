@@ -33,4 +33,9 @@ public interface ExportService {
 
     List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
 
+    List<List<String>> buildUsers(List<UserItemDataDto> records);
+
+    List<List<String>> buildInvests(List<InvestPaginationItemDataDto> records);
+
+    List<List<String>> buildRecharge(List<RechargePaginationItemDataDto> records);
 }

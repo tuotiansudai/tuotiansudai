@@ -63,7 +63,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
 
     $('.down-load').click(function () {
-        location.href = "/finance-manage/invests?"+$('form').serialize()+"&export=csv";
+        location.href = "/export/invests?" + $('form').serialize();
     });
 
 });
