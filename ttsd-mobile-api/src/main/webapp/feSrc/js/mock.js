@@ -21,7 +21,77 @@ app.get('/task-center/completed-tasks', function(req, res) {
 				description: "还差<span class=color-key>0.00元</span>即可获得奖励",
 				point: 2000,
 				completed: true
-			}]
+			},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				},
+				{
+					name: "EACH_SUM_INVEST",
+					title: "累计投资满10000.00元",
+					description: "还差<span class=color-key>0.00元</span>即可获得奖励",
+					point: 2000,
+					completed: true
+				}]
 		}
 	});
 });

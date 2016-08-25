@@ -138,8 +138,7 @@ class taskCenter extends React.Component {
         state = {
             active: MenuData.tabHeader[0].value,
             isShowLoading: true,
-            isFixedMenu:false,
-            menuTop:'',
+
             listData: {
                 newbieTasks: [],
                 advancedTasks: []
@@ -165,24 +164,19 @@ class taskCenter extends React.Component {
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
        let top=this.myScroll.y-10;
-       let isFixedMenu=this.state.isFixedMenu;
-       let imgHeight=document.getElementById('imageTopHead').scrollHeight-40;
+       let imgHeight=document.getElementById('imageTopHead').scrollHeight*1.1;
         if(/active/.test(event.target.className) ) {
             return;
         }
-        if(isFixedMenu) {
-            this.myScroll.scrollTo(0, -imgHeight, 200);
-        }
         this.setState({
           active: value,
-          isShowLoading:true,
-          isFixedMenu:isFixedMenu
-          // menuTop:Math.abs()+10,
+          isShowLoading:true
+
         });
-
-
+        this.myScroll.scrollTo(0, -imgHeight, 1000);
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
+
             this.setState((previousState) => {
                 return {
                     isShowLoading:false,
@@ -248,35 +242,33 @@ class taskCenter extends React.Component {
                 this.myScroll.on('scroll',function() {
                      let imgHeight=document.getElementById('imageTopHead').scrollHeight;
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
-                     let topH;
+                    let maxY=Math.abs(this.myScroll.scrollerHeight);
+                    let menuHeight=tabHeaderDom.clientHeight*0.5;
+                    let curY=Math.abs(this.myScroll.y)+menuHeight;
 
-                    if(Math.abs(this.myScroll.y) >= imgHeight-18) {
-                        if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
-                           topH= Math.abs(this.myScroll.maxScrollY)
-                        }
-                        else {
-                            topH = Math.abs(this.myScroll.y);
-                        }
-                         this.setState({
-                              isFixedMenu: true,
-                              menuTop:topH
-                            });
-
+                    if(curY>imgHeight) {
+                        tabHeaderDom.setAttribute('style','top:'+curY+'px;width:100%;left:0;height:1rem; line-height:1rem');
                     }
                     else {
-                        this.setState({
-                          isFixedMenu: false,
-                          menuTop:''
-                        });
-
+                        tabHeaderDom.setAttribute('style','top:5.33rem;');
                     }
+                    if(Math.abs(this.myScroll.y) >= imgHeight-18) {
+                        if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
+                           //topH= Math.abs(this.myScroll.maxScrollY);
+
+                        }
+                        else {
+                            //topH = Math.abs(this.myScroll.y);
+                        }
+                    }
+
                 }.bind(this));
 
             }
             else {
                 this.myScroll.refresh();
             }
-          },200);
+          },100);
 
 
         });
@@ -292,7 +284,7 @@ class taskCenter extends React.Component {
                 <div className="bodyCon" ref='mainConWrap'>
                 <div className="clearfix">
                 <div className="imageTopHead" id="imageTopHead" ref="imageTopHead"></div>
-			    <div className={classNames({'MenuBox':true,'fixTopMenu':this.state.isFixedMenu})} style={{top:this.state.menuTop}}  ref="tabHeader" id="tabHeaderDom">
+			    <div className={classNames({'MenuBox':true})} style={{top:this.state.menuTop}}  ref="tabHeader" id="tabHeaderDom">
 			        <ul >
                         {MenuData.tabHeader.map((value, index) => {
                             return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
