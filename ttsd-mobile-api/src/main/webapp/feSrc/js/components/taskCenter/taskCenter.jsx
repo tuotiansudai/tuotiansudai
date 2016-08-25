@@ -252,16 +252,6 @@ class taskCenter extends React.Component {
                     else {
                         tabHeaderDom.setAttribute('style','top:5.33rem;');
                     }
-                    if(Math.abs(this.myScroll.y) >= imgHeight-18) {
-                        if(Math.abs(this.myScroll.maxScrollY) - Math.abs(this.myScroll.y) <=0) {
-                           //topH= Math.abs(this.myScroll.maxScrollY);
-
-                        }
-                        else {
-                            //topH = Math.abs(this.myScroll.y);
-                        }
-                    }
-
                 }.bind(this));
 
             }
