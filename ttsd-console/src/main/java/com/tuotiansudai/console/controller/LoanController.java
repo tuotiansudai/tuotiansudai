@@ -44,6 +44,7 @@ public class LoanController {
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
+        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
     }

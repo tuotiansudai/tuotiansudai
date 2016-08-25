@@ -3,11 +3,13 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDetailsDto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class LoanDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String declaration;
+    private List<Source> extraSource;
 
     public LoanDetailsModel() {
     }
@@ -20,6 +22,15 @@ public class LoanDetailsModel implements Serializable {
     public LoanDetailsModel(LoanDetailsDto loanDetailsDto) {
         this.loanId = loanDetailsDto.getLoanId();
         this.declaration = loanDetailsDto.getDeclaration();
+        this.extraSource = loanDetailsDto.getExtraSource();
+    }
+
+    public List<Source> getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(List<Source> extraSource) {
+        this.extraSource = extraSource;
     }
 
     public long getId() {

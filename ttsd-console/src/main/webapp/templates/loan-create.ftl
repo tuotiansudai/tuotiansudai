@@ -198,7 +198,7 @@
                 <label class="col-sm-2 control-label">阶梯加息: </label>
 
                 <div class="col-sm-4 checkbox">
-                    <label for="extra"><input type="checkbox" id="extra">选中后此标的采用阶梯式加息</label>
+                    <label for="extra"><input type="checkbox" id="extra" >选中后此标的采用阶梯式加息</label>
                 </div>
             </div>
 
@@ -216,6 +216,18 @@
                         <tbody class="extra-rate-rule">
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="form-group extra-source hidden">
+                <label class="col-sm-2 control-label">加息来源:</label>
+
+                <div class="col-sm-4" id="extraSource">
+                    <#list sources as source>
+                        <label>
+                            <input type="checkbox" name="extraSource"  class="extraSource" value="${source.name()}">${source.name()}
+                        </label>
+                    </#list>
                 </div>
             </div>
         </div>
