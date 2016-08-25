@@ -182,7 +182,7 @@
                                         <td>奢侈品名</td>
                                         <td>2016-09-02</td>
                                     </tr>
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -245,22 +245,22 @@
                     </li>
                     <li class="active">
                         <div class="icon vali-icon"></div>
-                        <div class="icon-text">去注册</div>
+                        <div class="icon-text">去认证</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li>
+                    <li class="active">
                         <div class="icon card-icon"></div>
-                        <div class="icon-text">去注册</div>
+                        <div class="icon-text">绑卡</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li>
+                    <li class="active">
                         <div class="icon money-icon"></div>
-                        <div class="icon-text">去注册</div>
+                        <div class="icon-text">充值</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li>
+                    <li class="active">
                         <div class="icon loan-icon"></div>
-                        <div class="icon-text">去注册</div>
+                        <div class="icon-text">投资</div>
                         <div class="step-icon"></div>
                     </li>
                 </ul>

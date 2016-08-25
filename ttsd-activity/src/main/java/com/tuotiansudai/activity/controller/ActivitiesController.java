@@ -30,7 +30,7 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike|luxury-activity$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike|luxury-activity|luxury-detail}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = httpServletRequest.getParameter("loginName");

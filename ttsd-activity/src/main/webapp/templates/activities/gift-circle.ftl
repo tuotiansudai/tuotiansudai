@@ -1,4 +1,4 @@
-<div class="leader-container tour-theme" id="awardCom">
+<div class="leader-container " id="awardCom"><!--旅游主题class替换为tour-theme-->
     <div class="leader-list">
         <div class="lottery-circle">
             <h3>我的抽奖机会：1次</h3>
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-<div class="tip-list tour-theme" id="tipList">
+<div class="tip-list" id="tipList"><!--旅游主题class替换为tour-theme-->
     <div class="tip-dom">
         <div class="close-btn go-close"></div>
         <div class="text-tip">
