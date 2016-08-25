@@ -156,14 +156,6 @@
                             <td>2016-09-02</td>
                         </tr>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="4" class="tr">
-                                <a href="javascript:void(0)" class="page-btn">上一页</a>
-                                <a href="javascript:void(0)" class="page-btn">上一页</a>
-                            </td>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
 
