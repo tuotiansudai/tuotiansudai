@@ -1,8 +1,9 @@
 require(['jquery', 'underscore','layerWrapper','commonFun'], function ($, _, layer) {
 
     var $awardRecordsFrame=$('#awardRecordsFrame');
-    var $slideBody=$('.table tbody',$awardRecordsFrame);
+    var $slideBody=$('.winner-box table tbody',$awardRecordsFrame);
     var $awardList=$('.award-list');
+    var $awardCategory=$('.award-category',$awardRecordsFrame)
     var scrollTimer,scrollTimer2;
     var $swiperWrapper=$('.swiper-wrapper'),
         $swiperslide=$('.swiper-slide',$swiperWrapper);
@@ -127,5 +128,14 @@ require(['jquery', 'underscore','layerWrapper','commonFun'], function ($, _, lay
             scrollAwardRecords($slideBody);
         }, 2000);
     }).trigger("mouseout");
+
+    $awardCategory.find('li').on('click',function() {
+        var $this=$(this),
+            num=$this.index();
+        $this.addClass('active').siblings('li').removeClass('active');
+        $('.switchContent',$awardRecordsFrame).eq(num).show().siblings('.switchContent').hide();
+
+
+    })
 
 });
