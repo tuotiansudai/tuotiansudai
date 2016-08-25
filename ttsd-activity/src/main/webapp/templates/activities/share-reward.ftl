@@ -30,7 +30,6 @@
             <div class="example-case-detail"></div>
         </div>
         <div class="share-recommend">
-            <h1>${noAccount?c}</h1>
             <#if noAccount?? && noAccount>
                 <a href="/register/account">立即推荐</a>
             <#else>
@@ -67,17 +66,16 @@
                     <a href="/referrer/refer-list">立即推荐</a>
                 </#if>
             <#else>
-                <@global.isNotAnonymous>
+                <#if isLogin?? && !isLogin>
                     <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
-                </@global.isNotAnonymous>
-                <@global.isAnonymous>
+                <#else>
                     <#if noAccount?? && noAccount>
                         <a href="/registeraccount">立即推荐</a>
                     <#else>
                         <a href="/referrer/refer-list"
                            onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
                     </#if>
-                </@global.isAnonymous>
+                </#if>
             </#if>
         </div>
         <div class="share-rules"></div>

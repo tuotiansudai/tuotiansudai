@@ -48,6 +48,7 @@ public class ActivitiesController {
         } else {
             loginName = LoginUserInfo.getLoginName();
         }
+        modelAndView.addObject("isLogin", null != loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
         modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
