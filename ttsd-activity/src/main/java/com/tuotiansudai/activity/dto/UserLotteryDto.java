@@ -1,30 +1,32 @@
 package com.tuotiansudai.activity.dto;
 
+import com.tuotiansudai.dto.BaseDataDto;
+
 import java.io.Serializable;
 
-public class UserLotteryDto implements Serializable{
+public class UserLotteryDto extends BaseDataDto {
 
     private int lotteryTime;
 
-    private LotteryTaskStatus registerStatus;
+    private ActivityTaskStatus registerStatus;
 
-    private LotteryTaskStatus certificationStatus;
+    private ActivityTaskStatus certificationStatus;
 
-    private LotteryTaskStatus bindCardStatus;
+    private ActivityTaskStatus bindCardStatus;
 
-    private LotteryTaskStatus rechargeStatus;
+    private ActivityTaskStatus rechargeStatus;
 
-    private LotteryTaskStatus investStatus;
+    private ActivityTaskStatus investStatus;
 
     public UserLotteryDto() {}
 
-    public UserLotteryDto(int lotteryTime,LotteryTaskStatus lotteryTaskStatus) {
+    public UserLotteryDto(int lotteryTime,ActivityTaskStatus activityTaskStatus) {
         this.lotteryTime = lotteryTime;
-        this.rechargeStatus = lotteryTaskStatus;
-        this.certificationStatus = lotteryTaskStatus;
-        this.bindCardStatus = lotteryTaskStatus;
-        this.rechargeStatus = lotteryTaskStatus;
-        this.investStatus = lotteryTaskStatus;
+        this.rechargeStatus = activityTaskStatus;
+        this.certificationStatus = activityTaskStatus;
+        this.bindCardStatus = activityTaskStatus;
+        this.rechargeStatus = activityTaskStatus;
+        this.investStatus = activityTaskStatus;
     }
 
     public int getLotteryTime() {
@@ -35,41 +37,41 @@ public class UserLotteryDto implements Serializable{
         this.lotteryTime = lotteryTime;
     }
 
-    public LotteryTaskStatus getRegisterStatus() {
+    public ActivityTaskStatus getRegisterStatus() {
         return registerStatus;
     }
 
-    public void setRegisterStatus(LotteryTaskStatus registerStatus) {
+    public void setRegisterStatus(ActivityTaskStatus registerStatus) {
         this.registerStatus = registerStatus;
     }
 
-    public LotteryTaskStatus getCertificationStatus() {
+    public ActivityTaskStatus getCertificationStatus() {
         return certificationStatus;
     }
 
-    public void setCertificationStatus(LotteryTaskStatus certificationStatus) { this.certificationStatus = certificationStatus; }
+    public void setCertificationStatus(ActivityTaskStatus certificationStatus) { this.certificationStatus = certificationStatus; }
 
-    public LotteryTaskStatus getBindCardStatus() {
+    public ActivityTaskStatus getBindCardStatus() {
         return bindCardStatus;
     }
 
-    public void setBindCardStatus(LotteryTaskStatus bindCardStatus) {
+    public void setBindCardStatus(ActivityTaskStatus bindCardStatus) {
         this.bindCardStatus = bindCardStatus;
     }
 
-    public LotteryTaskStatus getRechargeStatus() {
+    public ActivityTaskStatus getRechargeStatus() {
         return rechargeStatus;
     }
 
-    public void setRechargeStatus(LotteryTaskStatus rechargeStatus) {
+    public void setRechargeStatus(ActivityTaskStatus rechargeStatus) {
         this.rechargeStatus = rechargeStatus;
     }
 
-    public LotteryTaskStatus getInvestStatus() {
+    public ActivityTaskStatus getInvestStatus() {
         return investStatus;
     }
 
-    public void setInvestStatus(LotteryTaskStatus investStatus) {
+    public void setInvestStatus(ActivityTaskStatus investStatus) {
         this.investStatus = investStatus;
     }
 }

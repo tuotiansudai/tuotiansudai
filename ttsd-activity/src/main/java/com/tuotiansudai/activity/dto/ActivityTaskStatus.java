@@ -1,14 +1,14 @@
-package com.tuotiansudai.activity.repository.model;
+package com.tuotiansudai.activity.dto;
 
 
-public enum LotteryTaskStatus {
+public enum ActivityTaskStatus {
     COMPLETE("完成"),
     PROCEED("进行中"),
     UNFINISHED("未完成");
 
     String description;
 
-    LotteryTaskStatus(String description){
+    ActivityTaskStatus(String description){
         this.description = description;
     }
 }

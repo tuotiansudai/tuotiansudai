@@ -62,7 +62,7 @@ public class LotteryController {
             ExportCsvUtil.createCsvOutputStream("用户手机号,姓名,可用抽奖机会,已用抽奖机会", data, response.getOutputStream());
             return null;
         }else{
-            ModelAndView modelAndView = new ModelAndView("activity-lottery-list");
+            ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");
             int lotteryCount = userLotteryService.findUserLotteryTimeCountViews(mobile);
             modelAndView.addObject("lotteryCount", lotteryCount);
             modelAndView.addObject("lotteryList",userLotteryService.findUserLotteryTimeViews(mobile, (index - 1) * pageSize, pageSize));
@@ -114,7 +114,7 @@ public class LotteryController {
             ExportCsvUtil.createCsvOutputStream("中奖时间,获奖用户手机号,姓名,奖品", data, response.getOutputStream());
             return null;
         }else{
-            ModelAndView modelAndView = new ModelAndView("activity-lottery-list");
+            ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");
             int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile,selectPrize,startTime,endTime);
             modelAndView.addObject("lotteryCount", lotteryCount);
             modelAndView.addObject("prizeList",userLotteryService.findUserLotteryPrizeViews(mobile,selectPrize,startTime,endTime, (index - 1) * pageSize, pageSize));

@@ -59,7 +59,7 @@
     </select>
 
     <select id="findUserLotteryPrizeCountViews" parameterType="map" resultType="int">
-        select count(1) from `activity`.`user_lottery_prize`
+        select count(1) from `activity`.`user_lottery_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'

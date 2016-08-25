@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.dto;
 
 import com.tuotiansudai.dto.BaseDataDto;
 
-public class DrawLotteryActivityDto extends BaseDataDto {
+public class DrawLotteryResultDto extends BaseDataDto {
 
     private int returnCode;
 

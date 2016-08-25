@@ -2,12 +2,11 @@ package com.tuotiansudai.activity.service.impl;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.dto.DrawLotteryActivityDto;
+import com.tuotiansudai.activity.dto.ActivityTaskStatus;
+import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.LotteryTaskStatus;
 import com.tuotiansudai.activity.dto.UserLotteryDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryTimeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.LotteryActivityService;
@@ -32,13 +31,10 @@ public class LotteryActivityServiceImpl implements LotteryActivityService {
     private static Logger logger = Logger.getLogger(LotteryActivityServiceImpl.class);
 
     @Autowired
-    private UserLotteryPrizeMapper userLotteryPrizeMapper;
-
-    @Autowired
-    private UserLotteryTimeMapper userLotteryTimeMapper;
-
-    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -57,27 +53,18 @@ public class LotteryActivityServiceImpl implements LotteryActivityService {
     private Date endTime;
 
     @Override
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,Date startTime,Date endTime,Integer index,Integer pageSize){
-        return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, startTime, endTime, index, pageSize);
-    }
-
-    @Override
-    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,Date startTime,Date endTime){
-        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, startTime, endTime);
-    }
-
-    @Override
-    public UserLotteryDto findUserLotteryByLoginName(String mobile){
+    public BaseDto<UserLotteryDto> findUserLotteryByLoginName(String mobile){
+        BaseDto baseDto = new BaseDto();
         int lotteryTime = 0;
-        UserLotteryDto userLotteryDto = new UserLotteryDto(lotteryTime,LotteryTaskStatus.UNFINISHED);
-
+        UserLotteryDto userLotteryDto = new UserLotteryDto(lotteryTime, ActivityTaskStatus.UNFINISHED);
+        baseDto.setData(userLotteryDto);
         if (Strings.isNullOrEmpty(mobile)) {
-            return userLotteryDto;
+            return baseDto;
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
         if(userModel == null){
-            return userLotteryDto;
+            return baseDto;
         }
 
         List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
@@ -93,61 +80,50 @@ public class LotteryActivityServiceImpl implements LotteryActivityService {
 
         if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
-            userLotteryDto.setRegisterStatus(LotteryTaskStatus.COMPLETE);
-        }else{
-            userLotteryDto.setRegisterStatus(LotteryTaskStatus.PROCEED);
-            return userLotteryDto;
+            userLotteryDto.setRegisterStatus(ActivityTaskStatus.COMPLETE);
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         if(accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
-            userLotteryDto.setCertificationStatus(LotteryTaskStatus.COMPLETE);
-        }else{
-            userLotteryDto.setCertificationStatus(LotteryTaskStatus.PROCEED);
-            return userLotteryDto;
+            userLotteryDto.setCertificationStatus(ActivityTaskStatus.COMPLETE);
         }
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
         if(bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
             lotteryTime ++;
-            userLotteryDto.setBindCardStatus(LotteryTaskStatus.COMPLETE);
-        }else{
-            userLotteryDto.setBindCardStatus(LotteryTaskStatus.PROCEED);
-            return userLotteryDto;
+            userLotteryDto.setBindCardStatus(ActivityTaskStatus.COMPLETE);
         }
 
         if(investMapper.countInvestorInvestPagination(userModel.getLoginName(), null, startTime, endTime) > 0){
             lotteryTime ++;
-            userLotteryDto.setInvestStatus(LotteryTaskStatus.COMPLETE);
-        }else{
-            userLotteryDto.setInvestStatus(LotteryTaskStatus.PROCEED);
-            return userLotteryDto;
+            userLotteryDto.setInvestStatus(ActivityTaskStatus.COMPLETE);
         }
-        return userLotteryDto;
+
+        return baseDto;
     }
 
-    public BaseDto<DrawLotteryActivityDto> drawLotteryPrize(String mobile,String drawType){
+    public BaseDto<DrawLotteryResultDto> drawLotteryPrize(String mobile,String drawType){
         logger.debug(mobile + " is drawing the lottery prize.");
         BaseDto baseDto = new BaseDto();
-        DrawLotteryActivityDto drawLotteryActivityDto = new DrawLotteryActivityDto();
-        baseDto.setData(drawLotteryActivityDto);
+        DrawLotteryResultDto drawLotteryResultDto = new DrawLotteryResultDto();
+        baseDto.setData(drawLotteryResultDto);
 
         if (StringUtils.isEmpty(mobile)) {
             logger.error("User not login. can't draw prize.");
-            drawLotteryActivityDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
-            drawLotteryActivityDto.setReturnCode(2);
-            drawLotteryActivityDto.setStatus(false);
+            drawLotteryResultDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
+            drawLotteryResultDto.setReturnCode(2);
+            drawLotteryResultDto.setStatus(false);
             baseDto.setSuccess(false);
             return baseDto;
         }
 
-        UserLotteryDto userLotteryDto = findUserLotteryByLoginName(mobile);
-        if(userLotteryDto.getLotteryTime() == 0){
-            logger.debug(mobile + "is no chance. draw time:" + userLotteryDto.getLotteryTime());
-            drawLotteryActivityDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
-            drawLotteryActivityDto.setReturnCode(1);
-            drawLotteryActivityDto.setStatus(false);
+        BaseDto<UserLotteryDto> userLotteryDto = findUserLotteryByLoginName(mobile);
+        if(userLotteryDto.getData().getLotteryTime() == 0){
+            logger.debug(mobile + "is no chance. draw time:" + userLotteryDto.getData().getLotteryTime());
+            drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
+            drawLotteryResultDto.setReturnCode(1);
+            drawLotteryResultDto.setStatus(false);
             baseDto.setSuccess(false);
             return baseDto;
         }
@@ -160,7 +136,7 @@ public class LotteryActivityServiceImpl implements LotteryActivityService {
         userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
         userLotteryPrizeModel.setPrize(lotteryPrize);
         userLotteryPrizeMapper.create(userLotteryPrizeModel);
-        drawLotteryActivityDto.setStatus(false);
+        drawLotteryResultDto.setStatus(false);
         baseDto.setSuccess(false);
         return baseDto;
     }
@@ -168,20 +144,40 @@ public class LotteryActivityServiceImpl implements LotteryActivityService {
     private LotteryPrize getDrawPrize(String drawType){
         int random = (int) (Math.random() * 100000000);
         int mod = random % 200;
-        System.out.print(mod + " =============> ");
         if(drawType.toUpperCase().equals(LotteryPrize.TOURISM) && mod == 0){
             return LotteryPrize.MANGO_CARD_100;
-        }else if(drawType.toUpperCase().equals(LotteryPrize.LUXURY) && mod == 0){
+        } else if (drawType.toUpperCase().equals(LotteryPrize.LUXURY) && mod == 0){
             return LotteryPrize.PORCELAIN_CUP;
-        }else if(mod >= 1 && mod <= 40){
+        } else if (mod >= 1 && mod <= 40){ // 1/5
             return LotteryPrize.RED_ENVELOPE_100;
-        }else if(mod >= 41 && mod <= 90){
+        } else if (mod >= 41 && mod <= 90){ // 1/4
             return LotteryPrize.RED_ENVELOPE_50;
-        }else if(mod >= 91 && mod <= 140){
+        } else if (mod >= 91 && mod <= 140){ // 1/4
             return LotteryPrize.INTEREST_COUPON_5;
-        }else{
+        } else {
             return LotteryPrize.INTEREST_COUPON_2;
         }
+    }
+
+    @Override
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,Integer index,Integer pageSize){
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, null, null, index, pageSize);
+        for(UserLotteryPrizeView view : userLotteryPrizeViews){
+            view.setMobile(encryptWebMiddleMobile(view.getMobile()));
+        }
+        return userLotteryPrizeViews;
+    }
+
+    public String encryptWebMiddleMobile(String mobile) {
+        return mobile.substring(0, 3) + showChar(4) + mobile.substring(7);
+    }
+
+    private static String showChar(int showLength) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < showLength; i++) {
+            sb.append('*');
+        }
+        return sb.toString();
     }
 
 }
